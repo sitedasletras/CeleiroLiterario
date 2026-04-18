@@ -10,6 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Lora:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
 
+  <script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
+
   <style>
     :root{
       --fundo:#f3efe8;
@@ -27,6 +29,7 @@
       --vermelho-escuro:#a73b3b;
       --azul:#4c6b8a;
       --azul-escuro:#37526d;
+      --cinza:#ece6da;
       --fonte-ui:'Inter', Arial, sans-serif;
       --fonte-miolo:'EB Garamond', Georgia, serif;
     }
@@ -217,7 +220,7 @@
     }
 
     textarea{
-      min-height:290px;
+      min-height:320px;
       resize:vertical;
       line-height:1.6;
     }
@@ -286,6 +289,12 @@
       border-color:var(--azul-escuro);
     }
 
+    .btn-upload{
+      background:#7a5c3a;
+      color:#fff;
+      border-color:#5e452a;
+    }
+
     .status-box{
       margin-top:16px;
       padding:14px;
@@ -295,6 +304,21 @@
       color:#4e453c;
       line-height:1.6;
       font-size:0.95rem;
+    }
+
+    .upload-box{
+      background:#efe8dc;
+      border:1px solid #d8cbb9;
+      border-radius:14px;
+      padding:14px;
+      margin-bottom:16px;
+    }
+
+    .upload-info{
+      font-size:0.93rem;
+      color:#5c5248;
+      line-height:1.6;
+      margin-top:8px;
     }
 
     .preview-aviso{
@@ -397,19 +421,20 @@
     }
 
     .preview-texto{
-      white-space:pre-wrap;
       word-break:break-word;
     }
 
     .pagina.prosa .preview-texto{
       text-align:justify;
-      white-space:pre-wrap;
     }
 
     .pagina.poesia .preview-texto{
       text-align:left;
-      white-space:pre-wrap;
       line-height:1.8;
+    }
+
+    .preview-texto p{
+      margin:0;
     }
 
     .nota-preview{
@@ -482,7 +507,7 @@
       <div>
         <div class="titulo">Pólux</div>
         <div class="subtitulo">
-          Diagramador de texto contínuo do Celeiro Literário, com base tipográfica e estrutural inspirada em ferramentas gratuitas do Google.
+          Diagramador de texto contínuo do Celeiro Literário, com upload da obra e separação entre Prosa e Poesia.
         </div>
       </div>
 
@@ -511,6 +536,17 @@
       <div class="grade-principal">
         <section class="formulario">
           <h2>Entrada da obra e ajustes editoriais</h2>
+
+          <div class="upload-box">
+            <label for="arquivoObra">Upload da obra</label>
+            <input type="file" id="arquivoObra" accept=".txt,.docx">
+            <div class="acoes">
+              <button class="acao-btn btn-upload" type="button" onclick="processarUpload()">Ler arquivo enviado</button>
+            </div>
+            <div class="upload-info" id="uploadInfo">
+              Formatos aceitos agora: <strong>.txt</strong> e <strong>.docx</strong>.
+            </div>
+          </div>
 
           <div class="grupo">
             <label for="titulo">Título da obra</label>
@@ -740,6 +776,7 @@
 
     const notaPreview = document.getElementById("notaPreview");
     const statusBox = document.getElementById("statusBox");
+    const uploadInfo = document.getElementById("uploadInfo");
 
     btnProsa.addEventListener("click", function(){
       modoAtual = "prosa";
@@ -781,29 +818,12 @@
       }
     }
 
-    function textoParaProsa(textoBruto, recuo, espacoAntes, espacoDepois){
-      const blocos = textoBruto
-        .split(/\n\s*\n/)
-        .map(p => p.trim())
-        .filter(p => p.length > 0);
-
-      if(blocos.length === 0){
-        return "Digite ou cole o texto da obra e clique em “Gerar prévia”.";
-      }
-
-      return blocos.map(p => {
-        const seguro = escaparHTML(p).replace(/\n/g, " ");
-        return `<p style="margin-top:${espacoAntes}em; margin-bottom:${espacoDepois}em; text-indent:${recuo}em;">${seguro}</p>`;
-      }).join("");
-    }
-
-    function textoParaPoesia(textoBruto, espacoDepois){
-      const linhas = textoBruto ? escaparHTML(textoBruto) : "Digite ou cole o texto da obra e clique em “Gerar prévia”.";
-      const html = linhas
-        .split("\n")
-        .map(linha => linha === "" ? `<div style="height:${espacoDepois}em;"></div>` : `<div>${linha}</div>`)
-        .join("");
-      return html;
+    function normalizarTexto(texto){
+      return texto
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n")
+        .replace(/\t/g, "    ")
+        .trim();
     }
 
     function escaparHTML(texto){
@@ -813,6 +833,60 @@
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+    }
+
+    function textoParaProsa(textoBruto, recuo, espacoAntes, espacoDepois){
+      const texto = normalizarTexto(textoBruto);
+
+      if(!texto){
+        return "Digite ou cole o texto da obra e clique em “Gerar prévia”.";
+      }
+
+      const blocos = texto
+        .split(/\n\s*\n+/)
+        .map(bloco => bloco.trim())
+        .filter(bloco => bloco.length > 0);
+
+      if(blocos.length === 0){
+        return "Digite ou cole o texto da obra e clique em “Gerar prévia”.";
+      }
+
+      return blocos.map((bloco, indice) => {
+        const seguro = escaparHTML(
+          bloco
+            .replace(/\n+/g, " ")
+            .replace(/\s+/g, " ")
+            .trim()
+        );
+
+        const recuoAtual = indice === 0 ? 0 : recuo;
+
+        return `<p style="margin-top:${espacoAntes}em; margin-bottom:${espacoDepois}em; text-indent:${recuoAtual}em;">${seguro}</p>`;
+      }).join("");
+    }
+
+    function textoParaPoesia(textoBruto, espacoDepois){
+      const texto = normalizarTexto(textoBruto);
+
+      if(!texto){
+        return "Digite ou cole o texto da obra e clique em “Gerar prévia”.";
+      }
+
+      const linhas = escaparHTML(texto)
+        .split("\n")
+        .map(linha => {
+          if(linha.trim() === ""){
+            return `<div style="height:${espacoDepois}em;"></div>`;
+          }
+          return `<div>${linha}</div>`;
+        })
+        .join("");
+
+      return linhas;
+    }
+
+    function extrairNomeFonte(valor){
+      return valor.split(",")[0].replaceAll("'", "").trim();
     }
 
     function gerarPreview(){
@@ -910,11 +984,46 @@
         "Margens: <strong>" + margemInterna + "/" + margemExterna + "/" + margemTopo + "/" + margemBase + " mm</strong>";
     }
 
-    function extrairNomeFonte(valor){
-      return valor.split(",")[0].replaceAll("'", "").trim();
+    async function processarUpload(){
+      const inputArquivo = document.getElementById("arquivoObra");
+      const campoTexto = document.getElementById("texto");
+
+      if(!inputArquivo.files || !inputArquivo.files[0]){
+        uploadInfo.innerHTML = "Nenhum arquivo selecionado.";
+        return;
+      }
+
+      const arquivo = inputArquivo.files[0];
+      const nome = arquivo.name.toLowerCase();
+
+      uploadInfo.innerHTML = "Lendo arquivo: <strong>" + arquivo.name + "</strong> ...";
+
+      try{
+        if(nome.endsWith(".txt")){
+          const texto = await arquivo.text();
+          campoTexto.value = normalizarTexto(texto);
+          uploadInfo.innerHTML = "Arquivo TXT carregado com sucesso: <strong>" + arquivo.name + "</strong>";
+          gerarPreview();
+          return;
+        }
+
+        if(nome.endsWith(".docx")){
+          const arrayBuffer = await arquivo.arrayBuffer();
+          const resultado = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+          campoTexto.value = normalizarTexto(resultado.value);
+          uploadInfo.innerHTML = "Arquivo DOCX carregado com sucesso: <strong>" + arquivo.name + "</strong>";
+          gerarPreview();
+          return;
+        }
+
+        uploadInfo.innerHTML = "Formato ainda não suportado neste momento. Use TXT ou DOCX.";
+      } catch(erro){
+        uploadInfo.innerHTML = "Não foi possível ler o arquivo enviado.";
+      }
     }
 
     function limparCampos(){
+      document.getElementById("arquivoObra").value = "";
       document.getElementById("titulo").value = "";
       document.getElementById("autor").value = "";
       document.getElementById("cabecalhoTexto").value = "";
@@ -942,6 +1051,8 @@
       document.getElementById("usarNumeroPagina").checked = true;
 
       document.getElementById("texto").value = "";
+
+      uploadInfo.innerHTML = 'Formatos aceitos agora: <strong>.txt</strong> e <strong>.docx</strong>.';
 
       modoAtual = "prosa";
       btnProsa.classList.add("ativo");
