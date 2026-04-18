@@ -1,1070 +1,628 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Pólux | Celeiro Literário</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Lora:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
-
-  <script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
-
+  <title>Pólux — Prosa</title>
   <style>
     :root{
-      --fundo:#f3efe8;
-      --painel:#fbf8f3;
-      --painel-2:#f5f0e8;
-      --linha:#d9cfbf;
-      --linha-2:#cfc3b1;
-      --texto:#201915;
-      --texto-suave:#5d5348;
-      --verde:#2f5d50;
-      --verde-escuro:#23463c;
-      --amarelo:#d9c756;
-      --amarelo-escuro:#b9aa45;
-      --vermelho:#c84d4d;
-      --vermelho-escuro:#a73b3b;
-      --azul:#4c6b8a;
-      --azul-escuro:#37526d;
-      --cinza:#ece6da;
-      --fonte-ui:'Inter', Arial, sans-serif;
-      --fonte-miolo:'EB Garamond', Georgia, serif;
+      --bg:#efe6d6;
+      --panel:#f8f4ec;
+      --ink:#1d1d1d;
+      --muted:#6f675b;
+      --line:#cdbfa8;
+      --accent:#7f6241;
+      --shadow:0 12px 28px rgba(0,0,0,.10);
+      --page-w:148mm;
+      --page-h:210mm;
+      --font-main:"Georgia","Times New Roman",serif;
+      --font-size:12pt;
+      --line-height:1.55;
+      --margin-top:18mm;
+      --margin-bottom:18mm;
+      --margin-inner:20mm;
+      --margin-outer:15mm;
+      --header-space:8mm;
+      --footer-space:10mm;
     }
 
-    *{
-      box-sizing:border-box;
-    }
-
-    html, body{
-      margin:0;
-      padding:0;
-      background:var(--fundo);
-      color:var(--texto);
-      font-family:var(--fonte-ui);
-    }
-
+    *{box-sizing:border-box}
     body{
+      margin:0;
+      font-family:Arial,Helvetica,sans-serif;
+      background:linear-gradient(180deg,#ebdfca 0%, #e5d7bf 100%);
+      color:var(--ink);
+    }
+
+    .app{
       min-height:100vh;
-    }
-
-    .topo{
-      background:var(--verde);
-      color:#fff;
-      padding:20px 16px;
-      border-bottom:4px solid var(--verde-escuro);
-    }
-
-    .topo-interno{
-      max-width:1320px;
-      margin:0 auto;
       display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    .titulo{
-      font-size:1.6rem;
-      font-weight:700;
-      letter-spacing:0.02em;
-    }
-
-    .subtitulo{
-      margin-top:6px;
-      font-size:0.96rem;
-      line-height:1.5;
-      opacity:0.95;
-    }
-
-    .acoes-topo{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .topo-btn{
-      display:inline-block;
-      text-decoration:none;
-      padding:11px 14px;
-      border-radius:10px;
-      font-weight:700;
-      border:1px solid transparent;
-      transition:0.2s ease;
-    }
-
-    .topo-btn:hover{
-      transform:translateY(-1px);
-    }
-
-    .btn-voltar{
-      background:var(--amarelo);
-      color:#2e2807;
-      border-color:var(--amarelo-escuro);
-    }
-
-    .btn-sair{
-      background:var(--vermelho);
-      color:#fff;
-      border-color:var(--vermelho-escuro);
-    }
-
-    .wrap{
-      max-width:1320px;
-      margin:0 auto;
-      padding:20px 16px 36px 16px;
-    }
-
-    .painel{
-      background:var(--painel);
-      border:1px solid var(--linha);
-      border-radius:18px;
-      box-shadow:0 10px 24px rgba(0,0,0,0.06);
-      padding:20px;
-    }
-
-    .selecao-modo{
-      background:var(--painel-2);
-      border:1px solid var(--linha);
-      border-radius:16px;
+      flex-direction:column;
+      gap:18px;
       padding:18px;
-      margin-bottom:18px;
     }
 
-    .selecao-modo h2,
-    .formulario h2,
-    .preview-box h2{
-      margin:0 0 12px 0;
-      font-size:1.24rem;
-      color:#1b1512;
+    .topbar{
+      background:rgba(255,255,255,.45);
+      border:1px solid rgba(120,94,58,.18);
+      border-radius:18px;
+      padding:16px 18px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(4px);
     }
 
-    .modo-botoes{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    .modo-btn{
-      border:1px solid #b9c8c2;
-      background:#e6efe9;
-      color:#1f3a31;
+    .topbar h1{
+      margin:0 0 8px;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:28px;
       font-weight:700;
-      border-radius:12px;
-      padding:14px 18px;
-      cursor:pointer;
-      font-size:0.98rem;
-      transition:0.2s ease;
-      font-family:var(--fonte-ui);
+      letter-spacing:.2px;
     }
 
-    .modo-btn:hover{
-      transform:translateY(-1px);
+    .topbar p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.45;
     }
 
-    .modo-btn.ativo{
-      background:var(--verde);
-      color:#fff;
-      border-color:var(--verde-escuro);
-    }
-
-    .estado{
-      margin-top:12px;
-      color:var(--texto-suave);
-      line-height:1.6;
-      font-size:0.97rem;
-    }
-
-    .grade-principal{
+    .controls{
       display:grid;
-      grid-template-columns:520px 1fr;
-      gap:20px;
+      grid-template-columns: 1.2fr .8fr .8fr .8fr auto auto;
+      gap:12px;
+      align-items:end;
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+      box-shadow:var(--shadow);
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+
+    .field label{
+      font-size:13px;
+      font-weight:700;
+      color:#433626;
+    }
+
+    .field input[type="text"],
+    .field select,
+    .field input[type="file"]{
+      width:100%;
+      border:1px solid #bcae97;
+      background:#fffdf9;
+      color:var(--ink);
+      border-radius:12px;
+      padding:11px 12px;
+      font-size:14px;
+      outline:none;
+    }
+
+    .btn{
+      border:none;
+      border-radius:12px;
+      padding:12px 14px;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(0,0,0,.08);
+    }
+
+    .btn-primary{
+      background:#3f6f4d;
+      color:#fff;
+    }
+
+    .btn-secondary{
+      background:#b48f5e;
+      color:#fff;
+    }
+
+    .workspace{
+      display:grid;
+      grid-template-columns: minmax(320px, 42%) 1fr;
+      gap:18px;
       align-items:start;
     }
 
-    .formulario,
-    .preview-box{
-      background:var(--painel-2);
-      border:1px solid var(--linha);
-      border-radius:16px;
-      padding:18px;
-    }
-
-    .grupo{
-      margin-bottom:14px;
-    }
-
-    label{
-      display:block;
-      font-weight:700;
-      margin-bottom:7px;
-      color:#2b241f;
-      font-size:0.95rem;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    textarea,
-    select{
-      width:100%;
-      border:1px solid var(--linha-2);
-      border-radius:12px;
-      padding:12px 14px;
-      font-size:0.98rem;
-      background:#fffdfa;
-      color:#1f1a17;
-      font-family:var(--fonte-ui);
-    }
-
-    textarea{
-      min-height:320px;
-      resize:vertical;
-      line-height:1.6;
-    }
-
-    .linha-campos-2{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-
-    .linha-campos-3{
-      display:grid;
-      grid-template-columns:1fr 1fr 1fr;
-      gap:12px;
-    }
-
-    .subbloco{
-      margin-top:18px;
-      padding-top:16px;
-      border-top:1px solid #ddd1c2;
-    }
-
-    .subbloco h3{
-      margin:0 0 12px 0;
-      font-size:1rem;
-      color:#322a24;
-    }
-
-    .acoes{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:8px;
-    }
-
-    .acao-btn{
-      border:1px solid transparent;
-      border-radius:12px;
-      padding:13px 16px;
-      font-weight:700;
-      cursor:pointer;
-      font-size:0.96rem;
-      transition:0.2s ease;
-      font-family:var(--fonte-ui);
-    }
-
-    .acao-btn:hover{
-      transform:translateY(-1px);
-    }
-
-    .btn-preview{
-      background:var(--verde);
-      color:#fff;
-      border-color:var(--verde-escuro);
-    }
-
-    .btn-limpar{
-      background:var(--amarelo);
-      color:#312907;
-      border-color:var(--amarelo-escuro);
-    }
-
-    .btn-imprimir{
-      background:var(--azul);
-      color:#fff;
-      border-color:var(--azul-escuro);
-    }
-
-    .btn-upload{
-      background:#7a5c3a;
-      color:#fff;
-      border-color:#5e452a;
-    }
-
-    .status-box{
-      margin-top:16px;
-      padding:14px;
-      border-radius:12px;
-      background:#ece6da;
-      border:1px solid #d4cab9;
-      color:#4e453c;
-      line-height:1.6;
-      font-size:0.95rem;
-    }
-
-    .upload-box{
-      background:#efe8dc;
-      border:1px solid #d8cbb9;
-      border-radius:14px;
-      padding:14px;
-      margin-bottom:16px;
-    }
-
-    .upload-info{
-      font-size:0.93rem;
-      color:#5c5248;
-      line-height:1.6;
-      margin-top:8px;
-    }
-
-    .preview-aviso{
-      margin-bottom:14px;
-      color:var(--texto-suave);
-      line-height:1.6;
-      font-size:0.95rem;
-    }
-
-    .pagina-area{
-      display:flex;
-      justify-content:center;
-      overflow:auto;
-      padding:8px;
-      background:#efe8dc;
-      border:1px solid #d8cbb9;
-      border-radius:14px;
-    }
-
-    .pagina{
-      width:148mm;
-      min-width:148mm;
-      height:210mm;
-      background:#fff;
-      color:#111;
-      border:1px solid #cfcfcf;
-      box-shadow:0 10px 22px rgba(0,0,0,0.08);
-      position:relative;
+    .editor-panel,
+    .preview-panel{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:20px;
+      box-shadow:var(--shadow);
       overflow:hidden;
     }
 
-    .pagina-interna{
+    .panel-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      background:rgba(255,255,255,.45);
+    }
+
+    .panel-head h2{
+      margin:0;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:22px;
+    }
+
+    .panel-head small{
+      color:var(--muted);
+      font-size:12px;
+      display:block;
+      margin-top:2px;
+    }
+
+    .editor-wrap{
+      padding:14px;
+    }
+
+    #textoEntrada{
+      width:100%;
+      min-height:72vh;
+      resize:vertical;
+      border:1px solid #bcae97;
+      background:#fffdf9;
+      border-radius:16px;
+      padding:16px;
+      font-family:var(--font-main);
+      font-size:16px;
+      line-height:1.65;
+      color:var(--ink);
+      outline:none;
+      white-space:pre-wrap;
+    }
+
+    .editor-note{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .preview-shell{
+      padding:18px;
+      overflow:auto;
+      background:
+        radial-gradient(circle at center, rgba(127,98,65,.10) 0%, rgba(127,98,65,.05) 38%, rgba(127,98,65,.02) 62%, transparent 70%),
+        linear-gradient(180deg,#ece1cf 0%,#e2d3b8 100%);
+    }
+
+    .book{
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      gap:0;
+      padding:12px;
+      min-height:78vh;
+    }
+
+    .page{
+      position:relative;
+      width:var(--page-w);
+      height:var(--page-h);
+      background:#fffefb;
+      box-shadow:
+        0 12px 28px rgba(0,0,0,.12),
+        inset 0 0 0 1px rgba(122,100,68,.10);
+      overflow:hidden;
+      flex:0 0 auto;
+    }
+
+    .page.left{
+      border-radius:14px 0 0 14px;
+    }
+
+    .page.right{
+      border-radius:0 14px 14px 0;
+    }
+
+    .gutter{
+      width:14px;
+      height:var(--page-h);
+      background:linear-gradient(90deg, rgba(113,88,57,.28), rgba(255,255,255,.6), rgba(113,88,57,.22));
+      box-shadow: inset 0 0 10px rgba(0,0,0,.10);
+      flex:0 0 auto;
+    }
+
+    .page-inner{
       position:absolute;
       inset:0;
-      padding-top:20mm;
-      padding-bottom:20mm;
-      padding-left:25mm;
-      padding-right:15mm;
-      font-family:var(--fonte-miolo);
-      font-size:12pt;
-      line-height:1.5;
-      text-align:justify;
+      padding-top:calc(var(--margin-top) + var(--header-space));
+      padding-bottom:calc(var(--margin-bottom) + var(--footer-space));
+      font-family:var(--font-main);
+      font-size:var(--font-size);
+      line-height:var(--line-height);
+      color:var(--ink);
+    }
+
+    .page.left .page-inner{
+      padding-left:var(--margin-outer);
+      padding-right:var(--margin-inner);
+    }
+
+    .page.right .page-inner{
+      padding-left:var(--margin-inner);
+      padding-right:var(--margin-outer);
+    }
+
+    .header, .footer{
+      position:absolute;
+      left:0;
+      right:0;
+      text-align:center;
+      color:#5e5347;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:10pt;
+      letter-spacing:.2px;
+      pointer-events:none;
+    }
+
+    .header{ top:10mm; }
+    .footer{ bottom:8mm; }
+
+    .content{
+      height:100%;
       overflow:hidden;
+      word-break:normal;
+      overflow-wrap:break-word;
     }
 
-    .cabecalho{
-      position:absolute;
-      left:25mm;
-      right:15mm;
-      top:8mm;
-      height:8mm;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      font-size:9pt;
-      color:#555;
-      border-bottom:1px solid #ddd;
-      font-family:var(--fonte-ui);
-      visibility:hidden;
-    }
-
-    .rodape{
-      position:absolute;
-      left:25mm;
-      right:15mm;
-      bottom:8mm;
-      height:8mm;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:9pt;
-      color:#555;
-      border-top:1px solid #ddd;
-      font-family:var(--fonte-ui);
-      visibility:hidden;
-    }
-
-    .pagina.tem-cabecalho .cabecalho{
-      visibility:visible;
-    }
-
-    .pagina.tem-rodape .rodape{
-      visibility:visible;
-    }
-
-    .preview-titulo{
-      font-size:1.35rem;
-      line-height:1.2;
-      text-align:center;
-      margin:0 0 10mm 0;
-      font-weight:700;
-    }
-
-    .preview-autor{
-      text-align:center;
-      font-size:1rem;
-      margin:0 0 12mm 0;
-      color:#444;
-      font-family:var(--fonte-ui);
-    }
-
-    .preview-texto{
-      word-break:break-word;
-    }
-
-    .pagina.prosa .preview-texto{
+    .content p{
+      margin:0 0 0.95em 0;
       text-align:justify;
+      text-indent:1.25em;
     }
 
-    .pagina.poesia .preview-texto{
-      text-align:left;
-      line-height:1.8;
+    .content p:first-child{
+      margin-top:0;
     }
 
-    .preview-texto p{
-      margin:0;
+    .content p.no-indent{
+      text-indent:0;
     }
 
-    .nota-preview{
-      margin-top:14px;
-      font-size:0.92rem;
-      color:#665b50;
-      line-height:1.6;
+    .empty-state{
+      color:#7c7265;
+      font-style:italic;
     }
 
-    .caixa-check{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      min-height:44px;
-      background:#fffdfa;
-      border:1px solid var(--linha-2);
-      border-radius:12px;
-      padding:10px 12px;
+    .status{
+      font-size:13px;
+      color:#5f523f;
+      background:#f5ecde;
+      border:1px solid #d8c7ad;
+      border-radius:999px;
+      padding:8px 12px;
+      white-space:nowrap;
     }
 
-    .caixa-check input{
-      transform:scale(1.1);
-    }
-
-    @media (max-width:1100px){
-      .grade-principal{
+    @media (max-width: 1200px){
+      .controls{
+        grid-template-columns:1fr 1fr 1fr;
+      }
+      .workspace{
         grid-template-columns:1fr;
       }
+      .book{
+        min-width:max-content;
+      }
     }
 
-    @media (max-width:700px){
-      .linha-campos-2,
-      .linha-campos-3{
+    @media (max-width: 740px){
+      .controls{
         grid-template-columns:1fr;
       }
-
-      .titulo{
-        font-size:1.4rem;
+      .topbar h1{
+        font-size:24px;
       }
-
-      .pagina-area{
-        justify-content:flex-start;
-      }
-    }
-
-    @media print{
-      body *{
-        visibility:hidden !important;
-      }
-
-      .pagina,
-      .pagina *{
-        visibility:visible !important;
-      }
-
-      .pagina{
-        position:absolute;
-        left:0;
-        top:0;
-        margin:0;
-        box-shadow:none;
-        border:none;
+      #textoEntrada{
+        min-height:50vh;
       }
     }
   </style>
 </head>
 <body>
-  <header class="topo">
-    <div class="topo-interno">
-      <div>
-        <div class="titulo">Pólux</div>
-        <div class="subtitulo">
-          Diagramador de texto contínuo do Celeiro Literário, com upload da obra e separação entre Prosa e Poesia.
-        </div>
-      </div>
-
-      <div class="acoes-topo">
-        <a class="topo-btn btn-voltar" href="lapidar.html">Retornar ao Lapidar</a>
-        <a class="topo-btn btn-sair" href="index.html">Sair para o Celeiro</a>
-      </div>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <section class="painel">
-      <section class="selecao-modo">
-        <h2>Modo de trabalho do Pólux</h2>
-
-        <div class="modo-botoes">
-          <button class="modo-btn ativo" id="btnProsa" type="button">Pólux Prosa</button>
-          <button class="modo-btn" id="btnPoesia" type="button">Pólux Poesia</button>
-        </div>
-
-        <div class="estado" id="textoModo">
-          Modo atual: <strong>Prosa</strong>. Indicado para romance, memórias, biografia, ensaio e demais textos contínuos.
-        </div>
-      </section>
-
-      <div class="grade-principal">
-        <section class="formulario">
-          <h2>Entrada da obra e ajustes editoriais</h2>
-
-          <div class="upload-box">
-            <label for="arquivoObra">Upload da obra</label>
-            <input type="file" id="arquivoObra" accept=".txt,.docx">
-            <div class="acoes">
-              <button class="acao-btn btn-upload" type="button" onclick="processarUpload()">Ler arquivo enviado</button>
-            </div>
-            <div class="upload-info" id="uploadInfo">
-              Formatos aceitos agora: <strong>.txt</strong> e <strong>.docx</strong>.
-            </div>
-          </div>
-
-          <div class="grupo">
-            <label for="titulo">Título da obra</label>
-            <input type="text" id="titulo" placeholder="Digite o título da obra">
-          </div>
-
-          <div class="grupo">
-            <label for="autor">Autor</label>
-            <input type="text" id="autor" placeholder="Digite o nome do autor">
-          </div>
-
-          <div class="linha-campos-2">
-            <div class="grupo">
-              <label for="cabecalhoTexto">Cabeçalho</label>
-              <input type="text" id="cabecalhoTexto" placeholder="Ex.: Título da obra">
-            </div>
-
-            <div class="grupo">
-              <label for="rodapeTexto">Rodapé</label>
-              <input type="text" id="rodapeTexto" placeholder="Ex.: Autor">
-            </div>
-          </div>
-
-          <div class="linha-campos-3">
-            <div class="grupo">
-              <label for="formato">Formato</label>
-              <select id="formato">
-                <option value="A5" selected>A5</option>
-                <option value="16x23">16x23</option>
-                <option value="6x9">6x9</option>
-                <option value="A4">A4</option>
-                <option value="epub">e-pub</option>
-              </select>
-            </div>
-
-            <div class="grupo">
-              <label for="fonte">Tipografia do miolo</label>
-              <select id="fonte">
-                <option value="'EB Garamond', Georgia, serif" selected>EB Garamond</option>
-                <option value="'Libre Baskerville', Georgia, serif">Libre Baskerville</option>
-                <option value="'Lora', Georgia, serif">Lora</option>
-                <option value="'Crimson Text', Georgia, serif">Crimson Text</option>
-                <option value="'Merriweather', Georgia, serif">Merriweather</option>
-              </select>
-            </div>
-
-            <div class="grupo">
-              <label for="tamanhoFonte">Tamanho da fonte</label>
-              <input type="number" id="tamanhoFonte" min="9" max="18" step="0.5" value="12">
-            </div>
-          </div>
-
-          <div class="subbloco">
-            <h3>Margens do miolo</h3>
-
-            <div class="linha-campos-2">
-              <div class="grupo">
-                <label for="margemInterna">Margem interna / esquerda (mm)</label>
-                <input type="number" id="margemInterna" min="5" max="40" step="1" value="25">
-              </div>
-
-              <div class="grupo">
-                <label for="margemExterna">Margem externa / direita (mm)</label>
-                <input type="number" id="margemExterna" min="5" max="40" step="1" value="15">
-              </div>
-            </div>
-
-            <div class="linha-campos-2">
-              <div class="grupo">
-                <label for="margemTopo">Margem superior (mm)</label>
-                <input type="number" id="margemTopo" min="5" max="40" step="1" value="20">
-              </div>
-
-              <div class="grupo">
-                <label for="margemBase">Margem inferior (mm)</label>
-                <input type="number" id="margemBase" min="5" max="40" step="1" value="20">
-              </div>
-            </div>
-          </div>
-
-          <div class="subbloco">
-            <h3>Parágrafo e espaçamento</h3>
-
-            <div class="linha-campos-3">
-              <div class="grupo">
-                <label for="alinhamento">Alinhamento</label>
-                <select id="alinhamento">
-                  <option value="justify" selected>Justificado</option>
-                  <option value="left">À esquerda</option>
-                  <option value="center">Centralizado</option>
-                  <option value="right">À direita</option>
-                </select>
-              </div>
-
-              <div class="grupo">
-                <label for="entrelinhas">Entrelinhas</label>
-                <input type="number" id="entrelinhas" min="1" max="3" step="0.05" value="1.5">
-              </div>
-
-              <div class="grupo">
-                <label for="recuo">Recuo de parágrafo (em)</label>
-                <input type="number" id="recuo" min="0" max="5" step="0.1" value="1.5">
-              </div>
-            </div>
-
-            <div class="linha-campos-2">
-              <div class="grupo">
-                <label for="espacoAntes">Espaço antes do parágrafo (em)</label>
-                <input type="number" id="espacoAntes" min="0" max="3" step="0.1" value="0">
-              </div>
-
-              <div class="grupo">
-                <label for="espacoDepois">Espaço depois do parágrafo (em)</label>
-                <input type="number" id="espacoDepois" min="0" max="3" step="0.1" value="0">
-              </div>
-            </div>
-          </div>
-
-          <div class="subbloco">
-            <h3>Cabeçalho, rodapé e página</h3>
-
-            <div class="linha-campos-2">
-              <div class="grupo">
-                <label for="margemCabecalho">Margem do cabeçalho (mm)</label>
-                <input type="number" id="margemCabecalho" min="0" max="25" step="1" value="8">
-              </div>
-
-              <div class="grupo">
-                <label for="margemRodape">Margem do rodapé (mm)</label>
-                <input type="number" id="margemRodape" min="0" max="25" step="1" value="8">
-              </div>
-            </div>
-
-            <div class="linha-campos-3">
-              <div class="grupo">
-                <div class="caixa-check">
-                  <input type="checkbox" id="usarCabecalho">
-                  <label for="usarCabecalho" style="margin:0;">Exibir cabeçalho</label>
-                </div>
-              </div>
-
-              <div class="grupo">
-                <div class="caixa-check">
-                  <input type="checkbox" id="usarRodape" checked>
-                  <label for="usarRodape" style="margin:0;">Exibir rodapé</label>
-                </div>
-              </div>
-
-              <div class="grupo">
-                <div class="caixa-check">
-                  <input type="checkbox" id="usarNumeroPagina" checked>
-                  <label for="usarNumeroPagina" style="margin:0;">Mostrar nº da página</label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="grupo">
-            <label for="texto">Texto da obra</label>
-            <textarea id="texto" placeholder="Cole aqui o texto da obra"></textarea>
-          </div>
-
-          <div class="acoes">
-            <button class="acao-btn btn-preview" type="button" onclick="gerarPreview()">Gerar prévia</button>
-            <button class="acao-btn btn-limpar" type="button" onclick="limparCampos()">Limpar</button>
-            <button class="acao-btn btn-imprimir" type="button" onclick="window.print()">Imprimir / Salvar em PDF</button>
-          </div>
-
-          <div class="status-box" id="statusBox">
-            Estado atual: sistema pronto para gerar a prévia editorial.
-          </div>
-        </section>
-
-        <section class="preview-box">
-          <h2>Prévia editorial</h2>
-
-          <div class="preview-aviso">
-            Aqui você vê a primeira página do Pólux. Prosa e Poesia permanecem separadas dentro do próprio sistema.
-          </div>
-
-          <div class="pagina-area">
-            <div class="pagina prosa tem-rodape" id="paginaPreview">
-              <div class="cabecalho" id="cabecalhoPreview">
-                <span id="cabecalhoEsquerda">Título da obra</span>
-                <span id="cabecalhoDireita">Pólux</span>
-              </div>
-
-              <div class="pagina-interna" id="paginaInterna">
-                <h3 class="preview-titulo" id="previewTitulo">Título da obra</h3>
-                <p class="preview-autor" id="previewAutor">Nome do autor</p>
-                <div class="preview-texto" id="previewTexto">Digite ou cole o texto da obra e clique em “Gerar prévia”.</div>
-              </div>
-
-              <div class="rodape" id="rodapePreview">
-                <span id="rodapeTextoPreview">1</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="nota-preview" id="notaPreview">
-            Prévia em A5 com margens editoriais iniciais.
-          </div>
-        </section>
-      </div>
+  <div class="app">
+    <section class="topbar">
+      <h1>Pólux — Prosa</h1>
+      <p>Upload direto da obra para a caixa de texto. A caixa continua livre para edição manual. A prévia no canto direito funciona como livro aberto, respeitando o formato escolhido.</p>
     </section>
-  </main>
+
+    <section class="controls">
+      <div class="field">
+        <label for="arquivoObra">Obra</label>
+        <input type="file" id="arquivoObra" accept=".txt,.md,.html,.doc,.docx" />
+      </div>
+
+      <div class="field">
+        <label for="tituloLivro">Título</label>
+        <input type="text" id="tituloLivro" value="Prévia da Obra" />
+      </div>
+
+      <div class="field">
+        <label for="autorLivro">Autor</label>
+        <input type="text" id="autorLivro" value="Autor" />
+      </div>
+
+      <div class="field">
+        <label for="formatoLivro">Formato</label>
+        <select id="formatoLivro">
+          <option value="A5" selected>A5</option>
+          <option value="16x23">16x23</option>
+          <option value="6x9">6x9</option>
+          <option value="A4">A4</option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary" id="limparTexto" type="button">Limpar texto</button>
+      <button class="btn btn-secondary" id="carregarExemplo" type="button">Carregar exemplo</button>
+    </section>
+
+    <section class="workspace">
+      <article class="editor-panel">
+        <div class="panel-head">
+          <div>
+            <h2>Caixa de texto</h2>
+            <small>O upload entra direto aqui. Depois disso, esta área vira apoio de edição manual.</small>
+          </div>
+          <div class="status" id="statusUpload">Aguardando obra</div>
+        </div>
+        <div class="editor-wrap">
+          <textarea id="textoEntrada" placeholder="Quando a obra for enviada, o texto aparecerá aqui automaticamente.&#10;&#10Depois você pode corrigir, cortar, ajustar ou completar trechos livremente."></textarea>
+          <div class="editor-note">
+            O texto enviado entra diretamente nesta caixa. Não existe etapa separada obrigatória. Qualquer alteração feita aqui atualiza a prévia automaticamente.
+          </div>
+        </div>
+      </article>
+
+      <article class="preview-panel">
+        <div class="panel-head">
+          <div>
+            <h2>Prévia editorial</h2>
+            <small>Livro aberto em duas páginas, seguindo o formato escolhido.</small>
+          </div>
+          <div class="status" id="statusFormato">Formato: A5</div>
+        </div>
+
+        <div class="preview-shell">
+          <div class="book" id="book">
+            <div class="page left">
+              <div class="header" id="headerLeft">Prévia da Obra</div>
+              <div class="page-inner">
+                <div class="content" id="pageLeft">
+                  <div class="empty-state">A prévia aparecerá aqui assim que a obra for enviada ou digitada.</div>
+                </div>
+              </div>
+              <div class="footer" id="footerLeft">1</div>
+            </div>
+
+            <div class="gutter"></div>
+
+            <div class="page right">
+              <div class="header" id="headerRight">Autor</div>
+              <div class="page-inner">
+                <div class="content" id="pageRight">
+                  <div class="empty-state">A segunda página acompanhará a continuidade do texto.</div>
+                </div>
+              </div>
+              <div class="footer" id="footerRight">2</div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </div>
 
   <script>
-    let modoAtual = "prosa";
+    const textoEntrada = document.getElementById('textoEntrada');
+    const arquivoObra = document.getElementById('arquivoObra');
+    const tituloLivro = document.getElementById('tituloLivro');
+    const autorLivro = document.getElementById('autorLivro');
+    const formatoLivro = document.getElementById('formatoLivro');
+    const statusUpload = document.getElementById('statusUpload');
+    const statusFormato = document.getElementById('statusFormato');
+    const pageLeft = document.getElementById('pageLeft');
+    const pageRight = document.getElementById('pageRight');
+    const headerLeft = document.getElementById('headerLeft');
+    const headerRight = document.getElementById('headerRight');
+    const footerLeft = document.getElementById('footerLeft');
+    const footerRight = document.getElementById('footerRight');
+    const limparTexto = document.getElementById('limparTexto');
+    const carregarExemplo = document.getElementById('carregarExemplo');
 
-    const btnProsa = document.getElementById("btnProsa");
-    const btnPoesia = document.getElementById("btnPoesia");
-    const textoModo = document.getElementById("textoModo");
+    const formatos = {
+      "A5":   { w: "148mm", h: "210mm", font: "12pt", line: "1.55", mt:"18mm", mb:"18mm", mi:"20mm", mo:"15mm" },
+      "16x23":{ w: "160mm", h: "230mm", font: "12pt", line: "1.58", mt:"18mm", mb:"18mm", mi:"21mm", mo:"16mm" },
+      "6x9":  { w: "152.4mm", h: "228.6mm", font: "12pt", line: "1.58", mt:"18mm", mb:"18mm", mi:"21mm", mo:"16mm" },
+      "A4":   { w: "210mm", h: "297mm", font: "12pt", line: "1.60", mt:"22mm", mb:"22mm", mi:"24mm", mo:"18mm" }
+    };
 
-    const pagina = document.getElementById("paginaPreview");
-    const paginaInterna = document.getElementById("paginaInterna");
-    const previewTitulo = document.getElementById("previewTitulo");
-    const previewAutor = document.getElementById("previewAutor");
-    const previewTexto = document.getElementById("previewTexto");
-
-    const cabecalhoPreview = document.getElementById("cabecalhoPreview");
-    const cabecalhoEsquerda = document.getElementById("cabecalhoEsquerda");
-    const cabecalhoDireita = document.getElementById("cabecalhoDireita");
-
-    const rodapePreview = document.getElementById("rodapePreview");
-    const rodapeTextoPreview = document.getElementById("rodapeTextoPreview");
-
-    const notaPreview = document.getElementById("notaPreview");
-    const statusBox = document.getElementById("statusBox");
-    const uploadInfo = document.getElementById("uploadInfo");
-
-    btnProsa.addEventListener("click", function(){
-      modoAtual = "prosa";
-      btnProsa.classList.add("ativo");
-      btnPoesia.classList.remove("ativo");
-      textoModo.innerHTML = 'Modo atual: <strong>Prosa</strong>. Indicado para romance, memórias, biografia, ensaio e demais textos contínuos.';
-      gerarPreview();
-    });
-
-    btnPoesia.addEventListener("click", function(){
-      modoAtual = "poesia";
-      btnPoesia.classList.add("ativo");
-      btnProsa.classList.remove("ativo");
-      textoModo.innerHTML = 'Modo atual: <strong>Poesia</strong>. Indicado para versos, estrofes, sonetos, odes e estruturas poéticas preservadas.';
-      gerarPreview();
-    });
-
-    function aplicarFormatoPagina(formato){
-      if(formato === "A5"){
-        pagina.style.width = "148mm";
-        pagina.style.minWidth = "148mm";
-        pagina.style.height = "210mm";
-      } else if(formato === "16x23"){
-        pagina.style.width = "160mm";
-        pagina.style.minWidth = "160mm";
-        pagina.style.height = "230mm";
-      } else if(formato === "6x9"){
-        pagina.style.width = "152.4mm";
-        pagina.style.minWidth = "152.4mm";
-        pagina.style.height = "228.6mm";
-      } else if(formato === "A4"){
-        pagina.style.width = "210mm";
-        pagina.style.minWidth = "210mm";
-        pagina.style.height = "297mm";
-      } else {
-        pagina.style.width = "148mm";
-        pagina.style.minWidth = "148mm";
-        pagina.style.height = "210mm";
-      }
-    }
-
-    function normalizarTexto(texto){
-      return texto
-        .replace(/\r\n/g, "\n")
-        .replace(/\r/g, "\n")
-        .replace(/\t/g, "    ")
-        .trim();
-    }
-
-    function escaparHTML(texto){
-      return texto
+    function escapeHtml(str) {
+      return str
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(/>/g, "&gt;");
     }
 
-    function textoParaProsa(textoBruto, recuo, espacoAntes, espacoDepois){
-      const texto = normalizarTexto(textoBruto);
+    function parseParagraphs(text) {
+      const normalized = text
+        .replace(/\r\n/g, '\n')
+        .replace(/\r/g, '\n')
+        .replace(/\t/g, '    ')
+        .trim();
 
-      if(!texto){
-        return "Digite ou cole o texto da obra e clique em “Gerar prévia”.";
-      }
+      if (!normalized) return [];
 
-      const blocos = texto
+      const paragraphs = normalized
         .split(/\n\s*\n+/)
-        .map(bloco => bloco.trim())
-        .filter(bloco => bloco.length > 0);
+        .map(p => p.replace(/\n/g, '<br>').trim())
+        .filter(Boolean);
 
-      if(blocos.length === 0){
-        return "Digite ou cole o texto da obra e clique em “Gerar prévia”.";
-      }
-
-      return blocos.map((bloco, indice) => {
-        const seguro = escaparHTML(
-          bloco
-            .replace(/\n+/g, " ")
-            .replace(/\s+/g, " ")
-            .trim()
-        );
-
-        const recuoAtual = indice === 0 ? 0 : recuo;
-
-        return `<p style="margin-top:${espacoAntes}em; margin-bottom:${espacoDepois}em; text-indent:${recuoAtual}em;">${seguro}</p>`;
-      }).join("");
+      return paragraphs;
     }
 
-    function textoParaPoesia(textoBruto, espacoDepois){
-      const texto = normalizarTexto(textoBruto);
-
-      if(!texto){
-        return "Digite ou cole o texto da obra e clique em “Gerar prévia”.";
-      }
-
-      const linhas = escaparHTML(texto)
-        .split("\n")
-        .map(linha => {
-          if(linha.trim() === ""){
-            return `<div style="height:${espacoDepois}em;"></div>`;
-          }
-          return `<div>${linha}</div>`;
-        })
-        .join("");
-
-      return linhas;
+    function measureParagraphHeight(paragraphHtml, pageEl) {
+      const probe = document.createElement('div');
+      probe.style.position = 'absolute';
+      probe.style.visibility = 'hidden';
+      probe.style.pointerEvents = 'none';
+      probe.style.left = '-99999px';
+      probe.style.top = '0';
+      probe.style.width = pageEl.clientWidth + 'px';
+      probe.innerHTML = `<p>${paragraphHtml}</p>`;
+      document.body.appendChild(probe);
+      const h = probe.offsetHeight;
+      probe.remove();
+      return h;
     }
 
-    function extrairNomeFonte(valor){
-      return valor.split(",")[0].replaceAll("'", "").trim();
+    function fillPage(pageEl, paragraphs, startIndex) {
+      pageEl.innerHTML = '';
+      if (!paragraphs.length) {
+        pageEl.innerHTML = '<div class="empty-state">A prévia aparecerá aqui assim que a obra for enviada ou digitada.</div>';
+        return startIndex;
+      }
+
+      const maxHeight = pageEl.clientHeight;
+      let used = 0;
+      let i = startIndex;
+
+      while (i < paragraphs.length) {
+        const para = paragraphs[i];
+        const h = measureParagraphHeight(para, pageEl);
+
+        if (used + h > maxHeight) {
+          break;
+        }
+
+        const p = document.createElement('p');
+        p.innerHTML = para;
+        if (i === 0 && startIndex === 0) {
+          p.classList.add('no-indent');
+        }
+        pageEl.appendChild(p);
+        used += h;
+        i++;
+      }
+
+      return i;
     }
 
-    function gerarPreview(){
-      const titulo = document.getElementById("titulo").value.trim() || "Título da obra";
-      const autor = document.getElementById("autor").value.trim() || "Nome do autor";
-      const cabecalhoTexto = document.getElementById("cabecalhoTexto").value.trim() || titulo;
-      const rodapeTexto = document.getElementById("rodapeTexto").value.trim() || autor;
-
-      const formato = document.getElementById("formato").value;
-      const fonte = document.getElementById("fonte").value;
-      const tamanhoFonte = parseFloat(document.getElementById("tamanhoFonte").value) || 12;
-
-      const margemInterna = parseFloat(document.getElementById("margemInterna").value) || 25;
-      const margemExterna = parseFloat(document.getElementById("margemExterna").value) || 15;
-      const margemTopo = parseFloat(document.getElementById("margemTopo").value) || 20;
-      const margemBase = parseFloat(document.getElementById("margemBase").value) || 20;
-
-      const alinhamento = document.getElementById("alinhamento").value;
-      const entrelinhas = parseFloat(document.getElementById("entrelinhas").value) || 1.5;
-      const recuo = parseFloat(document.getElementById("recuo").value) || 1.5;
-      const espacoAntes = parseFloat(document.getElementById("espacoAntes").value) || 0;
-      const espacoDepois = parseFloat(document.getElementById("espacoDepois").value) || 0;
-
-      const margemCabecalho = parseFloat(document.getElementById("margemCabecalho").value) || 8;
-      const margemRodape = parseFloat(document.getElementById("margemRodape").value) || 8;
-
-      const usarCabecalho = document.getElementById("usarCabecalho").checked;
-      const usarRodape = document.getElementById("usarRodape").checked;
-      const usarNumeroPagina = document.getElementById("usarNumeroPagina").checked;
-
-      const textoBruto = document.getElementById("texto").value;
-
-      previewTitulo.textContent = titulo;
-      previewAutor.textContent = autor;
-
-      aplicarFormatoPagina(formato);
-
-      paginaInterna.style.paddingTop = margemTopo + "mm";
-      paginaInterna.style.paddingBottom = margemBase + "mm";
-      paginaInterna.style.paddingLeft = margemInterna + "mm";
-      paginaInterna.style.paddingRight = margemExterna + "mm";
-      paginaInterna.style.fontFamily = fonte;
-      paginaInterna.style.fontSize = tamanhoFonte + "pt";
-      paginaInterna.style.lineHeight = entrelinhas;
-      paginaInterna.style.textAlign = modoAtual === "poesia" ? "left" : alinhamento;
-
-      cabecalhoPreview.style.top = margemCabecalho + "mm";
-      cabecalhoPreview.style.left = margemInterna + "mm";
-      cabecalhoPreview.style.right = margemExterna + "mm";
-
-      rodapePreview.style.bottom = margemRodape + "mm";
-      rodapePreview.style.left = margemInterna + "mm";
-      rodapePreview.style.right = margemExterna + "mm";
-
-      cabecalhoEsquerda.textContent = cabecalhoTexto;
-      cabecalhoDireita.textContent = "Pólux";
-
-      if(usarNumeroPagina){
-        rodapeTextoPreview.textContent = rodapeTexto ? rodapeTexto + " — 1" : "1";
-      } else {
-        rodapeTextoPreview.textContent = rodapeTexto || "";
-      }
-
-      if(usarCabecalho){
-        pagina.classList.add("tem-cabecalho");
-      } else {
-        pagina.classList.remove("tem-cabecalho");
-      }
-
-      if(usarRodape){
-        pagina.classList.add("tem-rodape");
-      } else {
-        pagina.classList.remove("tem-rodape");
-      }
-
-      pagina.classList.remove("prosa", "poesia");
-      pagina.classList.add(modoAtual);
-
-      if(modoAtual === "prosa"){
-        previewTexto.innerHTML = textoParaProsa(textoBruto, recuo, espacoAntes, espacoDepois);
-      } else {
-        previewTexto.innerHTML = textoParaPoesia(textoBruto, espacoDepois);
-      }
-
-      notaPreview.innerHTML =
-        "Prévia em <strong>" + formato + "</strong> | " +
-        "Fonte: <strong>" + extrairNomeFonte(fonte) + "</strong> | " +
-        "Modo: <strong>" + (modoAtual === "prosa" ? "Prosa" : "Poesia") + "</strong>";
-
-      statusBox.innerHTML =
-        "Prévia gerada com sucesso.<br>" +
-        "Formato: <strong>" + formato + "</strong><br>" +
-        "Modo: <strong>" + (modoAtual === "prosa" ? "Prosa" : "Poesia") + "</strong><br>" +
-        "Tipografia: <strong>" + extrairNomeFonte(fonte) + "</strong><br>" +
-        "Margens: <strong>" + margemInterna + "/" + margemExterna + "/" + margemTopo + "/" + margemBase + " mm</strong>";
+    function applyFormat() {
+      const f = formatos[formatoLivro.value];
+      const root = document.documentElement;
+      root.style.setProperty('--page-w', f.w);
+      root.style.setProperty('--page-h', f.h);
+      root.style.setProperty('--font-size', f.font);
+      root.style.setProperty('--line-height', f.line);
+      root.style.setProperty('--margin-top', f.mt);
+      root.style.setProperty('--margin-bottom', f.mb);
+      root.style.setProperty('--margin-inner', f.mi);
+      root.style.setProperty('--margin-outer', f.mo);
+      statusFormato.textContent = 'Formato: ' + formatoLivro.value;
     }
 
-    async function processarUpload(){
-      const inputArquivo = document.getElementById("arquivoObra");
-      const campoTexto = document.getElementById("texto");
+    function updateHeaders() {
+      headerLeft.textContent = tituloLivro.value.trim() || 'Prévia da Obra';
+      headerRight.textContent = autorLivro.value.trim() || 'Autor';
+    }
 
-      if(!inputArquivo.files || !inputArquivo.files[0]){
-        uploadInfo.innerHTML = "Nenhum arquivo selecionado.";
+    function renderPreview() {
+      updateHeaders();
+      applyFormat();
+
+      const paragraphs = parseParagraphs(textoEntrada.value);
+
+      if (!paragraphs.length) {
+        pageLeft.innerHTML = '<div class="empty-state">A prévia aparecerá aqui assim que a obra for enviada ou digitada.</div>';
+        pageRight.innerHTML = '<div class="empty-state">A segunda página acompanhará a continuidade do texto.</div>';
+        footerLeft.textContent = '1';
+        footerRight.textContent = '2';
         return;
       }
 
-      const arquivo = inputArquivo.files[0];
-      const nome = arquivo.name.toLowerCase();
+      const nextIndex = fillPage(pageLeft, paragraphs, 0);
+      fillPage(pageRight, paragraphs, nextIndex);
 
-      uploadInfo.innerHTML = "Lendo arquivo: <strong>" + arquivo.name + "</strong> ...";
+      footerLeft.textContent = '1';
+      footerRight.textContent = '2';
+    }
 
-      try{
-        if(nome.endsWith(".txt")){
-          const texto = await arquivo.text();
-          campoTexto.value = normalizarTexto(texto);
-          uploadInfo.innerHTML = "Arquivo TXT carregado com sucesso: <strong>" + arquivo.name + "</strong>";
-          gerarPreview();
-          return;
-        }
+    arquivoObra.addEventListener('change', function (event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
 
-        if(nome.endsWith(".docx")){
-          const arrayBuffer = await arquivo.arrayBuffer();
-          const resultado = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
-          campoTexto.value = normalizarTexto(resultado.value);
-          uploadInfo.innerHTML = "Arquivo DOCX carregado com sucesso: <strong>" + arquivo.name + "</strong>";
-          gerarPreview();
-          return;
-        }
+      const nome = file.name.toLowerCase();
 
-        uploadInfo.innerHTML = "Formato ainda não suportado neste momento. Use TXT ou DOCX.";
-      } catch(erro){
-        uploadInfo.innerHTML = "Não foi possível ler o arquivo enviado.";
+      if (!(nome.endsWith('.txt') || nome.endsWith('.md') || nome.endsWith('.html') || nome.endsWith('.doc') || nome.endsWith('.docx'))) {
+        statusUpload.textContent = 'Formato não suportado';
+        return;
       }
-    }
 
-    function limparCampos(){
-      document.getElementById("arquivoObra").value = "";
-      document.getElementById("titulo").value = "";
-      document.getElementById("autor").value = "";
-      document.getElementById("cabecalhoTexto").value = "";
-      document.getElementById("rodapeTexto").value = "";
-      document.getElementById("formato").value = "A5";
-      document.getElementById("fonte").value = "'EB Garamond', Georgia, serif";
-      document.getElementById("tamanhoFonte").value = 12;
+      if (nome.endsWith('.doc') || nome.endsWith('.docx')) {
+        statusUpload.textContent = 'DOC/DOCX enviado. Nesta versão, a leitura direta segura está pronta para TXT/MD/HTML.';
+        return;
+      }
 
-      document.getElementById("margemInterna").value = 25;
-      document.getElementById("margemExterna").value = 15;
-      document.getElementById("margemTopo").value = 20;
-      document.getElementById("margemBase").value = 20;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        textoEntrada.value = e.target.result || '';
+        statusUpload.textContent = 'Obra carregada na caixa';
+        renderPreview();
+      };
+      reader.onerror = function () {
+        statusUpload.textContent = 'Falha ao ler arquivo';
+      };
+      reader.readAsText(file, 'UTF-8');
+    });
 
-      document.getElementById("alinhamento").value = "justify";
-      document.getElementById("entrelinhas").value = 1.5;
-      document.getElementById("recuo").value = 1.5;
-      document.getElementById("espacoAntes").value = 0;
-      document.getElementById("espacoDepois").value = 0;
+    textoEntrada.addEventListener('input', renderPreview);
+    tituloLivro.addEventListener('input', renderPreview);
+    autorLivro.addEventListener('input', renderPreview);
+    formatoLivro.addEventListener('change', renderPreview);
 
-      document.getElementById("margemCabecalho").value = 8;
-      document.getElementById("margemRodape").value = 8;
+    limparTexto.addEventListener('click', () => {
+      textoEntrada.value = '';
+      statusUpload.textContent = 'Caixa limpa';
+      renderPreview();
+    });
 
-      document.getElementById("usarCabecalho").checked = false;
-      document.getElementById("usarRodape").checked = true;
-      document.getElementById("usarNumeroPagina").checked = true;
+    carregarExemplo.addEventListener('click', () => {
+      textoEntrada.value = `Prólogo
 
-      document.getElementById("texto").value = "";
+Numa tarde de calor manso, a cidade parecia conter a respiração atrás das janelas entreabertas. As ruas seguiam cheias, mas havia no ar uma suspensão estranha, como se o tempo, por capricho, tivesse decidido caminhar mais devagar.
 
-      uploadInfo.innerHTML = 'Formatos aceitos agora: <strong>.txt</strong> e <strong>.docx</strong>.';
+Augusto parou diante da porta antiga e passou os dedos pela madeira gasta. Não era apenas uma entrada. Era um limiar. Havia portas que separavam cômodos. Outras separavam épocas. Aquela, ele compreendeu, separava o homem que chegara do homem que sairia dali.
 
-      modoAtual = "prosa";
-      btnProsa.classList.add("ativo");
-      btnPoesia.classList.remove("ativo");
-      textoModo.innerHTML = 'Modo atual: <strong>Prosa</strong>. Indicado para romance, memórias, biografia, ensaio e demais textos contínuos.';
+Empurrou a folha com cuidado. O interior cheirava a papel envelhecido, ferro discreto e silêncio. Nas estantes, os livros se alinhavam com a disciplina de quem guardava segredos demais para cair em desordem.
 
-      gerarPreview();
+No fundo da sala, uma janela alta deixava a luz cair em diagonal sobre a mesa central. Em cima dela, repousava um caderno de capa escura. Não havia nome. Não havia data. Ainda assim, ele teve a impressão nítida de que o objeto o esperava havia anos.
 
-      statusBox.innerHTML = "Campos limpos. Sistema pronto para nova obra.";
-    }
+Tocou o caderno como quem testa a temperatura de uma lembrança. O couro estalou baixo. Então abriu a primeira página.
 
-    gerarPreview();
+Nada do que estava escrito ali começava naquele instante. E foi justamente isso o que o assustou.
+
+Capítulo 1
+
+Quando leu a primeira linha, Augusto não sentiu surpresa. Sentiu reconhecimento. Era como se alguém tivesse anotado, com paciência cruel, pensamentos que ele próprio jamais ousara ordenar em frases.
+
+Do lado de fora, a tarde prosseguia, indiferente. Dentro da sala, porém, o ar havia mudado. Cada palavra puxava outra, e a sequência delas o empurrava para dentro de uma história que não pedia licença para existir.`;
+      statusUpload.textContent = 'Exemplo carregado';
+      renderPreview();
+    });
+
+    window.addEventListener('load', renderPreview);
+    window.addEventListener('resize', renderPreview);
   </script>
 </body>
 </html>
