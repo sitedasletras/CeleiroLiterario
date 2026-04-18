@@ -1,340 +1,477 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Pólux | Celeiro Literário</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Lora:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
-    * {
-      box-sizing: border-box;
+    :root{
+      --fundo:#f3efe8;
+      --painel:#fbf8f3;
+      --painel-2:#f5f0e8;
+      --linha:#d9cfbf;
+      --linha-2:#cfc3b1;
+      --texto:#201915;
+      --texto-suave:#5d5348;
+      --verde:#2f5d50;
+      --verde-escuro:#23463c;
+      --amarelo:#d9c756;
+      --amarelo-escuro:#b9aa45;
+      --vermelho:#c84d4d;
+      --vermelho-escuro:#a73b3b;
+      --azul:#4c6b8a;
+      --azul-escuro:#37526d;
+      --fonte-ui:'Inter', Arial, sans-serif;
+      --fonte-miolo:'EB Garamond', Georgia, serif;
     }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Georgia, "Times New Roman", serif;
-      background: #f3efe8;
-      color: #201915;
+    *{
+      box-sizing:border-box;
     }
 
-    .topo {
-      background: #2f5d50;
-      color: white;
-      padding: 20px 16px;
-      border-bottom: 4px solid #23463c;
+    html, body{
+      margin:0;
+      padding:0;
+      background:var(--fundo);
+      color:var(--texto);
+      font-family:var(--fonte-ui);
     }
 
-    .topo-interno {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
+    body{
+      min-height:100vh;
     }
 
-    .titulo {
-      font-size: 1.7rem;
-      font-weight: bold;
+    .topo{
+      background:var(--verde);
+      color:#fff;
+      padding:20px 16px;
+      border-bottom:4px solid var(--verde-escuro);
     }
 
-    .subtitulo {
-      font-size: 0.98rem;
-      opacity: 0.94;
-      margin-top: 6px;
-      line-height: 1.5;
+    .topo-interno{
+      max-width:1320px;
+      margin:0 auto;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
     }
 
-    .acoes-topo {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    .titulo{
+      font-size:1.6rem;
+      font-weight:700;
+      letter-spacing:0.02em;
     }
 
-    .topo-btn {
-      text-decoration: none;
-      padding: 11px 14px;
-      border-radius: 10px;
-      font-weight: bold;
-      border: 1px solid transparent;
+    .subtitulo{
+      margin-top:6px;
+      font-size:0.96rem;
+      line-height:1.5;
+      opacity:0.95;
     }
 
-    .btn-voltar {
-      background: #d9c756;
-      color: #2e2807;
-      border-color: #b9aa45;
+    .acoes-topo{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
     }
 
-    .btn-sair {
-      background: #c84d4d;
-      color: white;
-      border-color: #a73b3b;
+    .topo-btn{
+      display:inline-block;
+      text-decoration:none;
+      padding:11px 14px;
+      border-radius:10px;
+      font-weight:700;
+      border:1px solid transparent;
+      transition:0.2s ease;
     }
 
-    .wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 16px 30px 16px;
+    .topo-btn:hover{
+      transform:translateY(-1px);
     }
 
-    .painel {
-      background: #fbf8f3;
-      border: 1px solid #d8cfc3;
-      border-radius: 18px;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.06);
-      padding: 20px;
+    .btn-voltar{
+      background:var(--amarelo);
+      color:#2e2807;
+      border-color:var(--amarelo-escuro);
     }
 
-    .linha-superior {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px;
-      margin-bottom: 18px;
+    .btn-sair{
+      background:var(--vermelho);
+      color:#fff;
+      border-color:var(--vermelho-escuro);
+    }
+
+    .wrap{
+      max-width:1320px;
+      margin:0 auto;
+      padding:20px 16px 36px 16px;
+    }
+
+    .painel{
+      background:var(--painel);
+      border:1px solid var(--linha);
+      border-radius:18px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
+      padding:20px;
+    }
+
+    .selecao-modo{
+      background:var(--painel-2);
+      border:1px solid var(--linha);
+      border-radius:16px;
+      padding:18px;
+      margin-bottom:18px;
     }
 
     .selecao-modo h2,
     .formulario h2,
-    .preview-box h2 {
-      margin-top: 0;
-      margin-bottom: 12px;
-      font-size: 1.35rem;
-      color: #1b1512;
+    .preview-box h2{
+      margin:0 0 12px 0;
+      font-size:1.24rem;
+      color:#1b1512;
     }
 
-    .modo-botoes {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
+    .modo-botoes{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
     }
 
-    .modo-btn {
-      border: 1px solid #b9c8c2;
-      background: #e6efe9;
-      color: #1f3a31;
-      font-weight: bold;
-      border-radius: 12px;
-      padding: 14px 18px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: 0.2s ease;
+    .modo-btn{
+      border:1px solid #b9c8c2;
+      background:#e6efe9;
+      color:#1f3a31;
+      font-weight:700;
+      border-radius:12px;
+      padding:14px 18px;
+      cursor:pointer;
+      font-size:0.98rem;
+      transition:0.2s ease;
+      font-family:var(--fonte-ui);
     }
 
-    .modo-btn:hover {
-      transform: translateY(-1px);
+    .modo-btn:hover{
+      transform:translateY(-1px);
     }
 
-    .modo-btn.ativo {
-      background: #2f5d50;
-      color: white;
-      border-color: #23463c;
+    .modo-btn.ativo{
+      background:var(--verde);
+      color:#fff;
+      border-color:var(--verde-escuro);
     }
 
-    .estado {
-      margin-top: 12px;
-      color: #5a5046;
-      line-height: 1.6;
+    .estado{
+      margin-top:12px;
+      color:var(--texto-suave);
+      line-height:1.6;
+      font-size:0.97rem;
     }
 
-    .grade-principal {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      align-items: start;
+    .grade-principal{
+      display:grid;
+      grid-template-columns:520px 1fr;
+      gap:20px;
+      align-items:start;
     }
 
     .formulario,
-    .preview-box {
-      background: #f5f0e8;
-      border: 1px solid #d9cfbf;
-      border-radius: 16px;
-      padding: 18px;
+    .preview-box{
+      background:var(--painel-2);
+      border:1px solid var(--linha);
+      border-radius:16px;
+      padding:18px;
     }
 
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 7px;
-      color: #2b241f;
+    .grupo{
+      margin-bottom:14px;
+    }
+
+    label{
+      display:block;
+      font-weight:700;
+      margin-bottom:7px;
+      color:#2b241f;
+      font-size:0.95rem;
     }
 
     input[type="text"],
+    input[type="number"],
     textarea,
-    select {
-      width: 100%;
-      border: 1px solid #cfc3b1;
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 1rem;
-      background: #fffdfa;
-      color: #1f1a17;
-      margin-bottom: 14px;
+    select{
+      width:100%;
+      border:1px solid var(--linha-2);
+      border-radius:12px;
+      padding:12px 14px;
+      font-size:0.98rem;
+      background:#fffdfa;
+      color:#1f1a17;
+      font-family:var(--fonte-ui);
     }
 
-    textarea {
-      min-height: 300px;
-      resize: vertical;
-      line-height: 1.7;
+    textarea{
+      min-height:290px;
+      resize:vertical;
+      line-height:1.6;
     }
 
-    .linha-campos {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+    .linha-campos-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
     }
 
-    .acoes {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 8px;
+    .linha-campos-3{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:12px;
     }
 
-    .acao-btn {
-      border: 1px solid transparent;
-      border-radius: 12px;
-      padding: 13px 16px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 0.98rem;
-      transition: 0.2s ease;
+    .subbloco{
+      margin-top:18px;
+      padding-top:16px;
+      border-top:1px solid #ddd1c2;
     }
 
-    .acao-btn:hover {
-      transform: translateY(-1px);
+    .subbloco h3{
+      margin:0 0 12px 0;
+      font-size:1rem;
+      color:#322a24;
     }
 
-    .btn-preview {
-      background: #2f5d50;
-      color: #fff;
-      border-color: #23463c;
+    .acoes{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:8px;
     }
 
-    .btn-limpar {
-      background: #d9c756;
-      color: #312907;
-      border-color: #b9aa45;
+    .acao-btn{
+      border:1px solid transparent;
+      border-radius:12px;
+      padding:13px 16px;
+      font-weight:700;
+      cursor:pointer;
+      font-size:0.96rem;
+      transition:0.2s ease;
+      font-family:var(--fonte-ui);
     }
 
-    .btn-imprimir {
-      background: #4c6b8a;
-      color: white;
-      border-color: #37526d;
+    .acao-btn:hover{
+      transform:translateY(-1px);
     }
 
-    .preview-aviso {
-      margin-bottom: 14px;
-      color: #5d5348;
-      line-height: 1.6;
+    .btn-preview{
+      background:var(--verde);
+      color:#fff;
+      border-color:var(--verde-escuro);
     }
 
-    .pagina {
-      width: 100%;
-      max-width: 420px;
-      margin: 0 auto;
-      background: white;
-      color: #111;
-      border: 1px solid #cfcfcf;
-      box-shadow: 0 10px 22px rgba(0,0,0,0.08);
-      aspect-ratio: 148 / 210;
-      overflow: hidden;
-      position: relative;
+    .btn-limpar{
+      background:var(--amarelo);
+      color:#312907;
+      border-color:var(--amarelo-escuro);
     }
 
-    .pagina-interna {
-      position: absolute;
-      inset: 0;
-      padding-top: 2cm;
-      padding-bottom: 2cm;
-      padding-left: 2.5cm;
-      padding-right: 1.5cm;
-      overflow: hidden;
+    .btn-imprimir{
+      background:var(--azul);
+      color:#fff;
+      border-color:var(--azul-escuro);
     }
 
-    .preview-titulo {
-      font-size: 1.15rem;
-      text-align: center;
-      margin: 0 0 18px 0;
-      font-weight: bold;
+    .status-box{
+      margin-top:16px;
+      padding:14px;
+      border-radius:12px;
+      background:#ece6da;
+      border:1px solid #d4cab9;
+      color:#4e453c;
+      line-height:1.6;
+      font-size:0.95rem;
     }
 
-    .preview-autor {
-      text-align: center;
-      font-size: 0.95rem;
-      margin: 0 0 22px 0;
-      color: #444;
+    .preview-aviso{
+      margin-bottom:14px;
+      color:var(--texto-suave);
+      line-height:1.6;
+      font-size:0.95rem;
     }
 
-    .preview-texto {
-      font-size: 0.92rem;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      word-wrap: break-word;
+    .pagina-area{
+      display:flex;
+      justify-content:center;
+      overflow:auto;
+      padding:8px;
+      background:#efe8dc;
+      border:1px solid #d8cbb9;
+      border-radius:14px;
     }
 
-    .poesia .preview-texto {
-      text-align: left;
-      line-height: 1.8;
+    .pagina{
+      width:148mm;
+      min-width:148mm;
+      height:210mm;
+      background:#fff;
+      color:#111;
+      border:1px solid #cfcfcf;
+      box-shadow:0 10px 22px rgba(0,0,0,0.08);
+      position:relative;
+      overflow:hidden;
     }
 
-    .status-box {
-      margin-top: 18px;
-      padding: 14px;
-      border-radius: 12px;
-      background: #ece6da;
-      border: 1px solid #d4cab9;
-      color: #4e453c;
-      line-height: 1.6;
+    .pagina-interna{
+      position:absolute;
+      inset:0;
+      padding-top:20mm;
+      padding-bottom:20mm;
+      padding-left:25mm;
+      padding-right:15mm;
+      font-family:var(--fonte-miolo);
+      font-size:12pt;
+      line-height:1.5;
+      text-align:justify;
+      overflow:hidden;
     }
 
-    @media (max-width: 900px) {
-      .grade-principal {
-        grid-template-columns: 1fr;
+    .cabecalho{
+      position:absolute;
+      left:25mm;
+      right:15mm;
+      top:8mm;
+      height:8mm;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-size:9pt;
+      color:#555;
+      border-bottom:1px solid #ddd;
+      font-family:var(--fonte-ui);
+      visibility:hidden;
+    }
+
+    .rodape{
+      position:absolute;
+      left:25mm;
+      right:15mm;
+      bottom:8mm;
+      height:8mm;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:9pt;
+      color:#555;
+      border-top:1px solid #ddd;
+      font-family:var(--fonte-ui);
+      visibility:hidden;
+    }
+
+    .pagina.tem-cabecalho .cabecalho{
+      visibility:visible;
+    }
+
+    .pagina.tem-rodape .rodape{
+      visibility:visible;
+    }
+
+    .preview-titulo{
+      font-size:1.35rem;
+      line-height:1.2;
+      text-align:center;
+      margin:0 0 10mm 0;
+      font-weight:700;
+    }
+
+    .preview-autor{
+      text-align:center;
+      font-size:1rem;
+      margin:0 0 12mm 0;
+      color:#444;
+      font-family:var(--fonte-ui);
+    }
+
+    .preview-texto{
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .pagina.prosa .preview-texto{
+      text-align:justify;
+      white-space:pre-wrap;
+    }
+
+    .pagina.poesia .preview-texto{
+      text-align:left;
+      white-space:pre-wrap;
+      line-height:1.8;
+    }
+
+    .nota-preview{
+      margin-top:14px;
+      font-size:0.92rem;
+      color:#665b50;
+      line-height:1.6;
+    }
+
+    .caixa-check{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-height:44px;
+      background:#fffdfa;
+      border:1px solid var(--linha-2);
+      border-radius:12px;
+      padding:10px 12px;
+    }
+
+    .caixa-check input{
+      transform:scale(1.1);
+    }
+
+    @media (max-width:1100px){
+      .grade-principal{
+        grid-template-columns:1fr;
       }
     }
 
-    @media (max-width: 600px) {
-      .linha-campos {
-        grid-template-columns: 1fr;
+    @media (max-width:700px){
+      .linha-campos-2,
+      .linha-campos-3{
+        grid-template-columns:1fr;
       }
 
-      .titulo {
-        font-size: 1.45rem;
+      .titulo{
+        font-size:1.4rem;
       }
 
-      .pagina {
-        max-width: 100%;
+      .pagina-area{
+        justify-content:flex-start;
       }
     }
 
-    @media print {
-      body * {
-        visibility: hidden;
+    @media print{
+      body *{
+        visibility:hidden !important;
       }
 
-      .pagina, .pagina * {
-        visibility: visible;
+      .pagina,
+      .pagina *{
+        visibility:visible !important;
       }
 
-      .pagina {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 148mm;
-        height: 210mm;
-        max-width: none;
-        aspect-ratio: auto;
-        margin: 0;
-        box-shadow: none;
-        border: none;
-      }
-
-      .pagina-interna {
-        padding-top: 20mm;
-        padding-bottom: 20mm;
-        padding-left: 25mm;
-        padding-right: 15mm;
+      .pagina{
+        position:absolute;
+        left:0;
+        top:0;
+        margin:0;
+        box-shadow:none;
+        border:none;
       }
     }
   </style>
@@ -345,8 +482,7 @@
       <div>
         <div class="titulo">Pólux</div>
         <div class="subtitulo">
-          Diagramador de texto contínuo do Celeiro Literário.
-          Primeiro sistema ativo do Lapidar.
+          Diagramador de texto contínuo do Celeiro Literário, com base tipográfica e estrutural inspirada em ferramentas gratuitas do Google.
         </div>
       </div>
 
@@ -359,53 +495,183 @@
 
   <main class="wrap">
     <section class="painel">
-      <div class="linha-superior">
-        <div class="selecao-modo">
-          <h2>Modo de trabalho do Pólux</h2>
-          <div class="modo-botoes">
-            <button class="modo-btn ativo" id="btnProsa" type="button">Pólux Prosa</button>
-            <button class="modo-btn" id="btnPoesia" type="button">Pólux Poesia</button>
-          </div>
-          <div class="estado" id="textoModo">
-            Modo atual: <strong>Prosa</strong>. Indicado para texto contínuo, romance, memórias, ensaio e biografia.
-          </div>
+      <section class="selecao-modo">
+        <h2>Modo de trabalho do Pólux</h2>
+
+        <div class="modo-botoes">
+          <button class="modo-btn ativo" id="btnProsa" type="button">Pólux Prosa</button>
+          <button class="modo-btn" id="btnPoesia" type="button">Pólux Poesia</button>
         </div>
-      </div>
+
+        <div class="estado" id="textoModo">
+          Modo atual: <strong>Prosa</strong>. Indicado para romance, memórias, biografia, ensaio e demais textos contínuos.
+        </div>
+      </section>
 
       <div class="grade-principal">
         <section class="formulario">
-          <h2>Entrada da obra</h2>
+          <h2>Entrada da obra e ajustes editoriais</h2>
 
-          <label for="titulo">Título da obra</label>
-          <input type="text" id="titulo" placeholder="Digite o título da obra">
+          <div class="grupo">
+            <label for="titulo">Título da obra</label>
+            <input type="text" id="titulo" placeholder="Digite o título da obra">
+          </div>
 
-          <label for="autor">Autor</label>
-          <input type="text" id="autor" placeholder="Digite o nome do autor">
+          <div class="grupo">
+            <label for="autor">Autor</label>
+            <input type="text" id="autor" placeholder="Digite o nome do autor">
+          </div>
 
-          <div class="linha-campos">
-            <div>
+          <div class="linha-campos-2">
+            <div class="grupo">
+              <label for="cabecalhoTexto">Cabeçalho</label>
+              <input type="text" id="cabecalhoTexto" placeholder="Ex.: Título da obra">
+            </div>
+
+            <div class="grupo">
+              <label for="rodapeTexto">Rodapé</label>
+              <input type="text" id="rodapeTexto" placeholder="Ex.: Autor">
+            </div>
+          </div>
+
+          <div class="linha-campos-3">
+            <div class="grupo">
               <label for="formato">Formato</label>
               <select id="formato">
-                <option value="A5">A5</option>
+                <option value="A5" selected>A5</option>
                 <option value="16x23">16x23</option>
                 <option value="6x9">6x9</option>
+                <option value="A4">A4</option>
                 <option value="epub">e-pub</option>
               </select>
             </div>
 
-            <div>
-              <label for="fonte">Fonte-base</label>
+            <div class="grupo">
+              <label for="fonte">Tipografia do miolo</label>
               <select id="fonte">
-                <option value="Georgia">Georgia</option>
-                <option value="Times New Roman">Times New Roman</option>
-                <option value="Arial">Arial</option>
-                <option value="Garamond">Garamond</option>
+                <option value="'EB Garamond', Georgia, serif" selected>EB Garamond</option>
+                <option value="'Libre Baskerville', Georgia, serif">Libre Baskerville</option>
+                <option value="'Lora', Georgia, serif">Lora</option>
+                <option value="'Crimson Text', Georgia, serif">Crimson Text</option>
+                <option value="'Merriweather', Georgia, serif">Merriweather</option>
               </select>
+            </div>
+
+            <div class="grupo">
+              <label for="tamanhoFonte">Tamanho da fonte</label>
+              <input type="number" id="tamanhoFonte" min="9" max="18" step="0.5" value="12">
             </div>
           </div>
 
-          <label for="texto">Texto da obra</label>
-          <textarea id="texto" placeholder="Cole aqui o texto da obra"></textarea>
+          <div class="subbloco">
+            <h3>Margens do miolo</h3>
+
+            <div class="linha-campos-2">
+              <div class="grupo">
+                <label for="margemInterna">Margem interna / esquerda (mm)</label>
+                <input type="number" id="margemInterna" min="5" max="40" step="1" value="25">
+              </div>
+
+              <div class="grupo">
+                <label for="margemExterna">Margem externa / direita (mm)</label>
+                <input type="number" id="margemExterna" min="5" max="40" step="1" value="15">
+              </div>
+            </div>
+
+            <div class="linha-campos-2">
+              <div class="grupo">
+                <label for="margemTopo">Margem superior (mm)</label>
+                <input type="number" id="margemTopo" min="5" max="40" step="1" value="20">
+              </div>
+
+              <div class="grupo">
+                <label for="margemBase">Margem inferior (mm)</label>
+                <input type="number" id="margemBase" min="5" max="40" step="1" value="20">
+              </div>
+            </div>
+          </div>
+
+          <div class="subbloco">
+            <h3>Parágrafo e espaçamento</h3>
+
+            <div class="linha-campos-3">
+              <div class="grupo">
+                <label for="alinhamento">Alinhamento</label>
+                <select id="alinhamento">
+                  <option value="justify" selected>Justificado</option>
+                  <option value="left">À esquerda</option>
+                  <option value="center">Centralizado</option>
+                  <option value="right">À direita</option>
+                </select>
+              </div>
+
+              <div class="grupo">
+                <label for="entrelinhas">Entrelinhas</label>
+                <input type="number" id="entrelinhas" min="1" max="3" step="0.05" value="1.5">
+              </div>
+
+              <div class="grupo">
+                <label for="recuo">Recuo de parágrafo (em)</label>
+                <input type="number" id="recuo" min="0" max="5" step="0.1" value="1.5">
+              </div>
+            </div>
+
+            <div class="linha-campos-2">
+              <div class="grupo">
+                <label for="espacoAntes">Espaço antes do parágrafo (em)</label>
+                <input type="number" id="espacoAntes" min="0" max="3" step="0.1" value="0">
+              </div>
+
+              <div class="grupo">
+                <label for="espacoDepois">Espaço depois do parágrafo (em)</label>
+                <input type="number" id="espacoDepois" min="0" max="3" step="0.1" value="0">
+              </div>
+            </div>
+          </div>
+
+          <div class="subbloco">
+            <h3>Cabeçalho, rodapé e página</h3>
+
+            <div class="linha-campos-2">
+              <div class="grupo">
+                <label for="margemCabecalho">Margem do cabeçalho (mm)</label>
+                <input type="number" id="margemCabecalho" min="0" max="25" step="1" value="8">
+              </div>
+
+              <div class="grupo">
+                <label for="margemRodape">Margem do rodapé (mm)</label>
+                <input type="number" id="margemRodape" min="0" max="25" step="1" value="8">
+              </div>
+            </div>
+
+            <div class="linha-campos-3">
+              <div class="grupo">
+                <div class="caixa-check">
+                  <input type="checkbox" id="usarCabecalho">
+                  <label for="usarCabecalho" style="margin:0;">Exibir cabeçalho</label>
+                </div>
+              </div>
+
+              <div class="grupo">
+                <div class="caixa-check">
+                  <input type="checkbox" id="usarRodape" checked>
+                  <label for="usarRodape" style="margin:0;">Exibir rodapé</label>
+                </div>
+              </div>
+
+              <div class="grupo">
+                <div class="caixa-check">
+                  <input type="checkbox" id="usarNumeroPagina" checked>
+                  <label for="usarNumeroPagina" style="margin:0;">Mostrar nº da página</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grupo">
+            <label for="texto">Texto da obra</label>
+            <textarea id="texto" placeholder="Cole aqui o texto da obra"></textarea>
+          </div>
 
           <div class="acoes">
             <button class="acao-btn btn-preview" type="button" onclick="gerarPreview()">Gerar prévia</button>
@@ -414,25 +680,38 @@
           </div>
 
           <div class="status-box" id="statusBox">
-            Estado atual: aguardando texto para gerar a prévia editorial.
+            Estado atual: sistema pronto para gerar a prévia editorial.
           </div>
         </section>
 
         <section class="preview-box">
           <h2>Prévia editorial</h2>
+
           <div class="preview-aviso">
-            Esta área simula a primeira página do livro no modo selecionado.
-            A lógica de Prosa e Poesia fica separada dentro do próprio Pólux.
+            Aqui você vê a primeira página do Pólux. Prosa e Poesia permanecem separadas dentro do próprio sistema.
           </div>
 
-          <div class="pagina" id="paginaPreview">
-            <div class="pagina-interna" id="paginaInterna">
-              <h3 class="preview-titulo" id="previewTitulo">Título da obra</h3>
-              <p class="preview-autor" id="previewAutor">Nome do autor</p>
-              <div class="preview-texto" id="previewTexto">
-Digite ou cole o texto da obra e clique em “Gerar prévia”.
+          <div class="pagina-area">
+            <div class="pagina prosa tem-rodape" id="paginaPreview">
+              <div class="cabecalho" id="cabecalhoPreview">
+                <span id="cabecalhoEsquerda">Título da obra</span>
+                <span id="cabecalhoDireita">Pólux</span>
+              </div>
+
+              <div class="pagina-interna" id="paginaInterna">
+                <h3 class="preview-titulo" id="previewTitulo">Título da obra</h3>
+                <p class="preview-autor" id="previewAutor">Nome do autor</p>
+                <div class="preview-texto" id="previewTexto">Digite ou cole o texto da obra e clique em “Gerar prévia”.</div>
+              </div>
+
+              <div class="rodape" id="rodapePreview">
+                <span id="rodapeTextoPreview">1</span>
               </div>
             </div>
+          </div>
+
+          <div class="nota-preview" id="notaPreview">
+            Prévia em A5 com margens editoriais iniciais.
           </div>
         </section>
       </div>
@@ -445,71 +724,231 @@ Digite ou cole o texto da obra e clique em “Gerar prévia”.
     const btnProsa = document.getElementById("btnProsa");
     const btnPoesia = document.getElementById("btnPoesia");
     const textoModo = document.getElementById("textoModo");
+
+    const pagina = document.getElementById("paginaPreview");
     const paginaInterna = document.getElementById("paginaInterna");
-    const previewTexto = document.getElementById("previewTexto");
     const previewTitulo = document.getElementById("previewTitulo");
     const previewAutor = document.getElementById("previewAutor");
-    const statusBox = document.getElementById("statusBox");
-    const campoFonte = document.getElementById("fonte");
+    const previewTexto = document.getElementById("previewTexto");
 
-    btnProsa.addEventListener("click", function () {
+    const cabecalhoPreview = document.getElementById("cabecalhoPreview");
+    const cabecalhoEsquerda = document.getElementById("cabecalhoEsquerda");
+    const cabecalhoDireita = document.getElementById("cabecalhoDireita");
+
+    const rodapePreview = document.getElementById("rodapePreview");
+    const rodapeTextoPreview = document.getElementById("rodapeTextoPreview");
+
+    const notaPreview = document.getElementById("notaPreview");
+    const statusBox = document.getElementById("statusBox");
+
+    btnProsa.addEventListener("click", function(){
       modoAtual = "prosa";
       btnProsa.classList.add("ativo");
       btnPoesia.classList.remove("ativo");
-      paginaInterna.classList.remove("poesia");
-      textoModo.innerHTML = 'Modo atual: <strong>Prosa</strong>. Indicado para texto contínuo, romance, memórias, ensaio e biografia.';
+      textoModo.innerHTML = 'Modo atual: <strong>Prosa</strong>. Indicado para romance, memórias, biografia, ensaio e demais textos contínuos.';
       gerarPreview();
     });
 
-    btnPoesia.addEventListener("click", function () {
+    btnPoesia.addEventListener("click", function(){
       modoAtual = "poesia";
       btnPoesia.classList.add("ativo");
       btnProsa.classList.remove("ativo");
-      paginaInterna.classList.add("poesia");
-      textoModo.innerHTML = 'Modo atual: <strong>Poesia</strong>. Indicado para versos, estrofes, odes, sonetos e estruturas poéticas preservadas.';
+      textoModo.innerHTML = 'Modo atual: <strong>Poesia</strong>. Indicado para versos, estrofes, sonetos, odes e estruturas poéticas preservadas.';
       gerarPreview();
     });
 
-    campoFonte.addEventListener("change", function () {
-      gerarPreview();
-    });
-
-    function gerarPreview() {
-      const titulo = document.getElementById("titulo").value.trim();
-      const autor = document.getElementById("autor").value.trim();
-      const texto = document.getElementById("texto").value;
-      const fonte = document.getElementById("fonte").value;
-      const formato = document.getElementById("formato").value;
-
-      previewTitulo.textContent = titulo || "Título da obra";
-      previewAutor.textContent = autor || "Nome do autor";
-      previewTexto.textContent = texto || "Digite ou cole o texto da obra e clique em “Gerar prévia”.";
-      paginaInterna.style.fontFamily = fonte + ', Georgia, serif';
-
-      if (modoAtual === "poesia") {
-        paginaInterna.classList.add("poesia");
+    function aplicarFormatoPagina(formato){
+      if(formato === "A5"){
+        pagina.style.width = "148mm";
+        pagina.style.minWidth = "148mm";
+        pagina.style.height = "210mm";
+      } else if(formato === "16x23"){
+        pagina.style.width = "160mm";
+        pagina.style.minWidth = "160mm";
+        pagina.style.height = "230mm";
+      } else if(formato === "6x9"){
+        pagina.style.width = "152.4mm";
+        pagina.style.minWidth = "152.4mm";
+        pagina.style.height = "228.6mm";
+      } else if(formato === "A4"){
+        pagina.style.width = "210mm";
+        pagina.style.minWidth = "210mm";
+        pagina.style.height = "297mm";
       } else {
-        paginaInterna.classList.remove("poesia");
+        pagina.style.width = "148mm";
+        pagina.style.minWidth = "148mm";
+        pagina.style.height = "210mm";
       }
+    }
+
+    function textoParaProsa(textoBruto, recuo, espacoAntes, espacoDepois){
+      const blocos = textoBruto
+        .split(/\n\s*\n/)
+        .map(p => p.trim())
+        .filter(p => p.length > 0);
+
+      if(blocos.length === 0){
+        return "Digite ou cole o texto da obra e clique em “Gerar prévia”.";
+      }
+
+      return blocos.map(p => {
+        const seguro = escaparHTML(p).replace(/\n/g, " ");
+        return `<p style="margin-top:${espacoAntes}em; margin-bottom:${espacoDepois}em; text-indent:${recuo}em;">${seguro}</p>`;
+      }).join("");
+    }
+
+    function textoParaPoesia(textoBruto, espacoDepois){
+      const linhas = textoBruto ? escaparHTML(textoBruto) : "Digite ou cole o texto da obra e clique em “Gerar prévia”.";
+      const html = linhas
+        .split("\n")
+        .map(linha => linha === "" ? `<div style="height:${espacoDepois}em;"></div>` : `<div>${linha}</div>`)
+        .join("");
+      return html;
+    }
+
+    function escaparHTML(texto){
+      return texto
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function gerarPreview(){
+      const titulo = document.getElementById("titulo").value.trim() || "Título da obra";
+      const autor = document.getElementById("autor").value.trim() || "Nome do autor";
+      const cabecalhoTexto = document.getElementById("cabecalhoTexto").value.trim() || titulo;
+      const rodapeTexto = document.getElementById("rodapeTexto").value.trim() || autor;
+
+      const formato = document.getElementById("formato").value;
+      const fonte = document.getElementById("fonte").value;
+      const tamanhoFonte = parseFloat(document.getElementById("tamanhoFonte").value) || 12;
+
+      const margemInterna = parseFloat(document.getElementById("margemInterna").value) || 25;
+      const margemExterna = parseFloat(document.getElementById("margemExterna").value) || 15;
+      const margemTopo = parseFloat(document.getElementById("margemTopo").value) || 20;
+      const margemBase = parseFloat(document.getElementById("margemBase").value) || 20;
+
+      const alinhamento = document.getElementById("alinhamento").value;
+      const entrelinhas = parseFloat(document.getElementById("entrelinhas").value) || 1.5;
+      const recuo = parseFloat(document.getElementById("recuo").value) || 1.5;
+      const espacoAntes = parseFloat(document.getElementById("espacoAntes").value) || 0;
+      const espacoDepois = parseFloat(document.getElementById("espacoDepois").value) || 0;
+
+      const margemCabecalho = parseFloat(document.getElementById("margemCabecalho").value) || 8;
+      const margemRodape = parseFloat(document.getElementById("margemRodape").value) || 8;
+
+      const usarCabecalho = document.getElementById("usarCabecalho").checked;
+      const usarRodape = document.getElementById("usarRodape").checked;
+      const usarNumeroPagina = document.getElementById("usarNumeroPagina").checked;
+
+      const textoBruto = document.getElementById("texto").value;
+
+      previewTitulo.textContent = titulo;
+      previewAutor.textContent = autor;
+
+      aplicarFormatoPagina(formato);
+
+      paginaInterna.style.paddingTop = margemTopo + "mm";
+      paginaInterna.style.paddingBottom = margemBase + "mm";
+      paginaInterna.style.paddingLeft = margemInterna + "mm";
+      paginaInterna.style.paddingRight = margemExterna + "mm";
+      paginaInterna.style.fontFamily = fonte;
+      paginaInterna.style.fontSize = tamanhoFonte + "pt";
+      paginaInterna.style.lineHeight = entrelinhas;
+      paginaInterna.style.textAlign = modoAtual === "poesia" ? "left" : alinhamento;
+
+      cabecalhoPreview.style.top = margemCabecalho + "mm";
+      cabecalhoPreview.style.left = margemInterna + "mm";
+      cabecalhoPreview.style.right = margemExterna + "mm";
+
+      rodapePreview.style.bottom = margemRodape + "mm";
+      rodapePreview.style.left = margemInterna + "mm";
+      rodapePreview.style.right = margemExterna + "mm";
+
+      cabecalhoEsquerda.textContent = cabecalhoTexto;
+      cabecalhoDireita.textContent = "Pólux";
+
+      if(usarNumeroPagina){
+        rodapeTextoPreview.textContent = rodapeTexto ? rodapeTexto + " — 1" : "1";
+      } else {
+        rodapeTextoPreview.textContent = rodapeTexto || "";
+      }
+
+      if(usarCabecalho){
+        pagina.classList.add("tem-cabecalho");
+      } else {
+        pagina.classList.remove("tem-cabecalho");
+      }
+
+      if(usarRodape){
+        pagina.classList.add("tem-rodape");
+      } else {
+        pagina.classList.remove("tem-rodape");
+      }
+
+      pagina.classList.remove("prosa", "poesia");
+      pagina.classList.add(modoAtual);
+
+      if(modoAtual === "prosa"){
+        previewTexto.innerHTML = textoParaProsa(textoBruto, recuo, espacoAntes, espacoDepois);
+      } else {
+        previewTexto.innerHTML = textoParaPoesia(textoBruto, espacoDepois);
+      }
+
+      notaPreview.innerHTML =
+        "Prévia em <strong>" + formato + "</strong> | " +
+        "Fonte: <strong>" + extrairNomeFonte(fonte) + "</strong> | " +
+        "Modo: <strong>" + (modoAtual === "prosa" ? "Prosa" : "Poesia") + "</strong>";
 
       statusBox.innerHTML =
         "Prévia gerada com sucesso.<br>" +
+        "Formato: <strong>" + formato + "</strong><br>" +
         "Modo: <strong>" + (modoAtual === "prosa" ? "Prosa" : "Poesia") + "</strong><br>" +
-        "Formato selecionado: <strong>" + formato + "</strong><br>" +
-        "Fonte-base: <strong>" + fonte + "</strong>";
+        "Tipografia: <strong>" + extrairNomeFonte(fonte) + "</strong><br>" +
+        "Margens: <strong>" + margemInterna + "/" + margemExterna + "/" + margemTopo + "/" + margemBase + " mm</strong>";
     }
 
-    function limparCampos() {
+    function extrairNomeFonte(valor){
+      return valor.split(",")[0].replaceAll("'", "").trim();
+    }
+
+    function limparCampos(){
       document.getElementById("titulo").value = "";
       document.getElementById("autor").value = "";
-      document.getElementById("texto").value = "";
+      document.getElementById("cabecalhoTexto").value = "";
+      document.getElementById("rodapeTexto").value = "";
       document.getElementById("formato").value = "A5";
-      document.getElementById("fonte").value = "Georgia";
+      document.getElementById("fonte").value = "'EB Garamond', Georgia, serif";
+      document.getElementById("tamanhoFonte").value = 12;
 
-      previewTitulo.textContent = "Título da obra";
-      previewAutor.textContent = "Nome do autor";
-      previewTexto.textContent = "Digite ou cole o texto da obra e clique em “Gerar prévia”.";
-      paginaInterna.style.fontFamily = 'Georgia, "Times New Roman", serif';
+      document.getElementById("margemInterna").value = 25;
+      document.getElementById("margemExterna").value = 15;
+      document.getElementById("margemTopo").value = 20;
+      document.getElementById("margemBase").value = 20;
+
+      document.getElementById("alinhamento").value = "justify";
+      document.getElementById("entrelinhas").value = 1.5;
+      document.getElementById("recuo").value = 1.5;
+      document.getElementById("espacoAntes").value = 0;
+      document.getElementById("espacoDepois").value = 0;
+
+      document.getElementById("margemCabecalho").value = 8;
+      document.getElementById("margemRodape").value = 8;
+
+      document.getElementById("usarCabecalho").checked = false;
+      document.getElementById("usarRodape").checked = true;
+      document.getElementById("usarNumeroPagina").checked = true;
+
+      document.getElementById("texto").value = "";
+
+      modoAtual = "prosa";
+      btnProsa.classList.add("ativo");
+      btnPoesia.classList.remove("ativo");
+      textoModo.innerHTML = 'Modo atual: <strong>Prosa</strong>. Indicado para romance, memórias, biografia, ensaio e demais textos contínuos.';
+
+      gerarPreview();
 
       statusBox.innerHTML = "Campos limpos. Sistema pronto para nova obra.";
     }
