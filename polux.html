@@ -67,7 +67,7 @@
 
     .layout{
       display:grid;
-      grid-template-columns:1.04fr 1fr;
+      grid-template-columns:1.08fr 1fr;
       gap:22px;
       align-items:start;
     }
@@ -198,11 +198,12 @@
       border-radius:8px;
       overflow:hidden;
       flex:0 0 auto;
+      transition:width .2s,height .2s;
     }
 
     .page-inner{
       height:100%;
-      overflow:hidden;
+      overflow:auto;
     }
 
     .epub-wrap{
@@ -243,7 +244,7 @@
 
     .chapter-line{
       text-align:center;
-      margin:2.4em 0 .8em 0;
+      margin:2.2em 0 .8em 0;
       line-height:1.2;
       text-transform:uppercase;
       letter-spacing:.03em;
@@ -253,19 +254,23 @@
       text-align:center;
       margin:0 0 1.4em 0;
       line-height:1.2;
-      opacity:.85;
+      opacity:.88;
+      font-style:italic;
     }
 
     .chapter-divider{
       text-align:center;
-      margin:2.1em 0 .9em 0;
-      opacity:.7;
-      font-family:"Cinzel", serif;
+      margin:1.9em 0 .8em 0;
+      opacity:.72;
     }
 
     .body-p{
-      margin:0 0 .9em 0;
-      text-align:left;
+      margin:0 0 .95em 0;
+      text-align:justify;
+      text-justify:inter-word;
+      hyphens:none;
+      word-break:normal;
+      overflow-wrap:break-word;
     }
 
     .dropcap::first-letter{
@@ -485,9 +490,9 @@
 
   function pageConfig(){
     const map = {
-      a5:    { w:360, h:520, pad:{ estreita:30, normal:38, ampla:48 }, name:"Modo impresso · A5" },
-      "16x23": { w:392, h:560, pad:{ estreita:34, normal:42, ampla:54 }, name:"Modo impresso · 16x23" },
-      "6x9": { w:412, h:592, pad:{ estreita:36, normal:46, ampla:58 }, name:'Modo impresso · 6" x 9"' },
+      a5:    { w:420, h:594, pad:{ estreita:28, normal:40, ampla:52 }, name:"Modo impresso · A5" },
+      "16x23": { w:455, h:650, pad:{ estreita:32, normal:46, ampla:60 }, name:"Modo impresso · 16x23" },
+      "6x9": { w:470, h:705, pad:{ estreita:34, normal:50, ampla:64 }, name:'Modo impresso · 6" x 9"' },
       epub:  { w:760, h:760, pad:{ estreita:34, normal:42, ampla:52 }, name:"Modo digital · ePub" }
     };
     return map[formato.value];
@@ -495,23 +500,23 @@
 
   function paragraphConfig(){
     if (paragrafo.value === "espaco") {
-      return { indent:"0", margin:"0 0 1.05em 0" };
+      return { indent:"0", margin:"0 0 1.15em 0" };
     }
     if (paragrafo.value === "reto") {
       return { indent:"0", margin:"0 0 .9em 0" };
     }
-    return { indent:"1.4em", margin:"0 0 .85em 0" };
+    return { indent:"1.5em", margin:"0 0 .95em 0" };
   }
 
   function isChapterLine(line){
-    return /^cap[ií]tulo\s*\d+$/i.test(line.trim());
+    return /^cap[ií]tulo\s*\d+$/i.test((line || "").trim());
   }
 
   function isBlank(line){
-    return !line || !line.trim();
+    return !(line && line.trim());
   }
 
-  function takeParagraphsFromLines(lines, startIndex){
+  function parseParagraphs(lines, startIndex){
     const paragraphs = [];
     let i = startIndex;
 
@@ -546,15 +551,16 @@
 
       while (i < lines.length && isBlank(lines[i])) i++;
 
-      const startParagraphs = takeParagraphsFromLines(lines, i);
-      startParagraphs.paragraphs.forEach((p, idx) => {
+      const intro = parseParagraphs(lines, i);
+      intro.paragraphs.forEach((p, idx) => {
         blocks.push({
           type:"paragraph",
           text:p,
           dropcap: idx === 0 && capitular.value === "on"
         });
       });
-      i = startParagraphs.nextIndex;
+      i = intro.nextIndex;
+
     } else {
       if (isChapterLine(lines[i])) {
         blocks.push({ type:"chapter-divider" });
@@ -574,15 +580,15 @@
 
       while (i < lines.length && isBlank(lines[i])) i++;
 
-      const startParagraphs = takeParagraphsFromLines(lines, i);
-      startParagraphs.paragraphs.forEach((p, idx) => {
+      const firstBody = parseParagraphs(lines, i);
+      firstBody.paragraphs.forEach((p, idx) => {
         blocks.push({
           type:"paragraph",
           text:p,
           dropcap: idx === 0 && capitular.value === "on"
         });
       });
-      i = startParagraphs.nextIndex;
+      i = firstBody.nextIndex;
     }
 
     while (i < lines.length) {
@@ -603,25 +609,25 @@
 
         while (i < lines.length && isBlank(lines[i])) i++;
 
-        const sectionParagraphs = takeParagraphsFromLines(lines, i);
-        sectionParagraphs.paragraphs.forEach((p, idx) => {
+        const body = parseParagraphs(lines, i);
+        body.paragraphs.forEach((p, idx) => {
           blocks.push({
             type:"paragraph",
             text:p,
             dropcap: idx === 0 && capitular.value === "on"
           });
         });
-        i = sectionParagraphs.nextIndex;
+        i = body.nextIndex;
       } else {
-        const looseParagraphs = takeParagraphsFromLines(lines, i);
-        looseParagraphs.paragraphs.forEach(p => {
+        const loose = parseParagraphs(lines, i);
+        loose.paragraphs.forEach(p => {
           blocks.push({
             type:"paragraph",
             text:p,
             dropcap:false
           });
         });
-        i = looseParagraphs.nextIndex;
+        i = loose.nextIndex;
       }
     }
 
@@ -711,13 +717,13 @@
 
     for (let idx = 0; idx < blocks.length; idx++) {
       const block = blocks[idx];
-      const blockWeight = block.text ? block.text.length : 20;
+      const weight = block.text ? block.text.length : 20;
       const html = htmlParts[idx];
 
       if (count < half) left += html;
       else right += html;
 
-      count += blockWeight;
+      count += weight;
     }
 
     page1.innerHTML = left || `<div class="empty">Sem conteúdo nesta página.</div>`;
@@ -758,21 +764,16 @@
   });
 
   btnExemplo.addEventListener("click", () => {
-    inputText.value = `O Degrau e a Mochila
-
+    inputText.value = `Capítulo 1
+O Degrau e a Mochila
 A praça respirava como um animal ferido.
-
 O som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.
-
 Sacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.
 
 Capítulo 2
 A Primeira Manhã
-
 A manhã revelou o que a noite havia escondido.
-
 Havia mais gente do que ele imaginava.
-
 Homens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa.`;
     renderPreview();
   });
