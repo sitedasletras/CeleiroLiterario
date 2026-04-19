@@ -1,189 +1,807 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pólux — Diagramador de Prosa</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pólux — Diagramador de Prosa</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Playfair+Display&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Cinzel:wght@400;600;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 
-<style>
+  <style>
+    :root{
+      --bg:#f7f5f2;
+      --card:#ffffff;
+      --line:#ddd7cf;
+      --ink:#2f2a25;
+      --muted:#746c63;
+      --shadow:0 2px 10px rgba(0,0,0,.06);
+      --radius:14px;
+    }
 
-body{
-background:#f6f3ee;
-font-family:Georgia,serif;
-margin:0;
-padding:24px;
-}
+    *{box-sizing:border-box}
 
-.container{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-}
+    body{
+      margin:0;
+      padding:24px;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:"EB Garamond", serif;
+    }
 
-.card{
-background:white;
-padding:20px;
-border-radius:12px;
-box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
+    button,select,input,textarea{
+      font:inherit;
+    }
 
-.preview{
-background:white;
-padding:40px;
-width:430px;
-height:610px;
-margin:auto;
-border-radius:10px;
-box-shadow:0 6px 20px rgba(0,0,0,.08);
-overflow:auto;
-}
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
 
-.chapter{
-font-family:Cinzel;
-text-align:center;
-letter-spacing:2px;
-margin-top:10px;
-}
+    .title{
+      font-size:2rem;
+      font-weight:700;
+    }
 
-.subtitle{
-font-family:Playfair Display;
-text-align:center;
-font-style:italic;
-margin-bottom:25px;
-}
+    .top-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-.paragraph{
-text-align:justify;
-text-indent:2em;
-margin-bottom:1em;
-line-height:1.6;
-}
+    .btn{
+      border:none;
+      border-radius:10px;
+      padding:10px 14px;
+      cursor:pointer;
+      font-weight:700;
+    }
 
-.dropcap:first-letter{
-float:left;
-font-size:3.2em;
-line-height:.8;
-padding-right:.12em;
-margin-top:.06em;
-font-family:Cinzel;
-text-indent:0;
-}
+    .btn-yellow{background:#d8b622;color:#2d2600;}
+    .btn-green{background:#1f6f43;color:#fff;}
+    .btn-red{background:#b63131;color:#fff;}
+    .btn-soft{background:#ece7df;color:#2f2a25;}
 
-.dropcap{
-text-indent:0;
-}
+    .layout{
+      display:grid;
+      grid-template-columns:1.08fr 1fr;
+      gap:22px;
+      align-items:start;
+    }
 
-.buttons{
-display:flex;
-gap:10px;
-margin-bottom:10px;
-}
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:16px;
+      margin-bottom:14px;
+    }
 
-button{
-padding:10px 15px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-}
+    .card h3{
+      margin:0 0 12px 0;
+      font-size:1.15rem;
+    }
 
-.retornar{background:#f4c430}
-.sair{background:#c0392b;color:white}
+    .upload-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-bottom:8px;
+    }
 
-textarea{
-width:100%;
-height:300px;
-margin-top:15px;
-font-family:Georgia;
-font-size:16px;
-padding:10px;
-}
+    .upload-note{
+      color:var(--muted);
+      font-size:.95rem;
+      line-height:1.35;
+    }
 
-</style>
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:12px 14px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+
+    .field label{
+      font-size:.95rem;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .field input[type="range"],
+    .field select{
+      width:100%;
+    }
+
+    .editor{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .editor-head{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      font-size:1.15rem;
+      font-weight:700;
+      background:#fbfaf8;
+    }
+
+    textarea{
+      width:100%;
+      min-height:560px;
+      border:none;
+      outline:none;
+      resize:vertical;
+      padding:18px 16px 24px;
+      background:transparent;
+      color:var(--ink);
+      font-size:1.08rem;
+      line-height:1.55;
+      white-space:pre-wrap;
+    }
+
+    .preview-box{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:16px;
+      min-height:760px;
+    }
+
+    .preview-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      margin-bottom:12px;
+      flex-wrap:wrap;
+    }
+
+    .preview-head h3{
+      margin:0;
+      font-size:1.15rem;
+    }
+
+    .preview-mode{
+      color:var(--muted);
+      font-weight:700;
+      font-size:.95rem;
+    }
+
+    .pages{
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+      justify-content:center;
+      align-items:flex-start;
+    }
+
+    .page{
+      background:#fff;
+      border:1px solid #d8d2ca;
+      box-shadow:0 6px 18px rgba(0,0,0,.07);
+      border-radius:8px;
+      overflow:hidden;
+      flex:0 0 auto;
+      transition:width .2s,height .2s;
+    }
+
+    .page-inner{
+      height:100%;
+      overflow:auto;
+    }
+
+    .epub-wrap{
+      display:none;
+      justify-content:center;
+    }
+
+    .epub{
+      background:#fff;
+      border:1px solid #d8d2ca;
+      box-shadow:0 6px 18px rgba(0,0,0,.07);
+      border-radius:8px;
+      width:min(100%, 760px);
+      min-height:620px;
+      max-height:860px;
+      overflow:auto;
+    }
+
+    .epub-inner{
+      width:100%;
+      min-height:100%;
+    }
+
+    .empty{
+      text-align:center;
+      color:var(--muted);
+      padding:80px 20px;
+      font-size:1.06rem;
+    }
+
+    .work-title{
+      text-align:center;
+      margin:0 0 1.25em 0;
+      line-height:1.2;
+      letter-spacing:.02em;
+      text-transform:uppercase;
+    }
+
+    .chapter-line{
+      text-align:center;
+      margin:2.2em 0 .8em 0;
+      line-height:1.2;
+      text-transform:uppercase;
+      letter-spacing:.03em;
+    }
+
+    .chapter-subtitle{
+      text-align:center;
+      margin:0 0 1.4em 0;
+      line-height:1.2;
+      opacity:.88;
+      font-style:italic;
+    }
+
+    .chapter-divider{
+      text-align:center;
+      margin:1.9em 0 .8em 0;
+      opacity:.72;
+    }
+
+    .body-p{
+      margin:0 0 1em 0;
+      text-align:justify;
+      text-justify:inter-word;
+      hyphens:none;
+      word-break:normal;
+      overflow-wrap:break-word;
+    }
+
+    .dropcap{
+      text-indent:0 !important;
+    }
+
+    .dropcap::first-letter{
+      float:left;
+      font-size:3.3em;
+      line-height:.83;
+      padding-right:.10em;
+      margin-top:.05em;
+      font-family:"Cinzel", serif;
+      font-weight:700;
+    }
+
+    @media (max-width:1100px){
+      .layout{
+        grid-template-columns:1fr;
+      }
+      .preview-box{
+        min-height:auto;
+      }
+    }
+
+    @media (max-width:760px){
+      body{
+        padding:14px;
+      }
+      .grid{
+        grid-template-columns:1fr;
+      }
+      .title{
+        font-size:1.55rem;
+      }
+      textarea{
+        min-height:420px;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="buttons">
+  <div class="topbar">
+    <div class="title">Pólux — Diagramador de Prosa</div>
 
-<button class="retornar" onclick="history.back()">Retornar</button>
+    <div class="top-actions">
+      <button class="btn btn-yellow" type="button" onclick="history.back()">Retornar</button>
+      <button class="btn btn-soft" type="button" id="btnExemplo">Carregar exemplo</button>
+      <button class="btn btn-soft" type="button" id="btnLimpar">Limpar</button>
+      <button class="btn btn-red" type="button" onclick="window.location.href='index.html'">Sair do sistema</button>
+    </div>
+  </div>
 
-<button class="sair" onclick="window.location.href='index.html'">
-Sair do sistema
-</button>
+  <div class="layout">
+    <div>
+      <div class="card">
+        <h3>Entrada da obra</h3>
 
-</div>
+        <div class="upload-row">
+          <input type="file" id="arquivoTexto" accept=".txt,.md,text/plain">
+          <button class="btn btn-green" type="button" id="btnUpload">Upar texto</button>
+          <span id="arquivoNome">Nenhum arquivo carregado</span>
+        </div>
 
+        <div class="upload-note">
+          O arquivo entra direto na caixa de texto. Depois disso, o autor pode ajustar manualmente se quiser.
+        </div>
+      </div>
 
-<div class="container">
+      <div class="card">
+        <h3>Configuração editorial</h3>
 
-<div class="card">
+        <div class="grid">
+          <div class="field">
+            <label for="formato">Formato</label>
+            <select id="formato">
+              <option value="a5">A5</option>
+              <option value="16x23">16x23</option>
+              <option value="6x9">6" x 9"</option>
+              <option value="epub">ePub</option>
+            </select>
+          </div>
 
-<h3>Caixa de texto</h3>
+          <div class="field">
+            <label for="modoInicio">Primeira linha da obra</label>
+            <select id="modoInicio">
+              <option value="titulo">Título da obra</option>
+              <option value="capitulo1" selected>Capítulo 1</option>
+            </select>
+          </div>
 
-<textarea id="input">
+          <div class="field">
+            <label for="fonteCorpo">Fonte do corpo</label>
+            <select id="fonteCorpo">
+              <option value='"EB Garamond", serif'>EB Garamond</option>
+              <option value='Georgia, serif'>Georgia</option>
+              <option value='"Libre Baskerville", serif'>Libre Baskerville</option>
+              <option value='"Times New Roman", serif'>Times New Roman</option>
+            </select>
+          </div>
 
-Capítulo 1
+          <div class="field">
+            <label for="fonteCapitulo">Fonte do capítulo</label>
+            <select id="fonteCapitulo">
+              <option value='"Cinzel", serif'>Cinzel</option>
+              <option value='"Playfair Display", serif'>Playfair Display</option>
+              <option value='"Libre Baskerville", serif'>Libre Baskerville</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="tamanhoCorpo">Tamanho do corpo</label>
+            <input type="range" id="tamanhoCorpo" min="12" max="22" step="0.5" value="14">
+          </div>
+
+          <div class="field">
+            <label for="tamanhoCapitulo">Tamanho do capítulo</label>
+            <input type="range" id="tamanhoCapitulo" min="18" max="52" step="1" value="30">
+          </div>
+
+          <div class="field">
+            <label for="entrelinha">Entrelinha</label>
+            <select id="entrelinha">
+              <option value="1.2">Compacta</option>
+              <option value="1.4">Normal</option>
+              <option value="1.6" selected>Confortável</option>
+              <option value="1.8">Arejada</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="margens">Margens</label>
+            <select id="margens">
+              <option value="estreita" selected>Estreitas</option>
+              <option value="normal">Normais</option>
+              <option value="ampla">Amplas</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="paragrafo">Parágrafos</label>
+            <select id="paragrafo">
+              <option value="recuo" selected>Recuo tradicional</option>
+              <option value="espaco">Espaço entre parágrafos</option>
+              <option value="reto">Sem recuo</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="capitular">Letra capitular</label>
+            <select id="capitular">
+              <option value="on" selected>Ativada</option>
+              <option value="off">Desativada</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor">
+        <div class="editor-head">Caixa de texto</div>
+        <textarea id="inputText" placeholder="Cole aqui sua obra ou use o botão de upar texto."></textarea>
+      </div>
+    </div>
+
+    <div>
+      <div class="preview-box">
+        <div class="preview-head">
+          <h3>Prévia editorial</h3>
+          <div class="preview-mode" id="previewMode">Modo impresso · A5</div>
+        </div>
+
+        <div class="pages" id="pagesWrap">
+          <div class="page"><div class="page-inner" id="page1"></div></div>
+          <div class="page"><div class="page-inner" id="page2"></div></div>
+        </div>
+
+        <div class="epub-wrap" id="epubWrap">
+          <div class="epub">
+            <div class="epub-inner" id="epubInner"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const inputText = document.getElementById("inputText");
+  const arquivoTexto = document.getElementById("arquivoTexto");
+  const arquivoNome = document.getElementById("arquivoNome");
+  const btnUpload = document.getElementById("btnUpload");
+  const btnExemplo = document.getElementById("btnExemplo");
+  const btnLimpar = document.getElementById("btnLimpar");
+
+  const formato = document.getElementById("formato");
+  const modoInicio = document.getElementById("modoInicio");
+  const fonteCorpo = document.getElementById("fonteCorpo");
+  const fonteCapitulo = document.getElementById("fonteCapitulo");
+  const tamanhoCorpo = document.getElementById("tamanhoCorpo");
+  const tamanhoCapitulo = document.getElementById("tamanhoCapitulo");
+  const entrelinha = document.getElementById("entrelinha");
+  const margens = document.getElementById("margens");
+  const paragrafo = document.getElementById("paragrafo");
+  const capitular = document.getElementById("capitular");
+
+  const previewMode = document.getElementById("previewMode");
+  const pagesWrap = document.getElementById("pagesWrap");
+  const page1 = document.getElementById("page1");
+  const page2 = document.getElementById("page2");
+  const epubWrap = document.getElementById("epubWrap");
+  const epubInner = document.getElementById("epubInner");
+
+  function escapeHtml(texto){
+    return texto
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function pageConfig(){
+    const map = {
+      a5:    { w:430, h:610, pad:{ estreita:26, normal:40, ampla:54 }, name:"Modo impresso · A5", indent:"2.2em" },
+      "16x23": { w:470, h:680, pad:{ estreita:30, normal:46, ampla:60 }, name:"Modo impresso · 16x23", indent:"1.8em" },
+      "6x9": { w:500, h:750, pad:{ estreita:34, normal:50, ampla:66 }, name:'Modo impresso · 6" x 9"', indent:"1.6em" },
+      epub:  { w:760, h:760, pad:{ estreita:34, normal:42, ampla:52 }, name:"Modo digital · ePub", indent:"1.5em" }
+    };
+    return map[formato.value];
+  }
+
+  function paragraphConfig(){
+    const cfg = pageConfig();
+    if (paragrafo.value === "espaco") {
+      return { indent:"0", margin:"0 0 1.2em 0" };
+    }
+    if (paragrafo.value === "reto") {
+      return { indent:"0", margin:"0 0 1em 0" };
+    }
+    return { indent:cfg.indent, margin:"0 0 1em 0" };
+  }
+
+  function isChapterLine(line){
+    return /^cap[ií]tulo\s*\d+$/i.test((line || "").trim());
+  }
+
+  function isBlank(line){
+    return !(line && line.trim());
+  }
+
+  function parseParagraphs(lines, startIndex){
+    const paragraphs = [];
+    let i = startIndex;
+
+    while (i < lines.length) {
+      while (i < lines.length && isBlank(lines[i])) i++;
+      if (i >= lines.length) break;
+      if (isChapterLine(lines[i])) break;
+
+      paragraphs.push(lines[i].trim());
+      i++;
+    }
+
+    return { paragraphs, nextIndex:i };
+  }
+
+  function buildBlocks(){
+    const raw = inputText.value.replace(/\r/g, "").trim();
+    if (!raw) return [];
+
+    const lines = raw.split("\n");
+    const blocks = [];
+    let i = 0;
+
+    while (i < lines.length && isBlank(lines[i])) i++;
+    if (i >= lines.length) return [];
+
+    if (modoInicio.value === "titulo") {
+      blocks.push({ type:"work-title", text:lines[i].trim() });
+      i++;
+
+      while (i < lines.length && isBlank(lines[i])) i++;
+
+      const intro = parseParagraphs(lines, i);
+      intro.paragraphs.forEach((p, idx) => {
+        blocks.push({
+          type:"paragraph",
+          text:p,
+          dropcap: idx === 0 && capitular.value === "on"
+        });
+      });
+      i = intro.nextIndex;
+
+    } else {
+      if (isChapterLine(lines[i])) {
+        blocks.push({ type:"chapter-divider" });
+        blocks.push({ type:"chapter-line", text:lines[i].trim() });
+        i++;
+      } else {
+        blocks.push({ type:"chapter-divider" });
+        blocks.push({ type:"chapter-line", text:"Capítulo 1" });
+      }
+
+      while (i < lines.length && isBlank(lines[i])) i++;
+
+      if (i < lines.length && !isBlank(lines[i]) && !isChapterLine(lines[i])) {
+        blocks.push({ type:"chapter-subtitle", text:lines[i].trim() });
+        i++;
+      }
+
+      while (i < lines.length && isBlank(lines[i])) i++;
+
+      const firstBody = parseParagraphs(lines, i);
+      firstBody.paragraphs.forEach((p, idx) => {
+        blocks.push({
+          type:"paragraph",
+          text:p,
+          dropcap: idx === 0 && capitular.value === "on"
+        });
+      });
+      i = firstBody.nextIndex;
+    }
+
+    while (i < lines.length) {
+      while (i < lines.length && isBlank(lines[i])) i++;
+      if (i >= lines.length) break;
+
+      if (isChapterLine(lines[i])) {
+        blocks.push({ type:"chapter-divider" });
+        blocks.push({ type:"chapter-line", text:lines[i].trim() });
+        i++;
+
+        while (i < lines.length && isBlank(lines[i])) i++;
+
+        if (i < lines.length && !isBlank(lines[i]) && !isChapterLine(lines[i])) {
+          blocks.push({ type:"chapter-subtitle", text:lines[i].trim() });
+          i++;
+        }
+
+        while (i < lines.length && isBlank(lines[i])) i++;
+
+        const body = parseParagraphs(lines, i);
+        body.paragraphs.forEach((p, idx) => {
+          blocks.push({
+            type:"paragraph",
+            text:p,
+            dropcap: idx === 0 && capitular.value === "on"
+          });
+        });
+        i = body.nextIndex;
+      } else {
+        const loose = parseParagraphs(lines, i);
+        loose.paragraphs.forEach(p => {
+          blocks.push({
+            type:"paragraph",
+            text:p,
+            dropcap:false
+          });
+        });
+        i = loose.nextIndex;
+      }
+    }
+
+    return blocks;
+  }
+
+  function renderBlock(block){
+    const bodyFont = fonteCorpo.value;
+    const chapterFont = fonteCapitulo.value;
+    const bodySize = tamanhoCorpo.value + "pt";
+    const chapterSize = tamanhoCapitulo.value + "pt";
+    const subtitleSize = Math.max(18, Number(tamanhoCapitulo.value) - 8) + "pt";
+    const chapterMainSize = Math.max(22, Number(tamanhoCapitulo.value) - 2) + "pt";
+    const line = entrelinha.value;
+    const pCfg = paragraphConfig();
+
+    if (block.type === "chapter-divider") {
+      return `<div class="chapter-divider" style="font-family:${chapterFont}; font-size:${Math.max(13, Number(tamanhoCapitulo.value) * 0.35)}pt;">❦</div>`;
+    }
+
+    if (block.type === "work-title") {
+      return `<div class="work-title" style="font-family:${chapterFont}; font-size:${chapterSize};">${escapeHtml(block.text)}</div>`;
+    }
+
+    if (block.type === "chapter-line") {
+      return `<div class="chapter-line" style="font-family:${chapterFont}; font-size:${chapterMainSize};">${escapeHtml(block.text)}</div>`;
+    }
+
+    if (block.type === "chapter-subtitle") {
+      return `<div class="chapter-subtitle" style="font-family:${chapterFont}; font-size:${subtitleSize};">${escapeHtml(block.text)}</div>`;
+    }
+
+    const cls = block.dropcap ? "body-p dropcap" : "body-p";
+    const indent = block.dropcap ? "0" : pCfg.indent;
+
+    return `<p class="${cls}" style="
+      font-family:${bodyFont};
+      font-size:${bodySize};
+      line-height:${line};
+      text-indent:${indent};
+      margin:${pCfg.margin};
+    ">${escapeHtml(block.text)}</p>`;
+  }
+
+  function applyPageStyles(){
+    const cfg = pageConfig();
+    const pad = cfg.pad[margens.value];
+
+    document.querySelectorAll(".page").forEach(page => {
+      page.style.width = cfg.w + "px";
+      page.style.height = cfg.h + "px";
+    });
+
+    document.querySelectorAll(".page-inner").forEach(inner => {
+      inner.style.padding = pad + "px";
+    });
+
+    epubInner.style.padding = pad + "px";
+    previewMode.textContent = cfg.name;
+  }
+
+  function renderPreview(){
+    applyPageStyles();
+    const blocks = buildBlocks();
+
+    if (!blocks.length) {
+      page1.innerHTML = `<div class="empty">A prévia aparece aqui assim que o texto entrar na caixa.</div>`;
+      page2.innerHTML = "";
+      epubInner.innerHTML = `<div class="empty">O modo ePub aparecerá aqui quando houver texto.</div>`;
+      syncMode();
+      return;
+    }
+
+    const htmlParts = blocks.map(renderBlock);
+
+    if (formato.value === "epub") {
+      syncMode();
+      epubInner.innerHTML = htmlParts.join("");
+      return;
+    }
+
+    syncMode();
+
+    const totalWeight = blocks.reduce((acc, b) => acc + (b.text ? b.text.length : 20), 0);
+    const half = Math.ceil(totalWeight / 2);
+
+    let left = "";
+    let right = "";
+    let count = 0;
+
+    for (let idx = 0; idx < blocks.length; idx++) {
+      const block = blocks[idx];
+      const weight = block.text ? block.text.length : 20;
+      const html = htmlParts[idx];
+
+      if (count < half) left += html;
+      else right += html;
+
+      count += weight;
+    }
+
+    page1.innerHTML = left || `<div class="empty">Sem conteúdo nesta página.</div>`;
+    page2.innerHTML = right || `<div class="empty">A continuação aparecerá aqui conforme o texto crescer.</div>`;
+  }
+
+  function syncMode(){
+    if (formato.value === "epub") {
+      pagesWrap.style.display = "none";
+      epubWrap.style.display = "flex";
+    } else {
+      pagesWrap.style.display = "flex";
+      epubWrap.style.display = "none";
+    }
+  }
+
+  btnUpload.addEventListener("click", () => {
+    const file = arquivoTexto.files[0];
+    if (!file) {
+      arquivoNome.textContent = "Escolha um arquivo .txt primeiro";
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e){
+      inputText.value = String(e.target.result || "");
+      arquivoNome.textContent = file.name;
+      renderPreview();
+    };
+    reader.onerror = function(){
+      arquivoNome.textContent = "Não foi possível ler este arquivo";
+    };
+    reader.readAsText(file, "UTF-8");
+  });
+
+  arquivoTexto.addEventListener("change", () => {
+    arquivoNome.textContent = arquivoTexto.files[0] ? arquivoTexto.files[0].name : "Nenhum arquivo carregado";
+  });
+
+  btnExemplo.addEventListener("click", () => {
+    inputText.value = `Capítulo 1
 O Degrau e a Mochila
 A praça respirava como um animal ferido.
 O som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.
 Sacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.
+Tudo parecia seguir um ritmo que não incluía pausas.
 
-</textarea>
+Capítulo 2
+A Primeira Manhã
+A manhã revelou o que a noite havia escondido.
+Havia mais gente do que ele imaginava.
+Homens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa.`;
+    renderPreview();
+  });
 
-</div>
+  btnLimpar.addEventListener("click", () => {
+    inputText.value = "";
+    arquivoTexto.value = "";
+    arquivoNome.textContent = "Nenhum arquivo carregado";
+    renderPreview();
+  });
 
+  [
+    inputText, formato, modoInicio, fonteCorpo, fonteCapitulo, tamanhoCorpo,
+    tamanhoCapitulo, entrelinha, margens, paragrafo, capitular
+  ].forEach(el => {
+    el.addEventListener("input", renderPreview);
+    el.addEventListener("change", renderPreview);
+  });
 
-<div class="preview" id="preview"></div>
-
-</div>
-
-
-<script>
-
-function render(){
-
-const text=document.getElementById("input").value
-
-const lines=text.split("\n")
-
-let html=""
-
-let firstParagraph=true
-
-lines.forEach(line=>{
-
-if(line.toLowerCase().includes("capítulo")){
-
-html+=`<div class="chapter">${line}</div>`
-
-}
-
-else if(firstParagraph){
-
-html+=`<p class="paragraph dropcap">${line}</p>`
-
-firstParagraph=false
-
-}
-
-else{
-
-html+=`<p class="paragraph">${line}</p>`
-
-}
-
-})
-
-document.getElementById("preview").innerHTML=html
-
-}
-
-render()
-
-document.getElementById("input").addEventListener("input",render)
-
+  syncMode();
+  renderPreview();
 </script>
 
 </body>
