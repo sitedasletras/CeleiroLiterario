@@ -3,571 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pólux — Diagramador de Prosa</title>
+<title>Pólux — Diagramador de Prosa (v5)</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Cinzel:wght@400;600;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:wght@400;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg:#f6f3ee;
-  --card:#ffffff;
-  --line:#ddd7cf;
-  --ink:#2f2a25;
-  --muted:#746c63;
-  --shadow:0 2px 10px rgba(0,0,0,.06);
-  --radius:14px;
-}
-*{box-sizing:border-box}
 body{
-  margin:0;
-  padding:24px;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:"EB Garamond", serif;
+background:#f6f3ee;
+font-family:Georgia,serif;
+margin:0;
+padding:20px;
 }
-button,select,input,textarea{font:inherit}
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-bottom:16px;
-}
-.title{font-size:2rem;font-weight:700}
-.top-actions{display:flex;gap:10px;flex-wrap:wrap}
-.btn{
-  border:none;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700;
-}
-.btn-yellow{background:#d8b622;color:#2d2600}
-.btn-green{background:#1f6f43;color:#fff}
-.btn-red{background:#b63131;color:#fff}
-.btn-soft{background:#ece7df;color:#2f2a25}
 
-.stack{display:flex;flex-direction:column;gap:16px}
+.container{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
 
-.card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:16px;
-}
-.card h3{margin:0 0 12px 0;font-size:1.15rem}
-
-.upload-row{
-  display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:8px;
-}
-.upload-note{color:var(--muted);font-size:.95rem;line-height:1.35}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2, minmax(0,1fr));
-  gap:12px 14px;
-}
-.field{display:flex;flex-direction:column;gap:6px;min-width:0}
-.field label{font-size:.95rem;color:var(--muted);font-weight:700}
-.field input[type="range"], .field select{width:100%}
-
-.editor{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  overflow:hidden;
-}
-.editor-head{
-  padding:14px 16px;
-  border-bottom:1px solid var(--line);
-  font-size:1.15rem;
-  font-weight:700;
-  background:#fbfaf8;
-}
 textarea{
-  width:100%;
-  min-height:360px;
-  border:none;
-  outline:none;
-  resize:vertical;
-  padding:18px 16px 24px;
-  background:transparent;
-  color:var(--ink);
-  font-size:1.02rem;
-  line-height:1.55;
-  white-space:pre-wrap;
+width:100%;
+height:320px;
+font-size:16px;
+padding:12px;
 }
 
-.preview-box{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:16px;
+.preview{
+background:white;
+border:1px solid #ccc;
+padding:40px;
+width:420px;
+height:620px;
+margin:auto;
+overflow:auto;
 }
-.preview-head{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:center;
-  margin-bottom:12px;
-  flex-wrap:wrap;
-}
-.preview-head h3{margin:0;font-size:1.15rem}
-.preview-mode{color:var(--muted);font-weight:700;font-size:.95rem}
-.page{
-  background:#fff;
-  border:1px solid #d8d2ca;
-  box-shadow:0 6px 18px rgba(0,0,0,.07);
-  border-radius:8px;
-  overflow:auto;
-  margin:0 auto;
-  transition:width .2s,height .2s;
-  scrollbar-width:thin;
-}
-.page-inner{min-height:100%}
-.empty{text-align:center;color:var(--muted);padding:80px 20px;font-size:1.06rem}
 
-.work-title{
-  text-align:center;
-  margin:0 0 1.25em 0;
-  line-height:1.2;
-  letter-spacing:.02em;
-  text-transform:uppercase;
+.chapter{
+text-align:center;
+letter-spacing:.05em;
+margin:2em 0 .7em 0;
+font-weight:700;
 }
-.chapter-line{
-  text-align:center;
-  margin:2.2em 0 .7em 0;
-  line-height:1.2;
-  text-transform:uppercase;
-  letter-spacing:.04em;
-  font-weight:700;
+
+.subtitle{
+text-align:center;
+font-style:italic;
+margin-bottom:1.2em;
 }
-.chapter-subtitle{
-  text-align:center;
-  margin:0 0 1.4em 0;
-  line-height:1.2;
-  opacity:.88;
-  font-style:italic;
+
+.divider{
+text-align:center;
+margin:1.4em 0 .7em 0;
+opacity:.7;
 }
-.chapter-divider{text-align:center;margin:1.8em 0 .8em 0;opacity:.72}
-.body-p{
-  margin:0 0 1em 0;
-  text-align:justify;
-  text-justify:inter-word;
-  hyphens:auto;
-  -webkit-hyphens:auto;
-  -ms-hyphens:auto;
-  word-break:normal;
-  overflow-wrap:normal;
+
+.body{
+text-align:justify;
+hyphens:auto;
+-webkit-hyphens:auto;
+-ms-hyphens:auto;
 }
-.dropcap{
-  text-indent:0 !important;
-  overflow:hidden;
-}
+
 .dropcap::first-letter{
-  float:left;
-  font-size:3.2em;
-  line-height:.83;
-  margin:.03em .10em 0 0;
-  font-family:"Cinzel", serif;
-  font-weight:700;
+float:left;
+font-size:3.2em;
+margin:.05em .12em 0 0;
+font-family:Cinzel;
 }
-.note{font-size:.9rem;color:var(--muted);margin-top:6px}
 
-@media (max-width:760px){
-  body{padding:14px}
-  .grid{grid-template-columns:1fr}
-  .title{font-size:1.55rem}
-  textarea{min-height:300px}
-}
 </style>
 </head>
+
 <body>
 
-<div class="topbar">
-  <div class="title">Pólux — Diagramador de Prosa</div>
-  <div class="top-actions">
-    <button class="btn btn-yellow" type="button" onclick="history.back()">Retornar</button>
-    <button class="btn btn-soft" type="button" id="btnExemplo">Carregar exemplo</button>
-    <button class="btn btn-soft" type="button" id="btnLimpar">Limpar</button>
-    <button class="btn btn-red" type="button" onclick="window.location.href='index.html'">Sair do sistema</button>
-  </div>
-</div>
+<h2>Pólux — Diagramador de Prosa</h2>
 
-<div class="stack">
-  <div class="card">
-    <h3>Entrada da obra</h3>
-    <div class="upload-row">
-      <input type="file" id="arquivoTexto" accept=".txt,.md,text/plain">
-      <button class="btn btn-green" type="button" id="btnUpload">Upar texto</button>
-      <span id="arquivoNome">Nenhum arquivo carregado</span>
-    </div>
-    <div class="upload-note">
-      O arquivo entra direto na caixa de texto. Depois disso, o autor pode ajustar manualmente se quiser.
-    </div>
-  </div>
+<textarea id="input"></textarea>
 
-  <div class="editor">
-    <div class="editor-head">Caixa de texto</div>
-    <textarea id="inputText" placeholder="Cole aqui sua obra ou use o botão de upar texto."></textarea>
-  </div>
+<br>
 
-  <div class="card">
-    <h3>Configuração editorial</h3>
+<label>Fonte capítulo</label>
+<select id="chapterFont">
+<option value="Cinzel">Cinzel</option>
+<option value="Playfair Display">Playfair Display</option>
+<option value="Libre Baskerville">Libre Baskerville</option>
+</select>
 
-    <div class="grid">
-      <div class="field">
-        <label for="formato">Formato</label>
-        <select id="formato">
-          <option value="a5">A5</option>
-          <option value="16x23">16x23</option>
-          <option value="6x9">6" x 9"</option>
-          <option value="epub">ePub</option>
-        </select>
-      </div>
+<label>Tamanho capítulo</label>
+<input type="range" id="chapterSize" min="20" max="50" value="30">
 
-      <div class="field">
-        <label for="modoInicio">Primeira linha da obra</label>
-        <select id="modoInicio">
-          <option value="titulo">Título da obra</option>
-          <option value="capitulo1" selected>Capítulo 1</option>
-        </select>
-      </div>
+<label>Modo parágrafo</label>
+<select id="paragraphMode">
+<option value="indent">Recuo tradicional</option>
+<option value="space">Espaço entre parágrafos</option>
+<option value="flat">Sem recuo</option>
+</select>
 
-      <div class="field">
-        <label for="fonteCorpo">Fonte do corpo</label>
-        <select id="fonteCorpo">
-          <option value="Georgia, serif" selected>Georgia</option>
-          <option value='"EB Garamond", serif'>EB Garamond</option>
-          <option value='"Libre Baskerville", serif'>Libre Baskerville</option>
-          <option value='"Times New Roman", serif'>Times New Roman</option>
-        </select>
-      </div>
+<label>Capitular</label>
+<select id="dropcap">
+<option value="on">Ativada</option>
+<option value="off">Desativada</option>
+</select>
 
-      <div class="field">
-        <label for="fonteCapitulo">Fonte do capítulo</label>
-        <select id="fonteCapitulo">
-          <option value='"Cinzel", serif' selected>Cinzel</option>
-          <option value='"Playfair Display", serif'>Playfair Display</option>
-          <option value='"Libre Baskerville", serif'>Libre Baskerville</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="tamanhoCorpo">Tamanho do corpo</label>
-        <input type="range" id="tamanhoCorpo" min="12" max="22" step="0.5" value="14">
-      </div>
-
-      <div class="field">
-        <label for="tamanhoCapitulo">Tamanho do capítulo</label>
-        <input type="range" id="tamanhoCapitulo" min="18" max="56" step="1" value="30">
-      </div>
-
-      <div class="field">
-        <label for="entrelinha">Entrelinha</label>
-        <select id="entrelinha">
-          <option value="1.2">Compacta</option>
-          <option value="1.4">Normal</option>
-          <option value="1.6" selected>Confortável</option>
-          <option value="1.8">Arejada</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="margens">Margens</label>
-        <select id="margens">
-          <option value="estreita">Estreitas</option>
-          <option value="normal">Normais</option>
-          <option value="ampla" selected>Amplas</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="paragrafo">Parágrafos</label>
-        <select id="paragrafo">
-          <option value="recuo" selected>Recuo tradicional</option>
-          <option value="espaco">Espaço entre parágrafos</option>
-          <option value="reto">Sem recuo</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="capitular">Letra capitular</label>
-        <select id="capitular">
-          <option value="on" selected>Ativada</option>
-          <option value="off">Desativada</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="note">Base estável: Georgia. As demais fontes podem ser calibradas depois em referência a ela.</div>
-  </div>
-
-  <div class="preview-box">
-    <div class="preview-head">
-      <h3>Prévia editorial</h3>
-      <div class="preview-mode" id="previewMode">Modo impresso · A5</div>
-    </div>
-    <div class="page" id="page">
-      <div class="page-inner" id="pageInner"></div>
-    </div>
-  </div>
-</div>
+<div class="preview" id="preview"></div>
 
 <script>
-const inputText = document.getElementById("inputText");
-const arquivoTexto = document.getElementById("arquivoTexto");
-const arquivoNome = document.getElementById("arquivoNome");
-const btnUpload = document.getElementById("btnUpload");
-const btnExemplo = document.getElementById("btnExemplo");
-const btnLimpar = document.getElementById("btnLimpar");
 
-const formato = document.getElementById("formato");
-const modoInicio = document.getElementById("modoInicio");
-const fonteCorpo = document.getElementById("fonteCorpo");
-const fonteCapitulo = document.getElementById("fonteCapitulo");
-const tamanhoCorpo = document.getElementById("tamanhoCorpo");
-const tamanhoCapitulo = document.getElementById("tamanhoCapitulo");
-const entrelinha = document.getElementById("entrelinha");
-const margens = document.getElementById("margens");
-const paragrafo = document.getElementById("paragrafo");
-const capitular = document.getElementById("capitular");
+const input=document.getElementById("input")
+const preview=document.getElementById("preview")
+const chapterFont=document.getElementById("chapterFont")
+const chapterSize=document.getElementById("chapterSize")
+const paragraphMode=document.getElementById("paragraphMode")
+const dropcap=document.getElementById("dropcap")
 
-const previewMode = document.getElementById("previewMode");
-const page = document.getElementById("page");
-const pageInner = document.getElementById("pageInner");
+function render(){
 
-const BODY_FONT_METRICS = {
-  "Georgia, serif": { paraGap: 1, compact: 1.2, normal: 1.4, comfort: 1.6, airy: 1.8, bodyAdjust: 0 },
-  '"EB Garamond", serif': { paraGap: 1, compact: 1.22, normal: 1.42, comfort: 1.62, airy: 1.84, bodyAdjust: 0.1 },
-  '"Libre Baskerville", serif': { paraGap: 1, compact: 1.22, normal: 1.42, comfort: 1.62, airy: 1.84, bodyAdjust: 0 },
-  '"Times New Roman", serif': { paraGap: 1, compact: 1.18, normal: 1.38, comfort: 1.56, airy: 1.76, bodyAdjust: 0 }
-};
+let lines=input.value.split("\n")
+let html=""
+let firstParagraph=true
 
-const CHAPTER_FONT_METRICS = {
-  '"Cinzel", serif': { sizeAdjust: 0, subtitleAdjust: -10, dividerScale: .34, weight: 700, letterSpacing: '.04em' },
-  '"Playfair Display", serif': { sizeAdjust: 2, subtitleAdjust: -8, dividerScale: .38, weight: 700, letterSpacing: '.02em' },
-  '"Libre Baskerville", serif': { sizeAdjust: 1, subtitleAdjust: -9, dividerScale: .34, weight: 700, letterSpacing: '.03em' }
-};
+lines.forEach(line=>{
 
-function escapeHtml(texto){
-  return texto
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+if(line.match(/^Cap[ií]tulo/i)){
+
+html+=`<div class="divider">❦</div>`
+html+=`<div class="chapter" style="font-family:${chapterFont.value};font-size:${chapterSize.value}px">${line}</div>`
+
 }
 
-function pageConfig(){
-  const map = {
-    a5: { w:420, h:610, pad:{ estreita:24, normal:36, ampla:48 }, name:"Modo impresso · A5", indent:"2em" },
-    "16x23": { w:465, h:680, pad:{ estreita:28, normal:42, ampla:56 }, name:"Modo impresso · 16x23", indent:"1.8em" },
-    "6x9": { w:495, h:740, pad:{ estreita:32, normal:46, ampla:60 }, name:'Modo impresso · 6\" x 9\"', indent:"1.7em" },
-    epub: { w:760, h:760, pad:{ estreita:34, normal:42, ampla:52 }, name:"Modo digital · ePub", indent:"1.5em" }
-  };
-  return map[formato.value];
+else if(firstParagraph && dropcap.value==="on"){
+
+html+=`<p class="body dropcap">${line}</p>`
+firstParagraph=false
+
 }
 
-function lineHeightValue(){
-  const body = BODY_FONT_METRICS[fonteCorpo.value] || BODY_FONT_METRICS["Georgia, serif"];
-  if (entrelinha.value === "1.2") return body.compact;
-  if (entrelinha.value === "1.4") return body.normal;
-  if (entrelinha.value === "1.8") return body.airy;
-  return body.comfort;
+else{
+
+let indent="2em"
+let margin="1em"
+
+if(paragraphMode.value==="space"){
+indent="0"
+margin="1.4em"
 }
 
-function paragraphConfig(){
-  const cfg = pageConfig();
-  const body = BODY_FONT_METRICS[fonteCorpo.value] || BODY_FONT_METRICS["Georgia, serif"];
-  if (paragrafo.value === "espaco") return { indent:"0", margin:`0 0 ${1.2 * body.paraGap}em 0` };
-  if (paragrafo.value === "reto") return { indent:"0", margin:"0 0 1em 0" };
-  return { indent:cfg.indent, margin:"0 0 1em 0" };
+if(paragraphMode.value==="flat"){
+indent="0"
+margin=".6em"
 }
 
-function isChapterLine(line){
-  return /^cap[ií]tulo\s*\d+$/i.test((line || "").trim());
+html+=`<p class="body" style="text-indent:${indent};margin-bottom:${margin}">${line}</p>`
+
 }
 
-function isBlank(line){
-  return !(line && line.trim());
+})
+
+preview.innerHTML=html
+
 }
 
-function parseBlocks(texto){
-  const lines = texto.replace(/\r/g, "").split("\n");
-  const blocks = [];
-  let i = 0;
+input.addEventListener("input",render)
+chapterFont.addEventListener("change",render)
+chapterSize.addEventListener("input",render)
+paragraphMode.addEventListener("change",render)
+dropcap.addEventListener("change",render)
 
-  while (i < lines.length && isBlank(lines[i])) i++;
-  if (i >= lines.length) return [];
-
-  if (modoInicio.value === "titulo") {
-    blocks.push({ type:"work-title", text:lines[i].trim() });
-    i++;
-  }
-
-  while (i < lines.length) {
-    while (i < lines.length && isBlank(lines[i])) i++;
-    if (i >= lines.length) break;
-
-    if (isChapterLine(lines[i])) {
-      blocks.push({ type:"chapter-divider" });
-      blocks.push({ type:"chapter-line", text:lines[i].trim() });
-      i++;
-
-      while (i < lines.length && isBlank(lines[i])) i++;
-
-      if (i < lines.length && !isBlank(lines[i]) && !isChapterLine(lines[i])) {
-        blocks.push({ type:"chapter-subtitle", text:lines[i].trim() });
-        i++;
-      }
-
-      let firstParagraphOfChapter = true;
-      while (i < lines.length && !isChapterLine(lines[i])) {
-        if (!isBlank(lines[i])) {
-          blocks.push({
-            type:"paragraph",
-            text:lines[i].trim(),
-            dropcap:firstParagraphOfChapter && capitular.value === "on"
-          });
-          firstParagraphOfChapter = false;
-        }
-        i++;
-      }
-    } else {
-      if (modoInicio.value === "capitulo1" && blocks.length === 0) {
-        blocks.push({ type:"chapter-divider" });
-        blocks.push({ type:"chapter-line", text:"Capítulo 1" });
-
-        let firstSub = true;
-        let firstParagraphOfChapter = false;
-        while (i < lines.length && !isChapterLine(lines[i])) {
-          if (!isBlank(lines[i])) {
-            if (firstSub) {
-              blocks.push({ type:"chapter-subtitle", text:lines[i].trim() });
-              firstSub = false;
-              firstParagraphOfChapter = true;
-            } else {
-              blocks.push({
-                type:"paragraph",
-                text:lines[i].trim(),
-                dropcap:firstParagraphOfChapter && capitular.value === "on"
-              });
-              firstParagraphOfChapter = false;
-            }
-          }
-          i++;
-        }
-      } else {
-        if (!isBlank(lines[i])) {
-          blocks.push({ type:"paragraph", text:lines[i].trim(), dropcap:false });
-        }
-        i++;
-      }
-    }
-  }
-  return blocks;
-}
-
-function renderBlock(block){
-  const bodyFont = fonteCorpo.value;
-  const chapterFont = fonteCapitulo.value;
-  const chapterMeta = CHAPTER_FONT_METRICS[chapterFont] || CHAPTER_FONT_METRICS['"Cinzel", serif'];
-  const bodyMeta = BODY_FONT_METRICS[bodyFont] || BODY_FONT_METRICS["Georgia, serif"];
-  const bodySize = Number(tamanhoCorpo.value) + bodyMeta.bodyAdjust;
-  const chapterSize = Number(tamanhoCapitulo.value) + chapterMeta.sizeAdjust;
-  const subtitleSize = Math.max(14, chapterSize + chapterMeta.subtitleAdjust);
-  const dividerSize = Math.max(12, chapterSize * chapterMeta.dividerScale);
-  const pCfg = paragraphConfig();
-  const lineHt = lineHeightValue();
-
-  if (block.type === "chapter-divider") {
-    return `<div class="chapter-divider" style="font-family:${chapterFont}; font-size:${dividerSize}pt;">❦</div>`;
-  }
-
-  if (block.type === "work-title") {
-    return `<div class="work-title" style="font-family:${chapterFont}; font-size:${Math.max(24, chapterSize + 2)}pt; letter-spacing:${chapterMeta.letterSpacing}; font-weight:${chapterMeta.weight};">${escapeHtml(block.text)}</div>`;
-  }
-
-  if (block.type === "chapter-line") {
-    return `<div class="chapter-line" style="font-family:${chapterFont}; font-size:${chapterSize}pt; letter-spacing:${chapterMeta.letterSpacing}; font-weight:${chapterMeta.weight};">${escapeHtml(block.text)}</div>`;
-  }
-
-  if (block.type === "chapter-subtitle") {
-    return `<div class="chapter-subtitle" style="font-family:${chapterFont}; font-size:${subtitleSize}pt;">${escapeHtml(block.text)}</div>`;
-  }
-
-  const cls = block.dropcap ? "body-p dropcap" : "body-p";
-  const indent = block.dropcap ? "0" : pCfg.indent;
-
-  return `<p class="${cls}" lang="pt-BR" style="font-family:${bodyFont}; font-size:${bodySize}pt; line-height:${lineHt}; text-indent:${indent}; margin:${pCfg.margin};">${escapeHtml(block.text)}</p>`;
-}
-
-function applyPageStyles(){
-  const cfg = pageConfig();
-  const pad = cfg.pad[margens.value];
-  page.style.width = cfg.w + "px";
-  page.style.height = cfg.h + "px";
-  pageInner.style.padding = pad + "px";
-  previewMode.textContent = cfg.name;
-}
-
-function renderPreview(){
-  applyPageStyles();
-  const texto = inputText.value.trim();
-  if (!texto) {
-    pageInner.innerHTML = '<div class="empty">A prévia aparece aqui assim que o texto entrar na caixa.</div>';
-    return;
-  }
-  const blocks = parseBlocks(texto);
-  pageInner.innerHTML = blocks.map(renderBlock).join("") || '<div class="empty">Sem conteúdo.</div>';
-}
-
-btnUpload.addEventListener("click", function(){
-  const file = arquivoTexto.files[0];
-  if (!file) {
-    arquivoNome.textContent = "Escolha um arquivo .txt primeiro";
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = function(e){
-    inputText.value = String(e.target.result || "");
-    arquivoNome.textContent = file.name;
-    renderPreview();
-  };
-  reader.onerror = function(){
-    arquivoNome.textContent = "Não foi possível ler este arquivo";
-  };
-  reader.readAsText(file, "UTF-8");
-});
-
-arquivoTexto.addEventListener("change", function(){
-  arquivoNome.textContent = arquivoTexto.files[0] ? arquivoTexto.files[0].name : "Nenhum arquivo carregado";
-});
-
-btnExemplo.addEventListener("click", function(){
-  inputText.value = 'Capítulo 1\nO Degrau e a Mochila\nA praça respirava como um animal ferido.\nO som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.\nSacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.\nTudo parecia seguir um ritmo que não incluía pausas.\n\nCapítulo 2\nA Primeira Manhã\nA manhã revelou o que a noite havia escondido.\nHavia mais gente do que ele imaginava.\nHomens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa.';
-  renderPreview();
-});
-
-btnLimpar.addEventListener("click", function(){
-  inputText.value = "";
-  arquivoTexto.value = "";
-  arquivoNome.textContent = "Nenhum arquivo carregado";
-  renderPreview();
-});
-
-[
-  inputText, formato, modoInicio, fonteCorpo, fonteCapitulo, tamanhoCorpo,
-  tamanhoCapitulo, entrelinha, margens, paragrafo, capitular
-].forEach(function(el){
-  el.addEventListener("input", renderPreview);
-  el.addEventListener("change", renderPreview);
-});
-
-renderPreview();
 </script>
 
 </body>
