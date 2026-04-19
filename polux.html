@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <title>Pólux — Diagramador de Prosa</title>
 
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Cinzel&family=Crimson+Text&family=Libre+Baskerville&family=Playfair+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Cinzel&family=Libre+Baskerville&family=Playfair+Display&display=swap" rel="stylesheet">
 
 <style>
 
 body{
 background:#f7f5f2;
-font-family:"EB Garamond", serif;
-margin:0;
+font-family:"EB Garamond",serif;
 padding:25px;
+margin:0;
 }
 
 .topbar{
@@ -38,8 +38,6 @@ grid-template-columns:1fr 1fr;
 gap:25px;
 }
 
-/* painel */
-
 .panel{
 background:white;
 padding:15px;
@@ -47,8 +45,6 @@ border-radius:10px;
 box-shadow:0 2px 6px rgba(0,0,0,.06);
 margin-bottom:12px;
 }
-
-/* preview */
 
 .preview{
 background:white;
@@ -59,23 +55,17 @@ min-height:600px;
 overflow:auto;
 }
 
-/* página */
-
-.page{
-width:48%;
-display:inline-block;
-vertical-align:top;
-padding:30px;
+.chapter-title{
+text-align:center;
+margin:35px 0 20px;
+font-family:"Cinzel";
 }
 
-/* epub */
-
-.epub{
-width:70%;
-margin:auto;
+.subtitle{
+text-align:center;
+margin-bottom:25px;
+opacity:.7;
 }
-
-/* capitular */
 
 .dropcap:first-letter{
 float:left;
@@ -83,20 +73,6 @@ font-size:56px;
 line-height:44px;
 padding-right:8px;
 font-family:"Cinzel";
-}
-
-/* capítulo */
-
-.chapter-title{
-text-align:center;
-margin:35px 0 20px;
-}
-
-.chapter-divider{
-text-align:center;
-margin:30px 0 10px;
-font-family:"Cinzel";
-opacity:.6;
 }
 
 </style>
@@ -110,7 +86,7 @@ opacity:.6;
 
 <div>
 
-<button class="btn-green" onclick="carregarArquivo()">Upar texto</button>
+<button class="btn-green" onclick="upload()">Upar texto</button>
 
 <button class="btn-red" onclick="window.location.href='index.html'">Sair</button>
 
@@ -121,9 +97,7 @@ opacity:.6;
 
 <div class="container">
 
-
 <div>
-
 
 <div class="panel">
 
@@ -148,13 +122,11 @@ Fonte corpo
 
 <option>EB Garamond</option>
 
-<option>Times New Roman</option>
+<option>Libre Baskerville</option>
 
 <option>Georgia</option>
 
-<option>Crimson Text</option>
-
-<option>Libre Baskerville</option>
+<option>Times New Roman</option>
 
 </select>
 
@@ -176,71 +148,44 @@ Fonte capítulo
 
 Tamanho corpo
 
-<input type="range" id="corpoSize" min="12" max="18" value="14">
+<input type="range" id="bodySize" min="12" max="18" value="14">
 
 
 Tamanho capítulo
 
-<input type="range" id="capSize" min="18" max="36" value="28">
+<input type="range" id="chapterSize" min="20" max="40" value="30">
 
 
 Entrelinha
 
-<select id="entrelinha">
+<select id="lineHeight">
 
 <option value="1.3">Compacto</option>
 
-<option value="1.5" selected>Normal</option>
+<option selected value="1.5">Normal</option>
 
 <option value="1.8">Arejado</option>
-
-<option value="2">Muito arejado</option>
-
-</select>
-
-
-Margens
-
-<select id="margens">
-
-<option value="estreita">Estreitas</option>
-
-<option selected value="normal">Normais</option>
-
-<option value="ampla">Amplas</option>
-
-</select>
-
-
-Parágrafos
-
-<select id="paragrafo">
-
-<option value="recuo">Recuo tradicional</option>
-
-<option value="espaco">Espaço entre parágrafos</option>
 
 </select>
 
 
 Capitular
 
-<select id="capitular">
+<select id="dropcap">
 
-<option value="sim">Ativada</option>
+<option value="on">Ativada</option>
 
-<option value="nao">Desativada</option>
+<option value="off">Desativada</option>
 
 </select>
 
-
 </div>
 
 
-<textarea id="entradaTexto" style="width:100%;height:500px"></textarea>
+<textarea id="inputText"
+style="width:100%;height:500px"></textarea>
 
 </div>
-
 
 
 <div>
@@ -249,38 +194,32 @@ Capitular
 
 </div>
 
-
 </div>
 
 
 
 <script>
 
+const inputText=document.getElementById("inputText")
 
-const entrada=document.getElementById("entradaTexto")
-
-const preview=document.getElementById("preview")
-
-
-entrada.addEventListener("input",render)
+inputText.addEventListener("input",render)
 
 
+function upload(){
 
-function carregarArquivo(){
+let f=document.createElement("input")
 
-let input=document.createElement("input")
+f.type="file"
 
-input.type="file"
+f.accept=".txt"
 
-input.accept=".txt"
-
-input.onchange=e=>{
+f.onchange=e=>{
 
 let reader=new FileReader()
 
 reader.onload=ev=>{
 
-entrada.value=ev.target.result
+inputText.value=ev.target.result
 
 render()
 
@@ -290,15 +229,15 @@ reader.readAsText(e.target.files[0])
 
 }
 
-input.click()
+f.click()
 
 }
 
 
 
-function detectarTitulo(linha){
+function isChapter(line){
 
-return linha.length<45 && linha.split(" ").length<6
+return /^cap[ií]tulo\s*\d+/i.test(line)
 
 }
 
@@ -306,41 +245,69 @@ return linha.length<45 && linha.split(" ").length<6
 
 function render(){
 
-let texto=entrada.value.split("\n")
+let lines=inputText.value.split("\n")
 
 let html=""
 
-let aplicarCapitular=false
+let firstLine=true
+
+let expectingSubtitle=false
+
+let expectingDropcap=false
 
 
-texto.forEach(linha=>{
+lines.forEach(line=>{
 
 
-if(detectarTitulo(linha)){
+if(firstLine){
 
-html+=`<div class="chapter-divider">❦</div>`
+html+=`<div class="chapter-title">${line}</div>`
 
-html+=`<div class="chapter-title" style="font-family:${fonteCapitulo.value};font-size:${capSize.value}px">${linha}</div>`
+firstLine=false
 
-aplicarCapitular=true
-
-return
-
-}
-
-
-if(aplicarCapitular && capitular.value=="sim"){
-
-html+=`<p class="dropcap">${linha}</p>`
-
-aplicarCapitular=false
+expectingDropcap=true
 
 return
 
 }
 
 
-html+=`<p>${linha}</p>`
+if(isChapter(line)){
+
+html+=`<div class="chapter-title">${line}</div>`
+
+expectingSubtitle=true
+
+return
+
+}
+
+
+if(expectingSubtitle){
+
+html+=`<div class="subtitle">${line}</div>`
+
+expectingSubtitle=false
+
+expectingDropcap=true
+
+return
+
+}
+
+
+if(expectingDropcap && dropcap.value=="on"){
+
+html+=`<p class="dropcap">${line}</p>`
+
+expectingDropcap=false
+
+return
+
+}
+
+
+html+=`<p>${line}</p>`
 
 
 })
@@ -351,9 +318,7 @@ preview.innerHTML=html
 
 }
 
-
 </script>
-
 
 </body>
 </html>
