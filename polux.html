@@ -45,25 +45,23 @@ button,select,input,textarea{font:inherit}
 .btn-green{background:#1f6f43;color:#fff}
 .btn-red{background:#b63131;color:#fff}
 .btn-soft{background:#ece7df;color:#2f2a25}
-.layout{
-  display:grid;
-  grid-template-columns:minmax(0,1.1fr) minmax(420px,0.9fr);
-  gap:22px;
-  align-items:start;
-}
+
+.stack{display:flex;flex-direction:column;gap:16px}
+
 .card{
   background:var(--card);
   border:1px solid var(--line);
   border-radius:var(--radius);
   box-shadow:var(--shadow);
   padding:16px;
-  margin-bottom:14px;
 }
 .card h3{margin:0 0 12px 0;font-size:1.15rem}
+
 .upload-row{
   display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:8px;
 }
 .upload-note{color:var(--muted);font-size:.95rem;line-height:1.35}
+
 .grid{
   display:grid;
   grid-template-columns:repeat(2, minmax(0,1fr));
@@ -72,6 +70,7 @@ button,select,input,textarea{font:inherit}
 .field{display:flex;flex-direction:column;gap:6px;min-width:0}
 .field label{font-size:.95rem;color:var(--muted);font-weight:700}
 .field input[type="range"], .field select{width:100%}
+
 .editor{
   background:var(--card);
   border:1px solid var(--line);
@@ -88,7 +87,7 @@ button,select,input,textarea{font:inherit}
 }
 textarea{
   width:100%;
-  min-height:560px;
+  min-height:360px;
   border:none;
   outline:none;
   resize:vertical;
@@ -99,13 +98,13 @@ textarea{
   line-height:1.55;
   white-space:pre-wrap;
 }
+
 .preview-box{
   background:var(--card);
   border:1px solid var(--line);
   border-radius:var(--radius);
   box-shadow:var(--shadow);
   padding:16px;
-  min-height:760px;
 }
 .preview-head{
   display:flex;
@@ -129,6 +128,7 @@ textarea{
 }
 .page-inner{min-height:100%}
 .empty{text-align:center;color:var(--muted);padding:80px 20px;font-size:1.06rem}
+
 .work-title{
   text-align:center;
   margin:0 0 1.25em 0;
@@ -175,15 +175,12 @@ textarea{
   font-weight:700;
 }
 .note{font-size:.9rem;color:var(--muted);margin-top:6px}
-@media (max-width:1500px){
-  .layout{grid-template-columns:1fr}
-  .preview-box{min-height:auto}
-}
+
 @media (max-width:760px){
   body{padding:14px}
   .grid{grid-template-columns:1fr}
   .title{font-size:1.55rem}
-  textarea{min-height:420px}
+  textarea{min-height:300px}
 }
 </style>
 </head>
@@ -199,126 +196,122 @@ textarea{
   </div>
 </div>
 
-<div class="layout">
-  <div>
-    <div class="card">
-      <h3>Entrada da obra</h3>
-      <div class="upload-row">
-        <input type="file" id="arquivoTexto" accept=".txt,.md,text/plain">
-        <button class="btn btn-green" type="button" id="btnUpload">Upar texto</button>
-        <span id="arquivoNome">Nenhum arquivo carregado</span>
-      </div>
-      <div class="upload-note">
-        O arquivo entra direto na caixa de texto. Depois disso, o autor pode ajustar manualmente se quiser.
-      </div>
+<div class="stack">
+  <div class="card">
+    <h3>Entrada da obra</h3>
+    <div class="upload-row">
+      <input type="file" id="arquivoTexto" accept=".txt,.md,text/plain">
+      <button class="btn btn-green" type="button" id="btnUpload">Upar texto</button>
+      <span id="arquivoNome">Nenhum arquivo carregado</span>
     </div>
-
-    <div class="card">
-      <h3>Configuração editorial</h3>
-
-      <div class="grid">
-        <div class="field">
-          <label for="formato">Formato</label>
-          <select id="formato">
-            <option value="a5">A5</option>
-            <option value="16x23">16x23</option>
-            <option value="6x9">6" x 9"</option>
-            <option value="epub">ePub</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="modoInicio">Primeira linha da obra</label>
-          <select id="modoInicio">
-            <option value="titulo">Título da obra</option>
-            <option value="capitulo1" selected>Capítulo 1</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="fonteCorpo">Fonte do corpo</label>
-          <select id="fonteCorpo">
-            <option value="Georgia, serif" selected>Georgia</option>
-            <option value='"EB Garamond", serif'>EB Garamond</option>
-            <option value='"Libre Baskerville", serif'>Libre Baskerville</option>
-            <option value='"Times New Roman", serif'>Times New Roman</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="fonteCapitulo">Fonte do capítulo</label>
-          <select id="fonteCapitulo">
-            <option value='"Cinzel", serif' selected>Cinzel</option>
-            <option value='"Playfair Display", serif'>Playfair Display</option>
-            <option value='"Libre Baskerville", serif'>Libre Baskerville</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="tamanhoCorpo">Tamanho do corpo</label>
-          <input type="range" id="tamanhoCorpo" min="12" max="22" step="0.5" value="14">
-        </div>
-
-        <div class="field">
-          <label for="tamanhoCapitulo">Tamanho do capítulo</label>
-          <input type="range" id="tamanhoCapitulo" min="18" max="56" step="1" value="30">
-        </div>
-
-        <div class="field">
-          <label for="entrelinha">Entrelinha</label>
-          <select id="entrelinha">
-            <option value="1.2">Compacta</option>
-            <option value="1.4">Normal</option>
-            <option value="1.6" selected>Confortável</option>
-            <option value="1.8">Arejada</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="margens">Margens</label>
-          <select id="margens">
-            <option value="estreita">Estreitas</option>
-            <option value="normal">Normais</option>
-            <option value="ampla" selected>Amplas</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="paragrafo">Parágrafos</label>
-          <select id="paragrafo">
-            <option value="recuo" selected>Recuo tradicional</option>
-            <option value="espaco">Espaço entre parágrafos</option>
-            <option value="reto">Sem recuo</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="capitular">Letra capitular</label>
-          <select id="capitular">
-            <option value="on" selected>Ativada</option>
-            <option value="off">Desativada</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="note">Base estável: Georgia. As demais fontes podem ser calibradas depois em referência a ela.</div>
-    </div>
-
-    <div class="editor">
-      <div class="editor-head">Caixa de texto</div>
-      <textarea id="inputText" placeholder="Cole aqui sua obra ou use o botão de upar texto."></textarea>
+    <div class="upload-note">
+      O arquivo entra direto na caixa de texto. Depois disso, o autor pode ajustar manualmente se quiser.
     </div>
   </div>
 
-  <div>
-    <div class="preview-box">
-      <div class="preview-head">
-        <h3>Prévia editorial</h3>
-        <div class="preview-mode" id="previewMode">Modo impresso · A5</div>
+  <div class="editor">
+    <div class="editor-head">Caixa de texto</div>
+    <textarea id="inputText" placeholder="Cole aqui sua obra ou use o botão de upar texto."></textarea>
+  </div>
+
+  <div class="card">
+    <h3>Configuração editorial</h3>
+
+    <div class="grid">
+      <div class="field">
+        <label for="formato">Formato</label>
+        <select id="formato">
+          <option value="a5">A5</option>
+          <option value="16x23">16x23</option>
+          <option value="6x9">6" x 9"</option>
+          <option value="epub">ePub</option>
+        </select>
       </div>
-      <div class="page" id="page">
-        <div class="page-inner" id="pageInner"></div>
+
+      <div class="field">
+        <label for="modoInicio">Primeira linha da obra</label>
+        <select id="modoInicio">
+          <option value="titulo">Título da obra</option>
+          <option value="capitulo1" selected>Capítulo 1</option>
+        </select>
       </div>
+
+      <div class="field">
+        <label for="fonteCorpo">Fonte do corpo</label>
+        <select id="fonteCorpo">
+          <option value="Georgia, serif" selected>Georgia</option>
+          <option value='"EB Garamond", serif'>EB Garamond</option>
+          <option value='"Libre Baskerville", serif'>Libre Baskerville</option>
+          <option value='"Times New Roman", serif'>Times New Roman</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="fonteCapitulo">Fonte do capítulo</label>
+        <select id="fonteCapitulo">
+          <option value='"Cinzel", serif' selected>Cinzel</option>
+          <option value='"Playfair Display", serif'>Playfair Display</option>
+          <option value='"Libre Baskerville", serif'>Libre Baskerville</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="tamanhoCorpo">Tamanho do corpo</label>
+        <input type="range" id="tamanhoCorpo" min="12" max="22" step="0.5" value="14">
+      </div>
+
+      <div class="field">
+        <label for="tamanhoCapitulo">Tamanho do capítulo</label>
+        <input type="range" id="tamanhoCapitulo" min="18" max="56" step="1" value="30">
+      </div>
+
+      <div class="field">
+        <label for="entrelinha">Entrelinha</label>
+        <select id="entrelinha">
+          <option value="1.2">Compacta</option>
+          <option value="1.4">Normal</option>
+          <option value="1.6" selected>Confortável</option>
+          <option value="1.8">Arejada</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="margens">Margens</label>
+        <select id="margens">
+          <option value="estreita">Estreitas</option>
+          <option value="normal">Normais</option>
+          <option value="ampla" selected>Amplas</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="paragrafo">Parágrafos</label>
+        <select id="paragrafo">
+          <option value="recuo" selected>Recuo tradicional</option>
+          <option value="espaco">Espaço entre parágrafos</option>
+          <option value="reto">Sem recuo</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="capitular">Letra capitular</label>
+        <select id="capitular">
+          <option value="on" selected>Ativada</option>
+          <option value="off">Desativada</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="note">Base estável: Georgia. As demais fontes podem ser calibradas depois em referência a ela.</div>
+  </div>
+
+  <div class="preview-box">
+    <div class="preview-head">
+      <h3>Prévia editorial</h3>
+      <div class="preview-mode" id="previewMode">Modo impresso · A5</div>
+    </div>
+    <div class="page" id="page">
+      <div class="page-inner" id="pageInner"></div>
     </div>
   </div>
 </div>
@@ -346,6 +339,19 @@ const previewMode = document.getElementById("previewMode");
 const page = document.getElementById("page");
 const pageInner = document.getElementById("pageInner");
 
+const BODY_FONT_METRICS = {
+  "Georgia, serif": { paraGap: 1, compact: 1.2, normal: 1.4, comfort: 1.6, airy: 1.8, bodyAdjust: 0 },
+  '"EB Garamond", serif': { paraGap: 1, compact: 1.22, normal: 1.42, comfort: 1.62, airy: 1.84, bodyAdjust: 0.1 },
+  '"Libre Baskerville", serif': { paraGap: 1, compact: 1.22, normal: 1.42, comfort: 1.62, airy: 1.84, bodyAdjust: 0 },
+  '"Times New Roman", serif': { paraGap: 1, compact: 1.18, normal: 1.38, comfort: 1.56, airy: 1.76, bodyAdjust: 0 }
+};
+
+const CHAPTER_FONT_METRICS = {
+  '"Cinzel", serif': { sizeAdjust: 0, subtitleAdjust: -10, dividerScale: .34, weight: 700, letterSpacing: '.04em' },
+  '"Playfair Display", serif': { sizeAdjust: 2, subtitleAdjust: -8, dividerScale: .38, weight: 700, letterSpacing: '.02em' },
+  '"Libre Baskerville", serif': { sizeAdjust: 1, subtitleAdjust: -9, dividerScale: .34, weight: 700, letterSpacing: '.03em' }
+};
+
 function escapeHtml(texto){
   return texto
     .replace(/&/g, "&amp;")
@@ -359,15 +365,24 @@ function pageConfig(){
   const map = {
     a5: { w:420, h:610, pad:{ estreita:24, normal:36, ampla:48 }, name:"Modo impresso · A5", indent:"2em" },
     "16x23": { w:465, h:680, pad:{ estreita:28, normal:42, ampla:56 }, name:"Modo impresso · 16x23", indent:"1.8em" },
-    "6x9": { w:495, h:740, pad:{ estreita:32, normal:46, ampla:60 }, name:'Modo impresso · 6" x 9"', indent:"1.7em" },
+    "6x9": { w:495, h:740, pad:{ estreita:32, normal:46, ampla:60 }, name:'Modo impresso · 6\" x 9\"', indent:"1.7em" },
     epub: { w:760, h:760, pad:{ estreita:34, normal:42, ampla:52 }, name:"Modo digital · ePub", indent:"1.5em" }
   };
   return map[formato.value];
 }
 
+function lineHeightValue(){
+  const body = BODY_FONT_METRICS[fonteCorpo.value] || BODY_FONT_METRICS["Georgia, serif"];
+  if (entrelinha.value === "1.2") return body.compact;
+  if (entrelinha.value === "1.4") return body.normal;
+  if (entrelinha.value === "1.8") return body.airy;
+  return body.comfort;
+}
+
 function paragraphConfig(){
   const cfg = pageConfig();
-  if (paragrafo.value === "espaco") return { indent:"0", margin:"0 0 1.2em 0" };
+  const body = BODY_FONT_METRICS[fonteCorpo.value] || BODY_FONT_METRICS["Georgia, serif"];
+  if (paragrafo.value === "espaco") return { indent:"0", margin:`0 0 ${1.2 * body.paraGap}em 0` };
   if (paragrafo.value === "reto") return { indent:"0", margin:"0 0 1em 0" };
   return { indent:cfg.indent, margin:"0 0 1em 0" };
 }
@@ -410,7 +425,6 @@ function parseBlocks(texto){
       }
 
       let firstParagraphOfChapter = true;
-
       while (i < lines.length && !isChapterLine(lines[i])) {
         if (!isBlank(lines[i])) {
           blocks.push({
@@ -429,7 +443,6 @@ function parseBlocks(texto){
 
         let firstSub = true;
         let firstParagraphOfChapter = false;
-
         while (i < lines.length && !isChapterLine(lines[i])) {
           if (!isBlank(lines[i])) {
             if (firstSub) {
@@ -455,39 +468,41 @@ function parseBlocks(texto){
       }
     }
   }
-
   return blocks;
 }
 
 function renderBlock(block){
   const bodyFont = fonteCorpo.value;
   const chapterFont = fonteCapitulo.value;
-  const bodySize = Number(tamanhoCorpo.value);
-  const chapterSize = Number(tamanhoCapitulo.value);
-  const subtitleSize = Math.max(14, chapterSize - 10);
-  const dividerSize = Math.max(12, chapterSize * 0.34);
+  const chapterMeta = CHAPTER_FONT_METRICS[chapterFont] || CHAPTER_FONT_METRICS['"Cinzel", serif'];
+  const bodyMeta = BODY_FONT_METRICS[bodyFont] || BODY_FONT_METRICS["Georgia, serif"];
+  const bodySize = Number(tamanhoCorpo.value) + bodyMeta.bodyAdjust;
+  const chapterSize = Number(tamanhoCapitulo.value) + chapterMeta.sizeAdjust;
+  const subtitleSize = Math.max(14, chapterSize + chapterMeta.subtitleAdjust);
+  const dividerSize = Math.max(12, chapterSize * chapterMeta.dividerScale);
   const pCfg = paragraphConfig();
+  const lineHt = lineHeightValue();
 
   if (block.type === "chapter-divider") {
-    return '<div class="chapter-divider" style="font-family:' + chapterFont + '; font-size:' + dividerSize + 'pt;">❦</div>';
+    return `<div class="chapter-divider" style="font-family:${chapterFont}; font-size:${dividerSize}pt;">❦</div>`;
   }
 
   if (block.type === "work-title") {
-    return '<div class="work-title" style="font-family:' + chapterFont + '; font-size:' + Math.max(24, chapterSize + 2) + 'pt;">' + escapeHtml(block.text) + '</div>';
+    return `<div class="work-title" style="font-family:${chapterFont}; font-size:${Math.max(24, chapterSize + 2)}pt; letter-spacing:${chapterMeta.letterSpacing}; font-weight:${chapterMeta.weight};">${escapeHtml(block.text)}</div>`;
   }
 
   if (block.type === "chapter-line") {
-    return '<div class="chapter-line" style="font-family:' + chapterFont + '; font-size:' + chapterSize + 'pt;">' + escapeHtml(block.text) + '</div>';
+    return `<div class="chapter-line" style="font-family:${chapterFont}; font-size:${chapterSize}pt; letter-spacing:${chapterMeta.letterSpacing}; font-weight:${chapterMeta.weight};">${escapeHtml(block.text)}</div>`;
   }
 
   if (block.type === "chapter-subtitle") {
-    return '<div class="chapter-subtitle" style="font-family:' + chapterFont + '; font-size:' + subtitleSize + 'pt;">' + escapeHtml(block.text) + '</div>';
+    return `<div class="chapter-subtitle" style="font-family:${chapterFont}; font-size:${subtitleSize}pt;">${escapeHtml(block.text)}</div>`;
   }
 
   const cls = block.dropcap ? "body-p dropcap" : "body-p";
   const indent = block.dropcap ? "0" : pCfg.indent;
 
-  return '<p class="' + cls + '" lang="pt-BR" style="font-family:' + bodyFont + '; font-size:' + bodySize + 'pt; line-height:' + entrelinha.value + '; text-indent:' + indent + '; margin:' + pCfg.margin + ';">' + escapeHtml(block.text) + '</p>';
+  return `<p class="${cls}" lang="pt-BR" style="font-family:${bodyFont}; font-size:${bodySize}pt; line-height:${lineHt}; text-indent:${indent}; margin:${pCfg.margin};">${escapeHtml(block.text)}</p>`;
 }
 
 function applyPageStyles(){
@@ -501,16 +516,13 @@ function applyPageStyles(){
 
 function renderPreview(){
   applyPageStyles();
-
   const texto = inputText.value.trim();
   if (!texto) {
     pageInner.innerHTML = '<div class="empty">A prévia aparece aqui assim que o texto entrar na caixa.</div>';
     return;
   }
-
   const blocks = parseBlocks(texto);
-  const html = blocks.map(renderBlock).join("");
-  pageInner.innerHTML = html || '<div class="empty">Sem conteúdo.</div>';
+  pageInner.innerHTML = blocks.map(renderBlock).join("") || '<div class="empty">Sem conteúdo.</div>';
 }
 
 btnUpload.addEventListener("click", function(){
@@ -519,7 +531,6 @@ btnUpload.addEventListener("click", function(){
     arquivoNome.textContent = "Escolha um arquivo .txt primeiro";
     return;
   }
-
   const reader = new FileReader();
   reader.onload = function(e){
     inputText.value = String(e.target.result || "");
