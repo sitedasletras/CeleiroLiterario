@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
+
 <meta charset="UTF-8">
+
 <title>Pólux — Prosa</title>
 
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Cinzel&display=swap" rel="stylesheet">
@@ -15,8 +18,6 @@ margin:0;
 padding:30px;
 }
 
-/* topo */
-
 header{
 display:flex;
 justify-content:space-between;
@@ -27,8 +28,6 @@ margin-bottom:20px;
 h1{
 font-size:28px;
 }
-
-/* layout */
 
 .container{
 display:grid;
@@ -70,7 +69,7 @@ height:440px;
 overflow:hidden;
 }
 
-/* letra capitular */
+/* capitular */
 
 .dropcap:first-letter{
 float:left;
@@ -106,11 +105,13 @@ font-family:'Cinzel',serif;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <header>
+
 <h1>Pólux — Prosa</h1>
 
 <div>
@@ -120,11 +121,12 @@ font-family:'Cinzel',serif;
 <button onclick="carregarExemplo()">Carregar exemplo</button>
 
 </div>
+
 </header>
+
 
 <div class="container">
 
-<!-- entrada -->
 
 <div>
 
@@ -136,13 +138,12 @@ placeholder="Cole aqui sua obra..."></textarea>
 </div>
 
 
-<!-- preview -->
 
 <div>
 
 <h3>Prévia editorial</h3>
 
-<div class="preview" id="preview">
+<div class="preview">
 
 <div class="page" id="pagina1"></div>
 
@@ -155,11 +156,14 @@ placeholder="Cole aqui sua obra..."></textarea>
 </div>
 
 
+
 <script>
+
 
 const entrada = document.getElementById("entradaTexto")
 
 entrada.addEventListener("input", atualizarPreview)
+
 
 
 function atualizarPreview(){
@@ -167,36 +171,57 @@ function atualizarPreview(){
 let texto = entrada.value
 
 
+
 /* detectar capítulos */
 
 texto = texto.replace(
+
 /Cap[ií]tulo\s+\d+/gi,
+
 match=>`<div class="chapter-divider"></div>
-<div class="chapter-title">${match}</div>`
+
+<div class="chapter-title">${match.toUpperCase()}</div>`
+
 )
 
 
-/* aplicar capitular no primeiro parágrafo */
+
+/* separar parágrafos corretamente */
 
 let paragrafos = texto.split("\n\n")
 
-if(paragrafos.length>0){
 
-paragrafos[0]=`<p class="dropcap">${paragrafos[0]}</p>`
+
+let htmlFinal = ""
+
+
+
+paragrafos.forEach((p,index)=>{
+
+if(index==0){
+
+htmlFinal += `<p class="dropcap">${p}</p>`
+
+}else{
+
+htmlFinal += `<p>${p}</p>`
 
 }
 
+})
 
-texto = paragrafos.map(p=>`<p>${p}</p>`).join("")
 
 
-/* dividir páginas */
+/* dividir páginas simuladas */
 
-let metade = Math.ceil(texto.length/2)
+let metade = Math.ceil(htmlFinal.length/2)
 
-let parte1 = texto.slice(0,metade)
 
-let parte2 = texto.slice(metade)
+
+let parte1 = htmlFinal.slice(0,metade)
+
+let parte2 = htmlFinal.slice(metade)
+
 
 
 document.getElementById("pagina1").innerHTML = parte1
@@ -206,7 +231,7 @@ document.getElementById("pagina2").innerHTML = parte2
 }
 
 
-/* limpar */
+
 
 function limparTexto(){
 
@@ -217,29 +242,37 @@ atualizarPreview()
 }
 
 
-/* exemplo */
 
 function carregarExemplo(){
 
 entrada.value=`
+
 Prólogo
 
 Numa tarde de calor manso, a cidade parecia conter a respiração atrás das janelas entreabertas.
+
+
 
 Capítulo 1
 
 Augusto parou diante da porta antiga e passou os dedos pela madeira gasta.
 
+
+
 Capítulo 2
 
 Nada do que estava escrito ali parecia casual.
+
 `
 
 atualizarPreview()
 
 }
 
+
 </script>
 
+
 </body>
+
 </html>
