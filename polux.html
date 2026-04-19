@@ -151,6 +151,7 @@
       color:var(--ink);
       font-size:1.08rem;
       line-height:1.55;
+      white-space:pre-wrap;
     }
 
     .preview-box{
@@ -234,7 +235,7 @@
 
     .work-title{
       text-align:center;
-      margin:0 0 1.15em 0;
+      margin:0 0 1.25em 0;
       line-height:1.2;
       letter-spacing:.02em;
       text-transform:uppercase;
@@ -275,11 +276,6 @@
       margin-top:.05em;
       font-family:"Cinzel", serif;
       font-weight:600;
-    }
-
-    .reading-line{
-      margin:0 0 .9em 0;
-      text-align:left;
     }
 
     @media (max-width:1100px){
@@ -511,13 +507,25 @@
     return /^cap[ií]tulo\s*\d+$/i.test(line.trim());
   }
 
-  function splitParagraphs(text){
-    return text
-      .replace(/\r/g, "")
-      .split(/\n\s*\n+/)
-      .map(p => p.trim())
-      .filter(Boolean)
-      .map(p => p.split("\n").map(x => x.trim()).filter(Boolean).join(" "));
+  function isBlank(line){
+    return !line || !line.trim();
+  }
+
+  function takeParagraphsFromLines(lines, startIndex){
+    const paragraphs = [];
+    let i = startIndex;
+
+    while (i < lines.length) {
+      while (i < lines.length && isBlank(lines[i])) i++;
+      if (i >= lines.length) break;
+      if (isChapterLine(lines[i])) break;
+
+      const current = lines[i].trim();
+      paragraphs.push(current);
+      i++;
+    }
+
+    return { paragraphs, nextIndex:i };
   }
 
   function buildBlocks(){
@@ -528,108 +536,93 @@
     const blocks = [];
     let i = 0;
 
+    while (i < lines.length && isBlank(lines[i])) i++;
+    if (i >= lines.length) return [];
+
     if (modoInicio.value === "titulo") {
-      while (i < lines.length && !lines[i].trim()) i++;
-      if (i < lines.length) {
-        blocks.push({ type:"work-title", text:lines[i].trim() });
-        i++;
-        while (i < lines.length && !lines[i].trim()) i++;
+      const firstLine = lines[i].trim();
+      blocks.push({ type:"work-title", text:firstLine });
+      i++;
 
-        const firstChunk = [];
-        while (i < lines.length && lines[i].trim() && !isChapterLine(lines[i])) {
-          firstChunk.push(lines[i]);
-          i++;
-        }
+      while (i < lines.length && isBlank(lines[i])) i++;
 
-        const paras = splitParagraphs(firstChunk.join("\n"));
-        paras.forEach((p, idx) => {
-          blocks.push({
-            type:"paragraph",
-            text:p,
-            dropcap: idx === 0 && capitular.value === "on"
-          });
+      const startParagraphs = takeParagraphsFromLines(lines, i);
+      startParagraphs.paragraphs.forEach((p, idx) => {
+        blocks.push({
+          type:"paragraph",
+          text:p,
+          dropcap: idx === 0 && capitular.value === "on"
         });
-      }
-    }
-
-    if (modoInicio.value === "capitulo1") {
-      while (i < lines.length && !lines[i].trim()) i++;
-      if (i < lines.length) {
+      });
+      i = startParagraphs.nextIndex;
+    } else {
+      if (isChapterLine(lines[i])) {
+        blocks.push({ type:"chapter-divider" });
+        blocks.push({ type:"chapter-line", text:lines[i].trim() });
+        i++;
+      } else {
         blocks.push({ type:"chapter-divider" });
         blocks.push({ type:"chapter-line", text:"Capítulo 1" });
-
-        let firstMeaningful = lines[i].trim();
-        if (firstMeaningful) {
-          blocks.push({ type:"chapter-subtitle", text:firstMeaningful });
-          i++;
-        }
-
-        while (i < lines.length && !lines[i].trim()) i++;
-
-        const firstChunk = [];
-        while (i < lines.length && !isChapterLine(lines[i])) {
-          firstChunk.push(lines[i]);
-          i++;
-        }
-
-        const paras = splitParagraphs(firstChunk.join("\n"));
-        paras.forEach((p, idx) => {
-          blocks.push({
-            type:"paragraph",
-            text:p,
-            dropcap: idx === 0 && capitular.value === "on"
-          });
-        });
       }
+
+      while (i < lines.length && isBlank(lines[i])) i++;
+
+      if (i < lines.length && !isBlank(lines[i]) && !isChapterLine(lines[i])) {
+        blocks.push({ type:"chapter-subtitle", text:lines[i].trim() });
+        i++;
+      }
+
+      while (i < lines.length && isBlank(lines[i])) i++;
+
+      const startParagraphs = takeParagraphsFromLines(lines, i);
+      startParagraphs.paragraphs.forEach((p, idx) => {
+        blocks.push({
+          type:"paragraph",
+          text:p,
+          dropcap: idx === 0 && capitular.value === "on"
+        });
+      });
+      i = startParagraphs.nextIndex;
     }
 
     while (i < lines.length) {
-      while (i < lines.length && !lines[i].trim()) i++;
+      while (i < lines.length && isBlank(lines[i])) i++;
       if (i >= lines.length) break;
 
       if (isChapterLine(lines[i])) {
-        const capLine = lines[i].trim();
         blocks.push({ type:"chapter-divider" });
-        blocks.push({ type:"chapter-line", text:capLine });
-
+        blocks.push({ type:"chapter-line", text:lines[i].trim() });
         i++;
-        while (i < lines.length && !lines[i].trim()) i++;
 
-        if (i < lines.length && lines[i].trim() && !isChapterLine(lines[i])) {
+        while (i < lines.length && isBlank(lines[i])) i++;
+
+        if (i < lines.length && !isBlank(lines[i]) && !isChapterLine(lines[i])) {
           blocks.push({ type:"chapter-subtitle", text:lines[i].trim() });
           i++;
         }
 
-        while (i < lines.length && !lines[i].trim()) i++;
+        while (i < lines.length && isBlank(lines[i])) i++;
 
-        const chunk = [];
-        while (i < lines.length && !isChapterLine(lines[i])) {
-          chunk.push(lines[i]);
-          i++;
-        }
-
-        const paras = splitParagraphs(chunk.join("\n"));
-        paras.forEach((p, idx) => {
+        const sectionParagraphs = takeParagraphsFromLines(lines, i);
+        sectionParagraphs.paragraphs.forEach((p, idx) => {
           blocks.push({
             type:"paragraph",
             text:p,
             dropcap: idx === 0 && capitular.value === "on"
           });
         });
-
-        continue;
+        i = sectionParagraphs.nextIndex;
+      } else {
+        const looseParagraphs = takeParagraphsFromLines(lines, i);
+        looseParagraphs.paragraphs.forEach(p => {
+          blocks.push({
+            type:"paragraph",
+            text:p,
+            dropcap:false
+          });
+        });
+        i = looseParagraphs.nextIndex;
       }
-
-      const freeChunk = [];
-      while (i < lines.length && !isChapterLine(lines[i])) {
-        freeChunk.push(lines[i]);
-        i++;
-      }
-
-      const paras = splitParagraphs(freeChunk.join("\n"));
-      paras.forEach(p => {
-        blocks.push({ type:"paragraph", text:p, dropcap:false });
-      });
     }
 
     return blocks;
@@ -690,6 +683,7 @@
     applyPageStyles();
 
     const blocks = buildBlocks();
+
     if (!blocks.length) {
       page1.innerHTML = `<div class="empty">A prévia aparece aqui assim que o texto entrar na caixa.</div>`;
       page2.innerHTML = "";
@@ -770,9 +764,7 @@ A praça respirava como um animal ferido.
 
 O som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.
 
-Não pensava em futuro.
-Era adaptação.
-Oferecia teste.
+Sacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.
 
 Capítulo 2
 A Primeira Manhã
