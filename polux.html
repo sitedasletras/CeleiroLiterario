@@ -751,21 +751,48 @@
       }
     }
 
-    function measureNodeHeight(node, cfg){
-      const box = document.createElement("div");
-      box.style.width = cfg.w + "px";
-      box.style.position = "relative";
+    function createMeasurementPage(cfg){
+      const page = document.createElement("div");
+      page.className = "page";
+      page.style.width = cfg.w + "px";
+      page.style.height = cfg.h + "px";
+
+      const inner = document.createElement("div");
+      inner.className = "page-inner";
+
+      const header = document.createElement("div");
+      header.className = "page-header";
+      header.innerHTML = `<span>Pólux</span><span>${cfg.name}</span>`;
 
       const content = document.createElement("div");
+      content.className = "page-content";
       content.style.padding = cfg.pad[margens.value] + "px";
-      content.style.width = "100%";
 
-      box.appendChild(content);
+      const footer = document.createElement("div");
+      footer.className = "page-footer";
+      footer.textContent = "1";
+
+      inner.appendChild(header);
+      inner.appendChild(content);
+      inner.appendChild(footer);
+      page.appendChild(inner);
+
       measureHost.innerHTML = "";
-      measureHost.appendChild(box);
-      content.appendChild(node);
+      measureHost.appendChild(page);
 
+      return { page, content };
+    }
+
+    function measureNodeHeight(node, cfg){
+      const shell = createMeasurementPage(cfg);
+      shell.content.innerHTML = "";
+      shell.content.appendChild(node);
       return Math.ceil(node.offsetHeight);
+    }
+
+    function getUsableHeight(cfg){
+      const shell = createMeasurementPage(cfg);
+      return Math.floor(shell.content.clientHeight);
     }
 
     function paginateBlocks(blocks){
@@ -780,7 +807,7 @@
         return;
       }
 
-      const usableHeight = cfg.h - 34 - 30 - (cfg.pad[margens.value] * 2);
+      const usableHeight = getUsableHeight(cfg);
 
       let currentBlocks = [];
       let currentHeight = 0;
@@ -922,7 +949,7 @@
     });
 
     btnExemplo.addEventListener("click", function(){
-      inputText.value = 'Capítulo 1\nO Degrau e a Mochila\nA praça respirava como um animal ferido.\nO som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.\nSacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.\nTudo parecia seguir um ritmo que não incluía pausas.\nPensava apenas na última surra que havia levado do pai.\nA mãe, havia ido morar com papai do céu.\nEle acreditava que aquela fuga era temporária.\n\nCapítulo 2\nA Primeira Manhã\nA manhã revelou o que a noite havia escondido.\nHavia mais gente do que ele imaginava.\nHomens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa.\nNinguém dizia o necessário por inteiro.\n\nCapítulo 3\nRegras Invisíveis\nA terceira noite já não parecia acidente.\nA segunda tinha sido resistência.\nA terceira começou a parecer início de padrão.\nA mulher dos cabelos grisalhos observou a rua e não disse nada.\nAs janelas fechadas pareciam guardar o fôlego da cidade.\nO dia avançou com o peso das coisas que ninguém queria nomear.';
+      inputText.value = 'Capítulo 1\nO Degrau e a Mochila\nA praça respirava como um animal ferido.\nO som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.\nSacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.\nTudo parecia seguir um ritmo que não incluía pausas.\nPensava apenas na última surra que havia levado do pai.\nA mãe, havia ido morar com papai do céu.\nEle acreditava que aquela fuga era temporária.\nSeria apenas uma noite fora de casa.\nUm erro que o dia seguinte corrigiria.\n\nCapítulo 2\nA Primeira Manhã\nA manhã revelou o que a noite havia escondido.\nHavia mais gente do que ele imaginava.\nHomens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa.\nNinguém dizia o necessário por inteiro.\n\nCapítulo 3\nRegras Invisíveis\nA terceira noite já não parecia acidente.\nA segunda tinha sido resistência.\nA terceira começou a parecer início de padrão.\nA mulher dos cabelos grisalhos observou a rua e não disse nada.\nAs janelas fechadas pareciam guardar o fôlego da cidade.\nO dia avançou com o peso das coisas que ninguém queria nomear.';
       currentPage = 1;
       renderPreview();
     });
