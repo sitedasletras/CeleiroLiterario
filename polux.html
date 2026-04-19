@@ -32,7 +32,7 @@
     }
     button,input,select,textarea{font:inherit}
     .wrap{
-      max-width:1180px;
+      max-width:1220px;
       margin:0 auto;
       display:flex;
       flex-direction:column;
@@ -66,6 +66,7 @@
     .btn-soft{background:#ece7df;color:#2f2a25}
     .btn-red{background:#b63131;color:#fff}
     .btn-green{background:#1f6f43;color:#fff}
+    .btn-blue{background:#356ea8;color:#fff}
 
     .card{
       background:var(--card);
@@ -139,7 +140,7 @@
       color:#33516d;
       font-weight:700;
     }
-    .field input[type="range"], .field select{
+    .field input[type="range"], .field select, .field input[type="text"]{
       width:100%;
     }
 
@@ -168,20 +169,25 @@
       font-size:.94rem;
     }
 
-    .preview-scroll{
-      max-height:780px;
-      overflow:auto;
-      padding:6px;
-      border-radius:10px;
-      background:#f6f9fc;
-      border:1px solid #d7e4f1;
+    .nav-preview{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:0 0 14px 0;
+      padding:10px 12px;
+      background:#edf5fc;
+      border:1px solid #d4e5f7;
+      border-radius:12px;
     }
 
-    .pages{
+    .page-stage{
       display:flex;
-      flex-direction:column;
-      gap:22px;
-      align-items:center;
+      justify-content:center;
+      align-items:flex-start;
+      min-height:680px;
+      padding:8px 0 12px;
     }
 
     .page{
@@ -196,13 +202,35 @@
     .page-inner{
       height:100%;
       overflow:hidden;
+      position:relative;
     }
-    .page-num{
+
+    .page-header{
       position:absolute;
-      bottom:8px;
-      right:14px;
-      font-size:.8rem;
-      color:#8b837b;
+      top:10px;
+      left:18px;
+      right:18px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      font-size:.74rem;
+      color:#867e77;
+      border-bottom:1px solid #ece5dc;
+      padding-bottom:4px;
+    }
+
+    .page-footer{
+      position:absolute;
+      bottom:10px;
+      left:18px;
+      right:18px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-size:.78rem;
+      color:#867e77;
+      border-top:1px solid #ece5dc;
+      padding-top:4px;
     }
 
     .empty{
@@ -218,6 +246,19 @@
       letter-spacing:.02em;
       text-transform:uppercase;
     }
+    .tech-page-title{
+      text-align:center;
+      margin:2.2em 0 1.3em 0;
+      font-weight:700;
+      letter-spacing:.03em;
+      text-transform:uppercase;
+    }
+    .tech-block{
+      margin:0 0 1em 0;
+      text-align:center;
+      line-height:1.5;
+    }
+
     .chapter-divider{
       text-align:center;
       margin:1.8em 0 .8em 0;
@@ -286,7 +327,7 @@
       .title{font-size:1.55rem}
       .grid{grid-template-columns:1fr}
       textarea{min-height:280px}
-      .preview-scroll{max-height:640px}
+      .page-stage{min-height:580px}
     }
   </style>
 </head>
@@ -298,6 +339,7 @@
         <button class="btn btn-yellow" type="button" onclick="history.back()">Retornar</button>
         <button class="btn btn-soft" type="button" id="btnExemplo">Carregar exemplo</button>
         <button class="btn btn-soft" type="button" id="btnLimpar">Limpar</button>
+        <button class="btn btn-blue" type="button" id="btnDownloadHtml">Baixar HTML</button>
         <button class="btn btn-red" type="button" onclick="window.location.href='index.html'">Sair do sistema</button>
       </div>
     </div>
@@ -336,6 +378,16 @@
             <option value="titulo">Título da obra</option>
             <option value="capitulo1" selected>Capítulo 1</option>
           </select>
+        </div>
+
+        <div class="field">
+          <label for="tituloObra">Título da obra</label>
+          <input id="tituloObra" type="text" value="Título da obra">
+        </div>
+
+        <div class="field">
+          <label for="autorObra">Autor</label>
+          <input id="autorObra" type="text" value="Nome do autor">
         </div>
 
         <div class="field">
@@ -411,9 +463,16 @@
         <h3>Prévia editorial</h3>
         <div class="preview-mode" id="previewMode">Modo impresso · A5</div>
       </div>
-      <div class="preview-scroll">
-        <div class="pages" id="pages"></div>
+
+      <div class="nav-preview">
+        <div class="actions">
+          <button class="btn btn-soft" type="button" id="btnPrev">Página anterior</button>
+          <button class="btn btn-soft" type="button" id="btnNext">Próxima página</button>
+        </div>
+        <div id="pageCounter">Página 1 de 1</div>
       </div>
+
+      <div class="page-stage" id="pageStage"></div>
       <div class="hint">Dica: clique em um parágrafo da prévia para localizar esse trecho na caixa de texto e corrigir mais rápido.</div>
     </div>
   </div>
@@ -427,9 +486,12 @@ const arquivoNome = document.getElementById("arquivoNome");
 const btnUpload = document.getElementById("btnUpload");
 const btnExemplo = document.getElementById("btnExemplo");
 const btnLimpar = document.getElementById("btnLimpar");
+const btnDownloadHtml = document.getElementById("btnDownloadHtml");
 
 const formato = document.getElementById("formato");
 const modoInicio = document.getElementById("modoInicio");
+const tituloObra = document.getElementById("tituloObra");
+const autorObra = document.getElementById("autorObra");
 const fonteCorpo = document.getElementById("fonteCorpo");
 const fonteCapitulo = document.getElementById("fonteCapitulo");
 const tamanhoCorpo = document.getElementById("tamanhoCorpo");
@@ -440,8 +502,14 @@ const paragrafo = document.getElementById("paragrafo");
 const capitular = document.getElementById("capitular");
 
 const previewMode = document.getElementById("previewMode");
-const pages = document.getElementById("pages");
+const pageStage = document.getElementById("pageStage");
 const measureHost = document.getElementById("measureHost");
+const btnPrev = document.getElementById("btnPrev");
+const btnNext = document.getElementById("btnNext");
+const pageCounter = document.getElementById("pageCounter");
+
+let renderedPages = [];
+let currentPageIndex = 0;
 
 const BODY_FONT_METRICS = {
   "Georgia": { bodyAdjust: 0, compact: 1.20, normal: 1.40, comfort: 1.58, airy: 1.80, paraGap: 1.45, stack: "Georgia, serif" },
@@ -456,21 +524,12 @@ const CHAPTER_FONT_METRICS = {
   "Libre Baskerville": { sizeAdjust: 2, subtitleAdjust: -8, dividerScale: .36, weight: 700, letterSpacing: '.03em', stack: "'Libre Baskerville', serif" }
 };
 
-function escapeHtml(texto){
-  return texto
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
 function pageConfig(){
   const map = {
-    a5: { w:420, h:610, pad:{ estreita:24, normal:36, ampla:48 }, name:"Modo impresso · A5", indent:"2em" },
-    "16x23": { w:465, h:680, pad:{ estreita:28, normal:42, ampla:56 }, name:"Modo impresso · 16x23", indent:"1.8em" },
-    "6x9": { w:495, h:740, pad:{ estreita:32, normal:46, ampla:60 }, name:'Modo impresso · 6" x 9"', indent:"1.7em" },
-    epub: { w:760, h:760, pad:{ estreita:34, normal:42, ampla:52 }, name:"Modo digital · ePub", indent:"1.5em" }
+    a5: { w:430, h:620, pad:{ estreita:28, normal:38, ampla:48 }, name:"Modo impresso · A5", indent:"2em" },
+    "16x23": { w:500, h:720, pad:{ estreita:34, normal:46, ampla:58 }, name:"Modo impresso · 16x23", indent:"1.8em" },
+    "6x9": { w:540, h:780, pad:{ estreita:38, normal:50, ampla:62 }, name:'Modo impresso · 6" x 9"', indent:"1.7em" },
+    epub: { w:760, h:760, pad:{ estreita:36, normal:46, ampla:58 }, name:"Modo digital · ePub", indent:"1.5em" }
   };
   return map[formato.value];
 }
@@ -498,16 +557,18 @@ function isBlank(line){
   return !(line && line.trim());
 }
 
-function parseBlocks(texto){
+function parseChapterStructure(texto){
   const lines = texto.replace(/\r/g, "").split("\n");
-  const blocks = [];
+  const chapters = [];
   let i = 0;
 
   while (i < lines.length && isBlank(lines[i])) i++;
-  if (i >= lines.length) return [];
 
-  if (modoInicio.value === "titulo" && !isChapterLine(lines[i])) {
-    blocks.push({ type:"work-title", text:lines[i].trim() });
+  let current = null;
+
+  if (modoInicio.value === "titulo" && i < lines.length && !isChapterLine(lines[i])) {
+    current = { number: null, title: lines[i].trim(), paras: [] };
+    chapters.push(current);
     i++;
   }
 
@@ -516,61 +577,99 @@ function parseBlocks(texto){
     if (i >= lines.length) break;
 
     if (isChapterLine(lines[i])) {
-      blocks.push({ type:"chapter-divider" });
-      blocks.push({ type:"chapter-line", text:lines[i].trim() });
+      const chapterNumber = lines[i].trim();
       i++;
-
       while (i < lines.length && isBlank(lines[i])) i++;
-
-      if (i < lines.length && !isBlank(lines[i]) && !isChapterLine(lines[i])) {
-        blocks.push({ type:"chapter-subtitle", text:lines[i].trim() });
-        i++;
-      }
-
-      let firstParagraphOfChapter = true;
-      while (i < lines.length && !isChapterLine(lines[i])) {
-        if (!isBlank(lines[i])) {
-          blocks.push({
-            type:"paragraph",
-            text:lines[i].trim(),
-            dropcap:firstParagraphOfChapter && capitular.value === "on"
-          });
-          firstParagraphOfChapter = false;
-        }
-        i++;
-      }
+      const chapterTitle = i < lines.length && !isBlank(lines[i]) && !isChapterLine(lines[i]) ? lines[i].trim() : "";
+      if (chapterTitle) i++;
+      current = { number: chapterNumber, title: chapterTitle, paras: [] };
+      chapters.push(current);
       continue;
     }
 
-    if (modoInicio.value === "capitulo1" && blocks.length === 0) {
-      blocks.push({ type:"chapter-divider" });
-      blocks.push({ type:"chapter-line", text:"Capítulo 1" });
-
-      if (!isBlank(lines[i])) {
-        blocks.push({ type:"chapter-subtitle", text:lines[i].trim() });
-        i++;
-      }
-
-      let firstParagraph = true;
-      while (i < lines.length && !isChapterLine(lines[i])) {
-        if (!isBlank(lines[i])) {
-          blocks.push({
-            type:"paragraph",
-            text:lines[i].trim(),
-            dropcap:firstParagraph && capitular.value === "on"
-          });
-          firstParagraph = false;
-        }
-        i++;
-      }
+    if (!current && modoInicio.value === "capitulo1") {
+      current = { number: "Capítulo 1", title: lines[i].trim(), paras: [] };
+      chapters.push(current);
+      i++;
       continue;
     }
 
-    if (!isBlank(lines[i])) {
-      blocks.push({ type:"paragraph", text:lines[i].trim(), dropcap:false });
+    if (!current) {
+      current = { number: null, title: "", paras: [] };
+      chapters.push(current);
     }
+
+    if (!isBlank(lines[i])) current.paras.push(lines[i].trim());
     i++;
   }
+
+  return chapters;
+}
+
+function makeTechPages(chapters){
+  const title = tituloObra.value.trim() || "Título da obra";
+  const author = autorObra.value.trim() || "Nome do autor";
+  const sumario = chapters
+    .filter(ch => ch.number)
+    .map((ch, idx) => `${ch.number} — ${ch.title || "Sem subtítulo"} ...... ${idx + 5}`);
+
+  return [
+    {
+      headerLeft:"",
+      headerRight:"",
+      footer:"1",
+      blocks:[
+        {type:"tech-title", text:title},
+        {type:"tech-center", text:author},
+        {type:"tech-center", text:"Folha de rosto"}
+      ]
+    },
+    {
+      headerLeft:title,
+      headerRight:"",
+      footer:"2",
+      blocks:[
+        {type:"tech-section", text:"Prefácio"},
+        {type:"tech-paragraph", text:"Espaço reservado para prefácio ou apresentação da obra."}
+      ]
+    },
+    {
+      headerLeft:title,
+      headerRight:"",
+      footer:"3",
+      blocks:[
+        {type:"tech-section", text:"Sumário"},
+        ...sumario.map(line => ({type:"tech-list", text:line}))
+      ]
+    }
+  ];
+}
+
+function makeChapterBlocks(chapters){
+  const blocks = [];
+  chapters.forEach(ch => {
+    if (ch.number) {
+      blocks.push({ type:"chapter-divider" });
+      blocks.push({ type:"chapter-line", text:ch.number });
+      if (ch.title) blocks.push({ type:"chapter-subtitle", text:ch.title });
+    } else if (ch.title) {
+      blocks.push({ type:"work-title", text:ch.title });
+    }
+
+    let firstParagraph = true;
+    ch.paras.forEach(p => {
+      blocks.push({
+        type:"paragraph",
+        text:p,
+        dropcap:firstParagraph && capitular.value === "on"
+      });
+      firstParagraph = false;
+    });
+  });
+
+  blocks.push({ type:"chapter-divider" });
+  blocks.push({ type:"tech-section", text:"Biografia" });
+  blocks.push({ type:"tech-paragraph", text:"Espaço reservado para biografia final do autor." });
 
   return blocks;
 }
@@ -578,14 +677,12 @@ function parseBlocks(texto){
 function buildBlockNode(block){
   const bodyMeta = BODY_FONT_METRICS[fonteCorpo.value] || BODY_FONT_METRICS["Georgia"];
   const chapterMeta = CHAPTER_FONT_METRICS[fonteCapitulo.value] || CHAPTER_FONT_METRICS["Cinzel"];
-
   const bodySize = Number(tamanhoCorpo.value) + bodyMeta.bodyAdjust;
   const chapterSize = Number(tamanhoCapitulo.value) + chapterMeta.sizeAdjust;
   const subtitleSize = Math.max(14, chapterSize + chapterMeta.subtitleAdjust);
   const dividerSize = Math.max(12, chapterSize * chapterMeta.dividerScale);
   const pCfg = paragraphConfig();
   const lineHt = lineHeightValue();
-
   let el;
 
   if (block.type === "chapter-divider") {
@@ -628,6 +725,55 @@ function buildBlockNode(block){
     return el;
   }
 
+  if (block.type === "tech-title") {
+    el = document.createElement("div");
+    el.className = "work-title";
+    el.textContent = block.text;
+    el.style.fontFamily = chapterMeta.stack;
+    el.style.fontSize = Math.max(28, chapterSize + 4) + "pt";
+    return el;
+  }
+
+  if (block.type === "tech-center") {
+    el = document.createElement("div");
+    el.className = "tech-block";
+    el.textContent = block.text;
+    el.style.fontFamily = bodyMeta.stack;
+    el.style.fontSize = bodySize + "pt";
+    return el;
+  }
+
+  if (block.type === "tech-section") {
+    el = document.createElement("div");
+    el.className = "tech-page-title";
+    el.textContent = block.text;
+    el.style.fontFamily = chapterMeta.stack;
+    el.style.fontSize = Math.max(20, chapterSize - 2) + "pt";
+    return el;
+  }
+
+  if (block.type === "tech-list") {
+    el = document.createElement("div");
+    el.className = "tech-block";
+    el.textContent = block.text;
+    el.style.textAlign = "left";
+    el.style.fontFamily = bodyMeta.stack;
+    el.style.fontSize = bodySize + "pt";
+    return el;
+  }
+
+  if (block.type === "tech-paragraph") {
+    el = document.createElement("p");
+    el.className = "body-p";
+    el.textContent = block.text;
+    el.style.fontFamily = bodyMeta.stack;
+    el.style.fontSize = bodySize + "pt";
+    el.style.lineHeight = String(lineHt);
+    el.style.textIndent = paragraphConfig().indent;
+    el.style.margin = paragraphConfig().margin;
+    return el;
+  }
+
   el = document.createElement("p");
   el.className = block.dropcap ? "body-p dropcap" : "body-p";
   el.textContent = block.text;
@@ -637,12 +783,35 @@ function buildBlockNode(block){
   el.style.textIndent = block.dropcap ? "0" : pCfg.indent;
   el.style.margin = pCfg.margin;
   el.dataset.locate = block.text;
-
   el.addEventListener("click", function(){
     locateInTextarea(block.text);
   });
-
   return el;
+}
+
+function createPageShell(cfg, headerLeft="", headerRight="", footer=""){
+  const page = document.createElement("div");
+  page.className = "page";
+  page.style.width = cfg.w + "px";
+  page.style.height = cfg.h + "px";
+
+  const header = document.createElement("div");
+  header.className = "page-header";
+  header.innerHTML = `<span>${headerLeft}</span><span>${headerRight}</span>`;
+
+  const inner = document.createElement("div");
+  inner.className = "page-inner";
+  inner.style.padding = (cfg.pad[margens.value] + 16) + "px " + cfg.pad[margens.value] + "px " + (cfg.pad[margens.value] + 26) + "px";
+
+  const footerEl = document.createElement("div");
+  footerEl.className = "page-footer";
+  footerEl.textContent = footer;
+
+  page.appendChild(header);
+  page.appendChild(inner);
+  page.appendChild(footerEl);
+
+  return { page, inner };
 }
 
 function locateInTextarea(snippet){
@@ -655,75 +824,83 @@ function locateInTextarea(snippet){
   }
 }
 
-function createPageShell(cfg){
-  const page = document.createElement("div");
-  page.className = "page";
-  page.style.width = cfg.w + "px";
-  page.style.height = cfg.h + "px";
-
-  const inner = document.createElement("div");
-  inner.className = "page-inner";
-  inner.style.padding = cfg.pad[margens.value] + "px";
-
-  page.appendChild(inner);
-  return { page, inner };
-}
-
-function paginateBlocks(blocks){
+function paginateContent(chapters){
   const cfg = pageConfig();
   previewMode.textContent = cfg.name;
-  pages.innerHTML = "";
+  pageStage.innerHTML = "";
   measureHost.innerHTML = "";
+  renderedPages = [];
 
-  if (!blocks.length) {
-    pages.innerHTML = '<div class="page" style="width:420px;height:610px;"><div class="page-inner"><div class="empty">A prévia aparece aqui assim que o texto entrar na caixa.</div></div></div>';
+  if (!chapters.length) {
+    const empty = createPageShell(cfg, "", "", "");
+    empty.inner.innerHTML = '<div class="empty">A prévia aparece aqui assim que o texto entrar na caixa.</div>';
+    renderedPages.push(empty.page);
+    showPage(0);
     return;
   }
 
-  const shell = createPageShell(cfg);
-  const measurer = createPageShell(cfg);
-  measureHost.appendChild(measurer.page);
+  const techPages = makeTechPages(chapters);
+  techPages.forEach(tp => {
+    const shell = createPageShell(cfg, tp.headerLeft, tp.headerRight, tp.footer);
+    tp.blocks.forEach(block => shell.inner.appendChild(buildBlockNode(block)));
+    renderedPages.push(shell.page);
+  });
 
-  let current = createPageShell(cfg);
-  let pageCount = 1;
+  const blocks = makeChapterBlocks(chapters);
+  const measurerShell = createPageShell(cfg, "", "", "");
+  measureHost.appendChild(measurerShell.page);
 
-  const maxContentHeight = cfg.h - (cfg.pad[margens.value] * 2);
-
-  function appendCurrentPage(){
-    const num = document.createElement("div");
-    num.className = "page-num";
-    num.textContent = pageCount;
-    current.page.appendChild(num);
-    pages.appendChild(current.page);
-  }
+  let pageNumber = techPages.length + 1;
+  let currentChapter = "";
+  let currentTitle = "";
+  let current = createPageShell(cfg, tituloObra.value.trim() || "Título da obra", "", String(pageNumber));
+  const maxHeight = cfg.h - 74 - 40 - ((cfg.pad[margens.value] + 16) + (cfg.pad[margens.value] + 26));
 
   blocks.forEach(block => {
-    const testNode = buildBlockNode(block);
-    measurer.inner.innerHTML = "";
-    measurer.inner.appendChild(testNode);
-    const nodeHeight = Math.ceil(testNode.offsetHeight);
+    if (block.type === "chapter-line") currentChapter = block.text;
+    if (block.type === "chapter-subtitle") currentTitle = block.text;
 
-    if (current.inner.offsetHeight + nodeHeight > maxContentHeight && current.inner.childNodes.length > 0) {
-      appendCurrentPage();
-      pageCount += 1;
-      current = createPageShell(cfg);
+    const measureNode = buildBlockNode(block);
+    measurerShell.inner.innerHTML = "";
+    measurerShell.inner.appendChild(measureNode);
+    const nodeHeight = Math.ceil(measureNode.offsetHeight);
+
+    if (current.inner.offsetHeight + nodeHeight > maxHeight && current.inner.childNodes.length > 0) {
+      renderedPages.push(current.page);
+      pageNumber += 1;
+      current = createPageShell(cfg, currentChapter || (tituloObra.value.trim() || "Título da obra"), currentTitle || "", String(pageNumber));
     }
 
     current.inner.appendChild(buildBlockNode(block));
+    current.page.querySelector(".page-header").innerHTML = `<span>${currentChapter || (tituloObra.value.trim() || "Título da obra")}</span><span>${currentTitle || ""}</span>`;
   });
 
-  appendCurrentPage();
+  renderedPages.push(current.page);
+  currentPageIndex = Math.min(currentPageIndex, renderedPages.length - 1);
+  showPage(currentPageIndex);
 }
+
+function showPage(index){
+  if (!renderedPages.length) return;
+  currentPageIndex = Math.max(0, Math.min(index, renderedPages.length - 1));
+  pageStage.innerHTML = "";
+  pageStage.appendChild(renderedPages[currentPageIndex]);
+  pageCounter.textContent = `Página ${currentPageIndex + 1} de ${renderedPages.length}`;
+  btnPrev.disabled = currentPageIndex === 0;
+  btnNext.disabled = currentPageIndex === renderedPages.length - 1;
+}
+
+btnPrev.addEventListener("click", () => showPage(currentPageIndex - 1));
+btnNext.addEventListener("click", () => showPage(currentPageIndex + 1));
 
 function renderPreview(){
   const texto = inputText.value.trim();
   if (!texto) {
-    pages.innerHTML = '<div class="page" style="width:420px;height:610px;"><div class="page-inner"><div class="empty">A prévia aparece aqui assim que o texto entrar na caixa.</div></div></div>';
-    previewMode.textContent = pageConfig().name;
+    paginateContent([]);
     return;
   }
-  const blocks = parseBlocks(texto);
-  paginateBlocks(blocks);
+  const chapters = parseChapterStructure(texto);
+  paginateContent(chapters);
 }
 
 btnUpload.addEventListener("click", function(){
@@ -736,6 +913,7 @@ btnUpload.addEventListener("click", function(){
   reader.onload = function(e){
     inputText.value = String(e.target.result || "");
     arquivoNome.textContent = file.name;
+    currentPageIndex = 0;
     renderPreview();
   };
   reader.onerror = function(){
@@ -749,7 +927,8 @@ arquivoTexto.addEventListener("change", function(){
 });
 
 btnExemplo.addEventListener("click", function(){
-  inputText.value = 'Capítulo 1\nO Degrau e a Mochila\nA praça respirava como um animal ferido.\nO som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.\nSacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.\nTudo parecia seguir um ritmo que não incluía pausas.\n\nCapítulo 2\nA Primeira Manhã\nA manhã revelou o que a noite havia escondido.\nHavia mais gente do que ele imaginava.\nHomens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa.\n\nCapítulo 3\nRegras Invisíveis\nA terceira noite já não parecia acidente.\nA segunda tinha sido resistência.\nA terceira começou a parecer início de padrão.';
+  inputText.value = 'Capítulo 1\nO Degrau e a Mochila\nA praça respirava como um animal ferido.\nO som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.\nSacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.\nTudo parecia seguir um ritmo que não incluía pausas.\n\nCapítulo 2\nA Primeira Manhã\nA manhã revelou o que a noite havia escondido.\nHavia mais gente do que ele imaginava.\nHomens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa.\n\nCapítulo 3\nRegras Invisíveis\nA terceira noite já não parecia acidente.\nA segunda tinha sido resistência.\nA terceira começou a parecer início de padrão.\nA mulher dos cabelos grisalhos se chamava Lúcia.';
+  currentPageIndex = 0;
   renderPreview();
 });
 
@@ -757,11 +936,21 @@ btnLimpar.addEventListener("click", function(){
   inputText.value = "";
   arquivoTexto.value = "";
   arquivoNome.textContent = "Nenhum arquivo carregado";
+  currentPageIndex = 0;
   renderPreview();
 });
 
+btnDownloadHtml.addEventListener("click", function(){
+  const blob = new Blob([document.documentElement.outerHTML], {type:"text/html;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "polux_diagramador_prosa.html";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
 [
-  inputText, formato, modoInicio, fonteCorpo, fonteCapitulo,
+  inputText, formato, modoInicio, tituloObra, autorObra, fonteCorpo, fonteCapitulo,
   tamanhoCorpo, tamanhoCapitulo, entrelinha, margens, paragrafo, capitular
 ].forEach(function(el){
   el.addEventListener("input", renderPreview);
