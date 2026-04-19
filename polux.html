@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pólux — Diagramador de Prosa (v5)</title>
+<title>Pólux — Diagramador de Prosa (v6 layout azul)</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,9 +18,22 @@ padding:20px;
 }
 
 .container{
+max-width:1100px;
+margin:auto;
 display:flex;
 flex-direction:column;
-gap:20px;
+gap:18px;
+}
+
+.card{
+background:white;
+border:1px solid #d8d2ca;
+border-radius:14px;
+padding:16px;
+}
+
+.config{
+background:#eef4fb;
 }
 
 textarea{
@@ -31,7 +44,7 @@ padding:12px;
 }
 
 .preview{
-background:white;
+background:#fffdf8;
 border:1px solid #ccc;
 padding:40px;
 width:420px;
@@ -68,8 +81,8 @@ hyphens:auto;
 
 .dropcap::first-letter{
 float:left;
-font-size:3.2em;
-margin:.05em .12em 0 0;
+font-size:3.1em;
+margin:.04em .12em 0 0;
 font-family:Cinzel;
 }
 
@@ -78,11 +91,14 @@ font-family:Cinzel;
 
 <body>
 
-<h2>Pólux — Diagramador de Prosa</h2>
+<div class="container">
 
+<div class="card">
+<h3>Entrada da obra</h3>
 <textarea id="input"></textarea>
+</div>
 
-<br>
+<div class="card config">
 
 <label>Fonte capítulo</label>
 <select id="chapterFont">
@@ -107,7 +123,14 @@ font-family:Cinzel;
 <option value="off">Desativada</option>
 </select>
 
+</div>
+
+<div class="card">
+<h3>Prévia editorial</h3>
 <div class="preview" id="preview"></div>
+</div>
+
+</div>
 
 <script>
 
@@ -147,12 +170,12 @@ let margin="1em"
 
 if(paragraphMode.value==="space"){
 indent="0"
-margin="1.4em"
+margin="1.5em"
 }
 
 if(paragraphMode.value==="flat"){
 indent="0"
-margin=".6em"
+margin=".4em"
 }
 
 html+=`<p class="body" style="text-indent:${indent};margin-bottom:${margin}">${line}</p>`
