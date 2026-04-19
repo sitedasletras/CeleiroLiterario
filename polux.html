@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pólux — Diagramador de Prosa</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Cinzel:wght@400;600&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Cinzel:wght@400;600;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -280,7 +280,7 @@
       padding-right:.10em;
       margin-top:.05em;
       font-family:"Cinzel", serif;
-      font-weight:600;
+      font-weight:700;
     }
 
     @media (max-width:1100px){
@@ -354,8 +354,8 @@
           <div class="field">
             <label for="modoInicio">Primeira linha da obra</label>
             <select id="modoInicio">
-              <option value="titulo" selected>Título da obra</option>
-              <option value="capitulo1">Capítulo 1</option>
+              <option value="titulo">Título da obra</option>
+              <option value="capitulo1" selected>Capítulo 1</option>
             </select>
           </div>
 
@@ -380,20 +380,20 @@
 
           <div class="field">
             <label for="tamanhoCorpo">Tamanho do corpo</label>
-            <input type="range" id="tamanhoCorpo" min="12" max="18" step="0.5" value="14">
+            <input type="range" id="tamanhoCorpo" min="12" max="22" step="0.5" value="14">
           </div>
 
           <div class="field">
             <label for="tamanhoCapitulo">Tamanho do capítulo</label>
-            <input type="range" id="tamanhoCapitulo" min="18" max="38" step="1" value="30">
+            <input type="range" id="tamanhoCapitulo" min="18" max="52" step="1" value="30">
           </div>
 
           <div class="field">
             <label for="entrelinha">Entrelinha</label>
             <select id="entrelinha">
-              <option value="1.3">Compacta</option>
-              <option value="1.45" selected>Normal</option>
-              <option value="1.6">Confortável</option>
+              <option value="1.2">Compacta</option>
+              <option value="1.4">Normal</option>
+              <option value="1.6" selected>Confortável</option>
               <option value="1.8">Arejada</option>
             </select>
           </div>
@@ -401,8 +401,8 @@
           <div class="field">
             <label for="margens">Margens</label>
             <select id="margens">
-              <option value="estreita">Estreitas</option>
-              <option value="normal" selected>Normais</option>
+              <option value="estreita" selected>Estreitas</option>
+              <option value="normal">Normais</option>
               <option value="ampla">Amplas</option>
             </select>
           </div>
@@ -490,22 +490,24 @@
 
   function pageConfig(){
     const map = {
-      a5:    { w:420, h:594, pad:{ estreita:28, normal:40, ampla:52 }, name:"Modo impresso · A5" },
-      "16x23": { w:455, h:650, pad:{ estreita:32, normal:46, ampla:60 }, name:"Modo impresso · 16x23" },
-      "6x9": { w:470, h:705, pad:{ estreita:34, normal:50, ampla:64 }, name:'Modo impresso · 6" x 9"' },
-      epub:  { w:760, h:760, pad:{ estreita:34, normal:42, ampla:52 }, name:"Modo digital · ePub" }
+      a5:    { w:430, h:610, pad:{ estreita:26, normal:40, ampla:54 }, name:"Modo impresso · A5", indent: "2.2em" },
+      "16x23": { w:470, h:680, pad:{ estreita:30, normal:46, ampla:60 }, name:"Modo impresso · 16x23", indent: "1.8em" },
+      "6x9": { w:500, h:750, pad:{ estreita:34, normal:50, ampla:66 }, name:'Modo impresso · 6" x 9"', indent: "1.6em" },
+      epub:  { w:760, h:760, pad:{ estreita:34, normal:42, ampla:52 }, name:"Modo digital · ePub", indent: "1.5em" }
     };
     return map[formato.value];
   }
 
   function paragraphConfig(){
+    const cfg = pageConfig();
+
     if (paragrafo.value === "espaco") {
-      return { indent:"0", margin:"0 0 1.15em 0" };
+      return { indent:"0", margin:"0 0 1.2em 0" };
     }
     if (paragrafo.value === "reto") {
-      return { indent:"0", margin:"0 0 .9em 0" };
+      return { indent:"0", margin:"0 0 1em 0" };
     }
-    return { indent:"1.5em", margin:"0 0 .95em 0" };
+    return { indent:cfg.indent, margin:"0 0 1em 0" };
   }
 
   function isChapterLine(line){
@@ -525,8 +527,7 @@
       if (i >= lines.length) break;
       if (isChapterLine(lines[i])) break;
 
-      const current = lines[i].trim();
-      paragraphs.push(current);
+      paragraphs.push(lines[i].trim());
       i++;
     }
 
@@ -545,8 +546,7 @@
     if (i >= lines.length) return [];
 
     if (modoInicio.value === "titulo") {
-      const firstLine = lines[i].trim();
-      blocks.push({ type:"work-title", text:firstLine });
+      blocks.push({ type:"work-title", text:lines[i].trim() });
       i++;
 
       while (i < lines.length && isBlank(lines[i])) i++;
@@ -639,11 +639,13 @@
     const chapterFont = fonteCapitulo.value;
     const bodySize = tamanhoCorpo.value + "pt";
     const chapterSize = tamanhoCapitulo.value + "pt";
+    const subtitleSize = Math.max(18, Number(tamanhoCapitulo.value) - 8) + "pt";
+    const chapterMainSize = Math.max(22, Number(tamanhoCapitulo.value) - 2) + "pt";
     const line = entrelinha.value;
     const pCfg = paragraphConfig();
 
     if (block.type === "chapter-divider") {
-      return `<div class="chapter-divider" style="font-family:${chapterFont};">❦</div>`;
+      return `<div class="chapter-divider" style="font-family:${chapterFont}; font-size:${Math.max(13, Number(tamanhoCapitulo.value) * 0.35)}pt;">❦</div>`;
     }
 
     if (block.type === "work-title") {
@@ -651,11 +653,11 @@
     }
 
     if (block.type === "chapter-line") {
-      return `<div class="chapter-line" style="font-family:${chapterFont}; font-size:${Math.max(22, Number(tamanhoCapitulo.value) - 2)}pt;">${escapeHtml(block.text)}</div>`;
+      return `<div class="chapter-line" style="font-family:${chapterFont}; font-size:${chapterMainSize};">${escapeHtml(block.text)}</div>`;
     }
 
     if (block.type === "chapter-subtitle") {
-      return `<div class="chapter-subtitle" style="font-family:${chapterFont}; font-size:${Math.max(18, Number(tamanhoCapitulo.value) - 6)}pt;">${escapeHtml(block.text)}</div>`;
+      return `<div class="chapter-subtitle" style="font-family:${chapterFont}; font-size:${subtitleSize};">${escapeHtml(block.text)}</div>`;
     }
 
     const cls = block.dropcap ? "body-p dropcap" : "body-p";
@@ -769,6 +771,7 @@ O Degrau e a Mochila
 A praça respirava como um animal ferido.
 O som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.
 Sacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.
+Tudo parecia seguir um ritmo que não incluía pausas.
 
 Capítulo 2
 A Primeira Manhã
