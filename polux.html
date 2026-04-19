@@ -1,499 +1,558 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pólux — Diagramador de Prosa</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pólux — Diagramador de Prosa</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Cinzel:wght@400;600;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Cinzel:wght@400;600;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 
-<style>
-:root{
-  --bg:#f6f3ee;
-  --card:#ffffff;
-  --config:#eef4fb;
-  --paper:#fffdf8;
-  --line:#d8d2ca;
-  --ink:#2f2a25;
-  --muted:#70675f;
-  --shadow:0 2px 10px rgba(0,0,0,.06);
-  --radius:14px;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  padding:20px;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:Georgia, serif;
-}
-button,input,select,textarea{font:inherit}
-.wrap{
-  max-width:1120px;
-  margin:0 auto;
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-}
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-}
-.title{
-  font-size:2rem;
-  font-weight:700;
-  line-height:1.1;
-}
-.actions{display:flex;gap:10px;flex-wrap:wrap}
-.btn{
-  border:none;
-  border-radius:10px;
-  padding:10px 14px;
-  font-weight:700;
-  cursor:pointer;
-}
-.btn-yellow{background:#d8b622;color:#2d2600}
-.btn-soft{background:#ece7df;color:#2f2a25}
-.btn-red{background:#b63131;color:#fff}
-.btn-green{background:#1f6f43;color:#fff}
+  <style>
+    :root{
+      --bg:#f6f3ee;
+      --card:#ffffff;
+      --config:#dfeefd;
+      --config-border:#b8d5f2;
+      --paper:#fffdf8;
+      --line:#d8d2ca;
+      --ink:#2f2a25;
+      --muted:#70675f;
+      --shadow:0 2px 10px rgba(0,0,0,.06);
+      --radius:14px;
+    }
 
-.card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:16px;
-}
-.config-card{background:var(--config)}
-.card h3{
-  margin:0 0 12px 0;
-  font-size:1.14rem;
-}
-.upload-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  align-items:center;
-  margin-bottom:8px;
-}
-.upload-note,.note{
-  color:var(--muted);
-  font-size:.92rem;
-  line-height:1.35;
-}
-.editor{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  overflow:hidden;
-}
-.editor-head{
-  padding:14px 16px;
-  border-bottom:1px solid var(--line);
-  font-size:1.14rem;
-  font-weight:700;
-  background:#fbfaf8;
-}
-textarea{
-  width:100%;
-  min-height:320px;
-  border:none;
-  outline:none;
-  resize:vertical;
-  padding:18px 16px 22px;
-  background:transparent;
-  color:var(--ink);
-  font-size:1rem;
-  line-height:1.55;
-  white-space:pre-wrap;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px 14px;
-}
-.field{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  min-width:0;
-}
-.field label{
-  font-size:.95rem;
-  color:var(--muted);
-  font-weight:700;
-}
-.field input[type="range"], .field select{width:100%}
-.preview-box{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:16px;
-}
-.preview-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-bottom:12px;
-}
-.preview-head h3{
-  margin:0;
-  font-size:1.14rem;
-}
-.preview-mode{
-  color:var(--muted);
-  font-weight:700;
-  font-size:.94rem;
-}
-.page{
-  background:var(--paper);
-  border:1px solid #d8d2ca;
-  border-radius:8px;
-  box-shadow:0 6px 18px rgba(0,0,0,.07);
-  overflow:auto;
-  margin:0 auto;
-  scrollbar-width:thin;
-  transition:width .2s,height .2s;
-}
-.page-inner{min-height:100%}
-.empty{
-  text-align:center;
-  color:var(--muted);
-  padding:80px 20px;
-  font-size:1.04rem;
-}
-.work-title{
-  text-align:center;
-  margin:0 0 1.2em 0;
-  line-height:1.2;
-  letter-spacing:.02em;
-  text-transform:uppercase;
-}
-.chapter-divider{
-  text-align:center;
-  margin:1.8em 0 .8em 0;
-  opacity:.72;
-}
-.chapter-line{
-  text-align:center;
-  margin:2.2em 0 .7em 0;
-  line-height:1.2;
-  text-transform:uppercase;
-  letter-spacing:.04em;
-  font-weight:700;
-}
-.chapter-subtitle{
-  text-align:center;
-  margin:0 0 1.35em 0;
-  line-height:1.2;
-  opacity:.88;
-  font-style:italic;
-}
-.body-p{
-  margin:0 0 1em 0;
-  text-align:justify;
-  text-justify:inter-word;
-  hyphens:auto;
-  -webkit-hyphens:auto;
-  -ms-hyphens:auto;
-  word-break:normal;
-  overflow-wrap:normal;
-}
-.dropcap{
-  text-indent:0 !important;
-  overflow:hidden;
-}
-.dropcap::first-letter{
-  float:left;
-  font-size:3.05em;
-  line-height:.88;
-  margin:.02em .06em 0 0;
-  font-family:"Cinzel", serif;
-  font-weight:700;
-}
-@media (max-width:760px){
-  body{padding:14px}
-  .title{font-size:1.55rem}
-  .grid{grid-template-columns:1fr}
-  textarea{min-height:280px}
-}
-</style>
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      padding:20px;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:Georgia, serif;
+    }
+
+    button,input,select,textarea{font:inherit}
+
+    .wrap{
+      max-width:1120px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .title{
+      font-size:2rem;
+      font-weight:700;
+      line-height:1.1;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:none;
+      border-radius:10px;
+      padding:10px 14px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .btn-yellow{background:#d8b622;color:#2d2600}
+    .btn-soft{background:#ece7df;color:#2f2a25}
+    .btn-red{background:#b63131;color:#fff}
+    .btn-green{background:#1f6f43;color:#fff}
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:16px;
+    }
+
+    .config-card{
+      background:var(--config);
+      border-color:var(--config-border);
+    }
+
+    .card h3{
+      margin:0 0 12px 0;
+      font-size:1.14rem;
+    }
+
+    .upload-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-bottom:8px;
+    }
+
+    .upload-note,.note{
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.35;
+    }
+
+    .editor{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .editor-head{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      font-size:1.14rem;
+      font-weight:700;
+      background:#fbfaf8;
+    }
+
+    textarea{
+      width:100%;
+      min-height:320px;
+      border:none;
+      outline:none;
+      resize:vertical;
+      padding:18px 16px 22px;
+      background:transparent;
+      color:var(--ink);
+      font-size:1rem;
+      line-height:1.55;
+      white-space:pre-wrap;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px 14px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+
+    .field label{
+      font-size:.95rem;
+      color:#4f6176;
+      font-weight:700;
+    }
+
+    .field input[type="range"], .field select{
+      width:100%;
+    }
+
+    .preview-box{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:16px;
+    }
+
+    .preview-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+
+    .preview-head h3{
+      margin:0;
+      font-size:1.14rem;
+    }
+
+    .preview-mode{
+      color:var(--muted);
+      font-weight:700;
+      font-size:.94rem;
+    }
+
+    .page{
+      background:var(--paper);
+      border:1px solid #d8d2ca;
+      border-radius:8px;
+      box-shadow:0 6px 18px rgba(0,0,0,.07);
+      overflow:auto;
+      margin:0 auto;
+      scrollbar-width:thin;
+      transition:width .2s,height .2s;
+    }
+
+    .page-inner{
+      min-height:100%;
+    }
+
+    .empty{
+      text-align:center;
+      color:var(--muted);
+      padding:80px 20px;
+      font-size:1.04rem;
+    }
+
+    .work-title{
+      text-align:center;
+      margin:0 0 1.2em 0;
+      line-height:1.2;
+      letter-spacing:.02em;
+      text-transform:uppercase;
+    }
+
+    .chapter-divider{
+      text-align:center;
+      margin:1.8em 0 .8em 0;
+      opacity:.72;
+    }
+
+    .chapter-line{
+      text-align:center;
+      margin:2.2em 0 .7em 0;
+      line-height:1.2;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      font-weight:700;
+    }
+
+    .chapter-subtitle{
+      text-align:center;
+      margin:0 0 1.35em 0;
+      line-height:1.2;
+      opacity:.88;
+      font-style:italic;
+    }
+
+    .body-p{
+      margin:0 0 1em 0;
+      text-align:justify;
+      text-justify:inter-word;
+      hyphens:auto;
+      -webkit-hyphens:auto;
+      -ms-hyphens:auto;
+      word-break:normal;
+      overflow-wrap:normal;
+      font-style:normal;
+      font-weight:400;
+    }
+
+    .dropcap{
+      text-indent:0 !important;
+      overflow:hidden;
+    }
+
+    .dropcap::first-letter{
+      float:left;
+      font-size:3.05em;
+      line-height:.88;
+      margin:.02em .06em 0 0;
+      font-family:"Cinzel", serif;
+      font-weight:700;
+    }
+
+    @media (max-width:760px){
+      body{padding:14px}
+      .title{font-size:1.55rem}
+      .grid{grid-template-columns:1fr}
+      textarea{min-height:280px}
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
+  <div class="wrap">
 
-  <div class="topbar">
-    <div class="title">Pólux — Diagramador de Prosa</div>
-    <div class="actions">
-      <button class="btn btn-yellow" type="button" onclick="history.back()">Retornar</button>
-      <button class="btn btn-soft" type="button" id="btnExemplo">Carregar exemplo</button>
-      <button class="btn btn-soft" type="button" id="btnLimpar">Limpar</button>
-      <button class="btn btn-red" type="button" onclick="window.location.href='index.html'">Sair do sistema</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>Entrada da obra</h3>
-    <div class="upload-row">
-      <input type="file" id="arquivoTexto" accept=".txt,.md,text/plain">
-      <button class="btn btn-green" type="button" id="btnUpload">Upar texto</button>
-      <span id="arquivoNome">Nenhum arquivo carregado</span>
-    </div>
-    <div class="upload-note">O arquivo entra direto na caixa de texto. Depois disso, o autor pode ajustar manualmente se quiser.</div>
-  </div>
-
-  <div class="editor">
-    <div class="editor-head">Caixa de texto</div>
-    <textarea id="inputText" placeholder="Cole aqui sua obra ou use o botão de upar texto."></textarea>
-  </div>
-
-  <div class="card config-card">
-    <h3>Configuração editorial</h3>
-
-    <div class="grid">
-      <div class="field">
-        <label for="formato">Formato</label>
-        <select id="formato">
-          <option value="a5">A5</option>
-          <option value="16x23">16x23</option>
-          <option value="6x9">6&quot; x 9&quot;</option>
-          <option value="epub">ePub</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="modoInicio">Primeira linha da obra</label>
-        <select id="modoInicio">
-          <option value="titulo">Título da obra</option>
-          <option value="capitulo1" selected>Capítulo 1</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="fonteCorpo">Fonte do corpo</label>
-        <select id="fonteCorpo">
-          <option value="Georgia" selected>Georgia</option>
-          <option value="EB Garamond">EB Garamond</option>
-          <option value="Libre Baskerville">Libre Baskerville</option>
-          <option value="Times New Roman">Times New Roman</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="fonteCapitulo">Fonte do capítulo</label>
-        <select id="fonteCapitulo">
-          <option value="Cinzel" selected>Cinzel</option>
-          <option value="Playfair Display">Playfair Display</option>
-          <option value="Libre Baskerville">Libre Baskerville</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="tamanhoCorpo">Tamanho do corpo</label>
-        <input type="range" id="tamanhoCorpo" min="12" max="22" step="0.5" value="14">
-      </div>
-
-      <div class="field">
-        <label for="tamanhoCapitulo">Tamanho do capítulo</label>
-        <input type="range" id="tamanhoCapitulo" min="18" max="56" step="1" value="30">
-      </div>
-
-      <div class="field">
-        <label for="entrelinha">Entrelinha</label>
-        <select id="entrelinha">
-          <option value="1.2">Compacta</option>
-          <option value="1.4">Normal</option>
-          <option value="1.6" selected>Confortável</option>
-          <option value="1.8">Arejada</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="margens">Margens</label>
-        <select id="margens">
-          <option value="estreita">Estreitas</option>
-          <option value="normal">Normais</option>
-          <option value="ampla" selected>Amplas</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="paragrafo">Parágrafos</label>
-        <select id="paragrafo">
-          <option value="recuo" selected>Recuo tradicional</option>
-          <option value="espaco">Espaço entre parágrafos</option>
-          <option value="reto">Sem recuo</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="capitular">Letra capitular</label>
-        <select id="capitular">
-          <option value="on" selected>Ativada</option>
-          <option value="off">Desativada</option>
-        </select>
+    <div class="topbar">
+      <div class="title">Pólux — Diagramador de Prosa</div>
+      <div class="actions">
+        <button class="btn btn-yellow" type="button" onclick="history.back()">Retornar</button>
+        <button class="btn btn-soft" type="button" id="btnExemplo">Carregar exemplo</button>
+        <button class="btn btn-soft" type="button" id="btnLimpar">Limpar</button>
+        <button class="btn btn-red" type="button" onclick="window.location.href='index.html'">Sair do sistema</button>
       </div>
     </div>
 
-    <div class="note">Base estável: Georgia. As demais fontes do corpo podem ser calibradas depois com referência nela.</div>
+    <div class="card">
+      <h3>Entrada da obra</h3>
+      <div class="upload-row">
+        <input type="file" id="arquivoTexto" accept=".txt,.md,text/plain">
+        <button class="btn btn-green" type="button" id="btnUpload">Upar texto</button>
+        <span id="arquivoNome">Nenhum arquivo carregado</span>
+      </div>
+      <div class="upload-note">O arquivo entra direto na caixa de texto. Depois disso, o autor pode ajustar manualmente se quiser.</div>
+    </div>
+
+    <div class="editor">
+      <div class="editor-head">Caixa de texto</div>
+      <textarea id="inputText" placeholder="Cole aqui sua obra ou use o botão de upar texto."></textarea>
+    </div>
+
+    <div class="card config-card">
+      <h3>Configuração editorial</h3>
+
+      <div class="grid">
+        <div class="field">
+          <label for="formato">Formato</label>
+          <select id="formato">
+            <option value="a5">A5</option>
+            <option value="16x23">16x23</option>
+            <option value="6x9">6" x 9"</option>
+            <option value="epub">ePub</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="modoInicio">Primeira linha da obra</label>
+          <select id="modoInicio">
+            <option value="titulo">Título da obra</option>
+            <option value="capitulo1" selected>Capítulo 1</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="fonteCorpo">Fonte do corpo</label>
+          <select id="fonteCorpo">
+            <option value="Georgia" selected>Georgia</option>
+            <option value="EB Garamond">EB Garamond</option>
+            <option value="Libre Baskerville">Libre Baskerville</option>
+            <option value="Times New Roman">Times New Roman</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="fonteCapitulo">Fonte do capítulo</label>
+          <select id="fonteCapitulo">
+            <option value="Cinzel" selected>Cinzel</option>
+            <option value="Playfair Display">Playfair Display</option>
+            <option value="Libre Baskerville">Libre Baskerville</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="tamanhoCorpo">Tamanho do corpo</label>
+          <input type="range" id="tamanhoCorpo" min="12" max="22" step="0.5" value="14">
+        </div>
+
+        <div class="field">
+          <label for="tamanhoCapitulo">Tamanho do capítulo</label>
+          <input type="range" id="tamanhoCapitulo" min="18" max="56" step="1" value="30">
+        </div>
+
+        <div class="field">
+          <label for="entrelinha">Entrelinha</label>
+          <select id="entrelinha">
+            <option value="1.2">Compacta</option>
+            <option value="1.4">Normal</option>
+            <option value="1.6" selected>Confortável</option>
+            <option value="1.8">Arejada</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="margens">Margens</label>
+          <select id="margens">
+            <option value="estreita">Estreitas</option>
+            <option value="normal">Normais</option>
+            <option value="ampla" selected>Amplas</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="paragrafo">Parágrafos</label>
+          <select id="paragrafo">
+            <option value="recuo" selected>Recuo tradicional</option>
+            <option value="espaco">Espaço entre parágrafos</option>
+            <option value="reto">Sem recuo</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="capitular">Letra capitular</label>
+          <select id="capitular">
+            <option value="on" selected>Ativada</option>
+            <option value="off">Desativada</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="note">Base estável: Georgia. As demais fontes do corpo podem ser calibradas depois com referência nela.</div>
+    </div>
+
+    <div class="preview-box">
+      <div class="preview-head">
+        <h3>Prévia editorial</h3>
+        <div class="preview-mode" id="previewMode">Modo impresso · A5</div>
+      </div>
+      <div class="page" id="page">
+        <div class="page-inner" id="pageInner"></div>
+      </div>
+    </div>
+
   </div>
 
-  <div class="preview-box">
-    <div class="preview-head">
-      <h3>Prévia editorial</h3>
-      <div class="preview-mode" id="previewMode">Modo impresso · A5</div>
-    </div>
-    <div class="page" id="page">
-      <div class="page-inner" id="pageInner"></div>
-    </div>
-  </div>
+  <script>
+    const inputText = document.getElementById("inputText");
+    const arquivoTexto = document.getElementById("arquivoTexto");
+    const arquivoNome = document.getElementById("arquivoNome");
+    const btnUpload = document.getElementById("btnUpload");
+    const btnExemplo = document.getElementById("btnExemplo");
+    const btnLimpar = document.getElementById("btnLimpar");
 
-</div>
+    const formato = document.getElementById("formato");
+    const modoInicio = document.getElementById("modoInicio");
+    const fonteCorpo = document.getElementById("fonteCorpo");
+    const fonteCapitulo = document.getElementById("fonteCapitulo");
+    const tamanhoCorpo = document.getElementById("tamanhoCorpo");
+    const tamanhoCapitulo = document.getElementById("tamanhoCapitulo");
+    const entrelinha = document.getElementById("entrelinha");
+    const margens = document.getElementById("margens");
+    const paragrafo = document.getElementById("paragrafo");
+    const capitular = document.getElementById("capitular");
 
-<script>
-const inputText = document.getElementById("inputText");
-const arquivoTexto = document.getElementById("arquivoTexto");
-const arquivoNome = document.getElementById("arquivoNome");
-const btnUpload = document.getElementById("btnUpload");
-const btnExemplo = document.getElementById("btnExemplo");
-const btnLimpar = document.getElementById("btnLimpar");
+    const previewMode = document.getElementById("previewMode");
+    const page = document.getElementById("page");
+    const pageInner = document.getElementById("pageInner");
 
-const formato = document.getElementById("formato");
-const modoInicio = document.getElementById("modoInicio");
-const fonteCorpo = document.getElementById("fonteCorpo");
-const fonteCapitulo = document.getElementById("fonteCapitulo");
-const tamanhoCorpo = document.getElementById("tamanhoCorpo");
-const tamanhoCapitulo = document.getElementById("tamanhoCapitulo");
-const entrelinha = document.getElementById("entrelinha");
-const margens = document.getElementById("margens");
-const paragrafo = document.getElementById("paragrafo");
-const capitular = document.getElementById("capitular");
+    const BODY_FONT_METRICS = {
+      "Georgia": { bodyAdjust: 0, compact: 1.20, normal: 1.40, comfort: 1.58, airy: 1.80, paraGap: 1.45, stack: "Georgia, serif" },
+      "EB Garamond": { bodyAdjust: 0.10, compact: 1.22, normal: 1.42, comfort: 1.62, airy: 1.84, paraGap: 1.45, stack: "'EB Garamond', serif" },
+      "Libre Baskerville": { bodyAdjust: 0, compact: 1.22, normal: 1.42, comfort: 1.62, airy: 1.84, paraGap: 1.45, stack: "'Libre Baskerville', serif" },
+      "Times New Roman": { bodyAdjust: 0, compact: 1.18, normal: 1.38, comfort: 1.56, airy: 1.76, paraGap: 1.45, stack: "'Times New Roman', serif" }
+    };
 
-const previewMode = document.getElementById("previewMode");
-const page = document.getElementById("page");
-const pageInner = document.getElementById("pageInner");
+    const CHAPTER_FONT_METRICS = {
+      "Cinzel": { sizeAdjust: 0, subtitleAdjust: -10, dividerScale: .34, weight: 700, letterSpacing: '.04em', stack: "'Cinzel', serif" },
+      "Playfair Display": { sizeAdjust: 5, subtitleAdjust: -6, dividerScale: .40, weight: 700, letterSpacing: '.01em', stack: "'Playfair Display', serif" },
+      "Libre Baskerville": { sizeAdjust: 2, subtitleAdjust: -8, dividerScale: .36, weight: 700, letterSpacing: '.03em', stack: "'Libre Baskerville', serif" }
+    };
 
-const BODY_FONT_METRICS = {
-  "Georgia": { bodyAdjust: 0, compact: 1.20, normal: 1.40, comfort: 1.58, airy: 1.80, paraGap: 1.45, stack: "Georgia, serif" },
-  "EB Garamond": { bodyAdjust: 0.10, compact: 1.22, normal: 1.42, comfort: 1.62, airy: 1.84, paraGap: 1.45, stack: "'EB Garamond', serif" },
-  "Libre Baskerville": { bodyAdjust: 0, compact: 1.22, normal: 1.42, comfort: 1.62, airy: 1.84, paraGap: 1.45, stack: "'Libre Baskerville', serif" },
-  "Times New Roman": { bodyAdjust: 0, compact: 1.18, normal: 1.38, comfort: 1.56, airy: 1.76, paraGap: 1.45, stack: "'Times New Roman', serif" }
-};
+    function escapeHtml(texto){
+      return texto
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
-const CHAPTER_FONT_METRICS = {
-  "Cinzel": { sizeAdjust: 0, subtitleAdjust: -10, dividerScale: .34, weight: 700, letterSpacing: '.04em', stack: "'Cinzel', serif" },
-  "Playfair Display": { sizeAdjust: 5, subtitleAdjust: -6, dividerScale: .40, weight: 700, letterSpacing: '.01em', stack: "'Playfair Display', serif" },
-  "Libre Baskerville": { sizeAdjust: 2, subtitleAdjust: -8, dividerScale: .36, weight: 700, letterSpacing: '.03em', stack: "'Libre Baskerville', serif" }
-};
+    function pageConfig(){
+      const map = {
+        a5: { w:420, h:610, pad:{ estreita:24, normal:36, ampla:48 }, name:"Modo impresso · A5", indent:"2em" },
+        "16x23": { w:465, h:680, pad:{ estreita:28, normal:42, ampla:56 }, name:"Modo impresso · 16x23", indent:"1.8em" },
+        "6x9": { w:495, h:740, pad:{ estreita:32, normal:46, ampla:60 }, name:'Modo impresso · 6" x 9"', indent:"1.7em" },
+        epub: { w:760, h:760, pad:{ estreita:34, normal:42, ampla:52 }, name:"Modo digital · ePub", indent:"1.5em" }
+      };
+      return map[formato.value];
+    }
 
-function escapeHtml(texto){
-  return texto
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
+    function lineHeightValue(){
+      const body = BODY_FONT_METRICS[fonteCorpo.value] || BODY_FONT_METRICS["Georgia"];
+      if (entrelinha.value === "1.2") return body.compact;
+      if (entrelinha.value === "1.4") return body.normal;
+      if (entrelinha.value === "1.8") return body.airy;
+      return body.comfort;
+    }
 
-function pageConfig(){
-  const map = {
-    a5: { w:420, h:610, pad:{ estreita:24, normal:36, ampla:48 }, name:"Modo impresso · A5", indent:"2em" },
-    "16x23": { w:465, h:680, pad:{ estreita:28, normal:42, ampla:56 }, name:"Modo impresso · 16x23", indent:"1.8em" },
-    "6x9": { w:495, h:740, pad:{ estreita:32, normal:46, ampla:60 }, name:'Modo impresso · 6" x 9"', indent:"1.7em" },
-    epub: { w:760, h:760, pad:{ estreita:34, normal:42, ampla:52 }, name:"Modo digital · ePub", indent:"1.5em" }
-  };
-  return map[formato.value];
-}
+    function paragraphConfig(){
+      const cfg = pageConfig();
+      const body = BODY_FONT_METRICS[fonteCorpo.value] || BODY_FONT_METRICS["Georgia"];
 
-function lineHeightValue(){
-  const body = BODY_FONT_METRICS[fonteCorpo.value] || BODY_FONT_METRICS["Georgia"];
-  if (entrelinha.value === "1.2") return body.compact;
-  if (entrelinha.value === "1.4") return body.normal;
-  if (entrelinha.value === "1.8") return body.airy;
-  return body.comfort;
-}
+      if (paragrafo.value === "espaco") {
+        return { indent:"0", margin:`0 0 ${body.paraGap}em 0` };
+      }
 
-function paragraphConfig(){
-  const cfg = pageConfig();
-  const body = BODY_FONT_METRICS[fonteCorpo.value] || BODY_FONT_METRICS["Georgia"];
-  if (paragrafo.value === "espaco") return { indent:"0", margin:`0 0 ${body.paraGap}em 0` };
-  if (paragrafo.value === "reto") return { indent:"0", margin:"0 0 .25em 0" };
-  return { indent:cfg.indent, margin:"0 0 1em 0" };
-}
+      if (paragrafo.value === "reto") {
+        return { indent:"0", margin:"0 0 .25em 0" };
+      }
 
-function isChapterLine(line){
-  return /^cap[ií]tulo\s*\d+$/i.test((line || "").trim());
-}
+      return { indent:cfg.indent, margin:"0 0 1em 0" };
+    }
 
-function isBlank(line){
-  return !(line && line.trim());
-}
+    function isChapterLine(line){
+      return /^cap[ií]tulo\s*\d+$/i.test((line || "").trim());
+    }
 
-function parseBlocks(texto){
-  const lines = texto.replace(/\\r/g, "").split("\\n");
-  const blocks = [];
-  let i = 0;
+    function isBlank(line){
+      return !(line && line.trim());
+    }
 
-  while (i < lines.length && isBlank(lines[i])) i++;
-  if (i >= lines.length) return [];
-
-  if (modoInicio.value === "titulo") {
-    blocks.push({ type:"work-title", text:lines[i].trim() });
-    i++;
-  }
-
-  while (i < lines.length) {
-    while (i < lines.length && isBlank(lines[i])) i++;
-    if (i >= lines.length) break;
-
-    if (isChapterLine(lines[i])) {
-      blocks.push({ type:"chapter-divider" });
-      blocks.push({ type:"chapter-line", text:lines[i].trim() });
-      i++;
+    function parseBlocks(texto){
+      const lines = texto.replace(/\r/g, "").split("\n");
+      const blocks = [];
+      let i = 0;
 
       while (i < lines.length && isBlank(lines[i])) i++;
+      if (i >= lines.length) return [];
 
-      if (i < lines.length && !isBlank(lines[i]) && !isChapterLine(lines[i])) {
-        blocks.push({ type:"chapter-subtitle", text:lines[i].trim() });
+      if (modoInicio.value === "titulo" && !isChapterLine(lines[i])) {
+        blocks.push({ type:"work-title", text:lines[i].trim() });
         i++;
       }
 
-      let firstParagraphOfChapter = true;
-      while (i < lines.length && !isChapterLine(lines[i])) {
-        if (!isBlank(lines[i])) {
-          blocks.push({
-            type:"paragraph",
-            text:lines[i].trim(),
-            dropcap:firstParagraphOfChapter && capitular.value === "on"
-          });
-          firstParagraphOfChapter = false;
+      while (i < lines.length) {
+        while (i < lines.length && isBlank(lines[i])) i++;
+        if (i >= lines.length) break;
+
+        if (isChapterLine(lines[i])) {
+          blocks.push({ type:"chapter-divider" });
+          blocks.push({ type:"chapter-line", text:lines[i].trim() });
+          i++;
+
+          while (i < lines.length && isBlank(lines[i])) i++;
+
+          if (i < lines.length && !isBlank(lines[i]) && !isChapterLine(lines[i])) {
+            blocks.push({ type:"chapter-subtitle", text:lines[i].trim() });
+            i++;
+          }
+
+          let firstParagraphOfChapter = true;
+
+          while (i < lines.length && !isChapterLine(lines[i])) {
+            if (!isBlank(lines[i])) {
+              blocks.push({
+                type:"paragraph",
+                text:lines[i].trim(),
+                dropcap:firstParagraphOfChapter && capitular.value === "on"
+              });
+              firstParagraphOfChapter = false;
+            }
+            i++;
+          }
+
+          continue;
         }
-        i++;
-      }
-    } else {
-      if (modoInicio.value === "capitulo1" && blocks.length === 0) {
-        blocks.push({ type:"chapter-divider" });
-        blocks.push({ type:"chapter-line", text:"Capítulo 1" });
 
-        let firstSub = true;
-        let firstParagraph = false;
+        if (modoInicio.value === "capitulo1" && blocks.length === 0) {
+          blocks.push({ type:"chapter-divider" });
+          blocks.push({ type:"chapter-line", text:"Capítulo 1" });
 
-        while (i < lines.length && !isChapterLine(lines[i])) {
           if (!isBlank(lines[i])) {
-            if (firstSub) {
-              blocks.push({ type:"chapter-subtitle", text:lines[i].trim() });
-              firstSub = false;
-              firstParagraph = true;
-            } else {
+            blocks.push({ type:"chapter-subtitle", text:lines[i].trim() });
+            i++;
+          }
+
+          let firstParagraph = true;
+
+          while (i < lines.length && !isChapterLine(lines[i])) {
+            if (!isBlank(lines[i])) {
               blocks.push({
                 type:"paragraph",
                 text:lines[i].trim(),
@@ -501,117 +560,125 @@ function parseBlocks(texto){
               });
               firstParagraph = false;
             }
+            i++;
           }
-          i++;
+
+          continue;
         }
-      } else {
+
         if (!isBlank(lines[i])) {
-          blocks.push({ type:"paragraph", text:lines[i].trim(), dropcap:false });
+          blocks.push({
+            type:"paragraph",
+            text:lines[i].trim(),
+            dropcap:false
+          });
         }
         i++;
       }
+
+      return blocks;
     }
-  }
 
-  return blocks;
-}
+    function renderBlock(block){
+      const bodyMeta = BODY_FONT_METRICS[fonteCorpo.value] || BODY_FONT_METRICS["Georgia"];
+      const chapterMeta = CHAPTER_FONT_METRICS[fonteCapitulo.value] || CHAPTER_FONT_METRICS["Cinzel"];
 
-function renderBlock(block){
-  const bodyFont = fonteCorpo.value;
-  const chapterFont = fonteCapitulo.value;
-  const chapterMeta = CHAPTER_FONT_METRICS[chapterFont] || CHAPTER_FONT_METRICS["Cinzel"];
-  const bodyMeta = BODY_FONT_METRICS[bodyFont] || BODY_FONT_METRICS["Georgia"];
-  const bodySize = Number(tamanhoCorpo.value) + bodyMeta.bodyAdjust;
-  const chapterSize = Number(tamanhoCapitulo.value) + chapterMeta.sizeAdjust;
-  const subtitleSize = Math.max(14, chapterSize + chapterMeta.subtitleAdjust);
-  const dividerSize = Math.max(12, chapterSize * chapterMeta.dividerScale);
-  const pCfg = paragraphConfig();
-  const lineHt = lineHeightValue();
+      const bodySize = Number(tamanhoCorpo.value) + bodyMeta.bodyAdjust;
+      const chapterSize = Number(tamanhoCapitulo.value) + chapterMeta.sizeAdjust;
+      const subtitleSize = Math.max(14, chapterSize + chapterMeta.subtitleAdjust);
+      const dividerSize = Math.max(12, chapterSize * chapterMeta.dividerScale);
 
-  if (block.type === "chapter-divider") {
-    return `<div class="chapter-divider" style="font-family:${chapterMeta.stack}; font-size:${dividerSize}pt;">❦</div>`;
-  }
+      const pCfg = paragraphConfig();
+      const lineHt = lineHeightValue();
 
-  if (block.type === "work-title") {
-    return `<div class="work-title" style="font-family:${chapterMeta.stack}; font-size:${Math.max(24, chapterSize + 2)}pt; letter-spacing:${chapterMeta.letterSpacing}; font-weight:${chapterMeta.weight};">${escapeHtml(block.text)}</div>`;
-  }
+      if (block.type === "chapter-divider") {
+        return `<div class="chapter-divider" style="font-family:${chapterMeta.stack}; font-size:${dividerSize}pt;">❦</div>`;
+      }
 
-  if (block.type === "chapter-line") {
-    return `<div class="chapter-line" style="font-family:${chapterMeta.stack}; font-size:${chapterSize}pt; letter-spacing:${chapterMeta.letterSpacing}; font-weight:${chapterMeta.weight};">${escapeHtml(block.text)}</div>`;
-  }
+      if (block.type === "work-title") {
+        return `<div class="work-title" style="font-family:${chapterMeta.stack}; font-size:${Math.max(24, chapterSize + 2)}pt; letter-spacing:${chapterMeta.letterSpacing}; font-weight:${chapterMeta.weight};">${escapeHtml(block.text)}</div>`;
+      }
 
-  if (block.type === "chapter-subtitle") {
-    return `<div class="chapter-subtitle" style="font-family:${chapterMeta.stack}; font-size:${subtitleSize}pt;">${escapeHtml(block.text)}</div>`;
-  }
+      if (block.type === "chapter-line") {
+        return `<div class="chapter-line" style="font-family:${chapterMeta.stack}; font-size:${chapterSize}pt; letter-spacing:${chapterMeta.letterSpacing}; font-weight:${chapterMeta.weight};">${escapeHtml(block.text)}</div>`;
+      }
 
-  const cls = block.dropcap ? "body-p dropcap" : "body-p";
-  const indent = block.dropcap ? "0" : pCfg.indent;
-  return `<p class="${cls}" lang="pt-BR" style="font-family:${bodyMeta.stack}; font-size:${bodySize}pt; line-height:${lineHt}; text-indent:${indent}; margin:${pCfg.margin};">${escapeHtml(block.text)}</p>`;
-}
+      if (block.type === "chapter-subtitle") {
+        return `<div class="chapter-subtitle" style="font-family:${chapterMeta.stack}; font-size:${subtitleSize}pt; font-style:italic; font-weight:400;">${escapeHtml(block.text)}</div>`;
+      }
 
-function applyPageStyles(){
-  const cfg = pageConfig();
-  const pad = cfg.pad[margens.value];
-  page.style.width = cfg.w + "px";
-  page.style.height = cfg.h + "px";
-  pageInner.style.padding = pad + "px";
-  previewMode.textContent = cfg.name;
-}
+      const cls = block.dropcap ? "body-p dropcap" : "body-p";
+      const indent = block.dropcap ? "0" : pCfg.indent;
 
-function renderPreview(){
-  applyPageStyles();
-  const texto = inputText.value.trim();
-  if (!texto) {
-    pageInner.innerHTML = '<div class="empty">A prévia aparece aqui assim que o texto entrar na caixa.</div>';
-    return;
-  }
-  const blocks = parseBlocks(texto);
-  pageInner.innerHTML = blocks.map(renderBlock).join("") || '<div class="empty">Sem conteúdo.</div>';
-}
+      return `<p class="${cls}" lang="pt-BR" style="font-family:${bodyMeta.stack}; font-size:${bodySize}pt; line-height:${lineHt}; text-indent:${indent}; margin:${pCfg.margin};">${escapeHtml(block.text)}</p>`;
+    }
 
-btnUpload.addEventListener("click", function(){
-  const file = arquivoTexto.files[0];
-  if (!file) {
-    arquivoNome.textContent = "Escolha um arquivo .txt primeiro";
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = function(e){
-    inputText.value = String(e.target.result || "");
-    arquivoNome.textContent = file.name;
+    function applyPageStyles(){
+      const cfg = pageConfig();
+      const pad = cfg.pad[margens.value];
+      page.style.width = cfg.w + "px";
+      page.style.height = cfg.h + "px";
+      pageInner.style.padding = pad + "px";
+      previewMode.textContent = cfg.name;
+    }
+
+    function renderPreview(){
+      applyPageStyles();
+      const texto = inputText.value.trim();
+
+      if (!texto) {
+        pageInner.innerHTML = '<div class="empty">A prévia aparece aqui assim que o texto entrar na caixa.</div>';
+        return;
+      }
+
+      const blocks = parseBlocks(texto);
+      pageInner.innerHTML = blocks.map(renderBlock).join("") || '<div class="empty">Sem conteúdo.</div>';
+    }
+
+    btnUpload.addEventListener("click", function(){
+      const file = arquivoTexto.files[0];
+      if (!file) {
+        arquivoNome.textContent = "Escolha um arquivo .txt primeiro";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e){
+        inputText.value = String(e.target.result || "");
+        arquivoNome.textContent = file.name;
+        renderPreview();
+      };
+      reader.onerror = function(){
+        arquivoNome.textContent = "Não foi possível ler este arquivo";
+      };
+      reader.readAsText(file, "UTF-8");
+    });
+
+    arquivoTexto.addEventListener("change", function(){
+      arquivoNome.textContent = arquivoTexto.files[0] ? arquivoTexto.files[0].name : "Nenhum arquivo carregado";
+    });
+
+    btnExemplo.addEventListener("click", function(){
+      inputText.value = 'Capítulo 1\nO Degrau e a Mochila\nA praça respirava como um animal ferido.\nO som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.\nSacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.\nTudo parecia seguir um ritmo que não incluía pausas.\n\nCapítulo 2\nA Primeira Manhã\nA manhã revelou o que a noite havia escondido.\nHavia mais gente do que ele imaginava.\nHomens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa.';
+      renderPreview();
+    });
+
+    btnLimpar.addEventListener("click", function(){
+      inputText.value = "";
+      arquivoTexto.value = "";
+      arquivoNome.textContent = "Nenhum arquivo carregado";
+      renderPreview();
+    });
+
+    [
+      inputText, formato, modoInicio, fonteCorpo, fonteCapitulo,
+      tamanhoCorpo, tamanhoCapitulo, entrelinha, margens, paragrafo, capitular
+    ].forEach(function(el){
+      el.addEventListener("input", renderPreview);
+      el.addEventListener("change", renderPreview);
+    });
+
     renderPreview();
-  };
-  reader.onerror = function(){
-    arquivoNome.textContent = "Não foi possível ler este arquivo";
-  };
-  reader.readAsText(file, "UTF-8");
-});
-
-arquivoTexto.addEventListener("change", function(){
-  arquivoNome.textContent = arquivoTexto.files[0] ? arquivoTexto.files[0].name : "Nenhum arquivo carregado";
-});
-
-btnExemplo.addEventListener("click", function(){
-  inputText.value = 'Capítulo 1\\nO Degrau e a Mochila\\nA praça respirava como um animal ferido.\\nO som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.\\nSacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.\\nTudo parecia seguir um ritmo que não incluía pausas.\\n\\nCapítulo 2\\nA Primeira Manhã\\nA manhã revelou o que a noite havia escondido.\\nHavia mais gente do que ele imaginava.\\nHomens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa.';
-  renderPreview();
-});
-
-btnLimpar.addEventListener("click", function(){
-  inputText.value = "";
-  arquivoTexto.value = "";
-  arquivoNome.textContent = "Nenhum arquivo carregado";
-  renderPreview();
-});
-
-[
-  inputText, formato, modoInicio, fonteCorpo, fonteCapitulo,
-  tamanhoCorpo, tamanhoCapitulo, entrelinha, margens, paragrafo, capitular
-].forEach(function(el){
-  el.addEventListener("input", renderPreview);
-  el.addEventListener("change", renderPreview);
-});
-
-renderPreview();
   </script>
 </body>
 </html>
