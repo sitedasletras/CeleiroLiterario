@@ -1,963 +1,156 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pólux — Diagramador de Prosa</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pólux — Diagramador de Prosa (Base Estável)</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Cinzel:wght@400;600;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Cinzel&family=Libre+Baskerville&family=Playfair+Display&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg:#f6f3ee;
-      --card:#ffffff;
-      --config:#cfe4fb;
-      --config-border:#9fc4ea;
-      --paper:#fffdf8;
-      --line:#d8d2ca;
-      --ink:#2f2a25;
-      --muted:#70675f;
-      --shadow:0 2px 10px rgba(0,0,0,.06);
-      --radius:14px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      padding:20px;
-      background:var(--bg);
-      color:var(--ink);
-      font-family:Georgia, serif;
-    }
-    button,input,select,textarea{font:inherit}
-    .wrap{
-      max-width:1220px;
-      margin:0 auto;
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-    }
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .title{
-      font-size:2rem;
-      font-weight:700;
-      line-height:1.1;
-    }
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .btn{
-      border:none;
-      border-radius:10px;
-      padding:10px 14px;
-      font-weight:700;
-      cursor:pointer;
-    }
-    .btn-yellow{background:#d8b622;color:#2d2600}
-    .btn-soft{background:#ece7df;color:#2f2a25}
-    .btn-red{background:#b63131;color:#fff}
-    .btn-green{background:#1f6f43;color:#fff}
-    .btn-blue{background:#356ea8;color:#fff}
+<style>
+body{
+  margin:0;
+  padding:24px;
+  background:#f6f3ee;
+  font-family:Georgia, serif;
+}
 
-    .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:16px;
-    }
-    .config-card{
-      background:var(--config);
-      border-color:var(--config-border);
-    }
-    .card h3{
-      margin:0 0 12px 0;
-      font-size:1.14rem;
-    }
-    .upload-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-      margin-bottom:8px;
-    }
-    .upload-note,.note{
-      color:var(--muted);
-      font-size:.92rem;
-      line-height:1.35;
-    }
+textarea{
+  width:100%;
+  min-height:260px;
+  font-size:16px;
+}
 
-    .editor{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .editor-head{
-      padding:14px 16px;
-      border-bottom:1px solid var(--line);
-      font-size:1.14rem;
-      font-weight:700;
-      background:#fbfaf8;
-    }
-    textarea{
-      width:100%;
-      min-height:320px;
-      border:none;
-      outline:none;
-      resize:vertical;
-      padding:18px 16px 22px;
-      background:transparent;
-      color:var(--ink);
-      font-size:1rem;
-      line-height:1.55;
-      white-space:pre-wrap;
-    }
+.page{
+  width:420px;
+  min-height:610px;
+  margin:24px auto;
+  background:#fffdf8;
+  border:1px solid #ccc;
+  padding:48px;
+  box-shadow:0 6px 14px rgba(0,0,0,.08);
+}
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:12px 14px;
-    }
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width:0;
-    }
-    .field label{
-      font-size:.95rem;
-      color:#33516d;
-      font-weight:700;
-    }
-    .field input[type="range"], .field select, .field input[type="text"]{
-      width:100%;
-    }
+.chapter{
+  font-family:Cinzel, serif;
+  text-align:center;
+  font-size:30px;
+  margin-top:60px;
+}
 
-    .preview-box{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:16px;
-    }
-    .preview-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom:12px;
-    }
-    .preview-head h3{
-      margin:0;
-      font-size:1.14rem;
-    }
-    .preview-mode{
-      color:var(--muted);
-      font-weight:700;
-      font-size:.94rem;
-    }
+.subtitle{
+  font-family:Cinzel, serif;
+  text-align:center;
+  font-style:italic;
+  margin-bottom:32px;
+}
 
-    .nav-preview{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      margin:0 0 14px 0;
-      padding:10px 12px;
-      background:#edf5fc;
-      border:1px solid #d4e5f7;
-      border-radius:12px;
-    }
+p{
+  text-align:justify;
+  text-indent:2em;
+  line-height:1.6;
+}
 
-    .page-stage{
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      min-height:680px;
-      padding:8px 0 12px;
-    }
+.dropcap:first-letter{
+  float:left;
+  font-size:3em;
+  margin-right:6px;
+  font-family:Cinzel;
+}
 
-    .page{
-      background:var(--paper);
-      border:1px solid #d8d2ca;
-      border-radius:8px;
-      box-shadow:0 6px 18px rgba(0,0,0,.07);
-      overflow:hidden;
-      position:relative;
-      flex:0 0 auto;
-    }
-    .page-inner{
-      height:100%;
-      overflow:hidden;
-      position:relative;
-    }
+.controls{
+  background:#e2efff;
+  padding:16px;
+  margin-top:16px;
+}
 
-    .page-header{
-      position:absolute;
-      top:10px;
-      left:18px;
-      right:18px;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      font-size:.74rem;
-      color:#867e77;
-      border-bottom:1px solid #ece5dc;
-      padding-bottom:4px;
-    }
-
-    .page-footer{
-      position:absolute;
-      bottom:10px;
-      left:18px;
-      right:18px;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      font-size:.78rem;
-      color:#867e77;
-      border-top:1px solid #ece5dc;
-      padding-top:4px;
-    }
-
-    .empty{
-      text-align:center;
-      color:var(--muted);
-      padding:80px 20px;
-      font-size:1.04rem;
-    }
-    .work-title{
-      text-align:center;
-      margin:0 0 1.2em 0;
-      line-height:1.2;
-      letter-spacing:.02em;
-      text-transform:uppercase;
-    }
-    .tech-page-title{
-      text-align:center;
-      margin:2.2em 0 1.3em 0;
-      font-weight:700;
-      letter-spacing:.03em;
-      text-transform:uppercase;
-    }
-    .tech-block{
-      margin:0 0 1em 0;
-      text-align:center;
-      line-height:1.5;
-    }
-
-    .chapter-divider{
-      text-align:center;
-      margin:1.8em 0 .8em 0;
-      opacity:.72;
-    }
-    .chapter-line{
-      text-align:center;
-      margin:2.2em 0 .7em 0;
-      line-height:1.2;
-      text-transform:uppercase;
-      letter-spacing:.04em;
-      font-weight:700;
-    }
-    .chapter-subtitle{
-      text-align:center;
-      margin:0 0 1.35em 0;
-      line-height:1.2;
-      opacity:.88;
-      font-style:italic;
-    }
-    .body-p{
-      margin:0 0 1em 0;
-      text-align:justify;
-      text-justify:inter-word;
-      hyphens:auto;
-      -webkit-hyphens:auto;
-      -ms-hyphens:auto;
-      word-break:normal;
-      overflow-wrap:normal;
-      font-style:normal;
-      font-weight:400;
-      cursor:pointer;
-    }
-    .body-p:hover{
-      background:rgba(207,228,251,.35);
-    }
-    .dropcap{
-      text-indent:0 !important;
-      overflow:hidden;
-    }
-    .dropcap::first-letter{
-      float:left;
-      font-size:3.05em;
-      line-height:.88;
-      margin:.02em .06em 0 0;
-      font-family:"Cinzel", serif;
-      font-weight:700;
-    }
-
-    .hint{
-      margin-top:10px;
-      font-size:.88rem;
-      color:#55697d;
-    }
-
-    #measureHost{
-      position:absolute;
-      left:-99999px;
-      top:-99999px;
-      visibility:hidden;
-      pointer-events:none;
-    }
-
-    @media (max-width:760px){
-      body{padding:14px}
-      .title{font-size:1.55rem}
-      .grid{grid-template-columns:1fr}
-      textarea{min-height:280px}
-      .page-stage{min-height:580px}
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="title">Pólux — Diagramador de Prosa</div>
-      <div class="actions">
-        <button class="btn btn-yellow" type="button" onclick="history.back()">Retornar</button>
-        <button class="btn btn-soft" type="button" id="btnExemplo">Carregar exemplo</button>
-        <button class="btn btn-soft" type="button" id="btnLimpar">Limpar</button>
-        <button class="btn btn-blue" type="button" id="btnDownloadHtml">Baixar HTML</button>
-        <button class="btn btn-red" type="button" onclick="window.location.href='index.html'">Sair do sistema</button>
-      </div>
-    </div>
 
-    <div class="card">
-      <h3>Entrada da obra</h3>
-      <div class="upload-row">
-        <input type="file" id="arquivoTexto" accept=".txt,.md,text/plain">
-        <button class="btn btn-green" type="button" id="btnUpload">Upar texto</button>
-        <span id="arquivoNome">Nenhum arquivo carregado</span>
-      </div>
-      <div class="upload-note">O arquivo entra direto na caixa de texto. Depois disso, o autor pode ajustar manualmente se quiser.</div>
-    </div>
+<h2>Pólux Prosa — versão estável paginada</h2>
 
-    <div class="editor">
-      <div class="editor-head">Caixa de texto</div>
-      <textarea id="inputText" placeholder="Cole aqui sua obra ou use o botão de upar texto."></textarea>
-    </div>
+<textarea id="inputText" placeholder="Cole o texto aqui..."></textarea>
 
-    <div class="card config-card">
-      <h3>Configuração editorial</h3>
-      <div class="grid">
-        <div class="field">
-          <label for="formato">Formato</label>
-          <select id="formato">
-            <option value="a5">A5</option>
-            <option value="16x23">16x23</option>
-            <option value="6x9">6" x 9"</option>
-            <option value="epub">ePub</option>
-          </select>
-        </div>
+<div class="controls">
+Formato:
+<select id="format">
+<option value="a5">A5</option>
+<option value="16x23">16x23</option>
+<option value="6x9">6x9</option>
+<option value="epub">ePub</option>
+</select>
 
-        <div class="field">
-          <label for="modoInicio">Primeira linha da obra</label>
-          <select id="modoInicio">
-            <option value="titulo">Título da obra</option>
-            <option value="capitulo1" selected>Capítulo 1</option>
-          </select>
-        </div>
+Fonte capítulo:
+<select id="chapterFont">
+<option value="Cinzel">Cinzel</option>
+<option value="Playfair Display">Playfair Display</option>
+<option value="Libre Baskerville">Libre Baskerville</option>
+</select>
+</div>
 
-        <div class="field">
-          <label for="tituloObra">Título da obra</label>
-          <input id="tituloObra" type="text" value="Título da obra">
-        </div>
-
-        <div class="field">
-          <label for="autorObra">Autor</label>
-          <input id="autorObra" type="text" value="Nome do autor">
-        </div>
-
-        <div class="field">
-          <label for="fonteCorpo">Fonte do corpo</label>
-          <select id="fonteCorpo">
-            <option value="Georgia" selected>Georgia</option>
-            <option value="EB Garamond">EB Garamond</option>
-            <option value="Libre Baskerville">Libre Baskerville</option>
-            <option value="Times New Roman">Times New Roman</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="fonteCapitulo">Fonte do capítulo</label>
-          <select id="fonteCapitulo">
-            <option value="Cinzel" selected>Cinzel</option>
-            <option value="Playfair Display">Playfair Display</option>
-            <option value="Libre Baskerville">Libre Baskerville</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="tamanhoCorpo">Tamanho do corpo</label>
-          <input type="range" id="tamanhoCorpo" min="12" max="22" step="0.5" value="14">
-        </div>
-
-        <div class="field">
-          <label for="tamanhoCapitulo">Tamanho do capítulo</label>
-          <input type="range" id="tamanhoCapitulo" min="18" max="56" step="1" value="30">
-        </div>
-
-        <div class="field">
-          <label for="entrelinha">Entrelinha</label>
-          <select id="entrelinha">
-            <option value="1.2">Compacta</option>
-            <option value="1.4">Normal</option>
-            <option value="1.6" selected>Confortável</option>
-            <option value="1.8">Arejada</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="margens">Margens</label>
-          <select id="margens">
-            <option value="estreita">Estreitas</option>
-            <option value="normal">Normais</option>
-            <option value="ampla" selected>Amplas</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="paragrafo">Parágrafos</label>
-          <select id="paragrafo">
-            <option value="recuo" selected>Recuo tradicional</option>
-            <option value="espaco">Espaço entre parágrafos</option>
-            <option value="reto">Sem recuo</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="capitular">Letra capitular</label>
-          <select id="capitular">
-            <option value="on" selected>Ativada</option>
-            <option value="off">Desativada</option>
-          </select>
-        </div>
-      </div>
-      <div class="note">Base estável: Georgia. As demais fontes do corpo podem ser calibradas depois com referência nela.</div>
-    </div>
-
-    <div class="preview-box">
-      <div class="preview-head">
-        <h3>Prévia editorial</h3>
-        <div class="preview-mode" id="previewMode">Modo impresso · A5</div>
-      </div>
-
-      <div class="nav-preview">
-        <div class="actions">
-          <button class="btn btn-soft" type="button" id="btnPrev">Página anterior</button>
-          <button class="btn btn-soft" type="button" id="btnNext">Próxima página</button>
-        </div>
-        <div id="pageCounter">Página 1 de 1</div>
-      </div>
-
-      <div class="page-stage" id="pageStage"></div>
-      <div class="hint">Dica: clique em um parágrafo da prévia para localizar esse trecho na caixa de texto e corrigir mais rápido.</div>
-    </div>
-  </div>
-
-  <div id="measureHost"></div>
+<div id="preview"></div>
 
 <script>
-const inputText = document.getElementById("inputText");
-const arquivoTexto = document.getElementById("arquivoTexto");
-const arquivoNome = document.getElementById("arquivoNome");
-const btnUpload = document.getElementById("btnUpload");
-const btnExemplo = document.getElementById("btnExemplo");
-const btnLimpar = document.getElementById("btnLimpar");
-const btnDownloadHtml = document.getElementById("btnDownloadHtml");
 
-const formato = document.getElementById("formato");
-const modoInicio = document.getElementById("modoInicio");
-const tituloObra = document.getElementById("tituloObra");
-const autorObra = document.getElementById("autorObra");
-const fonteCorpo = document.getElementById("fonteCorpo");
-const fonteCapitulo = document.getElementById("fonteCapitulo");
-const tamanhoCorpo = document.getElementById("tamanhoCorpo");
-const tamanhoCapitulo = document.getElementById("tamanhoCapitulo");
-const entrelinha = document.getElementById("entrelinha");
-const margens = document.getElementById("margens");
-const paragrafo = document.getElementById("paragrafo");
-const capitular = document.getElementById("capitular");
+const preview = document.getElementById("preview");
 
-const previewMode = document.getElementById("previewMode");
-const pageStage = document.getElementById("pageStage");
-const measureHost = document.getElementById("measureHost");
-const btnPrev = document.getElementById("btnPrev");
-const btnNext = document.getElementById("btnNext");
-const pageCounter = document.getElementById("pageCounter");
+function paginate(){
 
-let renderedPages = [];
-let currentPageIndex = 0;
+  preview.innerHTML="";
 
-const BODY_FONT_METRICS = {
-  "Georgia": { bodyAdjust: 0, compact: 1.20, normal: 1.40, comfort: 1.58, airy: 1.80, paraGap: 1.45, stack: "Georgia, serif" },
-  "EB Garamond": { bodyAdjust: 0.10, compact: 1.22, normal: 1.42, comfort: 1.62, airy: 1.84, paraGap: 1.45, stack: "'EB Garamond', serif" },
-  "Libre Baskerville": { bodyAdjust: 0, compact: 1.22, normal: 1.42, comfort: 1.62, airy: 1.84, paraGap: 1.45, stack: "'Libre Baskerville', serif" },
-  "Times New Roman": { bodyAdjust: 0, compact: 1.18, normal: 1.38, comfort: 1.56, airy: 1.76, paraGap: 1.45, stack: "'Times New Roman', serif" }
-};
+  const text=document.getElementById("inputText").value;
+  const lines=text.split("\n");
 
-const CHAPTER_FONT_METRICS = {
-  "Cinzel": { sizeAdjust: 0, subtitleAdjust: -10, dividerScale: .34, weight: 700, letterSpacing: '.04em', stack: "'Cinzel', serif" },
-  "Playfair Display": { sizeAdjust: 5, subtitleAdjust: -6, dividerScale: .40, weight: 700, letterSpacing: '.01em', stack: "'Playfair Display', serif" },
-  "Libre Baskerville": { sizeAdjust: 2, subtitleAdjust: -8, dividerScale: .36, weight: 700, letterSpacing: '.03em', stack: "'Libre Baskerville', serif" }
-};
+  let page=document.createElement("div");
+  page.className="page";
 
-function pageConfig(){
-  const map = {
-    a5: { w:430, h:620, pad:{ estreita:28, normal:38, ampla:48 }, name:"Modo impresso · A5", indent:"2em" },
-    "16x23": { w:500, h:720, pad:{ estreita:34, normal:46, ampla:58 }, name:"Modo impresso · 16x23", indent:"1.8em" },
-    "6x9": { w:540, h:780, pad:{ estreita:38, normal:50, ampla:62 }, name:'Modo impresso · 6" x 9"', indent:"1.7em" },
-    epub: { w:760, h:760, pad:{ estreita:36, normal:46, ampla:58 }, name:"Modo digital · ePub", indent:"1.5em" }
-  };
-  return map[formato.value];
-}
+  preview.appendChild(page);
 
-function lineHeightValue(){
-  const body = BODY_FONT_METRICS[fonteCorpo.value] || BODY_FONT_METRICS["Georgia"];
-  if (entrelinha.value === "1.2") return body.compact;
-  if (entrelinha.value === "1.4") return body.normal;
-  if (entrelinha.value === "1.8") return body.airy;
-  return body.comfort;
-}
+  let contentHeight=0;
 
-function paragraphConfig(){
-  const cfg = pageConfig();
-  const body = BODY_FONT_METRICS[fonteCorpo.value] || BODY_FONT_METRICS["Georgia"];
-  if (paragrafo.value === "espaco") return { indent:"0", margin:`0 0 ${body.paraGap}em 0` };
-  if (paragrafo.value === "reto") return { indent:"0", margin:"0 0 .25em 0" };
-  return { indent:cfg.indent, margin:"0 0 1em 0" };
-}
+  lines.forEach(line=>{
 
-function isChapterLine(line){
-  return /^cap[ií]tulo\s*\d+$/i.test((line || "").trim());
-}
-function isBlank(line){
-  return !(line && line.trim());
-}
+    let el;
 
-function parseChapterStructure(texto){
-  const lines = texto.replace(/\r/g, "").split("\n");
-  const chapters = [];
-  let i = 0;
-
-  while (i < lines.length && isBlank(lines[i])) i++;
-
-  let current = null;
-
-  if (modoInicio.value === "titulo" && i < lines.length && !isChapterLine(lines[i])) {
-    current = { number: null, title: lines[i].trim(), paras: [] };
-    chapters.push(current);
-    i++;
-  }
-
-  while (i < lines.length) {
-    while (i < lines.length && isBlank(lines[i])) i++;
-    if (i >= lines.length) break;
-
-    if (isChapterLine(lines[i])) {
-      const chapterNumber = lines[i].trim();
-      i++;
-      while (i < lines.length && isBlank(lines[i])) i++;
-      const chapterTitle = i < lines.length && !isBlank(lines[i]) && !isChapterLine(lines[i]) ? lines[i].trim() : "";
-      if (chapterTitle) i++;
-      current = { number: chapterNumber, title: chapterTitle, paras: [] };
-      chapters.push(current);
-      continue;
+    if(line.toLowerCase().startsWith("capítulo")){
+      el=document.createElement("div");
+      el.className="chapter";
     }
 
-    if (!current && modoInicio.value === "capitulo1") {
-      current = { number: "Capítulo 1", title: lines[i].trim(), paras: [] };
-      chapters.push(current);
-      i++;
-      continue;
+    else if(line.trim()===""){
+      return;
     }
 
-    if (!current) {
-      current = { number: null, title: "", paras: [] };
-      chapters.push(current);
+    else{
+      el=document.createElement("p");
+      el.className="dropcap";
     }
 
-    if (!isBlank(lines[i])) current.paras.push(lines[i].trim());
-    i++;
-  }
+    el.textContent=line;
 
-  return chapters;
-}
+    page.appendChild(el);
 
-function makeTechPages(chapters){
-  const title = tituloObra.value.trim() || "Título da obra";
-  const author = autorObra.value.trim() || "Nome do autor";
-  const sumario = chapters
-    .filter(ch => ch.number)
-    .map((ch, idx) => `${ch.number} — ${ch.title || "Sem subtítulo"} ...... ${idx + 5}`);
+    contentHeight=page.scrollHeight;
 
-  return [
-    {
-      headerLeft:"",
-      headerRight:"",
-      footer:"1",
-      blocks:[
-        {type:"tech-title", text:title},
-        {type:"tech-center", text:author},
-        {type:"tech-center", text:"Folha de rosto"}
-      ]
-    },
-    {
-      headerLeft:title,
-      headerRight:"",
-      footer:"2",
-      blocks:[
-        {type:"tech-section", text:"Prefácio"},
-        {type:"tech-paragraph", text:"Espaço reservado para prefácio ou apresentação da obra."}
-      ]
-    },
-    {
-      headerLeft:title,
-      headerRight:"",
-      footer:"3",
-      blocks:[
-        {type:"tech-section", text:"Sumário"},
-        ...sumario.map(line => ({type:"tech-list", text:line}))
-      ]
-    }
-  ];
-}
+    if(contentHeight>580){
 
-function makeChapterBlocks(chapters){
-  const blocks = [];
-  chapters.forEach(ch => {
-    if (ch.number) {
-      blocks.push({ type:"chapter-divider" });
-      blocks.push({ type:"chapter-line", text:ch.number });
-      if (ch.title) blocks.push({ type:"chapter-subtitle", text:ch.title });
-    } else if (ch.title) {
-      blocks.push({ type:"work-title", text:ch.title });
+      page=document.createElement("div");
+      page.className="page";
+      preview.appendChild(page);
+
     }
 
-    let firstParagraph = true;
-    ch.paras.forEach(p => {
-      blocks.push({
-        type:"paragraph",
-        text:p,
-        dropcap:firstParagraph && capitular.value === "on"
-      });
-      firstParagraph = false;
-    });
   });
 
-  blocks.push({ type:"chapter-divider" });
-  blocks.push({ type:"tech-section", text:"Biografia" });
-  blocks.push({ type:"tech-paragraph", text:"Espaço reservado para biografia final do autor." });
-
-  return blocks;
 }
 
-function buildBlockNode(block){
-  const bodyMeta = BODY_FONT_METRICS[fonteCorpo.value] || BODY_FONT_METRICS["Georgia"];
-  const chapterMeta = CHAPTER_FONT_METRICS[fonteCapitulo.value] || CHAPTER_FONT_METRICS["Cinzel"];
-  const bodySize = Number(tamanhoCorpo.value) + bodyMeta.bodyAdjust;
-  const chapterSize = Number(tamanhoCapitulo.value) + chapterMeta.sizeAdjust;
-  const subtitleSize = Math.max(14, chapterSize + chapterMeta.subtitleAdjust);
-  const dividerSize = Math.max(12, chapterSize * chapterMeta.dividerScale);
-  const pCfg = paragraphConfig();
-  const lineHt = lineHeightValue();
-  let el;
+document.getElementById("inputText").addEventListener("input",paginate);
 
-  if (block.type === "chapter-divider") {
-    el = document.createElement("div");
-    el.className = "chapter-divider";
-    el.textContent = "❦";
-    el.style.fontFamily = chapterMeta.stack;
-    el.style.fontSize = dividerSize + "pt";
-    return el;
-  }
-
-  if (block.type === "work-title") {
-    el = document.createElement("div");
-    el.className = "work-title";
-    el.textContent = block.text;
-    el.style.fontFamily = chapterMeta.stack;
-    el.style.fontSize = Math.max(24, chapterSize + 2) + "pt";
-    el.style.letterSpacing = chapterMeta.letterSpacing;
-    el.style.fontWeight = chapterMeta.weight;
-    return el;
-  }
-
-  if (block.type === "chapter-line") {
-    el = document.createElement("div");
-    el.className = "chapter-line";
-    el.textContent = block.text;
-    el.style.fontFamily = chapterMeta.stack;
-    el.style.fontSize = chapterSize + "pt";
-    el.style.letterSpacing = chapterMeta.letterSpacing;
-    el.style.fontWeight = chapterMeta.weight;
-    return el;
-  }
-
-  if (block.type === "chapter-subtitle") {
-    el = document.createElement("div");
-    el.className = "chapter-subtitle";
-    el.textContent = block.text;
-    el.style.fontFamily = chapterMeta.stack;
-    el.style.fontSize = subtitleSize + "pt";
-    return el;
-  }
-
-  if (block.type === "tech-title") {
-    el = document.createElement("div");
-    el.className = "work-title";
-    el.textContent = block.text;
-    el.style.fontFamily = chapterMeta.stack;
-    el.style.fontSize = Math.max(28, chapterSize + 4) + "pt";
-    return el;
-  }
-
-  if (block.type === "tech-center") {
-    el = document.createElement("div");
-    el.className = "tech-block";
-    el.textContent = block.text;
-    el.style.fontFamily = bodyMeta.stack;
-    el.style.fontSize = bodySize + "pt";
-    return el;
-  }
-
-  if (block.type === "tech-section") {
-    el = document.createElement("div");
-    el.className = "tech-page-title";
-    el.textContent = block.text;
-    el.style.fontFamily = chapterMeta.stack;
-    el.style.fontSize = Math.max(20, chapterSize - 2) + "pt";
-    return el;
-  }
-
-  if (block.type === "tech-list") {
-    el = document.createElement("div");
-    el.className = "tech-block";
-    el.textContent = block.text;
-    el.style.textAlign = "left";
-    el.style.fontFamily = bodyMeta.stack;
-    el.style.fontSize = bodySize + "pt";
-    return el;
-  }
-
-  if (block.type === "tech-paragraph") {
-    el = document.createElement("p");
-    el.className = "body-p";
-    el.textContent = block.text;
-    el.style.fontFamily = bodyMeta.stack;
-    el.style.fontSize = bodySize + "pt";
-    el.style.lineHeight = String(lineHt);
-    el.style.textIndent = paragraphConfig().indent;
-    el.style.margin = paragraphConfig().margin;
-    return el;
-  }
-
-  el = document.createElement("p");
-  el.className = block.dropcap ? "body-p dropcap" : "body-p";
-  el.textContent = block.text;
-  el.style.fontFamily = bodyMeta.stack;
-  el.style.fontSize = bodySize + "pt";
-  el.style.lineHeight = String(lineHt);
-  el.style.textIndent = block.dropcap ? "0" : pCfg.indent;
-  el.style.margin = pCfg.margin;
-  el.dataset.locate = block.text;
-  el.addEventListener("click", function(){
-    locateInTextarea(block.text);
-  });
-  return el;
-}
-
-function createPageShell(cfg, headerLeft="", headerRight="", footer=""){
-  const page = document.createElement("div");
-  page.className = "page";
-  page.style.width = cfg.w + "px";
-  page.style.height = cfg.h + "px";
-
-  const header = document.createElement("div");
-  header.className = "page-header";
-  header.innerHTML = `<span>${headerLeft}</span><span>${headerRight}</span>`;
-
-  const inner = document.createElement("div");
-  inner.className = "page-inner";
-  inner.style.padding = (cfg.pad[margens.value] + 16) + "px " + cfg.pad[margens.value] + "px " + (cfg.pad[margens.value] + 26) + "px";
-
-  const footerEl = document.createElement("div");
-  footerEl.className = "page-footer";
-  footerEl.textContent = footer;
-
-  page.appendChild(header);
-  page.appendChild(inner);
-  page.appendChild(footerEl);
-
-  return { page, inner };
-}
-
-function locateInTextarea(snippet){
-  const text = inputText.value;
-  const idx = text.indexOf(snippet);
-  inputText.focus();
-  if (idx >= 0) {
-    inputText.setSelectionRange(idx, idx + snippet.length);
-    inputText.scrollTop = (inputText.scrollHeight * idx) / Math.max(1, text.length);
-  }
-}
-
-function paginateContent(chapters){
-  const cfg = pageConfig();
-  previewMode.textContent = cfg.name;
-  pageStage.innerHTML = "";
-  measureHost.innerHTML = "";
-  renderedPages = [];
-
-  if (!chapters.length) {
-    const empty = createPageShell(cfg, "", "", "");
-    empty.inner.innerHTML = '<div class="empty">A prévia aparece aqui assim que o texto entrar na caixa.</div>';
-    renderedPages.push(empty.page);
-    showPage(0);
-    return;
-  }
-
-  const techPages = makeTechPages(chapters);
-  techPages.forEach(tp => {
-    const shell = createPageShell(cfg, tp.headerLeft, tp.headerRight, tp.footer);
-    tp.blocks.forEach(block => shell.inner.appendChild(buildBlockNode(block)));
-    renderedPages.push(shell.page);
-  });
-
-  const blocks = makeChapterBlocks(chapters);
-  const measurerShell = createPageShell(cfg, "", "", "");
-  measureHost.appendChild(measurerShell.page);
-
-  let pageNumber = techPages.length + 1;
-  let currentChapter = "";
-  let currentTitle = "";
-  let current = createPageShell(cfg, tituloObra.value.trim() || "Título da obra", "", String(pageNumber));
-  const maxHeight = cfg.h - 74 - 40 - ((cfg.pad[margens.value] + 16) + (cfg.pad[margens.value] + 26));
-
-  blocks.forEach(block => {
-    if (block.type === "chapter-line") currentChapter = block.text;
-    if (block.type === "chapter-subtitle") currentTitle = block.text;
-
-    const measureNode = buildBlockNode(block);
-    measurerShell.inner.innerHTML = "";
-    measurerShell.inner.appendChild(measureNode);
-    const nodeHeight = Math.ceil(measureNode.offsetHeight);
-
-    if (current.inner.offsetHeight + nodeHeight > maxHeight && current.inner.childNodes.length > 0) {
-      renderedPages.push(current.page);
-      pageNumber += 1;
-      current = createPageShell(cfg, currentChapter || (tituloObra.value.trim() || "Título da obra"), currentTitle || "", String(pageNumber));
-    }
-
-    current.inner.appendChild(buildBlockNode(block));
-    current.page.querySelector(".page-header").innerHTML = `<span>${currentChapter || (tituloObra.value.trim() || "Título da obra")}</span><span>${currentTitle || ""}</span>`;
-  });
-
-  renderedPages.push(current.page);
-  currentPageIndex = Math.min(currentPageIndex, renderedPages.length - 1);
-  showPage(currentPageIndex);
-}
-
-function showPage(index){
-  if (!renderedPages.length) return;
-  currentPageIndex = Math.max(0, Math.min(index, renderedPages.length - 1));
-  pageStage.innerHTML = "";
-  pageStage.appendChild(renderedPages[currentPageIndex]);
-  pageCounter.textContent = `Página ${currentPageIndex + 1} de ${renderedPages.length}`;
-  btnPrev.disabled = currentPageIndex === 0;
-  btnNext.disabled = currentPageIndex === renderedPages.length - 1;
-}
-
-btnPrev.addEventListener("click", () => showPage(currentPageIndex - 1));
-btnNext.addEventListener("click", () => showPage(currentPageIndex + 1));
-
-function renderPreview(){
-  const texto = inputText.value.trim();
-  if (!texto) {
-    paginateContent([]);
-    return;
-  }
-  const chapters = parseChapterStructure(texto);
-  paginateContent(chapters);
-}
-
-btnUpload.addEventListener("click", function(){
-  const file = arquivoTexto.files[0];
-  if (!file) {
-    arquivoNome.textContent = "Escolha um arquivo .txt primeiro";
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = function(e){
-    inputText.value = String(e.target.result || "");
-    arquivoNome.textContent = file.name;
-    currentPageIndex = 0;
-    renderPreview();
-  };
-  reader.onerror = function(){
-    arquivoNome.textContent = "Não foi possível ler este arquivo";
-  };
-  reader.readAsText(file, "UTF-8");
-});
-
-arquivoTexto.addEventListener("change", function(){
-  arquivoNome.textContent = arquivoTexto.files[0] ? arquivoTexto.files[0].name : "Nenhum arquivo carregado";
-});
-
-btnExemplo.addEventListener("click", function(){
-  inputText.value = 'Capítulo 1\nO Degrau e a Mochila\nA praça respirava como um animal ferido.\nO som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.\nSacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.\nTudo parecia seguir um ritmo que não incluía pausas.\n\nCapítulo 2\nA Primeira Manhã\nA manhã revelou o que a noite havia escondido.\nHavia mais gente do que ele imaginava.\nHomens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa.\n\nCapítulo 3\nRegras Invisíveis\nA terceira noite já não parecia acidente.\nA segunda tinha sido resistência.\nA terceira começou a parecer início de padrão.\nA mulher dos cabelos grisalhos se chamava Lúcia.';
-  currentPageIndex = 0;
-  renderPreview();
-});
-
-btnLimpar.addEventListener("click", function(){
-  inputText.value = "";
-  arquivoTexto.value = "";
-  arquivoNome.textContent = "Nenhum arquivo carregado";
-  currentPageIndex = 0;
-  renderPreview();
-});
-
-btnDownloadHtml.addEventListener("click", function(){
-  const blob = new Blob([document.documentElement.outerHTML], {type:"text/html;charset=utf-8"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "polux_diagramador_prosa.html";
-  a.click();
-  URL.revokeObjectURL(a.href);
-});
-
-[
-  inputText, formato, modoInicio, tituloObra, autorObra, fonteCorpo, fonteCapitulo,
-  tamanhoCorpo, tamanhoCapitulo, entrelinha, margens, paragrafo, capitular
-].forEach(function(el){
-  el.addEventListener("input", renderPreview);
-  el.addEventListener("change", renderPreview);
-});
-
-renderPreview();
 </script>
+
 </body>
 </html>
