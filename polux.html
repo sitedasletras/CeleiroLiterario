@@ -1,628 +1,245 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pólux — Prosa</title>
-  <style>
-    :root{
-      --bg:#efe6d6;
-      --panel:#f8f4ec;
-      --ink:#1d1d1d;
-      --muted:#6f675b;
-      --line:#cdbfa8;
-      --accent:#7f6241;
-      --shadow:0 12px 28px rgba(0,0,0,.10);
-      --page-w:148mm;
-      --page-h:210mm;
-      --font-main:"Georgia","Times New Roman",serif;
-      --font-size:12pt;
-      --line-height:1.55;
-      --margin-top:18mm;
-      --margin-bottom:18mm;
-      --margin-inner:20mm;
-      --margin-outer:15mm;
-      --header-space:8mm;
-      --footer-space:10mm;
-    }
+<meta charset="UTF-8">
+<title>Pólux — Prosa</title>
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Arial,Helvetica,sans-serif;
-      background:linear-gradient(180deg,#ebdfca 0%, #e5d7bf 100%);
-      color:var(--ink);
-    }
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Cinzel&display=swap" rel="stylesheet">
 
-    .app{
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      gap:18px;
-      padding:18px;
-    }
+<style>
 
-    .topbar{
-      background:rgba(255,255,255,.45);
-      border:1px solid rgba(120,94,58,.18);
-      border-radius:18px;
-      padding:16px 18px;
-      box-shadow:var(--shadow);
-      backdrop-filter: blur(4px);
-    }
+body{
+background:#f7f5f2;
+font-family:'EB Garamond',serif;
+margin:0;
+padding:30px;
+}
 
-    .topbar h1{
-      margin:0 0 8px;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:28px;
-      font-weight:700;
-      letter-spacing:.2px;
-    }
+/* topo */
 
-    .topbar p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.45;
-    }
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
 
-    .controls{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr .8fr .8fr auto auto;
-      gap:12px;
-      align-items:end;
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:16px;
-      box-shadow:var(--shadow);
-    }
+h1{
+font-size:28px;
+}
 
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width:0;
-    }
+/* layout */
 
-    .field label{
-      font-size:13px;
-      font-weight:700;
-      color:#433626;
-    }
+.container{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:30px;
+}
 
-    .field input[type="text"],
-    .field select,
-    .field input[type="file"]{
-      width:100%;
-      border:1px solid #bcae97;
-      background:#fffdf9;
-      color:var(--ink);
-      border-radius:12px;
-      padding:11px 12px;
-      font-size:14px;
-      outline:none;
-    }
+/* caixa texto */
 
-    .btn{
-      border:none;
-      border-radius:12px;
-      padding:12px 14px;
-      font-size:14px;
-      font-weight:700;
-      cursor:pointer;
-      box-shadow:0 8px 18px rgba(0,0,0,.08);
-    }
+textarea{
+width:100%;
+height:520px;
+padding:15px;
+font-size:18px;
+border-radius:10px;
+border:1px solid #ccc;
+resize:none;
+}
 
-    .btn-primary{
-      background:#3f6f4d;
-      color:#fff;
-    }
+/* preview */
 
-    .btn-secondary{
-      background:#b48f5e;
-      color:#fff;
-    }
+.preview{
+background:white;
+border-radius:10px;
+padding:25px;
+height:520px;
+overflow:auto;
+box-shadow:0 2px 6px rgba(0,0,0,0.05);
+}
 
-    .workspace{
-      display:grid;
-      grid-template-columns: minmax(320px, 42%) 1fr;
-      gap:18px;
-      align-items:start;
-    }
+/* página simulada */
 
-    .editor-panel,
-    .preview-panel{
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:20px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
+.page{
+width:48%;
+display:inline-block;
+vertical-align:top;
+padding:25px;
+height:440px;
+overflow:hidden;
+}
 
-    .panel-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      padding:14px 16px;
-      border-bottom:1px solid var(--line);
-      background:rgba(255,255,255,.45);
-    }
+/* letra capitular */
 
-    .panel-head h2{
-      margin:0;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:22px;
-    }
+.dropcap:first-letter{
+float:left;
+font-size:52px;
+line-height:42px;
+padding-right:8px;
+font-family:'Cinzel',serif;
+}
 
-    .panel-head small{
-      color:var(--muted);
-      font-size:12px;
-      display:block;
-      margin-top:2px;
-    }
+/* separador capítulo */
 
-    .editor-wrap{
-      padding:14px;
-    }
+.chapter-divider{
+text-align:center;
+margin:40px 0;
+font-family:'Cinzel',serif;
+font-size:22px;
+letter-spacing:3px;
+opacity:.5;
+}
 
-    #textoEntrada{
-      width:100%;
-      min-height:72vh;
-      resize:vertical;
-      border:1px solid #bcae97;
-      background:#fffdf9;
-      border-radius:16px;
-      padding:16px;
-      font-family:var(--font-main);
-      font-size:16px;
-      line-height:1.65;
-      color:var(--ink);
-      outline:none;
-      white-space:pre-wrap;
-    }
+.chapter-divider::before{
+content:"❦";
+}
 
-    .editor-note{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.45;
-    }
+/* título capítulo */
 
-    .preview-shell{
-      padding:18px;
-      overflow:auto;
-      background:
-        radial-gradient(circle at center, rgba(127,98,65,.10) 0%, rgba(127,98,65,.05) 38%, rgba(127,98,65,.02) 62%, transparent 70%),
-        linear-gradient(180deg,#ece1cf 0%,#e2d3b8 100%);
-    }
+.chapter-title{
+font-size:26px;
+text-align:center;
+margin-top:40px;
+margin-bottom:25px;
+font-family:'Cinzel',serif;
+}
 
-    .book{
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      gap:0;
-      padding:12px;
-      min-height:78vh;
-    }
-
-    .page{
-      position:relative;
-      width:var(--page-w);
-      height:var(--page-h);
-      background:#fffefb;
-      box-shadow:
-        0 12px 28px rgba(0,0,0,.12),
-        inset 0 0 0 1px rgba(122,100,68,.10);
-      overflow:hidden;
-      flex:0 0 auto;
-    }
-
-    .page.left{
-      border-radius:14px 0 0 14px;
-    }
-
-    .page.right{
-      border-radius:0 14px 14px 0;
-    }
-
-    .gutter{
-      width:14px;
-      height:var(--page-h);
-      background:linear-gradient(90deg, rgba(113,88,57,.28), rgba(255,255,255,.6), rgba(113,88,57,.22));
-      box-shadow: inset 0 0 10px rgba(0,0,0,.10);
-      flex:0 0 auto;
-    }
-
-    .page-inner{
-      position:absolute;
-      inset:0;
-      padding-top:calc(var(--margin-top) + var(--header-space));
-      padding-bottom:calc(var(--margin-bottom) + var(--footer-space));
-      font-family:var(--font-main);
-      font-size:var(--font-size);
-      line-height:var(--line-height);
-      color:var(--ink);
-    }
-
-    .page.left .page-inner{
-      padding-left:var(--margin-outer);
-      padding-right:var(--margin-inner);
-    }
-
-    .page.right .page-inner{
-      padding-left:var(--margin-inner);
-      padding-right:var(--margin-outer);
-    }
-
-    .header, .footer{
-      position:absolute;
-      left:0;
-      right:0;
-      text-align:center;
-      color:#5e5347;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:10pt;
-      letter-spacing:.2px;
-      pointer-events:none;
-    }
-
-    .header{ top:10mm; }
-    .footer{ bottom:8mm; }
-
-    .content{
-      height:100%;
-      overflow:hidden;
-      word-break:normal;
-      overflow-wrap:break-word;
-    }
-
-    .content p{
-      margin:0 0 0.95em 0;
-      text-align:justify;
-      text-indent:1.25em;
-    }
-
-    .content p:first-child{
-      margin-top:0;
-    }
-
-    .content p.no-indent{
-      text-indent:0;
-    }
-
-    .empty-state{
-      color:#7c7265;
-      font-style:italic;
-    }
-
-    .status{
-      font-size:13px;
-      color:#5f523f;
-      background:#f5ecde;
-      border:1px solid #d8c7ad;
-      border-radius:999px;
-      padding:8px 12px;
-      white-space:nowrap;
-    }
-
-    @media (max-width: 1200px){
-      .controls{
-        grid-template-columns:1fr 1fr 1fr;
-      }
-      .workspace{
-        grid-template-columns:1fr;
-      }
-      .book{
-        min-width:max-content;
-      }
-    }
-
-    @media (max-width: 740px){
-      .controls{
-        grid-template-columns:1fr;
-      }
-      .topbar h1{
-        font-size:24px;
-      }
-      #textoEntrada{
-        min-height:50vh;
-      }
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <div class="app">
-    <section class="topbar">
-      <h1>Pólux — Prosa</h1>
-      <p>Upload direto da obra para a caixa de texto. A caixa continua livre para edição manual. A prévia no canto direito funciona como livro aberto, respeitando o formato escolhido.</p>
-    </section>
 
-    <section class="controls">
-      <div class="field">
-        <label for="arquivoObra">Obra</label>
-        <input type="file" id="arquivoObra" accept=".txt,.md,.html,.doc,.docx" />
-      </div>
+<header>
+<h1>Pólux — Prosa</h1>
 
-      <div class="field">
-        <label for="tituloLivro">Título</label>
-        <input type="text" id="tituloLivro" value="Prévia da Obra" />
-      </div>
+<div>
 
-      <div class="field">
-        <label for="autorLivro">Autor</label>
-        <input type="text" id="autorLivro" value="Autor" />
-      </div>
+<button onclick="limparTexto()">Limpar texto</button>
 
-      <div class="field">
-        <label for="formatoLivro">Formato</label>
-        <select id="formatoLivro">
-          <option value="A5" selected>A5</option>
-          <option value="16x23">16x23</option>
-          <option value="6x9">6x9</option>
-          <option value="A4">A4</option>
-        </select>
-      </div>
+<button onclick="carregarExemplo()">Carregar exemplo</button>
 
-      <button class="btn btn-primary" id="limparTexto" type="button">Limpar texto</button>
-      <button class="btn btn-secondary" id="carregarExemplo" type="button">Carregar exemplo</button>
-    </section>
+</div>
+</header>
 
-    <section class="workspace">
-      <article class="editor-panel">
-        <div class="panel-head">
-          <div>
-            <h2>Caixa de texto</h2>
-            <small>O upload entra direto aqui. Depois disso, esta área vira apoio de edição manual.</small>
-          </div>
-          <div class="status" id="statusUpload">Aguardando obra</div>
-        </div>
-        <div class="editor-wrap">
-          <textarea id="textoEntrada" placeholder="Quando a obra for enviada, o texto aparecerá aqui automaticamente.&#10;&#10Depois você pode corrigir, cortar, ajustar ou completar trechos livremente."></textarea>
-          <div class="editor-note">
-            O texto enviado entra diretamente nesta caixa. Não existe etapa separada obrigatória. Qualquer alteração feita aqui atualiza a prévia automaticamente.
-          </div>
-        </div>
-      </article>
+<div class="container">
 
-      <article class="preview-panel">
-        <div class="panel-head">
-          <div>
-            <h2>Prévia editorial</h2>
-            <small>Livro aberto em duas páginas, seguindo o formato escolhido.</small>
-          </div>
-          <div class="status" id="statusFormato">Formato: A5</div>
-        </div>
+<!-- entrada -->
 
-        <div class="preview-shell">
-          <div class="book" id="book">
-            <div class="page left">
-              <div class="header" id="headerLeft">Prévia da Obra</div>
-              <div class="page-inner">
-                <div class="content" id="pageLeft">
-                  <div class="empty-state">A prévia aparecerá aqui assim que a obra for enviada ou digitada.</div>
-                </div>
-              </div>
-              <div class="footer" id="footerLeft">1</div>
-            </div>
+<div>
 
-            <div class="gutter"></div>
+<h3>Caixa de texto</h3>
 
-            <div class="page right">
-              <div class="header" id="headerRight">Autor</div>
-              <div class="page-inner">
-                <div class="content" id="pageRight">
-                  <div class="empty-state">A segunda página acompanhará a continuidade do texto.</div>
-                </div>
-              </div>
-              <div class="footer" id="footerRight">2</div>
-            </div>
-          </div>
-        </div>
-      </article>
-    </section>
-  </div>
+<textarea id="entradaTexto"
+placeholder="Cole aqui sua obra..."></textarea>
 
-  <script>
-    const textoEntrada = document.getElementById('textoEntrada');
-    const arquivoObra = document.getElementById('arquivoObra');
-    const tituloLivro = document.getElementById('tituloLivro');
-    const autorLivro = document.getElementById('autorLivro');
-    const formatoLivro = document.getElementById('formatoLivro');
-    const statusUpload = document.getElementById('statusUpload');
-    const statusFormato = document.getElementById('statusFormato');
-    const pageLeft = document.getElementById('pageLeft');
-    const pageRight = document.getElementById('pageRight');
-    const headerLeft = document.getElementById('headerLeft');
-    const headerRight = document.getElementById('headerRight');
-    const footerLeft = document.getElementById('footerLeft');
-    const footerRight = document.getElementById('footerRight');
-    const limparTexto = document.getElementById('limparTexto');
-    const carregarExemplo = document.getElementById('carregarExemplo');
+</div>
 
-    const formatos = {
-      "A5":   { w: "148mm", h: "210mm", font: "12pt", line: "1.55", mt:"18mm", mb:"18mm", mi:"20mm", mo:"15mm" },
-      "16x23":{ w: "160mm", h: "230mm", font: "12pt", line: "1.58", mt:"18mm", mb:"18mm", mi:"21mm", mo:"16mm" },
-      "6x9":  { w: "152.4mm", h: "228.6mm", font: "12pt", line: "1.58", mt:"18mm", mb:"18mm", mi:"21mm", mo:"16mm" },
-      "A4":   { w: "210mm", h: "297mm", font: "12pt", line: "1.60", mt:"22mm", mb:"22mm", mi:"24mm", mo:"18mm" }
-    };
 
-    function escapeHtml(str) {
-      return str
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-    }
+<!-- preview -->
 
-    function parseParagraphs(text) {
-      const normalized = text
-        .replace(/\r\n/g, '\n')
-        .replace(/\r/g, '\n')
-        .replace(/\t/g, '    ')
-        .trim();
+<div>
 
-      if (!normalized) return [];
+<h3>Prévia editorial</h3>
 
-      const paragraphs = normalized
-        .split(/\n\s*\n+/)
-        .map(p => p.replace(/\n/g, '<br>').trim())
-        .filter(Boolean);
+<div class="preview" id="preview">
 
-      return paragraphs;
-    }
+<div class="page" id="pagina1"></div>
 
-    function measureParagraphHeight(paragraphHtml, pageEl) {
-      const probe = document.createElement('div');
-      probe.style.position = 'absolute';
-      probe.style.visibility = 'hidden';
-      probe.style.pointerEvents = 'none';
-      probe.style.left = '-99999px';
-      probe.style.top = '0';
-      probe.style.width = pageEl.clientWidth + 'px';
-      probe.innerHTML = `<p>${paragraphHtml}</p>`;
-      document.body.appendChild(probe);
-      const h = probe.offsetHeight;
-      probe.remove();
-      return h;
-    }
+<div class="page" id="pagina2"></div>
 
-    function fillPage(pageEl, paragraphs, startIndex) {
-      pageEl.innerHTML = '';
-      if (!paragraphs.length) {
-        pageEl.innerHTML = '<div class="empty-state">A prévia aparecerá aqui assim que a obra for enviada ou digitada.</div>';
-        return startIndex;
-      }
+</div>
 
-      const maxHeight = pageEl.clientHeight;
-      let used = 0;
-      let i = startIndex;
+</div>
 
-      while (i < paragraphs.length) {
-        const para = paragraphs[i];
-        const h = measureParagraphHeight(para, pageEl);
+</div>
 
-        if (used + h > maxHeight) {
-          break;
-        }
 
-        const p = document.createElement('p');
-        p.innerHTML = para;
-        if (i === 0 && startIndex === 0) {
-          p.classList.add('no-indent');
-        }
-        pageEl.appendChild(p);
-        used += h;
-        i++;
-      }
+<script>
 
-      return i;
-    }
+const entrada = document.getElementById("entradaTexto")
 
-    function applyFormat() {
-      const f = formatos[formatoLivro.value];
-      const root = document.documentElement;
-      root.style.setProperty('--page-w', f.w);
-      root.style.setProperty('--page-h', f.h);
-      root.style.setProperty('--font-size', f.font);
-      root.style.setProperty('--line-height', f.line);
-      root.style.setProperty('--margin-top', f.mt);
-      root.style.setProperty('--margin-bottom', f.mb);
-      root.style.setProperty('--margin-inner', f.mi);
-      root.style.setProperty('--margin-outer', f.mo);
-      statusFormato.textContent = 'Formato: ' + formatoLivro.value;
-    }
+entrada.addEventListener("input", atualizarPreview)
 
-    function updateHeaders() {
-      headerLeft.textContent = tituloLivro.value.trim() || 'Prévia da Obra';
-      headerRight.textContent = autorLivro.value.trim() || 'Autor';
-    }
 
-    function renderPreview() {
-      updateHeaders();
-      applyFormat();
+function atualizarPreview(){
 
-      const paragraphs = parseParagraphs(textoEntrada.value);
+let texto = entrada.value
 
-      if (!paragraphs.length) {
-        pageLeft.innerHTML = '<div class="empty-state">A prévia aparecerá aqui assim que a obra for enviada ou digitada.</div>';
-        pageRight.innerHTML = '<div class="empty-state">A segunda página acompanhará a continuidade do texto.</div>';
-        footerLeft.textContent = '1';
-        footerRight.textContent = '2';
-        return;
-      }
 
-      const nextIndex = fillPage(pageLeft, paragraphs, 0);
-      fillPage(pageRight, paragraphs, nextIndex);
+/* detectar capítulos */
 
-      footerLeft.textContent = '1';
-      footerRight.textContent = '2';
-    }
+texto = texto.replace(
+/Cap[ií]tulo\s+\d+/gi,
+match=>`<div class="chapter-divider"></div>
+<div class="chapter-title">${match}</div>`
+)
 
-    arquivoObra.addEventListener('change', function (event) {
-      const file = event.target.files && event.target.files[0];
-      if (!file) return;
 
-      const nome = file.name.toLowerCase();
+/* aplicar capitular no primeiro parágrafo */
 
-      if (!(nome.endsWith('.txt') || nome.endsWith('.md') || nome.endsWith('.html') || nome.endsWith('.doc') || nome.endsWith('.docx'))) {
-        statusUpload.textContent = 'Formato não suportado';
-        return;
-      }
+let paragrafos = texto.split("\n\n")
 
-      if (nome.endsWith('.doc') || nome.endsWith('.docx')) {
-        statusUpload.textContent = 'DOC/DOCX enviado. Nesta versão, a leitura direta segura está pronta para TXT/MD/HTML.';
-        return;
-      }
+if(paragrafos.length>0){
 
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        textoEntrada.value = e.target.result || '';
-        statusUpload.textContent = 'Obra carregada na caixa';
-        renderPreview();
-      };
-      reader.onerror = function () {
-        statusUpload.textContent = 'Falha ao ler arquivo';
-      };
-      reader.readAsText(file, 'UTF-8');
-    });
+paragrafos[0]=`<p class="dropcap">${paragrafos[0]}</p>`
 
-    textoEntrada.addEventListener('input', renderPreview);
-    tituloLivro.addEventListener('input', renderPreview);
-    autorLivro.addEventListener('input', renderPreview);
-    formatoLivro.addEventListener('change', renderPreview);
+}
 
-    limparTexto.addEventListener('click', () => {
-      textoEntrada.value = '';
-      statusUpload.textContent = 'Caixa limpa';
-      renderPreview();
-    });
 
-    carregarExemplo.addEventListener('click', () => {
-      textoEntrada.value = `Prólogo
+texto = paragrafos.map(p=>`<p>${p}</p>`).join("")
 
-Numa tarde de calor manso, a cidade parecia conter a respiração atrás das janelas entreabertas. As ruas seguiam cheias, mas havia no ar uma suspensão estranha, como se o tempo, por capricho, tivesse decidido caminhar mais devagar.
 
-Augusto parou diante da porta antiga e passou os dedos pela madeira gasta. Não era apenas uma entrada. Era um limiar. Havia portas que separavam cômodos. Outras separavam épocas. Aquela, ele compreendeu, separava o homem que chegara do homem que sairia dali.
+/* dividir páginas */
 
-Empurrou a folha com cuidado. O interior cheirava a papel envelhecido, ferro discreto e silêncio. Nas estantes, os livros se alinhavam com a disciplina de quem guardava segredos demais para cair em desordem.
+let metade = Math.ceil(texto.length/2)
 
-No fundo da sala, uma janela alta deixava a luz cair em diagonal sobre a mesa central. Em cima dela, repousava um caderno de capa escura. Não havia nome. Não havia data. Ainda assim, ele teve a impressão nítida de que o objeto o esperava havia anos.
+let parte1 = texto.slice(0,metade)
 
-Tocou o caderno como quem testa a temperatura de uma lembrança. O couro estalou baixo. Então abriu a primeira página.
+let parte2 = texto.slice(metade)
 
-Nada do que estava escrito ali começava naquele instante. E foi justamente isso o que o assustou.
+
+document.getElementById("pagina1").innerHTML = parte1
+
+document.getElementById("pagina2").innerHTML = parte2
+
+}
+
+
+/* limpar */
+
+function limparTexto(){
+
+entrada.value=""
+
+atualizarPreview()
+
+}
+
+
+/* exemplo */
+
+function carregarExemplo(){
+
+entrada.value=`
+Prólogo
+
+Numa tarde de calor manso, a cidade parecia conter a respiração atrás das janelas entreabertas.
 
 Capítulo 1
 
-Quando leu a primeira linha, Augusto não sentiu surpresa. Sentiu reconhecimento. Era como se alguém tivesse anotado, com paciência cruel, pensamentos que ele próprio jamais ousara ordenar em frases.
+Augusto parou diante da porta antiga e passou os dedos pela madeira gasta.
 
-Do lado de fora, a tarde prosseguia, indiferente. Dentro da sala, porém, o ar havia mudado. Cada palavra puxava outra, e a sequência delas o empurrava para dentro de uma história que não pedia licença para existir.`;
-      statusUpload.textContent = 'Exemplo carregado';
-      renderPreview();
-    });
+Capítulo 2
 
-    window.addEventListener('load', renderPreview);
-    window.addEventListener('resize', renderPreview);
-  </script>
+Nada do que estava escrito ali parecia casual.
+`
+
+atualizarPreview()
+
+}
+
+</script>
+
 </body>
 </html>
