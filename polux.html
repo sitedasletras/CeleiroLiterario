@@ -4,7 +4,6 @@
 <head>
 
 <meta charset="UTF-8">
-
 <title>Pólux — Prosa</title>
 
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Cinzel&display=swap" rel="stylesheet">
@@ -25,23 +24,34 @@ align-items:center;
 margin-bottom:20px;
 }
 
-h1{
-font-size:28px;
-}
-
 .container{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:30px;
 }
 
+/* painel editorial */
+
+.painel{
+background:#ffffff;
+padding:12px;
+border-radius:8px;
+margin-bottom:10px;
+box-shadow:0 1px 4px rgba(0,0,0,.05);
+font-size:14px;
+}
+
+.painel label{
+margin-right:10px;
+}
+
 /* caixa texto */
 
 textarea{
 width:100%;
-height:520px;
+height:500px;
 padding:15px;
-font-size:18px;
+font-size:16px;
 border-radius:10px;
 border:1px solid #ccc;
 resize:none;
@@ -52,7 +62,7 @@ resize:none;
 .preview{
 background:white;
 border-radius:10px;
-padding:25px;
+padding:20px;
 height:520px;
 overflow:auto;
 box-shadow:0 2px 6px rgba(0,0,0,0.05);
@@ -112,17 +122,18 @@ font-family:'Cinzel',serif;
 
 <header>
 
-<h1>Pólux — Prosa</h1>
+<h2>Pólux — Diagramador de Prosa</h2>
 
 <div>
 
-<button onclick="limparTexto()">Limpar texto</button>
+<button onclick="limparTexto()">Limpar</button>
 
-<button onclick="carregarExemplo()">Carregar exemplo</button>
+<button onclick="carregarExemplo()">Exemplo</button>
 
 </div>
 
 </header>
+
 
 
 <div class="container">
@@ -130,10 +141,57 @@ font-family:'Cinzel',serif;
 
 <div>
 
+<div class="painel">
+
+<label>Tamanho fonte</label>
+
+<select id="fonteSize">
+
+<option value="16">16</option>
+
+<option value="18" selected>18</option>
+
+<option value="20">20</option>
+
+<option value="22">22</option>
+
+</select>
+
+
+<label>Entrelinha</label>
+
+<select id="linhaSize">
+
+<option value="1.3">1.3</option>
+
+<option value="1.5" selected>1.5</option>
+
+<option value="1.8">1.8</option>
+
+<option value="2">2.0</option>
+
+</select>
+
+
+<label>Largura página</label>
+
+<select id="larguraPagina">
+
+<option value="42">Compacta</option>
+
+<option value="48" selected>A5</option>
+
+<option value="55">Ampliada</option>
+
+</select>
+
+</div>
+
+
 <h3>Caixa de texto</h3>
 
 <textarea id="entradaTexto"
-placeholder="Cole aqui sua obra..."></textarea>
+placeholder="Cole aqui sua obra"></textarea>
 
 </div>
 
@@ -153,6 +211,7 @@ placeholder="Cole aqui sua obra..."></textarea>
 
 </div>
 
+
 </div>
 
 
@@ -162,7 +221,20 @@ placeholder="Cole aqui sua obra..."></textarea>
 
 const entrada = document.getElementById("entradaTexto")
 
+const fonte = document.getElementById("fonteSize")
+
+const linha = document.getElementById("linhaSize")
+
+const largura = document.getElementById("larguraPagina")
+
+
 entrada.addEventListener("input", atualizarPreview)
+
+fonte.addEventListener("change", atualizarPreview)
+
+linha.addEventListener("change", atualizarPreview)
+
+largura.addEventListener("change", atualizarPreview)
 
 
 
@@ -171,8 +243,6 @@ function atualizarPreview(){
 let texto = entrada.value
 
 
-
-/* detectar capítulos */
 
 texto = texto.replace(
 
@@ -185,8 +255,6 @@ match=>`<div class="chapter-divider"></div>
 )
 
 
-
-/* separar parágrafos corretamente */
 
 let paragrafos = texto.split("\n\n")
 
@@ -212,8 +280,6 @@ htmlFinal += `<p>${p}</p>`
 
 
 
-/* dividir páginas simuladas */
-
 let metade = Math.ceil(htmlFinal.length/2)
 
 
@@ -224,12 +290,24 @@ let parte2 = htmlFinal.slice(metade)
 
 
 
-document.getElementById("pagina1").innerHTML = parte1
+document.getElementById("pagina1").innerHTML = aplicarEstilo(parte1)
 
-document.getElementById("pagina2").innerHTML = parte2
+document.getElementById("pagina2").innerHTML = aplicarEstilo(parte2)
 
 }
 
+
+
+function aplicarEstilo(texto){
+
+return `<div style="
+font-size:${fonte.value}px;
+line-height:${linha.value};
+width:${largura.value}%;
+margin:auto;
+">${texto}</div>`
+
+}
 
 
 
@@ -271,7 +349,6 @@ atualizarPreview()
 
 
 </script>
-
 
 </body>
 
