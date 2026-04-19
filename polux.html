@@ -7,7 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Cinzel:wght@400;600;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Cinzel:wght@400;600;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -29,84 +29,129 @@ body{
 }
 button,select,input,textarea{font:inherit}
 .topbar{
-  display:flex; justify-content:space-between; align-items:center; gap:12px;
-  flex-wrap:wrap; margin-bottom:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
 }
-.title{font-size:2rem; font-weight:700}
-.top-actions{display:flex; gap:10px; flex-wrap:wrap}
+.title{font-size:2rem;font-weight:700}
+.top-actions{display:flex;gap:10px;flex-wrap:wrap}
 .btn{
-  border:none; border-radius:10px; padding:10px 14px; cursor:pointer; font-weight:700;
+  border:none;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700;
 }
 .btn-yellow{background:#d8b622;color:#2d2600}
 .btn-green{background:#1f6f43;color:#fff}
 .btn-red{background:#b63131;color:#fff}
 .btn-soft{background:#ece7df;color:#2f2a25}
 .layout{
-  display:grid; grid-template-columns:1.06fr 1fr; gap:22px; align-items:start;
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(420px,0.9fr);
+  gap:22px;
+  align-items:start;
 }
 .card{
-  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
-  box-shadow:var(--shadow); padding:16px; margin-bottom:14px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:16px;
+  margin-bottom:14px;
 }
-.card h3{margin:0 0 12px 0; font-size:1.15rem}
+.card h3{margin:0 0 12px 0;font-size:1.15rem}
 .upload-row{
-  display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:8px;
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:8px;
 }
-.upload-note{color:var(--muted); font-size:.95rem; line-height:1.35}
+.upload-note{color:var(--muted);font-size:.95rem;line-height:1.35}
 .grid{
-  display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px 14px;
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:12px 14px;
 }
-.field{
-  display:flex; flex-direction:column; gap:6px; min-width:0;
-}
-.field label{
-  font-size:.95rem; color:var(--muted); font-weight:700;
-}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font-size:.95rem;color:var(--muted);font-weight:700}
 .field input[type="range"], .field select{width:100%}
 .editor{
-  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
-  box-shadow:var(--shadow); overflow:hidden;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:hidden;
 }
 .editor-head{
-  padding:14px 16px; border-bottom:1px solid var(--line); font-size:1.15rem;
-  font-weight:700; background:#fbfaf8;
+  padding:14px 16px;
+  border-bottom:1px solid var(--line);
+  font-size:1.15rem;
+  font-weight:700;
+  background:#fbfaf8;
 }
 textarea{
-  width:100%; min-height:560px; border:none; outline:none; resize:vertical;
-  padding:18px 16px 24px; background:transparent; color:var(--ink);
-  font-size:1.02rem; line-height:1.55; white-space:pre-wrap;
+  width:100%;
+  min-height:560px;
+  border:none;
+  outline:none;
+  resize:vertical;
+  padding:18px 16px 24px;
+  background:transparent;
+  color:var(--ink);
+  font-size:1.02rem;
+  line-height:1.55;
+  white-space:pre-wrap;
 }
 .preview-box{
-  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
-  box-shadow:var(--shadow); padding:16px; min-height:760px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:16px;
+  min-height:760px;
 }
 .preview-head{
-  display:flex; justify-content:space-between; gap:12px; align-items:center;
-  margin-bottom:12px; flex-wrap:wrap;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  margin-bottom:12px;
+  flex-wrap:wrap;
 }
-.preview-head h3{margin:0; font-size:1.15rem}
-.preview-mode{color:var(--muted); font-weight:700; font-size:.95rem}
+.preview-head h3{margin:0;font-size:1.15rem}
+.preview-mode{color:var(--muted);font-weight:700;font-size:.95rem}
 .page{
-  background:#fff; border:1px solid #d8d2ca; box-shadow:0 6px 18px rgba(0,0,0,.07);
-  border-radius:8px; overflow:auto; margin:0 auto; transition:width .2s,height .2s;
+  background:#fff;
+  border:1px solid #d8d2ca;
+  box-shadow:0 6px 18px rgba(0,0,0,.07);
+  border-radius:8px;
+  overflow:auto;
+  margin:0 auto;
+  transition:width .2s,height .2s;
   scrollbar-width:thin;
 }
 .page-inner{min-height:100%}
-.empty{
-  text-align:center; color:var(--muted); padding:80px 20px; font-size:1.06rem;
-}
+.empty{text-align:center;color:var(--muted);padding:80px 20px;font-size:1.06rem}
 .work-title{
-  text-align:center; margin:0 0 1.25em 0; line-height:1.2; letter-spacing:.02em;
+  text-align:center;
+  margin:0 0 1.25em 0;
+  line-height:1.2;
+  letter-spacing:.02em;
   text-transform:uppercase;
 }
 .chapter-line{
-  text-align:center; margin:2.2em 0 .8em 0; line-height:1.2; text-transform:uppercase;
-  letter-spacing:.03em; font-weight:600;
+  text-align:center;
+  margin:2.2em 0 .7em 0;
+  line-height:1.2;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  font-weight:700;
 }
 .chapter-subtitle{
-  text-align:center; margin:0 0 1.4em 0; line-height:1.2; opacity:.88; font-style:italic;
+  text-align:center;
+  margin:0 0 1.4em 0;
+  line-height:1.2;
+  opacity:.88;
+  font-style:italic;
 }
-.chapter-divider{text-align:center; margin:1.9em 0 .8em 0; opacity:.72}
+.chapter-divider{text-align:center;margin:1.8em 0 .8em 0;opacity:.72}
 .body-p{
   margin:0 0 1em 0;
   text-align:justify;
@@ -114,8 +159,8 @@ textarea{
   hyphens:auto;
   -webkit-hyphens:auto;
   -ms-hyphens:auto;
-  overflow-wrap:normal;
   word-break:normal;
+  overflow-wrap:normal;
 }
 .dropcap{
   text-indent:0 !important;
@@ -123,17 +168,14 @@ textarea{
 }
 .dropcap::first-letter{
   float:left;
-  font-size:3.25em;
-  line-height:.84;
-  padding-right:.10em;
-  margin-top:.02em;
+  font-size:3.2em;
+  line-height:.83;
+  margin:.03em .10em 0 0;
   font-family:"Cinzel", serif;
   font-weight:700;
 }
-.note{
-  font-size:.9rem; color:var(--muted); margin-top:6px;
-}
-@media (max-width:1100px){
+.note{font-size:.9rem;color:var(--muted);margin-top:6px}
+@media (max-width:1500px){
   .layout{grid-template-columns:1fr}
   .preview-box{min-height:auto}
 }
@@ -196,7 +238,7 @@ textarea{
         <div class="field">
           <label for="fonteCorpo">Fonte do corpo</label>
           <select id="fonteCorpo">
-            <option value="Georgia, serif">Georgia</option>
+            <option value="Georgia, serif" selected>Georgia</option>
             <option value='"EB Garamond", serif'>EB Garamond</option>
             <option value='"Libre Baskerville", serif'>Libre Baskerville</option>
             <option value='"Times New Roman", serif'>Times New Roman</option>
@@ -206,7 +248,7 @@ textarea{
         <div class="field">
           <label for="fonteCapitulo">Fonte do capítulo</label>
           <select id="fonteCapitulo">
-            <option value='"Cinzel", serif'>Cinzel</option>
+            <option value='"Cinzel", serif' selected>Cinzel</option>
             <option value='"Playfair Display", serif'>Playfair Display</option>
             <option value='"Libre Baskerville", serif'>Libre Baskerville</option>
           </select>
@@ -219,7 +261,7 @@ textarea{
 
         <div class="field">
           <label for="tamanhoCapitulo">Tamanho do capítulo</label>
-          <input type="range" id="tamanhoCapitulo" min="18" max="52" step="1" value="30">
+          <input type="range" id="tamanhoCapitulo" min="18" max="56" step="1" value="30">
         </div>
 
         <div class="field">
@@ -236,8 +278,8 @@ textarea{
           <label for="margens">Margens</label>
           <select id="margens">
             <option value="estreita">Estreitas</option>
-            <option value="normal" selected>Normais</option>
-            <option value="ampla">Amplas</option>
+            <option value="normal">Normais</option>
+            <option value="ampla" selected>Amplas</option>
           </select>
         </div>
 
@@ -253,8 +295,8 @@ textarea{
         <div class="field">
           <label for="capitular">Letra capitular</label>
           <select id="capitular">
-            <option value="on">Ativada</option>
-            <option value="off" selected>Desativada</option>
+            <option value="on" selected>Ativada</option>
+            <option value="off">Desativada</option>
           </select>
         </div>
       </div>
@@ -274,7 +316,6 @@ textarea{
         <h3>Prévia editorial</h3>
         <div class="preview-mode" id="previewMode">Modo impresso · A5</div>
       </div>
-
       <div class="page" id="page">
         <div class="page-inner" id="pageInner"></div>
       </div>
@@ -316,9 +357,9 @@ function escapeHtml(texto){
 
 function pageConfig(){
   const map = {
-    a5: { w:430, h:610, pad:{ estreita:26, normal:40, ampla:54 }, name:"Modo impresso · A5", indent:"2.2em" },
-    "16x23": { w:470, h:680, pad:{ estreita:30, normal:46, ampla:60 }, name:"Modo impresso · 16x23", indent:"1.8em" },
-    "6x9": { w:500, h:750, pad:{ estreita:34, normal:50, ampla:66 }, name:'Modo impresso · 6" x 9"', indent:"1.6em" },
+    a5: { w:420, h:610, pad:{ estreita:24, normal:36, ampla:48 }, name:"Modo impresso · A5", indent:"2em" },
+    "16x23": { w:465, h:680, pad:{ estreita:28, normal:42, ampla:56 }, name:"Modo impresso · 16x23", indent:"1.8em" },
+    "6x9": { w:495, h:740, pad:{ estreita:32, normal:46, ampla:60 }, name:'Modo impresso · 6" x 9"', indent:"1.7em" },
     epub: { w:760, h:760, pad:{ estreita:34, normal:42, ampla:52 }, name:"Modo digital · ePub", indent:"1.5em" }
   };
   return map[formato.value];
@@ -423,15 +464,16 @@ function renderBlock(block){
   const chapterFont = fonteCapitulo.value;
   const bodySize = Number(tamanhoCorpo.value);
   const chapterSize = Number(tamanhoCapitulo.value);
-  const subtitleSize = Math.max(15, chapterSize - 9);
+  const subtitleSize = Math.max(14, chapterSize - 10);
+  const dividerSize = Math.max(12, chapterSize * 0.34);
   const pCfg = paragraphConfig();
 
   if (block.type === "chapter-divider") {
-    return '<div class="chapter-divider" style="font-family:' + chapterFont + '; font-size:' + Math.max(13, chapterSize * 0.35) + 'pt;">❦</div>';
+    return '<div class="chapter-divider" style="font-family:' + chapterFont + '; font-size:' + dividerSize + 'pt;">❦</div>';
   }
 
   if (block.type === "work-title") {
-    return '<div class="work-title" style="font-family:' + chapterFont + '; font-size:' + Math.max(26, chapterSize) + 'pt;">' + escapeHtml(block.text) + '</div>';
+    return '<div class="work-title" style="font-family:' + chapterFont + '; font-size:' + Math.max(24, chapterSize + 2) + 'pt;">' + escapeHtml(block.text) + '</div>';
   }
 
   if (block.type === "chapter-line") {
