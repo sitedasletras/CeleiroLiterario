@@ -1,252 +1,966 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pólux — Diagramador de Prosa</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pólux — Diagramador de Prosa</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Libre+Baskerville&family=EB+Garamond&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Libre+Baskerville:wght@400;700&family=EB+Garamond:wght@400;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 
-<style>
+  <style>
+    :root{
+      --bg:#f6f3ee;
+      --card:#ffffff;
+      --panel:#e7f4ec;
+      --panel-border:#b7d9c3;
+      --paper:#fffdf8;
+      --line:#d8d2ca;
+      --ink:#2f2a25;
+      --muted:#70675f;
+      --green:#1f6f43;
+      --green-soft:#2d8a57;
+      --yellow:#d8b622;
+      --red:#b63131;
+      --shadow:0 2px 10px rgba(0,0,0,.06);
+      --radius:14px;
+    }
 
-body{
-margin:0;
-padding:20px;
-background:#f6f3ee;
-font-family:Georgia, serif;
-}
+    *{box-sizing:border-box}
 
-.wrap{
-max-width:1100px;
-margin:auto;
-}
+    body{
+      margin:0;
+      padding:20px;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:Georgia, serif;
+    }
 
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
-}
+    button,input,select,textarea{font:inherit}
 
-.title{
-font-size:28px;
-font-weight:bold;
-}
+    .wrap{
+      max-width:1180px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
 
-.btn{
-padding:8px 14px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-font-weight:bold;
-}
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
 
-.btn-soft{background:#eee}
-.btn-green{background:#1f6f43;color:white}
-.btn-yellow{background:#d8b622}
-.btn-red{background:#b63131;color:white}
+    .title{
+      font-size:2rem;
+      font-weight:700;
+      line-height:1.1;
+    }
 
-.card{
-background:white;
-padding:14px;
-margin-bottom:14px;
-border-radius:10px;
-}
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-textarea{
-width:100%;
-height:260px;
-padding:12px;
-font-size:15px;
-}
+    .btn{
+      border:none;
+      border-radius:10px;
+      padding:10px 14px;
+      font-weight:700;
+      cursor:pointer;
+    }
 
-.preview{
-background:#f7fafc;
-padding:20px;
-border-radius:10px;
-}
+    .btn-yellow{background:var(--yellow);color:#2d2600}
+    .btn-soft{background:#ece7df;color:#2f2a25}
+    .btn-red{background:var(--red);color:#fff}
+    .btn-green{background:var(--green);color:#fff}
+    .btn-green-soft{background:var(--green-soft);color:#fff}
 
-.page{
-background:white;
-width:420px;
-height:610px;
-margin:auto;
-padding:40px;
-box-shadow:0 6px 18px rgba(0,0,0,.07);
-}
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:16px;
+    }
 
-.chapter{
-font-family:Cinzel, serif;
-font-size:26px;
-text-align:center;
-margin-bottom:20px;
-}
+    .config-card{
+      background:var(--panel);
+      border-color:var(--panel-border);
+    }
 
-.paragraph{
-text-align:justify;
-margin-bottom:12px;
-line-height:1.6;
-}
+    .card h3{
+      margin:0 0 12px 0;
+      font-size:1.14rem;
+    }
 
-.dropcap::first-letter{
-font-size:42px;
-float:left;
-margin-right:6px;
-font-family:Cinzel;
-}
+    .upload-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-bottom:8px;
+    }
 
-</style>
+    .upload-note,.note{
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.35;
+    }
+
+    .editor{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .editor-head{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      font-size:1.14rem;
+      font-weight:700;
+      background:#fbfaf8;
+    }
+
+    textarea{
+      width:100%;
+      min-height:320px;
+      border:none;
+      outline:none;
+      resize:vertical;
+      padding:18px 16px 22px;
+      background:transparent;
+      color:var(--ink);
+      font-size:1rem;
+      line-height:1.55;
+      white-space:pre-wrap;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px 14px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+
+    .field label{
+      font-size:.95rem;
+      color:#28563b;
+      font-weight:700;
+    }
+
+    .field input,.field select{
+      width:100%;
+    }
+
+    .field input[type="number"]{
+      padding:8px 10px;
+      border:1px solid #b8c9d8;
+      border-radius:8px;
+      background:#fff;
+    }
+
+    .preview-box{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:16px;
+    }
+
+    .preview-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+
+    .preview-head h3{
+      margin:0;
+      font-size:1.14rem;
+    }
+
+    .preview-mode{
+      color:var(--muted);
+      font-weight:700;
+      font-size:.94rem;
+    }
+
+    .preview-toolbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+      padding:10px 12px;
+      background:#f1f8f4;
+      border:1px solid #cfe2d5;
+      border-radius:12px;
+    }
+
+    .preview-toolbar .left{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .preview-counter{
+      font-size:.92rem;
+      color:#3f684d;
+      font-weight:700;
+    }
+
+    .preview-stage{
+      min-height:700px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:6px;
+      background:#f9fcfa;
+      border:1px solid #dbe9df;
+      border-radius:10px;
+    }
+
+    .page{
+      background:var(--paper);
+      border:1px solid #d8d2ca;
+      border-radius:8px;
+      box-shadow:0 6px 18px rgba(0,0,0,.07);
+      overflow:hidden;
+      position:relative;
+      flex:0 0 auto;
+    }
+
+    .page-inner{
+      position:relative;
+      height:100%;
+      overflow:hidden;
+    }
+
+    .page-header{
+      position:absolute;
+      top:10px;
+      left:18px;
+      right:18px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom:1px solid #ece5dc;
+      padding-bottom:4px;
+      font-size:.74rem;
+      color:#887f77;
+    }
+
+    .page-content{
+      position:absolute;
+      top:34px;
+      left:0;
+      right:0;
+      bottom:30px;
+      overflow:auto;
+      white-space:normal;
+    }
+
+    .page-footer{
+      position:absolute;
+      bottom:10px;
+      left:18px;
+      right:18px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      border-top:1px solid #ece5dc;
+      padding-top:4px;
+      font-size:.78rem;
+      color:#887f77;
+    }
+
+    .empty{
+      text-align:center;
+      color:var(--muted);
+      padding:80px 20px;
+      font-size:1.04rem;
+    }
+
+    .chapter-divider{
+      text-align:center;
+      margin:1.8em 0 .8em 0;
+      opacity:.72;
+    }
+
+    .chapter-line{
+      text-align:center;
+      margin:2.2em 0 .7em 0;
+      line-height:1.2;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      font-weight:700;
+    }
+
+    .chapter-subtitle{
+      text-align:center;
+      margin:0 0 1.35em 0;
+      line-height:1.2;
+      opacity:.88;
+      font-style:italic;
+    }
+
+    .work-title{
+      text-align:center;
+      margin:0 0 1.2em 0;
+      line-height:1.2;
+      letter-spacing:.02em;
+      text-transform:uppercase;
+    }
+
+    .body-p{
+      margin:0 0 1em 0;
+      text-align:justify;
+      text-justify:inter-word;
+      hyphens:none;
+      -webkit-hyphens:none;
+      -ms-hyphens:none;
+      word-break:normal;
+      overflow-wrap:break-word;
+      font-style:normal;
+      font-weight:400;
+      cursor:pointer;
+    }
+
+    .body-p:hover{
+      background:rgba(31,111,67,.08);
+    }
+
+    .dropcap{
+      text-indent:0 !important;
+      overflow:hidden;
+    }
+
+    .dropcap::first-letter{
+      float:left;
+      font-size:3.05em;
+      line-height:.88;
+      margin:.02em .06em 0 0;
+      font-family:"Cinzel", serif;
+      font-weight:700;
+    }
+
+    .hint{
+      margin-top:10px;
+      font-size:.88rem;
+      color:#4f6d59;
+    }
+
+    @media (max-width:760px){
+      body{padding:14px}
+      .title{font-size:1.55rem}
+      .grid{grid-template-columns:1fr}
+      textarea{min-height:280px}
+      .preview-stage{min-height:620px}
+    }
+  </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title">Pólux — Diagramador de Prosa</div>
+      <div class="actions">
+        <button class="btn btn-yellow" type="button" onclick="window.location.href='lapidar.html'">Retornar</button>
+        <button class="btn btn-soft" type="button" id="btnExemplo">Exemplo</button>
+        <button class="btn btn-soft" type="button" id="btnLimpar">Limpar</button>
+        <button class="btn btn-green-soft" type="button" id="btnDownload">Baixar arquivo</button>
+        <button class="btn btn-red" type="button" onclick="window.location.href='lapidar.html'">Sair</button>
+      </div>
+    </div>
 
-<div class="wrap">
+    <div class="card">
+      <h3>Entrada da obra</h3>
+      <div class="upload-row">
+        <input type="file" id="arquivoTexto" accept=".txt,.md,text/plain">
+        <button class="btn btn-green" type="button" id="btnUpload">Upar texto</button>
+        <span id="arquivoNome">Nenhum arquivo carregado</span>
+      </div>
+      <div class="upload-note">O arquivo entra direto na caixa de texto. Depois disso, o autor pode ajustar manualmente se quiser.</div>
+    </div>
 
-<div class="topbar">
-<div class="title">Pólux — Diagramador de Prosa</div>
+    <div class="editor">
+      <div class="editor-head">Caixa de texto</div>
+      <textarea id="inputText" placeholder="Cole aqui sua obra ou use o botão de upar texto."></textarea>
+    </div>
 
-<div>
-<button class="btn btn-yellow" onclick="history.back()">Retornar</button>
-<button class="btn btn-soft" onclick="carregarExemplo()">Exemplo</button>
-<button class="btn btn-soft" onclick="limpar()">Limpar</button>
-<button class="btn btn-red">Sair</button>
-</div>
+    <div class="card config-card">
+      <h3>Configuração editorial</h3>
+      <div class="grid">
+        <div class="field">
+          <label for="formato">Formato</label>
+          <select id="formato">
+            <option value="a5">A5</option>
+            <option value="16x23">16x23</option>
+            <option value="6x9">6" x 9"</option>
+            <option value="epub">ePub</option>
+          </select>
+        </div>
 
-</div>
+        <div class="field">
+          <label for="modoInicio">Primeira linha da obra</label>
+          <select id="modoInicio">
+            <option value="titulo">Título da obra</option>
+            <option value="capitulo1" selected>Capítulo 1</option>
+          </select>
+        </div>
 
+        <div class="field">
+          <label for="fonteCorpo">Fonte do corpo</label>
+          <select id="fonteCorpo">
+            <option value="Georgia" selected>Georgia</option>
+            <option value="EB Garamond">EB Garamond</option>
+            <option value="Libre Baskerville">Libre Baskerville</option>
+            <option value="Times New Roman">Times New Roman</option>
+          </select>
+        </div>
 
-<div class="card">
+        <div class="field">
+          <label for="fonteCapitulo">Fonte do capítulo</label>
+          <select id="fonteCapitulo">
+            <option value="Cinzel" selected>Cinzel</option>
+            <option value="Playfair Display">Playfair Display</option>
+            <option value="Libre Baskerville">Libre Baskerville</option>
+          </select>
+        </div>
 
-<h3>Entrada da obra</h3>
+        <div class="field">
+          <label for="tamanhoCorpo">Tamanho do corpo (pt)</label>
+          <input type="number" id="tamanhoCorpo" min="12" max="22" step="0.5" value="14">
+        </div>
 
-<input type="file" id="fileInput">
-<button class="btn btn-green" onclick="upload()">Upar texto</button>
+        <div class="field">
+          <label for="tamanhoCapitulo">Tamanho do capítulo (pt)</label>
+          <input type="number" id="tamanhoCapitulo" min="18" max="56" step="1" value="30">
+        </div>
 
-</div>
+        <div class="field">
+          <label for="entrelinha">Entrelinha</label>
+          <select id="entrelinha">
+            <option value="1.2">Compacta</option>
+            <option value="1.4">Normal</option>
+            <option value="1.6" selected>Confortável</option>
+            <option value="1.8">Arejada</option>
+          </select>
+        </div>
 
+        <div class="field">
+          <label for="margens">Margens</label>
+          <select id="margens">
+            <option value="estreita">Estreitas</option>
+            <option value="normal">Normais</option>
+            <option value="ampla" selected>Amplas</option>
+          </select>
+        </div>
 
-<div class="card">
+        <div class="field">
+          <label for="paragrafo">Parágrafos</label>
+          <select id="paragrafo">
+            <option value="recuo" selected>Recuo tradicional</option>
+            <option value="espaco">Espaço entre parágrafos</option>
+            <option value="reto">Sem recuo</option>
+          </select>
+        </div>
 
-<h3>Texto</h3>
+        <div class="field">
+          <label for="capitular">Letra capitular</label>
+          <select id="capitular">
+            <option value="on" selected>Ativada</option>
+            <option value="off">Desativada</option>
+          </select>
+        </div>
+      </div>
+      <div class="note">Base do Pólux restaurada em identidade verde, alinhada ao painel principal do Lapidar.</div>
+    </div>
 
-<textarea id="inputText"></textarea>
+    <div class="preview-box">
+      <div class="preview-head">
+        <h3>Prévia editorial</h3>
+        <div class="preview-mode" id="previewMode">Modo impresso · A5</div>
+      </div>
 
-</div>
+      <div class="preview-toolbar">
+        <div class="left">
+          <button class="btn btn-soft" type="button" id="btnPrev">Página anterior</button>
+          <button class="btn btn-soft" type="button" id="btnNext">Próxima página</button>
+        </div>
+        <div class="preview-counter" id="pageCounter">Página 1 de 1</div>
+      </div>
 
+      <div class="preview-stage" id="previewStage"></div>
+      <div class="hint">Dica: clique em um parágrafo da prévia para localizar esse trecho na caixa de texto e corrigir mais rápido.</div>
+    </div>
+  </div>
 
-<div class="card preview">
+  <script>
+    const inputText = document.getElementById("inputText");
+    const arquivoTexto = document.getElementById("arquivoTexto");
+    const arquivoNome = document.getElementById("arquivoNome");
+    const btnUpload = document.getElementById("btnUpload");
+    const btnExemplo = document.getElementById("btnExemplo");
+    const btnLimpar = document.getElementById("btnLimpar");
+    const btnDownload = document.getElementById("btnDownload");
 
-<h3>Prévia editorial</h3>
+    const formato = document.getElementById("formato");
+    const modoInicio = document.getElementById("modoInicio");
+    const fonteCorpo = document.getElementById("fonteCorpo");
+    const fonteCapitulo = document.getElementById("fonteCapitulo");
+    const tamanhoCorpo = document.getElementById("tamanhoCorpo");
+    const tamanhoCapitulo = document.getElementById("tamanhoCapitulo");
+    const entrelinha = document.getElementById("entrelinha");
+    const margens = document.getElementById("margens");
+    const paragrafo = document.getElementById("paragrafo");
+    const capitular = document.getElementById("capitular");
 
-<div id="preview"></div>
+    const previewMode = document.getElementById("previewMode");
+    const previewStage = document.getElementById("previewStage");
+    const btnPrev = document.getElementById("btnPrev");
+    const btnNext = document.getElementById("btnNext");
+    const pageCounter = document.getElementById("pageCounter");
 
-</div>
+    let pagesData = [];
+    let currentPage = 1;
 
+    function pageConfig(){
+      const map = {
+        a5: { w:420, h:610, pad:{ estreita:24, normal:36, ampla:48 }, name:"Modo impresso · A5", indent:"2em" },
+        "16x23": { w:465, h:680, pad:{ estreita:28, normal:42, ampla:56 }, name:"Modo impresso · 16x23", indent:"1.8em" },
+        "6x9": { w:495, h:740, pad:{ estreita:32, normal:46, ampla:60 }, name:'Modo impresso · 6" x 9"', indent:"1.7em" },
+        epub: { w:760, h:760, pad:{ estreita:34, normal:42, ampla:52 }, name:"Modo digital · ePub", indent:"1.5em" }
+      };
+      return map[formato.value];
+    }
 
-</div>
+    function getBodySize(){
+      let v = parseFloat(tamanhoCorpo.value);
+      if (isNaN(v)) v = 14;
+      if (v < 12) v = 12;
+      if (v > 22) v = 22;
+      tamanhoCorpo.value = v;
+      return v;
+    }
 
+    function getChapterSize(){
+      let v = parseFloat(tamanhoCapitulo.value);
+      if (isNaN(v)) v = 30;
+      if (v < 18) v = 18;
+      if (v > 56) v = 56;
+      tamanhoCapitulo.value = v;
+      return v;
+    }
 
-<script>
+    function getBodyFont(){
+      const map = {
+        "Georgia":"Georgia, serif",
+        "EB Garamond":"'EB Garamond', serif",
+        "Libre Baskerville":"'Libre Baskerville', serif",
+        "Times New Roman":"'Times New Roman', serif"
+      };
+      return map[fonteCorpo.value] || "Georgia, serif";
+    }
 
-function upload(){
+    function getChapterFont(){
+      const map = {
+        "Cinzel":"'Cinzel', serif",
+        "Playfair Display":"'Playfair Display', serif",
+        "Libre Baskerville":"'Libre Baskerville', serif"
+      };
+      return map[fonteCapitulo.value] || "'Cinzel', serif";
+    }
 
-const file=document.getElementById("fileInput").files[0];
+    function lineHeightValue(){
+      return entrelinha.value;
+    }
 
-if(!file)return;
+    function paragraphConfig(){
+      const cfg = pageConfig();
+      if (paragrafo.value === "espaco") return { indent:"0", margin:"0 0 1.4em 0" };
+      if (paragrafo.value === "reto") return { indent:"0", margin:"0 0 .3em 0" };
+      return { indent:cfg.indent, margin:"0 0 1em 0" };
+    }
 
-const reader=new FileReader();
+    function isChapterLine(line){
+      return /^cap[ií]tulo\s*\d+$/i.test((line || "").trim());
+    }
 
-reader.onload=e=>{
-document.getElementById("inputText").value=e.target.result;
-render();
-}
+    function isBlank(line){
+      return !(line && line.trim());
+    }
 
-reader.readAsText(file);
+    function parseBlocks(texto){
+      const lines = texto.replace(/\r/g, "").split("\n");
+      const blocks = [];
+      let i = 0;
+      let currentHeader = "Pólux";
 
-}
+      while (i < lines.length && isBlank(lines[i])) i++;
+      if (i >= lines.length) return [];
 
+      if (modoInicio.value === "titulo" && !isChapterLine(lines[i])) {
+        const title = lines[i].trim();
+        blocks.push({ type:"work-title", text:title, header:title });
+        currentHeader = title;
+        i++;
+      }
 
-function limpar(){
+      while (i < lines.length) {
+        while (i < lines.length && isBlank(lines[i])) i++;
+        if (i >= lines.length) break;
 
-document.getElementById("inputText").value="";
-render();
+        if (isChapterLine(lines[i])) {
+          currentHeader = lines[i].trim();
+          blocks.push({ type:"chapter-divider", header:currentHeader });
+          blocks.push({ type:"chapter-line", text:lines[i].trim(), header:currentHeader });
+          i++;
 
-}
+          while (i < lines.length && isBlank(lines[i])) i++;
 
+          if (i < lines.length && !isBlank(lines[i]) && !isChapterLine(lines[i])) {
+            blocks.push({ type:"chapter-subtitle", text:lines[i].trim(), header:currentHeader });
+            i++;
+          }
 
-function carregarExemplo(){
+          let firstParagraphOfChapter = true;
 
-document.getElementById("inputText").value=
+          while (i < lines.length && !isChapterLine(lines[i])) {
+            if (!isBlank(lines[i])) {
+              blocks.push({
+                type:"paragraph",
+                text:lines[i].trim(),
+                dropcap:firstParagraphOfChapter && capitular.value === "on",
+                header:currentHeader
+              });
+              firstParagraphOfChapter = false;
+            }
+            i++;
+          }
+          continue;
+        }
 
+        if (modoInicio.value === "capitulo1" && blocks.length === 0) {
+          currentHeader = "Capítulo 1";
+          blocks.push({ type:"chapter-divider", header:currentHeader });
+          blocks.push({ type:"chapter-line", text:"Capítulo 1", header:currentHeader });
+
+          if (!isBlank(lines[i])) {
+            blocks.push({ type:"chapter-subtitle", text:lines[i].trim(), header:currentHeader });
+            i++;
+          }
+
+          let firstParagraph = true;
+          while (i < lines.length && !isChapterLine(lines[i])) {
+            if (!isBlank(lines[i])) {
+              blocks.push({
+                type:"paragraph",
+                text:lines[i].trim(),
+                dropcap:firstParagraph && capitular.value === "on",
+                header:currentHeader
+              });
+              firstParagraph = false;
+            }
+            i++;
+          }
+          continue;
+        }
+
+        if (!isBlank(lines[i])) {
+          blocks.push({ type:"paragraph", text:lines[i].trim(), dropcap:false, header:currentHeader });
+        }
+        i++;
+      }
+
+      return blocks;
+    }
+
+    function buildBlockNode(block){
+      const bodySize = getBodySize();
+      const chapterSize = getChapterSize();
+      const bodyFont = getBodyFont();
+      const chapterFont = getChapterFont();
+      const pCfg = paragraphConfig();
+      const lineHt = lineHeightValue();
+
+      let el;
+
+      if (block.type === "chapter-divider") {
+        el = document.createElement("div");
+        el.className = "chapter-divider";
+        el.textContent = "❦";
+        el.style.fontFamily = chapterFont;
+        el.style.fontSize = "12pt";
+        return el;
+      }
+
+      if (block.type === "work-title") {
+        el = document.createElement("div");
+        el.className = "work-title";
+        el.textContent = block.text;
+        el.style.fontFamily = chapterFont;
+        el.style.fontSize = Math.max(24, chapterSize + 2) + "pt";
+        el.style.fontWeight = "700";
+        return el;
+      }
+
+      if (block.type === "chapter-line") {
+        el = document.createElement("div");
+        el.className = "chapter-line";
+        el.textContent = block.text;
+        el.style.fontFamily = chapterFont;
+        el.style.fontSize = chapterSize + "pt";
+        return el;
+      }
+
+      if (block.type === "chapter-subtitle") {
+        el = document.createElement("div");
+        el.className = "chapter-subtitle";
+        el.textContent = block.text;
+        el.style.fontFamily = chapterFont;
+        el.style.fontSize = Math.max(14, chapterSize - 8) + "pt";
+        return el;
+      }
+
+      el = document.createElement("p");
+      el.className = block.dropcap ? "body-p dropcap" : "body-p";
+      el.textContent = block.text;
+      el.style.fontFamily = bodyFont;
+      el.style.fontSize = bodySize + "pt";
+      el.style.lineHeight = String(lineHt);
+      el.style.textIndent = block.dropcap ? "0" : pCfg.indent;
+      el.style.margin = pCfg.margin;
+      el.dataset.locate = block.text;
+
+      el.addEventListener("click", function(){
+        locateInTextarea(block.text);
+      });
+
+      return el;
+    }
+
+    function locateInTextarea(snippet){
+      const text = inputText.value;
+      const idx = text.indexOf(snippet);
+      inputText.focus();
+      if (idx >= 0) {
+        inputText.setSelectionRange(idx, idx + snippet.length);
+      }
+    }
+
+    function paginateBlocks(blocks){
+      const cfg = pageConfig();
+      previewMode.textContent = cfg.name;
+      pagesData = [];
+
+      if (!blocks.length) {
+        pagesData = [{ header:"Pólux", blocks:[] }];
+        currentPage = 1;
+        renderCurrentPage();
+        return;
+      }
+
+      let currentBlocks = [];
+      let currentHeader = blocks[0].header || "Pólux";
+      let count = 0;
+
+      blocks.forEach(block => {
+        currentHeader = block.header || currentHeader;
+        currentBlocks.push(block);
+        count++;
+
+        if (count >= 10) {
+          pagesData.push({ header: currentHeader, blocks: currentBlocks });
+          currentBlocks = [];
+          count = 0;
+        }
+      });
+
+      if (currentBlocks.length) {
+        pagesData.push({ header: currentHeader, blocks: currentBlocks });
+      }
+
+      if (currentPage > pagesData.length) currentPage = pagesData.length;
+      if (currentPage < 1) currentPage = 1;
+
+      renderCurrentPage();
+    }
+
+    function renderCurrentPage(){
+      const cfg = pageConfig();
+      previewStage.innerHTML = "";
+
+      const pageObj = pagesData[currentPage - 1] || { header:"Pólux", blocks:[] };
+
+      const page = document.createElement("div");
+      page.className = "page";
+      page.style.width = cfg.w + "px";
+      page.style.height = cfg.h + "px";
+
+      const inner = document.createElement("div");
+      inner.className = "page-inner";
+
+      const header = document.createElement("div");
+      header.className = "page-header";
+      header.innerHTML = `<span>${pageObj.header || "Pólux"}</span><span>${cfg.name}</span>`;
+
+      const content = document.createElement("div");
+      content.className = "page-content";
+      content.style.padding = cfg.pad[margens.value] + "px";
+
+      if (!pageObj.blocks.length) {
+        content.innerHTML = '<div class="empty">A prévia aparece aqui assim que o texto entrar na caixa.</div>';
+      } else {
+        pageObj.blocks.forEach(block => content.appendChild(buildBlockNode(block)));
+      }
+
+      const footer = document.createElement("div");
+      footer.className = "page-footer";
+      footer.textContent = currentPage;
+
+      inner.appendChild(header);
+      inner.appendChild(content);
+      inner.appendChild(footer);
+      page.appendChild(inner);
+      previewStage.appendChild(page);
+
+      pageCounter.textContent = `Página ${currentPage} de ${pagesData.length || 1}`;
+      btnPrev.disabled = currentPage <= 1;
+      btnNext.disabled = currentPage >= (pagesData.length || 1);
+    }
+
+    function renderPreview(){
+      const texto = inputText.value.trim();
+
+      if (!texto) {
+        pagesData = [{ header:"Pólux", blocks:[] }];
+        currentPage = 1;
+        renderCurrentPage();
+        return;
+      }
+
+      const blocks = parseBlocks(texto);
+      paginateBlocks(blocks);
+    }
+
+    btnPrev.addEventListener("click", function(){
+      if (currentPage > 1) {
+        currentPage -= 1;
+        renderCurrentPage();
+      }
+    });
+
+    btnNext.addEventListener("click", function(){
+      if (currentPage < pagesData.length) {
+        currentPage += 1;
+        renderCurrentPage();
+      }
+    });
+
+    btnDownload.addEventListener("click", function(){
+      const blob = new Blob([document.documentElement.outerHTML], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "polux_diagramado.html";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    btnUpload.addEventListener("click", function(){
+      const file = arquivoTexto.files[0];
+      if (!file) {
+        arquivoNome.textContent = "Escolha um arquivo .txt primeiro";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e){
+        inputText.value = String(e.target.result || "");
+        arquivoNome.textContent = file.name;
+        currentPage = 1;
+        renderPreview();
+      };
+      reader.onerror = function(){
+        arquivoNome.textContent = "Não foi possível ler este arquivo";
+      };
+      reader.readAsText(file, "UTF-8");
+    });
+
+    arquivoTexto.addEventListener("change", function(){
+      arquivoNome.textContent = arquivoTexto.files[0] ? arquivoTexto.files[0].name : "Nenhum arquivo carregado";
+    });
+
+    btnExemplo.addEventListener("click", function(){
+      inputText.value =
 `Capítulo 1
 O Degrau e a Mochila
 A praça respirava como um animal ferido.
-Sacolas plásticas raspavam no chão.
+O som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.
+Sacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.
+Tudo parecia seguir um ritmo que não incluía pausas.
 
 Capítulo 2
 A Primeira Manhã
-A manhã revelou o que a noite havia escondido.`
+A manhã revelou o que a noite havia escondido.
+Havia mais gente do que ele imaginava.
+Homens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa.
+Ninguém dizia o necessário por inteiro.
 
-render();
+Capítulo 3
+Regras Invisíveis
+A terceira noite já não parecia acidente.
+A segunda tinha sido resistência.
+A terceira começou a parecer início de padrão.
+A mulher dos cabelos grisalhos observou a rua e não disse nada.
+As janelas fechadas pareciam guardar o fôlego da cidade.`;
+      currentPage = 1;
+      renderPreview();
+    });
 
-}
+    btnLimpar.addEventListener("click", function(){
+      inputText.value = "";
+      arquivoTexto.value = "";
+      arquivoNome.textContent = "Nenhum arquivo carregado";
+      currentPage = 1;
+      renderPreview();
+    });
 
+    [
+      inputText, formato, modoInicio, fonteCorpo, fonteCapitulo,
+      tamanhoCorpo, tamanhoCapitulo, entrelinha, margens, paragrafo, capitular
+    ].forEach(function(el){
+      el.addEventListener("input", function(){
+        currentPage = 1;
+        renderPreview();
+      });
+      el.addEventListener("change", function(){
+        currentPage = 1;
+        renderPreview();
+      });
+    });
 
-function render(){
-
-const text=document.getElementById("inputText").value;
-
-if(!text){
-
-document.getElementById("preview").innerHTML="";
-return;
-
-}
-
-const lines=text.split("\n");
-
-let html="<div class='page'>";
-
-let firstParagraph=true;
-
-for(let line of lines){
-
-line=line.trim();
-
-if(!line)continue;
-
-if(line.toLowerCase().startsWith("capítulo")){
-
-html+=`<div class="chapter">${line}</div>`;
-firstParagraph=true;
-
-}else{
-
-if(firstParagraph){
-
-html+=`<div class="paragraph dropcap">${line}</div>`;
-firstParagraph=false;
-
-}else{
-
-html+=`<div class="paragraph">${line}</div>`;
-
-}
-
-}
-
-}
-
-html+="</div>";
-
-document.getElementById("preview").innerHTML=html;
-
-}
-
-
-document.getElementById("inputText").addEventListener("input",render);
-
-</script>
-
+    renderPreview();
+  </script>
 </body>
 </html>
