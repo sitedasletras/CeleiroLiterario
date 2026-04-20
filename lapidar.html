@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Lapidar — Diagramação de Livros</title>
 
 <style>
-
 body{
 margin:0;
 font-family:Georgia, serif;
@@ -26,6 +24,8 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 margin-bottom:30px;
+gap:12px;
+flex-wrap:wrap;
 }
 
 .titulo{
@@ -36,8 +36,8 @@ font-weight:bold;
 .btn-voltar{
 background:#d8b622;
 border:none;
-padding:8px 14px;
-border-radius:6px;
+padding:10px 16px;
+border-radius:8px;
 cursor:pointer;
 font-weight:bold;
 }
@@ -46,6 +46,7 @@ font-weight:bold;
 margin-bottom:30px;
 font-size:18px;
 color:#5a524b;
+line-height:1.5;
 }
 
 .grid{
@@ -59,24 +60,38 @@ background:white;
 padding:25px;
 border-radius:12px;
 box-shadow:0 6px 16px rgba(0,0,0,0.08);
+border:1px solid #e2ddd6;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+min-height:320px;
 }
 
 .card h2{
 margin-top:0;
+margin-bottom:10px;
+}
+
+.card p{
+margin-top:0;
+color:#675f57;
+line-height:1.5;
 }
 
 .lista{
 margin-top:10px;
 margin-bottom:20px;
-line-height:1.6;
+line-height:1.7;
+color:#433d37;
 }
 
 .botao{
 border:none;
-padding:10px 18px;
-border-radius:6px;
+padding:11px 18px;
+border-radius:8px;
 cursor:pointer;
 font-weight:bold;
+width:100%;
 }
 
 .btn-polux{
@@ -99,16 +114,14 @@ margin-top:40px;
 color:#777;
 font-size:14px;
 text-align:center;
+line-height:1.5;
 }
 
 @media(max-width:900px){
-
 .grid{
 grid-template-columns:1fr;
 }
-
 }
-
 </style>
 </head>
 
@@ -117,38 +130,25 @@ grid-template-columns:1fr;
 <div class="container">
 
 <div class="header">
+<div class="titulo">Lapidar — Diagramação de Livros</div>
 
-<div class="titulo">
-Lapidar — Diagramação de Livros
-</div>
-
-<button class="btn-voltar"
-onclick="location.href='index.html'">
+<button class="btn-voltar" onclick="location.href='index.html'">
 Retornar ao Celeiro
 </button>
-
 </div>
-
 
 <div class="descricao">
-
-Escolha abaixo o tipo de obra que deseja diagramar.
-Cada motor trabalha com uma estrutura editorial diferente.
-
+Escolha abaixo o tipo de obra que deseja diagramar. Cada motor trabalha com uma estrutura editorial diferente.
 </div>
-
 
 <div class="grid">
 
-
-<!-- POLUX -->
-
 <div class="card">
-
+<div>
 <h2>Pólux — Prosa</h2>
+<p>Para obras em texto contínuo, com estrutura narrativa ou expositiva.</p>
 
 <div class="lista">
-
 romance<br>
 conto<br>
 sci-fi<br>
@@ -157,83 +157,57 @@ ensaio<br>
 memórias<br>
 biografia<br>
 crônica
-
+</div>
 </div>
 
-<button class="botao btn-polux"
-onclick="location.href='polux.html'">
-
+<button class="botao btn-polux" onclick="location.href='polux.html'">
 Abrir Pólux
-
 </button>
-
 </div>
-
-
-
-<!-- CASTOR -->
 
 <div class="card">
-
+<div>
 <h2>Castor — Poesia</h2>
+<p>Para versos, estrofes e composições poéticas com respiração visual própria.</p>
 
 <div class="lista">
-
 haicai<br>
 pantum<br>
 gasal<br>
 soneto<br>
 estrofismo livre<br>
 poesia experimental
-
+</div>
 </div>
 
-<button class="botao btn-castor"
-onclick="alert('Castor será ativado na próxima etapa.')">
-
-Castor — em breve
-
+<button class="botao btn-castor" onclick="location.href='castor.html'">
+Abrir Castor
 </button>
-
 </div>
-
-
-
-<!-- CENTAURO -->
 
 <div class="card">
-
+<div>
 <h2>Centauro — Híbrido</h2>
+<p>Para materiais mistos, coletivos ou de composição estrutural híbrida.</p>
 
 <div class="lista">
-
 antologias<br>
 miscelâneas<br>
 materiais escolares<br>
 coletâneas<br>
 texto + imagem
-
+</div>
 </div>
 
-<button class="botao btn-centauro"
-onclick="alert('Centauro será ativado na próxima etapa.')">
-
-Centauro — em breve
-
+<button class="botao btn-centauro" onclick="location.href='centauro.html'">
+Abrir Centauro
 </button>
-
 </div>
 
-
-
 </div>
-
 
 <div class="footer">
-
-Lapidar é o sistema de diagramação do Celeiro Literário.
-Cada motor editorial atende um tipo específico de obra.
-
+Lapidar é o sistema de diagramação do Celeiro Literário. Cada motor editorial atende um tipo específico de obra.
 </div>
 
 </div>
