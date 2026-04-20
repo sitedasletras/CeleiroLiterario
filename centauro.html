@@ -6,19 +6,35 @@
   <title>Centauro — Diagramador Híbrido</title>
   <style>
     :root{
-      --bg:#f4f5f7;
-      --painel:#efe3ff;
-      --painel-borda:#baa0d9;
-      --texto:#2b2b2b;
-      --muted:#6c7782;
+      --bg:#f3f1f8;
+      --painel:#dcc8ff;
+      --painel-borda:#8f68c7;
+      --painel-sombra:rgba(95, 54, 148, .20);
+      --texto:#2c2438;
+      --muted:#6f6682;
       --page:#fffdf8;
       --page-border:#3e4550;
-      --botao:#ffffff;
-      --botao-borda:#a99ac3;
-      --selecionado:#e8dcff;
-      --manual:#fff3c7;
-      --sombra:0 8px 22px rgba(0,0,0,.08);
       --toolbar:#faf7ff;
+      --card:#ffffff;
+      --selecionado:#ecdfff;
+      --manual:#fff3c7;
+
+      --btn-base:#ffffff;
+      --btn-borda:#b39ed6;
+
+      --btn-marca-bg:#f5efff;
+      --btn-marca-bd:#b396e8;
+
+      --btn-estrutura-bg:#efe5ff;
+      --btn-estrutura-bd:#a57fe0;
+
+      --btn-pagina-bg:#e7d7ff;
+      --btn-pagina-bd:#8c60d5;
+
+      --tag-bg:#f8f3ff;
+      --tag-bd:#c9b7ec;
+
+      --shadow:0 10px 26px rgba(0,0,0,.08);
     }
 
     *{ box-sizing:border-box; }
@@ -34,29 +50,29 @@
     .topo{
       padding:12px 16px 6px;
       font-size:14px;
-      color:#4d4a5d;
-      border-bottom:1px solid #ddd7ea;
-      background:#fbfaff;
+      color:#4d4460;
+      border-bottom:1px solid #ddd3f0;
+      background:#fbf9ff;
       position:sticky;
       top:0;
-      z-index:10;
+      z-index:20;
     }
 
     .layout{
       display:grid;
-      grid-template-columns:300px 1fr;
+      grid-template-columns:320px 1fr;
       gap:14px;
       padding:14px;
       min-height:calc(100vh - 44px);
     }
 
     .painel{
-      background:var(--painel);
+      background:linear-gradient(180deg, #e5d4ff 0%, #d7c0ff 100%);
       border:1px solid var(--painel-borda);
-      border-radius:12px;
+      border-radius:14px;
       padding:12px;
       overflow:auto;
-      box-shadow:var(--sombra);
+      box-shadow:0 10px 30px var(--painel-sombra);
       height:calc(100vh - 72px);
       position:sticky;
       top:58px;
@@ -83,15 +99,16 @@
     .grupo select,
     .grupo textarea{
       width:100%;
-      border:1px solid #b7a8d1;
+      border:1px solid #ae97d7;
       border-radius:8px;
       background:#fff;
-      padding:7px 8px;
+      padding:8px 9px;
       font-size:14px;
+      color:#2c2438;
     }
 
     .grupo textarea{
-      min-height:240px;
+      min-height:250px;
       resize:vertical;
       line-height:1.45;
     }
@@ -110,16 +127,36 @@
     }
 
     button{
-      border:1px solid var(--botao-borda);
-      background:var(--botao);
+      border:1px solid var(--btn-borda);
+      background:var(--btn-base);
+      color:#35274e;
       padding:8px 10px;
       border-radius:8px;
       cursor:pointer;
       font-size:14px;
+      transition:.15s ease;
     }
 
     button:hover{
-      background:#faf8ff;
+      transform:translateY(-1px);
+      filter:brightness(1.02);
+    }
+
+    .btn-marca{
+      background:var(--btn-marca-bg);
+      border-color:var(--btn-marca-bd);
+    }
+
+    .btn-estrutura{
+      background:var(--btn-estrutura-bg);
+      border-color:var(--btn-estrutura-bd);
+    }
+
+    .btn-pagina{
+      background:var(--btn-pagina-bg);
+      border-color:var(--btn-pagina-bd);
+      color:#2d1954;
+      font-weight:600;
     }
 
     .workspace{
@@ -132,11 +169,11 @@
     .caixa-texto,
     .barra-acoes,
     .bloco-previa{
-      background:#fff;
-      border:1px solid #dfd9ea;
+      background:var(--card);
+      border:1px solid #e1d8ef;
       border-radius:12px;
       padding:12px;
-      box-shadow:var(--sombra);
+      box-shadow:var(--shadow);
     }
 
     .caixa-texto h3,
@@ -186,6 +223,14 @@
       flex-wrap:wrap;
     }
 
+    .barra-previa select{
+      border:1px solid #b6a4da;
+      border-radius:8px;
+      padding:7px 8px;
+      background:#fff;
+      color:#382853;
+    }
+
     .visor{
       flex:1;
       min-height:0;
@@ -193,7 +238,8 @@
       padding:12px;
       background:#fafbfd;
       border-radius:10px;
-      border:1px solid #ece7f4;
+      border:1px solid #ebe3f7;
+      scroll-behavior:smooth;
     }
 
     .spreads{
@@ -222,20 +268,9 @@
       flex:0 0 auto;
     }
 
-    .pagina.a5{
-      width:148mm;
-      min-height:210mm;
-    }
-
-    .pagina.f16x23{
-      width:160mm;
-      min-height:230mm;
-    }
-
-    .pagina.f6x9{
-      width:152mm;
-      min-height:229mm;
-    }
+    .pagina.a5{ width:148mm; min-height:210mm; }
+    .pagina.f16x23{ width:160mm; min-height:230mm; }
+    .pagina.f6x9{ width:152mm; min-height:229mm; }
 
     .pagina-inner{
       padding:20mm 15mm 18mm 20mm;
@@ -288,12 +323,12 @@
     }
 
     .linha-item:hover{
-      background:#f6f1ff;
+      background:#f4edff;
     }
 
     .linha-item.selecionado{
       background:var(--selecionado);
-      outline:1px solid #c7b6e6;
+      outline:1px solid #c6afea;
     }
 
     .linha-item.manual{
@@ -339,26 +374,22 @@
     .linha-item.prosa{
       text-align:justify;
       text-indent:6mm;
-      hyphens:auto;
-      -webkit-hyphens:auto;
-      -ms-hyphens:auto;
+    }
+
+    .linha-item.prosa-cont{
+      text-align:justify;
+      text-indent:0;
     }
 
     .linha-item.dialogo{
       text-align:left;
       text-indent:0;
       padding-left:4mm;
-      hyphens:none;
-      -webkit-hyphens:none;
-      -ms-hyphens:none;
     }
 
     .linha-item.poesia{
       text-align:left;
       text-indent:0;
-      hyphens:none;
-      -webkit-hyphens:none;
-      -ms-hyphens:none;
     }
 
     .linha-item.ornamento{
@@ -370,8 +401,8 @@
     .tag{
       display:inline-block;
       font-size:11px;
-      border:1px solid #c9c0da;
-      background:#faf7ff;
+      border:1px solid var(--tag-bd);
+      background:var(--tag-bg);
       border-radius:999px;
       padding:3px 8px;
     }
@@ -396,6 +427,36 @@
       visibility:hidden;
       pointer-events:none;
       z-index:-1;
+    }
+
+    .measure-page{
+      background:#fff;
+      border:2px solid #000;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .measure-inner{
+      padding:20mm 15mm 18mm 20mm;
+      display:flex;
+      flex-direction:column;
+      flex:1;
+      min-height:0;
+    }
+
+    .measure-inner.margens-normais{
+      padding:18mm 14mm 17mm 18mm;
+    }
+
+    .measure-inner.margens-estreitas{
+      padding:14mm 12mm 14mm 14mm;
+    }
+
+    .measure-miolo{
+      flex:1 1 auto;
+      min-height:0;
+      width:100%;
     }
 
     @media (max-width:980px){
@@ -528,7 +589,7 @@
         <label for="ornamentoModo">Ornamento</label>
         <select id="ornamentoModo">
           <option value="desligado" selected>Desligado</option>
-          <option value="entrePoemas">Entre poemas</option>
+          <option value="entreTitulos">Entre títulos</option>
           <option value="manual">Manual</option>
         </select>
       </div>
@@ -545,13 +606,13 @@
       </div>
 
       <div class="acoes">
-        <button id="btnAplicar">Aplicar</button>
-        <button id="btnCarregarPreview">Carregar texto na prévia</button>
-        <button id="btnLimparTudo">Limpar tudo</button>
+        <button id="btnAplicar" class="btn-pagina">Aplicar</button>
+        <button id="btnCarregarPreview" class="btn-pagina">Carregar texto na prévia</button>
+        <button id="btnLimparTudo" class="btn-estrutura">Limpar tudo</button>
       </div>
 
       <div class="ajuda">
-        O Centauro detecta prosa, diálogo e poesia automaticamente. A correção manual fica disponível como lapidação fina.
+        O Centauro detecta prosa, diálogo e poesia automaticamente. Na prosa, a paginação trabalha por linhas internas do parágrafo.
       </div>
     </aside>
 
@@ -593,19 +654,21 @@ aprendeu com a ausência a soluçar.</textarea>
         <h3>Comandos da prévia híbrida</h3>
         <div id="statusEdicao" class="status">Selecione uma linha na prévia. Duplo clique edita direto nela.</div>
         <div class="acao-compacta">
-          <button id="btnSalvarLinha">Salvar linha</button>
-          <button id="btnProsa">Marcar como prosa</button>
-          <button id="btnDialogo">Marcar como diálogo</button>
-          <button id="btnPoesia">Marcar como poesia</button>
-          <button id="btnTitulo">Marcar como título</button>
-          <button id="btnSubtitulo">Marcar como subtítulo</button>
-          <button id="btnInserirAbaixo">Inserir linha abaixo</button>
-          <button id="btnExcluirLinha">Excluir linha</button>
-          <button id="btnInserirOrnamentoManual">Inserir ornamento abaixo</button>
-          <button id="btnUnirAcima">Unir com linha acima</button>
-          <button id="btnUnirAbaixo">Unir com linha abaixo</button>
-          <button id="btnNovaPaginaAqui">Iniciar nova página aqui</button>
-          <button id="btnRemoverQuebra">Remover quebra</button>
+          <button id="btnSalvarLinha" class="btn-marca">Salvar linha</button>
+          <button id="btnProsa" class="btn-marca">Marcar como prosa</button>
+          <button id="btnDialogo" class="btn-marca">Marcar como diálogo</button>
+          <button id="btnPoesia" class="btn-marca">Marcar como poesia</button>
+          <button id="btnTitulo" class="btn-marca">Marcar como título</button>
+          <button id="btnSubtitulo" class="btn-marca">Marcar como subtítulo</button>
+
+          <button id="btnInserirAbaixo" class="btn-estrutura">Inserir linha abaixo</button>
+          <button id="btnExcluirLinha" class="btn-estrutura">Excluir linha</button>
+          <button id="btnInserirOrnamentoManual" class="btn-estrutura">Inserir ornamento abaixo</button>
+          <button id="btnUnirAcima" class="btn-estrutura">Unir com linha acima</button>
+          <button id="btnUnirAbaixo" class="btn-estrutura">Unir com linha abaixo</button>
+
+          <button id="btnNovaPaginaAqui" class="btn-pagina">Iniciar nova página aqui</button>
+          <button id="btnRemoverQuebra" class="btn-pagina">Remover quebra</button>
         </div>
       </section>
 
@@ -613,8 +676,8 @@ aprendeu com a ausência a soluçar.</textarea>
         <div class="barra-previa">
           <h3>Prévia híbrida</h3>
           <div class="controles">
-            <button id="paginaAnterior">Página anterior</button>
-            <button id="proximaPagina">Próxima página</button>
+            <button id="paginaAnterior" class="btn-pagina">Página anterior</button>
+            <button id="proximaPagina" class="btn-pagina">Próxima página</button>
 
             <select id="modoEscala" style="width:auto;">
               <option value="ajustar" selected>Ajustar à tela</option>
@@ -714,23 +777,15 @@ aprendeu com a ausência a soluçar.</textarea>
 
       if(/^[—-]\s?/.test(atual)) return 'dialogo';
 
-      if(antes === '' && atual.length <= 60 && !/[,.!?;:]$/.test(atual) && /^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ]/.test(atual)){
-        if(depois !== '' && !/^[—-]\s?/.test(depois)){
-          return 'titulo';
-        }
-      }
+      const tituloCurto = atual.length <= 70 && !/[,.!?;:]$/.test(atual) && /^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ0-9]/.test(atual);
+      if(antes === '' && tituloCurto) return 'titulo';
 
-      const linhaCurta = atual.length <= 55;
-      const parecePoesia =
-        linhaCurta &&
-        !/^[—-]\s?/.test(atual) &&
-        (
-          /[,.!?;:]$/.test(atual) ||
-          /^[a-záàâãéêíóôõúç]/.test(atual) ||
-          (antes !== '' && depois !== '')
-        );
+      const linhaCurta = atual.length <= 60;
+      const prevCurta = (linhas[i - 1] ?? '').trim().length <= 60;
+      const nextCurta = (linhas[i + 1] ?? '').trim().length <= 60;
+      const possivelPoesia = linhaCurta && (prevCurta || nextCurta);
 
-      if(parecePoesia && !/^\s{4,}/.test(atual)) return 'poesia';
+      if(possivelPoesia && atual.split(' ').length <= 12) return 'poesia';
 
       return 'prosa';
     }
@@ -747,17 +802,8 @@ aprendeu com a ausência a soluçar.</textarea>
 
       const linhas = bruto === '' ? [''] : bruto.split('\n');
       linhasBase = linhas.map((linha, i) => criarItem(linha, detectarTipoAutomatico(linhas, i), false));
-
       aplicarEstrutura();
       statusEdicao.textContent = 'Texto híbrido carregado na prévia.';
-    }
-
-    function aplicarEstrutura(){
-      linhasProcessadas = gerarEstruturaComOrnamentos(linhasBase);
-      paginarPorMedicaoReal();
-      renderPaginas();
-      atualizarMetas();
-      aplicarEscalaVisual();
     }
 
     function gerarEstruturaComOrnamentos(base){
@@ -769,9 +815,9 @@ aprendeu com a ausência a soluçar.</textarea>
       for(let i = 0; i < base.length; i++){
         const atual = { ...base[i] };
 
-        if(ornamentoModo.value === 'entrePoemas' && atual.tipo === 'titulo'){
-          const temAntes = existeConteudoRealAntes(base, i);
-          if(temAntes){
+        if(ornamentoModo.value === 'entreTitulos' && atual.tipo === 'titulo'){
+          const existeAntes = existeConteudoRealAntes(base, i);
+          if(existeAntes){
             saida.push({
               id: novoId(),
               texto: simbolo,
@@ -798,21 +844,20 @@ aprendeu com a ausência a soluçar.</textarea>
 
     function criarPaginaMedidora(){
       const pagina = document.createElement('div');
-      pagina.className = `pagina ${getPageClass()} ${getMargemClass()}`;
-
+      pagina.className = `measure-page ${getPageClass()}`;
       const inner = document.createElement('div');
-      inner.className = 'pagina-inner';
+      inner.className = `measure-inner ${getMargemClass()}`;
 
       const cab = document.createElement('div');
-      cab.className = 'cabecalho-pagina';
-      cab.innerHTML = `<span>Centauro</span><span>Página 1</span>`;
+      cab.style.height = '8mm';
+      cab.style.flex = '0 0 auto';
 
       const miolo = document.createElement('div');
-      miolo.className = 'miolo';
+      miolo.className = 'measure-miolo';
 
       const rodape = document.createElement('div');
-      rodape.className = 'rodape-pagina';
-      rodape.textContent = '1';
+      rodape.style.height = '8mm';
+      rodape.style.flex = '0 0 auto';
 
       inner.appendChild(cab);
       inner.appendChild(miolo);
@@ -822,56 +867,259 @@ aprendeu com a ausência a soluçar.</textarea>
       return { pagina, miolo };
     }
 
+    function criarMedidorLinha(tipo, texto, primeiraLinhaProsa=false){
+      const el = document.createElement('div');
+      el.style.whiteSpace = 'pre-wrap';
+      el.style.wordBreak = 'break-word';
+      el.style.margin = '0';
+      el.style.padding = '0';
+
+      if(tipo === 'titulo'){
+        el.style.fontFamily = fonteTitulos.value;
+        el.style.fontSize = tamTitulos.value + 'pt';
+        el.style.lineHeight = '1.3';
+        el.style.textAlign = 'center';
+        el.style.fontWeight = '700';
+        el.style.marginTop = '4mm';
+        el.style.marginBottom = '3mm';
+      } else if(tipo === 'subtitulo'){
+        el.style.fontFamily = fonteTitulos.value;
+        el.style.fontSize = Math.max(10, Number(tamTitulos.value) - 2) + 'pt';
+        el.style.lineHeight = '1.3';
+        el.style.textAlign = 'center';
+        el.style.fontStyle = 'italic';
+      } else if(tipo === 'poesia'){
+        el.style.fontFamily = fontePoesia.value;
+        el.style.fontSize = tamPoesia.value + 'pt';
+        el.style.lineHeight = entrelinhaPoesia.value;
+        el.style.textAlign = 'left';
+      } else if(tipo === 'dialogo'){
+        el.style.fontFamily = fonteProsa.value;
+        el.style.fontSize = tamDialogo.value + 'pt';
+        el.style.lineHeight = entrelinhaProsa.value;
+        el.style.textAlign = 'left';
+        el.style.paddingLeft = '4mm';
+        el.style.hyphens = 'none';
+      } else if(tipo === 'ornamento'){
+        el.style.fontFamily = fonteTitulos.value;
+        el.style.fontSize = Math.max(10, Number(tamTitulos.value) - 1) + 'pt';
+        el.style.lineHeight = '1.2';
+        el.style.textAlign = 'center';
+        el.style.margin = '3mm 0';
+      } else if(tipo === 'vazio'){
+        el.style.minHeight = '4mm';
+      } else {
+        el.style.fontFamily = fonteProsa.value;
+        el.style.fontSize = tamProsa.value + 'pt';
+        el.style.lineHeight = entrelinhaProsa.value;
+        el.style.textAlign = 'justify';
+        el.style.textIndent = primeiraLinhaProsa ? '6mm' : '0';
+        if(hifenizacaoProsa.value === 'sim'){
+          el.style.hyphens = 'auto';
+          el.lang = 'pt-BR';
+        } else {
+          el.style.hyphens = 'none';
+        }
+      }
+
+      el.textContent = texto || '';
+      return el;
+    }
+
+    function quebrarParagrafoEmLinhas(texto, miolo){
+      const palavras = texto.trim().split(/\s+/).filter(Boolean);
+      if(!palavras.length) return [''];
+
+      const linhas = [];
+      let atual = '';
+
+      for(const palavra of palavras){
+        const tentativa = atual ? atual + ' ' + palavra : palavra;
+        const el = criarMedidorLinha('prosa', tentativa, linhas.length === 0);
+        miolo.innerHTML = '';
+        miolo.appendChild(el);
+
+        if(el.scrollHeight > el.clientHeight + 4 || el.scrollWidth > miolo.clientWidth + 1){
+          if(atual){
+            linhas.push(atual);
+            atual = palavra;
+          } else {
+            linhas.push(tentativa);
+            atual = '';
+          }
+        } else {
+          atual = tentativa;
+        }
+      }
+
+      if(atual) linhas.push(atual);
+      return linhas;
+    }
+
+    function expandirItensParaFluxo(baseItems){
+      const estrutura = criarPaginaMedidora();
+      medidor.innerHTML = '';
+      medidor.appendChild(estrutura.pagina);
+      const miolo = estrutura.miolo;
+      const fluxo = [];
+
+      for(const item of baseItems){
+        if(item.tipo === 'prosa' && item.texto.trim()){
+          const linhas = quebrarParagrafoEmLinhas(item.texto, miolo);
+          linhas.forEach((linha, idx) => {
+            fluxo.push({
+              id: item.id,
+              parentId: item.id,
+              texto: linha,
+              tipo: idx === 0 ? 'prosa' : 'prosa-cont',
+              originalTipo: 'prosa',
+              manual: item.manual,
+              pageBreakBefore: idx === 0 ? item.pageBreakBefore : false,
+              segmentIndex: idx,
+              segmentTotal: linhas.length
+            });
+          });
+        } else {
+          fluxo.push({
+            id: item.id,
+            parentId: item.id,
+            texto: item.texto,
+            tipo: item.tipo,
+            originalTipo: item.tipo,
+            manual: item.manual,
+            pageBreakBefore: item.pageBreakBefore,
+            segmentIndex: 0,
+            segmentTotal: 1
+          });
+        }
+      }
+
+      medidor.innerHTML = '';
+      return fluxo;
+    }
+
     function paginarPorMedicaoReal(){
       paginas = [];
-      medidor.innerHTML = '';
 
       const estrutura = criarPaginaMedidora();
+      medidor.innerHTML = '';
       medidor.appendChild(estrutura.pagina);
 
       const mioloMedidor = estrutura.miolo;
       const alturaDisponivel = mioloMedidor.clientHeight;
+      const fluxo = expandirItensParaFluxo(linhasProcessadas);
 
-      let atual = [];
+      let pagina = [];
+      let i = 0;
 
-      for(let i = 0; i < linhasProcessadas.length; i++){
-        const item = linhasProcessadas[i];
+      while(i < fluxo.length){
+        const item = fluxo[i];
 
-        if(item.pageBreakBefore && atual.length > 0){
-          paginas.push(atual);
-          atual = [];
+        if(item.pageBreakBefore && pagina.length > 0){
+          paginas.push(pagina);
+          pagina = [];
           mioloMedidor.innerHTML = '';
         }
 
-        const clone = criarLinhaVisual(item, false);
-        mioloMedidor.appendChild(clone);
+        if(item.originalTipo === 'prosa'){
+          const grupo = [];
+          while(i < fluxo.length && fluxo[i].parentId === item.parentId && fluxo[i].originalTipo === 'prosa'){
+            grupo.push(fluxo[i]);
+            i++;
+          }
 
-        const passou = mioloMedidor.scrollHeight > alturaDisponivel + 1;
-
-        if(passou && atual.length > 0){
-          mioloMedidor.removeChild(clone);
-          paginas.push(atual);
-          atual = [];
+          let fit = 0;
           mioloMedidor.innerHTML = '';
-          mioloMedidor.appendChild(criarLinhaVisual(item, false));
+          pagina.forEach(seg => mioloMedidor.appendChild(criarLinhaVisual(seg, false)));
+
+          for(let g = 0; g < grupo.length; g++){
+            const el = criarLinhaVisual(grupo[g], false);
+            mioloMedidor.appendChild(el);
+            if(mioloMedidor.scrollHeight <= alturaDisponivel + 1){
+              fit++;
+            } else {
+              mioloMedidor.removeChild(el);
+              break;
+            }
+          }
+
+          if(fit === grupo.length){
+            pagina.push(...grupo);
+            continue;
+          }
+
+          if(fit === 0){
+            if(pagina.length > 0){
+              paginas.push(pagina);
+              pagina = [];
+              mioloMedidor.innerHTML = '';
+              continue;
+            } else {
+              pagina.push(...grupo);
+              paginas.push(pagina);
+              pagina = [];
+              mioloMedidor.innerHTML = '';
+              continue;
+            }
+          }
+
+          if(fit < 2){
+            paginas.push(pagina);
+            pagina = [];
+            mioloMedidor.innerHTML = '';
+            continue;
+          }
+
+          const restante = grupo.length - fit;
+          if(restante < 2 && grupo.length >= 4){
+            fit = Math.max(2, fit - (2 - restante));
+          }
+
+          pagina.push(...grupo.slice(0, fit));
+          paginas.push(pagina);
+          pagina = [];
+          mioloMedidor.innerHTML = '';
+
+          const sobra = grupo.slice(fit);
+          fluxo.splice(i, 0, ...sobra);
+          continue;
         }
 
-        atual.push(item);
+        const el = criarLinhaVisual(item, false);
+        mioloMedidor.innerHTML = '';
+        pagina.forEach(seg => mioloMedidor.appendChild(criarLinhaVisual(seg, false)));
+        mioloMedidor.appendChild(el);
+
+        if(mioloMedidor.scrollHeight <= alturaDisponivel + 1){
+          pagina.push(item);
+          i++;
+        } else {
+          if(pagina.length === 0){
+            pagina.push(item);
+            i++;
+          }
+          paginas.push(pagina);
+          pagina = [];
+          mioloMedidor.innerHTML = '';
+        }
       }
 
-      if(atual.length === 0){
-        atual.push({
+      if(pagina.length === 0){
+        pagina.push({
           id: novoId(),
+          parentId: null,
           texto:'',
           tipo:'vazio',
+          originalTipo:'vazio',
           manual:false,
-          pageBreakBefore:false
+          pageBreakBefore:false,
+          segmentIndex:0,
+          segmentTotal:1
         });
       }
 
-      paginas.push(atual);
+      paginas.push(pagina);
       medidor.innerHTML = '';
-
       if(paginaAtual >= paginas.length) paginaAtual = paginas.length - 1;
       if(paginaAtual < 0) paginaAtual = 0;
     }
@@ -881,8 +1129,9 @@ aprendeu com a ausência a soluçar.</textarea>
       div.className = 'linha-item ' + item.tipo + (item.manual ? ' manual' : '');
       if(item.pageBreakBefore) div.classList.add('break-before');
 
-      div.dataset.id = item.id;
-      div.dataset.tipo = item.tipo;
+      div.dataset.id = item.parentId ?? item.id;
+      div.dataset.segment = item.segmentIndex ?? 0;
+      div.dataset.tipo = item.originalTipo || item.tipo;
 
       if(item.tipo === 'vazio'){
         div.innerHTML = '&nbsp;';
@@ -893,8 +1142,8 @@ aprendeu com a ausência a soluçar.</textarea>
       aplicarEstiloLinha(div, item);
 
       if(interativa){
-        div.addEventListener('click', () => selecionarLinha(item.id));
-        div.addEventListener('dblclick', () => iniciarEdicaoInline(item.id));
+        div.addEventListener('click', () => selecionarLinha(item.parentId ?? item.id));
+        div.addEventListener('dblclick', () => iniciarEdicaoInline(item.parentId ?? item.id));
       }
 
       return div;
@@ -905,40 +1154,35 @@ aprendeu com a ausência a soluçar.</textarea>
         div.style.fontFamily = fonteTitulos.value;
         div.style.fontSize = tamTitulos.value + 'pt';
         div.style.lineHeight = '1.3';
-        div.style.textAlign = 'center';
       } else if(item.tipo === 'subtitulo'){
         div.style.fontFamily = fonteTitulos.value;
         div.style.fontSize = Math.max(10, Number(tamTitulos.value) - 2) + 'pt';
         div.style.lineHeight = '1.3';
-        div.style.textAlign = 'center';
-      } else if(item.tipo === 'poesia'){
+      } else if(item.type === 'poesia' || item.tipo === 'poesia'){
         div.style.fontFamily = fontePoesia.value;
         div.style.fontSize = tamPoesia.value + 'pt';
         div.style.lineHeight = entrelinhaPoesia.value;
-        div.style.textAlign = 'left';
       } else if(item.tipo === 'dialogo'){
         div.style.fontFamily = fonteProsa.value;
         div.style.fontSize = tamDialogo.value + 'pt';
         div.style.lineHeight = entrelinhaProsa.value;
-        div.style.textAlign = 'left';
       } else if(item.tipo === 'ornamento'){
         div.style.fontFamily = fonteTitulos.value;
         div.style.fontSize = Math.max(10, Number(tamTitulos.value) - 1) + 'pt';
         div.style.lineHeight = '1.2';
-        div.style.textAlign = 'center';
-      } else if(item.tipo === 'prosa'){
+      } else if(item.tipo === 'prosa' || item.tipo === 'prosa-cont'){
         div.style.fontFamily = fonteProsa.value;
         div.style.fontSize = tamProsa.value + 'pt';
         div.style.lineHeight = entrelinhaProsa.value;
-        div.style.textAlign = 'justify';
-        if(hifenizacaoProsa.value === 'nao'){
-          div.style.hyphens = 'none';
-          div.style.webkitHyphens = 'none';
-          div.style.msHyphens = 'none';
-        } else {
+        if(hifenizacaoProsa.value === 'sim'){
           div.style.hyphens = 'auto';
           div.style.webkitHyphens = 'auto';
           div.style.msHyphens = 'auto';
+          div.lang = 'pt-BR';
+        } else {
+          div.style.hyphens = 'none';
+          div.style.webkitHyphens = 'none';
+          div.style.msHyphens = 'none';
         }
       }
 
@@ -975,11 +1219,13 @@ aprendeu com a ausência a soluçar.</textarea>
       }
 
       destacarSelecionadaNaPagina();
+      requestAnimationFrame(scrollPaginaAtualParaVista);
     }
 
     function criarPaginaCompleta(items, numeroPagina){
       const page = document.createElement('div');
       page.className = `pagina ${getPageClass()} ${getMargemClass()}`;
+      page.dataset.pagina = numeroPagina - 1;
 
       const inner = document.createElement('div');
       inner.className = 'pagina-inner';
@@ -991,9 +1237,7 @@ aprendeu com a ausência a soluçar.</textarea>
       const miolo = document.createElement('div');
       miolo.className = 'miolo';
 
-      items.forEach(item => {
-        miolo.appendChild(criarLinhaVisual(item, true));
-      });
+      items.forEach(item => miolo.appendChild(criarLinhaVisual(item, true)));
 
       const rodape = document.createElement('div');
       rodape.className = 'rodape-pagina';
@@ -1028,21 +1272,52 @@ aprendeu com a ausência a soluçar.</textarea>
       let escala = 1;
 
       if(modoEscala.value === 'ajustar'){
-        const firstPage = spreadsEl.querySelector('.pagina');
-        if(firstPage){
-          const larguraPagina = firstPage.offsetWidth;
+        const pages = spreadsEl.querySelectorAll('.pagina');
+        const first = pages[0];
+        if(first){
+          const larguraPagina = first.offsetWidth;
           const larguraDisponivel = visorPaginas.clientWidth - 30;
-
           let larguraTotal = larguraPagina;
-          if(modoVisualizacao.value === 'livro' && spreadsEl.querySelectorAll('.pagina').length >= 2){
+          if(modoVisualizacao.value === 'livro' && pages.length >= 2){
             larguraTotal = (larguraPagina * 2) + 18;
           }
-
           escala = Math.min(1, larguraDisponivel / larguraTotal);
         }
       }
 
       spreadsEl.style.transform = `scale(${escala})`;
+    }
+
+    function localizarPaginaDoItem(itemId){
+      for(let p = 0; p < paginas.length; p++){
+        if((paginas[p] || []).some(seg => (seg.parentId ?? seg.id) === itemId)){
+          return p;
+        }
+      }
+      return 0;
+    }
+
+    function aplicarEstrutura(manterContexto=true){
+      const itemContexto = linhaSelecionadaId;
+      linhasProcessadas = gerarEstruturaComOrnamentos(linhasBase);
+      paginarPorMedicaoReal();
+
+      if(manterContexto && itemContexto !== null){
+        paginaAtual = localizarPaginaDoItem(itemContexto);
+      } else {
+        paginaAtual = Math.max(0, Math.min(paginaAtual, paginas.length - 1));
+      }
+
+      renderPaginas();
+      atualizarMetas();
+      aplicarEscalaVisual();
+    }
+
+    function scrollPaginaAtualParaVista(){
+      const alvo = spreadsEl.querySelector(`.pagina[data-pagina="${paginaAtual}"]`);
+      if(alvo){
+        alvo.scrollIntoView({ block:'nearest', inline:'nearest' });
+      }
     }
 
     function buscarItemBasePorId(id){
@@ -1053,7 +1328,6 @@ aprendeu com a ausência a soluçar.</textarea>
       linhaSelecionadaId = id;
       const item = buscarItemBasePorId(id);
       if(!item) return;
-
       statusEdicao.textContent = `Linha selecionada: ${item.tipo}. Duplo clique para editar direto nela.`;
       destacarSelecionadaNaPagina();
     }
@@ -1061,8 +1335,7 @@ aprendeu com a ausência a soluçar.</textarea>
     function destacarSelecionadaNaPagina(){
       document.querySelectorAll('.linha-item').forEach(el => el.classList.remove('selecionado'));
       if(linhaSelecionadaId === null) return;
-      const el = document.querySelector(`.linha-item[data-id="${linhaSelecionadaId}"]`);
-      if(el) el.classList.add('selecionado');
+      document.querySelectorAll(`.linha-item[data-id="${linhaSelecionadaId}"]`).forEach(el => el.classList.add('selecionado'));
     }
 
     function salvarLinhaSelecionada(){
@@ -1073,7 +1346,7 @@ aprendeu com a ausência a soluçar.</textarea>
         const item = buscarItemBasePorId(linhaSelecionadaId);
         if(item){
           item.manual = true;
-          aplicarEstrutura();
+          aplicarEstrutura(true);
           reconstruirEntradaAPartirDasLinhas();
           selecionarLinha(linhaSelecionadaId);
         }
@@ -1092,7 +1365,7 @@ aprendeu com a ausência a soluçar.</textarea>
         item.texto = ornamentoTipo.value;
       }
 
-      aplicarEstrutura();
+      aplicarEstrutura(true);
       reconstruirEntradaAPartirDasLinhas();
       selecionarLinha(linhaSelecionadaId);
     }
@@ -1104,9 +1377,9 @@ aprendeu com a ausência a soluçar.</textarea>
 
       const novo = criarItem('', 'vazio', true);
       linhasBase.splice(index + 1, 0, novo);
-      aplicarEstrutura();
+      linhaSelecionadaId = novo.id;
+      aplicarEstrutura(true);
       reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(novo.id);
       iniciarEdicaoInline(novo.id);
     }
 
@@ -1115,9 +1388,10 @@ aprendeu com a ausência a soluçar.</textarea>
       const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
       if(index === -1) return;
 
+      const fallback = linhasBase[index - 1]?.id ?? linhasBase[index + 1]?.id ?? null;
       linhasBase.splice(index, 1);
-      linhaSelecionadaId = null;
-      aplicarEstrutura();
+      linhaSelecionadaId = fallback;
+      aplicarEstrutura(true);
       reconstruirEntradaAPartirDasLinhas();
       statusEdicao.textContent = 'Linha removida.';
     }
@@ -1129,7 +1403,8 @@ aprendeu com a ausência a soluçar.</textarea>
 
       const novo = criarItem(ornamentoTipo.value, 'ornamento', true);
       linhasBase.splice(index + 1, 0, novo);
-      aplicarEstrutura();
+      linhaSelecionadaId = novo.id;
+      aplicarEstrutura(true);
       reconstruirEntradaAPartirDasLinhas();
       selecionarLinha(novo.id);
     }
@@ -1145,8 +1420,9 @@ aprendeu com a ausência a soluçar.</textarea>
       acima.texto = (acima.texto.replace(/\s+$/,'') + ' ' + atual.texto.replace(/^\s+/,'')).trim();
       acima.manual = true;
       linhasBase.splice(index, 1);
+      linhaSelecionadaId = acima.id;
 
-      aplicarEstrutura();
+      aplicarEstrutura(true);
       reconstruirEntradaAPartirDasLinhas();
       selecionarLinha(acima.id);
     }
@@ -1162,8 +1438,9 @@ aprendeu com a ausência a soluçar.</textarea>
       atual.texto = (atual.texto.replace(/\s+$/,'') + ' ' + abaixo.texto.replace(/^\s+/,'')).trim();
       atual.manual = true;
       linhasBase.splice(index + 1, 1);
+      linhaSelecionadaId = atual.id;
 
-      aplicarEstrutura();
+      aplicarEstrutura(true);
       reconstruirEntradaAPartirDasLinhas();
       selecionarLinha(atual.id);
     }
@@ -1174,7 +1451,7 @@ aprendeu com a ausência a soluçar.</textarea>
       if(!item) return;
       item.pageBreakBefore = true;
       item.manual = true;
-      aplicarEstrutura();
+      aplicarEstrutura(true);
       reconstruirEntradaAPartirDasLinhas();
       selecionarLinha(item.id);
     }
@@ -1185,7 +1462,7 @@ aprendeu com a ausência a soluçar.</textarea>
       if(!item) return;
       item.pageBreakBefore = false;
       item.manual = true;
-      aplicarEstrutura();
+      aplicarEstrutura(true);
       reconstruirEntradaAPartirDasLinhas();
       selecionarLinha(item.id);
     }
@@ -1210,11 +1487,6 @@ aprendeu com a ausência a soluçar.</textarea>
       el.contentEditable = 'true';
       el.spellcheck = false;
       el.focus();
-
-      if(item.tipo === 'vazio'){
-        el.textContent = '';
-      }
-
       colocarCursorNoFim(el);
       statusEdicao.textContent = 'Editando direto na prévia. Enter salva. Esc cancela.';
 
@@ -1233,19 +1505,6 @@ aprendeu com a ausência a soluçar.</textarea>
       if(e.key === 'Escape'){
         e.preventDefault();
         finalizarEdicaoInline(false);
-      }
-
-      if(e.key === 'Delete'){
-        const item = buscarItemBasePorId(editandoId);
-        const texto = limparTextoVisual(e.currentTarget.innerText || '');
-
-        if(item && (item.tipo === 'ornamento' || item.tipo === 'vazio') && texto === ''){
-          e.preventDefault();
-          const idApagar = editandoId;
-          finalizarEdicaoInline(false);
-          linhaSelecionadaId = idApagar;
-          excluirLinhaSelecionada();
-        }
       }
     }
 
@@ -1270,19 +1529,16 @@ aprendeu com a ausência a soluçar.</textarea>
       el.classList.remove('editando');
 
       if(salvar){
-        const textoNovo = limparTextoVisual(el.innerText || '');
-        item.texto = textoNovo;
+        item.texto = limparTextoVisual(el.innerText || '');
         item.manual = true;
-        if(textoNovo === ''){
-          item.tipo = 'vazio';
-        }
+        if(item.texto === '') item.tipo = 'vazio';
       } else {
         item.texto = textoAntesEdicao;
       }
 
       editandoId = null;
       textoAntesEdicao = '';
-      aplicarEstrutura();
+      aplicarEstrutura(true);
       reconstruirEntradaAPartirDasLinhas();
       selecionarLinha(id);
     }
@@ -1317,7 +1573,7 @@ aprendeu com a ausência a soluçar.</textarea>
       linhaSelecionadaId = null;
       editandoId = null;
       paginaAtual = 0;
-      aplicarEstrutura();
+      aplicarEstrutura(false);
       statusEdicao.textContent = 'Tudo limpo. Agora cole o novo texto.';
     }
 
@@ -1348,7 +1604,7 @@ aprendeu com a ausência a soluçar.</textarea>
       aplicarEscalaVisual();
     }
 
-    document.getElementById('btnAplicar').addEventListener('click', aplicarEstrutura);
+    document.getElementById('btnAplicar').addEventListener('click', () => aplicarEstrutura(true));
     document.getElementById('btnCarregarPreview').addEventListener('click', () => parseEntrada(true));
     document.getElementById('btnLimparTudo').addEventListener('click', limparTudo);
 
@@ -1376,8 +1632,7 @@ aprendeu com a ausência a soluçar.</textarea>
       modoEscala, modoVisualizacao
     ].forEach(campo => {
       campo.addEventListener('change', () => {
-        paginaAtual = 0;
-        aplicarEstrutura();
+        aplicarEstrutura(true);
       });
     });
 
@@ -1392,7 +1647,7 @@ aprendeu com a ausência a soluçar.</textarea>
 
       if(e.key === 'Delete' && linhaSelecionadaId !== null){
         const item = buscarItemBasePorId(linhaSelecionadaId);
-        if(item && (item.tipo === 'ornamento' || item.tipo === 'vazio')){
+        if(item && item.tipo === 'ornamento'){
           excluirLinhaSelecionada();
         }
       }
