@@ -1,881 +1,288 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Castor — Diagramador de Poesia</title>
-  <style>
-    :root{
-      --bg:#f3f5f7;
-      --painel:#cfefff;
-      --painel-borda:#8cbdd6;
-      --texto:#2b2b2b;
-      --muted:#6c7782;
-      --page:#fffdf8;
-      --page-border:#3e4550;
-      --botao:#ffffff;
-      --botao-borda:#9bb3c5;
-      --selecionado:#dff0ff;
-      --manual:#fff3c7;
-      --sombra:0 8px 22px rgba(0,0,0,.08);
-      --toolbar:#f7fbff;
-    }
+<meta charset="UTF-8">
+<title>Castor — Diagramador Poético</title>
 
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family: Georgia, "Times New Roman", serif;
-      background:var(--bg);
-      color:var(--texto);
-      min-height:100vh;
-    }
-    .topo{
-      padding:12px 16px 6px;
-      font-size:14px;
-      color:#4d5d6c;
-      border-bottom:1px solid #d9e2ea;
-      background:#f8fbfe;
-    }
-    .layout{
-      display:grid;
-      grid-template-columns:300px 1fr;
-      gap:14px;
-      padding:14px;
-      min-height:calc(100vh - 44px);
-    }
-    .painel{
-      background:var(--painel);
-      border:1px solid var(--painel-borda);
-      border-radius:12px;
-      padding:12px;
-      overflow:auto;
-      box-shadow:var(--sombra);
-      height:calc(100vh - 72px);
-    }
-    .painel h2{ margin:0 0 10px; font-size:18px; }
-    .grupo{ margin-bottom:10px; }
-    .grupo label{ display:block; font-size:13px; margin:0 0 4px; font-weight:600; }
-    .grupo input, .grupo select, .grupo textarea{
-      width:100%; border:1px solid #8fb0c0; border-radius:8px; background:#fff; padding:7px 8px; font-size:14px;
-    }
-    .grupo textarea{ min-height:180px; resize:vertical; line-height:1.45; }
-    .linha-dupla{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-    .acoes, .acao-compacta{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
-    button{
-      border:1px solid var(--botao-borda); background:var(--botao); padding:8px 10px; border-radius:8px; cursor:pointer; font-size:14px;
-    }
-    button:hover{ background:#f7fbff; }
-    .workspace{ display:grid; grid-template-rows:auto auto 1fr; gap:12px; min-width:0; }
-    .caixa-texto, .barra-acoes, .bloco-previa{
-      background:#fff; border:1px solid #d7e0e8; border-radius:12px; padding:12px; box-shadow:var(--sombra);
-    }
-    .caixa-texto h3, .barra-acoes h3, .bloco-previa h3{ margin:0 0 8px; font-size:16px; }
-    .barra-acoes{ background:var(--toolbar); }
-    .status{ font-size:13px; color:var(--muted); margin-bottom:10px; }
-    .bloco-previa{ min-height:0; display:flex; flex-direction:column; }
-    .barra-previa{
-      display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; flex-wrap:wrap;
-    }
-    .barra-previa .controles{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-    .barra-previa .meta{ font-size:13px; color:var(--muted); }
-    .visor{
-      flex:1; min-height:0; overflow:auto; padding:12px; background:#f7fafc; border-radius:10px;
-      border:1px solid #e3ebf2; display:flex; justify-content:center; align-items:flex-start;
-    }
-    .spread{
-      display:flex; gap:16px; align-items:flex-start; justify-content:center; width:100%;
-      transform-origin:top center; transition:transform .15s ease;
-    }
-    .pagina{
-      background:var(--page); border:2px solid var(--page-border); border-radius:4px; position:relative;
-      box-shadow:0 8px 24px rgba(0,0,0,.10); display:flex; flex-direction:column; flex:0 0 auto;
-    }
-    .pagina.a5{ width:148mm; min-height:210mm; }
-    .pagina.f16x23{ width:160mm; min-height:230mm; }
-    .pagina.f6x9{ width:152mm; min-height:229mm; }
-    .pagina-inner{ padding:20mm 15mm 20mm 20mm; display:flex; flex-direction:column; flex:1; min-height:0; }
-    .pagina.margens-normais .pagina-inner{ padding:18mm 14mm 18mm 18mm; }
-    .pagina.margens-estreitas .pagina-inner{ padding:14mm 12mm 14mm 14mm; }
-    .cabecalho-pagina{ display:flex; justify-content:space-between; font-size:9px; color:#707a84; margin-bottom:8mm; }
-    .miolo{ flex:1 1 auto; min-height:0; }
-    .rodape-pagina{ margin-top:8mm; text-align:center; font-size:10px; color:#7b7b7b; }
-    .linha-item{
-      position:relative; border-radius:6px; transition:.15s ease; padding:1px 3px; cursor:pointer;
-      white-space:pre-wrap; word-break:break-word; outline:none;
-    }
-    .linha-item:hover{ background:#f3f8fc; }
-    .linha-item.selecionado{ background:var(--selecionado); outline:1px solid #aac9df; }
-    .linha-item.vazio{ min-height:5mm; }
-    .linha-item.titulo{ text-align:center; font-weight:700; margin-top:4mm; margin-bottom:3mm; }
-    .linha-item.subtitulo{ text-align:center; font-style:italic; margin-top:-1mm; margin-bottom:3mm; }
-    .linha-item.verso{ text-align:left; margin:0; }
-    .linha-item.ornamento{ text-align:center; color:#8d8d8d; margin:3mm 0; }
-    .linha-item.manual{ box-shadow:inset 0 0 0 9999px rgba(255,243,199,.45); }
-    .linha-item.editando{ background:#fffef0; outline:1px solid #d8c778; }
-    .ajuda{ font-size:12px; color:var(--muted); line-height:1.4; margin-top:6px; }
-    .tag{ display:inline-block; font-size:11px; border:1px solid #b7cad8; background:#f6fbff; border-radius:999px; padding:3px 8px; margin-right:6px; }
-    #medidor{ position:absolute; left:-99999px; top:0; visibility:hidden; pointer-events:none; z-index:-1; }
-    @media (max-width:980px){
-      .layout{ grid-template-columns:1fr; }
-      .painel{ height:auto; }
-      .pagina.a5, .pagina.f16x23, .pagina.f6x9{ width:148mm; }
-    }
-  </style>
+<style>
+
+body{
+font-family:Georgia,serif;
+background:#f2f5f7;
+margin:0;
+}
+
+.toolbar{
+padding:10px;
+background:white;
+border-bottom:1px solid #ddd;
+display:flex;
+gap:10px;
+}
+
+button{
+padding:6px 12px;
+cursor:pointer;
+}
+
+#workspace{
+display:flex;
+flex-direction:column;
+align-items:center;
+padding:20px;
+}
+
+.page{
+width:148mm;
+height:210mm;
+background:white;
+border:2px solid #333;
+padding:20mm 15mm;
+position:relative;
+margin:20px;
+}
+
+.page-number{
+position:absolute;
+bottom:8mm;
+width:100%;
+text-align:center;
+font-size:11px;
+color:#666;
+}
+
+.line{
+cursor:pointer;
+padding:2px;
+}
+
+.line.selected{
+background:#dff1ff;
+}
+
+.line.title{
+font-weight:bold;
+text-align:center;
+margin-top:10mm;
+}
+
+.line.ornament{
+text-align:center;
+color:#888;
+}
+
+</style>
 </head>
+
 <body>
-  <div class="topo">Castor — Diagramador de Poesia</div>
-
-  <div class="layout">
-    <aside class="painel">
-      <h2>Configuração poética</h2>
-
-      <div class="grupo">
-        <label for="formato">Formato</label>
-        <select id="formato">
-          <option value="A5" selected>A5</option>
-          <option value="16x23">16x23</option>
-          <option value="6x9">6x9</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="primeiraLinha">Leitura estrutural</label>
-        <select id="primeiraLinha">
-          <option value="titulo">Título por poema</option>
-          <option value="livre">Livre</option>
-          <option value="semTitulo">Sem título automático</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="formaPoetica">Forma poética</label>
-        <select id="formaPoetica">
-          <option value="misto" selected>Misto</option>
-          <option value="elegia">Elegia</option>
-          <option value="soneto">Soneto</option>
-          <option value="haikai">Haikai</option>
-          <option value="livre">Livre</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="fonteVersos">Fonte dos versos</label>
-        <select id="fonteVersos">
-          <option value="Georgia">Georgia</option>
-          <option value="'Libre Baskerville', serif" selected>Libre Baskerville</option>
-          <option value="'Times New Roman', serif">Times New Roman</option>
-          <option value="'EB Garamond', serif">EB Garamond</option>
-          <option value="Garamond, serif">Garamond</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="fonteTitulos">Fonte do título</label>
-        <select id="fonteTitulos">
-          <option value="'Playfair Display', serif" selected>Playfair Display</option>
-          <option value="'Libre Baskerville', serif">Libre Baskerville</option>
-          <option value="'EB Garamond', serif">EB Garamond</option>
-          <option value="Georgia">Georgia</option>
-          <option value="Garamond, serif">Garamond</option>
-        </select>
-      </div>
-
-      <div class="linha-dupla">
-        <div class="grupo">
-          <label for="tamVersos">Tamanho dos versos (pt)</label>
-          <input id="tamVersos" type="number" value="12" min="8" max="32">
-        </div>
-
-        <div class="grupo">
-          <label for="tamTitulos">Tamanho do título (pt)</label>
-          <input id="tamTitulos" type="number" value="16" min="8" max="40">
-        </div>
-      </div>
-
-      <div class="grupo">
-        <label for="entrelinha">Entrelinha dos versos</label>
-        <select id="entrelinha">
-          <option value="1.15">Compacta</option>
-          <option value="1.35" selected>Normal</option>
-          <option value="1.6">Respirada</option>
-          <option value="1.9">Ampla</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="margens">Margens</label>
-        <select id="margens">
-          <option value="amplas" selected>Amplas</option>
-          <option value="normais">Normais</option>
-          <option value="estreitas">Estreitas</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="alinhamento">Alinhamento poético</label>
-        <select id="alinhamento">
-          <option value="left" selected>À esquerda</option>
-          <option value="center">Centralizado</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="espacoEstrofes">Espaço entre estrofes</label>
-        <select id="espacoEstrofes">
-          <option value="normal" selected>Normal</option>
-          <option value="maior">Maior</option>
-          <option value="minimo">Mínimo</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="ornamentoModo">Ornamento</label>
-        <select id="ornamentoModo">
-          <option value="desligado" selected>Desligado</option>
-          <option value="entrePoemas">Entre poemas</option>
-          <option value="antesTitulo">Antes do título</option>
-          <option value="depoisTitulo">Depois do título</option>
-          <option value="manual">Manual</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="ornamentoTipo">Tipo de ornamento</label>
-        <select id="ornamentoTipo">
-          <option value="✻" selected>Floral simples</option>
-          <option value="❦">Floral clássico</option>
-          <option value="✦">Estrela</option>
-          <option value="• • •">Pontos</option>
-          <option value="— § —">Editorial</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="novaPagina">Novo poema inicia nova página</label>
-        <select id="novaPagina">
-          <option value="nao" selected>Não</option>
-          <option value="sim">Sim</option>
-        </select>
-      </div>
-
-      <div class="acoes">
-        <button id="btnAplicar">Aplicar</button>
-        <button id="btnReprocessar">Reprocessar texto</button>
-        <button id="btnCarregarPreview">Carregar texto na prévia</button>
-        <button id="btnLimparTudo">Limpar tudo</button>
-      </div>
-
-      <div class="ajuda">
-        A prévia abre em modo livro, mas você pode alternar para página única quando quiser.
-      </div>
-    </aside>
-
-    <main class="workspace">
-      <section class="caixa-texto">
-        <h3>Caixa de texto poético</h3>
-        <div class="grupo" style="margin-bottom:0;">
-          <textarea id="entradaPoetica">Elegia – Saudades do Passado
-
-O tempo teceu em sombras o que
-um dia foi dourado,
-e agora só restam ecos de um riso
-desbotado.
-
-Ah, como doem as horas que não
-voltam mais,
-fantasmas de um verão que se
-apagou nos trigais.
-
-Elegia – Lembranças Perdidas
-
-Procuro teu rosto nos álbuns
-empoeirados,
-mas o papel guarda apenas traços
-despedaçados.
-
-Onde foi que se perdeu o brilho
-dos teus olhos?</textarea>
-        </div>
-      </section>
-
-      <section class="barra-acoes">
-        <h3>Comandos da prévia poética</h3>
-        <div id="statusEdicao" class="status">Selecione uma linha na prévia. Duplo clique edita direto nela.</div>
-        <div class="acao-compacta">
-          <button id="btnSalvarLinha">Salvar linha</button>
-          <button id="btnVerso">Marcar como verso</button>
-          <button id="btnTitulo">Marcar como título</button>
-          <button id="btnSubtitulo">Marcar como subtítulo</button>
-          <button id="btnInserirAbaixo">Inserir linha abaixo</button>
-          <button id="btnExcluirLinha">Excluir linha</button>
-          <button id="btnInserirOrnamentoManual">Inserir ornamento abaixo</button>
-          <button id="btnUnirAcima">Unir com linha acima</button>
-          <button id="btnUnirAbaixo">Unir com linha abaixo</button>
-        </div>
-      </section>
-
-      <section class="bloco-previa">
-        <div class="barra-previa">
-          <h3>Prévia poética</h3>
-          <div class="controles">
-            <button id="paginaAnterior">Página anterior</button>
-            <button id="proximaPagina">Próxima página</button>
-            <select id="modoEscala" style="width:auto;">
-              <option value="real">Escala real</option>
-              <option value="ajustar" selected>Ajustar à tela</option>
-            </select>
-            <select id="modoVisualizacao" style="width:auto;">
-              <option value="livro" selected>Modo livro</option>
-              <option value="pagina">Página única</option>
-            </select>
-          </div>
-          <div class="meta">
-            <span class="tag" id="metaFormato">Formato A5</span>
-            <span class="tag" id="metaPagina">Páginas 1 de 1</span>
-          </div>
-        </div>
-
-        <div id="visorPaginas" class="visor"></div>
-      </section>
-    </main>
-  </div>
-
-  <div id="medidor"></div>
-
-  <script>
-    const entradaPoetica = document.getElementById('entradaPoetica');
-    const visorPaginas = document.getElementById('visorPaginas');
-    const metaFormato = document.getElementById('metaFormato');
-    const metaPagina = document.getElementById('metaPagina');
-    const medidor = document.getElementById('medidor');
-    const statusEdicao = document.getElementById('statusEdicao');
-
-    const formato = document.getElementById('formato');
-    const primeiraLinha = document.getElementById('primeiraLinha');
-    const formaPoetica = document.getElementById('formaPoetica');
-    const fonteVersos = document.getElementById('fonteVersos');
-    const fonteTitulos = document.getElementById('fonteTitulos');
-    const tamVersos = document.getElementById('tamVersos');
-    const tamTitulos = document.getElementById('tamTitulos');
-    const entrelinha = document.getElementById('entrelinha');
-    const margens = document.getElementById('margens');
-    const alinhamento = document.getElementById('alinhamento');
-    const espacoEstrofes = document.getElementById('espacoEstrofes');
-    const ornamentoModo = document.getElementById('ornamentoModo');
-    const ornamentoTipo = document.getElementById('ornamentoTipo');
-    const novaPagina = document.getElementById('novaPagina');
-    const modoEscala = document.getElementById('modoEscala');
-    const modoVisualizacao = document.getElementById('modoVisualizacao');
-
-    let linhasBase = [];
-    let linhasProcessadas = [];
-    let paginas = [];
-    let paginaAtual = 0;
-    let linhaSelecionadaId = null;
-    let contadorIds = 1;
-    let editandoId = null;
-    let textoAntesEdicao = '';
-    let autoTimer = null;
-    let ultimoTextoLido = '';
-
-    function novoId(){ return contadorIds++; }
-    function criarItem(texto, tipo, manual=false){ return { id: novoId(), texto, tipo, manual }; }
-
-    function getPageClass(){
-      if(formato.value === '16x23') return 'f16x23';
-      if(formato.value === '6x9') return 'f6x9';
-      return 'a5';
-    }
-
-    function getMargemClass(){
-      if(margens.value === 'normais') return 'margens-normais';
-      if(margens.value === 'estreitas') return 'margens-estreitas';
-      return '';
-    }
-
-    function getFormaPreset(){
-      const forma = formaPoetica.value;
-      const leitura = primeiraLinha.value;
-      const preset = { extraTopTitulo:0, extraBottomTitulo:0, overrideEntrelinha:null, overrideEspacoVazio:null, deteccaoConservadora:false };
-      if(forma === 'elegia'){ preset.extraTopTitulo = 2; preset.extraBottomTitulo = 1; preset.overrideEntrelinha = 1.5; }
-      if(forma === 'soneto'){ preset.overrideEntrelinha = 1.25; preset.overrideEspacoVazio = 'minimo'; preset.deteccaoConservadora = true; }
-      if(forma === 'haikai'){ preset.overrideEntrelinha = 1.55; preset.overrideEspacoVazio = 'maior'; preset.deteccaoConservadora = true; }
-      if(forma === 'livre' || leitura === 'livre'){ preset.deteccaoConservadora = true; }
-      return preset;
-    }
-
-    function textoCurtoProvavelTitulo(txt){
-      const t = txt.trim();
-      if(!t) return false;
-      if(t.length > 58) return false;
-      if(/[,:;]$/.test(t)) return false;
-      if(t.split(' ').length > 8) return false;
-      return true;
-    }
-
-    function pareceVersoClaro(txt){
-      const t = txt.trim();
-      if(!t) return false;
-      if(t.length > 62) return true;
-      if(/[,.!?;:]$/.test(t)) return true;
-      if(/^[a-záàâãéêíóôõúç]/.test(t)) return true;
-      return false;
-    }
-
-    function detectarTipoAutomatico(linhas, i){
-      const preset = getFormaPreset();
-      const atual = (linhas[i] ?? '').trim();
-      const antes = (linhas[i - 1] ?? '').trim();
-      const depois = (linhas[i + 1] ?? '').trim();
-      const depois2 = (linhas[i + 2] ?? '').trim();
-      if(atual === '') return 'vazio';
-      if(primeiraLinha.value === 'semTitulo') return 'verso';
-      if(primeiraLinha.value === 'livre') return 'verso';
-
-      const candidatoTituloForte = antes === '' && depois === '' && textoCurtoProvavelTitulo(atual) && !pareceVersoClaro(atual);
-      if(candidatoTituloForte) return 'titulo';
-
-      const candidatoTituloModerado = antes === '' && depois !== '' && depois2 !== '' && textoCurtoProvavelTitulo(atual) && /^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ]/.test(atual) && !pareceVersoClaro(atual);
-      if(candidatoTituloModerado && !preset.deteccaoConservadora) return 'titulo';
-
-      return 'verso';
-    }
-
-    function parseEntrada(resetSelecao=true){
-      contadorIds = 1;
-      const bruto = entradaPoetica.value.replace(/\r/g, '');
-      ultimoTextoLido = bruto;
-      if(resetSelecao){ linhaSelecionadaId = null; editandoId = null; }
-      const linhas = bruto === '' ? [''] : bruto.split('\n');
-      linhasBase = linhas.map((linha, i) => criarItem(linha, detectarTipoAutomatico(linhas, i), false));
-      paginaAtual = 0;
-      aplicarEstrutura();
-      statusEdicao.textContent = 'Texto atual carregado na prévia.';
-    }
-
-    function aplicarEstrutura(){
-      linhasProcessadas = gerarEstruturaComOrnamentos(linhasBase);
-      paginarPorMedicaoReal();
-      renderPaginas();
-      atualizarMetas();
-      aplicarEscalaVisual();
-    }
-
-    function gerarEstruturaComOrnamentos(base){
-      const modoOrn = ornamentoModo.value;
-      const simboloOrn = ornamentoTipo.value;
-      const saida = [];
-      for(let i = 0; i < base.length; i++){
-        const item = base[i];
-        const atual = { ...item };
-        if(atual.tipo === 'titulo'){
-          const existeConteudoAntes = existeConteudoRealAntes(base, i);
-          if(modoOrn === 'antesTitulo' && existeConteudoAntes && !ornamentoJaPertoNoFim(saida)){
-            saida.push(criarItem(simboloOrn, 'ornamento', false));
-          }
-          if(modoOrn === 'entrePoemas' && existeConteudoAntes && !ornamentoJaPertoNoFim(saida)){
-            saida.push(criarItem(simboloOrn, 'ornamento', false));
-          }
-          saida.push(atual);
-          if(modoOrn === 'depoisTitulo'){
-            const prox = proximoConteudoReal(base, i);
-            if(prox !== null) saida.push(criarItem(simboloOrn, 'ornamento', false));
-          }
-        } else {
-          saida.push(atual);
-        }
-      }
-      return saida;
-    }
-
-    function existeConteudoRealAntes(lista, indice){
-      for(let i = indice - 1; i >= 0; i--){
-        if(lista[i].tipo === 'verso' || lista[i].tipo === 'subtitulo') return true;
-        if(lista[i].tipo === 'titulo') return false;
-      }
-      return false;
-    }
-    function proximoConteudoReal(lista, indice){
-      for(let i = indice + 1; i < lista.length; i++) if(lista[i].tipo !== 'vazio') return i;
-      return null;
-    }
-    function ornamentoJaPertoNoFim(lista){
-      if(lista.length === 0) return false;
-      const ultimo = lista[lista.length - 1];
-      const penultimo = lista[lista.length - 2];
-      return (ultimo && ultimo.tipo === 'ornamento') || (penultimo && penultimo.tipo === 'ornamento');
-    }
-
-    function criarPaginaMedidora(){
-      const pagina = document.createElement('div');
-      pagina.className = `pagina ${getPageClass()} ${getMargemClass()}`;
-      const inner = document.createElement('div'); inner.className = 'pagina-inner';
-      const cab = document.createElement('div'); cab.className = 'cabecalho-pagina'; cab.innerHTML = `<span>Castor</span><span>${formato.value}</span>`;
-      const miolo = document.createElement('div'); miolo.className = 'miolo';
-      const rodape = document.createElement('div'); rodape.className = 'rodape-pagina'; rodape.textContent = '1';
-      inner.appendChild(cab); inner.appendChild(miolo); inner.appendChild(rodape); pagina.appendChild(inner);
-      return { pagina, miolo };
-    }
-
-    function paginarPorMedicaoReal(){
-      paginas = [];
-      medidor.innerHTML = '';
-      const estrutura = criarPaginaMedidora();
-      medidor.appendChild(estrutura.pagina);
-      const mioloMedidor = estrutura.miolo;
-      const alturaDisponivel = mioloMedidor.clientHeight;
-      let atual = [];
-
-      for(let i = 0; i < linhasProcessadas.length; i++){
-        const item = linhasProcessadas[i];
-        if(novaPagina.value === 'sim' && item.tipo === 'titulo' && atual.length > 0){
-          paginas.push(atual); atual = []; mioloMedidor.innerHTML = '';
-        }
-        const clone = criarLinhaVisual(item, false);
-        mioloMedidor.appendChild(clone);
-        const passou = mioloMedidor.scrollHeight > alturaDisponivel + 1;
-        if(passou && atual.length > 0){
-          mioloMedidor.removeChild(clone);
-          paginas.push(atual); atual = []; mioloMedidor.innerHTML = '';
-          mioloMedidor.appendChild(criarLinhaVisual(item, false));
-        }
-        atual.push(item);
-      }
-      if(atual.length === 0) atual.push(criarItem('', 'vazio', false));
-      paginas.push(atual);
-      medidor.innerHTML = '';
-      if(paginaAtual >= paginas.length) paginaAtual = Math.max(0, paginas.length - 1);
-    }
-
-    function criarLinhaVisual(item, interativa=true){
-      const div = document.createElement('div');
-      div.className = 'linha-item ' + item.tipo + (item.manual ? ' manual' : '');
-      div.dataset.id = item.id;
-      div.dataset.tipo = item.tipo;
-      if(item.tipo === 'vazio') div.innerHTML = '&nbsp;'; else div.textContent = item.texto;
-      aplicarEstiloLinha(div, item);
-      if(interativa){
-        div.addEventListener('click', () => selecionarLinha(item.id));
-        div.addEventListener('dblclick', () => iniciarEdicaoInline(item.id));
-      }
-      return div;
-    }
-
-    function aplicarEstiloLinha(div, item){
-      const preset = getFormaPreset();
-      const entre = preset.overrideEntrelinha || Number(entrelinha.value);
-      const espaco = preset.overrideEspacoVazio || espacoEstrofes.value;
-      div.style.textAlign = (item.tipo === 'titulo' || item.tipo === 'subtitulo' || item.tipo === 'ornamento') ? 'center' : alinhamento.value;
-
-      if(item.tipo === 'titulo'){
-        div.style.fontFamily = fonteTitulos.value;
-        div.style.fontSize = tamTitulos.value + 'pt';
-        div.style.lineHeight = '1.3';
-        div.style.marginTop = (4 + preset.extraTopTitulo) + 'mm';
-        div.style.marginBottom = (3 + preset.extraBottomTitulo) + 'mm';
-      } else if(item.tipo === 'subtitulo'){
-        div.style.fontFamily = fonteTitulos.value;
-        div.style.fontSize = Math.max(10, Number(tamTitulos.value) - 2) + 'pt';
-        div.style.lineHeight = '1.3';
-      } else if(item.tipo === 'ornamento'){
-        div.style.fontFamily = fonteTitulos.value;
-        div.style.fontSize = Math.max(10, Number(tamTitulos.value) - 1) + 'pt';
-        div.style.lineHeight = '1.2';
-      } else {
-        div.style.fontFamily = fonteVersos.value;
-        div.style.fontSize = tamVersos.value + 'pt';
-        div.style.lineHeight = String(entre);
-      }
-
-      if(item.tipo === 'vazio'){
-        if(espaco === 'maior') div.style.minHeight = '7mm';
-        else if(espaco === 'minimo') div.style.minHeight = '2.5mm';
-        else div.style.minHeight = '5mm';
-      }
-    }
-
-    function getVisiblePages(){
-      if(modoVisualizacao.value === 'pagina') return [paginaAtual];
-      if(paginaAtual <= 0) return [0];
-      const esquerda = (paginaAtual % 2 === 0) ? paginaAtual : paginaAtual - 1;
-      const direita = esquerda + 1;
-      return direita < paginas.length ? [esquerda, direita] : [esquerda];
-    }
-
-    function renderPaginas(){
-      visorPaginas.innerHTML = '';
-      const spread = document.createElement('div');
-      spread.className = 'spread';
-      const visiveis = getVisiblePages();
-
-      visiveis.forEach(indicePagina => {
-        const pagina = paginas[indicePagina];
-        if(!pagina) return;
-        const page = document.createElement('div');
-        page.className = `pagina ${getPageClass()} ${getMargemClass()}`;
-        const inner = document.createElement('div'); inner.className = 'pagina-inner';
-        const cab = document.createElement('div'); cab.className = 'cabecalho-pagina'; cab.innerHTML = `<span>Castor</span><span>Página ${indicePagina + 1}</span>`;
-        const miolo = document.createElement('div'); miolo.className = 'miolo';
-        pagina.forEach(item => miolo.appendChild(criarLinhaVisual(item, true)));
-        const rodape = document.createElement('div'); rodape.className = 'rodape-pagina'; rodape.textContent = String(indicePagina + 1);
-        inner.appendChild(cab); inner.appendChild(miolo); inner.appendChild(rodape); page.appendChild(inner); spread.appendChild(page);
-      });
-
-      visorPaginas.appendChild(spread);
-      destacarSelecionadaNaPagina();
-    }
-
-    function atualizarMetas(){
-      metaFormato.textContent = `Formato ${formato.value}`;
-      const visiveis = getVisiblePages().map(i => i + 1);
-      metaPagina.textContent = visiveis.length === 1 ? `Página ${visiveis[0]} de ${paginas.length}` : `Páginas ${visiveis[0]}–${visiveis[1]} de ${paginas.length}`;
-    }
-
-    function aplicarEscalaVisual(){
-      const spread = visorPaginas.querySelector('.spread');
-      if(!spread) return;
-      let escala = 1;
-      if(modoEscala.value === 'ajustar'){
-        const larguraVisor = visorPaginas.clientWidth - 24;
-        const larguraSpread = spread.scrollWidth;
-        escala = Math.min(1, larguraVisor / larguraSpread);
-      }
-      spread.style.transform = `scale(${escala})`;
-      spread.style.marginBottom = `${(1 - escala) * 60}px`;
-    }
-
-    function buscarItemBasePorId(id){ return linhasBase.find(item => item.id === id) || null; }
-
-    function selecionarLinha(id){
-      linhaSelecionadaId = id;
-      const item = buscarItemBasePorId(id);
-      if(!item) return;
-      statusEdicao.textContent = `Linha selecionada: ${item.tipo}. Duplo clique para editar direto nela.`;
-      destacarSelecionadaNaPagina();
-    }
-
-    function destacarSelecionadaNaPagina(){
-      document.querySelectorAll('.linha-item').forEach(el => el.classList.remove('selecionado'));
-      if(linhaSelecionadaId === null) return;
-      const el = document.querySelector(`.linha-item[data-id="${linhaSelecionadaId}"]`);
-      if(el) el.classList.add('selecionado');
-    }
-
-    function salvarLinhaSelecionada(){
-      if(linhaSelecionadaId === null) return;
-      if(editandoId !== null) finalizarEdicaoInline(true);
-      else {
-        const item = buscarItemBasePorId(linhaSelecionadaId);
-        if(item){ item.manual = true; aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); selecionarLinha(linhaSelecionadaId); }
-      }
-    }
-
-    function reclassificarSelecionada(tipo){
-      if(linhaSelecionadaId === null) return;
-      const item = buscarItemBasePorId(linhaSelecionadaId);
-      if(!item) return;
-      item.type = tipo;
-      item.tipo = tipo;
-      item.manual = true;
-      if(tipo === 'ornamento' && !item.texto.trim()) item.texto = ornamentoTipo.value;
-      aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); selecionarLinha(linhaSelecionadaId);
-    }
-
-    function inserirLinhaAbaixo(){
-      if(linhaSelecionadaId === null) return;
-      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
-      if(index === -1) return;
-      const novo = criarItem('', 'verso', true);
-      linhasBase.splice(index + 1, 0, novo);
-      aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); selecionarLinha(novo.id); iniciarEdicaoInline(novo.id);
-    }
-
-    function excluirLinhaSelecionada(){
-      if(linhaSelecionadaId === null) return;
-      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
-      if(index === -1) return;
-      linhasBase.splice(index, 1);
-      linhaSelecionadaId = null;
-      aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); statusEdicao.textContent = 'Linha removida.';
-    }
-
-    function inserirOrnamentoManual(){
-      if(linhaSelecionadaId === null) return;
-      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
-      if(index === -1) return;
-      const novo = criarItem(ornamentoTipo.value, 'ornamento', true);
-      linhasBase.splice(index + 1, 0, novo);
-      aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); selecionarLinha(novo.id);
-    }
-
-    function unirComLinhaAcima(){
-      if(linhaSelecionadaId === null) return;
-      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
-      if(index <= 0) return;
-      const atual = linhasBase[index];
-      const acima = linhasBase[index - 1];
-      acima.texto = (acima.texto.replace(/\s+$/,'') + ' ' + atual.texto.replace(/^\s+/,'')).trim();
-      acima.manual = true;
-      linhasBase.splice(index, 1);
-      aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); selecionarLinha(acima.id);
-    }
-
-    function unirComLinhaAbaixo(){
-      if(linhaSelecionadaId === null) return;
-      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
-      if(index === -1 || index >= linhasBase.length - 1) return;
-      const atual = linhasBase[index];
-      const abaixo = linhasBase[index + 1];
-      atual.texto = (atual.texto.replace(/\s+$/,'') + ' ' + abaixo.texto.replace(/^\s+/,'')).trim();
-      atual.manual = true;
-      linhasBase.splice(index + 1, 1);
-      aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); selecionarLinha(atual.id);
-    }
-
-    function reconstruirEntradaAPartirDasLinhas(){
-      entradaPoetica.value = linhasBase.map(item => item.texto).join('\n');
-      ultimoTextoLido = entradaPoetica.value.replace(/\r/g,'');
-    }
-
-    function iniciarEdicaoInline(id){
-      if(editandoId !== null) finalizarEdicaoInline(true);
-      const item = buscarItemBasePorId(id);
-      const el = document.querySelector(`.linha-item[data-id="${id}"]`);
-      if(!item || !el) return;
-      selecionarLinha(id);
-      editandoId = id;
-      textoAntesEdicao = item.texto;
-      el.classList.add('editando');
-      el.contentEditable = 'true';
-      el.spellcheck = false;
-      el.focus();
-      if(item.tipo === 'vazio') el.textContent = '';
-      colocarCursorNoFim(el);
-      statusEdicao.textContent = 'Editando direto na prévia. Enter salva. Esc cancela.';
-      el.addEventListener('keydown', tratarTeclaEdicao);
-      el.addEventListener('blur', tratarBlurEdicao);
-    }
-
-    function tratarTeclaEdicao(e){
-      if(editandoId === null) return;
-      if(e.key === 'Enter'){ e.preventDefault(); finalizarEdicaoInline(true); }
-      if(e.key === 'Escape'){ e.preventDefault(); finalizarEdicaoInline(false); }
-      if(e.key === 'Delete'){
-        const el = e.currentTarget;
-        const item = buscarItemBasePorId(editandoId);
-        const texto = limparTextoVisual(el.innerText || '');
-        if(item && item.tipo === 'vazio' && texto === ''){
-          e.preventDefault();
-          const idApagar = editandoId;
-          finalizarEdicaoInline(false);
-          linhaSelecionadaId = idApagar;
-          excluirLinhaSelecionada();
-        }
-      }
-    }
-
-    function tratarBlurEdicao(){ if(editandoId !== null) finalizarEdicaoInline(true); }
-
-    function finalizarEdicaoInline(salvar){
-      const id = editandoId;
-      if(id === null) return;
-      const item = buscarItemBasePorId(id);
-      const el = document.querySelector(`.linha-item[data-id="${id}"]`);
-      if(!item || !el){ editandoId = null; return; }
-      el.removeEventListener('keydown', tratarTeclaEdicao);
-      el.removeEventListener('blur', tratarBlurEdicao);
-      el.contentEditable = 'false';
-      el.classList.remove('editando');
-      if(salvar){
-        const textoNovo = limparTextoVisual(el.innerText || '');
-        item.texto = textoNovo;
-        item.manual = true;
-        if(textoNovo === '') item.tipo = 'vazio';
-      } else {
-        item.texto = textoAntesEdicao;
-      }
-      editandoId = null;
-      textoAntesEdicao = '';
-      aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); selecionarLinha(id);
-    }
-
-    function limparTextoVisual(txt){ return txt.replace(/\u00A0/g, ' ').replace(/\r/g, '').trimEnd(); }
-    function colocarCursorNoFim(el){
-      const range = document.createRange();
-      const sel = window.getSelection();
-      range.selectNodeContents(el); range.collapse(false); sel.removeAllRanges(); sel.addRange(range);
-    }
-
-    function scheduleAutoParse(){
-      clearTimeout(autoTimer);
-      autoTimer = setTimeout(() => {
-        const atual = entradaPoetica.value.replace(/\r/g,'');
-        if(atual !== ultimoTextoLido) parseEntrada(true);
-      }, 250);
-    }
-
-    function limparTudo(){
-      entradaPoetica.value = '';
-      ultimoTextoLido = '';
-      linhasBase = [criarItem('', 'vazio', false)];
-      linhaSelecionadaId = null;
-      editandoId = null;
-      paginaAtual = 0;
-      aplicarEstrutura();
-      statusEdicao.textContent = 'Tudo limpo. Agora cole o novo texto.';
-    }
-
-    document.getElementById('btnAplicar').addEventListener('click', aplicarEstrutura);
-    document.getElementById('btnReprocessar').addEventListener('click', () => { parseEntrada(true); statusEdicao.textContent = 'Texto reprocessado com a leitura estrutural atual.'; });
-    document.getElementById('btnCarregarPreview').addEventListener('click', () => parseEntrada(true));
-    document.getElementById('btnLimparTudo').addEventListener('click', limparTudo);
-    document.getElementById('btnSalvarLinha').addEventListener('click', salvarLinhaSelecionada);
-    document.getElementById('btnVerso').addEventListener('click', () => reclassificarSelecionada('verso'));
-    document.getElementById('btnTitulo').addEventListener('click', () => reclassificarSelecionada('titulo'));
-    document.getElementById('btnSubtitulo').addEventListener('click', () => reclassificarSelecionada('subtitulo'));
-    document.getElementById('btnInserirAbaixo').addEventListener('click', inserirLinhaAbaixo);
-    document.getElementById('btnExcluirLinha').addEventListener('click', excluirLinhaSelecionada);
-    document.getElementById('btnInserirOrnamentoManual').addEventListener('click', inserirOrnamentoManual);
-    document.getElementById('btnUnirAcima').addEventListener('click', unirComLinhaAcima);
-    document.getElementById('btnUnirAbaixo').addEventListener('click', unirComLinhaAbaixo);
-
-    document.getElementById('paginaAnterior').addEventListener('click', () => {
-      if(modoVisualizacao.value === 'pagina') paginaAtual = Math.max(0, paginaAtual - 1);
-      else if(paginaAtual <= 0) paginaAtual = 0;
-      else paginaAtual = Math.max(0, paginaAtual - 2);
-      renderPaginas(); atualizarMetas(); aplicarEscalaVisual();
-    });
-
-    document.getElementById('proximaPagina').addEventListener('click', () => {
-      if(modoVisualizacao.value === 'pagina') paginaAtual = Math.min(paginas.length - 1, paginaAtual + 1);
-      else {
-        if(paginaAtual === 0) paginaAtual = Math.min(paginas.length - 1, 1);
-        else paginaAtual = Math.min(paginas.length - 1, paginaAtual + 2);
-      }
-      renderPaginas(); atualizarMetas(); aplicarEscalaVisual();
-    });
-
-    [formato, primeiraLinha, formaPoetica, fonteVersos, fonteTitulos, tamVersos, tamTitulos, entrelinha, margens, alinhamento, espacoEstrofes, ornamentoModo, ornamentoTipo, novaPagina, modoEscala, modoVisualizacao].forEach(campo => {
-      campo.addEventListener('change', () => {
-        if(campo === modoVisualizacao) paginaAtual = 0;
-        aplicarEstrutura();
-      });
-    });
-
-    entradaPoetica.addEventListener('input', scheduleAutoParse);
-    entradaPoetica.addEventListener('paste', () => setTimeout(scheduleAutoParse, 20));
-    entradaPoetica.addEventListener('change', scheduleAutoParse);
-    window.addEventListener('resize', aplicarEscalaVisual);
-
-    document.addEventListener('keydown', (e) => {
-      if(editandoId !== null) return;
-      if(e.key === 'Delete' && linhaSelecionadaId !== null){
-        const item = buscarItemBasePorId(linhaSelecionadaId);
-        if(item && (item.tipo === 'vazio' || item.tipo === 'ornamento')) excluirLinhaSelecionada();
-      }
-    });
-
-    parseEntrada(true);
-  </script>
+
+<div class="toolbar">
+
+<button onclick="toggleView()">Alternar modo livro</button>
+<button onclick="pageBreak()">Iniciar nova página aqui</button>
+<button onclick="removeBreak()">Remover quebra</button>
+
+</div>
+
+<div id="workspace"></div>
+
+<script>
+
+let lines=[]
+let selected=null
+let pages=[]
+let bookMode=true
+
+function parseText(){
+
+const text=document.getElementById("input")?.value || sampleText
+
+lines=text.split("\n").map(l=>({
+
+text:l,
+break:false,
+type:l.trim()==""?"blank":
+l.length<40?"title":"verse"
+
+}))
+
+paginate()
+
+}
+
+function paginate(){
+
+pages=[[]]
+
+lines.forEach(l=>{
+
+if(l.break){
+
+pages.push([])
+
+}
+
+pages[pages.length-1].push(l)
+
+})
+
+render()
+
+}
+
+function render(){
+
+workspace.innerHTML=""
+
+if(bookMode){
+
+renderBook()
+
+}else{
+
+renderSingle()
+
+}
+
+}
+
+function renderSingle(){
+
+pages.forEach((page,index)=>{
+
+workspace.appendChild(createPage(page,index+1))
+
+})
+
+}
+
+function renderBook(){
+
+for(let i=0;i<pages.length;i+=2){
+
+workspace.appendChild(createSpread(i))
+
+}
+
+}
+
+function createSpread(i){
+
+let div=document.createElement("div")
+
+div.style.display="flex"
+
+div.appendChild(createPage(pages[i],i+1))
+
+if(pages[i+1]){
+
+div.appendChild(createPage(pages[i+1],i+2))
+
+}
+
+return div
+
+}
+
+function createPage(page,number){
+
+let div=document.createElement("div")
+
+div.className="page"
+
+page.forEach(line=>{
+
+let el=document.createElement("div")
+
+el.className="line "+line.type
+
+el.innerText=line.text
+
+el.onclick=()=>select(line,el)
+
+div.appendChild(el)
+
+})
+
+let num=document.createElement("div")
+
+num.className="page-number"
+
+num.innerText=number
+
+div.appendChild(num)
+
+return div
+
+}
+
+function select(line,el){
+
+document.querySelectorAll(".line").forEach(l=>l.classList.remove("selected"))
+
+el.classList.add("selected")
+
+selected=line
+
+}
+
+function pageBreak(){
+
+if(selected){
+
+selected.break=true
+
+paginate()
+
+}
+
+}
+
+function removeBreak(){
+
+if(selected){
+
+selected.break=false
+
+paginate()
+
+}
+
+}
+
+function toggleView(){
+
+bookMode=!bookMode
+
+render()
+
+}
+
+const sampleText=`
+
+Elegia I
+
+Verso exemplo
+
+Verso exemplo
+
+Elegia II
+
+Verso exemplo
+
+Verso exemplo
+
+Elegia III
+
+Verso exemplo
+
+Verso exemplo
+
+`
+
+parseText()
+
+</script>
+
 </body>
 </html>
