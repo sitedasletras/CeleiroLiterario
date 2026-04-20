@@ -18,6 +18,7 @@
       --selecionado:#dff0ff;
       --manual:#fff3c7;
       --sombra:0 8px 22px rgba(0,0,0,.08);
+      --toolbar:#f7fbff;
     }
 
     *{ box-sizing:border-box; }
@@ -40,7 +41,7 @@
 
     .layout{
       display:grid;
-      grid-template-columns:280px 1fr;
+      grid-template-columns:300px 1fr;
       gap:14px;
       padding:14px;
       min-height:calc(100vh - 44px);
@@ -84,7 +85,7 @@
     }
 
     .grupo textarea{
-      min-height:140px;
+      min-height:180px;
       resize:vertical;
       line-height:1.45;
     }
@@ -123,7 +124,7 @@
     }
 
     .caixa-texto,
-    .painel-edicao,
+    .barra-acoes,
     .bloco-previa{
       background:#fff;
       border:1px solid #d7e0e8;
@@ -133,13 +134,17 @@
     }
 
     .caixa-texto h3,
-    .painel-edicao h3,
+    .barra-acoes h3,
     .bloco-previa h3{
       margin:0 0 8px;
       font-size:16px;
     }
 
-    .edicao-status{
+    .barra-acoes{
+      background:var(--toolbar);
+    }
+
+    .status{
       font-size:13px;
       color:var(--muted);
       margin-bottom:10px;
@@ -164,6 +169,7 @@
       display:flex;
       gap:8px;
       flex-wrap:wrap;
+      align-items:center;
     }
 
     .barra-previa .meta{
@@ -175,14 +181,21 @@
       flex:1;
       min-height:0;
       overflow:auto;
-      padding:8px;
+      padding:12px;
       background:#f7fafc;
       border-radius:10px;
       border:1px solid #e3ebf2;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+    }
+
+    .pagina-wrap{
+      transform-origin:top center;
+      transition:transform .15s ease;
     }
 
     .pagina{
-      margin:0 auto 18px auto;
       background:var(--page);
       border:2px solid var(--page-border);
       border-radius:4px;
@@ -192,31 +205,35 @@
       flex-direction:column;
     }
 
-    .pagina.oculta{
-      display:none;
-    }
-
     .pagina.a5{
-      width:420px;
-      min-height:594px;
+      width:148mm;
+      min-height:210mm;
     }
 
     .pagina.f16x23{
-      width:452px;
-      min-height:650px;
+      width:160mm;
+      min-height:230mm;
     }
 
     .pagina.f6x9{
-      width:440px;
-      min-height:660px;
+      width:152mm;
+      min-height:229mm;
     }
 
     .pagina-inner{
-      padding:42px 34px 42px 34px;
+      padding:20mm 15mm 20mm 20mm;
       display:flex;
       flex-direction:column;
       flex:1;
       min-height:0;
+    }
+
+    .pagina.margens-normais .pagina-inner{
+      padding:18mm 14mm 18mm 18mm;
+    }
+
+    .pagina.margens-estreitas .pagina-inner{
+      padding:14mm 12mm 14mm 14mm;
     }
 
     .cabecalho-pagina{
@@ -224,7 +241,7 @@
       justify-content:space-between;
       font-size:9px;
       color:#707a84;
-      margin-bottom:18px;
+      margin-bottom:8mm;
       flex:0 0 auto;
     }
 
@@ -234,7 +251,7 @@
     }
 
     .rodape-pagina{
-      margin-top:18px;
+      margin-top:8mm;
       text-align:center;
       font-size:10px;
       color:#7b7b7b;
@@ -245,7 +262,7 @@
       position:relative;
       border-radius:6px;
       transition:.15s ease;
-      padding:2px 4px;
+      padding:1px 3px;
       cursor:pointer;
       white-space:pre-wrap;
       word-break:break-word;
@@ -262,22 +279,22 @@
     }
 
     .linha-item.vazio{
-      min-height:16px;
+      min-height:5mm;
       cursor:pointer;
     }
 
     .linha-item.titulo{
       text-align:center;
       font-weight:700;
-      margin-top:14px;
-      margin-bottom:10px;
+      margin-top:4mm;
+      margin-bottom:3mm;
     }
 
     .linha-item.subtitulo{
       text-align:center;
       font-style:italic;
-      margin-top:-4px;
-      margin-bottom:10px;
+      margin-top:-1mm;
+      margin-bottom:3mm;
     }
 
     .linha-item.verso{
@@ -288,7 +305,7 @@
     .linha-item.ornamento{
       text-align:center;
       color:#8d8d8d;
-      margin:12px 0;
+      margin:3mm 0;
       cursor:pointer;
     }
 
@@ -318,16 +335,10 @@
       margin-right:6px;
     }
 
-    .campos-edicao{
-      display:grid;
-      grid-template-columns:1fr 180px;
-      gap:10px;
-      align-items:end;
-    }
-
-    .campos-edicao textarea{
-      min-height:72px;
-      resize:vertical;
+    .acao-compacta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
     }
 
     #medidor{
@@ -351,12 +362,7 @@
       .pagina.a5,
       .pagina.f16x23,
       .pagina.f6x9{
-        width:100%;
-        max-width:452px;
-      }
-
-      .campos-edicao{
-        grid-template-columns:1fr;
+        width:148mm;
       }
     }
   </style>
@@ -378,7 +384,7 @@
       </div>
 
       <div class="grupo">
-        <label for="primeiraLinha">Primeira linha</label>
+        <label for="primeiraLinha">Leitura estrutural</label>
         <select id="primeiraLinha">
           <option value="titulo">Título por poema</option>
           <option value="livre">Livre</option>
@@ -443,8 +449,8 @@
       <div class="grupo">
         <label for="margens">Margens</label>
         <select id="margens">
-          <option value="normais">Normais</option>
           <option value="amplas" selected>Amplas</option>
+          <option value="normais">Normais</option>
           <option value="estreitas">Estreitas</option>
         </select>
       </div>
@@ -502,7 +508,7 @@
       </div>
 
       <div class="ajuda">
-        Clique numa linha da prévia para selecionar. Dê duplo clique para editar direto nela. Enter salva. Esc cancela.
+        Esta leitura ainda é assistida. O autor continua mandando no resultado final.
       </div>
     </aside>
 
@@ -534,31 +540,10 @@ dos teus olhos?</textarea>
         </div>
       </section>
 
-      <section class="painel-edicao">
-        <h3>Edição da prévia poética</h3>
-        <div id="statusEdicao" class="edicao-status">Selecione uma linha na prévia para editar, reclassificar ou ajustar manualmente.</div>
-
-        <div class="campos-edicao">
-          <div class="grupo" style="margin-bottom:0;">
-            <label for="edicaoTexto">Texto da linha selecionada</label>
-            <textarea id="edicaoTexto" placeholder="A linha selecionada aparecerá aqui"></textarea>
-          </div>
-
-          <div>
-            <div class="grupo">
-              <label for="edicaoTipo">Classificação</label>
-              <select id="edicaoTipo">
-                <option value="verso">Verso</option>
-                <option value="titulo">Título</option>
-                <option value="subtitulo">Subtítulo</option>
-                <option value="vazio">Linha em branco</option>
-                <option value="ornamento">Ornamento</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="acoes">
+      <section class="barra-acoes">
+        <h3>Comandos da prévia poética</h3>
+        <div id="statusEdicao" class="status">Selecione uma linha na prévia. Duplo clique edita direto nela.</div>
+        <div class="acao-compacta">
           <button id="btnSalvarLinha">Salvar linha</button>
           <button id="btnVerso">Marcar como verso</button>
           <button id="btnTitulo">Marcar como título</button>
@@ -566,10 +551,8 @@ dos teus olhos?</textarea>
           <button id="btnInserirAbaixo">Inserir linha abaixo</button>
           <button id="btnExcluirLinha">Excluir linha</button>
           <button id="btnInserirOrnamentoManual">Inserir ornamento abaixo</button>
-        </div>
-
-        <div class="ajuda">
-          A reclassificação manual continua valendo. O motor só sugere. Quem manda no final é o autor.
+          <button id="btnUnirAcima">Unir com linha acima</button>
+          <button id="btnUnirAbaixo">Unir com linha abaixo</button>
         </div>
       </section>
 
@@ -579,9 +562,13 @@ dos teus olhos?</textarea>
           <div class="controles">
             <button id="paginaAnterior">Página anterior</button>
             <button id="proximaPagina">Próxima página</button>
+            <select id="modoEscala" style="width:auto;">
+              <option value="real">Escala real</option>
+              <option value="ajustar" selected>Ajustar à tela</option>
+            </select>
           </div>
           <div class="meta">
-            <span class="tag" id="metaFormato">Modo impresso — A5</span>
+            <span class="tag" id="metaFormato">Formato A5</span>
             <span class="tag" id="metaPagina">Página 1 de 1</span>
           </div>
         </div>
@@ -599,9 +586,6 @@ dos teus olhos?</textarea>
     const metaFormato = document.getElementById('metaFormato');
     const metaPagina = document.getElementById('metaPagina');
     const medidor = document.getElementById('medidor');
-
-    const edicaoTexto = document.getElementById('edicaoTexto');
-    const edicaoTipo = document.getElementById('edicaoTipo');
     const statusEdicao = document.getElementById('statusEdicao');
 
     const formato = document.getElementById('formato');
@@ -618,6 +602,7 @@ dos teus olhos?</textarea>
     const ornamentoModo = document.getElementById('ornamentoModo');
     const ornamentoTipo = document.getElementById('ornamentoTipo');
     const novaPagina = document.getElementById('novaPagina');
+    const modoEscala = document.getElementById('modoEscala');
 
     let linhasBase = [];
     let linhasProcessadas = [];
@@ -642,10 +627,47 @@ dos teus olhos?</textarea>
       return 'a5';
     }
 
-    function getPaddingPagina(){
-      if(margens.value === 'estreitas') return '28px 24px 28px 24px';
-      if(margens.value === 'normais') return '36px 30px 36px 30px';
-      return '42px 34px 42px 34px';
+    function getMargemClass(){
+      if(margens.value === 'normais') return 'margens-normais';
+      if(margens.value === 'estreitas') return 'margens-estreitas';
+      return '';
+    }
+
+    function getFormaPreset(){
+      const forma = formaPoetica.value;
+      const leitura = primeiraLinha.value;
+
+      const preset = {
+        extraTopTitulo: 0,
+        extraBottomTitulo: 0,
+        overrideEntrelinha: null,
+        overrideEspacoVazio: null,
+        deteccaoConservadora: false
+      };
+
+      if(forma === 'elegia'){
+        preset.extraTopTitulo = 2;
+        preset.extraBottomTitulo = 1;
+        preset.overrideEntrelinha = 1.5;
+      }
+
+      if(forma === 'soneto'){
+        preset.overrideEntrelinha = 1.25;
+        preset.overrideEspacoVazio = 'minimo';
+        preset.deteccaoConservadora = true;
+      }
+
+      if(forma === 'haikai'){
+        preset.overrideEntrelinha = 1.55;
+        preset.overrideEspacoVazio = 'maior';
+        preset.deteccaoConservadora = true;
+      }
+
+      if(forma === 'livre' || leitura === 'livre'){
+        preset.deteccaoConservadora = true;
+      }
+
+      return preset;
     }
 
     function textoCurtoProvavelTitulo(txt){
@@ -667,19 +689,22 @@ dos teus olhos?</textarea>
     }
 
     function detectarTipoAutomatico(linhas, i){
+      const preset = getFormaPreset();
+
       const atual = (linhas[i] ?? '').trim();
       const antes = (linhas[i - 1] ?? '').trim();
       const depois = (linhas[i + 1] ?? '').trim();
       const depois2 = (linhas[i + 2] ?? '').trim();
 
       if(atual === '') return 'vazio';
-
       if(primeiraLinha.value === 'semTitulo') return 'verso';
+      if(primeiraLinha.value === 'livre') return 'verso';
 
       const candidatoTituloForte =
         antes === '' &&
         depois === '' &&
-        textoCurtoProvavelTitulo(atual);
+        textoCurtoProvavelTitulo(atual) &&
+        !pareceVersoClaro(atual);
 
       if(candidatoTituloForte){
         return 'titulo';
@@ -693,7 +718,7 @@ dos teus olhos?</textarea>
         /^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ]/.test(atual) &&
         !pareceVersoClaro(atual);
 
-      if(candidatoTituloModerado){
+      if(candidatoTituloModerado && !preset.deteccaoConservadora){
         return 'titulo';
       }
 
@@ -704,7 +729,6 @@ dos teus olhos?</textarea>
       contadorIds = 1;
       const bruto = entradaPoetica.value.replace(/\r/g, '');
       const linhas = bruto.split('\n');
-
       linhasBase = linhas.map((linha, i) => criarItem(linha, detectarTipoAutomatico(linhas, i), false));
       aplicarEstrutura();
     }
@@ -714,6 +738,7 @@ dos teus olhos?</textarea>
       paginarPorMedicaoReal();
       renderPaginas();
       atualizarMetas();
+      aplicarEscalaVisual();
     }
 
     function gerarEstruturaComOrnamentos(base){
@@ -780,14 +805,14 @@ dos teus olhos?</textarea>
 
     function criarPaginaMedidora(){
       const pagina = document.createElement('div');
-      pagina.className = `pagina ${getPageClass()}`;
+      pagina.className = `pagina ${getPageClass()} ${getMargemClass()}`;
+
       const inner = document.createElement('div');
       inner.className = 'pagina-inner';
-      inner.style.padding = getPaddingPagina();
 
       const cab = document.createElement('div');
       cab.className = 'cabecalho-pagina';
-      cab.innerHTML = `<span>Castor</span><span>Modo impresso — ${formato.value}</span>`;
+      cab.innerHTML = `<span>Castor</span><span>${formato.value}</span>`;
 
       const miolo = document.createElement('div');
       miolo.className = 'miolo';
@@ -851,7 +876,6 @@ dos teus olhos?</textarea>
       }
 
       paginas.push(atual);
-
       medidor.innerHTML = '';
 
       if(paginaAtual >= paginas.length) paginaAtual = paginas.length - 1;
@@ -881,6 +905,10 @@ dos teus olhos?</textarea>
     }
 
     function aplicarEstiloLinha(div, item){
+      const preset = getFormaPreset();
+      const entre = preset.overrideEntrelinha || Number(entrelinha.value);
+      const espaco = preset.overrideEspacoVazio || espacoEstrofes.value;
+
       div.style.textAlign =
         item.tipo === 'titulo' || item.tipo === 'subtitulo' || item.tipo === 'ornamento'
           ? 'center'
@@ -890,6 +918,8 @@ dos teus olhos?</textarea>
         div.style.fontFamily = fonteTitulos.value;
         div.style.fontSize = tamTitulos.value + 'pt';
         div.style.lineHeight = '1.3';
+        div.style.marginTop = (4 + preset.extraTopTitulo) + 'mm';
+        div.style.marginBottom = (3 + preset.extraBottomTitulo) + 'mm';
       } else if(item.tipo === 'subtitulo'){
         div.style.fontFamily = fonteTitulos.value;
         div.style.fontSize = Math.max(10, Number(tamTitulos.value) - 2) + 'pt';
@@ -901,13 +931,13 @@ dos teus olhos?</textarea>
       } else {
         div.style.fontFamily = fonteVersos.value;
         div.style.fontSize = tamVersos.value + 'pt';
-        div.style.lineHeight = entrelinha.value;
+        div.style.lineHeight = String(entre);
       }
 
       if(item.tipo === 'vazio'){
-        if(espacoEstrofes.value === 'maior') div.style.minHeight = '24px';
-        else if(espacoEstrofes.value === 'minimo') div.style.minHeight = '8px';
-        else div.style.minHeight = '16px';
+        if(espaco === 'maior') div.style.minHeight = '7mm';
+        else if(espaco === 'minimo') div.style.minHeight = '2.5mm';
+        else div.style.minHeight = '5mm';
       }
     }
 
@@ -915,16 +945,19 @@ dos teus olhos?</textarea>
       visorPaginas.innerHTML = '';
 
       paginas.forEach((pagina, indicePagina) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'pagina-wrap';
+        wrap.dataset.page = indicePagina;
+
         const page = document.createElement('div');
-        page.className = `pagina ${getPageClass()}` + (indicePagina === paginaAtual ? '' : ' oculta');
+        page.className = `pagina ${getPageClass()} ${getMargemClass()}` + (indicePagina === paginaAtual ? '' : ' oculta');
 
         const inner = document.createElement('div');
         inner.className = 'pagina-inner';
-        inner.style.padding = getPaddingPagina();
 
         const cab = document.createElement('div');
         cab.className = 'cabecalho-pagina';
-        cab.innerHTML = `<span>Castor</span><span>Modo impresso — ${formato.value}</span>`;
+        cab.innerHTML = `<span>Castor</span><span>${formato.value}</span>`;
 
         const miolo = document.createElement('div');
         miolo.className = 'miolo';
@@ -941,14 +974,15 @@ dos teus olhos?</textarea>
         inner.appendChild(miolo);
         inner.appendChild(rodape);
         page.appendChild(inner);
-        visorPaginas.appendChild(page);
+        wrap.appendChild(page);
+        visorPaginas.appendChild(wrap);
       });
 
       destacarSelecionadaNaPagina();
     }
 
     function atualizarMetas(){
-      metaFormato.textContent = `Modo impresso — ${formato.value}`;
+      metaFormato.textContent = `Formato ${formato.value}`;
       metaPagina.textContent = `Página ${paginaAtual + 1} de ${paginas.length}`;
       mostrarPaginaAtual();
     }
@@ -960,6 +994,25 @@ dos teus olhos?</textarea>
       });
     }
 
+    function aplicarEscalaVisual(){
+      const wrap = visorPaginas.querySelector('.pagina-wrap');
+      if(!wrap) return;
+
+      const page = wrap.querySelector('.pagina');
+      if(!page) return;
+
+      let escala = 1;
+
+      if(modoEscala.value === 'ajustar'){
+        const larguraVisor = visorPaginas.clientWidth - 24;
+        const larguraPagina = page.offsetWidth;
+        escala = Math.min(1, larguraVisor / larguraPagina);
+      }
+
+      wrap.style.transform = `scale(${escala})`;
+      wrap.style.marginBottom = `${(1 - escala) * 40}px`;
+    }
+
     function buscarItemBasePorId(id){
       return linhasBase.find(item => item.id === id) || null;
     }
@@ -968,10 +1021,7 @@ dos teus olhos?</textarea>
       linhaSelecionadaId = id;
       const item = buscarItemBasePorId(id);
       if(!item) return;
-
-      edicaoTexto.value = item.texto;
-      edicaoTipo.value = item.tipo;
-      statusEdicao.textContent = `Linha selecionada: ${item.tipo}. Dê duplo clique nela para editar direto na prévia.`;
+      statusEdicao.textContent = `Linha selecionada: ${item.tipo}. Duplo clique para editar direto nela.`;
       destacarSelecionadaNaPagina();
     }
 
@@ -984,16 +1034,17 @@ dos teus olhos?</textarea>
 
     function salvarLinhaSelecionada(){
       if(linhaSelecionadaId === null) return;
-      const item = buscarItemBasePorId(linhaSelecionadaId);
-      if(!item) return;
-
-      item.texto = edicaoTexto.value;
-      item.tipo = edicaoTipo.value;
-      item.manual = true;
-
-      aplicarEstrutura();
-      reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(linhaSelecionadaId);
+      if(editandoId !== null){
+        finalizarEdicaoInline(true);
+      } else {
+        const item = buscarItemBasePorId(linhaSelecionadaId);
+        if(item){
+          item.manual = true;
+          aplicarEstrutura();
+          reconstruirEntradaAPartirDasLinhas();
+          selecionarLinha(linhaSelecionadaId);
+        }
+      }
     }
 
     function reclassificarSelecionada(tipo){
@@ -1033,7 +1084,6 @@ dos teus olhos?</textarea>
 
       linhasBase.splice(index, 1);
       linhaSelecionadaId = null;
-      edicaoTexto.value = '';
       aplicarEstrutura();
       reconstruirEntradaAPartirDasLinhas();
       statusEdicao.textContent = 'Linha removida.';
@@ -1049,6 +1099,40 @@ dos teus olhos?</textarea>
       aplicarEstrutura();
       reconstruirEntradaAPartirDasLinhas();
       selecionarLinha(novo.id);
+    }
+
+    function unirComLinhaAcima(){
+      if(linhaSelecionadaId === null) return;
+      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
+      if(index <= 0) return;
+
+      const atual = linhasBase[index];
+      const acima = linhasBase[index - 1];
+
+      acima.texto = (acima.texto.replace(/\s+$/,'') + ' ' + atual.texto.replace(/^\s+/,'')).trim();
+      acima.manual = true;
+      linhasBase.splice(index, 1);
+
+      aplicarEstrutura();
+      reconstruirEntradaAPartirDasLinhas();
+      selecionarLinha(acima.id);
+    }
+
+    function unirComLinhaAbaixo(){
+      if(linhaSelecionadaId === null) return;
+      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
+      if(index === -1 || index >= linhasBase.length - 1) return;
+
+      const atual = linhasBase[index];
+      const abaixo = linhasBase[index + 1];
+
+      atual.texto = (atual.texto.replace(/\s+$/,'') + ' ' + abaixo.texto.replace(/^\s+/,'')).trim();
+      atual.manual = true;
+      linhasBase.splice(index + 1, 1);
+
+      aplicarEstrutura();
+      reconstruirEntradaAPartirDasLinhas();
+      selecionarLinha(atual.id);
     }
 
     function reconstruirEntradaAPartirDasLinhas(){
@@ -1136,8 +1220,6 @@ dos teus olhos?</textarea>
         if(textoNovo === ''){
           item.tipo = 'vazio';
         }
-        edicaoTexto.value = item.texto;
-        edicaoTipo.value = item.tipo;
       } else {
         item.texto = textoAntesEdicao;
       }
@@ -1150,7 +1232,7 @@ dos teus olhos?</textarea>
     }
 
     function limparTextoVisual(txt){
-      return txt.replace(/\u00A0/g, ' ').replace(/\r/g, '').replace(/\n/g, ' ').trimEnd();
+      return txt.replace(/\u00A0/g, ' ').replace(/\r/g, '').trimEnd();
     }
 
     function colocarCursorNoFim(el){
@@ -1162,10 +1244,7 @@ dos teus olhos?</textarea>
       sel.addRange(range);
     }
 
-    document.getElementById('btnAplicar').addEventListener('click', () => {
-      aplicarEstrutura();
-    });
-
+    document.getElementById('btnAplicar').addEventListener('click', aplicarEstrutura);
     document.getElementById('btnReprocessar').addEventListener('click', () => {
       parseEntrada();
       statusEdicao.textContent = 'Texto reprocessado com a leitura estrutural atual.';
@@ -1178,11 +1257,14 @@ dos teus olhos?</textarea>
     document.getElementById('btnInserirAbaixo').addEventListener('click', inserirLinhaAbaixo);
     document.getElementById('btnExcluirLinha').addEventListener('click', excluirLinhaSelecionada);
     document.getElementById('btnInserirOrnamentoManual').addEventListener('click', inserirOrnamentoManual);
+    document.getElementById('btnUnirAcima').addEventListener('click', unirComLinhaAcima);
+    document.getElementById('btnUnirAbaixo').addEventListener('click', unirComLinhaAbaixo);
 
     document.getElementById('paginaAnterior').addEventListener('click', () => {
       if(paginaAtual > 0){
         paginaAtual--;
         atualizarMetas();
+        aplicarEscalaVisual();
       }
     });
 
@@ -1190,18 +1272,21 @@ dos teus olhos?</textarea>
       if(paginaAtual < paginas.length - 1){
         paginaAtual++;
         atualizarMetas();
+        aplicarEscalaVisual();
       }
     });
 
     [
       formato, primeiraLinha, formaPoetica, fonteVersos, fonteTitulos, tamVersos,
       tamTitulos, entrelinha, margens, alinhamento, espacoEstrofes,
-      ornamentoModo, ornamentoTipo, novaPagina
+      ornamentoModo, ornamentoTipo, novaPagina, modoEscala
     ].forEach(campo => {
       campo.addEventListener('change', () => {
         aplicarEstrutura();
       });
     });
+
+    window.addEventListener('resize', aplicarEscalaVisual);
 
     document.addEventListener('keydown', (e) => {
       if(editandoId !== null) return;
