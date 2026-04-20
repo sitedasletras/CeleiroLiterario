@@ -13,23 +13,21 @@
     :root{
       --bg:#f6f3ee;
       --card:#ffffff;
-      --panel:#c6daf3;
-      --panel-border:#6d97c7;
+      --panel:#bfd6f1;
+      --panel-border:#5f89b8;
       --paper:#fffdf8;
       --line:#d8d2ca;
       --ink:#2f2a25;
       --muted:#6e665e;
-      --blue:#17497f;
-      --blue-soft:#215d9c;
+      --blue:#123f72;
+      --blue-soft:#1c578f;
       --yellow:#d8b622;
       --red:#b63131;
       --shadow:0 2px 10px rgba(0,0,0,.06);
       --radius:14px;
     }
 
-    *{
-      box-sizing:border-box;
-    }
+    *{box-sizing:border-box}
 
     body{
       margin:0;
@@ -144,7 +142,7 @@
 
     .work-area{
       display:grid;
-      grid-template-columns:300px minmax(0,1fr);
+      grid-template-columns:270px minmax(0,1fr);
       gap:16px;
       align-items:start;
     }
@@ -169,14 +167,14 @@
 
     .field label{
       font-size:.92rem;
-      color:#183c63;
+      color:#15395f;
       font-weight:700;
     }
 
     .field input,.field select{
       width:100%;
       padding:7px 9px;
-      border:1px solid #9db7d3;
+      border:1px solid #8fb0d1;
       border-radius:8px;
       background:#fff;
     }
@@ -218,8 +216,8 @@
       flex-wrap:wrap;
       margin-bottom:12px;
       padding:10px 12px;
-      background:#edf4fb;
-      border:1px solid #d1dfed;
+      background:#ecf3fb;
+      border:1px solid #cbdced;
       border-radius:12px;
     }
 
@@ -232,7 +230,7 @@
 
     .preview-counter{
       font-size:.92rem;
-      color:#355a80;
+      color:#2e557d;
       font-weight:700;
     }
 
@@ -303,7 +301,7 @@
 
     .poem-title{
       text-align:center;
-      margin:0 0 1.2em 0;
+      margin:0 0 1.1em 0;
       line-height:1.2;
       letter-spacing:.01em;
       font-weight:700;
@@ -321,7 +319,7 @@
 
     .ornament{
       text-align:center;
-      margin:1.2em 0;
+      margin:1.1em 0;
       opacity:.82;
     }
 
@@ -370,12 +368,12 @@
         <button class="btn btn-blue" type="button" id="btnUpload">Upar texto</button>
         <span id="arquivoNome">Nenhum arquivo carregado</span>
       </div>
-      <div class="upload-note">Cada linha é tratada como verso. Linha em branco separa estrofes.</div>
+      <div class="upload-note">Cada linha é tratada como verso. Linha em branco separa estrofes. Duas linhas em branco separam poemas.</div>
     </div>
 
     <div class="editor">
       <div class="editor-head">Caixa de texto poético</div>
-      <textarea id="inputText" placeholder="Cole aqui seus poemas."></textarea>
+      <textarea id="inputText" placeholder="Cole aqui seus poemas. Para separar um poema do outro, use duas linhas em branco."></textarea>
     </div>
 
     <div class="work-area">
@@ -396,7 +394,7 @@
           <div class="field">
             <label for="modoAbertura">Primeira linha</label>
             <select id="modoAbertura">
-              <option value="titulo" selected>Título do poema</option>
+              <option value="titulo_bloco" selected>Título por poema</option>
               <option value="livre">Livre</option>
             </select>
           </div>
@@ -493,8 +491,9 @@
             <select id="ornamento">
               <option value="off" selected>Desligado</option>
               <option value="inicio">Antes do poema</option>
+              <option value="entre">Entre poemas</option>
               <option value="fim">No fim do poema</option>
-              <option value="ambos">Antes e no fim</option>
+              <option value="completo">Início, entre e fim</option>
             </select>
           </div>
 
@@ -509,7 +508,7 @@
           </div>
         </div>
 
-        <div class="note">A forma poética funciona como preset leve. Título e versos ficam separados.</div>
+        <div class="note">Título por poema, separador entre poemas e fonte do título independente dos versos.</div>
       </div>
 
       <div class="preview-box">
@@ -527,7 +526,7 @@
         </div>
 
         <div class="preview-stage" id="previewStage"></div>
-        <div class="hint">Painel e prévia lado a lado. A prévia é a área principal de observação da diagramação.</div>
+        <div class="hint">Agora o separador pode entrar entre poemas. Use duas linhas em branco para iniciar um novo poema com mais segurança.</div>
       </div>
     </div>
   </div>
@@ -631,47 +630,115 @@
       }
     }
 
-    function parsePoetry(text){
-      const lines = text.replace(/\r/g, "").split("\n");
+    function seemsLikeTitle(line, previousBlank, nextLine){
+      const t = line.trim();
+      if (!t) return false;
+      if (!previousBlank) return false;
+      if (!nextLine || !nextLine.trim()) return false;
+      if (t.length > 80) return false;
+      if (/[.!?;:]$/.test(t)) return false;
+
+      const lower = t.toLowerCase();
+      const forms = ["elegia", "soneto", "haikai", "ghazal", "pantum", "trova", "ode", "sextina", "limerick", "acróstico", "acrostico"];
+      if (forms.some(f => lower.includes(f))) return true;
+
+      return /^[A-ZÁÉÍÓÚÂÊÔÃÕÇ0-9]/.test(t);
+    }
+
+    function splitPoems(text){
+      const raw = text.replace(/\r/g, "");
+      const poems = raw.split(/\n{3,}/).map(p => p.trim()).filter(Boolean);
+
+      if (poems.length > 1) return poems;
+
+      if (modoAbertura.value === "livre") return [raw.trim()];
+
+      const lines = raw.split("\n");
+      const chunks = [];
+      let buffer = [];
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const prev = i === 0 ? "" : lines[i - 1];
+        const next = i + 1 < lines.length ? lines[i + 1] : "";
+        const previousBlank = i === 0 || !prev.trim();
+
+        if (buffer.length && seemsLikeTitle(line, previousBlank, next)) {
+          chunks.push(buffer.join("\n").trim());
+          buffer = [line];
+        } else {
+          buffer.push(line);
+        }
+      }
+
+      if (buffer.length) chunks.push(buffer.join("\n").trim());
+
+      return chunks.filter(Boolean);
+    }
+
+    function parseSinglePoem(poemText){
+      const lines = poemText.split("\n");
       const blocks = [];
-      let currentHeader = "Castor";
       let i = 0;
+      let header = "Castor";
 
       while (i < lines.length && !lines[i].trim()) i++;
-      if (i >= lines.length) return [];
+      if (i >= lines.length) return { header, blocks };
 
-      if (modoAbertura.value === "titulo" && lines[i].trim()) {
-        currentHeader = lines[i].trim();
-        blocks.push({ type:"title", text:lines[i].trim(), header:currentHeader });
+      if (modoAbertura.value === "titulo_bloco" && lines[i].trim()) {
+        header = lines[i].trim();
+        blocks.push({ type:"title", text:lines[i].trim(), header });
         i++;
       }
 
-      const stanza = [];
+      let stanza = [];
 
       function pushStanza(){
         if (!stanza.length) return;
-        blocks.push({ type:"stanza", lines:[...stanza], header:currentHeader });
-        stanza.length = 0;
-      }
-
-      if (ornamento.value === "inicio" || ornamento.value === "ambos") {
-        blocks.push({ type:"ornament", text:ornamentText(), header:currentHeader });
+        blocks.push({ type:"stanza", lines:[...stanza], header });
+        stanza = [];
       }
 
       for (; i < lines.length; i++) {
         const line = lines[i];
+
         if (!line.trim()) {
           pushStanza();
           continue;
         }
+
         stanza.push(line);
       }
 
       pushStanza();
+      return { header, blocks };
+    }
 
-      if (ornamento.value === "fim" || ornamento.value === "ambos") {
-        blocks.push({ type:"ornament", text:ornamentText(), header:currentHeader });
-      }
+    function parsePoetry(text){
+      const poems = splitPoems(text).map(parseSinglePoem).filter(p => p.blocks.length);
+      const blocks = [];
+      let currentHeader = poems.length ? poems[0].header : "Castor";
+      const ornament = ornamentText();
+
+      poems.forEach((poem, idx) => {
+        currentHeader = poem.header || currentHeader;
+
+        if ((ornamento.value === "inicio" || ornamento.value === "completo") && idx === 0) {
+          blocks.push({ type:"ornament", text:ornament, header:currentHeader });
+        }
+
+        poem.blocks.forEach(b => blocks.push(b));
+
+        const isLast = idx === poems.length - 1;
+
+        if ((ornamento.value === "entre" || ornamento.value === "completo") && !isLast) {
+          blocks.push({ type:"ornament", text:ornament, header:currentHeader });
+        }
+
+        if ((ornamento.value === "fim" || ornamento.value === "completo") && isLast) {
+          blocks.push({ type:"ornament", text:ornament, header:currentHeader });
+        }
+      });
 
       return blocks;
     }
@@ -847,9 +914,9 @@
       } else {
         blocks.forEach((block) => {
           if (block.type === "title") {
-            contentHTML += '<div style="text-align:center;margin:0 0 1.2em 0;line-height:1.2;letter-spacing:.01em;font-weight:700;font-family:' + titleFont + ';font-size:' + titleSize + 'pt;">' + escapeHtml(block.text) + '</div>';
+            contentHTML += '<div style="text-align:center;margin:0 0 1.1em 0;line-height:1.2;letter-spacing:.01em;font-weight:700;font-family:' + titleFont + ';font-size:' + titleSize + 'pt;">' + escapeHtml(block.text) + '</div>';
           } else if (block.type === "ornament") {
-            contentHTML += '<div style="text-align:center;margin:1.2em 0;opacity:.82;font-family:' + titleFont + ';font-size:' + Math.max(12, titleSize - 6) + 'pt;">' + escapeHtml(block.text) + '</div>';
+            contentHTML += '<div style="text-align:center;margin:1.1em 0;opacity:.82;font-family:' + titleFont + ';font-size:' + Math.max(12, titleSize - 6) + 'pt;">' + escapeHtml(block.text) + '</div>';
           } else if (block.type === "stanza") {
             contentHTML += '<div style="margin:0 0 ' + espacoEstrofe.value + 'em 0;">';
             block.lines.forEach((line) => {
@@ -940,14 +1007,13 @@
     btnExemplo.addEventListener("click", function(){
       inputText.value =
 `Elegia – Saudades do Passado
-
 O tempo teceu em sombras o que um dia foi dourado,
 e agora só restam ecos de um riso desbotado.
 Ah, como doem as horas que não voltam mais,
 fantasmas de um verão que se apagou nos trigais.
 
-Elegia – Lembranças Perdidas
 
+Elegia – Lembranças Perdidas
 Procuro teu rosto nos álbuns empoeirados,
 mas o papel guarda apenas traços despedaçados.
 Onde foi que se perdeu o brilho dos teus olhos?
