@@ -182,19 +182,41 @@
     }
 
     .pagina{
-      width:420px;
-      min-height:594px;
       margin:0 auto 18px auto;
       background:var(--page);
       border:2px solid var(--page-border);
       border-radius:4px;
-      padding:42px 34px 42px 34px;
       position:relative;
       box-shadow:0 8px 24px rgba(0,0,0,.10);
+      display:flex;
+      flex-direction:column;
     }
 
     .pagina.oculta{
       display:none;
+    }
+
+    .pagina.a5{
+      width:420px;
+      min-height:594px;
+    }
+
+    .pagina.f16x23{
+      width:452px;
+      min-height:650px;
+    }
+
+    .pagina.f6x9{
+      width:440px;
+      min-height:660px;
+    }
+
+    .pagina-inner{
+      padding:42px 34px 42px 34px;
+      display:flex;
+      flex-direction:column;
+      flex:1;
+      min-height:0;
     }
 
     .cabecalho-pagina{
@@ -203,10 +225,20 @@
       font-size:9px;
       color:#707a84;
       margin-bottom:18px;
+      flex:0 0 auto;
     }
 
     .miolo{
-      min-height:460px;
+      flex:1 1 auto;
+      min-height:0;
+    }
+
+    .rodape-pagina{
+      margin-top:18px;
+      text-align:center;
+      font-size:10px;
+      color:#7b7b7b;
+      flex:0 0 auto;
     }
 
     .linha-item{
@@ -269,13 +301,6 @@
       outline:1px solid #d8c778;
     }
 
-    .rodape-pagina{
-      margin-top:18px;
-      text-align:center;
-      font-size:10px;
-      color:#7b7b7b;
-    }
-
     .ajuda{
       font-size:12px;
       color:var(--muted);
@@ -305,6 +330,15 @@
       resize:vertical;
     }
 
+    #medidor{
+      position:absolute;
+      left:-99999px;
+      top:0;
+      visibility:hidden;
+      pointer-events:none;
+      z-index:-1;
+    }
+
     @media (max-width:980px){
       .layout{
         grid-template-columns:1fr;
@@ -314,9 +348,11 @@
         height:auto;
       }
 
-      .pagina{
+      .pagina.a5,
+      .pagina.f16x23,
+      .pagina.f6x9{
         width:100%;
-        max-width:420px;
+        max-width:452px;
       }
 
       .campos-edicao{
@@ -466,7 +502,7 @@
       </div>
 
       <div class="ajuda">
-        Clique numa linha da prévia para editar. Enter salva. Esc cancela. Delete apaga linha vazia selecionada.
+        Clique numa linha da prévia para selecionar. Dê duplo clique para editar direto nela. Enter salva. Esc cancela.
       </div>
     </aside>
 
@@ -533,7 +569,7 @@ dos teus olhos?</textarea>
         </div>
 
         <div class="ajuda">
-          A linha pode ser editada direto na prévia. O painel continua para reclassificação rápida.
+          A reclassificação manual continua valendo. O motor só sugere. Quem manda no final é o autor.
         </div>
       </section>
 
@@ -555,11 +591,14 @@ dos teus olhos?</textarea>
     </main>
   </div>
 
+  <div id="medidor"></div>
+
   <script>
     const entradaPoetica = document.getElementById('entradaPoetica');
     const visorPaginas = document.getElementById('visorPaginas');
     const metaFormato = document.getElementById('metaFormato');
     const metaPagina = document.getElementById('metaPagina');
+    const medidor = document.getElementById('medidor');
 
     const edicaoTexto = document.getElementById('edicaoTexto');
     const edicaoTipo = document.getElementById('edicaoTipo');
@@ -597,33 +636,64 @@ dos teus olhos?</textarea>
       return { id: novoId(), texto, tipo, manual };
     }
 
+    function getPageClass(){
+      if(formato.value === '16x23') return 'f16x23';
+      if(formato.value === '6x9') return 'f6x9';
+      return 'a5';
+    }
+
+    function getPaddingPagina(){
+      if(margens.value === 'estreitas') return '28px 24px 28px 24px';
+      if(margens.value === 'normais') return '36px 30px 36px 30px';
+      return '42px 34px 42px 34px';
+    }
+
     function textoCurtoProvavelTitulo(txt){
       const t = txt.trim();
-      if (!t) return false;
-      if (t.length > 58) return false;
-      if (/[,:;]$/.test(t)) return false;
-      if (t.split(' ').length > 8) return false;
+      if(!t) return false;
+      if(t.length > 58) return false;
+      if(/[,:;]$/.test(t)) return false;
+      if(t.split(' ').length > 8) return false;
       return true;
     }
 
+    function pareceVersoClaro(txt){
+      const t = txt.trim();
+      if(!t) return false;
+      if(t.length > 62) return true;
+      if(/[,.!?;:]$/.test(t)) return true;
+      if(/^[a-záàâãéêíóôõúç]/.test(t)) return true;
+      return false;
+    }
+
     function detectarTipoAutomatico(linhas, i){
-      const atual = linhas[i] ?? '';
-      const antes = linhas[i - 1] ?? '';
-      const depois = linhas[i + 1] ?? '';
-      const depois2 = linhas[i + 2] ?? '';
+      const atual = (linhas[i] ?? '').trim();
+      const antes = (linhas[i - 1] ?? '').trim();
+      const depois = (linhas[i + 1] ?? '').trim();
+      const depois2 = (linhas[i + 2] ?? '').trim();
 
-      const t = atual.trim();
-      const a = antes.trim();
-      const d = depois.trim();
-      const d2 = depois2.trim();
+      if(atual === '') return 'vazio';
 
-      if (t === '') return 'vazio';
+      if(primeiraLinha.value === 'semTitulo') return 'verso';
 
-      if (primeiraLinha.value !== 'semTitulo') {
-        if (a === '' && d === '' && textoCurtoProvavelTitulo(t)) return 'titulo';
+      const candidatoTituloForte =
+        antes === '' &&
+        depois === '' &&
+        textoCurtoProvavelTitulo(atual);
+
+      if(candidatoTituloForte){
+        return 'titulo';
       }
 
-      if (a === '' && d !== '' && d2 !== '' && textoCurtoProvavelTitulo(t) && /^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ]/.test(t)) {
+      const candidatoTituloModerado =
+        antes === '' &&
+        depois !== '' &&
+        depois2 !== '' &&
+        textoCurtoProvavelTitulo(atual) &&
+        /^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ]/.test(atual) &&
+        !pareceVersoClaro(atual);
+
+      if(candidatoTituloModerado){
         return 'titulo';
       }
 
@@ -636,94 +706,144 @@ dos teus olhos?</textarea>
       const linhas = bruto.split('\n');
 
       linhasBase = linhas.map((linha, i) => criarItem(linha, detectarTipoAutomatico(linhas, i), false));
-
       aplicarEstrutura();
     }
 
     function aplicarEstrutura(){
-      let resultado = [];
-      const modoOrn = ornamentoModo.value;
-      const simboloOrn = ornamentoTipo.value;
-
-      for(let i = 0; i < linhasBase.length; i++){
-        const item = linhasBase[i];
-
-        if(item.tipo === 'titulo'){
-          if(modoOrn === 'antesTitulo'){
-            if(resultado.length > 0 && resultado[resultado.length - 1].tipo !== 'ornamento'){
-              resultado.push(criarItem(simboloOrn, 'ornamento', false));
-            }
-          }
-
-          if(modoOrn === 'entrePoemas'){
-            const anteriorReal = encontrarAnteriorReal(linhasBase, i);
-            if(anteriorReal !== null && !jaTemOrnamentoNoFinal(resultado)){
-              resultado.push(criarItem(simboloOrn, 'ornamento', false));
-            }
-          }
-
-          resultado.push({ ...item });
-
-          if(modoOrn === 'depoisTitulo'){
-            resultado.push(criarItem(simboloOrn, 'ornamento', false));
-          }
-        } else {
-          resultado.push({ ...item });
-        }
-      }
-
-      linhasProcessadas = resultado;
-      paginar();
+      linhasProcessadas = gerarEstruturaComOrnamentos(linhasBase);
+      paginarPorMedicaoReal();
       renderPaginas();
       atualizarMetas();
     }
 
-    function encontrarAnteriorReal(lista, indice){
+    function gerarEstruturaComOrnamentos(base){
+      const modoOrn = ornamentoModo.value;
+      const simboloOrn = ornamentoTipo.value;
+      const saida = [];
+
+      for(let i = 0; i < base.length; i++){
+        const item = base[i];
+        const atual = { ...item };
+
+        if(atual.tipo === 'titulo'){
+          const existeConteudoAntes = existeConteudoRealAntes(base, i);
+
+          if(modoOrn === 'antesTitulo' && existeConteudoAntes){
+            if(!ornamentoJaPertoNoFim(saida)){
+              saida.push(criarItem(simboloOrn, 'ornamento', false));
+            }
+          }
+
+          if(modoOrn === 'entrePoemas' && existeConteudoAntes){
+            if(!ornamentoJaPertoNoFim(saida)){
+              saida.push(criarItem(simboloOrn, 'ornamento', false));
+            }
+          }
+
+          saida.push(atual);
+
+          if(modoOrn === 'depoisTitulo'){
+            const prox = proximoConteudoReal(base, i);
+            if(prox !== null){
+              saida.push(criarItem(simboloOrn, 'ornamento', false));
+            }
+          }
+        } else {
+          saida.push(atual);
+        }
+      }
+
+      return saida;
+    }
+
+    function existeConteudoRealAntes(lista, indice){
       for(let i = indice - 1; i >= 0; i--){
+        if(lista[i].tipo === 'verso' || lista[i].tipo === 'subtitulo') return true;
+        if(lista[i].tipo === 'titulo') return false;
+      }
+      return false;
+    }
+
+    function proximoConteudoReal(lista, indice){
+      for(let i = indice + 1; i < lista.length; i++){
         if(lista[i].tipo !== 'vazio') return i;
       }
       return null;
     }
 
-    function jaTemOrnamentoNoFinal(lista){
+    function ornamentoJaPertoNoFim(lista){
       if(lista.length === 0) return false;
-      return lista[lista.length - 1].tipo === 'ornamento';
+      const ultimo = lista[lista.length - 1];
+      const penultimo = lista[lista.length - 2];
+      return (ultimo && ultimo.tipo === 'ornamento') || (penultimo && penultimo.tipo === 'ornamento');
     }
 
-    function alturaMargem(){
-      if(margens.value === 'estreitas') return '28px 24px 28px 24px';
-      if(margens.value === 'normais') return '36px 30px 36px 30px';
-      return '42px 34px 42px 34px';
+    function criarPaginaMedidora(){
+      const pagina = document.createElement('div');
+      pagina.className = `pagina ${getPageClass()}`;
+      const inner = document.createElement('div');
+      inner.className = 'pagina-inner';
+      inner.style.padding = getPaddingPagina();
+
+      const cab = document.createElement('div');
+      cab.className = 'cabecalho-pagina';
+      cab.innerHTML = `<span>Castor</span><span>Modo impresso — ${formato.value}</span>`;
+
+      const miolo = document.createElement('div');
+      miolo.className = 'miolo';
+
+      const rodape = document.createElement('div');
+      rodape.className = 'rodape-pagina';
+      rodape.textContent = '1';
+
+      inner.appendChild(cab);
+      inner.appendChild(miolo);
+      inner.appendChild(rodape);
+      pagina.appendChild(inner);
+
+      return { pagina, miolo };
     }
 
-    function paginaLimite(){
-      return formato.value === '16x23' ? 34 : (formato.value === '6x9' ? 31 : 30);
-    }
-
-    function paginar(){
+    function paginarPorMedicaoReal(){
       paginas = [];
+      medidor.innerHTML = '';
+
+      const estrutura = criarPaginaMedidora();
+      medidor.appendChild(estrutura.pagina);
+
+      const mioloMedidor = estrutura.miolo;
+      const alturaDisponivel = mioloMedidor.clientHeight;
+
       let atual = [];
-      let contador = 0;
-      const limite = paginaLimite();
 
       for(let i = 0; i < linhasProcessadas.length; i++){
         const item = linhasProcessadas[i];
 
-        if(novaPagina.value === 'sim' && item.tipo === 'titulo' && atual.length > 0){
+        if(
+          novaPagina.value === 'sim' &&
+          item.tipo === 'titulo' &&
+          atual.length > 0
+        ){
           paginas.push(atual);
           atual = [];
-          contador = 0;
+          mioloMedidor.innerHTML = '';
         }
 
-        const peso = pesoLinha(item);
-        if(contador + peso > limite && atual.length > 0){
+        const clone = criarLinhaVisual(item, false);
+        mioloMedidor.appendChild(clone);
+
+        const passou = mioloMedidor.scrollHeight > alturaDisponivel + 1;
+
+        if(passou && atual.length > 0){
+          mioloMedidor.removeChild(clone);
           paginas.push(atual);
           atual = [];
-          contador = 0;
+          mioloMedidor.innerHTML = '';
+          const cloneNovo = criarLinhaVisual(item, false);
+          mioloMedidor.appendChild(cloneNovo);
         }
 
         atual.push(item);
-        contador += peso;
       }
 
       if(atual.length === 0){
@@ -732,90 +852,53 @@ dos teus olhos?</textarea>
 
       paginas.push(atual);
 
+      medidor.innerHTML = '';
+
       if(paginaAtual >= paginas.length) paginaAtual = paginas.length - 1;
       if(paginaAtual < 0) paginaAtual = 0;
     }
 
-    function pesoLinha(item){
-      if(item.tipo === 'titulo') return 3;
-      if(item.tipo === 'subtitulo') return 2;
-      if(item.tipo === 'ornamento') return 2;
+    function criarLinhaVisual(item, interativa=true){
+      const div = document.createElement('div');
+      div.className = 'linha-item ' + item.tipo + (item.manual ? ' manual' : '');
+      div.dataset.id = item.id;
+      div.dataset.tipo = item.tipo;
+
       if(item.tipo === 'vazio'){
-        if(espacoEstrofes.value === 'minimo') return 0.5;
-        if(espacoEstrofes.value === 'maior') return 2;
-        return 1;
+        div.innerHTML = '&nbsp;';
+      } else {
+        div.textContent = item.texto;
       }
-      return 1;
-    }
 
-    function renderPaginas(){
-      visorPaginas.innerHTML = '';
+      aplicarEstiloLinha(div, item);
 
-      paginas.forEach((pagina, indicePagina) => {
-        const page = document.createElement('div');
-        page.className = 'pagina' + (indicePagina === paginaAtual ? '' : ' oculta');
-        page.style.padding = alturaMargem();
+      if(interativa){
+        div.addEventListener('click', () => selecionarLinha(item.id));
+        div.addEventListener('dblclick', () => iniciarEdicaoInline(item.id));
+      }
 
-        const cab = document.createElement('div');
-        cab.className = 'cabecalho-pagina';
-        cab.innerHTML = `<span>Castor</span><span>Modo impresso — ${formato.value}</span>`;
-        page.appendChild(cab);
-
-        const miolo = document.createElement('div');
-        miolo.className = 'miolo';
-
-        pagina.forEach(item => {
-          const div = document.createElement('div');
-          div.className = 'linha-item ' + item.tipo + (item.manual ? ' manual' : '');
-          div.dataset.id = item.id;
-          div.dataset.tipo = item.tipo;
-
-          if(item.tipo === 'vazio'){
-            div.innerHTML = '&nbsp;';
-          } else {
-            div.textContent = item.texto;
-          }
-
-          aplicarEstiloLinha(div, item);
-
-          div.addEventListener('click', () => selecionarLinha(item.id));
-
-          div.addEventListener('dblclick', () => iniciarEdicaoInline(item.id));
-
-          miolo.appendChild(div);
-        });
-
-        page.appendChild(miolo);
-
-        const rodape = document.createElement('div');
-        rodape.className = 'rodape-pagina';
-        rodape.textContent = String(indicePagina + 1);
-        page.appendChild(rodape);
-
-        visorPaginas.appendChild(page);
-      });
-
-      destacarSelecionadaNaPagina();
+      return div;
     }
 
     function aplicarEstiloLinha(div, item){
-      div.style.textAlign = item.tipo === 'titulo' || item.tipo === 'subtitulo' || item.tipo === 'ornamento'
-        ? 'center'
-        : alinhamento.value;
+      div.style.textAlign =
+        item.tipo === 'titulo' || item.tipo === 'subtitulo' || item.tipo === 'ornamento'
+          ? 'center'
+          : alinhamento.value;
 
       if(item.tipo === 'titulo'){
         div.style.fontFamily = fonteTitulos.value;
         div.style.fontSize = tamTitulos.value + 'pt';
         div.style.lineHeight = '1.3';
-      }else if(item.tipo === 'subtitulo'){
+      } else if(item.tipo === 'subtitulo'){
         div.style.fontFamily = fonteTitulos.value;
         div.style.fontSize = Math.max(10, Number(tamTitulos.value) - 2) + 'pt';
         div.style.lineHeight = '1.3';
-      }else if(item.tipo === 'ornamento'){
+      } else if(item.tipo === 'ornamento'){
         div.style.fontFamily = fonteTitulos.value;
         div.style.fontSize = Math.max(10, Number(tamTitulos.value) - 1) + 'pt';
         div.style.lineHeight = '1.2';
-      }else{
+      } else {
         div.style.fontFamily = fonteVersos.value;
         div.style.fontSize = tamVersos.value + 'pt';
         div.style.lineHeight = entrelinha.value;
@@ -826,6 +909,42 @@ dos teus olhos?</textarea>
         else if(espacoEstrofes.value === 'minimo') div.style.minHeight = '8px';
         else div.style.minHeight = '16px';
       }
+    }
+
+    function renderPaginas(){
+      visorPaginas.innerHTML = '';
+
+      paginas.forEach((pagina, indicePagina) => {
+        const page = document.createElement('div');
+        page.className = `pagina ${getPageClass()}` + (indicePagina === paginaAtual ? '' : ' oculta');
+
+        const inner = document.createElement('div');
+        inner.className = 'pagina-inner';
+        inner.style.padding = getPaddingPagina();
+
+        const cab = document.createElement('div');
+        cab.className = 'cabecalho-pagina';
+        cab.innerHTML = `<span>Castor</span><span>Modo impresso — ${formato.value}</span>`;
+
+        const miolo = document.createElement('div');
+        miolo.className = 'miolo';
+
+        pagina.forEach(item => {
+          miolo.appendChild(criarLinhaVisual(item, true));
+        });
+
+        const rodape = document.createElement('div');
+        rodape.className = 'rodape-pagina';
+        rodape.textContent = String(indicePagina + 1);
+
+        inner.appendChild(cab);
+        inner.appendChild(miolo);
+        inner.appendChild(rodape);
+        page.appendChild(inner);
+        visorPaginas.appendChild(page);
+      });
+
+      destacarSelecionadaNaPagina();
     }
 
     function atualizarMetas(){
@@ -852,7 +971,7 @@ dos teus olhos?</textarea>
 
       edicaoTexto.value = item.texto;
       edicaoTipo.value = item.tipo;
-      statusEdicao.textContent = `Linha selecionada: ${item.tipo}. Clique duas vezes na linha para editar direto na prévia.`;
+      statusEdicao.textContent = `Linha selecionada: ${item.tipo}. Dê duplo clique nela para editar direto na prévia.`;
       destacarSelecionadaNaPagina();
     }
 
@@ -884,6 +1003,7 @@ dos teus olhos?</textarea>
 
       item.tipo = tipo;
       item.manual = true;
+
       if(tipo === 'ornamento' && !item.texto.trim()){
         item.texto = ornamentoTipo.value;
       }
@@ -897,6 +1017,7 @@ dos teus olhos?</textarea>
       if(linhaSelecionadaId === null) return;
       const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
       if(index === -1) return;
+
       const novo = criarItem('', 'verso', true);
       linhasBase.splice(index + 1, 0, novo);
       aplicarEstrutura();
@@ -909,6 +1030,7 @@ dos teus olhos?</textarea>
       if(linhaSelecionadaId === null) return;
       const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
       if(index === -1) return;
+
       linhasBase.splice(index, 1);
       linhaSelecionadaId = null;
       edicaoTexto.value = '';
@@ -921,6 +1043,7 @@ dos teus olhos?</textarea>
       if(linhaSelecionadaId === null) return;
       const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
       if(index === -1) return;
+
       const novo = criarItem(ornamentoTipo.value, 'ornamento', true);
       linhasBase.splice(index + 1, 0, novo);
       aplicarEstrutura();
@@ -953,7 +1076,7 @@ dos teus olhos?</textarea>
       }
 
       colocarCursorNoFim(el);
-      statusEdicao.textContent = 'Editando linha direto na prévia. Enter salva. Esc cancela.';
+      statusEdicao.textContent = 'Editando direto na prévia. Enter salva. Esc cancela.';
 
       el.addEventListener('keydown', tratarTeclaEdicao);
       el.addEventListener('blur', tratarBlurEdicao);
@@ -1071,9 +1194,9 @@ dos teus olhos?</textarea>
     });
 
     [
-      formato, fonteVersos, fonteTitulos, tamVersos, tamTitulos, entrelinha,
-      margens, alinhamento, espacoEstrofes, ornamentoModo, ornamentoTipo,
-      novaPagina, primeiraLinha, formaPoetica
+      formato, primeiraLinha, formaPoetica, fonteVersos, fonteTitulos, tamVersos,
+      tamTitulos, entrelinha, margens, alinhamento, espacoEstrofes,
+      ornamentoModo, ornamentoTipo, novaPagina
     ].forEach(campo => {
       campo.addEventListener('change', () => {
         aplicarEstrutura();
