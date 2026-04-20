@@ -13,11 +13,10 @@
       --muted:#6c7782;
       --page:#fffdf8;
       --page-border:#3e4550;
-      --toolbar:#eef5fb;
       --botao:#ffffff;
       --botao-borda:#9bb3c5;
-      --realce:#fff3c7;
       --selecionado:#dff0ff;
+      --manual:#fff3c7;
       --sombra:0 8px 22px rgba(0,0,0,.08);
     }
 
@@ -41,7 +40,7 @@
 
     .layout{
       display:grid;
-      grid-template-columns: 280px 1fr;
+      grid-template-columns:280px 1fr;
       gap:14px;
       padding:14px;
       min-height:calc(100vh - 44px);
@@ -123,7 +122,9 @@
       min-width:0;
     }
 
-    .caixa-texto{
+    .caixa-texto,
+    .painel-edicao,
+    .bloco-previa{
       background:#fff;
       border:1px solid #d7e0e8;
       border-radius:12px;
@@ -138,14 +139,6 @@
       font-size:16px;
     }
 
-    .painel-edicao{
-      background:#fff;
-      border:1px solid #d7e0e8;
-      border-radius:12px;
-      padding:12px;
-      box-shadow:var(--sombra);
-    }
-
     .edicao-status{
       font-size:13px;
       color:var(--muted);
@@ -153,11 +146,6 @@
     }
 
     .bloco-previa{
-      background:#fff;
-      border:1px solid #d7e0e8;
-      border-radius:12px;
-      padding:12px;
-      box-shadow:var(--sombra);
       min-height:0;
       display:flex;
       flex-direction:column;
@@ -196,13 +184,17 @@
     .pagina{
       width:420px;
       min-height:594px;
-      margin:0 auto;
+      margin:0 auto 18px auto;
       background:var(--page);
       border:2px solid var(--page-border);
       border-radius:4px;
       padding:42px 34px 42px 34px;
       position:relative;
       box-shadow:0 8px 24px rgba(0,0,0,.10);
+    }
+
+    .pagina.oculta{
+      display:none;
     }
 
     .cabecalho-pagina{
@@ -225,6 +217,7 @@
       cursor:pointer;
       white-space:pre-wrap;
       word-break:break-word;
+      outline:none;
     }
 
     .linha-item:hover{
@@ -237,8 +230,8 @@
     }
 
     .linha-item.vazio{
-      min-height:18px;
-      cursor:default;
+      min-height:16px;
+      cursor:pointer;
     }
 
     .linha-item.titulo{
@@ -264,11 +257,16 @@
       text-align:center;
       color:#8d8d8d;
       margin:12px 0;
-      cursor:default;
+      cursor:pointer;
     }
 
     .linha-item.manual{
       box-shadow:inset 0 0 0 9999px rgba(255,243,199,.45);
+    }
+
+    .linha-item.editando{
+      background:#fffef0;
+      outline:1px solid #d8c778;
     }
 
     .rodape-pagina{
@@ -307,7 +305,7 @@
       resize:vertical;
     }
 
-    @media (max-width: 980px){
+    @media (max-width:980px){
       .layout{
         grid-template-columns:1fr;
       }
@@ -468,7 +466,7 @@
       </div>
 
       <div class="ajuda">
-        A prévia continua manipulável, mas agora a edição é controlada por linha para evitar que o navegador bagunce fonte, tamanho e alinhamento dentro do mesmo verso.
+        Clique numa linha da prévia para editar. Enter salva. Esc cancela. Delete apaga linha vazia selecionada.
       </div>
     </aside>
 
@@ -535,7 +533,7 @@ dos teus olhos?</textarea>
         </div>
 
         <div class="ajuda">
-          Aqui você mexe dentro da prévia sem permitir que o navegador quebre o estilo do poema por conta própria.
+          A linha pode ser editada direto na prévia. O painel continua para reclassificação rápida.
         </div>
       </section>
 
@@ -552,27 +550,16 @@ dos teus olhos?</textarea>
           </div>
         </div>
 
-        <div class="visor">
-          <div class="pagina">
-            <div class="cabecalho-pagina">
-              <span>Castor</span>
-              <span id="cabecalhoFormato">Modo impresso — A5</span>
-            </div>
-            <div id="mioloPagina" class="miolo"></div>
-            <div class="rodape-pagina" id="rodapePagina">1</div>
-          </div>
-        </div>
+        <div id="visorPaginas" class="visor"></div>
       </section>
     </main>
   </div>
 
   <script>
     const entradaPoetica = document.getElementById('entradaPoetica');
-    const mioloPagina = document.getElementById('mioloPagina');
+    const visorPaginas = document.getElementById('visorPaginas');
     const metaFormato = document.getElementById('metaFormato');
     const metaPagina = document.getElementById('metaPagina');
-    const cabecalhoFormato = document.getElementById('cabecalhoFormato');
-    const rodapePagina = document.getElementById('rodapePagina');
 
     const edicaoTexto = document.getElementById('edicaoTexto');
     const edicaoTipo = document.getElementById('edicaoTipo');
@@ -599,18 +586,15 @@ dos teus olhos?</textarea>
     let paginaAtual = 0;
     let linhaSelecionadaId = null;
     let contadorIds = 1;
+    let editandoId = null;
+    let textoAntesEdicao = '';
 
     function novoId(){
       return contadorIds++;
     }
 
     function criarItem(texto, tipo, manual=false){
-      return {
-        id: novoId(),
-        texto,
-        tipo,
-        manual
-      };
+      return { id: novoId(), texto, tipo, manual };
     }
 
     function textoCurtoProvavelTitulo(txt){
@@ -636,9 +620,7 @@ dos teus olhos?</textarea>
       if (t === '') return 'vazio';
 
       if (primeiraLinha.value !== 'semTitulo') {
-        if (a === '' && d === '' && textoCurtoProvavelTitulo(t)) {
-          return 'titulo';
-        }
+        if (a === '' && d === '' && textoCurtoProvavelTitulo(t)) return 'titulo';
       }
 
       if (a === '' && d !== '' && d2 !== '' && textoCurtoProvavelTitulo(t) && /^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ]/.test(t)) {
@@ -653,9 +635,7 @@ dos teus olhos?</textarea>
       const bruto = entradaPoetica.value.replace(/\r/g, '');
       const linhas = bruto.split('\n');
 
-      linhasBase = linhas.map((linha, i) => {
-        return criarItem(linha, detectarTipoAutomatico(linhas, i), false);
-      });
+      linhasBase = linhas.map((linha, i) => criarItem(linha, detectarTipoAutomatico(linhas, i), false));
 
       aplicarEstrutura();
     }
@@ -675,29 +655,26 @@ dos teus olhos?</textarea>
             }
           }
 
-          resultado.push({...item});
+          if(modoOrn === 'entrePoemas'){
+            const anteriorReal = encontrarAnteriorReal(linhasBase, i);
+            if(anteriorReal !== null && !jaTemOrnamentoNoFinal(resultado)){
+              resultado.push(criarItem(simboloOrn, 'ornamento', false));
+            }
+          }
+
+          resultado.push({ ...item });
 
           if(modoOrn === 'depoisTitulo'){
             resultado.push(criarItem(simboloOrn, 'ornamento', false));
           }
-
-          if(modoOrn === 'entrePoemas'){
-            const anteriorReal = encontrarAnteriorReal(linhasBase, i);
-            if(anteriorReal !== null){
-              const inserirAntes = resultado.length >= 2 ? resultado.length - 1 : 0;
-              if(!jaTemOrnamentoPerto(resultado, inserirAntes)){
-                resultado.splice(inserirAntes, 0, criarItem(simboloOrn, 'ornamento', false));
-              }
-            }
-          }
-        }else{
-          resultado.push({...item});
+        } else {
+          resultado.push({ ...item });
         }
       }
 
       linhasProcessadas = resultado;
       paginar();
-      renderPagina();
+      renderPaginas();
       atualizarMetas();
     }
 
@@ -708,16 +685,15 @@ dos teus olhos?</textarea>
       return null;
     }
 
-    function jaTemOrnamentoPerto(lista, pos){
-      const anterior = lista[pos - 1];
-      const atual = lista[pos];
-      return (anterior && anterior.tipo === 'ornamento') || (atual && atual.tipo === 'ornamento');
+    function jaTemOrnamentoNoFinal(lista){
+      if(lista.length === 0) return false;
+      return lista[lista.length - 1].tipo === 'ornamento';
     }
 
     function alturaMargem(){
-      if(margens.value === 'estreitas') return {padding:'28px 24px 28px 24px'};
-      if(margens.value === 'normais') return {padding:'36px 30px 36px 30px'};
-      return {padding:'42px 34px 42px 34px'};
+      if(margens.value === 'estreitas') return '28px 24px 28px 24px';
+      if(margens.value === 'normais') return '36px 30px 36px 30px';
+      return '42px 34px 42px 34px';
     }
 
     function paginaLimite(){
@@ -756,9 +732,7 @@ dos teus olhos?</textarea>
 
       paginas.push(atual);
 
-      if(paginaAtual >= paginas.length){
-        paginaAtual = paginas.length - 1;
-      }
+      if(paginaAtual >= paginas.length) paginaAtual = paginas.length - 1;
       if(paginaAtual < 0) paginaAtual = 0;
     }
 
@@ -774,35 +748,54 @@ dos teus olhos?</textarea>
       return 1;
     }
 
-    function renderPagina(){
-      mioloPagina.innerHTML = '';
-      const pagina = paginas[paginaAtual] || [];
-      const estiloMargem = alturaMargem();
-      document.querySelector('.pagina').style.padding = estiloMargem.padding;
+    function renderPaginas(){
+      visorPaginas.innerHTML = '';
 
-      pagina.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'linha-item ' + item.tipo + (item.manual ? ' manual' : '');
-        div.dataset.id = item.id;
+      paginas.forEach((pagina, indicePagina) => {
+        const page = document.createElement('div');
+        page.className = 'pagina' + (indicePagina === paginaAtual ? '' : ' oculta');
+        page.style.padding = alturaMargem();
 
-        if(item.tipo === 'vazio'){
-          div.innerHTML = '&nbsp;';
-        }else{
-          div.textContent = item.texto;
-        }
+        const cab = document.createElement('div');
+        cab.className = 'cabecalho-pagina';
+        cab.innerHTML = `<span>Castor</span><span>Modo impresso — ${formato.value}</span>`;
+        page.appendChild(cab);
 
-        aplicarEstiloLinha(div, item);
+        const miolo = document.createElement('div');
+        miolo.className = 'miolo';
 
-        if(item.tipo !== 'ornamento' && item.tipo !== 'vazio'){
+        pagina.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'linha-item ' + item.tipo + (item.manual ? ' manual' : '');
+          div.dataset.id = item.id;
+          div.dataset.tipo = item.tipo;
+
+          if(item.tipo === 'vazio'){
+            div.innerHTML = '&nbsp;';
+          } else {
+            div.textContent = item.texto;
+          }
+
+          aplicarEstiloLinha(div, item);
+
           div.addEventListener('click', () => selecionarLinha(item.id));
-        }
 
-        mioloPagina.appendChild(div);
+          div.addEventListener('dblclick', () => iniciarEdicaoInline(item.id));
+
+          miolo.appendChild(div);
+        });
+
+        page.appendChild(miolo);
+
+        const rodape = document.createElement('div');
+        rodape.className = 'rodape-pagina';
+        rodape.textContent = String(indicePagina + 1);
+        page.appendChild(rodape);
+
+        visorPaginas.appendChild(page);
       });
 
       destacarSelecionadaNaPagina();
-      rodapePagina.textContent = String(paginaAtual + 1);
-      metaPagina.textContent = `Página ${paginaAtual + 1} de ${paginas.length}`;
     }
 
     function aplicarEstiloLinha(div, item){
@@ -828,10 +821,6 @@ dos teus olhos?</textarea>
         div.style.lineHeight = entrelinha.value;
       }
 
-      if(item.tipo === 'verso'){
-        div.style.marginBottom = '2px';
-      }
-
       if(item.tipo === 'vazio'){
         if(espacoEstrofes.value === 'maior') div.style.minHeight = '24px';
         else if(espacoEstrofes.value === 'minimo') div.style.minHeight = '8px';
@@ -841,29 +830,34 @@ dos teus olhos?</textarea>
 
     function atualizarMetas(){
       metaFormato.textContent = `Modo impresso — ${formato.value}`;
-      cabecalhoFormato.textContent = `Modo impresso — ${formato.value}`;
       metaPagina.textContent = `Página ${paginaAtual + 1} de ${paginas.length}`;
+      mostrarPaginaAtual();
     }
 
-    function buscarItemPorId(id){
+    function mostrarPaginaAtual(){
+      const todas = visorPaginas.querySelectorAll('.pagina');
+      todas.forEach((p, i) => {
+        p.classList.toggle('oculta', i !== paginaAtual);
+      });
+    }
+
+    function buscarItemBasePorId(id){
       return linhasBase.find(item => item.id === id) || null;
     }
 
     function selecionarLinha(id){
       linhaSelecionadaId = id;
-      const item = buscarItemPorId(id);
+      const item = buscarItemBasePorId(id);
       if(!item) return;
 
       edicaoTexto.value = item.texto;
       edicaoTipo.value = item.tipo;
-      statusEdicao.textContent = `Linha selecionada: ${item.tipo}. Você pode alterar o texto ou reclassificar manualmente.`;
+      statusEdicao.textContent = `Linha selecionada: ${item.tipo}. Clique duas vezes na linha para editar direto na prévia.`;
       destacarSelecionadaNaPagina();
     }
 
     function destacarSelecionadaNaPagina(){
-      document.querySelectorAll('.linha-item').forEach(el => {
-        el.classList.remove('selecionado');
-      });
+      document.querySelectorAll('.linha-item').forEach(el => el.classList.remove('selecionado'));
       if(linhaSelecionadaId === null) return;
       const el = document.querySelector(`.linha-item[data-id="${linhaSelecionadaId}"]`);
       if(el) el.classList.add('selecionado');
@@ -871,7 +865,7 @@ dos teus olhos?</textarea>
 
     function salvarLinhaSelecionada(){
       if(linhaSelecionadaId === null) return;
-      const item = buscarItemPorId(linhaSelecionadaId);
+      const item = buscarItemBasePorId(linhaSelecionadaId);
       if(!item) return;
 
       item.texto = edicaoTexto.value;
@@ -879,12 +873,13 @@ dos teus olhos?</textarea>
       item.manual = true;
 
       aplicarEstrutura();
+      reconstruirEntradaAPartirDasLinhas();
       selecionarLinha(linhaSelecionadaId);
     }
 
     function reclassificarSelecionada(tipo){
       if(linhaSelecionadaId === null) return;
-      const item = buscarItemPorId(linhaSelecionadaId);
+      const item = buscarItemBasePorId(linhaSelecionadaId);
       if(!item) return;
 
       item.tipo = tipo;
@@ -894,6 +889,7 @@ dos teus olhos?</textarea>
       }
 
       aplicarEstrutura();
+      reconstruirEntradaAPartirDasLinhas();
       selecionarLinha(linhaSelecionadaId);
     }
 
@@ -904,7 +900,9 @@ dos teus olhos?</textarea>
       const novo = criarItem('', 'verso', true);
       linhasBase.splice(index + 1, 0, novo);
       aplicarEstrutura();
+      reconstruirEntradaAPartirDasLinhas();
       selecionarLinha(novo.id);
+      iniciarEdicaoInline(novo.id);
     }
 
     function excluirLinhaSelecionada(){
@@ -915,6 +913,7 @@ dos teus olhos?</textarea>
       linhaSelecionadaId = null;
       edicaoTexto.value = '';
       aplicarEstrutura();
+      reconstruirEntradaAPartirDasLinhas();
       statusEdicao.textContent = 'Linha removida.';
     }
 
@@ -925,11 +924,119 @@ dos teus olhos?</textarea>
       const novo = criarItem(ornamentoTipo.value, 'ornamento', true);
       linhasBase.splice(index + 1, 0, novo);
       aplicarEstrutura();
-      statusEdicao.textContent = 'Ornamento manual inserido abaixo da linha selecionada.';
+      reconstruirEntradaAPartirDasLinhas();
+      selecionarLinha(novo.id);
     }
 
     function reconstruirEntradaAPartirDasLinhas(){
       entradaPoetica.value = linhasBase.map(item => item.texto).join('\n');
+    }
+
+    function iniciarEdicaoInline(id){
+      if(editandoId !== null) finalizarEdicaoInline(true);
+
+      const item = buscarItemBasePorId(id);
+      const el = document.querySelector(`.linha-item[data-id="${id}"]`);
+      if(!item || !el) return;
+
+      selecionarLinha(id);
+      editandoId = id;
+      textoAntesEdicao = item.texto;
+
+      el.classList.add('editando');
+      el.contentEditable = 'true';
+      el.spellcheck = false;
+      el.focus();
+
+      if(item.tipo === 'vazio'){
+        el.textContent = '';
+      }
+
+      colocarCursorNoFim(el);
+      statusEdicao.textContent = 'Editando linha direto na prévia. Enter salva. Esc cancela.';
+
+      el.addEventListener('keydown', tratarTeclaEdicao);
+      el.addEventListener('blur', tratarBlurEdicao);
+    }
+
+    function tratarTeclaEdicao(e){
+      if(editandoId === null) return;
+
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        finalizarEdicaoInline(true);
+      }
+
+      if(e.key === 'Escape'){
+        e.preventDefault();
+        finalizarEdicaoInline(false);
+      }
+
+      if(e.key === 'Delete'){
+        const el = e.currentTarget;
+        const texto = limparTextoVisual(el.innerText || '');
+        const item = buscarItemBasePorId(editandoId);
+        if(item && item.tipo === 'vazio' && texto === ''){
+          e.preventDefault();
+          const idApagar = editandoId;
+          finalizarEdicaoInline(false);
+          linhaSelecionadaId = idApagar;
+          excluirLinhaSelecionada();
+        }
+      }
+    }
+
+    function tratarBlurEdicao(){
+      if(editandoId !== null) finalizarEdicaoInline(true);
+    }
+
+    function finalizarEdicaoInline(salvar){
+      const id = editandoId;
+      if(id === null) return;
+
+      const item = buscarItemBasePorId(id);
+      const el = document.querySelector(`.linha-item[data-id="${id}"]`);
+      if(!item || !el){
+        editandoId = null;
+        return;
+      }
+
+      el.removeEventListener('keydown', tratarTeclaEdicao);
+      el.removeEventListener('blur', tratarBlurEdicao);
+      el.contentEditable = 'false';
+      el.classList.remove('editando');
+
+      if(salvar){
+        const textoNovo = limparTextoVisual(el.innerText || '');
+        item.texto = textoNovo;
+        item.manual = true;
+        if(textoNovo === ''){
+          item.tipo = 'vazio';
+        }
+        edicaoTexto.value = item.texto;
+        edicaoTipo.value = item.tipo;
+      } else {
+        item.texto = textoAntesEdicao;
+      }
+
+      editandoId = null;
+      textoAntesEdicao = '';
+      aplicarEstrutura();
+      reconstruirEntradaAPartirDasLinhas();
+      selecionarLinha(id);
+    }
+
+    function limparTextoVisual(txt){
+      return txt.replace(/\u00A0/g, ' ').replace(/\r/g, '').replace(/\n/g, ' ').trimEnd();
+    }
+
+    function colocarCursorNoFim(el){
+      const range = document.createRange();
+      const sel = window.getSelection();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      sel.removeAllRanges();
+      sel.addRange(range);
     }
 
     document.getElementById('btnAplicar').addEventListener('click', () => {
@@ -941,45 +1048,17 @@ dos teus olhos?</textarea>
       statusEdicao.textContent = 'Texto reprocessado com a leitura estrutural atual.';
     });
 
-    document.getElementById('btnSalvarLinha').addEventListener('click', () => {
-      salvarLinhaSelecionada();
-      reconstruirEntradaAPartirDasLinhas();
-    });
-
-    document.getElementById('btnVerso').addEventListener('click', () => {
-      reclassificarSelecionada('verso');
-      reconstruirEntradaAPartirDasLinhas();
-    });
-
-    document.getElementById('btnTitulo').addEventListener('click', () => {
-      reclassificarSelecionada('titulo');
-      reconstruirEntradaAPartirDasLinhas();
-    });
-
-    document.getElementById('btnSubtitulo').addEventListener('click', () => {
-      reclassificarSelecionada('subtitulo');
-      reconstruirEntradaAPartirDasLinhas();
-    });
-
-    document.getElementById('btnInserirAbaixo').addEventListener('click', () => {
-      inserirLinhaAbaixo();
-      reconstruirEntradaAPartirDasLinhas();
-    });
-
-    document.getElementById('btnExcluirLinha').addEventListener('click', () => {
-      excluirLinhaSelecionada();
-      reconstruirEntradaAPartirDasLinhas();
-    });
-
-    document.getElementById('btnInserirOrnamentoManual').addEventListener('click', () => {
-      inserirOrnamentoManual();
-      reconstruirEntradaAPartirDasLinhas();
-    });
+    document.getElementById('btnSalvarLinha').addEventListener('click', salvarLinhaSelecionada);
+    document.getElementById('btnVerso').addEventListener('click', () => reclassificarSelecionada('verso'));
+    document.getElementById('btnTitulo').addEventListener('click', () => reclassificarSelecionada('titulo'));
+    document.getElementById('btnSubtitulo').addEventListener('click', () => reclassificarSelecionada('subtitulo'));
+    document.getElementById('btnInserirAbaixo').addEventListener('click', inserirLinhaAbaixo);
+    document.getElementById('btnExcluirLinha').addEventListener('click', excluirLinhaSelecionada);
+    document.getElementById('btnInserirOrnamentoManual').addEventListener('click', inserirOrnamentoManual);
 
     document.getElementById('paginaAnterior').addEventListener('click', () => {
       if(paginaAtual > 0){
         paginaAtual--;
-        renderPagina();
         atualizarMetas();
       }
     });
@@ -987,7 +1066,6 @@ dos teus olhos?</textarea>
     document.getElementById('proximaPagina').addEventListener('click', () => {
       if(paginaAtual < paginas.length - 1){
         paginaAtual++;
-        renderPagina();
         atualizarMetas();
       }
     });
@@ -995,11 +1073,22 @@ dos teus olhos?</textarea>
     [
       formato, fonteVersos, fonteTitulos, tamVersos, tamTitulos, entrelinha,
       margens, alinhamento, espacoEstrofes, ornamentoModo, ornamentoTipo,
-      novaPagina
+      novaPagina, primeiraLinha, formaPoetica
     ].forEach(campo => {
       campo.addEventListener('change', () => {
         aplicarEstrutura();
       });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if(editandoId !== null) return;
+
+      if(e.key === 'Delete' && linhaSelecionadaId !== null){
+        const item = buscarItemBasePorId(linhaSelecionadaId);
+        if(item && item.tipo === 'vazio'){
+          excluirLinhaSelecionada();
+        }
+      }
     });
 
     parseEntrada();
