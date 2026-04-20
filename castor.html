@@ -7,18 +7,22 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
       --bg:#f6f3ee;
       --card:#ffffff;
-      --config:#efe8fb;
-      --config-border:#cdbce9;
+      --panel:#e7f0fb;
+      --panel-border:#bfd0eb;
       --paper:#fffdf8;
       --line:#d8d2ca;
       --ink:#2f2a25;
-      --muted:#6f675f;
+      --muted:#70675f;
+      --blue:#2f6ea5;
+      --blue-soft:#3e7fba;
+      --yellow:#d8b622;
+      --red:#b63131;
       --shadow:0 2px 10px rgba(0,0,0,.06);
       --radius:14px;
     }
@@ -33,7 +37,9 @@
       font-family:Georgia, serif;
     }
 
-    button,input,select,textarea{font:inherit}
+    button,input,select,textarea{
+      font:inherit;
+    }
 
     .wrap{
       max-width:1180px;
@@ -71,11 +77,11 @@
       cursor:pointer;
     }
 
-    .btn-yellow{background:#d8b622;color:#2d2600}
+    .btn-yellow{background:var(--yellow);color:#2d2600}
     .btn-soft{background:#ece7df;color:#2f2a25}
-    .btn-red{background:#b63131;color:#fff}
-    .btn-green{background:#1f6f43;color:#fff}
-    .btn-purple{background:#6d51a8;color:#fff}
+    .btn-red{background:var(--red);color:#fff}
+    .btn-blue{background:var(--blue);color:#fff}
+    .btn-blue-soft{background:var(--blue-soft);color:#fff}
 
     .card{
       background:var(--card);
@@ -86,8 +92,8 @@
     }
 
     .config-card{
-      background:var(--config);
-      border-color:var(--config-border);
+      background:var(--panel);
+      border-color:var(--panel-border);
     }
 
     .card h3{
@@ -127,7 +133,7 @@
 
     textarea{
       width:100%;
-      min-height:320px;
+      min-height:160px;
       border:none;
       outline:none;
       resize:vertical;
@@ -154,17 +160,17 @@
 
     .field label{
       font-size:.95rem;
-      color:#5a467d;
+      color:#365a7a;
       font-weight:700;
     }
 
-    .field input, .field select{
+    .field input,.field select{
       width:100%;
     }
 
     .field input[type="number"]{
       padding:8px 10px;
-      border:1px solid #c8bbdf;
+      border:1px solid #b8c9d8;
       border-radius:8px;
       background:#fff;
     }
@@ -205,8 +211,8 @@
       flex-wrap:wrap;
       margin-bottom:12px;
       padding:10px 12px;
-      background:#f3eefb;
-      border:1px solid #d9cdef;
+      background:#eef5fc;
+      border:1px solid #d3e1ef;
       border-radius:12px;
     }
 
@@ -219,19 +225,20 @@
 
     .preview-counter{
       font-size:.92rem;
-      color:#5c4c7d;
+      color:#476683;
       font-weight:700;
     }
 
     .preview-stage{
-      min-height:700px;
+      min-height:760px;
       display:flex;
       justify-content:center;
       align-items:flex-start;
-      padding:6px;
-      background:#faf8fd;
-      border:1px solid #e3dbf0;
+      padding:12px;
+      background:#f8fbfe;
+      border:1px solid #dde8f2;
       border-radius:10px;
+      overflow:auto;
     }
 
     .page{
@@ -270,7 +277,7 @@
       left:0;
       right:0;
       bottom:30px;
-      overflow:hidden;
+      overflow:auto;
       white-space:normal;
     }
 
@@ -297,67 +304,46 @@
 
     .poem-title{
       text-align:center;
-      margin:0 0 1.4em 0;
+      margin:0 0 1.35em 0;
       line-height:1.2;
       letter-spacing:.02em;
     }
 
-    .poem-section{
+    .poem-subtitle{
       text-align:center;
-      margin:2em 0 1em 0;
+      margin:-.7em 0 1.35em 0;
       line-height:1.2;
-      font-weight:700;
-      letter-spacing:.03em;
+      font-style:italic;
+      opacity:.88;
     }
 
     .stanza{
-      margin:0 0 1.45em 0;
+      margin:0 0 1.5em 0;
     }
 
     .verse{
       margin:0;
-      text-align:left;
       white-space:pre-wrap;
       overflow-wrap:break-word;
+    }
+
+    .ornament{
+      text-align:center;
+      margin:1.2em 0 1.2em 0;
+      opacity:.82;
     }
 
     .hint{
       margin-top:10px;
       font-size:.88rem;
-      color:#665784;
-    }
-
-    #measureHost{
-      position:absolute;
-      left:-99999px;
-      top:-99999px;
-      visibility:hidden;
-      pointer-events:none;
-      width:0;
-      height:0;
-      overflow:hidden;
-    }
-
-    .measure-page{
-      position:relative;
-      background:#fff;
-      overflow:hidden;
-    }
-
-    .measure-content{
-      position:absolute;
-      top:34px;
-      left:0;
-      right:0;
-      bottom:30px;
-      overflow:hidden;
+      color:#576f87;
     }
 
     @media (max-width:760px){
       body{padding:14px}
       .title{font-size:1.55rem}
       .grid{grid-template-columns:1fr}
-      textarea{min-height:280px}
+      textarea{min-height:140px}
       .preview-stage{min-height:620px}
     }
   </style>
@@ -367,11 +353,11 @@
     <div class="topbar">
       <div class="title">Castor — Diagramador de Poesia</div>
       <div class="actions">
-        <button class="btn btn-yellow" type="button" onclick="history.back()">Retornar</button>
-        <button class="btn btn-soft" type="button" id="btnExemplo">Carregar exemplo</button>
+        <button class="btn btn-yellow" type="button" onclick="window.location.href='lapidar.html'">Retornar</button>
+        <button class="btn btn-soft" type="button" id="btnExemplo">Exemplo</button>
         <button class="btn btn-soft" type="button" id="btnLimpar">Limpar</button>
-        <button class="btn btn-purple" type="button" id="btnDownload">Baixar arquivo diagramado</button>
-        <button class="btn btn-red" type="button" onclick="window.location.href='lapidar.html'">Sair do sistema</button>
+        <button class="btn btn-blue-soft" type="button" id="btnDownload">Baixar arquivo</button>
+        <button class="btn btn-red" type="button" onclick="window.location.href='lapidar.html'">Sair</button>
       </div>
     </div>
 
@@ -379,7 +365,7 @@
       <h3>Entrada da obra poética</h3>
       <div class="upload-row">
         <input type="file" id="arquivoTexto" accept=".txt,.md,text/plain">
-        <button class="btn btn-green" type="button" id="btnUpload">Upar texto</button>
+        <button class="btn btn-blue" type="button" id="btnUpload">Upar texto</button>
         <span id="arquivoNome">Nenhum arquivo carregado</span>
       </div>
       <div class="upload-note">No Castor, cada linha é tratada como verso. Linhas em branco separam estrofes.</div>
@@ -387,7 +373,7 @@
 
     <div class="editor">
       <div class="editor-head">Caixa de texto poético</div>
-      <textarea id="inputText" placeholder="Cole aqui seus poemas. Use uma linha em branco para separar estrofes."></textarea>
+      <textarea id="inputText" placeholder="Cole aqui seus poemas. Linha em branco separa estrofes."></textarea>
     </div>
 
     <div class="card config-card">
@@ -407,13 +393,13 @@
           <label for="modoAbertura">Primeira linha</label>
           <select id="modoAbertura">
             <option value="titulo" selected>Título do poema</option>
-            <option value="secao">Seção do livro</option>
+            <option value="livre">Livre</option>
           </select>
         </div>
 
         <div class="field">
-          <label for="fonteCorpo">Fonte dos versos</label>
-          <select id="fonteCorpo">
+          <label for="fonteVerso">Fonte dos versos</label>
+          <select id="fonteVerso">
             <option value="Libre Baskerville" selected>Libre Baskerville</option>
             <option value="EB Garamond">EB Garamond</option>
             <option value="Georgia">Georgia</option>
@@ -427,12 +413,13 @@
             <option value="Playfair Display" selected>Playfair Display</option>
             <option value="Libre Baskerville">Libre Baskerville</option>
             <option value="EB Garamond">EB Garamond</option>
+            <option value="Cinzel">Cinzel</option>
           </select>
         </div>
 
         <div class="field">
-          <label for="tamanhoCorpo">Tamanho dos versos (pt)</label>
-          <input type="number" id="tamanhoCorpo" min="12" max="24" step="0.5" value="14">
+          <label for="tamanhoVerso">Tamanho dos versos (pt)</label>
+          <input type="number" id="tamanhoVerso" min="12" max="24" step="0.5" value="14">
         </div>
 
         <div class="field">
@@ -475,9 +462,28 @@
             <option value="1.8">Respirado</option>
           </select>
         </div>
-      </div>
 
-      <div class="note">No Castor, a preservação dos versos vem antes da justificação. Aqui a respiração visual do poema é prioridade.</div>
+        <div class="field">
+          <label for="ornamento">Ornamento</label>
+          <select id="ornamento">
+            <option value="off" selected>Desligado</option>
+            <option value="inicio">Antes do poema</option>
+            <option value="fim">No fim do poema</option>
+            <option value="ambos">Antes e no fim</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="tipoOrnamento">Tipo de ornamento</label>
+          <select id="tipoOrnamento">
+            <option value="floral" selected>❦ Floral</option>
+            <option value="asterisco">✶ Estelar</option>
+            <option value="linha">— Linha simples —</option>
+            <option value="ponto">• Ponto central •</option>
+          </select>
+        </div>
+      </div>
+      <div class="note">No Castor, preservar verso e estrofe vem antes de qualquer efeito visual. O ornamento é opcional e controlado pelo autor.</div>
     </div>
 
     <div class="preview-box">
@@ -495,11 +501,9 @@
       </div>
 
       <div class="preview-stage" id="previewStage"></div>
-      <div class="hint">Cada linha é um verso. Para separar estrofes, deixe uma linha em branco.</div>
+      <div class="hint">A prévia respeita o tamanho real escolhido. Cada linha é um verso. Linhas em branco separam estrofes.</div>
     </div>
   </div>
-
-  <div id="measureHost"></div>
 
   <script>
     const inputText = document.getElementById("inputText");
@@ -512,18 +516,19 @@
 
     const formato = document.getElementById("formato");
     const modoAbertura = document.getElementById("modoAbertura");
-    const fonteCorpo = document.getElementById("fonteCorpo");
+    const fonteVerso = document.getElementById("fonteVerso");
     const fonteTitulo = document.getElementById("fonteTitulo");
-    const tamanhoCorpo = document.getElementById("tamanhoCorpo");
+    const tamanhoVerso = document.getElementById("tamanhoVerso");
     const tamanhoTitulo = document.getElementById("tamanhoTitulo");
     const entrelinha = document.getElementById("entrelinha");
     const margens = document.getElementById("margens");
     const alinhamento = document.getElementById("alinhamento");
     const espacoEstrofe = document.getElementById("espacoEstrofe");
+    const ornamento = document.getElementById("ornamento");
+    const tipoOrnamento = document.getElementById("tipoOrnamento");
 
     const previewMode = document.getElementById("previewMode");
     const previewStage = document.getElementById("previewStage");
-    const measureHost = document.getElementById("measureHost");
     const btnPrev = document.getElementById("btnPrev");
     const btnNext = document.getElementById("btnNext");
     const pageCounter = document.getElementById("pageCounter");
@@ -541,168 +546,131 @@
       return map[formato.value];
     }
 
-    function getBodyFont(){
+    function getFontStack(value){
       const map = {
-        "Libre Baskerville": "'Libre Baskerville', serif",
-        "EB Garamond": "'EB Garamond', serif",
-        "Georgia": "Georgia, serif",
-        "Times New Roman": "'Times New Roman', serif"
+        "Libre Baskerville":"'Libre Baskerville', serif",
+        "EB Garamond":"'EB Garamond', serif",
+        "Georgia":"Georgia, serif",
+        "Times New Roman":"'Times New Roman', serif",
+        "Playfair Display":"'Playfair Display', serif",
+        "Cinzel":"'Cinzel', serif"
       };
-      return map[fonteCorpo.value] || "'Libre Baskerville', serif";
+      return map[value] || "Georgia, serif";
     }
 
-    function getTitleFont(){
-      const map = {
-        "Playfair Display": "'Playfair Display', serif",
-        "Libre Baskerville": "'Libre Baskerville', serif",
-        "EB Garamond": "'EB Garamond', serif"
-      };
-      return map[fonteTitulo.value] || "'Playfair Display', serif";
-    }
-
-    function getBodySize(){
-      let v = parseFloat(tamanhoCorpo.value);
-      if (isNaN(v)) v = 14;
-      if (v < 12) v = 12;
-      if (v > 24) v = 24;
-      tamanhoCorpo.value = v;
+    function clampNumber(input, min, max, fallback){
+      let v = parseFloat(input.value);
+      if (isNaN(v)) v = fallback;
+      if (v < min) v = min;
+      if (v > max) v = max;
+      input.value = v;
       return v;
     }
 
-    function getTitleSize(){
-      let v = parseFloat(tamanhoTitulo.value);
-      if (isNaN(v)) v = 24;
-      if (v < 18) v = 18;
-      if (v > 42) v = 42;
-      tamanhoTitulo.value = v;
-      return v;
+    function ornamentText(){
+      const map = {
+        floral:"❦",
+        asterisco:"✶",
+        linha:"— Linha simples —",
+        ponto:"• Ponto central •"
+      };
+      return map[tipoOrnamento.value] || "❦";
     }
 
     function parsePoetry(text){
       const lines = text.replace(/\r/g, "").split("\n");
       const blocks = [];
-      let stanza = [];
       let currentHeader = "Castor";
-
-      function pushStanza(){
-        if (stanza.length){
-          blocks.push({
-            type:"stanza",
-            verses:[...stanza],
-            header:currentHeader
-          });
-          stanza = [];
-        }
-      }
-
       let i = 0;
+
       while (i < lines.length && !lines[i].trim()) i++;
       if (i >= lines.length) return [];
 
       if (modoAbertura.value === "titulo" && lines[i].trim()) {
         currentHeader = lines[i].trim();
+        blocks.push({ type:"title", text:lines[i].trim(), header:currentHeader });
+        i++;
+      }
+
+      const stanza = [];
+      let poemStarted = false;
+
+      function pushStanzaBuffer(){
+        if (!stanza.length) return;
         blocks.push({
-          type:"poem-title",
-          text:lines[i].trim(),
+          type:"stanza",
+          lines:[...stanza],
           header:currentHeader
         });
-        i++;
-      } else if (modoAbertura.value === "secao" && lines[i].trim()) {
-        currentHeader = lines[i].trim();
-        blocks.push({
-          type:"poem-section",
-          text:lines[i].trim(),
-          header:currentHeader
-        });
-        i++;
+        stanza.length = 0;
+      }
+
+      if (ornamento.value === "inicio" || ornamento.value === "ambos") {
+        blocks.push({ type:"ornament", text:ornamentText(), header:currentHeader });
       }
 
       for (; i < lines.length; i++) {
         const line = lines[i];
+
         if (!line.trim()) {
-          pushStanza();
+          pushStanzaBuffer();
+          poemStarted = true;
           continue;
         }
+
         stanza.push(line);
       }
 
-      pushStanza();
+      pushStanzaBuffer();
+
+      if ((ornamento.value === "fim" || ornamento.value === "ambos") && (poemStarted || blocks.length)) {
+        blocks.push({ type:"ornament", text:ornamentText(), header:currentHeader });
+      }
+
       return blocks;
     }
 
     function buildBlockNode(block){
-      const bodyFont = getBodyFont();
-      const titleFont = getTitleFont();
-      const bodySize = getBodySize();
-      const titleSize = getTitleSize();
-      const lineHt = entrelinha.value;
-      const stanzaGap = espacoEstrofe.value;
+      const verseSize = clampNumber(tamanhoVerso, 12, 24, 14);
+      const titleSize = clampNumber(tamanhoTitulo, 18, 42, 24);
+      const verseFont = getFontStack(fonteVerso.value);
+      const titleFont = getFontStack(fonteTitulo.value);
 
-      let el;
-
-      if (block.type === "poem-title") {
-        el = document.createElement("div");
+      if (block.type === "title") {
+        const el = document.createElement("div");
         el.className = "poem-title";
         el.textContent = block.text;
         el.style.fontFamily = titleFont;
         el.style.fontSize = titleSize + "pt";
+        el.style.fontWeight = "700";
         return el;
       }
 
-      if (block.type === "poem-section") {
-        el = document.createElement("div");
-        el.className = "poem-section";
+      if (block.type === "ornament") {
+        const el = document.createElement("div");
+        el.className = "ornament";
         el.textContent = block.text;
         el.style.fontFamily = titleFont;
-        el.style.fontSize = Math.max(18, titleSize - 2) + "pt";
+        el.style.fontSize = Math.max(12, titleSize - 8) + "pt";
         return el;
       }
 
-      el = document.createElement("div");
-      el.className = "stanza";
-      el.style.marginBottom = stanzaGap + "em";
+      const stanzaEl = document.createElement("div");
+      stanzaEl.className = "stanza";
+      stanzaEl.style.marginBottom = espacoEstrofe.value + "em";
 
-      block.verses.forEach(v => {
+      block.lines.forEach(line => {
         const verse = document.createElement("p");
         verse.className = "verse";
-        verse.textContent = v;
-        verse.style.fontFamily = bodyFont;
-        verse.style.fontSize = bodySize + "pt";
-        verse.style.lineHeight = lineHt;
+        verse.textContent = line;
+        verse.style.fontFamily = verseFont;
+        verse.style.fontSize = verseSize + "pt";
+        verse.style.lineHeight = entrelinha.value;
         verse.style.textAlign = alinhamento.value === "centro" ? "center" : "left";
-        el.appendChild(verse);
+        stanzaEl.appendChild(verse);
       });
 
-      return el;
-    }
-
-    function createMeasureShell(cfg){
-      const page = document.createElement("div");
-      page.className = "measure-page";
-      page.style.width = cfg.w + "px";
-      page.style.height = cfg.h + "px";
-
-      const content = document.createElement("div");
-      content.className = "measure-content";
-      content.style.padding = cfg.pad[margens.value] + "px";
-
-      page.appendChild(content);
-      measureHost.innerHTML = "";
-      measureHost.appendChild(page);
-
-      return { page, content };
-    }
-
-    function measureNodeHeight(node, cfg){
-      const shell = createMeasureShell(cfg);
-      shell.content.innerHTML = "";
-      shell.content.appendChild(node);
-      return Math.ceil(node.offsetHeight);
-    }
-
-    function getUsableHeight(cfg){
-      const shell = createMeasureShell(cfg);
-      return Math.floor(shell.content.clientHeight);
+      return stanzaEl;
     }
 
     function paginateBlocks(blocks){
@@ -717,24 +685,20 @@
         return;
       }
 
-      const usableHeight = getUsableHeight(cfg);
       let currentBlocks = [];
-      let currentHeight = 0;
       let currentHeader = blocks[0].header || "Castor";
+      let count = 0;
 
       blocks.forEach(block => {
-        const node = buildBlockNode(block);
-        const h = measureNodeHeight(node, cfg);
-
-        if (currentHeight + h > usableHeight && currentBlocks.length > 0) {
-          pagesData.push({ header: currentHeader, blocks: currentBlocks });
-          currentBlocks = [];
-          currentHeight = 0;
-        }
-
         currentHeader = block.header || currentHeader;
         currentBlocks.push(block);
-        currentHeight += h;
+        count++;
+
+        if (count >= 8) {
+          pagesData.push({ header: currentHeader, blocks: currentBlocks });
+          currentBlocks = [];
+          count = 0;
+        }
       });
 
       if (currentBlocks.length) {
@@ -792,6 +756,7 @@
 
     function renderPreview(){
       const text = inputText.value.trim();
+
       if (!text) {
         pagesData = [{ header:"Castor", blocks:[] }];
         currentPage = 1;
@@ -818,7 +783,7 @@
     });
 
     btnDownload.addEventListener("click", function(){
-      const blob = new Blob([document.documentElement.outerHTML], { type: "text/html;charset=utf-8" });
+      const blob = new Blob([document.documentElement.outerHTML], { type:"text/html;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -835,6 +800,7 @@
         arquivoNome.textContent = "Escolha um arquivo .txt primeiro";
         return;
       }
+
       const reader = new FileReader();
       reader.onload = function(e){
         inputText.value = String(e.target.result || "");
@@ -853,7 +819,8 @@
     });
 
     btnExemplo.addEventListener("click", function(){
-      inputText.value = `A Rua sem Nome
+      inputText.value =
+`A Rua sem Nome
 
 A noite encosta na janela
 como um pássaro sem ninho
@@ -867,23 +834,7 @@ como água cansada
 
 No escuro
 aprendi a escutar
-o peso do silêncio
-
-e a fome
-que mastiga
-as horas
-
-Soneto de Teste
-
-Não peço ao céu o ouro das manhãs
-nem peço ao mar descanso para a dor
-somente o rastro antigo do calor
-que habita as mãos mais pobres e mais sãs
-
-Se o tempo cai nas ruas e nos vãos
-e apaga a antiga chama do rumor
-ainda persiste em mim algum ardor
-guardando o pó das últimas canções`;
+o peso do silêncio`;
       currentPage = 1;
       renderPreview();
     });
@@ -897,8 +848,9 @@ guardando o pó das últimas canções`;
     });
 
     [
-      inputText, formato, modoAbertura, fonteCorpo, fonteTitulo,
-      tamanhoCorpo, tamanhoTitulo, entrelinha, margens, alinhamento, espacoEstrofe
+      inputText, formato, modoAbertura, fonteVerso, fonteTitulo,
+      tamanhoVerso, tamanhoTitulo, entrelinha, margens,
+      alinhamento, espacoEstrofe, ornamento, tipoOrnamento
     ].forEach(function(el){
       el.addEventListener("input", function(){
         currentPage = 1;
