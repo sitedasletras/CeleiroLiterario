@@ -1,133 +1,482 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>Castor — Diagramador de Poesia</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Castor — Diagramador de Poesia</title>
+  <style>
+    :root{
+      --bg:#f3f5f7;
+      --painel:#cfefff;
+      --painel-borda:#8cbdd6;
+      --texto:#2b2b2b;
+      --muted:#6c7782;
+      --page:#fffdf8;
+      --page-border:#3e4550;
+      --toolbar:#eef5fb;
+      --botao:#ffffff;
+      --botao-borda:#9bb3c5;
+      --realce:#fff3c7;
+      --selecionado:#dff0ff;
+      --sombra:0 8px 22px rgba(0,0,0,.08);
+    }
 
-<style>
+    *{ box-sizing:border-box; }
 
-body{
-font-family: Garamond, serif;
-background:#f7f7f2;
-margin:0;
-display:flex;
-height:100vh;
-}
+    body{
+      margin:0;
+      font-family: Georgia, "Times New Roman", serif;
+      background:var(--bg);
+      color:var(--texto);
+      min-height:100vh;
+    }
 
-#painel{
-width:280px;
-background:#d8edf7;
-padding:15px;
-overflow:auto;
-}
+    .topo{
+      padding:12px 16px 6px;
+      font-size:14px;
+      color:#4d5d6c;
+      border-bottom:1px solid #d9e2ea;
+      background:#f8fbfe;
+    }
 
-#preview-area{
-flex:1;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:flex-start;
-padding:20px;
-}
+    .layout{
+      display:grid;
+      grid-template-columns: 280px 1fr;
+      gap:14px;
+      padding:14px;
+      min-height:calc(100vh - 44px);
+    }
 
-#preview{
-background:white;
-width:420px;
-height:600px;
-padding:60px 45px 60px 60px;
-box-shadow:0px 0px 8px rgba(0,0,0,0.15);
-overflow:auto;
-line-height:1.6;
-}
+    .painel{
+      background:var(--painel);
+      border:1px solid var(--painel-borda);
+      border-radius:12px;
+      padding:12px;
+      overflow:auto;
+      box-shadow:var(--sombra);
+      height:calc(100vh - 72px);
+    }
 
-textarea{
-width:100%;
-height:140px;
-margin-bottom:10px;
-}
+    .painel h2{
+      margin:0 0 10px;
+      font-size:18px;
+    }
 
-select, input{
-width:100%;
-margin-bottom:10px;
-}
+    .grupo{
+      margin-bottom:10px;
+    }
 
-.titulo{
-text-align:center;
-font-weight:bold;
-margin-top:35px;
-margin-bottom:15px;
-cursor:pointer;
-}
+    .grupo label{
+      display:block;
+      font-size:13px;
+      margin:0 0 4px;
+      font-weight:600;
+    }
 
-.verso{
-margin-left:10px;
-cursor:pointer;
-}
+    .grupo input,
+    .grupo select,
+    .grupo textarea{
+      width:100%;
+      border:1px solid #8fb0c0;
+      border-radius:8px;
+      background:#fff;
+      padding:7px 8px;
+      font-size:14px;
+    }
 
-.separador{
-text-align:center;
-margin:25px 0;
-opacity:.5;
-}
+    .grupo textarea{
+      min-height:140px;
+      resize:vertical;
+      line-height:1.45;
+    }
 
-.manualTitulo{
-background:#fff2c4;
-}
+    .linha-dupla{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
 
-</style>
+    .acoes{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:8px;
+    }
 
+    button{
+      border:1px solid var(--botao-borda);
+      background:var(--botao);
+      padding:8px 10px;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:14px;
+    }
+
+    button:hover{
+      background:#f7fbff;
+    }
+
+    .workspace{
+      display:grid;
+      grid-template-rows:auto auto 1fr;
+      gap:12px;
+      min-width:0;
+    }
+
+    .caixa-texto{
+      background:#fff;
+      border:1px solid #d7e0e8;
+      border-radius:12px;
+      padding:12px;
+      box-shadow:var(--sombra);
+    }
+
+    .caixa-texto h3,
+    .painel-edicao h3,
+    .bloco-previa h3{
+      margin:0 0 8px;
+      font-size:16px;
+    }
+
+    .painel-edicao{
+      background:#fff;
+      border:1px solid #d7e0e8;
+      border-radius:12px;
+      padding:12px;
+      box-shadow:var(--sombra);
+    }
+
+    .edicao-status{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+
+    .bloco-previa{
+      background:#fff;
+      border:1px solid #d7e0e8;
+      border-radius:12px;
+      padding:12px;
+      box-shadow:var(--sombra);
+      min-height:0;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .barra-previa{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:8px;
+      flex-wrap:wrap;
+    }
+
+    .barra-previa .controles{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .barra-previa .meta{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .visor{
+      flex:1;
+      min-height:0;
+      overflow:auto;
+      padding:8px;
+      background:#f7fafc;
+      border-radius:10px;
+      border:1px solid #e3ebf2;
+    }
+
+    .pagina{
+      width:420px;
+      min-height:594px;
+      margin:0 auto;
+      background:var(--page);
+      border:2px solid var(--page-border);
+      border-radius:4px;
+      padding:42px 34px 42px 34px;
+      position:relative;
+      box-shadow:0 8px 24px rgba(0,0,0,.10);
+    }
+
+    .cabecalho-pagina{
+      display:flex;
+      justify-content:space-between;
+      font-size:9px;
+      color:#707a84;
+      margin-bottom:18px;
+    }
+
+    .miolo{
+      min-height:460px;
+    }
+
+    .linha-item{
+      position:relative;
+      border-radius:6px;
+      transition:.15s ease;
+      padding:2px 4px;
+      cursor:pointer;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .linha-item:hover{
+      background:#f3f8fc;
+    }
+
+    .linha-item.selecionado{
+      background:var(--selecionado);
+      outline:1px solid #aac9df;
+    }
+
+    .linha-item.vazio{
+      min-height:18px;
+      cursor:default;
+    }
+
+    .linha-item.titulo{
+      text-align:center;
+      font-weight:700;
+      margin-top:14px;
+      margin-bottom:10px;
+    }
+
+    .linha-item.subtitulo{
+      text-align:center;
+      font-style:italic;
+      margin-top:-4px;
+      margin-bottom:10px;
+    }
+
+    .linha-item.verso{
+      text-align:left;
+      margin:0;
+    }
+
+    .linha-item.ornamento{
+      text-align:center;
+      color:#8d8d8d;
+      margin:12px 0;
+      cursor:default;
+    }
+
+    .linha-item.manual{
+      box-shadow:inset 0 0 0 9999px rgba(255,243,199,.45);
+    }
+
+    .rodape-pagina{
+      margin-top:18px;
+      text-align:center;
+      font-size:10px;
+      color:#7b7b7b;
+    }
+
+    .ajuda{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.4;
+      margin-top:6px;
+    }
+
+    .tag{
+      display:inline-block;
+      font-size:11px;
+      border:1px solid #b7cad8;
+      background:#f6fbff;
+      border-radius:999px;
+      padding:3px 8px;
+      margin-right:6px;
+    }
+
+    .campos-edicao{
+      display:grid;
+      grid-template-columns:1fr 180px;
+      gap:10px;
+      align-items:end;
+    }
+
+    .campos-edicao textarea{
+      min-height:72px;
+      resize:vertical;
+    }
+
+    @media (max-width: 980px){
+      .layout{
+        grid-template-columns:1fr;
+      }
+
+      .painel{
+        height:auto;
+      }
+
+      .pagina{
+        width:100%;
+        max-width:420px;
+      }
+
+      .campos-edicao{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="topo">Castor — Diagramador de Poesia</div>
 
-<div id="painel">
+  <div class="layout">
+    <aside class="painel">
+      <h2>Configuração poética</h2>
 
-<b>Configuração poética</b>
+      <div class="grupo">
+        <label for="formato">Formato</label>
+        <select id="formato">
+          <option value="A5" selected>A5</option>
+          <option value="16x23">16x23</option>
+          <option value="6x9">6x9</option>
+        </select>
+      </div>
 
-<label>Fonte versos</label>
-<select id="fonteVerso">
-<option>Garamond</option>
-<option>Libre Baskerville</option>
-<option>Times New Roman</option>
-</select>
+      <div class="grupo">
+        <label for="primeiraLinha">Primeira linha</label>
+        <select id="primeiraLinha">
+          <option value="titulo">Título por poema</option>
+          <option value="livre">Livre</option>
+          <option value="semTitulo">Sem título automático</option>
+        </select>
+      </div>
 
-<label>Fonte título</label>
-<select id="fonteTitulo">
-<option>Garamond</option>
-<option>Playfair Display</option>
-<option>Libre Baskerville</option>
-</select>
+      <div class="grupo">
+        <label for="formaPoetica">Forma poética</label>
+        <select id="formaPoetica">
+          <option value="misto" selected>Misto</option>
+          <option value="elegia">Elegia</option>
+          <option value="soneto">Soneto</option>
+          <option value="haikai">Haikai</option>
+          <option value="livre">Livre</option>
+        </select>
+      </div>
 
-<label>Tamanho versos</label>
-<input id="tamVerso" type="number" value="12">
+      <div class="grupo">
+        <label for="fonteVersos">Fonte dos versos</label>
+        <select id="fonteVersos">
+          <option value="Georgia">Georgia</option>
+          <option value="'Libre Baskerville', serif" selected>Libre Baskerville</option>
+          <option value="'Times New Roman', serif">Times New Roman</option>
+          <option value="'EB Garamond', serif">EB Garamond</option>
+          <option value="Garamond, serif">Garamond</option>
+        </select>
+      </div>
 
-<label>Tamanho título</label>
-<input id="tamTitulo" type="number" value="16">
+      <div class="grupo">
+        <label for="fonteTitulos">Fonte do título</label>
+        <select id="fonteTitulos">
+          <option value="'Playfair Display', serif" selected>Playfair Display</option>
+          <option value="'Libre Baskerville', serif">Libre Baskerville</option>
+          <option value="'EB Garamond', serif">EB Garamond</option>
+          <option value="Georgia">Georgia</option>
+        </select>
+      </div>
 
-<label>Ornamento</label>
-<select id="ornamento">
-<option value="off">Desligado</option>
-<option value="entre">Entre poemas</option>
-<option value="antes">Antes do título</option>
-<option value="depois">Depois do título</option>
-</select>
+      <div class="linha-dupla">
+        <div class="grupo">
+          <label for="tamVersos">Tamanho dos versos (pt)</label>
+          <input id="tamVersos" type="number" value="12" min="8" max="32">
+        </div>
 
-<label>Novo poema inicia nova página</label>
-<select id="novaPagina">
-<option value="nao">Não</option>
-<option value="sim">Sim</option>
-</select>
+        <div class="grupo">
+          <label for="tamTitulos">Tamanho do título (pt)</label>
+          <input id="tamTitulos" type="number" value="16" min="8" max="40">
+        </div>
+      </div>
 
-<button onclick="render()">Aplicar</button>
+      <div class="grupo">
+        <label for="entrelinha">Entrelinha dos versos</label>
+        <select id="entrelinha">
+          <option value="1.15">Compacta</option>
+          <option value="1.35" selected>Normal</option>
+          <option value="1.6">Respirada</option>
+          <option value="1.9">Ampla</option>
+        </select>
+      </div>
 
-</div>
+      <div class="grupo">
+        <label for="margens">Margens</label>
+        <select id="margens">
+          <option value="normais">Normais</option>
+          <option value="amplas" selected>Amplas</option>
+          <option value="estreitas">Estreitas</option>
+        </select>
+      </div>
 
+      <div class="grupo">
+        <label for="alinhamento">Alinhamento poético</label>
+        <select id="alinhamento">
+          <option value="left" selected>À esquerda</option>
+          <option value="center">Centralizado</option>
+        </select>
+      </div>
 
-<div id="preview-area">
+      <div class="grupo">
+        <label for="espacoEstrofes">Espaço entre estrofes</label>
+        <select id="espacoEstrofes">
+          <option value="normal" selected>Normal</option>
+          <option value="maior">Maior</option>
+          <option value="minimo">Mínimo</option>
+        </select>
+      </div>
 
-<textarea id="entrada">
+      <div class="grupo">
+        <label for="ornamentoModo">Ornamento</label>
+        <select id="ornamentoModo">
+          <option value="desligado" selected>Desligado</option>
+          <option value="entrePoemas">Entre poemas</option>
+          <option value="antesTitulo">Antes do título</option>
+          <option value="depoisTitulo">Depois do título</option>
+          <option value="manual">Manual</option>
+        </select>
+      </div>
 
-Elegia – Saudades do Passado
+      <div class="grupo">
+        <label for="ornamentoTipo">Tipo de ornamento</label>
+        <select id="ornamentoTipo">
+          <option value="✻" selected>Floral simples</option>
+          <option value="❦">Floral clássico</option>
+          <option value="✦">Estrela</option>
+          <option value="• • •">Pontos</option>
+          <option value="— § —">Editorial</option>
+        </select>
+      </div>
+
+      <div class="grupo">
+        <label for="novaPagina">Novo poema inicia nova página</label>
+        <select id="novaPagina">
+          <option value="nao" selected>Não</option>
+          <option value="sim">Sim</option>
+        </select>
+      </div>
+
+      <div class="acoes">
+        <button id="btnAplicar">Aplicar</button>
+        <button id="btnReprocessar">Reprocessar texto</button>
+      </div>
+
+      <div class="ajuda">
+        A prévia continua manipulável, mas agora a edição é controlada por linha para evitar que o navegador bagunce fonte, tamanho e alinhamento dentro do mesmo verso.
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <section class="caixa-texto">
+        <h3>Caixa de texto poético</h3>
+        <div class="grupo" style="margin-bottom:0;">
+          <textarea id="entradaPoetica">Elegia – Saudades do Passado
 
 O tempo teceu em sombras o que
 um dia foi dourado,
@@ -139,7 +488,6 @@ voltam mais,
 fantasmas de um verão que se
 apagou nos trigais.
 
-
 Elegia – Lembranças Perdidas
 
 Procuro teu rosto nos álbuns
@@ -148,201 +496,513 @@ mas o papel guarda apenas traços
 despedaçados.
 
 Onde foi que se perdeu o brilho
-dos teus olhos?
-
-</textarea>
-
-<div id="preview" contenteditable="true"></div>
-
-</div>
-
-
-<script>
-
-function isTitulo(linha, anterior, proxima){
-
-linha = linha.trim()
-
-if(linha.length===0) return false
-
-// regra: linha isolada entre brancos pode ser título
-
-if(
-anterior.trim()===""
-&& proxima.trim()===""
-&& linha.length < 60
-)
-return true
-
-
-// regra: linha curta com capitalização editorial
-
-if(
-linha.length<40
-&& linha[0]===linha[0].toUpperCase()
-&& !linha.endsWith(",")
-&& !linha.endsWith(".")
-)
-return true
-
-
-return false
-}
-
-
-
-function render(){
-
-preview.innerHTML=""
-
-const texto=entrada.value.split("\n")
-
-let fonteVerso=fonteVersoSelect()
-let fonteTitulo=fonteTituloSelect()
-
-for(let i=0;i<texto.length;i++){
-
-let linha=texto[i]
-
-let anterior=texto[i-1] || ""
-let proxima=texto[i+1] || ""
-
-if(isTitulo(linha, anterior, proxima)){
-
-inserirTitulo(linha)
-
-}else{
-
-inserirVerso(linha)
-
-}
-
-}
-
-aplicarOrnamentos()
-
-}
-
-
-
-function fonteVersoSelect(){
-return document.getElementById("fonteVerso").value
-}
-
-function fonteTituloSelect(){
-return document.getElementById("fonteTitulo").value
-}
-
-
-
-function inserirTitulo(texto){
-
-let div=document.createElement("div")
-
-div.className="titulo"
-
-div.style.fontFamily=fonteTituloSelect()
-
-div.style.fontSize=
-document.getElementById("tamTitulo").value+"pt"
-
-div.innerText=texto
-
-div.onclick=function(){
-toggleManualTitulo(div)
-}
-
-preview.appendChild(div)
-
-}
-
-
-
-function inserirVerso(texto){
-
-let div=document.createElement("div")
-
-div.className="verso"
-
-div.style.fontFamily=fonteVersoSelect()
-
-div.style.fontSize=
-document.getElementById("tamVerso").value+"pt"
-
-div.innerText=texto
-
-div.onclick=function(){
-toggleManualTitulo(div)
-}
-
-preview.appendChild(div)
-
-}
-
-
-
-function toggleManualTitulo(div){
-
-if(div.classList.contains("titulo")){
-
-div.classList.remove("titulo")
-div.classList.add("verso")
-
-}else{
-
-div.classList.remove("verso")
-div.classList.add("titulo")
-div.classList.add("manualTitulo")
-
-}
-
-}
-
-
-
-function aplicarOrnamentos(){
-
-let modo=document.getElementById("ornamento").value
-
-if(modo==="off") return
-
-let titulos=document.querySelectorAll(".titulo")
-
-titulos.forEach(t=>{
-
-let sep=document.createElement("div")
-
-sep.className="separador"
-
-sep.innerHTML="✻"
-
-if(modo==="antes"){
-
-t.before(sep)
-
-}
-
-if(modo==="depois"){
-
-t.after(sep)
-
-}
-
-if(modo==="entre"){
-
-t.after(sep)
-
-}
-
-})
-
-}
-
-
-
-render()
-
-</script>
-
+dos teus olhos?</textarea>
+        </div>
+      </section>
+
+      <section class="painel-edicao">
+        <h3>Edição da prévia poética</h3>
+        <div id="statusEdicao" class="edicao-status">Selecione uma linha na prévia para editar, reclassificar ou ajustar manualmente.</div>
+
+        <div class="campos-edicao">
+          <div class="grupo" style="margin-bottom:0;">
+            <label for="edicaoTexto">Texto da linha selecionada</label>
+            <textarea id="edicaoTexto" placeholder="A linha selecionada aparecerá aqui"></textarea>
+          </div>
+
+          <div>
+            <div class="grupo">
+              <label for="edicaoTipo">Classificação</label>
+              <select id="edicaoTipo">
+                <option value="verso">Verso</option>
+                <option value="titulo">Título</option>
+                <option value="subtitulo">Subtítulo</option>
+                <option value="vazio">Linha em branco</option>
+                <option value="ornamento">Ornamento</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="acoes">
+          <button id="btnSalvarLinha">Salvar linha</button>
+          <button id="btnVerso">Marcar como verso</button>
+          <button id="btnTitulo">Marcar como título</button>
+          <button id="btnSubtitulo">Marcar como subtítulo</button>
+          <button id="btnInserirAbaixo">Inserir linha abaixo</button>
+          <button id="btnExcluirLinha">Excluir linha</button>
+          <button id="btnInserirOrnamentoManual">Inserir ornamento abaixo</button>
+        </div>
+
+        <div class="ajuda">
+          Aqui você mexe dentro da prévia sem permitir que o navegador quebre o estilo do poema por conta própria.
+        </div>
+      </section>
+
+      <section class="bloco-previa">
+        <div class="barra-previa">
+          <h3>Prévia poética</h3>
+          <div class="controles">
+            <button id="paginaAnterior">Página anterior</button>
+            <button id="proximaPagina">Próxima página</button>
+          </div>
+          <div class="meta">
+            <span class="tag" id="metaFormato">Modo impresso — A5</span>
+            <span class="tag" id="metaPagina">Página 1 de 1</span>
+          </div>
+        </div>
+
+        <div class="visor">
+          <div class="pagina">
+            <div class="cabecalho-pagina">
+              <span>Castor</span>
+              <span id="cabecalhoFormato">Modo impresso — A5</span>
+            </div>
+            <div id="mioloPagina" class="miolo"></div>
+            <div class="rodape-pagina" id="rodapePagina">1</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const entradaPoetica = document.getElementById('entradaPoetica');
+    const mioloPagina = document.getElementById('mioloPagina');
+    const metaFormato = document.getElementById('metaFormato');
+    const metaPagina = document.getElementById('metaPagina');
+    const cabecalhoFormato = document.getElementById('cabecalhoFormato');
+    const rodapePagina = document.getElementById('rodapePagina');
+
+    const edicaoTexto = document.getElementById('edicaoTexto');
+    const edicaoTipo = document.getElementById('edicaoTipo');
+    const statusEdicao = document.getElementById('statusEdicao');
+
+    const formato = document.getElementById('formato');
+    const primeiraLinha = document.getElementById('primeiraLinha');
+    const formaPoetica = document.getElementById('formaPoetica');
+    const fonteVersos = document.getElementById('fonteVersos');
+    const fonteTitulos = document.getElementById('fonteTitulos');
+    const tamVersos = document.getElementById('tamVersos');
+    const tamTitulos = document.getElementById('tamTitulos');
+    const entrelinha = document.getElementById('entrelinha');
+    const margens = document.getElementById('margens');
+    const alinhamento = document.getElementById('alinhamento');
+    const espacoEstrofes = document.getElementById('espacoEstrofes');
+    const ornamentoModo = document.getElementById('ornamentoModo');
+    const ornamentoTipo = document.getElementById('ornamentoTipo');
+    const novaPagina = document.getElementById('novaPagina');
+
+    let linhasBase = [];
+    let linhasProcessadas = [];
+    let paginas = [];
+    let paginaAtual = 0;
+    let linhaSelecionadaId = null;
+    let contadorIds = 1;
+
+    function novoId(){
+      return contadorIds++;
+    }
+
+    function criarItem(texto, tipo, manual=false){
+      return {
+        id: novoId(),
+        texto,
+        tipo,
+        manual
+      };
+    }
+
+    function textoCurtoProvavelTitulo(txt){
+      const t = txt.trim();
+      if (!t) return false;
+      if (t.length > 58) return false;
+      if (/[,:;]$/.test(t)) return false;
+      if (t.split(' ').length > 8) return false;
+      return true;
+    }
+
+    function detectarTipoAutomatico(linhas, i){
+      const atual = linhas[i] ?? '';
+      const antes = linhas[i - 1] ?? '';
+      const depois = linhas[i + 1] ?? '';
+      const depois2 = linhas[i + 2] ?? '';
+
+      const t = atual.trim();
+      const a = antes.trim();
+      const d = depois.trim();
+      const d2 = depois2.trim();
+
+      if (t === '') return 'vazio';
+
+      if (primeiraLinha.value !== 'semTitulo') {
+        if (a === '' && d === '' && textoCurtoProvavelTitulo(t)) {
+          return 'titulo';
+        }
+      }
+
+      if (a === '' && d !== '' && d2 !== '' && textoCurtoProvavelTitulo(t) && /^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ]/.test(t)) {
+        return 'titulo';
+      }
+
+      return 'verso';
+    }
+
+    function parseEntrada(){
+      contadorIds = 1;
+      const bruto = entradaPoetica.value.replace(/\r/g, '');
+      const linhas = bruto.split('\n');
+
+      linhasBase = linhas.map((linha, i) => {
+        return criarItem(linha, detectarTipoAutomatico(linhas, i), false);
+      });
+
+      aplicarEstrutura();
+    }
+
+    function aplicarEstrutura(){
+      let resultado = [];
+      const modoOrn = ornamentoModo.value;
+      const simboloOrn = ornamentoTipo.value;
+
+      for(let i = 0; i < linhasBase.length; i++){
+        const item = linhasBase[i];
+
+        if(item.tipo === 'titulo'){
+          if(modoOrn === 'antesTitulo'){
+            if(resultado.length > 0 && resultado[resultado.length - 1].tipo !== 'ornamento'){
+              resultado.push(criarItem(simboloOrn, 'ornamento', false));
+            }
+          }
+
+          resultado.push({...item});
+
+          if(modoOrn === 'depoisTitulo'){
+            resultado.push(criarItem(simboloOrn, 'ornamento', false));
+          }
+
+          if(modoOrn === 'entrePoemas'){
+            const anteriorReal = encontrarAnteriorReal(linhasBase, i);
+            if(anteriorReal !== null){
+              const inserirAntes = resultado.length >= 2 ? resultado.length - 1 : 0;
+              if(!jaTemOrnamentoPerto(resultado, inserirAntes)){
+                resultado.splice(inserirAntes, 0, criarItem(simboloOrn, 'ornamento', false));
+              }
+            }
+          }
+        }else{
+          resultado.push({...item});
+        }
+      }
+
+      linhasProcessadas = resultado;
+      paginar();
+      renderPagina();
+      atualizarMetas();
+    }
+
+    function encontrarAnteriorReal(lista, indice){
+      for(let i = indice - 1; i >= 0; i--){
+        if(lista[i].tipo !== 'vazio') return i;
+      }
+      return null;
+    }
+
+    function jaTemOrnamentoPerto(lista, pos){
+      const anterior = lista[pos - 1];
+      const atual = lista[pos];
+      return (anterior && anterior.tipo === 'ornamento') || (atual && atual.tipo === 'ornamento');
+    }
+
+    function alturaMargem(){
+      if(margens.value === 'estreitas') return {padding:'28px 24px 28px 24px'};
+      if(margens.value === 'normais') return {padding:'36px 30px 36px 30px'};
+      return {padding:'42px 34px 42px 34px'};
+    }
+
+    function paginaLimite(){
+      return formato.value === '16x23' ? 34 : (formato.value === '6x9' ? 31 : 30);
+    }
+
+    function paginar(){
+      paginas = [];
+      let atual = [];
+      let contador = 0;
+      const limite = paginaLimite();
+
+      for(let i = 0; i < linhasProcessadas.length; i++){
+        const item = linhasProcessadas[i];
+
+        if(novaPagina.value === 'sim' && item.tipo === 'titulo' && atual.length > 0){
+          paginas.push(atual);
+          atual = [];
+          contador = 0;
+        }
+
+        const peso = pesoLinha(item);
+        if(contador + peso > limite && atual.length > 0){
+          paginas.push(atual);
+          atual = [];
+          contador = 0;
+        }
+
+        atual.push(item);
+        contador += peso;
+      }
+
+      if(atual.length === 0){
+        atual.push(criarItem('', 'vazio', false));
+      }
+
+      paginas.push(atual);
+
+      if(paginaAtual >= paginas.length){
+        paginaAtual = paginas.length - 1;
+      }
+      if(paginaAtual < 0) paginaAtual = 0;
+    }
+
+    function pesoLinha(item){
+      if(item.tipo === 'titulo') return 3;
+      if(item.tipo === 'subtitulo') return 2;
+      if(item.tipo === 'ornamento') return 2;
+      if(item.tipo === 'vazio'){
+        if(espacoEstrofes.value === 'minimo') return 0.5;
+        if(espacoEstrofes.value === 'maior') return 2;
+        return 1;
+      }
+      return 1;
+    }
+
+    function renderPagina(){
+      mioloPagina.innerHTML = '';
+      const pagina = paginas[paginaAtual] || [];
+      const estiloMargem = alturaMargem();
+      document.querySelector('.pagina').style.padding = estiloMargem.padding;
+
+      pagina.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'linha-item ' + item.tipo + (item.manual ? ' manual' : '');
+        div.dataset.id = item.id;
+
+        if(item.tipo === 'vazio'){
+          div.innerHTML = '&nbsp;';
+        }else{
+          div.textContent = item.texto;
+        }
+
+        aplicarEstiloLinha(div, item);
+
+        if(item.tipo !== 'ornamento' && item.tipo !== 'vazio'){
+          div.addEventListener('click', () => selecionarLinha(item.id));
+        }
+
+        mioloPagina.appendChild(div);
+      });
+
+      destacarSelecionadaNaPagina();
+      rodapePagina.textContent = String(paginaAtual + 1);
+      metaPagina.textContent = `Página ${paginaAtual + 1} de ${paginas.length}`;
+    }
+
+    function aplicarEstiloLinha(div, item){
+      div.style.textAlign = item.tipo === 'titulo' || item.tipo === 'subtitulo' || item.tipo === 'ornamento'
+        ? 'center'
+        : alinhamento.value;
+
+      if(item.tipo === 'titulo'){
+        div.style.fontFamily = fonteTitulos.value;
+        div.style.fontSize = tamTitulos.value + 'pt';
+        div.style.lineHeight = '1.3';
+      }else if(item.tipo === 'subtitulo'){
+        div.style.fontFamily = fonteTitulos.value;
+        div.style.fontSize = Math.max(10, Number(tamTitulos.value) - 2) + 'pt';
+        div.style.lineHeight = '1.3';
+      }else if(item.tipo === 'ornamento'){
+        div.style.fontFamily = fonteTitulos.value;
+        div.style.fontSize = Math.max(10, Number(tamTitulos.value) - 1) + 'pt';
+        div.style.lineHeight = '1.2';
+      }else{
+        div.style.fontFamily = fonteVersos.value;
+        div.style.fontSize = tamVersos.value + 'pt';
+        div.style.lineHeight = entrelinha.value;
+      }
+
+      if(item.tipo === 'verso'){
+        div.style.marginBottom = '2px';
+      }
+
+      if(item.tipo === 'vazio'){
+        if(espacoEstrofes.value === 'maior') div.style.minHeight = '24px';
+        else if(espacoEstrofes.value === 'minimo') div.style.minHeight = '8px';
+        else div.style.minHeight = '16px';
+      }
+    }
+
+    function atualizarMetas(){
+      metaFormato.textContent = `Modo impresso — ${formato.value}`;
+      cabecalhoFormato.textContent = `Modo impresso — ${formato.value}`;
+      metaPagina.textContent = `Página ${paginaAtual + 1} de ${paginas.length}`;
+    }
+
+    function buscarItemPorId(id){
+      return linhasBase.find(item => item.id === id) || null;
+    }
+
+    function selecionarLinha(id){
+      linhaSelecionadaId = id;
+      const item = buscarItemPorId(id);
+      if(!item) return;
+
+      edicaoTexto.value = item.texto;
+      edicaoTipo.value = item.tipo;
+      statusEdicao.textContent = `Linha selecionada: ${item.tipo}. Você pode alterar o texto ou reclassificar manualmente.`;
+      destacarSelecionadaNaPagina();
+    }
+
+    function destacarSelecionadaNaPagina(){
+      document.querySelectorAll('.linha-item').forEach(el => {
+        el.classList.remove('selecionado');
+      });
+      if(linhaSelecionadaId === null) return;
+      const el = document.querySelector(`.linha-item[data-id="${linhaSelecionadaId}"]`);
+      if(el) el.classList.add('selecionado');
+    }
+
+    function salvarLinhaSelecionada(){
+      if(linhaSelecionadaId === null) return;
+      const item = buscarItemPorId(linhaSelecionadaId);
+      if(!item) return;
+
+      item.texto = edicaoTexto.value;
+      item.tipo = edicaoTipo.value;
+      item.manual = true;
+
+      aplicarEstrutura();
+      selecionarLinha(linhaSelecionadaId);
+    }
+
+    function reclassificarSelecionada(tipo){
+      if(linhaSelecionadaId === null) return;
+      const item = buscarItemPorId(linhaSelecionadaId);
+      if(!item) return;
+
+      item.tipo = tipo;
+      item.manual = true;
+      if(tipo === 'ornamento' && !item.texto.trim()){
+        item.texto = ornamentoTipo.value;
+      }
+
+      aplicarEstrutura();
+      selecionarLinha(linhaSelecionadaId);
+    }
+
+    function inserirLinhaAbaixo(){
+      if(linhaSelecionadaId === null) return;
+      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
+      if(index === -1) return;
+      const novo = criarItem('', 'verso', true);
+      linhasBase.splice(index + 1, 0, novo);
+      aplicarEstrutura();
+      selecionarLinha(novo.id);
+    }
+
+    function excluirLinhaSelecionada(){
+      if(linhaSelecionadaId === null) return;
+      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
+      if(index === -1) return;
+      linhasBase.splice(index, 1);
+      linhaSelecionadaId = null;
+      edicaoTexto.value = '';
+      aplicarEstrutura();
+      statusEdicao.textContent = 'Linha removida.';
+    }
+
+    function inserirOrnamentoManual(){
+      if(linhaSelecionadaId === null) return;
+      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
+      if(index === -1) return;
+      const novo = criarItem(ornamentoTipo.value, 'ornamento', true);
+      linhasBase.splice(index + 1, 0, novo);
+      aplicarEstrutura();
+      statusEdicao.textContent = 'Ornamento manual inserido abaixo da linha selecionada.';
+    }
+
+    function reconstruirEntradaAPartirDasLinhas(){
+      entradaPoetica.value = linhasBase.map(item => item.texto).join('\n');
+    }
+
+    document.getElementById('btnAplicar').addEventListener('click', () => {
+      aplicarEstrutura();
+    });
+
+    document.getElementById('btnReprocessar').addEventListener('click', () => {
+      parseEntrada();
+      statusEdicao.textContent = 'Texto reprocessado com a leitura estrutural atual.';
+    });
+
+    document.getElementById('btnSalvarLinha').addEventListener('click', () => {
+      salvarLinhaSelecionada();
+      reconstruirEntradaAPartirDasLinhas();
+    });
+
+    document.getElementById('btnVerso').addEventListener('click', () => {
+      reclassificarSelecionada('verso');
+      reconstruirEntradaAPartirDasLinhas();
+    });
+
+    document.getElementById('btnTitulo').addEventListener('click', () => {
+      reclassificarSelecionada('titulo');
+      reconstruirEntradaAPartirDasLinhas();
+    });
+
+    document.getElementById('btnSubtitulo').addEventListener('click', () => {
+      reclassificarSelecionada('subtitulo');
+      reconstruirEntradaAPartirDasLinhas();
+    });
+
+    document.getElementById('btnInserirAbaixo').addEventListener('click', () => {
+      inserirLinhaAbaixo();
+      reconstruirEntradaAPartirDasLinhas();
+    });
+
+    document.getElementById('btnExcluirLinha').addEventListener('click', () => {
+      excluirLinhaSelecionada();
+      reconstruirEntradaAPartirDasLinhas();
+    });
+
+    document.getElementById('btnInserirOrnamentoManual').addEventListener('click', () => {
+      inserirOrnamentoManual();
+      reconstruirEntradaAPartirDasLinhas();
+    });
+
+    document.getElementById('paginaAnterior').addEventListener('click', () => {
+      if(paginaAtual > 0){
+        paginaAtual--;
+        renderPagina();
+        atualizarMetas();
+      }
+    });
+
+    document.getElementById('proximaPagina').addEventListener('click', () => {
+      if(paginaAtual < paginas.length - 1){
+        paginaAtual++;
+        renderPagina();
+        atualizarMetas();
+      }
+    });
+
+    [
+      formato, fonteVersos, fonteTitulos, tamVersos, tamTitulos, entrelinha,
+      margens, alinhamento, espacoEstrofes, ornamentoModo, ornamentoTipo,
+      novaPagina
+    ].forEach(campo => {
+      campo.addEventListener('change', () => {
+        aplicarEstrutura();
+      });
+    });
+
+    parseEntrada();
+  </script>
 </body>
 </html>
