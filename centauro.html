@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Centauro — Diagramador Híbrido</title>
+
+  <style>
+    :root{
+      --bg:#f6f3ee;
+      --card:#ffffff;
+      --panel:#f1ebfb;
+      --panel-border:#d2c3eb;
+      --ink:#2f2a25;
+      --muted:#6d655d;
+      --purple:#7a5aa6;
+      --purple-soft:#8a6ab5;
+      --yellow:#d8b622;
+      --red:#b63131;
+      --line:#ddd7cf;
+      --shadow:0 2px 10px rgba(0,0,0,.06);
+      --radius:14px;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      padding:20px;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:Georgia, serif;
+    }
+
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .title{
+      font-size:2rem;
+      font-weight:700;
+      line-height:1.1;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:none;
+      border-radius:10px;
+      padding:10px 14px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .btn-yellow{background:var(--yellow);color:#2d2600}
+    .btn-soft{background:#ece7df;color:#2f2a25}
+    .btn-red{background:var(--red);color:#fff}
+    .btn-purple{background:var(--purple);color:#fff}
+    .btn-purple-soft{background:var(--purple-soft);color:#fff}
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+
+    .hero{
+      background:var(--panel);
+      border-color:var(--panel-border);
+    }
+
+    .hero h3{
+      margin:0 0 10px 0;
+      font-size:1.2rem;
+    }
+
+    .hero p{
+      margin:0;
+      line-height:1.6;
+      color:#554e47;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+
+    .box h4{
+      margin:0 0 10px 0;
+      font-size:1.05rem;
+      color:#5e4682;
+    }
+
+    .box p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .footer-note{
+      color:#6b635b;
+      font-size:.94rem;
+      line-height:1.5;
+    }
+
+    @media (max-width:760px){
+      body{padding:14px}
+      .title{font-size:1.55rem}
+      .grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="topbar">
+      <div class="title">Centauro — Diagramador Híbrido</div>
+      <div class="actions">
+        <button class="btn btn-yellow" type="button" onclick="window.location.href='lapidar.html'">Retornar</button>
+        <button class="btn btn-soft" type="button">Exemplo</button>
+        <button class="btn btn-purple-soft" type="button">Baixar arquivo</button>
+        <button class="btn btn-red" type="button" onclick="window.location.href='lapidar.html'">Sair</button>
+      </div>
+    </div>
+
+    <div class="card hero">
+      <h3>Área híbrida conectada</h3>
+      <p>
+        O Centauro já está ligado ao Lapidar. Esta área será usada para obras mistas, antologias, miscelâneas,
+        materiais escolares e projetos com texto + imagem. Por enquanto, esta é a base inicial de entrada do motor.
+      </p>
+    </div>
+
+    <div class="grid">
+      <div class="card box">
+        <h4>Tipos de obra</h4>
+        <p>
+          Antologias, miscelâneas, coletâneas, materiais escolares, livros com texto e imagem,
+          projetos híbridos e composições editoriais misturadas.
+        </p>
+      </div>
+
+      <div class="card box">
+        <h4>Estado atual</h4>
+        <p>
+          Ligação estrutural concluída. O motor já pode ser acessado a partir do Lapidar.
+          A etapa de configuração editorial interna será construída depois.
+        </p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="footer-note">
+        Centauro será desenvolvido depois do Castor. O importante agora é que ele já está conectado ao fluxo do Celeiro
+        e do Lapidar, sem tela morta nem botão quebrado.
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
