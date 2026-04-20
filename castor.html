@@ -13,21 +13,23 @@
     :root{
       --bg:#f6f3ee;
       --card:#ffffff;
-      --panel:#dbe9f7;
-      --panel-border:#9fbddd;
+      --panel:#c6daf3;
+      --panel-border:#6d97c7;
       --paper:#fffdf8;
       --line:#d8d2ca;
       --ink:#2f2a25;
       --muted:#6e665e;
-      --blue:#1f4f87;
-      --blue-soft:#2b66a6;
+      --blue:#17497f;
+      --blue-soft:#215d9c;
       --yellow:#d8b622;
       --red:#b63131;
       --shadow:0 2px 10px rgba(0,0,0,.06);
       --radius:14px;
     }
 
-    *{box-sizing:border-box}
+    *{
+      box-sizing:border-box;
+    }
 
     body{
       margin:0;
@@ -42,7 +44,7 @@
     }
 
     .wrap{
-      max-width:1220px;
+      max-width:1240px;
       margin:0 auto;
       display:flex;
       flex-direction:column;
@@ -91,12 +93,6 @@
       padding:16px;
     }
 
-    .config-card{
-      background:var(--panel);
-      border-color:var(--panel-border);
-      height:100%;
-    }
-
     .card h3{
       margin:0 0 12px 0;
       font-size:1.14rem;
@@ -110,10 +106,10 @@
       margin-bottom:8px;
     }
 
-    .upload-note,.note{
+    .upload-note,.note,.hint{
       color:var(--muted);
       font-size:.92rem;
-      line-height:1.35;
+      line-height:1.4;
     }
 
     .editor{
@@ -134,11 +130,11 @@
 
     textarea{
       width:100%;
-      min-height:160px;
+      min-height:150px;
       border:none;
       outline:none;
       resize:vertical;
-      padding:18px 16px 22px;
+      padding:16px;
       background:transparent;
       color:var(--ink);
       font-size:1rem;
@@ -148,37 +144,39 @@
 
     .work-area{
       display:grid;
-      grid-template-columns:380px minmax(0,1fr);
+      grid-template-columns:300px minmax(0,1fr);
       gap:16px;
       align-items:start;
+    }
+
+    .config-card{
+      background:var(--panel);
+      border-color:var(--panel-border);
     }
 
     .grid{
       display:grid;
       grid-template-columns:1fr;
-      gap:12px;
+      gap:10px;
     }
 
     .field{
       display:flex;
       flex-direction:column;
-      gap:6px;
+      gap:5px;
       min-width:0;
     }
 
     .field label{
-      font-size:.95rem;
-      color:#2b4f76;
+      font-size:.92rem;
+      color:#183c63;
       font-weight:700;
     }
 
     .field input,.field select{
       width:100%;
-    }
-
-    .field input[type="number"]{
-      padding:8px 10px;
-      border:1px solid #b8c9d8;
+      padding:7px 9px;
+      border:1px solid #9db7d3;
       border-radius:8px;
       background:#fff;
     }
@@ -220,8 +218,8 @@
       flex-wrap:wrap;
       margin-bottom:12px;
       padding:10px 12px;
-      background:#eef5fc;
-      border:1px solid #d3e1ef;
+      background:#edf4fb;
+      border:1px solid #d1dfed;
       border-radius:12px;
     }
 
@@ -255,15 +253,9 @@
       border:1px solid #d8d2ca;
       border-radius:8px;
       box-shadow:0 6px 18px rgba(0,0,0,.07);
-      overflow:hidden;
       position:relative;
+      overflow:hidden;
       flex:0 0 auto;
-    }
-
-    .page-inner{
-      position:relative;
-      height:100%;
-      overflow:hidden;
     }
 
     .page-header{
@@ -287,7 +279,6 @@
       right:0;
       bottom:30px;
       overflow:auto;
-      white-space:normal;
     }
 
     .page-footer{
@@ -297,7 +288,6 @@
       right:18px;
       display:flex;
       justify-content:center;
-      align-items:center;
       border-top:1px solid #ece5dc;
       padding-top:4px;
       font-size:.78rem;
@@ -320,7 +310,7 @@
     }
 
     .stanza{
-      margin:0 0 1.45em 0;
+      margin:0 0 1.4em 0;
     }
 
     .verse{
@@ -335,12 +325,6 @@
       opacity:.82;
     }
 
-    .hint{
-      margin-top:10px;
-      font-size:.88rem;
-      color:#55697d;
-    }
-
     .measure-host{
       position:absolute;
       left:-99999px;
@@ -350,10 +334,6 @@
       width:0;
       height:0;
       overflow:hidden;
-    }
-
-    .download-helper{
-      display:none;
     }
 
     @media (max-width:980px){
@@ -390,12 +370,12 @@
         <button class="btn btn-blue" type="button" id="btnUpload">Upar texto</button>
         <span id="arquivoNome">Nenhum arquivo carregado</span>
       </div>
-      <div class="upload-note">No Castor, cada linha é tratada como verso. Linhas em branco separam estrofes.</div>
+      <div class="upload-note">Cada linha é tratada como verso. Linha em branco separa estrofes.</div>
     </div>
 
     <div class="editor">
       <div class="editor-head">Caixa de texto poético</div>
-      <textarea id="inputText" placeholder="Cole aqui seus poemas. Linha em branco separa estrofes."></textarea>
+      <textarea id="inputText" placeholder="Cole aqui seus poemas."></textarea>
     </div>
 
     <div class="work-area">
@@ -408,7 +388,7 @@
             <select id="formato">
               <option value="a5">A5</option>
               <option value="16x23">16x23</option>
-              <option value="6x9">6" x 9"</option>
+              <option value="6x9">6&quot; x 9&quot;</option>
               <option value="epub">ePub</option>
             </select>
           </div>
@@ -418,6 +398,27 @@
             <select id="modoAbertura">
               <option value="titulo" selected>Título do poema</option>
               <option value="livre">Livre</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="formaPoetica">Forma poética</label>
+            <select id="formaPoetica">
+              <option value="misto" selected>Misto</option>
+              <option value="livre">Verso livre</option>
+              <option value="elegia">Elegia</option>
+              <option value="haikai">Haikai</option>
+              <option value="soneto_it">Soneto italiano</option>
+              <option value="soneto_sh">Soneto shakespeariano</option>
+              <option value="ghazal">Ghazal</option>
+              <option value="pantum">Pantum</option>
+              <option value="trova">Trova</option>
+              <option value="ode">Ode</option>
+              <option value="sextina">Sextina</option>
+              <option value="limerick">Limerick</option>
+              <option value="acrostico">Acróstico</option>
+              <option value="estrofista">Novo Movimento Estrofista</option>
+              <option value="personalizado">Personalizado</option>
             </select>
           </div>
 
@@ -508,7 +509,7 @@
           </div>
         </div>
 
-        <div class="note">Título e versos agora ficam separados. O ornamento é opcional e controlado pelo autor.</div>
+        <div class="note">A forma poética funciona como preset leve. Título e versos ficam separados.</div>
       </div>
 
       <div class="preview-box">
@@ -526,7 +527,7 @@
         </div>
 
         <div class="preview-stage" id="previewStage"></div>
-        <div class="hint">A prévia fica ao lado da configuração para o autor ajustar vendo o resultado ao mesmo tempo.</div>
+        <div class="hint">Painel e prévia lado a lado. A prévia é a área principal de observação da diagramação.</div>
       </div>
     </div>
   </div>
@@ -544,6 +545,7 @@
 
     const formato = document.getElementById("formato");
     const modoAbertura = document.getElementById("modoAbertura");
+    const formaPoetica = document.getElementById("formaPoetica");
     const fonteVerso = document.getElementById("fonteVerso");
     const fonteTitulo = document.getElementById("fonteTitulo");
     const tamanhoVerso = document.getElementById("tamanhoVerso");
@@ -606,6 +608,29 @@
       return map[tipoOrnamento.value] || "❦";
     }
 
+    function applyPreset(){
+      const v = formaPoetica.value;
+
+      if (v === "haikai") {
+        alinhamento.value = "centro";
+        entrelinha.value = "1.4";
+        espacoEstrofe.value = "1.8";
+      } else if (v === "limerick") {
+        alinhamento.value = "esquerda";
+        entrelinha.value = "1.4";
+        espacoEstrofe.value = "1.4";
+      } else if (v === "acrostico") {
+        alinhamento.value = "esquerda";
+        entrelinha.value = "1.4";
+      } else if (v === "elegia") {
+        alinhamento.value = "centro";
+        entrelinha.value = "1.6";
+      } else if (v === "soneto_it" || v === "soneto_sh") {
+        alinhamento.value = "centro";
+        entrelinha.value = "1.4";
+      }
+    }
+
     function parsePoetry(text){
       const lines = text.replace(/\r/g, "").split("\n");
       const blocks = [];
@@ -623,13 +648,9 @@
 
       const stanza = [];
 
-      function pushStanzaBuffer(){
+      function pushStanza(){
         if (!stanza.length) return;
-        blocks.push({
-          type:"stanza",
-          lines:[...stanza],
-          header:currentHeader
-        });
+        blocks.push({ type:"stanza", lines:[...stanza], header:currentHeader });
         stanza.length = 0;
       }
 
@@ -639,16 +660,14 @@
 
       for (; i < lines.length; i++) {
         const line = lines[i];
-
         if (!line.trim()) {
-          pushStanzaBuffer();
+          pushStanza();
           continue;
         }
-
         stanza.push(line);
       }
 
-      pushStanzaBuffer();
+      pushStanza();
 
       if (ornamento.value === "fim" || ornamento.value === "ambos") {
         blocks.push({ type:"ornament", text:ornamentText(), header:currentHeader });
@@ -685,7 +704,7 @@
       stanzaEl.className = "stanza";
       stanzaEl.style.marginBottom = espacoEstrofe.value + "em";
 
-      block.lines.forEach(line => {
+      block.lines.forEach((line) => {
         const verse = document.createElement("p");
         verse.className = "verse";
         verse.textContent = line;
@@ -751,7 +770,7 @@
       let currentHeader = blocks[0].header || "Castor";
       let currentHeight = 0;
 
-      blocks.forEach(block => {
+      blocks.forEach((block) => {
         const h = measureBlockHeight(block, cfg);
 
         if (currentHeight + h > limit && currentBlocks.length > 0) {
@@ -786,12 +805,9 @@
       page.style.width = cfg.w + "px";
       page.style.height = cfg.h + "px";
 
-      const inner = document.createElement("div");
-      inner.className = "page-inner";
-
       const header = document.createElement("div");
       header.className = "page-header";
-      header.innerHTML = `<span>${pageObj.header || "Castor"}</span><span>${cfg.name}</span>`;
+      header.innerHTML = "<span>" + (pageObj.header || "Castor") + "</span><span>" + cfg.name + "</span>";
 
       const content = document.createElement("div");
       content.className = "page-content";
@@ -800,25 +816,64 @@
       if (!pageObj.blocks.length) {
         content.innerHTML = '<div class="empty">A prévia aparece aqui assim que o texto entrar na caixa.</div>';
       } else {
-        pageObj.blocks.forEach(block => content.appendChild(buildBlockNode(block)));
+        pageObj.blocks.forEach((block) => content.appendChild(buildBlockNode(block)));
       }
 
       const footer = document.createElement("div");
       footer.className = "page-footer";
       footer.textContent = currentPage;
 
-      inner.appendChild(header);
-      inner.appendChild(content);
-      inner.appendChild(footer);
-      page.appendChild(inner);
+      page.appendChild(header);
+      page.appendChild(content);
+      page.appendChild(footer);
       previewStage.appendChild(page);
 
-      pageCounter.textContent = `Página ${currentPage} de ${pagesData.length || 1}`;
+      pageCounter.textContent = "Página " + currentPage + " de " + (pagesData.length || 1);
       btnPrev.disabled = currentPage <= 1;
       btnNext.disabled = currentPage >= (pagesData.length || 1);
     }
 
+    function buildDownloadHTML(){
+      const cfg = pageConfig();
+      const blocks = inputText.value.trim() ? parsePoetry(inputText.value.trim()) : [];
+      const titleFont = getFontStack(fonteTitulo.value);
+      const verseFont = getFontStack(fonteVerso.value);
+      const verseSize = clampNumber(tamanhoVerso, 12, 24, 14);
+      const titleSize = clampNumber(tamanhoTitulo, 16, 34, 20);
+
+      let contentHTML = "";
+      if (!blocks.length) {
+        contentHTML = '<div style="text-align:center;color:#70675f;padding:80px 20px;">Sem conteúdo.</div>';
+      } else {
+        blocks.forEach((block) => {
+          if (block.type === "title") {
+            contentHTML += '<div style="text-align:center;margin:0 0 1.2em 0;line-height:1.2;letter-spacing:.01em;font-weight:700;font-family:' + titleFont + ';font-size:' + titleSize + 'pt;">' + escapeHtml(block.text) + '</div>';
+          } else if (block.type === "ornament") {
+            contentHTML += '<div style="text-align:center;margin:1.2em 0;opacity:.82;font-family:' + titleFont + ';font-size:' + Math.max(12, titleSize - 6) + 'pt;">' + escapeHtml(block.text) + '</div>';
+          } else if (block.type === "stanza") {
+            contentHTML += '<div style="margin:0 0 ' + espacoEstrofe.value + 'em 0;">';
+            block.lines.forEach((line) => {
+              contentHTML += '<p style="margin:0;white-space:pre-wrap;overflow-wrap:break-word;font-family:' + verseFont + ';font-size:' + verseSize + 'pt;line-height:' + entrelinha.value + ';text-align:' + (alinhamento.value === "centro" ? "center" : "left") + ';">' + escapeHtml(line) + '</p>';
+            });
+            contentHTML += '</div>';
+          }
+        });
+      }
+
+      return '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>castor_diagramado</title></head><body style="margin:0;padding:20px;background:#f6f3ee;font-family:Georgia,serif;"><div style="width:' + cfg.w + 'px;height:' + cfg.h + 'px;margin:0 auto;background:#fffdf8;border:1px solid #d8d2ca;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.07);position:relative;overflow:hidden;"><div style="position:absolute;top:10px;left:18px;right:18px;display:flex;justify-content:space-between;border-bottom:1px solid #ece5dc;padding-bottom:4px;font-size:.74rem;color:#887f77;"><span>Castor</span><span>' + cfg.name + '</span></div><div style="position:absolute;top:34px;left:0;right:0;bottom:30px;overflow:auto;padding:' + cfg.pad[margens.value] + 'px;">' + contentHTML + '</div><div style="position:absolute;bottom:10px;left:18px;right:18px;display:flex;justify-content:center;border-top:1px solid #ece5dc;padding-top:4px;font-size:.78rem;color:#887f77;">1</div></div></body></html>';
+    }
+
+    function escapeHtml(str){
+      return str
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#39;");
+    }
+
     function renderPreview(){
+      applyPreset();
       const text = inputText.value.trim();
 
       if (!text) {
@@ -830,57 +885,6 @@
 
       const blocks = parsePoetry(text);
       paginateBlocks(blocks);
-    }
-
-    function buildDownloadHTML(){
-      const cfg = pageConfig();
-      const text = inputText.value.trim();
-      const blocks = text ? parsePoetry(text) : [];
-      const pageObj = blocks.length ? { header: blocks[0].header || "Castor", blocks } : { header:"Castor", blocks:[] };
-
-      const contentHTML = pageObj.blocks.length
-        ? pageObj.blocks.map(block => {
-            if (block.type === "title") {
-              return `<div style="text-align:center;margin:0 0 1.2em 0;line-height:1.2;letter-spacing:.01em;font-weight:700;font-family:${getFontStack(fonteTitulo.value)};font-size:${clampNumber(tamanhoTitulo,16,34,20)}pt;">${escapeHtml(block.text)}</div>`;
-            }
-            if (block.type === "ornament") {
-              return `<div style="text-align:center;margin:1.2em 0;opacity:.82;font-family:${getFontStack(fonteTitulo.value)};font-size:${Math.max(12, clampNumber(tamanhoTitulo,16,34,20)-6)}pt;">${escapeHtml(block.text)}</div>`;
-            }
-            return `<div style="margin:0 0 ${espacoEstrofe.value}em 0;">${block.lines.map(line => `<p style="margin:0;white-space:pre-wrap;overflow-wrap:break-word;font-family:${getFontStack(fonteVerso.value)};font-size:${clampNumber(tamanhoVerso,12,24,14)}pt;line-height:${entrelinha.value};text-align:${alinhamento.value === 'centro' ? 'center' : 'left'};">${escapeHtml(line)}</p>`).join("")}</div>`;
-          }).join("")
-        : `<div style="text-align:center;color:#70675f;padding:80px 20px;">Sem conteúdo.</div>`;
-
-      return `<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>castor_diagramado</title>
-</head>
-<body style="margin:0;padding:20px;background:#f6f3ee;font-family:Georgia,serif;">
-  <div style="width:${cfg.w}px;height:${cfg.h}px;margin:0 auto;background:#fffdf8;border:1px solid #d8d2ca;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.07);position:relative;overflow:hidden;">
-    <div style="position:absolute;top:10px;left:18px;right:18px;display:flex;justify-content:space-between;border-bottom:1px solid #ece5dc;padding-bottom:4px;font-size:.74rem;color:#887f77;">
-      <span>${escapeHtml(pageObj.header || "Castor")}</span>
-      <span>${escapeHtml(cfg.name)}</span>
-    </div>
-    <div style="position:absolute;top:34px;left:0;right:0;bottom:30px;overflow:auto;padding:${cfg.pad[margens.value]}px;">
-      ${contentHTML}
-    </div>
-    <div style="position:absolute;bottom:10px;left:18px;right:18px;display:flex;justify-content:center;border-top:1px solid #ece5dc;padding-top:4px;font-size:.78rem;color:#887f77;">
-      1
-    </div>
-  </div>
-</body>
-</html>`;
-    }
-
-    function escapeHtml(str){
-      return str
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#39;");
     }
 
     btnPrev.addEventListener("click", function(){
@@ -935,21 +939,19 @@
 
     btnExemplo.addEventListener("click", function(){
       inputText.value =
-`A Rua sem Nome
+`Elegia – Saudades do Passado
 
-A noite encosta na janela
-como um pássaro sem ninho
-e deixa no vidro
-a memória do vento
+O tempo teceu em sombras o que um dia foi dourado,
+e agora só restam ecos de um riso desbotado.
+Ah, como doem as horas que não voltam mais,
+fantasmas de um verão que se apagou nos trigais.
 
-Os passos da cidade
-não me chamam pelo nome
-apenas passam
-como água cansada
+Elegia – Lembranças Perdidas
 
-No escuro
-aprendi a escutar
-o peso do silêncio`;
+Procuro teu rosto nos álbuns empoeirados,
+mas o papel guarda apenas traços despedaçados.
+Onde foi que se perdeu o brilho dos teus olhos?
+Sumiu no mesmo vento que levou meus despojos.`;
       currentPage = 1;
       renderPreview();
     });
@@ -963,7 +965,7 @@ o peso do silêncio`;
     });
 
     [
-      inputText, formato, modoAbertura, fonteVerso, fonteTitulo,
+      inputText, formato, modoAbertura, formaPoetica, fonteVerso, fonteTitulo,
       tamanhoVerso, tamanhoTitulo, entrelinha, margens,
       alinhamento, espacoEstrofe, ornamento, tipoOrnamento
     ].forEach(function(el){
