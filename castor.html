@@ -505,10 +505,12 @@
       <div class="acoes">
         <button id="btnAplicar">Aplicar</button>
         <button id="btnReprocessar">Reprocessar texto</button>
+        <button id="btnCarregarPreview">Carregar texto na prévia</button>
+        <button id="btnLimparTudo">Limpar tudo</button>
       </div>
 
       <div class="ajuda">
-        Esta leitura ainda é assistida. O autor continua mandando no resultado final.
+        Agora, ao colar ou digitar na caixa de texto, o Castor reprocessa automaticamente e joga o texto atual para a prévia.
       </div>
     </aside>
 
@@ -612,6 +614,8 @@ dos teus olhos?</textarea>
     let contadorIds = 1;
     let editandoId = null;
     let textoAntesEdicao = '';
+    let autoTimer = null;
+    let ultimoTextoLido = '';
 
     function novoId(){
       return contadorIds++;
@@ -725,12 +729,21 @@ dos teus olhos?</textarea>
       return 'verso';
     }
 
-    function parseEntrada(){
+    function parseEntrada(resetSelecao=true){
       contadorIds = 1;
       const bruto = entradaPoetica.value.replace(/\r/g, '');
-      const linhas = bruto.split('\n');
+      ultimoTextoLido = bruto;
+
+      if(resetSelecao){
+        linhaSelecionadaId = null;
+        editandoId = null;
+      }
+
+      const linhas = bruto === '' ? [''] : bruto.split('\n');
       linhasBase = linhas.map((linha, i) => criarItem(linha, detectarTipoAutomatico(linhas, i), false));
+
       aplicarEstrutura();
+      statusEdicao.textContent = 'Texto atual carregado na prévia.';
     }
 
     function aplicarEstrutura(){
@@ -1137,6 +1150,7 @@ dos teus olhos?</textarea>
 
     function reconstruirEntradaAPartirDasLinhas(){
       entradaPoetica.value = linhasBase.map(item => item.texto).join('\n');
+      ultimoTextoLido = entradaPoetica.value.replace(/\r/g,'');
     }
 
     function iniciarEdicaoInline(id){
@@ -1244,11 +1258,39 @@ dos teus olhos?</textarea>
       sel.addRange(range);
     }
 
+    function scheduleAutoParse(){
+      clearTimeout(autoTimer);
+      autoTimer = setTimeout(() => {
+        const atual = entradaPoetica.value.replace(/\r/g,'');
+        if(atual !== ultimoTextoLido){
+          parseEntrada(true);
+        }
+      }, 250);
+    }
+
+    function limparTudo(){
+      entradaPoetica.value = '';
+      ultimoTextoLido = '';
+      linhasBase = [criarItem('', 'vazio', false)];
+      linhaSelecionadaId = null;
+      editandoId = null;
+      paginaAtual = 0;
+      aplicarEstrutura();
+      statusEdicao.textContent = 'Tudo limpo. Agora cole o novo texto.';
+    }
+
     document.getElementById('btnAplicar').addEventListener('click', aplicarEstrutura);
+
     document.getElementById('btnReprocessar').addEventListener('click', () => {
-      parseEntrada();
+      parseEntrada(true);
       statusEdicao.textContent = 'Texto reprocessado com a leitura estrutural atual.';
     });
+
+    document.getElementById('btnCarregarPreview').addEventListener('click', () => {
+      parseEntrada(true);
+    });
+
+    document.getElementById('btnLimparTudo').addEventListener('click', limparTudo);
 
     document.getElementById('btnSalvarLinha').addEventListener('click', salvarLinhaSelecionada);
     document.getElementById('btnVerso').addEventListener('click', () => reclassificarSelecionada('verso'));
@@ -1286,6 +1328,10 @@ dos teus olhos?</textarea>
       });
     });
 
+    entradaPoetica.addEventListener('input', scheduleAutoParse);
+    entradaPoetica.addEventListener('paste', () => setTimeout(scheduleAutoParse, 20));
+    entradaPoetica.addEventListener('change', scheduleAutoParse);
+
     window.addEventListener('resize', aplicarEscalaVisual);
 
     document.addEventListener('keydown', (e) => {
@@ -1299,7 +1345,7 @@ dos teus olhos?</textarea>
       }
     });
 
-    parseEntrada();
+    parseEntrada(true);
   </script>
 </body>
 </html>
