@@ -264,6 +264,7 @@
       right:0;
       bottom:30px;
       overflow:hidden;
+      white-space:normal;
     }
 
     .page-footer{
@@ -362,6 +363,24 @@
       top:-99999px;
       visibility:hidden;
       pointer-events:none;
+      width:0;
+      height:0;
+      overflow:hidden;
+    }
+
+    .measure-page{
+      position:relative;
+      background:#fff;
+      overflow:hidden;
+    }
+
+    .measure-content{
+      position:absolute;
+      top:34px;
+      left:0;
+      right:0;
+      bottom:30px;
+      overflow:hidden;
     }
 
     @media (max-width:760px){
@@ -623,7 +642,6 @@
           }
 
           let firstParagraphOfChapter = true;
-
           while (i < lines.length && !isChapterLine(lines[i])) {
             if (!isBlank(lines[i])) {
               blocks.push({
@@ -751,32 +769,17 @@
       }
     }
 
-    function createMeasurementPage(cfg){
+    function createMeasureShell(cfg){
       const page = document.createElement("div");
-      page.className = "page";
+      page.className = "measure-page";
       page.style.width = cfg.w + "px";
       page.style.height = cfg.h + "px";
 
-      const inner = document.createElement("div");
-      inner.className = "page-inner";
-
-      const header = document.createElement("div");
-      header.className = "page-header";
-      header.innerHTML = `<span>Pólux</span><span>${cfg.name}</span>`;
-
       const content = document.createElement("div");
-      content.className = "page-content";
+      content.className = "measure-content";
       content.style.padding = cfg.pad[margens.value] + "px";
 
-      const footer = document.createElement("div");
-      footer.className = "page-footer";
-      footer.textContent = "1";
-
-      inner.appendChild(header);
-      inner.appendChild(content);
-      inner.appendChild(footer);
-      page.appendChild(inner);
-
+      page.appendChild(content);
       measureHost.innerHTML = "";
       measureHost.appendChild(page);
 
@@ -784,15 +787,59 @@
     }
 
     function measureNodeHeight(node, cfg){
-      const shell = createMeasurementPage(cfg);
+      const shell = createMeasureShell(cfg);
       shell.content.innerHTML = "";
       shell.content.appendChild(node);
       return Math.ceil(node.offsetHeight);
     }
 
     function getUsableHeight(cfg){
-      const shell = createMeasurementPage(cfg);
+      const shell = createMeasureShell(cfg);
       return Math.floor(shell.content.clientHeight);
+    }
+
+    function splitParagraphBlock(block, cfg, remainingHeight){
+      const fullNode = buildBlockNode({ ...block, dropcap:false });
+      const shell = createMeasureShell(cfg);
+      shell.content.innerHTML = "";
+      shell.content.appendChild(fullNode);
+
+      const words = block.text.split(/\s+/).filter(Boolean);
+      if (words.length <= 1) return [block, null];
+
+      let left = 1;
+      let right = words.length;
+      let best = 1;
+
+      while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        const testText = words.slice(0, mid).join(" ");
+        const testNode = buildBlockNode({ ...block, text:testText, dropcap:false });
+        const h = measureNodeHeight(testNode, cfg);
+
+        if (h <= remainingHeight) {
+          best = mid;
+          left = mid + 1;
+        } else {
+          right = mid - 1;
+        }
+      }
+
+      if (best <= 0 || best >= words.length) return [block, null];
+
+      const part1 = {
+        ...block,
+        text: words.slice(0, best).join(" "),
+        dropcap:block.dropcap
+      };
+
+      const part2 = {
+        ...block,
+        text: words.slice(best).join(" "),
+        dropcap:false
+      };
+
+      return [part1, part2];
     }
 
     function paginateBlocks(blocks){
@@ -813,23 +860,64 @@
       let currentHeight = 0;
       let currentHeader = blocks[0].header || "Pólux";
 
-      blocks.forEach(block => {
+      let queue = [...blocks];
+
+      while (queue.length) {
+        const block = queue.shift();
+        currentHeader = block.header || currentHeader;
+
         const node = buildBlockNode(block);
         const nodeHeight = measureNodeHeight(node, cfg);
 
-        if (currentHeight + nodeHeight > usableHeight && currentBlocks.length > 0) {
+        if (nodeHeight <= (usableHeight - currentHeight)) {
+          currentBlocks.push(block);
+          currentHeight += nodeHeight;
+          continue;
+        }
+
+        if (currentBlocks.length === 0) {
+          if (block.type === "paragraph") {
+            const [part1, part2] = splitParagraphBlock(block, cfg, usableHeight);
+            currentBlocks.push(part1);
+            if (part2) queue.unshift(part2);
+          } else {
+            currentBlocks.push(block);
+          }
+
           pagesData.push({
             header: currentHeader,
             blocks: currentBlocks
           });
           currentBlocks = [];
           currentHeight = 0;
+          continue;
         }
 
-        currentHeader = block.header || currentHeader;
-        currentBlocks.push(block);
-        currentHeight += nodeHeight;
-      });
+        if (block.type === "paragraph") {
+          const remaining = usableHeight - currentHeight;
+          const [part1, part2] = splitParagraphBlock(block, cfg, remaining);
+
+          if (part2) {
+            currentBlocks.push(part1);
+            pagesData.push({
+              header: currentHeader,
+              blocks: currentBlocks
+            });
+            currentBlocks = [];
+            currentHeight = 0;
+            queue.unshift(part2);
+            continue;
+          }
+        }
+
+        pagesData.push({
+          header: currentHeader,
+          blocks: currentBlocks
+        });
+        currentBlocks = [];
+        currentHeight = 0;
+        queue.unshift(block);
+      }
 
       if (currentBlocks.length) {
         pagesData.push({
@@ -895,6 +983,7 @@
         renderCurrentPage();
         return;
       }
+
       const blocks = parseBlocks(texto);
       paginateBlocks(blocks);
     }
@@ -949,7 +1038,7 @@
     });
 
     btnExemplo.addEventListener("click", function(){
-      inputText.value = 'Capítulo 1\nO Degrau e a Mochila\nA praça respirava como um animal ferido.\nO som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.\nSacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.\nTudo parecia seguir um ritmo que não incluía pausas.\nPensava apenas na última surra que havia levado do pai.\nA mãe, havia ido morar com papai do céu.\nEle acreditava que aquela fuga era temporária.\nSeria apenas uma noite fora de casa.\nUm erro que o dia seguinte corrigiria.\n\nCapítulo 2\nA Primeira Manhã\nA manhã revelou o que a noite havia escondido.\nHavia mais gente do que ele imaginava.\nHomens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa.\nNinguém dizia o necessário por inteiro.\n\nCapítulo 3\nRegras Invisíveis\nA terceira noite já não parecia acidente.\nA segunda tinha sido resistência.\nA terceira começou a parecer início de padrão.\nA mulher dos cabelos grisalhos observou a rua e não disse nada.\nAs janelas fechadas pareciam guardar o fôlego da cidade.\nO dia avançou com o peso das coisas que ninguém queria nomear.';
+      inputText.value = 'Capítulo 1\nO Degrau e a Mochila\nA praça respirava como um animal ferido.\nO som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.\nSacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.\nTudo parecia seguir um ritmo que não incluía pausas.\nPensava apenas na última surra que havia levado do pai, um bêbado alcolatra que batia nele e em seus irmãos toda vez que perdia dinheiro que conseguia trabalhando, pegando reciclado e vendendo, pra manter a família que até então era ele, o pai e mais três irmãos.\nA mãe, havia ido morar com papai do céu, quatro anos antes.\nEle acreditava que aquela fuga era temporária, até seu pai se recuperar e ficar sóbrio.\nSeria apenas uma noite fora de casa. Um erro que o dia seguinte corrigiria.\n\nCapítulo 2\nA Primeira Manhã\nA manhã revelou o que a noite havia escondido.\nHavia mais gente do que ele imaginava.\nHomens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa.\nNinguém dizia o necessário por inteiro.\n\nCapítulo 3\nRegras Invisíveis\nA terceira noite já não parecia acidente.\nA segunda tinha sido resistência.\nA terceira começou a parecer início de padrão.\nA mulher dos cabelos grisalhos observou a rua e não disse nada.\nAs janelas fechadas pareciam guardar o fôlego da cidade.\nO dia avançou com o peso das coisas que ninguém queria nomear.';
       currentPage = 1;
       renderPreview();
     });
