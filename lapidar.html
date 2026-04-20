@@ -1,228 +1,242 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Celeiro Literário | Lapidar</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Georgia, "Times New Roman", serif;
-      background: linear-gradient(180deg, #f4f1ea 0%, #efe9dd 100%);
-      color: #211b17;
-      padding: 24px;
-    }
+<title>Lapidar — Diagramação de Livros</title>
 
-    .topo {
-      max-width: 980px;
-      margin: 0 auto 24px auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+<style>
 
-    .marca {
-      font-size: 1.8rem;
-      font-weight: bold;
-    }
+body{
+margin:0;
+font-family:Georgia, serif;
+background:#f6f3ee;
+color:#2f2a25;
+}
 
-    .voltar {
-      text-decoration: none;
-      background: #d9c756;
-      color: #2e2807;
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-weight: bold;
-      border: 1px solid #b9aa45;
-    }
+.container{
+max-width:1000px;
+margin:auto;
+padding:40px 20px;
+}
 
-    .voltar:hover {
-      background: #cdbd4c;
-    }
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+}
 
-    .container {
-      max-width: 980px;
-      margin: 0 auto;
-      background: #faf7f2;
-      border: 1px solid #d8d0c5;
-      border-radius: 18px;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
-      padding: 32px 22px;
-    }
+.titulo{
+font-size:30px;
+font-weight:bold;
+}
 
-    h1 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-size: 2rem;
-      color: #1d1713;
-    }
+.btn-voltar{
+background:#d8b622;
+border:none;
+padding:8px 14px;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+}
 
-    .intro {
-      font-size: 1.05rem;
-      line-height: 1.7;
-      color: #4d4339;
-      margin-bottom: 30px;
-    }
+.descricao{
+margin-bottom:30px;
+font-size:18px;
+color:#5a524b;
+}
 
-    .grade {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 22px;
-    }
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+}
 
-    .card {
-      background: #f4efe7;
-      border: 1px solid #d9cfbf;
-      border-radius: 16px;
-      padding: 22px;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.04);
-    }
+.card{
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 6px 16px rgba(0,0,0,0.08);
+}
 
-    .card h2 {
-      margin-top: 0;
-      margin-bottom: 12px;
-      font-size: 1.6rem;
-    }
+.card h2{
+margin-top:0;
+}
 
-    .card p {
-      margin: 0 0 18px 0;
-      line-height: 1.7;
-      color: #51473d;
-      font-size: 1rem;
-    }
+.lista{
+margin-top:10px;
+margin-bottom:20px;
+line-height:1.6;
+}
 
-    .lista {
-      margin: 0 0 20px 18px;
-      color: #3c342d;
-      line-height: 1.8;
-    }
+.botao{
+border:none;
+padding:10px 18px;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+}
 
-    .botao {
-      display: inline-block;
-      text-decoration: none;
-      padding: 14px 18px;
-      border-radius: 12px;
-      font-weight: bold;
-      border: 1px solid transparent;
-      transition: 0.2s ease;
-    }
+.btn-polux{
+background:#1f6f43;
+color:white;
+}
 
-    .botao:hover {
-      transform: translateY(-2px);
-    }
+.btn-castor{
+background:#2f6ea5;
+color:white;
+}
 
-    .polux {
-      background: #2f5d50;
-      color: white;
-      border-color: #22453b;
-    }
+.btn-centauro{
+background:#7a5aa6;
+color:white;
+}
 
-    .polux:hover {
-      background: #264c42;
-    }
+.footer{
+margin-top:40px;
+color:#777;
+font-size:14px;
+text-align:center;
+}
 
-    .castor {
-      background: #d7c2a1;
-      color: #3b2d1d;
-      border-color: #bea27b;
-      cursor: default;
-    }
+@media(max-width:900px){
 
-    .rodape {
-      margin-top: 28px;
-      padding-top: 20px;
-      border-top: 1px solid #ddd1c2;
-      color: #655a4f;
-      line-height: 1.7;
-      font-size: 0.96rem;
-    }
+.grid{
+grid-template-columns:1fr;
+}
 
-    @media (max-width: 600px) {
-      body {
-        padding: 16px;
-      }
+}
 
-      .container {
-        padding: 24px 16px;
-      }
-
-      h1 {
-        font-size: 1.7rem;
-      }
-
-      .card h2 {
-        font-size: 1.4rem;
-      }
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <header class="topo">
-    <div class="marca">Celeiro Literário → Lapidar</div>
-    <a class="voltar" href="index.html">Retornar ao Celeiro</a>
-  </header>
 
-  <main class="container">
-    <h1>Lapidar</h1>
+<div class="container">
 
-    <p class="intro">
-      Dentro do Celeiro Literário, o Lapidar passa a operar por sistemas próprios.
-      Neste primeiro momento, ele abre dois caminhos distintos:
-      <strong>Pólux</strong> e <strong>Castor</strong>.
-    </p>
+<div class="header">
 
-    <section class="grade">
-      <article class="card">
-        <h2>Pólux</h2>
-        <p>
-          Diagramador de texto contínuo. Primeiro motor a nascer.
-          Voltado para obras em que o texto é o eixo principal.
-        </p>
+<div class="titulo">
+Lapidar — Diagramação de Livros
+</div>
 
-        <ul class="lista">
-          <li>prosa</li>
-          <li>poesia</li>
-          <li>romance</li>
-          <li>ensaio</li>
-          <li>memórias</li>
-          <li>biografia</li>
-        </ul>
+<button class="btn-voltar"
+onclick="location.href='index.html'">
+Retornar ao Celeiro
+</button>
 
-        <a class="botao polux" href="polux.html">Abrir Pólux</a>
-      </article>
+</div>
 
-      <article class="card">
-        <h2>Castor</h2>
-        <p>
-          Diagramador estrutural e visual.
-          Ficará reservado para a próxima etapa, com foco em obras mais visuais.
-        </p>
 
-        <ul class="lista">
-          <li>infantil</li>
-          <li>livro ilustrado</li>
-          <li>receitas</li>
-          <li>álbum visual</li>
-          <li>HQ</li>
-          <li>materiais técnicos visuais</li>
-        </ul>
+<div class="descricao">
 
-        <span class="botao castor">Castor — em breve</span>
-      </article>
-    </section>
+Escolha abaixo o tipo de obra que deseja diagramar.
+Cada motor trabalha com uma estrutura editorial diferente.
 
-    <div class="rodape">
-      Estrutura validada: Lapidar existe dentro do Celeiro Literário.<br>
-      Pólux e Castor são sistemas diferentes.<br>
-      O desenvolvimento segue primeiro pelo Pólux, com separação interna entre Prosa e Poesia.
-    </div>
-  </main>
+</div>
+
+
+<div class="grid">
+
+
+<!-- POLUX -->
+
+<div class="card">
+
+<h2>Pólux — Prosa</h2>
+
+<div class="lista">
+
+romance<br>
+conto<br>
+sci-fi<br>
+terror<br>
+ensaio<br>
+memórias<br>
+biografia<br>
+crônica
+
+</div>
+
+<button class="botao btn-polux"
+onclick="location.href='polux.html'">
+
+Abrir Pólux
+
+</button>
+
+</div>
+
+
+
+<!-- CASTOR -->
+
+<div class="card">
+
+<h2>Castor — Poesia</h2>
+
+<div class="lista">
+
+haicai<br>
+pantum<br>
+gasal<br>
+soneto<br>
+estrofismo livre<br>
+poesia experimental
+
+</div>
+
+<button class="botao btn-castor"
+onclick="alert('Castor será ativado na próxima etapa.')">
+
+Castor — em breve
+
+</button>
+
+</div>
+
+
+
+<!-- CENTAURO -->
+
+<div class="card">
+
+<h2>Centauro — Híbrido</h2>
+
+<div class="lista">
+
+antologias<br>
+miscelâneas<br>
+materiais escolares<br>
+coletâneas<br>
+texto + imagem
+
+</div>
+
+<button class="botao btn-centauro"
+onclick="alert('Centauro será ativado na próxima etapa.')">
+
+Centauro — em breve
+
+</button>
+
+</div>
+
+
+
+</div>
+
+
+<div class="footer">
+
+Lapidar é o sistema de diagramação do Celeiro Literário.
+Cada motor editorial atende um tipo específico de obra.
+
+</div>
+
+</div>
+
 </body>
 </html>
