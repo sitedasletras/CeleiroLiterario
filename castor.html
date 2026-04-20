@@ -22,7 +22,6 @@
     }
 
     *{ box-sizing:border-box; }
-
     body{
       margin:0;
       font-family: Georgia, "Times New Roman", serif;
@@ -30,7 +29,6 @@
       color:var(--texto);
       min-height:100vh;
     }
-
     .topo{
       padding:12px 16px 6px;
       font-size:14px;
@@ -38,7 +36,6 @@
       border-bottom:1px solid #d9e2ea;
       background:#f8fbfe;
     }
-
     .layout{
       display:grid;
       grid-template-columns:300px 1fr;
@@ -46,7 +43,6 @@
       padding:14px;
       min-height:calc(100vh - 44px);
     }
-
     .painel{
       background:var(--painel);
       border:1px solid var(--painel-borda);
@@ -56,314 +52,73 @@
       box-shadow:var(--sombra);
       height:calc(100vh - 72px);
     }
-
-    .painel h2{
-      margin:0 0 10px;
-      font-size:18px;
+    .painel h2{ margin:0 0 10px; font-size:18px; }
+    .grupo{ margin-bottom:10px; }
+    .grupo label{ display:block; font-size:13px; margin:0 0 4px; font-weight:600; }
+    .grupo input, .grupo select, .grupo textarea{
+      width:100%; border:1px solid #8fb0c0; border-radius:8px; background:#fff; padding:7px 8px; font-size:14px;
     }
-
-    .grupo{
-      margin-bottom:10px;
-    }
-
-    .grupo label{
-      display:block;
-      font-size:13px;
-      margin:0 0 4px;
-      font-weight:600;
-    }
-
-    .grupo input,
-    .grupo select,
-    .grupo textarea{
-      width:100%;
-      border:1px solid #8fb0c0;
-      border-radius:8px;
-      background:#fff;
-      padding:7px 8px;
-      font-size:14px;
-    }
-
-    .grupo textarea{
-      min-height:180px;
-      resize:vertical;
-      line-height:1.45;
-    }
-
-    .linha-dupla{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:8px;
-    }
-
-    .acoes{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:8px;
-    }
-
+    .grupo textarea{ min-height:180px; resize:vertical; line-height:1.45; }
+    .linha-dupla{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .acoes, .acao-compacta{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
     button{
-      border:1px solid var(--botao-borda);
-      background:var(--botao);
-      padding:8px 10px;
-      border-radius:8px;
-      cursor:pointer;
-      font-size:14px;
+      border:1px solid var(--botao-borda); background:var(--botao); padding:8px 10px; border-radius:8px; cursor:pointer; font-size:14px;
     }
-
-    button:hover{
-      background:#f7fbff;
+    button:hover{ background:#f7fbff; }
+    .workspace{ display:grid; grid-template-rows:auto auto 1fr; gap:12px; min-width:0; }
+    .caixa-texto, .barra-acoes, .bloco-previa{
+      background:#fff; border:1px solid #d7e0e8; border-radius:12px; padding:12px; box-shadow:var(--sombra);
     }
-
-    .workspace{
-      display:grid;
-      grid-template-rows:auto auto 1fr;
-      gap:12px;
-      min-width:0;
-    }
-
-    .caixa-texto,
-    .barra-acoes,
-    .bloco-previa{
-      background:#fff;
-      border:1px solid #d7e0e8;
-      border-radius:12px;
-      padding:12px;
-      box-shadow:var(--sombra);
-    }
-
-    .caixa-texto h3,
-    .barra-acoes h3,
-    .bloco-previa h3{
-      margin:0 0 8px;
-      font-size:16px;
-    }
-
-    .barra-acoes{
-      background:var(--toolbar);
-    }
-
-    .status{
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:10px;
-    }
-
-    .bloco-previa{
-      min-height:0;
-      display:flex;
-      flex-direction:column;
-    }
-
+    .caixa-texto h3, .barra-acoes h3, .bloco-previa h3{ margin:0 0 8px; font-size:16px; }
+    .barra-acoes{ background:var(--toolbar); }
+    .status{ font-size:13px; color:var(--muted); margin-bottom:10px; }
+    .bloco-previa{ min-height:0; display:flex; flex-direction:column; }
     .barra-previa{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:8px;
-      flex-wrap:wrap;
+      display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; flex-wrap:wrap;
     }
-
-    .barra-previa .controles{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-
-    .barra-previa .meta{
-      font-size:13px;
-      color:var(--muted);
-    }
-
+    .barra-previa .controles{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .barra-previa .meta{ font-size:13px; color:var(--muted); }
     .visor{
-      flex:1;
-      min-height:0;
-      overflow:auto;
-      padding:12px;
-      background:#f7fafc;
-      border-radius:10px;
-      border:1px solid #e3ebf2;
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
+      flex:1; min-height:0; overflow:auto; padding:12px; background:#f7fafc; border-radius:10px;
+      border:1px solid #e3ebf2; display:flex; justify-content:center; align-items:flex-start;
     }
-
-    .pagina-wrap{
-      transform-origin:top center;
-      transition:transform .15s ease;
+    .spread{
+      display:flex; gap:16px; align-items:flex-start; justify-content:center; width:100%;
+      transform-origin:top center; transition:transform .15s ease;
     }
-
     .pagina{
-      background:var(--page);
-      border:2px solid var(--page-border);
-      border-radius:4px;
-      position:relative;
-      box-shadow:0 8px 24px rgba(0,0,0,.10);
-      display:flex;
-      flex-direction:column;
+      background:var(--page); border:2px solid var(--page-border); border-radius:4px; position:relative;
+      box-shadow:0 8px 24px rgba(0,0,0,.10); display:flex; flex-direction:column; flex:0 0 auto;
     }
-
-    .pagina.a5{
-      width:148mm;
-      min-height:210mm;
-    }
-
-    .pagina.f16x23{
-      width:160mm;
-      min-height:230mm;
-    }
-
-    .pagina.f6x9{
-      width:152mm;
-      min-height:229mm;
-    }
-
-    .pagina-inner{
-      padding:20mm 15mm 20mm 20mm;
-      display:flex;
-      flex-direction:column;
-      flex:1;
-      min-height:0;
-    }
-
-    .pagina.margens-normais .pagina-inner{
-      padding:18mm 14mm 18mm 18mm;
-    }
-
-    .pagina.margens-estreitas .pagina-inner{
-      padding:14mm 12mm 14mm 14mm;
-    }
-
-    .cabecalho-pagina{
-      display:flex;
-      justify-content:space-between;
-      font-size:9px;
-      color:#707a84;
-      margin-bottom:8mm;
-      flex:0 0 auto;
-    }
-
-    .miolo{
-      flex:1 1 auto;
-      min-height:0;
-    }
-
-    .rodape-pagina{
-      margin-top:8mm;
-      text-align:center;
-      font-size:10px;
-      color:#7b7b7b;
-      flex:0 0 auto;
-    }
-
+    .pagina.a5{ width:148mm; min-height:210mm; }
+    .pagina.f16x23{ width:160mm; min-height:230mm; }
+    .pagina.f6x9{ width:152mm; min-height:229mm; }
+    .pagina-inner{ padding:20mm 15mm 20mm 20mm; display:flex; flex-direction:column; flex:1; min-height:0; }
+    .pagina.margens-normais .pagina-inner{ padding:18mm 14mm 18mm 18mm; }
+    .pagina.margens-estreitas .pagina-inner{ padding:14mm 12mm 14mm 14mm; }
+    .cabecalho-pagina{ display:flex; justify-content:space-between; font-size:9px; color:#707a84; margin-bottom:8mm; }
+    .miolo{ flex:1 1 auto; min-height:0; }
+    .rodape-pagina{ margin-top:8mm; text-align:center; font-size:10px; color:#7b7b7b; }
     .linha-item{
-      position:relative;
-      border-radius:6px;
-      transition:.15s ease;
-      padding:1px 3px;
-      cursor:pointer;
-      white-space:pre-wrap;
-      word-break:break-word;
-      outline:none;
+      position:relative; border-radius:6px; transition:.15s ease; padding:1px 3px; cursor:pointer;
+      white-space:pre-wrap; word-break:break-word; outline:none;
     }
-
-    .linha-item:hover{
-      background:#f3f8fc;
-    }
-
-    .linha-item.selecionado{
-      background:var(--selecionado);
-      outline:1px solid #aac9df;
-    }
-
-    .linha-item.vazio{
-      min-height:5mm;
-      cursor:pointer;
-    }
-
-    .linha-item.titulo{
-      text-align:center;
-      font-weight:700;
-      margin-top:4mm;
-      margin-bottom:3mm;
-    }
-
-    .linha-item.subtitulo{
-      text-align:center;
-      font-style:italic;
-      margin-top:-1mm;
-      margin-bottom:3mm;
-    }
-
-    .linha-item.verso{
-      text-align:left;
-      margin:0;
-    }
-
-    .linha-item.ornamento{
-      text-align:center;
-      color:#8d8d8d;
-      margin:3mm 0;
-      cursor:pointer;
-    }
-
-    .linha-item.manual{
-      box-shadow:inset 0 0 0 9999px rgba(255,243,199,.45);
-    }
-
-    .linha-item.editando{
-      background:#fffef0;
-      outline:1px solid #d8c778;
-    }
-
-    .ajuda{
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.4;
-      margin-top:6px;
-    }
-
-    .tag{
-      display:inline-block;
-      font-size:11px;
-      border:1px solid #b7cad8;
-      background:#f6fbff;
-      border-radius:999px;
-      padding:3px 8px;
-      margin-right:6px;
-    }
-
-    .acao-compacta{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-
-    #medidor{
-      position:absolute;
-      left:-99999px;
-      top:0;
-      visibility:hidden;
-      pointer-events:none;
-      z-index:-1;
-    }
-
+    .linha-item:hover{ background:#f3f8fc; }
+    .linha-item.selecionado{ background:var(--selecionado); outline:1px solid #aac9df; }
+    .linha-item.vazio{ min-height:5mm; }
+    .linha-item.titulo{ text-align:center; font-weight:700; margin-top:4mm; margin-bottom:3mm; }
+    .linha-item.subtitulo{ text-align:center; font-style:italic; margin-top:-1mm; margin-bottom:3mm; }
+    .linha-item.verso{ text-align:left; margin:0; }
+    .linha-item.ornamento{ text-align:center; color:#8d8d8d; margin:3mm 0; }
+    .linha-item.manual{ box-shadow:inset 0 0 0 9999px rgba(255,243,199,.45); }
+    .linha-item.editando{ background:#fffef0; outline:1px solid #d8c778; }
+    .ajuda{ font-size:12px; color:var(--muted); line-height:1.4; margin-top:6px; }
+    .tag{ display:inline-block; font-size:11px; border:1px solid #b7cad8; background:#f6fbff; border-radius:999px; padding:3px 8px; margin-right:6px; }
+    #medidor{ position:absolute; left:-99999px; top:0; visibility:hidden; pointer-events:none; z-index:-1; }
     @media (max-width:980px){
-      .layout{
-        grid-template-columns:1fr;
-      }
-
-      .painel{
-        height:auto;
-      }
-
-      .pagina.a5,
-      .pagina.f16x23,
-      .pagina.f6x9{
-        width:148mm;
-      }
+      .layout{ grid-template-columns:1fr; }
+      .painel{ height:auto; }
+      .pagina.a5, .pagina.f16x23, .pagina.f6x9{ width:148mm; }
     }
   </style>
 </head>
@@ -421,6 +176,7 @@
           <option value="'Libre Baskerville', serif">Libre Baskerville</option>
           <option value="'EB Garamond', serif">EB Garamond</option>
           <option value="Georgia">Georgia</option>
+          <option value="Garamond, serif">Garamond</option>
         </select>
       </div>
 
@@ -510,7 +266,7 @@
       </div>
 
       <div class="ajuda">
-        Agora, ao colar ou digitar na caixa de texto, o Castor reprocessa automaticamente e joga o texto atual para a prévia.
+        A prévia abre em modo livro, mas você pode alternar para página única quando quiser.
       </div>
     </aside>
 
@@ -568,10 +324,14 @@ dos teus olhos?</textarea>
               <option value="real">Escala real</option>
               <option value="ajustar" selected>Ajustar à tela</option>
             </select>
+            <select id="modoVisualizacao" style="width:auto;">
+              <option value="livro" selected>Modo livro</option>
+              <option value="pagina">Página única</option>
+            </select>
           </div>
           <div class="meta">
             <span class="tag" id="metaFormato">Formato A5</span>
-            <span class="tag" id="metaPagina">Página 1 de 1</span>
+            <span class="tag" id="metaPagina">Páginas 1 de 1</span>
           </div>
         </div>
 
@@ -605,6 +365,7 @@ dos teus olhos?</textarea>
     const ornamentoTipo = document.getElementById('ornamentoTipo');
     const novaPagina = document.getElementById('novaPagina');
     const modoEscala = document.getElementById('modoEscala');
+    const modoVisualizacao = document.getElementById('modoVisualizacao');
 
     let linhasBase = [];
     let linhasProcessadas = [];
@@ -617,13 +378,8 @@ dos teus olhos?</textarea>
     let autoTimer = null;
     let ultimoTextoLido = '';
 
-    function novoId(){
-      return contadorIds++;
-    }
-
-    function criarItem(texto, tipo, manual=false){
-      return { id: novoId(), texto, tipo, manual };
-    }
+    function novoId(){ return contadorIds++; }
+    function criarItem(texto, tipo, manual=false){ return { id: novoId(), texto, tipo, manual }; }
 
     function getPageClass(){
       if(formato.value === '16x23') return 'f16x23';
@@ -640,37 +396,11 @@ dos teus olhos?</textarea>
     function getFormaPreset(){
       const forma = formaPoetica.value;
       const leitura = primeiraLinha.value;
-
-      const preset = {
-        extraTopTitulo: 0,
-        extraBottomTitulo: 0,
-        overrideEntrelinha: null,
-        overrideEspacoVazio: null,
-        deteccaoConservadora: false
-      };
-
-      if(forma === 'elegia'){
-        preset.extraTopTitulo = 2;
-        preset.extraBottomTitulo = 1;
-        preset.overrideEntrelinha = 1.5;
-      }
-
-      if(forma === 'soneto'){
-        preset.overrideEntrelinha = 1.25;
-        preset.overrideEspacoVazio = 'minimo';
-        preset.deteccaoConservadora = true;
-      }
-
-      if(forma === 'haikai'){
-        preset.overrideEntrelinha = 1.55;
-        preset.overrideEspacoVazio = 'maior';
-        preset.deteccaoConservadora = true;
-      }
-
-      if(forma === 'livre' || leitura === 'livre'){
-        preset.deteccaoConservadora = true;
-      }
-
+      const preset = { extraTopTitulo:0, extraBottomTitulo:0, overrideEntrelinha:null, overrideEspacoVazio:null, deteccaoConservadora:false };
+      if(forma === 'elegia'){ preset.extraTopTitulo = 2; preset.extraBottomTitulo = 1; preset.overrideEntrelinha = 1.5; }
+      if(forma === 'soneto'){ preset.overrideEntrelinha = 1.25; preset.overrideEspacoVazio = 'minimo'; preset.deteccaoConservadora = true; }
+      if(forma === 'haikai'){ preset.overrideEntrelinha = 1.55; preset.overrideEspacoVazio = 'maior'; preset.deteccaoConservadora = true; }
+      if(forma === 'livre' || leitura === 'livre'){ preset.deteccaoConservadora = true; }
       return preset;
     }
 
@@ -694,37 +424,19 @@ dos teus olhos?</textarea>
 
     function detectarTipoAutomatico(linhas, i){
       const preset = getFormaPreset();
-
       const atual = (linhas[i] ?? '').trim();
       const antes = (linhas[i - 1] ?? '').trim();
       const depois = (linhas[i + 1] ?? '').trim();
       const depois2 = (linhas[i + 2] ?? '').trim();
-
       if(atual === '') return 'vazio';
       if(primeiraLinha.value === 'semTitulo') return 'verso';
       if(primeiraLinha.value === 'livre') return 'verso';
 
-      const candidatoTituloForte =
-        antes === '' &&
-        depois === '' &&
-        textoCurtoProvavelTitulo(atual) &&
-        !pareceVersoClaro(atual);
+      const candidatoTituloForte = antes === '' && depois === '' && textoCurtoProvavelTitulo(atual) && !pareceVersoClaro(atual);
+      if(candidatoTituloForte) return 'titulo';
 
-      if(candidatoTituloForte){
-        return 'titulo';
-      }
-
-      const candidatoTituloModerado =
-        antes === '' &&
-        depois !== '' &&
-        depois2 !== '' &&
-        textoCurtoProvavelTitulo(atual) &&
-        /^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ]/.test(atual) &&
-        !pareceVersoClaro(atual);
-
-      if(candidatoTituloModerado && !preset.deteccaoConservadora){
-        return 'titulo';
-      }
+      const candidatoTituloModerado = antes === '' && depois !== '' && depois2 !== '' && textoCurtoProvavelTitulo(atual) && /^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ]/.test(atual) && !pareceVersoClaro(atual);
+      if(candidatoTituloModerado && !preset.deteccaoConservadora) return 'titulo';
 
       return 'verso';
     }
@@ -733,15 +445,10 @@ dos teus olhos?</textarea>
       contadorIds = 1;
       const bruto = entradaPoetica.value.replace(/\r/g, '');
       ultimoTextoLido = bruto;
-
-      if(resetSelecao){
-        linhaSelecionadaId = null;
-        editandoId = null;
-      }
-
+      if(resetSelecao){ linhaSelecionadaId = null; editandoId = null; }
       const linhas = bruto === '' ? [''] : bruto.split('\n');
       linhasBase = linhas.map((linha, i) => criarItem(linha, detectarTipoAutomatico(linhas, i), false));
-
+      paginaAtual = 0;
       aplicarEstrutura();
       statusEdicao.textContent = 'Texto atual carregado na prévia.';
     }
@@ -758,39 +465,26 @@ dos teus olhos?</textarea>
       const modoOrn = ornamentoModo.value;
       const simboloOrn = ornamentoTipo.value;
       const saida = [];
-
       for(let i = 0; i < base.length; i++){
         const item = base[i];
         const atual = { ...item };
-
         if(atual.tipo === 'titulo'){
           const existeConteudoAntes = existeConteudoRealAntes(base, i);
-
-          if(modoOrn === 'antesTitulo' && existeConteudoAntes){
-            if(!ornamentoJaPertoNoFim(saida)){
-              saida.push(criarItem(simboloOrn, 'ornamento', false));
-            }
+          if(modoOrn === 'antesTitulo' && existeConteudoAntes && !ornamentoJaPertoNoFim(saida)){
+            saida.push(criarItem(simboloOrn, 'ornamento', false));
           }
-
-          if(modoOrn === 'entrePoemas' && existeConteudoAntes){
-            if(!ornamentoJaPertoNoFim(saida)){
-              saida.push(criarItem(simboloOrn, 'ornamento', false));
-            }
+          if(modoOrn === 'entrePoemas' && existeConteudoAntes && !ornamentoJaPertoNoFim(saida)){
+            saida.push(criarItem(simboloOrn, 'ornamento', false));
           }
-
           saida.push(atual);
-
           if(modoOrn === 'depoisTitulo'){
             const prox = proximoConteudoReal(base, i);
-            if(prox !== null){
-              saida.push(criarItem(simboloOrn, 'ornamento', false));
-            }
+            if(prox !== null) saida.push(criarItem(simboloOrn, 'ornamento', false));
           }
         } else {
           saida.push(atual);
         }
       }
-
       return saida;
     }
 
@@ -801,14 +495,10 @@ dos teus olhos?</textarea>
       }
       return false;
     }
-
     function proximoConteudoReal(lista, indice){
-      for(let i = indice + 1; i < lista.length; i++){
-        if(lista[i].tipo !== 'vazio') return i;
-      }
+      for(let i = indice + 1; i < lista.length; i++) if(lista[i].tipo !== 'vazio') return i;
       return null;
     }
-
     function ornamentoJaPertoNoFim(lista){
       if(lista.length === 0) return false;
       const ultimo = lista[lista.length - 1];
@@ -819,80 +509,42 @@ dos teus olhos?</textarea>
     function criarPaginaMedidora(){
       const pagina = document.createElement('div');
       pagina.className = `pagina ${getPageClass()} ${getMargemClass()}`;
-
-      const inner = document.createElement('div');
-      inner.className = 'pagina-inner';
-
-      const cab = document.createElement('div');
-      cab.className = 'cabecalho-pagina';
-      cab.innerHTML = `<span>Castor</span><span>${formato.value}</span>`;
-
-      const miolo = document.createElement('div');
-      miolo.className = 'miolo';
-
-      const rodape = document.createElement('div');
-      rodape.className = 'rodape-pagina';
-      rodape.textContent = '1';
-
-      inner.appendChild(cab);
-      inner.appendChild(miolo);
-      inner.appendChild(rodape);
-      pagina.appendChild(inner);
-
+      const inner = document.createElement('div'); inner.className = 'pagina-inner';
+      const cab = document.createElement('div'); cab.className = 'cabecalho-pagina'; cab.innerHTML = `<span>Castor</span><span>${formato.value}</span>`;
+      const miolo = document.createElement('div'); miolo.className = 'miolo';
+      const rodape = document.createElement('div'); rodape.className = 'rodape-pagina'; rodape.textContent = '1';
+      inner.appendChild(cab); inner.appendChild(miolo); inner.appendChild(rodape); pagina.appendChild(inner);
       return { pagina, miolo };
     }
 
     function paginarPorMedicaoReal(){
       paginas = [];
       medidor.innerHTML = '';
-
       const estrutura = criarPaginaMedidora();
       medidor.appendChild(estrutura.pagina);
-
       const mioloMedidor = estrutura.miolo;
       const alturaDisponivel = mioloMedidor.clientHeight;
-
       let atual = [];
 
       for(let i = 0; i < linhasProcessadas.length; i++){
         const item = linhasProcessadas[i];
-
-        if(
-          novaPagina.value === 'sim' &&
-          item.tipo === 'titulo' &&
-          atual.length > 0
-        ){
-          paginas.push(atual);
-          atual = [];
-          mioloMedidor.innerHTML = '';
+        if(novaPagina.value === 'sim' && item.tipo === 'titulo' && atual.length > 0){
+          paginas.push(atual); atual = []; mioloMedidor.innerHTML = '';
         }
-
         const clone = criarLinhaVisual(item, false);
         mioloMedidor.appendChild(clone);
-
         const passou = mioloMedidor.scrollHeight > alturaDisponivel + 1;
-
         if(passou && atual.length > 0){
           mioloMedidor.removeChild(clone);
-          paginas.push(atual);
-          atual = [];
-          mioloMedidor.innerHTML = '';
-          const cloneNovo = criarLinhaVisual(item, false);
-          mioloMedidor.appendChild(cloneNovo);
+          paginas.push(atual); atual = []; mioloMedidor.innerHTML = '';
+          mioloMedidor.appendChild(criarLinhaVisual(item, false));
         }
-
         atual.push(item);
       }
-
-      if(atual.length === 0){
-        atual.push(criarItem('', 'vazio', false));
-      }
-
+      if(atual.length === 0) atual.push(criarItem('', 'vazio', false));
       paginas.push(atual);
       medidor.innerHTML = '';
-
-      if(paginaAtual >= paginas.length) paginaAtual = paginas.length - 1;
-      if(paginaAtual < 0) paginaAtual = 0;
+      if(paginaAtual >= paginas.length) paginaAtual = Math.max(0, paginas.length - 1);
     }
 
     function criarLinhaVisual(item, interativa=true){
@@ -900,20 +552,12 @@ dos teus olhos?</textarea>
       div.className = 'linha-item ' + item.tipo + (item.manual ? ' manual' : '');
       div.dataset.id = item.id;
       div.dataset.tipo = item.tipo;
-
-      if(item.tipo === 'vazio'){
-        div.innerHTML = '&nbsp;';
-      } else {
-        div.textContent = item.texto;
-      }
-
+      if(item.tipo === 'vazio') div.innerHTML = '&nbsp;'; else div.textContent = item.texto;
       aplicarEstiloLinha(div, item);
-
       if(interativa){
         div.addEventListener('click', () => selecionarLinha(item.id));
         div.addEventListener('dblclick', () => iniciarEdicaoInline(item.id));
       }
-
       return div;
     }
 
@@ -921,11 +565,7 @@ dos teus olhos?</textarea>
       const preset = getFormaPreset();
       const entre = preset.overrideEntrelinha || Number(entrelinha.value);
       const espaco = preset.overrideEspacoVazio || espacoEstrofes.value;
-
-      div.style.textAlign =
-        item.tipo === 'titulo' || item.tipo === 'subtitulo' || item.tipo === 'ornamento'
-          ? 'center'
-          : alinhamento.value;
+      div.style.textAlign = (item.tipo === 'titulo' || item.tipo === 'subtitulo' || item.tipo === 'ornamento') ? 'center' : alinhamento.value;
 
       if(item.tipo === 'titulo'){
         div.style.fontFamily = fonteTitulos.value;
@@ -954,81 +594,57 @@ dos teus olhos?</textarea>
       }
     }
 
+    function getVisiblePages(){
+      if(modoVisualizacao.value === 'pagina') return [paginaAtual];
+      if(paginaAtual <= 0) return [0];
+      const esquerda = (paginaAtual % 2 === 0) ? paginaAtual : paginaAtual - 1;
+      const direita = esquerda + 1;
+      return direita < paginas.length ? [esquerda, direita] : [esquerda];
+    }
+
     function renderPaginas(){
       visorPaginas.innerHTML = '';
+      const spread = document.createElement('div');
+      spread.className = 'spread';
+      const visiveis = getVisiblePages();
 
-      paginas.forEach((pagina, indicePagina) => {
-        const wrap = document.createElement('div');
-        wrap.className = 'pagina-wrap';
-        wrap.dataset.page = indicePagina;
-
+      visiveis.forEach(indicePagina => {
+        const pagina = paginas[indicePagina];
+        if(!pagina) return;
         const page = document.createElement('div');
-        page.className = `pagina ${getPageClass()} ${getMargemClass()}` + (indicePagina === paginaAtual ? '' : ' oculta');
-
-        const inner = document.createElement('div');
-        inner.className = 'pagina-inner';
-
-        const cab = document.createElement('div');
-        cab.className = 'cabecalho-pagina';
-        cab.innerHTML = `<span>Castor</span><span>${formato.value}</span>`;
-
-        const miolo = document.createElement('div');
-        miolo.className = 'miolo';
-
-        pagina.forEach(item => {
-          miolo.appendChild(criarLinhaVisual(item, true));
-        });
-
-        const rodape = document.createElement('div');
-        rodape.className = 'rodape-pagina';
-        rodape.textContent = String(indicePagina + 1);
-
-        inner.appendChild(cab);
-        inner.appendChild(miolo);
-        inner.appendChild(rodape);
-        page.appendChild(inner);
-        wrap.appendChild(page);
-        visorPaginas.appendChild(wrap);
+        page.className = `pagina ${getPageClass()} ${getMargemClass()}`;
+        const inner = document.createElement('div'); inner.className = 'pagina-inner';
+        const cab = document.createElement('div'); cab.className = 'cabecalho-pagina'; cab.innerHTML = `<span>Castor</span><span>Página ${indicePagina + 1}</span>`;
+        const miolo = document.createElement('div'); miolo.className = 'miolo';
+        pagina.forEach(item => miolo.appendChild(criarLinhaVisual(item, true)));
+        const rodape = document.createElement('div'); rodape.className = 'rodape-pagina'; rodape.textContent = String(indicePagina + 1);
+        inner.appendChild(cab); inner.appendChild(miolo); inner.appendChild(rodape); page.appendChild(inner); spread.appendChild(page);
       });
 
+      visorPaginas.appendChild(spread);
       destacarSelecionadaNaPagina();
     }
 
     function atualizarMetas(){
       metaFormato.textContent = `Formato ${formato.value}`;
-      metaPagina.textContent = `Página ${paginaAtual + 1} de ${paginas.length}`;
-      mostrarPaginaAtual();
-    }
-
-    function mostrarPaginaAtual(){
-      const todas = visorPaginas.querySelectorAll('.pagina');
-      todas.forEach((p, i) => {
-        p.classList.toggle('oculta', i !== paginaAtual);
-      });
+      const visiveis = getVisiblePages().map(i => i + 1);
+      metaPagina.textContent = visiveis.length === 1 ? `Página ${visiveis[0]} de ${paginas.length}` : `Páginas ${visiveis[0]}–${visiveis[1]} de ${paginas.length}`;
     }
 
     function aplicarEscalaVisual(){
-      const wrap = visorPaginas.querySelector('.pagina-wrap');
-      if(!wrap) return;
-
-      const page = wrap.querySelector('.pagina');
-      if(!page) return;
-
+      const spread = visorPaginas.querySelector('.spread');
+      if(!spread) return;
       let escala = 1;
-
       if(modoEscala.value === 'ajustar'){
         const larguraVisor = visorPaginas.clientWidth - 24;
-        const larguraPagina = page.offsetWidth;
-        escala = Math.min(1, larguraVisor / larguraPagina);
+        const larguraSpread = spread.scrollWidth;
+        escala = Math.min(1, larguraVisor / larguraSpread);
       }
-
-      wrap.style.transform = `scale(${escala})`;
-      wrap.style.marginBottom = `${(1 - escala) * 40}px`;
+      spread.style.transform = `scale(${escala})`;
+      spread.style.marginBottom = `${(1 - escala) * 60}px`;
     }
 
-    function buscarItemBasePorId(id){
-      return linhasBase.find(item => item.id === id) || null;
-    }
+    function buscarItemBasePorId(id){ return linhasBase.find(item => item.id === id) || null; }
 
     function selecionarLinha(id){
       linhaSelecionadaId = id;
@@ -1047,16 +663,10 @@ dos teus olhos?</textarea>
 
     function salvarLinhaSelecionada(){
       if(linhaSelecionadaId === null) return;
-      if(editandoId !== null){
-        finalizarEdicaoInline(true);
-      } else {
+      if(editandoId !== null) finalizarEdicaoInline(true);
+      else {
         const item = buscarItemBasePorId(linhaSelecionadaId);
-        if(item){
-          item.manual = true;
-          aplicarEstrutura();
-          reconstruirEntradaAPartirDasLinhas();
-          selecionarLinha(linhaSelecionadaId);
-        }
+        if(item){ item.manual = true; aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); selecionarLinha(linhaSelecionadaId); }
       }
     }
 
@@ -1064,88 +674,62 @@ dos teus olhos?</textarea>
       if(linhaSelecionadaId === null) return;
       const item = buscarItemBasePorId(linhaSelecionadaId);
       if(!item) return;
-
+      item.type = tipo;
       item.tipo = tipo;
       item.manual = true;
-
-      if(tipo === 'ornamento' && !item.texto.trim()){
-        item.texto = ornamentoTipo.value;
-      }
-
-      aplicarEstrutura();
-      reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(linhaSelecionadaId);
+      if(tipo === 'ornamento' && !item.texto.trim()) item.texto = ornamentoTipo.value;
+      aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); selecionarLinha(linhaSelecionadaId);
     }
 
     function inserirLinhaAbaixo(){
       if(linhaSelecionadaId === null) return;
       const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
       if(index === -1) return;
-
       const novo = criarItem('', 'verso', true);
       linhasBase.splice(index + 1, 0, novo);
-      aplicarEstrutura();
-      reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(novo.id);
-      iniciarEdicaoInline(novo.id);
+      aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); selecionarLinha(novo.id); iniciarEdicaoInline(novo.id);
     }
 
     function excluirLinhaSelecionada(){
       if(linhaSelecionadaId === null) return;
       const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
       if(index === -1) return;
-
       linhasBase.splice(index, 1);
       linhaSelecionadaId = null;
-      aplicarEstrutura();
-      reconstruirEntradaAPartirDasLinhas();
-      statusEdicao.textContent = 'Linha removida.';
+      aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); statusEdicao.textContent = 'Linha removida.';
     }
 
     function inserirOrnamentoManual(){
       if(linhaSelecionadaId === null) return;
       const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
       if(index === -1) return;
-
       const novo = criarItem(ornamentoTipo.value, 'ornamento', true);
       linhasBase.splice(index + 1, 0, novo);
-      aplicarEstrutura();
-      reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(novo.id);
+      aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); selecionarLinha(novo.id);
     }
 
     function unirComLinhaAcima(){
       if(linhaSelecionadaId === null) return;
       const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
       if(index <= 0) return;
-
       const atual = linhasBase[index];
       const acima = linhasBase[index - 1];
-
       acima.texto = (acima.texto.replace(/\s+$/,'') + ' ' + atual.texto.replace(/^\s+/,'')).trim();
       acima.manual = true;
       linhasBase.splice(index, 1);
-
-      aplicarEstrutura();
-      reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(acima.id);
+      aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); selecionarLinha(acima.id);
     }
 
     function unirComLinhaAbaixo(){
       if(linhaSelecionadaId === null) return;
       const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
       if(index === -1 || index >= linhasBase.length - 1) return;
-
       const atual = linhasBase[index];
       const abaixo = linhasBase[index + 1];
-
       atual.texto = (atual.texto.replace(/\s+$/,'') + ' ' + abaixo.texto.replace(/^\s+/,'')).trim();
       atual.manual = true;
       linhasBase.splice(index + 1, 1);
-
-      aplicarEstrutura();
-      reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(atual.id);
+      aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); selecionarLinha(atual.id);
     }
 
     function reconstruirEntradaAPartirDasLinhas(){
@@ -1155,48 +739,31 @@ dos teus olhos?</textarea>
 
     function iniciarEdicaoInline(id){
       if(editandoId !== null) finalizarEdicaoInline(true);
-
       const item = buscarItemBasePorId(id);
       const el = document.querySelector(`.linha-item[data-id="${id}"]`);
       if(!item || !el) return;
-
       selecionarLinha(id);
       editandoId = id;
       textoAntesEdicao = item.texto;
-
       el.classList.add('editando');
       el.contentEditable = 'true';
       el.spellcheck = false;
       el.focus();
-
-      if(item.tipo === 'vazio'){
-        el.textContent = '';
-      }
-
+      if(item.tipo === 'vazio') el.textContent = '';
       colocarCursorNoFim(el);
       statusEdicao.textContent = 'Editando direto na prévia. Enter salva. Esc cancela.';
-
       el.addEventListener('keydown', tratarTeclaEdicao);
       el.addEventListener('blur', tratarBlurEdicao);
     }
 
     function tratarTeclaEdicao(e){
       if(editandoId === null) return;
-
-      if(e.key === 'Enter'){
-        e.preventDefault();
-        finalizarEdicaoInline(true);
-      }
-
-      if(e.key === 'Escape'){
-        e.preventDefault();
-        finalizarEdicaoInline(false);
-      }
-
+      if(e.key === 'Enter'){ e.preventDefault(); finalizarEdicaoInline(true); }
+      if(e.key === 'Escape'){ e.preventDefault(); finalizarEdicaoInline(false); }
       if(e.key === 'Delete'){
         const el = e.currentTarget;
-        const texto = limparTextoVisual(el.innerText || '');
         const item = buscarItemBasePorId(editandoId);
+        const texto = limparTextoVisual(el.innerText || '');
         if(item && item.tipo === 'vazio' && texto === ''){
           e.preventDefault();
           const idApagar = editandoId;
@@ -1207,64 +774,43 @@ dos teus olhos?</textarea>
       }
     }
 
-    function tratarBlurEdicao(){
-      if(editandoId !== null) finalizarEdicaoInline(true);
-    }
+    function tratarBlurEdicao(){ if(editandoId !== null) finalizarEdicaoInline(true); }
 
     function finalizarEdicaoInline(salvar){
       const id = editandoId;
       if(id === null) return;
-
       const item = buscarItemBasePorId(id);
       const el = document.querySelector(`.linha-item[data-id="${id}"]`);
-      if(!item || !el){
-        editandoId = null;
-        return;
-      }
-
+      if(!item || !el){ editandoId = null; return; }
       el.removeEventListener('keydown', tratarTeclaEdicao);
       el.removeEventListener('blur', tratarBlurEdicao);
       el.contentEditable = 'false';
       el.classList.remove('editando');
-
       if(salvar){
         const textoNovo = limparTextoVisual(el.innerText || '');
         item.texto = textoNovo;
         item.manual = true;
-        if(textoNovo === ''){
-          item.tipo = 'vazio';
-        }
+        if(textoNovo === '') item.tipo = 'vazio';
       } else {
         item.texto = textoAntesEdicao;
       }
-
       editandoId = null;
       textoAntesEdicao = '';
-      aplicarEstrutura();
-      reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(id);
+      aplicarEstrutura(); reconstruirEntradaAPartirDasLinhas(); selecionarLinha(id);
     }
 
-    function limparTextoVisual(txt){
-      return txt.replace(/\u00A0/g, ' ').replace(/\r/g, '').trimEnd();
-    }
-
+    function limparTextoVisual(txt){ return txt.replace(/\u00A0/g, ' ').replace(/\r/g, '').trimEnd(); }
     function colocarCursorNoFim(el){
       const range = document.createRange();
       const sel = window.getSelection();
-      range.selectNodeContents(el);
-      range.collapse(false);
-      sel.removeAllRanges();
-      sel.addRange(range);
+      range.selectNodeContents(el); range.collapse(false); sel.removeAllRanges(); sel.addRange(range);
     }
 
     function scheduleAutoParse(){
       clearTimeout(autoTimer);
       autoTimer = setTimeout(() => {
         const atual = entradaPoetica.value.replace(/\r/g,'');
-        if(atual !== ultimoTextoLido){
-          parseEntrada(true);
-        }
+        if(atual !== ultimoTextoLido) parseEntrada(true);
       }, 250);
     }
 
@@ -1280,18 +826,9 @@ dos teus olhos?</textarea>
     }
 
     document.getElementById('btnAplicar').addEventListener('click', aplicarEstrutura);
-
-    document.getElementById('btnReprocessar').addEventListener('click', () => {
-      parseEntrada(true);
-      statusEdicao.textContent = 'Texto reprocessado com a leitura estrutural atual.';
-    });
-
-    document.getElementById('btnCarregarPreview').addEventListener('click', () => {
-      parseEntrada(true);
-    });
-
+    document.getElementById('btnReprocessar').addEventListener('click', () => { parseEntrada(true); statusEdicao.textContent = 'Texto reprocessado com a leitura estrutural atual.'; });
+    document.getElementById('btnCarregarPreview').addEventListener('click', () => parseEntrada(true));
     document.getElementById('btnLimparTudo').addEventListener('click', limparTudo);
-
     document.getElementById('btnSalvarLinha').addEventListener('click', salvarLinhaSelecionada);
     document.getElementById('btnVerso').addEventListener('click', () => reclassificarSelecionada('verso'));
     document.getElementById('btnTitulo').addEventListener('click', () => reclassificarSelecionada('titulo'));
@@ -1303,27 +840,24 @@ dos teus olhos?</textarea>
     document.getElementById('btnUnirAbaixo').addEventListener('click', unirComLinhaAbaixo);
 
     document.getElementById('paginaAnterior').addEventListener('click', () => {
-      if(paginaAtual > 0){
-        paginaAtual--;
-        atualizarMetas();
-        aplicarEscalaVisual();
-      }
+      if(modoVisualizacao.value === 'pagina') paginaAtual = Math.max(0, paginaAtual - 1);
+      else if(paginaAtual <= 0) paginaAtual = 0;
+      else paginaAtual = Math.max(0, paginaAtual - 2);
+      renderPaginas(); atualizarMetas(); aplicarEscalaVisual();
     });
 
     document.getElementById('proximaPagina').addEventListener('click', () => {
-      if(paginaAtual < paginas.length - 1){
-        paginaAtual++;
-        atualizarMetas();
-        aplicarEscalaVisual();
+      if(modoVisualizacao.value === 'pagina') paginaAtual = Math.min(paginas.length - 1, paginaAtual + 1);
+      else {
+        if(paginaAtual === 0) paginaAtual = Math.min(paginas.length - 1, 1);
+        else paginaAtual = Math.min(paginas.length - 1, paginaAtual + 2);
       }
+      renderPaginas(); atualizarMetas(); aplicarEscalaVisual();
     });
 
-    [
-      formato, primeiraLinha, formaPoetica, fonteVersos, fonteTitulos, tamVersos,
-      tamTitulos, entrelinha, margens, alinhamento, espacoEstrofes,
-      ornamentoModo, ornamentoTipo, novaPagina, modoEscala
-    ].forEach(campo => {
+    [formato, primeiraLinha, formaPoetica, fonteVersos, fonteTitulos, tamVersos, tamTitulos, entrelinha, margens, alinhamento, espacoEstrofes, ornamentoModo, ornamentoTipo, novaPagina, modoEscala, modoVisualizacao].forEach(campo => {
       campo.addEventListener('change', () => {
+        if(campo === modoVisualizacao) paginaAtual = 0;
         aplicarEstrutura();
       });
     });
@@ -1331,17 +865,13 @@ dos teus olhos?</textarea>
     entradaPoetica.addEventListener('input', scheduleAutoParse);
     entradaPoetica.addEventListener('paste', () => setTimeout(scheduleAutoParse, 20));
     entradaPoetica.addEventListener('change', scheduleAutoParse);
-
     window.addEventListener('resize', aplicarEscalaVisual);
 
     document.addEventListener('keydown', (e) => {
       if(editandoId !== null) return;
-
       if(e.key === 'Delete' && linhaSelecionadaId !== null){
         const item = buscarItemBasePorId(linhaSelecionadaId);
-        if(item && item.tipo === 'vazio'){
-          excluirLinhaSelecionada();
-        }
+        if(item && (item.tipo === 'vazio' || item.tipo === 'ornamento')) excluirLinhaSelecionada();
       }
     });
 
