@@ -38,9 +38,7 @@
       font-family:Georgia, serif;
     }
 
-    button,input,select,textarea{
-      font:inherit;
-    }
+    button,input,select,textarea{font:inherit}
 
     .wrap{
       max-width:1460px;
@@ -78,11 +76,7 @@
       cursor:pointer;
     }
 
-    .btn:disabled{
-      opacity:.5;
-      cursor:not-allowed;
-    }
-
+    .btn:disabled{opacity:.5;cursor:not-allowed}
     .btn-yellow{background:var(--yellow);color:#2d2600}
     .btn-soft{background:#ece7df;color:#2f2a25}
     .btn-red{background:var(--red);color:#fff}
@@ -128,9 +122,10 @@
       background:#fff;
       line-height:1.45;
       white-space:pre-wrap;
+      font-family:Georgia, serif;
     }
 
-    .upload-note,.note,.help{
+    .upload-note,.help{
       color:var(--muted);
       font-size:.92rem;
       line-height:1.35;
@@ -166,10 +161,7 @@
     }
 
     .panel h3,
-    .preview-box h3{
-      margin:0;
-      font-size:1.08rem;
-    }
+    .preview-box h3{margin:0;font-size:1.08rem}
 
     .subgroup{
       border:1px solid #d4e6da;
@@ -188,17 +180,8 @@
       color:#28573c;
     }
 
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-
-    .field label{
-      font-size:.92rem;
-      color:#28563b;
-      font-weight:700;
-    }
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field label{font-size:.92rem;color:#28563b;font-weight:700}
 
     .field input,
     .field select{
@@ -229,11 +212,7 @@
       flex-wrap:wrap;
     }
 
-    .preview-mode{
-      color:var(--muted);
-      font-weight:700;
-      font-size:.94rem;
-    }
+    .preview-mode{color:var(--muted);font-weight:700;font-size:.94rem}
 
     .preview-toolbar{
       display:flex;
@@ -247,18 +226,8 @@
       border-radius:12px;
     }
 
-    .preview-toolbar .left{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-
-    .preview-counter{
-      font-size:.92rem;
-      color:#3f684d;
-      font-weight:700;
-    }
+    .preview-toolbar .left{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .preview-counter{font-size:.92rem;color:#3f684d;font-weight:700}
 
     .preview-stage{
       min-height:650px;
@@ -282,12 +251,7 @@
       flex:0 0 auto;
     }
 
-    .page-inner{
-      position:relative;
-      width:100%;
-      height:100%;
-      overflow:hidden;
-    }
+    .page-inner{position:relative;width:100%;height:100%;overflow:hidden}
 
     .page-header{
       position:absolute;
@@ -327,16 +291,13 @@
       color:#887f77;
     }
 
-    .empty{
-      text-align:center;
-      color:var(--muted);
-      padding:90px 24px;
-      font-size:1.02rem;
-    }
+    .empty{text-align:center;color:var(--muted);padding:90px 24px;font-size:1.02rem}
 
     .block{
       outline:none;
       color:var(--ink);
+      white-space:pre-wrap;
+      word-break:break-word;
     }
 
     .block.selected{
@@ -403,11 +364,7 @@
       font-weight:700;
     }
 
-    .chip-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
+    .chip-row{display:flex;flex-wrap:wrap;gap:8px}
 
     .chip{
       border:1px solid #c4d7ca;
@@ -420,11 +377,7 @@
       cursor:pointer;
     }
 
-    .chip.active{
-      background:#e6f2ea;
-      border-color:#84b597;
-      color:#1d5d39;
-    }
+    .chip.active{background:#e6f2ea;border-color:#84b597;color:#1d5d39}
 
     .status-box{
       border:1px dashed #bdd3c3;
@@ -445,28 +398,16 @@
     }
 
     @media (max-width:1220px){
-      .workspace{
-        grid-template-columns:1fr;
-      }
-
-      .panel,
-      .preview-box{
-        min-height:auto;
-      }
-
-      .preview-stage{
-        min-height:560px;
-      }
+      .workspace{grid-template-columns:1fr}
+      .panel,.preview-box{min-height:auto}
+      .preview-stage{min-height:560px}
     }
 
     @media (max-width:760px){
       body{padding:12px}
       .title{font-size:1.45rem}
       .entry-grid{grid-template-columns:1fr}
-      .page{
-        transform:scale(.86);
-        transform-origin:top center;
-      }
+      .page{transform:scale(.86);transform-origin:top center}
     }
   </style>
 </head>
@@ -596,9 +537,7 @@
           </div>
         </div>
 
-        <div class="help">
-          A leitura correta aqui depende das quebras reais do texto. Para separar título, subtítulo e parágrafos, o texto precisa subir com linhas quebradas de verdade.
-        </div>
+        <div class="help">Esta versão já tenta separar automaticamente capítulo, subtítulo e corpo do texto mesmo quando o autor cola o material na caixa de entrada.</div>
       </aside>
 
       <section class="preview-box">
@@ -726,9 +665,7 @@
           </div>
         </div>
 
-        <div class="status-box" id="selecionadoInfo">
-          Nenhum bloco selecionado.
-        </div>
+        <div class="status-box" id="selecionadoInfo">Nenhum bloco selecionado.</div>
       </aside>
     </div>
   </div>
@@ -736,7 +673,7 @@
   <div id="hiddenMeasurer" class="hidden-measurer"></div>
 
   <script>
-    const STORAGE_KEY = "polux_sessao_editorial_v2";
+    const STORAGE_KEY = "polux_sessao_editorial_v3";
 
     const inputText = document.getElementById("inputText");
     const arquivoTexto = document.getElementById("arquivoTexto");
@@ -780,7 +717,6 @@
     let pages = [];
     let currentPage = 1;
     let selectedBlockId = null;
-    let pendingFileText = "";
 
     function getPageConfig() {
       const map = {
@@ -820,21 +756,20 @@
     }
 
     function getPagePadding() {
-      const formatKey = formato.value;
-      const marginKey = margens.value;
-
       const map = {
         a5: { estreita: 26, normal: 40, ampla: 54 },
         "16x23": { estreita: 30, normal: 46, ampla: 60 },
         "6x9": { estreita: 34, normal: 50, ampla: 66 },
         epub: { estreita: 36, normal: 46, ampla: 56 }
       };
-
-      return map[formatKey][marginKey];
+      return map[formato.value][margens.value];
     }
 
     function cleanText(text) {
-      return String(text || "").replace(/\r/g, "");
+      return String(text || "")
+        .replace(/\r/g, "")
+        .replace(/\u00A0/g, " ")
+        .replace(/\t/g, "    ");
     }
 
     function uid() {
@@ -842,11 +777,45 @@
     }
 
     function makeBlock(text, style) {
-      return {
-        id: uid(),
-        text: text || "",
-        style: style || "normal"
-      };
+      return { id: uid(), text: text || "", style: style || "normal" };
+    }
+
+    function isChapterLine(line) {
+      return /^cap[ií]tulo\s+\d+/i.test(line.trim());
+    }
+
+    function isLikelySubtitle(line) {
+      const t = line.trim();
+      if (!t) return false;
+      if (isChapterLine(t)) return false;
+      if (t.length > 90) return false;
+      if (/[.!?;:]$/.test(t)) return false;
+      const words = t.split(/\s+/).filter(Boolean);
+      if (words.length > 10) return false;
+      return true;
+    }
+
+    function splitIntoParagraphs(lines) {
+      const groups = [];
+      let current = [];
+
+      function flush() {
+        if (current.length) {
+          groups.push(current.join(" ").replace(/\s+/g, " ").trim());
+          current = [];
+        }
+      }
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          flush();
+          continue;
+        }
+        current.push(trimmed);
+      }
+      flush();
+      return groups.filter(Boolean);
     }
 
     function parseTextToBlocks(text) {
@@ -855,69 +824,92 @@
 
       const lines = cleaned.split("\n");
       const result = [];
-      let paragraphLines = [];
+      let i = 0;
+      let firstBlockHandled = false;
 
-      function flushParagraph() {
-        const joined = paragraphLines
-          .map(line => line.trim())
-          .filter(Boolean)
-          .join(" ")
-          .trim();
-
-        if (joined) {
-          result.push(makeBlock(joined, "normal"));
-        }
-        paragraphLines = [];
-      }
-
-      if (modoInicio.value === "capitulo1") {
-        const firstRealLine = lines.find(line => line.trim());
-        if (firstRealLine && !/^cap[ií]tulo\s+\d+/i.test(firstRealLine.trim())) {
-          result.push(makeBlock("Capítulo 1", "title1"));
-        }
-      }
-
-      for (let i = 0; i < lines.length; i++) {
-        const raw = lines[i];
-        const line = raw.trim();
+      while (i < lines.length) {
+        const line = lines[i].trim();
 
         if (!line) {
-          flushParagraph();
+          i++;
           continue;
         }
 
-        if (/^cap[ií]tulo\s+\d+/i.test(line)) {
-          flushParagraph();
+        if (!firstBlockHandled && modoInicio.value === "capitulo1" && !isChapterLine(line)) {
+          result.push(makeBlock("Capítulo 1", "title1"));
+          firstBlockHandled = true;
+          continue;
+        }
+
+        if (!firstBlockHandled && modoInicio.value === "titulo" && line) {
           result.push(makeBlock(line, "title1"));
+          firstBlockHandled = true;
+          i++;
           continue;
         }
 
-        if (
-          modoInicio.value === "titulo" &&
-          result.length === 0 &&
-          line
-        ) {
+        if (isChapterLine(line)) {
           result.push(makeBlock(line, "title1"));
+          firstBlockHandled = true;
+          i++;
+
+          while (i < lines.length && !lines[i].trim()) i++;
+
+          if (i < lines.length && isLikelySubtitle(lines[i])) {
+            result.push(makeBlock(lines[i].trim(), "title2"));
+            i++;
+          }
           continue;
         }
 
-        paragraphLines.push(raw);
+        if (!firstBlockHandled && isLikelySubtitle(line) && i + 1 < lines.length) {
+          const next = lines[i + 1] ? lines[i + 1].trim() : "";
+          if (next && !isLikelySubtitle(next)) {
+            result.push(makeBlock(line, "title2"));
+            firstBlockHandled = true;
+            i++;
+            continue;
+          }
+        }
+
+        const paragraphLines = [];
+        while (i < lines.length) {
+          const current = lines[i].trim();
+          if (!current) {
+            paragraphLines.push("");
+            i++;
+            if (paragraphLines.length && paragraphLines[paragraphLines.length - 1] === "") break;
+            continue;
+          }
+          if (isChapterLine(current)) break;
+          paragraphLines.push(lines[i]);
+          i++;
+
+          const next = i < lines.length ? lines[i].trim() : "";
+          if (!next) {
+            i++;
+            break;
+          }
+          if (isChapterLine(next)) break;
+        }
+
+        const paragraphs = splitIntoParagraphs(paragraphLines);
+        for (const p of paragraphs) {
+          if (isLikelySubtitle(p) && result.length && result[result.length - 1].style === "title1") {
+            result.push(makeBlock(p, "title2"));
+          } else {
+            result.push(makeBlock(p, "normal"));
+          }
+        }
       }
-
-      flushParagraph();
 
       if (ornamentoModo.value === "fim-capitulo") {
         const withOrnaments = [];
-        for (let i = 0; i < result.length; i++) {
-          const current = result[i];
-          const next = result[i + 1];
+        for (let idx = 0; idx < result.length; idx++) {
+          const current = result[idx];
+          const next = result[idx + 1];
           withOrnaments.push(current);
-
-          if (
-            current.style === "normal" &&
-            next &&
-            next.style === "title1"
-          ) {
+          if (current.style === "normal" && next && next.style === "title1") {
             withOrnaments.push(makeBlock(ornamentoTipo.value, "ornamento"));
           }
         }
@@ -930,8 +922,13 @@
     function blocksToSupportText() {
       const parts = [];
       for (const block of blocks) {
-        parts.push(block.text);
-        parts.push("");
+        if (block.style === "title1" || block.style === "title2" || block.style === "title3" || block.style === "epigrafe" || block.style === "ornamento") {
+          parts.push(block.text);
+          parts.push("");
+        } else {
+          parts.push(block.text);
+          parts.push("");
+        }
       }
       return parts.join("\n").trim();
     }
@@ -948,7 +945,7 @@
 
       const header = document.createElement("div");
       header.className = "page-header";
-      header.innerHTML = `<span>${headerText || "Pólux"}</span><span>${cfg.label}</span>`;
+      header.innerHTML = `<span>${headerText || "Pólux"}</span><span>${cfg.label.replace(" · ", " - ")}</span>`;
 
       const content = document.createElement("div");
       content.className = "page-content";
@@ -978,7 +975,6 @@
       const bodySize = Math.max(12, Math.min(22, parseFloat(tamanhoCorpo.value || "14") || 14));
       const chapterSize = Math.max(18, Math.min(56, parseFloat(tamanhoCapitulo.value || "30") || 30));
       const lineHt = parseFloat(entrelinha.value || "1.6") || 1.6;
-
       const bodyFont = getBodyFont();
       const chapterFont = getChapterFont();
 
@@ -987,16 +983,9 @@
         el.style.fontSize = bodySize + "pt";
         el.style.lineHeight = lineHt;
         el.style.textAlign = alinhamentoTexto.value;
-
-        if (hifenizacao.value === "on") {
-          el.style.hyphens = "auto";
-          el.style.webkitHyphens = "auto";
-          el.style.msHyphens = "auto";
-        } else {
-          el.style.hyphens = "none";
-          el.style.webkitHyphens = "none";
-          el.style.msHyphens = "none";
-        }
+        el.style.hyphens = hifenizacao.value === "on" ? "auto" : "none";
+        el.style.webkitHyphens = hifenizacao.value === "on" ? "auto" : "none";
+        el.style.msHyphens = hifenizacao.value === "on" ? "auto" : "none";
 
         if (paragrafo.value === "recuo") {
           el.style.textIndent = getIndentValue();
@@ -1009,12 +998,19 @@
           el.style.marginBottom = block.style === "sem-espaco" ? ".25em" : ".5em";
         }
 
-        const blockIndex = blocks.findIndex(item => item.id === block.id);
-        const prev = blocks[blockIndex - 1];
+        const index = blocks.findIndex(item => item.id === block.id);
+        let prevBodyRelevant = null;
+        for (let k = index - 1; k >= 0; k--) {
+          if (blocks[k].style !== "ornamento") {
+            prevBodyRelevant = blocks[k];
+            break;
+          }
+        }
+
         const isFirstBodyAfterTitle = (
           capitular.value === "on" &&
           block.style === "normal" &&
-          (!prev || ["title1","title2","title3","ornamento"].includes(prev.style))
+          (!prevBodyRelevant || ["title1", "title2", "title3", "epigrafe"].includes(prevBodyRelevant.style))
         );
         el.classList.toggle("dropcap", isFirstBodyAfterTitle);
       }
@@ -1027,37 +1023,36 @@
       if (block.style === "title2") {
         el.style.fontFamily = chapterFont;
         el.style.fontSize = Math.max(14, chapterSize - 8) + "pt";
+        el.classList.remove("dropcap");
       }
 
       if (block.style === "title3") {
         el.style.fontFamily = chapterFont;
         el.style.fontSize = Math.max(13, chapterSize - 10) + "pt";
+        el.classList.remove("dropcap");
       }
 
       if (block.style === "epigrafe") {
         el.style.fontFamily = bodyFont;
         el.style.fontSize = bodySize + "pt";
         el.style.lineHeight = lineHt;
+        el.classList.remove("dropcap");
       }
 
       if (block.style === "ornamento") {
         el.style.fontFamily = chapterFont;
         el.style.fontSize = Math.max(14, chapterSize - 8) + "pt";
+        el.classList.remove("dropcap");
       }
 
       if (editable) {
-        el.addEventListener("click", () => {
-          selectBlock(block.id);
-        });
-
-        el.addEventListener("focus", () => {
-          selectBlock(block.id);
-        });
+        el.addEventListener("click", () => selectBlock(block.id));
+        el.addEventListener("focus", () => selectBlock(block.id));
 
         el.addEventListener("input", () => {
           const item = blocks.find(b => b.id === block.id);
           if (item) {
-            item.text = el.innerText.replace(/\n/g, " ").trim();
+            item.text = el.innerText.replace(/\n{2,}/g, "\n").trim();
             inputText.value = blocksToSupportText();
             saveState();
           }
@@ -1068,7 +1063,6 @@
             event.preventDefault();
             splitSelectedBlock(block.id);
           }
-
           if ((event.key === "Backspace" || event.key === "Delete") && el.innerText.trim() === "") {
             event.preventDefault();
             removeBlock(block.id);
@@ -1076,10 +1070,7 @@
         });
       }
 
-      if (selectedBlockId === block.id) {
-        el.classList.add("selected");
-      }
-
+      if (selectedBlockId === block.id) el.classList.add("selected");
       return el;
     }
 
@@ -1103,21 +1094,15 @@
       for (let i = 0; i < blocks.length; i++) {
         const block = blocks[i];
         const testNode = buildBlockNode(block, false);
-
         measureShell.content.appendChild(testNode);
 
         const tooTall = measureShell.content.scrollHeight > maxHeight && currentIds.length > 0;
 
         if (tooTall) {
           measureShell.content.removeChild(testNode);
-          pages.push({
-            header: currentHeader,
-            ids: [...currentIds]
-          });
-
+          pages.push({ header: currentHeader, ids: [...currentIds] });
           currentIds = [];
           measureShell.content.innerHTML = "";
-
           if (block.style === "title1") currentHeader = block.text;
           currentIds.push(block.id);
           measureShell.content.appendChild(buildBlockNode(block, false));
@@ -1128,15 +1113,10 @@
       }
 
       if (currentIds.length) {
-        pages.push({
-          header: currentHeader,
-          ids: [...currentIds]
-        });
+        pages.push({ header: currentHeader, ids: [...currentIds] });
       }
 
-      if (!pages.length) {
-        pages = [{ header: "Pólux", ids: [] }];
-      }
+      if (!pages.length) pages = [{ header: "Pólux", ids: [] }];
     }
 
     function render() {
@@ -1154,7 +1134,6 @@
       }
 
       paginate();
-
       if (currentPage < 1) currentPage = 1;
       if (currentPage > pages.length) currentPage = pages.length;
 
@@ -1163,23 +1142,18 @@
 
       for (const id of pageData.ids) {
         const block = blocks.find(item => item.id === id);
-        if (block) {
-          shell.content.appendChild(buildBlockNode(block, true));
-        }
+        if (block) shell.content.appendChild(buildBlockNode(block, true));
       }
 
       previewStage.appendChild(shell.page);
       pageCounter.textContent = `Página ${currentPage} de ${pages.length}`;
       btnPrev.disabled = currentPage <= 1;
       btnNext.disabled = currentPage >= pages.length;
-
       refreshStyleChips();
     }
 
     function refreshStyleChips() {
-      chips.forEach(chip => {
-        chip.classList.toggle("active", chip.dataset.style === estiloAtual.value);
-      });
+      chips.forEach(chip => chip.classList.toggle("active", chip.dataset.style === estiloAtual.value));
     }
 
     function selectBlock(id) {
@@ -1187,7 +1161,7 @@
       const block = blocks.find(item => item.id === id);
       if (block) {
         estiloAtual.value = block.style;
-        selecionadoInfo.innerHTML = `<strong>Bloco selecionado:</strong><br>${block.text.slice(0, 120) || "(vazio)"}`;
+        selecionadoInfo.innerHTML = `<strong>Bloco selecionado:</strong><br>${(block.text || "(vazio)").slice(0, 140)}`;
       } else {
         selecionadoInfo.textContent = "Nenhum bloco selecionado.";
       }
@@ -1198,11 +1172,8 @@
       if (!selectedBlockId) return;
       const block = blocks.find(item => item.id === selectedBlockId);
       if (!block) return;
-
       block.style = style;
-      if (style === "ornamento" && !block.text.trim()) {
-        block.text = ornamentoTipo.value;
-      }
+      if (style === "ornamento" && !block.text.trim()) block.text = ornamentoTipo.value;
       inputText.value = blocksToSupportText();
       saveState();
       render();
@@ -1229,14 +1200,12 @@
       const text = original.text || "";
       const left = text.slice(0, offset).trim();
       const right = text.slice(offset).trim();
-
       if (!left && !right) return;
 
       blocks[index].text = left || "";
       const newBlock = makeBlock(right || "", original.style);
       blocks.splice(index + 1, 0, newBlock);
       selectedBlockId = newBlock.id;
-
       inputText.value = blocksToSupportText();
       saveState();
       render();
@@ -1245,10 +1214,8 @@
     function removeBlock(id) {
       const index = blocks.findIndex(item => item.id === id);
       if (index === -1) return;
-
       blocks.splice(index, 1);
       selectedBlockId = blocks[index]?.id || blocks[index - 1]?.id || null;
-
       inputText.value = blocksToSupportText();
       saveState();
       render();
@@ -1264,11 +1231,9 @@
 
     function resetAll() {
       sessionStorage.removeItem(STORAGE_KEY);
-
       inputText.value = "";
       arquivoTexto.value = "";
       arquivoNome.textContent = "Nenhum arquivo carregado";
-
       formato.value = "a5";
       margens.value = "normal";
       paragrafo.value = "recuo";
@@ -1286,7 +1251,6 @@
       estiloAtual.value = "normal";
       ornamentoModo.value = "off";
       ornamentoTipo.value = "❦";
-
       blocks = [];
       pages = [];
       currentPage = 1;
@@ -1327,10 +1291,8 @@
     function restoreState() {
       const raw = sessionStorage.getItem(STORAGE_KEY);
       if (!raw) return;
-
       try {
         const data = JSON.parse(raw);
-
         if (data.values) {
           formato.value = data.values.formato || "a5";
           margens.value = data.values.margens || "normal";
@@ -1350,7 +1312,6 @@
           ornamentoModo.value = data.values.ornamentoModo || "off";
           ornamentoTipo.value = data.values.ornamentoTipo || "❦";
         }
-
         inputText.value = data.inputText || "";
         arquivoNome.textContent = data.arquivoNome || "Nenhum arquivo carregado";
         blocks = Array.isArray(data.blocks) ? data.blocks : [];
@@ -1366,7 +1327,6 @@
         arquivoNome.textContent = "Escolha um arquivo .txt primeiro";
         return;
       }
-
       const reader = new FileReader();
       reader.onload = function(e) {
         const text = String(e.target.result || "");
@@ -1381,9 +1341,7 @@
     });
 
     arquivoTexto.addEventListener("change", function() {
-      arquivoNome.textContent = arquivoTexto.files[0]
-        ? arquivoTexto.files[0].name
-        : "Nenhum arquivo carregado";
+      arquivoNome.textContent = arquivoTexto.files[0] ? arquivoTexto.files[0].name : "Nenhum arquivo carregado";
     });
 
     btnExemplo.addEventListener("click", function() {
@@ -1391,7 +1349,8 @@
 
 O Degrau e a Mochila
 
-A praça respirava como um animal ferido. O som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.
+A praça respirava como um animal ferido.
+O som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.
 
 Sacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa. Tudo parecia seguir um ritmo que não incluía pausas.
 
@@ -1403,22 +1362,12 @@ Quando as pombas choram
 
 A manhã revelou o que a noite havia escondido. Havia mais gente do que ele imaginava.
 
-Homens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa. Ninguém dizia o necessário por inteiro.
-
-Capítulo 3
-
-O Baile dos Mundos
-
-A terceira noite já não parecia acidente. A segunda tinha sido resistência. A terceira começou a parecer início de padrão.
-
-As janelas fechadas pareciam guardar o fôlego da cidade.`;
+Homens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa. Ninguém dizia o necessário por inteiro.`;
       arquivoNome.textContent = "Exemplo interno";
       rebuildFromSupportText();
     });
 
-    btnNovoProjeto.addEventListener("click", function() {
-      resetAll();
-    });
+    btnNovoProjeto.addEventListener("click", resetAll);
 
     btnSair.addEventListener("click", function() {
       resetAll();
@@ -1453,11 +1402,10 @@ As janelas fechadas pareciam guardar o fôlego da cidade.`;
       URL.revokeObjectURL(url);
     });
 
+    let inputTimer = null;
     inputText.addEventListener("input", function() {
-      clearTimeout(inputText._timer);
-      inputText._timer = setTimeout(() => {
-        rebuildFromSupportText();
-      }, 220);
+      clearTimeout(inputTimer);
+      inputTimer = setTimeout(rebuildFromSupportText, 350);
     });
 
     [
@@ -1470,7 +1418,6 @@ As janelas fechadas pareciam guardar o fôlego da cidade.`;
         saveState();
         render();
       });
-
       el.addEventListener("input", function() {
         saveState();
         render();
