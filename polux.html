@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -15,23 +14,18 @@
       --bg:#f6f3ee;
       --card:#ffffff;
       --panel:#eef7f1;
-      --panel-2:#f6fbf7;
       --panel-border:#bfd8c7;
       --paper:#fffdf8;
       --line:#d8d2ca;
       --ink:#2f2a25;
       --muted:#70675f;
-      --green:#246c47;
-      --green-2:#2f7a55;
-      --green-3:#e5f2ea;
+      --green:#2d6f4f;
+      --green-soft:#4f8f6c;
+      --green-bg:#edf7f1;
       --yellow:#d8b622;
       --red:#b63131;
       --shadow:0 2px 10px rgba(0,0,0,.06);
       --radius:14px;
-      --page-w:420px;
-      --page-h:610px;
-      --ui-font:Georgia, serif;
-      --chapter-font:'Cinzel', serif;
     }
 
     *{box-sizing:border-box}
@@ -49,7 +43,7 @@
     }
 
     .wrap{
-      max-width:1420px;
+      max-width:1460px;
       margin:0 auto;
       display:flex;
       flex-direction:column;
@@ -85,7 +79,7 @@
     }
 
     .btn:disabled{
-      opacity:.55;
+      opacity:.5;
       cursor:not-allowed;
     }
 
@@ -93,7 +87,7 @@
     .btn-soft{background:#ece7df;color:#2f2a25}
     .btn-red{background:var(--red);color:#fff}
     .btn-green{background:var(--green);color:#fff}
-    .btn-green-soft{background:var(--green-2);color:#fff}
+    .btn-green-soft{background:var(--green-soft);color:#fff}
 
     .card{
       background:var(--card);
@@ -110,52 +104,57 @@
 
     .entry-grid{
       display:grid;
-      grid-template-columns:1fr auto;
+      grid-template-columns:minmax(0,1fr) 280px;
       gap:12px;
       align-items:start;
-    }
-
-    .mini-editor{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
-    .mini-editor textarea{
-      width:100%;
-      min-height:150px;
-      resize:vertical;
-      border:1px solid #c6d8cc;
-      border-radius:12px;
-      padding:12px;
-      background:#fff;
-      outline:none;
-      line-height:1.45;
-      white-space:pre-wrap;
     }
 
     .upload-row{
       display:flex;
       flex-wrap:wrap;
-      gap:10px;
       align-items:center;
+      gap:10px;
+      margin-bottom:8px;
     }
 
-    .upload-note,.note,.help-text{
+    .support-box{
+      width:100%;
+      min-height:150px;
+      resize:vertical;
+      border:1px solid #c5d8ca;
+      border-radius:12px;
+      padding:12px;
+      outline:none;
+      background:#fff;
+      line-height:1.45;
+      white-space:pre-wrap;
+    }
+
+    .upload-note,.note,.help{
       color:var(--muted);
       font-size:.92rem;
       line-height:1.35;
     }
 
+    .mini-status{
+      border:1px dashed #b9d1c0;
+      border-radius:12px;
+      background:#fff;
+      padding:12px;
+      font-size:.92rem;
+      line-height:1.45;
+      color:#40654d;
+    }
+
     .workspace{
       display:grid;
-      grid-template-columns:280px minmax(360px, 1fr) 300px;
+      grid-template-columns:280px minmax(420px,1fr) 300px;
       gap:14px;
       align-items:start;
     }
 
     .panel{
-      background:var(--panel-2);
+      background:var(--green-bg);
       border:1px solid var(--panel-border);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
@@ -163,13 +162,30 @@
       display:flex;
       flex-direction:column;
       gap:12px;
-      min-height:740px;
+      min-height:760px;
     }
 
     .panel h3,
     .preview-box h3{
       margin:0;
-      font-size:1.06rem;
+      font-size:1.08rem;
+    }
+
+    .subgroup{
+      border:1px solid #d4e6da;
+      border-radius:12px;
+      background:#fff;
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .subgroup-title{
+      margin:0;
+      font-size:.95rem;
+      font-weight:700;
+      color:#28573c;
     }
 
     .field{
@@ -180,8 +196,8 @@
 
     .field label{
       font-size:.92rem;
+      color:#28563b;
       font-weight:700;
-      color:#25563a;
     }
 
     .field input,
@@ -193,30 +209,13 @@
       background:#fff;
     }
 
-    .subgroup{
-      border:1px solid #d4e6da;
-      border-radius:12px;
-      padding:12px;
-      background:#fff;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .subgroup-title{
-      font-weight:700;
-      color:#2a6544;
-      font-size:.94rem;
-      margin:0;
-    }
-
     .preview-box{
       background:var(--card);
       border:1px solid var(--line);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       padding:14px;
-      min-height:740px;
+      min-height:760px;
       display:flex;
       flex-direction:column;
       gap:12px;
@@ -262,7 +261,7 @@
     }
 
     .preview-stage{
-      min-height:640px;
+      min-height:650px;
       display:flex;
       justify-content:center;
       align-items:flex-start;
@@ -274,8 +273,6 @@
     }
 
     .page{
-      width:var(--page-w);
-      height:var(--page-h);
       background:var(--paper);
       border:1px solid #d8d2ca;
       border-radius:8px;
@@ -290,7 +287,6 @@
       width:100%;
       height:100%;
       overflow:hidden;
-      font-family:var(--ui-font);
     }
 
     .page-header{
@@ -310,9 +306,11 @@
     .page-content{
       position:absolute;
       top:34px;
+      left:0;
+      right:0;
       bottom:30px;
       overflow:hidden;
-      outline:none;
+      white-space:normal;
     }
 
     .page-footer{
@@ -332,44 +330,18 @@
     .empty{
       text-align:center;
       color:var(--muted);
-      padding:90px 22px;
-      font-size:1rem;
-      line-height:1.45;
+      padding:90px 24px;
+      font-size:1.02rem;
     }
 
-    .style-chip-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-
-    .style-chip{
-      border:1px solid #c4d7ca;
-      background:#fff;
-      color:#275a3c;
-      border-radius:999px;
-      padding:7px 10px;
-      font-size:.84rem;
-      font-weight:700;
-      cursor:pointer;
-    }
-
-    .style-chip.active{
-      background:var(--green-3);
-      border-color:#7eb591;
-      color:#1d5d39;
-    }
-
-    .preview-block{
-      margin:0;
-      color:var(--ink);
+    .block{
       outline:none;
-      cursor:text;
+      color:var(--ink);
     }
 
-    .preview-block.selected{
-      background:rgba(47,122,85,.10);
-      box-shadow:0 0 0 2px rgba(47,122,85,.22);
+    .block.selected{
+      background:rgba(45,111,79,.08);
+      box-shadow:0 0 0 2px rgba(45,111,79,.20);
       border-radius:4px;
     }
 
@@ -389,43 +361,38 @@
       text-align:center;
       margin:2em 0 .8em 0;
       line-height:1.2;
-      font-family:var(--chapter-font);
-      font-weight:700;
       text-transform:uppercase;
       letter-spacing:.04em;
+      font-weight:700;
     }
 
     .style-title2{
       text-align:center;
       margin:0 0 1.2em 0;
       line-height:1.2;
-      font-family:var(--chapter-font);
       font-style:italic;
       font-weight:700;
-      opacity:.9;
     }
 
     .style-title3{
       text-align:left;
       margin:1.4em 0 .8em 0;
       line-height:1.2;
-      font-family:var(--chapter-font);
       font-weight:700;
     }
 
     .style-epigrafe{
       text-align:right;
-      margin:1.6em 0 1.6em auto;
+      margin:1.4em 0 1.6em auto;
       width:72%;
       font-style:italic;
     }
 
     .style-ornamento{
       text-align:center;
-      margin:1.4em 0;
+      margin:1.3em 0;
       letter-spacing:.1em;
-      font-family:var(--chapter-font);
-      cursor:pointer;
+      font-weight:700;
     }
 
     .dropcap::first-letter{
@@ -433,20 +400,30 @@
       font-size:3.05em;
       line-height:.88;
       margin:.02em .06em 0 0;
-      font-family:var(--chapter-font);
       font-weight:700;
     }
 
-    .measurer{
-      position:absolute;
-      left:-99999px;
-      top:-99999px;
-      visibility:hidden;
-      pointer-events:none;
-      width:var(--page-w);
-      height:var(--page-h);
-      overflow:hidden;
-      background:var(--paper);
+    .chip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .chip{
+      border:1px solid #c4d7ca;
+      background:#fff;
+      color:#275a3c;
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:.84rem;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .chip.active{
+      background:#e6f2ea;
+      border-color:#84b597;
+      color:#1d5d39;
     }
 
     .status-box{
@@ -459,7 +436,15 @@
       line-height:1.4;
     }
 
-    @media (max-width:1180px){
+    .hidden-measurer{
+      position:absolute;
+      left:-99999px;
+      top:-99999px;
+      visibility:hidden;
+      pointer-events:none;
+    }
+
+    @media (max-width:1220px){
       .workspace{
         grid-template-columns:1fr;
       }
@@ -482,9 +467,6 @@
         transform:scale(.86);
         transform-origin:top center;
       }
-      .preview-stage{
-        min-height:560px;
-      }
     }
   </style>
 </head>
@@ -504,21 +486,22 @@
     <div class="card entry-card">
       <h3>Entrada da obra</h3>
       <div class="entry-grid">
-        <div class="mini-editor">
+        <div>
           <div class="upload-row">
             <input type="file" id="arquivoTexto" accept=".txt,.md,text/plain">
             <button class="btn btn-green" type="button" id="btnUpload">Escolher / Upar texto</button>
             <span id="arquivoNome">Nenhum arquivo carregado</span>
           </div>
-          <textarea id="inputText" placeholder="Área de apoio. Pode colar aqui se quiser, mas o fluxo principal é subir o arquivo e trabalhar direto na prévia editorial."></textarea>
+          <textarea id="inputText" class="support-box" placeholder="Área de apoio. Pode colar aqui se quiser, mas o fluxo principal é subir o arquivo e trabalhar na prévia editorial."></textarea>
           <div class="upload-note">A caixa de texto é apoio. A área principal de trabalho é a prévia editorial no centro.</div>
         </div>
-        <div class="status-box">
+
+        <div class="mini-status">
           <strong>Fluxo do Pólux</strong><br>
           1. Upar o texto<br>
           2. Ver a prévia no centro<br>
-          3. Editar na própria prévia<br>
-          4. Ajustar estrutura e aparência nos painéis laterais
+          3. Ajustar estrutura e aparência<br>
+          4. Editar a própria prévia
         </div>
       </div>
     </div>
@@ -544,8 +527,8 @@
             <label for="margens">Margens</label>
             <select id="margens">
               <option value="estreita">Estreitas</option>
-              <option value="normal">Normais</option>
-              <option value="ampla" selected>Amplas</option>
+              <option value="normal" selected>Normais</option>
+              <option value="ampla">Amplas</option>
             </select>
           </div>
         </div>
@@ -576,7 +559,7 @@
           <div class="field">
             <label for="espacoParagrafos">Espaço entre parágrafos</label>
             <select id="espacoParagrafos">
-              <option value="0">0</option>
+              <option value="0">0 pt</option>
               <option value="6">6 pt</option>
               <option value="8" selected>8 pt</option>
               <option value="10">10 pt</option>
@@ -613,8 +596,8 @@
           </div>
         </div>
 
-        <div class="help-text">
-          Enter e Delete do teclado devem ser o caminho principal de uso. Menos botões, mais edição natural.
+        <div class="help">
+          A leitura correta aqui depende das quebras reais do texto. Para separar título, subtítulo e parágrafos, o texto precisa subir com linhas quebradas de verdade.
         </div>
       </aside>
 
@@ -636,7 +619,7 @@
           <div class="empty">A prévia aparece aqui assim que a obra entrar no sistema.</div>
         </div>
 
-        <div class="help-text">A prévia fica no centro, uma página por vez, e pode ser editada diretamente.</div>
+        <div class="help">Uma página por vez. Acompanhe a diagramação sem mural infinito de páginas.</div>
       </section>
 
       <aside class="panel">
@@ -709,14 +692,14 @@
             </select>
           </div>
 
-          <div class="style-chip-row">
-            <button class="style-chip" data-style="normal" type="button">Normal</button>
-            <button class="style-chip" data-style="sem-espaco" type="button">Sem espaço</button>
-            <button class="style-chip" data-style="title1" type="button">Título 1</button>
-            <button class="style-chip" data-style="title2" type="button">Título 2</button>
-            <button class="style-chip" data-style="title3" type="button">Título 3</button>
-            <button class="style-chip" data-style="epigrafe" type="button">Epígrafe</button>
-            <button class="style-chip" data-style="ornamento" type="button">Ornamento</button>
+          <div class="chip-row">
+            <button class="chip active" data-style="normal" type="button">Normal</button>
+            <button class="chip" data-style="sem-espaco" type="button">Sem espaço</button>
+            <button class="chip" data-style="title1" type="button">Título 1</button>
+            <button class="chip" data-style="title2" type="button">Título 2</button>
+            <button class="chip" data-style="title3" type="button">Título 3</button>
+            <button class="chip" data-style="epigrafe" type="button">Epígrafe</button>
+            <button class="chip" data-style="ornamento" type="button">Ornamento</button>
           </div>
         </div>
 
@@ -744,19 +727,16 @@
         </div>
 
         <div class="status-box" id="selecionadoInfo">
-          Nenhum bloco selecionado na prévia.
+          Nenhum bloco selecionado.
         </div>
       </aside>
     </div>
   </div>
 
-  <div class="measurer" id="measurer"></div>
-
-  <script src="js/config-tipografica.js"></script>
-  <script src="js/motor-tipografico.js"></script>
+  <div id="hiddenMeasurer" class="hidden-measurer"></div>
 
   <script>
-    const STORAGE_KEY = "polux-sessao-temp";
+    const STORAGE_KEY = "polux_sessao_editorial_v2";
 
     const inputText = document.getElementById("inputText");
     const arquivoTexto = document.getElementById("arquivoTexto");
@@ -782,10 +762,10 @@
     const tamanhoCapitulo = document.getElementById("tamanhoCapitulo");
     const entrelinha = document.getElementById("entrelinha");
     const alinhamentoTexto = document.getElementById("alinhamentoTexto");
+
     const estiloAtual = document.getElementById("estiloAtual");
     const ornamentoModo = document.getElementById("ornamentoModo");
     const ornamentoTipo = document.getElementById("ornamentoTipo");
-    const styleChips = Array.from(document.querySelectorAll(".style-chip"));
 
     const previewMode = document.getElementById("previewMode");
     const previewStage = document.getElementById("previewStage");
@@ -793,38 +773,20 @@
     const btnNext = document.getElementById("btnNext");
     const pageCounter = document.getElementById("pageCounter");
     const selecionadoInfo = document.getElementById("selecionadoInfo");
-    const measurer = document.getElementById("measurer");
+    const hiddenMeasurer = document.getElementById("hiddenMeasurer");
+    const chips = Array.from(document.querySelectorAll(".chip"));
 
     let blocks = [];
     let pages = [];
     let currentPage = 1;
     let selectedBlockId = null;
+    let pendingFileText = "";
 
-    const defaultState = {
-      formato: "a5",
-      margens: "ampla",
-      paragrafo: "recuo",
-      recuoPrimeiraLinha: "1.0",
-      espacoParagrafos: "8",
-      modoInicio: "capitulo1",
-      capitular: "on",
-      hifenizacao: "on",
-      fonteCorpo: "Georgia",
-      fonteCapitulo: "Cinzel",
-      tamanhoCorpo: "14",
-      tamanhoCapitulo: "30",
-      entrelinha: "1.6",
-      alinhamentoTexto: "justify",
-      estiloAtual: "normal",
-      ornamentoModo: "off",
-      ornamentoTipo: "❦"
-    };
-
-    function pageConfig() {
+    function getPageConfig() {
       const map = {
         a5: { w: 420, h: 610, label: "Modo impresso · A5" },
         "16x23": { w: 455, h: 655, label: "Modo impresso · 16x23" },
-        "6x9": { w: 485, h: 720, label: 'Modo impresso · 6" x 9"' },
+        "6x9": { w: 500, h: 720, label: 'Modo impresso · 6" x 9"' },
         epub: { w: 760, h: 760, label: "Modo digital · ePub" }
       };
       return map[formato.value] || map.a5;
@@ -849,43 +811,75 @@
       return map[fonteCapitulo.value] || "'Cinzel', serif";
     }
 
-    function sanitizeText(text) {
-      return String(text || "").replace(/\r/g, "").trim();
+    function getIndentValue() {
+      return (parseFloat(recuoPrimeiraLinha.value || "1") || 1) + "cm";
     }
 
-    function generateId() {
-      return "b_" + Math.random().toString(36).slice(2, 10);
+    function getParagraphSpacing() {
+      return (parseFloat(espacoParagrafos.value || "8") || 8) + "pt";
     }
 
-    function makeBlock(text, style = "normal") {
+    function getPagePadding() {
+      const formatKey = formato.value;
+      const marginKey = margens.value;
+
+      const map = {
+        a5: { estreita: 26, normal: 40, ampla: 54 },
+        "16x23": { estreita: 30, normal: 46, ampla: 60 },
+        "6x9": { estreita: 34, normal: 50, ampla: 66 },
+        epub: { estreita: 36, normal: 46, ampla: 56 }
+      };
+
+      return map[formatKey][marginKey];
+    }
+
+    function cleanText(text) {
+      return String(text || "").replace(/\r/g, "");
+    }
+
+    function uid() {
+      return "b" + Math.random().toString(36).slice(2, 11);
+    }
+
+    function makeBlock(text, style) {
       return {
-        id: generateId(),
-        style,
-        text
+        id: uid(),
+        text: text || "",
+        style: style || "normal"
       };
     }
 
-    function parseTextToBlocks(rawText) {
-      let text = sanitizeText(rawText);
-      if (!text) return [];
+    function parseTextToBlocks(text) {
+      const cleaned = cleanText(text).trim();
+      if (!cleaned) return [];
 
-      const lines = text.split("\n");
-      const parsed = [];
-
-      if (modoInicio.value === "capitulo1" && lines[0] && !/^cap[ií]tulo\s+\d+/i.test(lines[0].trim())) {
-        parsed.push(makeBlock("Capítulo 1", "title1"));
-      }
-
-      let paragraphBuffer = [];
+      const lines = cleaned.split("\n");
+      const result = [];
+      let paragraphLines = [];
 
       function flushParagraph() {
-        const content = paragraphBuffer.join(" ").trim();
-        if (content) parsed.push(makeBlock(content, "normal"));
-        paragraphBuffer = [];
+        const joined = paragraphLines
+          .map(line => line.trim())
+          .filter(Boolean)
+          .join(" ")
+          .trim();
+
+        if (joined) {
+          result.push(makeBlock(joined, "normal"));
+        }
+        paragraphLines = [];
+      }
+
+      if (modoInicio.value === "capitulo1") {
+        const firstRealLine = lines.find(line => line.trim());
+        if (firstRealLine && !/^cap[ií]tulo\s+\d+/i.test(firstRealLine.trim())) {
+          result.push(makeBlock("Capítulo 1", "title1"));
+        }
       }
 
       for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
+        const raw = lines[i];
+        const line = raw.trim();
 
         if (!line) {
           flushParagraph();
@@ -894,162 +888,60 @@
 
         if (/^cap[ií]tulo\s+\d+/i.test(line)) {
           flushParagraph();
-          parsed.push(makeBlock(line, "title1"));
+          result.push(makeBlock(line, "title1"));
           continue;
         }
 
-        if (modoInicio.value === "titulo" && i === 0) {
-          flushParagraph();
-          parsed.push(makeBlock(line, "title1"));
+        if (
+          modoInicio.value === "titulo" &&
+          result.length === 0 &&
+          line
+        ) {
+          result.push(makeBlock(line, "title1"));
           continue;
         }
 
-        paragraphBuffer.push(line);
+        paragraphLines.push(raw);
       }
 
       flushParagraph();
-      return parsed;
+
+      if (ornamentoModo.value === "fim-capitulo") {
+        const withOrnaments = [];
+        for (let i = 0; i < result.length; i++) {
+          const current = result[i];
+          const next = result[i + 1];
+          withOrnaments.push(current);
+
+          if (
+            current.style === "normal" &&
+            next &&
+            next.style === "title1"
+          ) {
+            withOrnaments.push(makeBlock(ornamentoTipo.value, "ornamento"));
+          }
+        }
+        return withOrnaments;
+      }
+
+      return result;
     }
 
     function blocksToSupportText() {
-      const pieces = [];
-      blocks.forEach((block) => {
-        pieces.push(block.text);
-        pieces.push("");
-      });
-      return pieces.join("\n").trim();
-    }
-
-    function applyConfigVisuals() {
-      const cfg = pageConfig();
-      previewMode.textContent = cfg.label;
-      document.documentElement.style.setProperty("--page-w", cfg.w + "px");
-      document.documentElement.style.setProperty("--page-h", cfg.h + "px");
-      document.documentElement.style.setProperty("--ui-font", getBodyFont());
-      document.documentElement.style.setProperty("--chapter-font", getChapterFont());
-    }
-
-    function getMarginPaddingPx() {
-      const cfg = pageConfig();
-      if (formato.value === "epub") return 42;
-
-      const map = {
-        estreita: { a5: 28, "16x23": 34, "6x9": 38 },
-        normal: { a5: 40, "16x23": 46, "6x9": 52 },
-        ampla: { a5: 52, "16x23": 58, "6x9": 64 }
-      };
-
-      const fm = formato.value === "a5" ? "a5" : (formato.value === "16x23" ? "16x23" : "6x9");
-      return map[margens.value][fm];
-    }
-
-    function buildBlockElement(block) {
-      const el = document.createElement("div");
-      el.className = "preview-block style-" + block.style;
-      el.dataset.id = block.id;
-      el.dataset.style = block.style;
-      el.contentEditable = "true";
-      el.spellcheck = true;
-      el.textContent = block.text;
-
-      const bodySize = Math.max(12, Math.min(22, parseFloat(tamanhoCorpo.value) || 14));
-      const chapterSize = Math.max(18, Math.min(56, parseFloat(tamanhoCapitulo.value) || 30));
-      const lineHt = parseFloat(entrelinha.value || "1.6");
-      const indentCm = parseFloat(recuoPrimeiraLinha.value || "1.0");
-      const indent = indentCm + "cm";
-      const spacePt = parseFloat(espacoParagrafos.value || "8") + "pt";
-
-      if (block.style === "normal" || block.style === "sem-espaco") {
-        el.style.fontFamily = getBodyFont();
-        el.style.fontSize = bodySize + "pt";
-        el.style.lineHeight = lineHt;
-        el.style.textAlign = alinhamentoTexto.value;
-        el.style.hyphens = hifenizacao.value === "on" ? "auto" : "manual";
-
-        if (paragrafo.value === "recuo") {
-          el.style.textIndent = block.style === "sem-espaco" ? indent : indent;
-          el.style.marginBottom = block.style === "sem-espaco" ? ".25em" : "1em";
-        } else if (paragrafo.value === "espaco") {
-          el.style.textIndent = "0";
-          el.style.marginBottom = spacePt;
-        } else {
-          el.style.textIndent = "0";
-          el.style.marginBottom = block.style === "sem-espaco" ? ".25em" : ".6em";
-        }
-
-        if (capitular.value === "on" && block.style === "normal") {
-          const idx = blocks.findIndex(b => b.id === block.id);
-          const prevMeaningful = blocks.slice(0, idx).reverse().find(b => b.style !== "ornamento");
-          const firstBody = !prevMeaningful || ["title1","title2","title3","epigrafe","ornamento"].includes(prevMeaningful.style);
-          el.classList.toggle("dropcap", firstBody);
-        } else {
-          el.classList.remove("dropcap");
-        }
+      const parts = [];
+      for (const block of blocks) {
+        parts.push(block.text);
+        parts.push("");
       }
-
-      if (block.style === "title1") {
-        el.style.fontFamily = getChapterFont();
-        el.style.fontSize = chapterSize + "pt";
-      }
-
-      if (block.style === "title2") {
-        el.style.fontFamily = getChapterFont();
-        el.style.fontSize = Math.max(14, chapterSize - 8) + "pt";
-      }
-
-      if (block.style === "title3") {
-        el.style.fontFamily = getChapterFont();
-        el.style.fontSize = Math.max(13, chapterSize - 10) + "pt";
-      }
-
-      if (block.style === "epigrafe") {
-        el.style.fontFamily = getBodyFont();
-        el.style.fontSize = bodySize + "pt";
-        el.style.lineHeight = lineHt;
-      }
-
-      if (block.style === "ornamento") {
-        el.style.fontSize = Math.max(14, chapterSize - 10) + "pt";
-        el.style.textAlign = "center";
-      }
-
-      el.addEventListener("focus", () => {
-        selectBlock(block.id);
-      });
-
-      el.addEventListener("click", () => {
-        selectBlock(block.id);
-      });
-
-      el.addEventListener("input", () => {
-        const target = blocks.find(b => b.id === block.id);
-        if (target) {
-          target.text = el.innerText.replace(/\n/g, " ").trim();
-          inputText.value = blocksToSupportText();
-          saveTempState();
-          requestRender();
-        }
-      });
-
-      el.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" && !event.shiftKey) {
-          event.preventDefault();
-          splitBlock(block.id, window.getSelection());
-        }
-
-        if ((event.key === "Backspace" || event.key === "Delete") && el.innerText.trim() === "") {
-          event.preventDefault();
-          removeBlock(block.id);
-        }
-      });
-
-      return el;
+      return parts.join("\n").trim();
     }
 
     function createPageShell(pageNumber, headerText) {
-      const cfg = pageConfig();
+      const cfg = getPageConfig();
       const page = document.createElement("div");
       page.className = "page";
+      page.style.width = cfg.w + "px";
+      page.style.height = cfg.h + "px";
 
       const inner = document.createElement("div");
       inner.className = "page-inner";
@@ -1060,10 +952,8 @@
 
       const content = document.createElement("div");
       content.className = "page-content";
-      const pad = getMarginPaddingPx();
-      content.style.left = pad + "px";
-      content.style.right = pad + "px";
-      content.style.paddingTop = "10px";
+      const pad = getPagePadding();
+      content.style.padding = "10px " + pad + "px 0 " + pad + "px";
 
       const footer = document.createElement("div");
       footer.className = "page-footer";
@@ -1077,57 +967,181 @@
       return { page, content };
     }
 
-    function paginateBlocks() {
-      const cfg = pageConfig();
+    function buildBlockNode(block, editable = true) {
+      const el = document.createElement("div");
+      el.className = "block style-" + block.style;
+      el.dataset.id = block.id;
+      el.contentEditable = editable ? "true" : "false";
+      el.spellcheck = true;
+      el.innerText = block.text;
+
+      const bodySize = Math.max(12, Math.min(22, parseFloat(tamanhoCorpo.value || "14") || 14));
+      const chapterSize = Math.max(18, Math.min(56, parseFloat(tamanhoCapitulo.value || "30") || 30));
+      const lineHt = parseFloat(entrelinha.value || "1.6") || 1.6;
+
+      const bodyFont = getBodyFont();
+      const chapterFont = getChapterFont();
+
+      if (block.style === "normal" || block.style === "sem-espaco") {
+        el.style.fontFamily = bodyFont;
+        el.style.fontSize = bodySize + "pt";
+        el.style.lineHeight = lineHt;
+        el.style.textAlign = alinhamentoTexto.value;
+
+        if (hifenizacao.value === "on") {
+          el.style.hyphens = "auto";
+          el.style.webkitHyphens = "auto";
+          el.style.msHyphens = "auto";
+        } else {
+          el.style.hyphens = "none";
+          el.style.webkitHyphens = "none";
+          el.style.msHyphens = "none";
+        }
+
+        if (paragrafo.value === "recuo") {
+          el.style.textIndent = getIndentValue();
+          el.style.marginBottom = block.style === "sem-espaco" ? ".25em" : "1em";
+        } else if (paragrafo.value === "espaco") {
+          el.style.textIndent = "0";
+          el.style.marginBottom = getParagraphSpacing();
+        } else {
+          el.style.textIndent = "0";
+          el.style.marginBottom = block.style === "sem-espaco" ? ".25em" : ".5em";
+        }
+
+        const blockIndex = blocks.findIndex(item => item.id === block.id);
+        const prev = blocks[blockIndex - 1];
+        const isFirstBodyAfterTitle = (
+          capitular.value === "on" &&
+          block.style === "normal" &&
+          (!prev || ["title1","title2","title3","ornamento"].includes(prev.style))
+        );
+        el.classList.toggle("dropcap", isFirstBodyAfterTitle);
+      }
+
+      if (block.style === "title1") {
+        el.style.fontFamily = chapterFont;
+        el.style.fontSize = chapterSize + "pt";
+      }
+
+      if (block.style === "title2") {
+        el.style.fontFamily = chapterFont;
+        el.style.fontSize = Math.max(14, chapterSize - 8) + "pt";
+      }
+
+      if (block.style === "title3") {
+        el.style.fontFamily = chapterFont;
+        el.style.fontSize = Math.max(13, chapterSize - 10) + "pt";
+      }
+
+      if (block.style === "epigrafe") {
+        el.style.fontFamily = bodyFont;
+        el.style.fontSize = bodySize + "pt";
+        el.style.lineHeight = lineHt;
+      }
+
+      if (block.style === "ornamento") {
+        el.style.fontFamily = chapterFont;
+        el.style.fontSize = Math.max(14, chapterSize - 8) + "pt";
+      }
+
+      if (editable) {
+        el.addEventListener("click", () => {
+          selectBlock(block.id);
+        });
+
+        el.addEventListener("focus", () => {
+          selectBlock(block.id);
+        });
+
+        el.addEventListener("input", () => {
+          const item = blocks.find(b => b.id === block.id);
+          if (item) {
+            item.text = el.innerText.replace(/\n/g, " ").trim();
+            inputText.value = blocksToSupportText();
+            saveState();
+          }
+        });
+
+        el.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            splitSelectedBlock(block.id);
+          }
+
+          if ((event.key === "Backspace" || event.key === "Delete") && el.innerText.trim() === "") {
+            event.preventDefault();
+            removeBlock(block.id);
+          }
+        });
+      }
+
+      if (selectedBlockId === block.id) {
+        el.classList.add("selected");
+      }
+
+      return el;
+    }
+
+    function paginate() {
+      const cfg = getPageConfig();
+      hiddenMeasurer.innerHTML = "";
       pages = [];
-      measurer.innerHTML = "";
 
-      if (!blocks.length) return;
+      if (!blocks.length) {
+        pages = [{ header: "Pólux", ids: [] }];
+        return;
+      }
 
-      const measurePage = createPageShell(1, "Pólux");
-      measurer.appendChild(measurePage.page);
+      const measureShell = createPageShell(1, "Pólux");
+      hiddenMeasurer.appendChild(measureShell.page);
 
       const maxHeight = cfg.h - 74;
-      let current = [];
-      let currentHeight = 0;
-      let pageTitle = "Pólux";
+      let currentIds = [];
+      let currentHeader = "Pólux";
 
-      blocks.forEach((block) => {
-        const node = buildBlockElement(block);
-        measurePage.content.appendChild(node);
-        const blockHeight = node.offsetHeight;
+      for (let i = 0; i < blocks.length; i++) {
+        const block = blocks[i];
+        const testNode = buildBlockNode(block, false);
 
-        if (current.length > 0 && currentHeight + blockHeight > maxHeight) {
-          pages.push({ header: pageTitle, blocks: [...current] });
-          current = [block];
-          currentHeight = blockHeight;
+        measureShell.content.appendChild(testNode);
+
+        const tooTall = measureShell.content.scrollHeight > maxHeight && currentIds.length > 0;
+
+        if (tooTall) {
+          measureShell.content.removeChild(testNode);
+          pages.push({
+            header: currentHeader,
+            ids: [...currentIds]
+          });
+
+          currentIds = [];
+          measureShell.content.innerHTML = "";
+
+          if (block.style === "title1") currentHeader = block.text;
+          currentIds.push(block.id);
+          measureShell.content.appendChild(buildBlockNode(block, false));
         } else {
-          current.push(block);
-          currentHeight += blockHeight;
+          if (block.style === "title1") currentHeader = block.text;
+          currentIds.push(block.id);
         }
+      }
 
-        if (block.style === "title1") {
-          pageTitle = block.text;
-        }
-
-        measurePage.content.innerHTML = "";
-        current.forEach((item) => {
-          measurePage.content.appendChild(buildBlockElement(item));
+      if (currentIds.length) {
+        pages.push({
+          header: currentHeader,
+          ids: [...currentIds]
         });
-        currentHeight = measurePage.content.scrollHeight;
-      });
-
-      if (current.length) {
-        pages.push({ header: pageTitle, blocks: [...current] });
       }
 
       if (!pages.length) {
-        pages = [{ header: "Pólux", blocks: [] }];
+        pages = [{ header: "Pólux", ids: [] }];
       }
     }
 
-    function renderCurrentPage() {
-      applyConfigVisuals();
+    function render() {
+      const cfg = getPageConfig();
+      previewMode.textContent = cfg.label;
       previewStage.innerHTML = "";
 
       if (!blocks.length) {
@@ -1135,10 +1149,11 @@
         pageCounter.textContent = "Página 1 de 1";
         btnPrev.disabled = true;
         btnNext.disabled = true;
+        refreshStyleChips();
         return;
       }
 
-      paginateBlocks();
+      paginate();
 
       if (currentPage < 1) currentPage = 1;
       if (currentPage > pages.length) currentPage = pages.length;
@@ -1146,74 +1161,66 @@
       const pageData = pages[currentPage - 1];
       const shell = createPageShell(currentPage, pageData.header);
 
-      pageData.blocks.forEach((block) => {
-        shell.content.appendChild(buildBlockElement(block));
-      });
+      for (const id of pageData.ids) {
+        const block = blocks.find(item => item.id === id);
+        if (block) {
+          shell.content.appendChild(buildBlockNode(block, true));
+        }
+      }
 
       previewStage.appendChild(shell.page);
       pageCounter.textContent = `Página ${currentPage} de ${pages.length}`;
       btnPrev.disabled = currentPage <= 1;
       btnNext.disabled = currentPage >= pages.length;
-      refreshSelectedVisual();
+
+      refreshStyleChips();
     }
 
-    let renderTimer = null;
-    function requestRender() {
-      clearTimeout(renderTimer);
-      renderTimer = setTimeout(renderCurrentPage, 80);
-    }
-
-    function selectBlock(id) {
-      selectedBlockId = id;
-      const block = blocks.find(b => b.id === id);
-      if (!block) return;
-      estiloAtual.value = block.style;
-      selecionadoInfo.innerHTML = `<strong>Bloco selecionado:</strong><br>${block.text.slice(0, 120) || "(vazio)"}`;
-      refreshSelectedVisual();
-      syncStyleChips();
-    }
-
-    function refreshSelectedVisual() {
-      document.querySelectorAll(".preview-block").forEach((el) => {
-        el.classList.toggle("selected", el.dataset.id === selectedBlockId);
-      });
-    }
-
-    function syncStyleChips() {
-      styleChips.forEach((chip) => {
+    function refreshStyleChips() {
+      chips.forEach(chip => {
         chip.classList.toggle("active", chip.dataset.style === estiloAtual.value);
       });
     }
 
+    function selectBlock(id) {
+      selectedBlockId = id;
+      const block = blocks.find(item => item.id === id);
+      if (block) {
+        estiloAtual.value = block.style;
+        selecionadoInfo.innerHTML = `<strong>Bloco selecionado:</strong><br>${block.text.slice(0, 120) || "(vazio)"}`;
+      } else {
+        selecionadoInfo.textContent = "Nenhum bloco selecionado.";
+      }
+      render();
+    }
+
     function applyStyleToSelected(style) {
       if (!selectedBlockId) return;
-      const block = blocks.find(b => b.id === selectedBlockId);
+      const block = blocks.find(item => item.id === selectedBlockId);
       if (!block) return;
 
+      block.style = style;
       if (style === "ornamento" && !block.text.trim()) {
         block.text = ornamentoTipo.value;
       }
-
-      block.style = style;
       inputText.value = blocksToSupportText();
-      saveTempState();
-      requestRender();
-      syncStyleChips();
+      saveState();
+      render();
     }
 
-    function splitBlock(id) {
-      const index = blocks.findIndex(b => b.id === id);
+    function splitSelectedBlock(id) {
+      const index = blocks.findIndex(item => item.id === id);
       if (index === -1) return;
 
-      const pageBlockEl = document.querySelector(`.preview-block[data-id="${id}"]`);
-      if (!pageBlockEl) return;
+      const el = document.querySelector('.block[data-id="' + id + '"]');
+      if (!el) return;
 
       const selection = window.getSelection();
       let offset = 0;
 
       if (selection && selection.rangeCount > 0) {
         const range = selection.getRangeAt(0).cloneRange();
-        range.selectNodeContents(pageBlockEl);
+        range.selectNodeContents(el);
         range.setEnd(selection.anchorNode, selection.anchorOffset);
         offset = range.toString().length;
       }
@@ -1225,55 +1232,73 @@
 
       if (!left && !right) return;
 
-      blocks[index].text = left || original.text;
+      blocks[index].text = left || "";
       const newBlock = makeBlock(right || "", original.style);
       blocks.splice(index + 1, 0, newBlock);
-
       selectedBlockId = newBlock.id;
+
       inputText.value = blocksToSupportText();
-      saveTempState();
-      requestRender();
+      saveState();
+      render();
     }
 
     function removeBlock(id) {
-      const index = blocks.findIndex(b => b.id === id);
+      const index = blocks.findIndex(item => item.id === id);
       if (index === -1) return;
+
       blocks.splice(index, 1);
       selectedBlockId = blocks[index]?.id || blocks[index - 1]?.id || null;
+
       inputText.value = blocksToSupportText();
-      saveTempState();
-      requestRender();
-    }
-
-    function insertAutoOrnaments() {
-      if (ornamentoModo.value !== "fim-capitulo") return;
-
-      const result = [];
-      for (let i = 0; i < blocks.length; i++) {
-        const current = blocks[i];
-        result.push(current);
-
-        const next = blocks[i + 1];
-        const endOfChapter = current.style === "normal" && next && next.style === "title1";
-        if (endOfChapter) {
-          result.push(makeBlock(ornamentoTipo.value, "ornamento"));
-        }
-      }
-      blocks = result;
+      saveState();
+      render();
     }
 
     function rebuildFromSupportText() {
       blocks = parseTextToBlocks(inputText.value);
-      if (ornamentoModo.value === "fim-capitulo") {
-        insertAutoOrnaments();
-      }
       selectedBlockId = null;
-      saveTempState();
-      requestRender();
+      currentPage = 1;
+      saveState();
+      render();
     }
 
-    function saveTempState() {
-      const state = {
+    function resetAll() {
+      sessionStorage.removeItem(STORAGE_KEY);
+
+      inputText.value = "";
+      arquivoTexto.value = "";
+      arquivoNome.textContent = "Nenhum arquivo carregado";
+
+      formato.value = "a5";
+      margens.value = "normal";
+      paragrafo.value = "recuo";
+      recuoPrimeiraLinha.value = "1.0";
+      espacoParagrafos.value = "8";
+      modoInicio.value = "capitulo1";
+      capitular.value = "on";
+      hifenizacao.value = "on";
+      fonteCorpo.value = "Georgia";
+      fonteCapitulo.value = "Cinzel";
+      tamanhoCorpo.value = "14";
+      tamanhoCapitulo.value = "30";
+      entrelinha.value = "1.6";
+      alinhamentoTexto.value = "justify";
+      estiloAtual.value = "normal";
+      ornamentoModo.value = "off";
+      ornamentoTipo.value = "❦";
+
+      blocks = [];
+      pages = [];
+      currentPage = 1;
+      selectedBlockId = null;
+      selecionadoInfo.textContent = "Nenhum bloco selecionado.";
+      render();
+    }
+
+    function saveState() {
+      const payload = {
+        inputText: inputText.value,
+        arquivoNome: arquivoNome.textContent,
         values: {
           formato: formato.value,
           margens: margens.value,
@@ -1294,48 +1319,46 @@
           ornamentoTipo: ornamentoTipo.value
         },
         blocks,
-        supportText: inputText.value,
-        fileName: arquivoNome.textContent
+        currentPage
       };
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     }
 
-    function clearTempState() {
-      sessionStorage.removeItem(STORAGE_KEY);
-    }
+    function restoreState() {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
 
-    function resetInterface() {
-      Object.entries(defaultState).forEach(([key, value]) => {
-        const el = document.getElementById(key);
-        if (el) el.value = value;
-      });
+      try {
+        const data = JSON.parse(raw);
 
-      inputText.value = "";
-      arquivoTexto.value = "";
-      arquivoNome.textContent = "Nenhum arquivo carregado";
-      blocks = [];
-      pages = [];
-      currentPage = 1;
-      selectedBlockId = null;
-      selecionadoInfo.textContent = "Nenhum bloco selecionado na prévia.";
-      clearTempState();
-      syncStyleChips();
-      renderCurrentPage();
-    }
+        if (data.values) {
+          formato.value = data.values.formato || "a5";
+          margens.value = data.values.margens || "normal";
+          paragrafo.value = data.values.paragrafo || "recuo";
+          recuoPrimeiraLinha.value = data.values.recuoPrimeiraLinha || "1.0";
+          espacoParagrafos.value = data.values.espacoParagrafos || "8";
+          modoInicio.value = data.values.modoInicio || "capitulo1";
+          capitular.value = data.values.capitular || "on";
+          hifenizacao.value = data.values.hifenizacao || "on";
+          fonteCorpo.value = data.values.fonteCorpo || "Georgia";
+          fonteCapitulo.value = data.values.fonteCapitulo || "Cinzel";
+          tamanhoCorpo.value = data.values.tamanhoCorpo || "14";
+          tamanhoCapitulo.value = data.values.tamanhoCapitulo || "30";
+          entrelinha.value = data.values.entrelinha || "1.6";
+          alinhamentoTexto.value = data.values.alinhamentoTexto || "justify";
+          estiloAtual.value = data.values.estiloAtual || "normal";
+          ornamentoModo.value = data.values.ornamentoModo || "off";
+          ornamentoTipo.value = data.values.ornamentoTipo || "❦";
+        }
 
-    btnPrev.addEventListener("click", function() {
-      if (currentPage > 1) {
-        currentPage -= 1;
-        renderCurrentPage();
+        inputText.value = data.inputText || "";
+        arquivoNome.textContent = data.arquivoNome || "Nenhum arquivo carregado";
+        blocks = Array.isArray(data.blocks) ? data.blocks : [];
+        currentPage = data.currentPage || 1;
+      } catch (err) {
+        resetAll();
       }
-    });
-
-    btnNext.addEventListener("click", function() {
-      if (currentPage < pages.length) {
-        currentPage += 1;
-        renderCurrentPage();
-      }
-    });
+    }
 
     btnUpload.addEventListener("click", function() {
       const file = arquivoTexto.files[0];
@@ -1346,7 +1369,8 @@
 
       const reader = new FileReader();
       reader.onload = function(e) {
-        inputText.value = String(e.target.result || "");
+        const text = String(e.target.result || "");
+        inputText.value = cleanText(text);
         arquivoNome.textContent = file.name;
         rebuildFromSupportText();
       };
@@ -1371,32 +1395,50 @@ A praça respirava como um animal ferido. O som não vinha apenas do vento atrav
 
 Sacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa. Tudo parecia seguir um ritmo que não incluía pausas.
 
+Rovonilson Reigns Bautista aprendeu cedo que o mundo não diminui o passo para ninguém. Naquela noite, ele tinha nove anos e segurava uma mochila pequena contra o peito.
+
 Capítulo 2
 
-A Primeira Manhã
+Quando as pombas choram
 
-A manhã revelou o que a noite havia escondido. Havia mais gente do que ele imaginava. Homens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa.
+A manhã revelou o que a noite havia escondido. Havia mais gente do que ele imaginava.
 
-Ninguém dizia o necessário por inteiro.
+Homens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa. Ninguém dizia o necessário por inteiro.
 
 Capítulo 3
 
-Regras Invisíveis
+O Baile dos Mundos
 
 A terceira noite já não parecia acidente. A segunda tinha sido resistência. A terceira começou a parecer início de padrão.
 
-A mulher dos cabelos grisalhos observou a rua e não disse nada. As janelas fechadas pareciam guardar o fôlego da cidade.`;
+As janelas fechadas pareciam guardar o fôlego da cidade.`;
       arquivoNome.textContent = "Exemplo interno";
       rebuildFromSupportText();
     });
 
     btnNovoProjeto.addEventListener("click", function() {
-      resetInterface();
+      resetAll();
     });
 
     btnSair.addEventListener("click", function() {
-      resetInterface();
+      resetAll();
       window.location.href = "lapidar.html";
+    });
+
+    btnPrev.addEventListener("click", function() {
+      if (currentPage > 1) {
+        currentPage -= 1;
+        saveState();
+        render();
+      }
+    });
+
+    btnNext.addEventListener("click", function() {
+      if (currentPage < pages.length) {
+        currentPage += 1;
+        saveState();
+        render();
+      }
     });
 
     btnDownload.addEventListener("click", function() {
@@ -1415,7 +1457,7 @@ A mulher dos cabelos grisalhos observou a rua e não disse nada. As janelas fech
       clearTimeout(inputText._timer);
       inputText._timer = setTimeout(() => {
         rebuildFromSupportText();
-      }, 240);
+      }, 220);
     });
 
     [
@@ -1423,35 +1465,36 @@ A mulher dos cabelos grisalhos observou a rua e não disse nada. As janelas fech
       modoInicio, capitular, hifenizacao, fonteCorpo, fonteCapitulo,
       tamanhoCorpo, tamanhoCapitulo, entrelinha, alinhamentoTexto,
       ornamentoModo, ornamentoTipo
-    ].forEach((el) => {
+    ].forEach(el => {
       el.addEventListener("change", function() {
-        saveTempState();
-        requestRender();
+        saveState();
+        render();
       });
+
       el.addEventListener("input", function() {
-        saveTempState();
-        requestRender();
+        saveState();
+        render();
       });
     });
 
     estiloAtual.addEventListener("change", function() {
-      syncStyleChips();
       applyStyleToSelected(estiloAtual.value);
     });
 
-    styleChips.forEach((chip) => {
+    chips.forEach(chip => {
       chip.addEventListener("click", function() {
         estiloAtual.value = chip.dataset.style;
+        refreshStyleChips();
         applyStyleToSelected(chip.dataset.style);
       });
     });
 
     window.addEventListener("beforeunload", function() {
-      clearTempState();
+      sessionStorage.removeItem(STORAGE_KEY);
     });
 
-    syncStyleChips();
-    renderCurrentPage();
+    restoreState();
+    render();
   </script>
 </body>
 </html>
