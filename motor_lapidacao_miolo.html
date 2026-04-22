@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Motor de Lapidação do Miolo</title>
+  <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
 
   <style>
     :root{
@@ -14,8 +15,7 @@
       --line:#d9dee7;
       --panel:#243447;
       --panel-2:#31465f;
-      --accent:#7a4f14;
-      --accent-2:#446b88;
+      --accent:#446b88;
       --ok:#2f6f4e;
       --warn:#8c5d1f;
       --danger:#7f2f2f;
@@ -23,7 +23,7 @@
       --radius:18px;
     }
 
-    *{ box-sizing:border-box; }
+    *{box-sizing:border-box}
 
     html,body{
       margin:0;
@@ -34,7 +34,7 @@
       min-height:100%;
     }
 
-    body{ overflow-x:hidden; }
+    body{overflow-x:hidden}
 
     .app{
       min-height:100vh;
@@ -131,7 +131,7 @@
     }
 
     .button{
-      background:var(--accent-2);
+      background:var(--accent);
       color:#fff;
       padding:12px 14px;
       cursor:pointer;
@@ -222,9 +222,10 @@
       border:1px solid #d8dee8;
       border-radius:16px;
       padding:28px 30px;
-      min-height:420px;
+      min-height:260px;
       box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
       overflow:auto;
+      line-height:1.55;
     }
 
     .preview.prose{
@@ -236,6 +237,10 @@
     .preview.fixed{
       text-align:left;
       white-space:pre-wrap;
+    }
+
+    .preview.hybrid{
+      text-align:justify;
     }
 
     .preview p{
@@ -256,19 +261,60 @@
       text-indent:0;
     }
 
-    .preview .warning{
-      margin-top:16px;
-      padding:10px 12px;
-      border-radius:12px;
-      background:#fff4dc;
-      border:1px solid #ecd59a;
-      color:#6e5521;
-      font-size:.93rem;
-      line-height:1.4;
+    .issue-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
     }
 
-    .preview .line-flag{
-      background:linear-gradient(180deg, transparent 55%, rgba(238,211,110,.35) 55%);
+    .issue{
+      background:#fff;
+      border:1px solid #e0e5ec;
+      border-left:5px solid #d6a33a;
+      border-radius:14px;
+      padding:12px;
+      box-shadow:0 4px 12px rgba(31,36,48,.06);
+    }
+
+    .issue-title{
+      font-size:.95rem;
+      font-weight:700;
+      color:#243041;
+      margin-bottom:6px;
+    }
+
+    .issue-snippet{
+      font-size:.95rem;
+      color:#495567;
+      line-height:1.45;
+      white-space:pre-wrap;
+    }
+
+    .issue-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    .mini-btn{
+      border:none;
+      border-radius:10px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-weight:700;
+      background:#eef4f8;
+      color:#233040;
+    }
+
+    .mini-btn.primary{
+      background:#2f6f4e;
+      color:#fff;
+    }
+
+    .mini-btn.warn{
+      background:#8c5d1f;
+      color:#fff;
     }
 
     .stats-grid{
@@ -296,20 +342,10 @@
       color:#1f2b38;
     }
 
-    .ghost-measure{
-      position:absolute;
-      visibility:hidden;
-      left:-99999px;
-      top:-99999px;
-      width:700px;
-      padding:28px 30px;
-      background:#fff;
-      border:1px solid #d8dee8;
-      line-height:1.55;
-      white-space:normal;
-      text-align:justify;
-      pointer-events:none;
-      z-index:-1;
+    .hint{
+      font-size:.9rem;
+      color:#687285;
+      line-height:1.45;
     }
 
     @media (max-width:1200px){
@@ -359,12 +395,12 @@
     <aside class="panel">
       <h2>Miolo</h2>
 
-      <div class="status" id="statusBox">Motor pronto. Cole texto ou suba arquivo para lapidação.</div>
+      <div class="status" id="statusBox">Motor pronto. Pode trabalhar sozinho ou receber texto do Pólux.</div>
 
       <div class="card-soft">
         <label for="fileInput"><strong>Subir texto</strong></label>
         <input class="file" type="file" id="fileInput" accept=".txt,.docx" />
-        <small>TXT e DOCX. Este motor trabalha separado do Pólux.</small>
+        <small>TXT e DOCX.</small>
       </div>
 
       <div class="card-soft">
@@ -385,7 +421,7 @@
           <option value="light">Automática leve</option>
           <option value="medium">Automática moderada</option>
         </select>
-        <small>Odes e versos livres podem usar hifenização. Formas fixas exigem mais cuidado.</small>
+        <small>Odes e versos livres podem usar hifenização.</small>
       </div>
 
       <div class="card-soft">
@@ -422,6 +458,7 @@
 
       <div class="card-soft">
         <button class="button" id="processBtn" type="button">Lapidar texto</button>
+        <button class="button ok" id="sendBackBtn" type="button">Enviar para módulo chamador</button>
         <button class="button ok" id="copyBtn" type="button">Copiar resultado</button>
         <button class="button warn" id="downloadBtn" type="button">Baixar TXT lapidado</button>
         <button class="button danger" id="clearBtn" type="button">Limpar</button>
@@ -432,6 +469,7 @@
       <section class="box">
         <div class="meta">
           <span class="pill">Motor de Lapidação do Miolo</span>
+          <span class="pill" id="sourcePill">Origem: manual</span>
           <span class="pill" id="modePill">Modo: prosa</span>
           <span class="pill" id="hyphenPill">Hifenização: desligada</span>
         </div>
@@ -439,7 +477,7 @@
 
       <section class="box">
         <h3>Texto-base</h3>
-        <textarea id="sourceText" class="textarea" placeholder="Cole aqui o texto-base que será refinado pelo motor."></textarea>
+        <textarea id="sourceText" class="textarea" placeholder="Cole aqui o texto-base. Se vier do Pólux, ele aparece aqui automaticamente."></textarea>
       </section>
 
       <section class="preview-wrap">
@@ -454,6 +492,13 @@
 
         <div id="preview" class="preview prose"></div>
       </section>
+
+      <section class="box">
+        <h3>Quebras suspeitas encontradas</h3>
+        <div id="issuesList" class="issue-list">
+          <div class="hint">Nenhuma análise ainda.</div>
+        </div>
+      </section>
     </main>
 
     <aside class="panel">
@@ -461,15 +506,16 @@
 
       <div class="card-soft">
         <h3>Função do motor</h3>
-        <p>Este motor cuida de hifenização, parágrafo, observação de viúva/órfã e polimento do miolo para Pólux, Castor, Centauro e Qui(RON)xadá.</p>
+        <p>Este motor centraliza saneamento de texto para Pólux, Castor, Centauro e Qui(RON)xadá.</p>
       </div>
 
       <div class="card-soft">
-        <h3>Leitura por forma</h3>
-        <p><strong>Prosa:</strong> hifenização ampla.</p>
-        <p><strong>Verso livre:</strong> hifenização opcional.</p>
-        <p><strong>Ode:</strong> hifenização permitida.</p>
-        <p><strong>Forma fixa:</strong> hifenização restrita.</p>
+        <h3>O que ele detecta</h3>
+        <p>• quebra indevida de linha</p>
+        <p>• linha começando com minúscula</p>
+        <p>• continuação provável de oração</p>
+        <p>• hifenização</p>
+        <p>• viúva e órfã</p>
       </div>
 
       <div class="card-soft">
@@ -484,19 +530,22 @@
             <div class="stat-value" id="statWords">0</div>
           </div>
           <div class="stat">
-            <div class="stat-label">Palavras hifenizadas</div>
+            <div class="stat-label">Hifenizadas</div>
             <div class="stat-value" id="statHyphenated">0</div>
           </div>
           <div class="stat">
-            <div class="stat-label">Alertas</div>
+            <div class="stat-label">Quebras suspeitas</div>
             <div class="stat-value" id="statWarnings">0</div>
           </div>
         </div>
       </div>
+
+      <div class="card-soft">
+        <h3>Ligação aberta</h3>
+        <p>Esta HTML já está pronta para receber texto por <strong>postMessage</strong> e devolver o resultado ao módulo chamador.</p>
+      </div>
     </aside>
   </div>
-
-  <div id="measureRoot" class="ghost-measure"></div>
 
   <script>
     const fileInput = document.getElementById('fileInput');
@@ -507,34 +556,57 @@
     const paragraphIndent = document.getElementById('paragraphIndent');
     const paragraphGap = document.getElementById('paragraphGap');
     const processBtn = document.getElementById('processBtn');
+    const sendBackBtn = document.getElementById('sendBackBtn');
     const copyBtn = document.getElementById('copyBtn');
     const downloadBtn = document.getElementById('downloadBtn');
     const clearBtn = document.getElementById('clearBtn');
 
     const preview = document.getElementById('preview');
     const statusBox = document.getElementById('statusBox');
+    const sourcePill = document.getElementById('sourcePill');
     const modePill = document.getElementById('modePill');
     const hyphenPill = document.getElementById('hyphenPill');
     const issuesPill = document.getElementById('issuesPill');
+    const issuesList = document.getElementById('issuesList');
 
     const statParagraphs = document.getElementById('statParagraphs');
     const statWords = document.getElementById('statWords');
     const statHyphenated = document.getElementById('statHyphenated');
     const statWarnings = document.getElementById('statWarnings');
 
-    const measureRoot = document.getElementById('measureRoot');
-
     let processedText = '';
-    let processedHtml = '';
+    let processedParagraphs = [];
+    let detectedIssues = [];
+    let sourceApp = 'manual';
 
     fileInput.addEventListener('change', handleFileUpload);
     processBtn.addEventListener('click', processText);
+    sendBackBtn.addEventListener('click', sendBackToCaller);
     copyBtn.addEventListener('click', copyProcessedText);
     downloadBtn.addEventListener('click', downloadProcessedText);
     clearBtn.addEventListener('click', clearAll);
 
     [compositionMode, hyphenationMode, widowOrphanMode, paragraphIndent, paragraphGap]
       .forEach(el => el.addEventListener('change', processText));
+
+    window.addEventListener('message', handleIncomingMessage);
+
+    function handleIncomingMessage(event){
+      const data = event.data;
+      if(!data || typeof data !== 'object') return;
+      if(data.type !== 'lapidar-miolo-load') return;
+
+      sourceApp = data.sourceApp || 'externo';
+      sourcePill.textContent = 'Origem: ' + sourceApp;
+      sourceText.value = normalizeText(data.text || '');
+      if(data.compositionMode) compositionMode.value = data.compositionMode;
+      if(data.hyphenationMode) hyphenationMode.value = data.hyphenationMode;
+      if(data.paragraphIndent) paragraphIndent.value = data.paragraphIndent;
+      if(data.paragraphGap) paragraphGap.value = data.paragraphGap;
+
+      statusBox.textContent = 'Texto recebido de ' + sourceApp + '.';
+      processText();
+    }
 
     async function handleFileUpload(event){
       const file = event.target.files[0];
@@ -555,6 +627,8 @@
           return;
         }
 
+        sourceApp = 'arquivo';
+        sourcePill.textContent = 'Origem: arquivo';
         statusBox.textContent = 'Arquivo carregado com sucesso: ' + file.name;
         processText();
       } catch (error){
@@ -579,34 +653,50 @@
         .filter(Boolean);
     }
 
+    function readableMode(mode){
+      const map = {
+        prose:'prosa',
+        freeverse:'verso livre',
+        ode:'ode',
+        fixed:'forma fixa',
+        hybrid:'híbrido'
+      };
+      return map[mode] || mode;
+    }
+
+    function readableHyphen(mode){
+      const map = {
+        off:'desligada',
+        light:'leve',
+        medium:'moderada'
+      };
+      return map[mode] || mode;
+    }
+
     function shouldUseHyphenationByMode(){
       const mode = compositionMode.value;
       const hyph = hyphenationMode.value;
-
       if(hyph === 'off') return false;
       if(mode === 'prose') return true;
       if(mode === 'hybrid') return true;
       if(mode === 'ode') return true;
       if(mode === 'freeverse') return true;
       if(mode === 'fixed') return false;
-
       return false;
     }
 
     function hyphenateWordPT(word, level){
-      const clean = word;
-      if(clean.length < 7) return clean;
-      if(/^\d+$/.test(clean)) return clean;
-      if(/[A-ZÁÉÍÓÚÂÊÔÃÕÇ]{3,}/.test(clean) && !/[a-záéíóúâêôãõç]/.test(clean)) return clean;
+      if(word.length < 7) return word;
+      if(/^\d+$/.test(word)) return word;
 
       const vowels = 'aeiouáéíóúâêôãõàüAEIOUÁÉÍÓÚÂÊÔÃÕÀÜ';
       const points = [];
 
-      for(let i = 2; i < clean.length - 2; i++){
-        const a = clean[i - 1];
-        const b = clean[i];
-        const prev = clean[i - 2];
-        const next = clean[i + 1];
+      for(let i = 2; i < word.length - 2; i++){
+        const a = word[i - 1];
+        const b = word[i];
+        const prev = word[i - 2];
+        const next = word[i + 1];
 
         const aV = vowels.includes(a);
         const bV = vowels.includes(b);
@@ -615,29 +705,24 @@
 
         if(aV && !bV && nextV){
           points.push(i);
-        } else if(!aV && bV && !nextV && i < clean.length - 3){
-          points.push(i + 1);
         } else if(prevV && !aV && !bV && nextV){
           points.push(i);
+        } else if(!aV && bV && !nextV && i < word.length - 3){
+          points.push(i + 1);
         }
       }
 
-      const unique = [...new Set(points)].filter(p => p > 2 && p < clean.length - 2);
-      if(!unique.length) return clean;
+      const unique = [...new Set(points)].filter(p => p > 2 && p < word.length - 2);
+      if(!unique.length) return word;
 
-      let chosen = [];
-      if(level === 'light'){
-        chosen = unique.filter((_, idx) => idx % 2 === 0);
-      } else {
-        chosen = unique;
-      }
+      let chosen = level === 'light'
+        ? unique.filter((_, idx) => idx % 2 === 0)
+        : unique;
 
       let out = '';
-      for(let i = 0; i < clean.length; i++){
-        out += clean[i];
-        if(chosen.includes(i + 1)){
-          out += '\u00AD';
-        }
+      for(let i = 0; i < word.length; i++){
+        out += word[i];
+        if(chosen.includes(i + 1)) out += '\u00AD';
       }
       return out;
     }
@@ -650,6 +735,113 @@
         return hyphenated;
       });
       return { text: result, count };
+    }
+
+    function detectSuspiciousBreaks(paragraphs){
+      const issues = [];
+
+      paragraphs.forEach((p, idx) => {
+        const lines = p.split('\n').map(v => v.trim()).filter(Boolean);
+        if(lines.length < 2) return;
+
+        for(let i = 1; i < lines.length; i++){
+          const prev = lines[i - 1];
+          const curr = lines[i];
+
+          const startsLower = /^[a-záéíóúâêôãõàç]/.test(curr);
+          const prevEndsSoft = /[,;:–—-]$/.test(prev) || !/[.!?…]$/.test(prev);
+          const continuationLikely = startsLower && prevEndsSoft;
+
+          if(continuationLikely){
+            issues.push({
+              paragraphIndex: idx,
+              lineIndex: i,
+              kind: 'join-line',
+              prevLine: prev,
+              currentLine: curr,
+              snippet: prev + '\n' + curr
+            });
+          }
+        }
+      });
+
+      return issues;
+    }
+
+    function applyJoinLineIssue(issue){
+      const p = processedParagraphs[issue.paragraphIndex];
+      if(!p) return;
+
+      const lines = p.split('\n').map(v => v.trim()).filter(Boolean);
+      if(issue.lineIndex <= 0 || issue.lineIndex >= lines.length) return;
+
+      lines[issue.lineIndex - 1] = lines[issue.lineIndex - 1] + ' ' + lines[issue.lineIndex];
+      lines.splice(issue.lineIndex, 1);
+
+      processedParagraphs[issue.paragraphIndex] = lines.join('\n');
+      processedText = processedParagraphs.join('\n\n');
+      processFromProcessedState();
+    }
+
+    function applyJoinParagraphBlock(issue){
+      const p = processedParagraphs[issue.paragraphIndex];
+      if(!p) return;
+      processedParagraphs[issue.paragraphIndex] = p.replace(/\n+/g, ' ');
+      processedText = processedParagraphs.join('\n\n');
+      processFromProcessedState();
+    }
+
+    function renderIssues(){
+      if(!detectedIssues.length){
+        issuesList.innerHTML = '<div class="hint">Nenhuma quebra suspeita detectada.</div>';
+        return;
+      }
+
+      issuesList.innerHTML = '';
+
+      detectedIssues.forEach((issue, idx) => {
+        const box = document.createElement('div');
+        box.className = 'issue';
+
+        const title = document.createElement('div');
+        title.className = 'issue-title';
+        title.textContent = `Quebra suspeita ${idx + 1}`;
+        box.appendChild(title);
+
+        const snippet = document.createElement('div');
+        snippet.className = 'issue-snippet';
+        snippet.textContent = issue.snippet;
+        box.appendChild(snippet);
+
+        const actions = document.createElement('div');
+        actions.className = 'issue-actions';
+
+        const joinBtn = document.createElement('button');
+        joinBtn.className = 'mini-btn primary';
+        joinBtn.textContent = 'Juntar linha anterior';
+        joinBtn.onclick = () => applyJoinLineIssue(issue);
+
+        const blockBtn = document.createElement('button');
+        blockBtn.className = 'mini-btn warn';
+        blockBtn.textContent = 'Juntar bloco';
+        blockBtn.onclick = () => applyJoinParagraphBlock(issue);
+
+        const keepBtn = document.createElement('button');
+        keepBtn.className = 'mini-btn';
+        keepBtn.textContent = 'Manter assim';
+        keepBtn.onclick = () => {
+          detectedIssues = detectedIssues.filter((_, i) => i !== idx);
+          renderIssues();
+          updateIssueCounters();
+        };
+
+        actions.appendChild(joinBtn);
+        actions.appendChild(blockBtn);
+        actions.appendChild(keepBtn);
+        box.appendChild(actions);
+
+        issuesList.appendChild(box);
+      });
     }
 
     function renderPreviewHtml(paragraphs, warnings){
@@ -671,7 +863,7 @@
       if(mode === 'prose' || mode === 'hybrid'){
         html = paragraphs.map((p, idx) => {
           const cls = idx === 0 ? ' class="first-para"' : '';
-          return `<p${cls}>${escapeHtml(p).replace(/\u00AD/g, '&shy;')}</p>`;
+          return `<p${cls}>${escapeHtml(p).replace(/\u00AD/g, '&shy;').replace(/\n/g, '<br>')}</p>`;
         }).join('');
       } else {
         html = `<div>${escapeHtml(paragraphs.join('\n\n')).replace(/\n/g,'<br>').replace(/\u00AD/g, '&shy;')}</div>`;
@@ -682,7 +874,6 @@
       }
 
       preview.innerHTML = html;
-      processedHtml = html;
     }
 
     function escapeHtml(text){
@@ -696,38 +887,19 @@
       const mode = widowOrphanMode.value;
       if(mode === 'off') return [];
 
-      measureRoot.innerHTML = '';
-      measureRoot.style.fontFamily = getComputedStyle(preview).fontFamily || 'Georgia, serif';
-      measureRoot.style.fontSize = '1rem';
-      measureRoot.style.lineHeight = '1.55';
-      measureRoot.style.textAlign = compositionMode.value === 'prose' || compositionMode.value === 'hybrid' ? 'justify' : 'left';
-      measureRoot.style.whiteSpace = compositionMode.value === 'prose' || compositionMode.value === 'hybrid' ? 'normal' : 'pre-wrap';
-
       const warnings = [];
 
       paragraphs.forEach((p, idx) => {
-        const para = document.createElement('p');
-        para.style.margin = '0 0 10px 0';
-        para.style.width = '640px';
-        para.innerHTML = escapeHtml(p).replace(/\u00AD/g, '&shy;');
-        measureRoot.appendChild(para);
-
-        const lines = Math.round(para.getBoundingClientRect().height / 24);
-        const words = p.split(/\s+/).filter(Boolean);
-
-        if(lines <= 1 && words.length > 8){
-          warnings.push(`Parágrafo ${idx + 1}: bloco comprimido demais para análise.`);
-        }
-
+        const words = p.replace(/\n/g, ' ').split(/\s+/).filter(Boolean);
         if(words.length >= 10){
           const lastWords = words.slice(-1).join(' ');
           if(lastWords.length <= 3){
-            warnings.push(`Parágrafo ${idx + 1}: possível fechamento fraco na última linha.`);
+            warnings.push(`Parágrafo ${idx + 1}: fechamento fraco na última linha.`);
           }
         }
 
-        if(mode === 'tight' && words.length > 22 && lines >= 5){
-          warnings.push(`Parágrafo ${idx + 1}: revisar quebra por viúva/órfã no diagramador.`);
+        if(mode === 'tight' && words.length > 22){
+          warnings.push(`Parágrafo ${idx + 1}: revisar possível viúva/órfã no diagramador.`);
         }
       });
 
@@ -736,22 +908,22 @@
 
     function processText(){
       const raw = normalizeText(sourceText.value);
-      const mode = compositionMode.value;
-      const hyph = hyphenationMode.value;
 
-      modePill.textContent = 'Modo: ' + readableMode(mode);
-      hyphenPill.textContent = 'Hifenização: ' + readableHyphen(hyph);
+      modePill.textContent = 'Modo: ' + readableMode(compositionMode.value);
+      hyphenPill.textContent = 'Hifenização: ' + readableHyphen(hyphenationMode.value);
 
       if(!raw){
         processedText = '';
-        processedHtml = '';
+        processedParagraphs = [];
+        detectedIssues = [];
         preview.innerHTML = '';
+        issuesList.innerHTML = '<div class="hint">Nenhuma análise ainda.</div>';
         issuesPill.textContent = 'Sem análise ainda';
         statParagraphs.textContent = '0';
         statWords.textContent = '0';
         statHyphenated.textContent = '0';
         statWarnings.textContent = '0';
-        statusBox.textContent = 'Cole texto ou suba arquivo para lapidação.';
+        statusBox.textContent = 'Cole texto ou suba arquivo.';
         return;
       }
 
@@ -759,54 +931,76 @@
       let hyphenatedCount = 0;
 
       if(shouldUseHyphenationByMode()){
-        const level = hyph === 'medium' ? 'medium' : 'light';
-        const resultParagraphs = [];
+        const level = hyphenationMode.value === 'medium' ? 'medium' : 'light';
+        const newParagraphs = [];
 
         paragraphs.forEach((p) => {
           const res = hyphenateText(p, level);
-          resultParagraphs.push(res.text);
+          newParagraphs.push(res.text);
           hyphenatedCount += res.count;
         });
 
-        paragraphs = resultParagraphs;
+        paragraphs = newParagraphs;
       }
 
-      const warnings = detectWidowOrphanWarnings(paragraphs);
-
+      processedParagraphs = paragraphs;
       processedText = paragraphs.join('\n\n');
-      renderPreviewHtml(paragraphs, warnings);
-
-      const wordCount = raw.split(/\s+/).filter(Boolean).length;
-      statParagraphs.textContent = String(paragraphs.length);
-      statWords.textContent = String(wordCount);
-      statHyphenated.textContent = String(hyphenatedCount);
-      statWarnings.textContent = String(warnings.length);
-
-      issuesPill.textContent = warnings.length
-        ? `${warnings.length} alerta(s)`
-        : 'Sem alertas relevantes';
-
+      processFromProcessedState(hyphenatedCount);
       statusBox.textContent = 'Texto lapidado com sucesso.';
     }
 
-    function readableMode(mode){
-      const map = {
-        prose:'prosa',
-        freeverse:'verso livre',
-        ode:'ode',
-        fixed:'forma fixa',
-        hybrid:'híbrido'
-      };
-      return map[mode] || mode;
+    function processFromProcessedState(existingHyphenCount = null){
+      const warnings = detectWidowOrphanWarnings(processedParagraphs);
+      detectedIssues = detectSuspiciousBreaks(processedParagraphs);
+
+      renderPreviewHtml(processedParagraphs, warnings);
+      renderIssues();
+      updateIssueCounters(existingHyphenCount);
     }
 
-    function readableHyphen(mode){
-      const map = {
-        off:'desligada',
-        light:'leve',
-        medium:'moderada'
+    function updateIssueCounters(existingHyphenCount = null){
+      const raw = normalizeText(sourceText.value);
+      const wordCount = raw ? raw.replace(/\n/g, ' ').split(/\s+/).filter(Boolean).length : 0;
+      let hyphenCount = existingHyphenCount;
+
+      if(hyphenCount === null){
+        hyphenCount = (processedText.match(/\u00AD/g) || []).length;
+      }
+
+      statParagraphs.textContent = String(processedParagraphs.length);
+      statWords.textContent = String(wordCount);
+      statHyphenated.textContent = String(hyphenCount);
+      statWarnings.textContent = String(detectedIssues.length);
+
+      issuesPill.textContent = detectedIssues.length
+        ? `${detectedIssues.length} quebra(s) suspeita(s)`
+        : 'Sem quebras suspeitas';
+    }
+
+    function sendBackToCaller(){
+      if(!processedText){
+        statusBox.textContent = 'Nada para enviar ainda.';
+        return;
+      }
+
+      const payload = {
+        type: 'lapidar-miolo-result',
+        sourceApp: sourceApp,
+        compositionMode: compositionMode.value,
+        text: processedText.replace(/\u00AD/g, ''),
+        hyphenatedText: processedText,
+        issues: detectedIssues
       };
-      return map[mode] || mode;
+
+      if(window.opener && !window.opener.closed){
+        window.opener.postMessage(payload, '*');
+        statusBox.textContent = 'Resultado enviado ao módulo chamador.';
+      } else if(window.parent && window.parent !== window){
+        window.parent.postMessage(payload, '*');
+        statusBox.textContent = 'Resultado enviado ao container pai.';
+      } else {
+        statusBox.textContent = 'Nenhum módulo chamador detectado. Use copiar ou baixar.';
+      }
     }
 
     async function copyProcessedText(){
@@ -845,8 +1039,12 @@
     function clearAll(){
       sourceText.value = '';
       processedText = '';
-      processedHtml = '';
+      processedParagraphs = [];
+      detectedIssues = [];
+      sourceApp = 'manual';
+      sourcePill.textContent = 'Origem: manual';
       preview.innerHTML = '';
+      issuesList.innerHTML = '<div class="hint">Nenhuma análise ainda.</div>';
       issuesPill.textContent = 'Sem análise ainda';
       statParagraphs.textContent = '0';
       statWords.textContent = '0';
