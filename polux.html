@@ -5,43 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pólux — Diagramador de Prosa</title>
 
+  <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
+
   <style>
     :root{
       --bg:#f4f1ea;
       --paper:#ffffff;
       --ink:#1f2430;
-      --muted:#5f6b66;
       --line:#d6ddd7;
       --polux-green:#184A2E;
       --polux-green-2:#1F5E3B;
       --polux-green-3:#2A7A4D;
       --shadow:0 10px 28px rgba(0,0,0,.10);
       --radius:18px;
-
-      /* base 16x23 proporcional */
-      --page-w: 460px;
-      --page-h: 661px;
+      --page-w:460px;
     }
 
-    *{ box-sizing:border-box; }
+    *{box-sizing:border-box}
 
     html,body{
       margin:0;
       padding:0;
       background:var(--bg);
       color:var(--ink);
-      font-family: Georgia, "Times New Roman", serif;
+      font-family:Georgia, "Times New Roman", serif;
       min-height:100%;
     }
 
-    body{
-      overflow-x:hidden;
-    }
+    body{overflow-x:hidden}
 
     .app{
       min-height:100vh;
       display:grid;
-      grid-template-columns: 280px minmax(320px, 1fr) 280px;
+      grid-template-columns:280px minmax(320px,1fr) 280px;
       gap:14px;
       padding:14px;
     }
@@ -64,22 +60,6 @@
       margin:0;
       font-size:2rem;
       line-height:1;
-      letter-spacing:.3px;
-    }
-
-    .panel h3{
-      margin:6px 0 0 0;
-      font-size:1rem;
-      font-weight:700;
-      opacity:.95;
-    }
-
-    .panel p,
-    .panel label,
-    .panel small{
-      margin:0;
-      color:rgba(255,255,255,.92);
-      line-height:1.35;
     }
 
     .card-soft{
@@ -95,11 +75,7 @@
       gap:8px;
     }
 
-    .input,
-    .select,
-    .textarea,
-    .button,
-    .file{
+    .input,.select,.button,.file{
       width:100%;
       border-radius:14px;
       border:none;
@@ -107,20 +83,12 @@
       font-family:inherit;
     }
 
-    .input,
-    .select,
-    .textarea{
+    .input,.select{
       background:#f6fbf7;
       color:#132018;
       border:1px solid #b9d3c1;
-      padding:12px 12px;
+      padding:12px;
       outline:none;
-    }
-
-    .textarea{
-      min-height:130px;
-      resize:vertical;
-      line-height:1.5;
     }
 
     .file{
@@ -132,34 +100,15 @@
 
     .button{
       background:var(--polux-green-3);
-      color:white;
+      color:#fff;
       padding:13px 14px;
       cursor:pointer;
       font-weight:700;
-      transition:transform .12s ease, opacity .12s ease, background .12s ease;
     }
 
-    .button:hover{
-      opacity:.95;
-      transform:translateY(-1px);
-    }
-
-    .button.secondary{
-      background:#296544;
-    }
-
-    .button.ghost{
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.15);
-    }
-
-    .button.warn{
-      background:#8b5a18;
-    }
-
-    .button.danger{
-      background:#7a2727;
-    }
+    .button.secondary{background:#296544}
+    .button.warn{background:#8b5a18}
+    .button.danger{background:#7a2727}
 
     .main{
       min-width:0;
@@ -181,7 +130,7 @@
       justify-content:space-between;
     }
 
-    .workspace-topbar .meta{
+    .meta{
       display:flex;
       flex-wrap:wrap;
       gap:10px 18px;
@@ -251,7 +200,6 @@
       font-size:1.55rem;
       line-height:1.1;
       text-align:center;
-      font-family:"Times New Roman", Georgia, serif;
       font-weight:700;
       color:#18201d;
     }
@@ -293,7 +241,7 @@
     }
 
     .empty-state{
-      width:min(100%, 760px);
+      width:min(100%,760px);
       background:rgba(255,255,255,.78);
       border:2px dashed #b7c3b7;
       border-radius:22px;
@@ -322,27 +270,17 @@
 
     .editor-text{
       width:100%;
-      min-height:200px;
+      min-height:220px;
       resize:vertical;
       border-radius:16px;
       border:1px solid #cfd8cf;
       background:#fff;
       padding:14px;
-      font-family: Georgia, "Times New Roman", serif;
+      font-family:Georgia, "Times New Roman", serif;
       font-size:1rem;
       line-height:1.55;
       color:#202522;
       outline:none;
-    }
-
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .row > *{
-      flex:1 1 140px;
     }
 
     .status{
@@ -352,6 +290,7 @@
       border-radius:14px;
       padding:10px 12px;
       border:1px solid rgba(255,255,255,.14);
+      min-height:48px;
     }
 
     .mini-note{
@@ -360,35 +299,21 @@
       opacity:.95;
     }
 
-    .hidden{
-      display:none !important;
-    }
+    .hidden{display:none !important}
 
-    @media (max-width: 1180px){
-      .app{
-        grid-template-columns: 1fr;
-      }
-
+    @media (max-width:1180px){
+      .app{grid-template-columns:1fr}
       .panel{
         position:relative;
         top:auto;
         min-height:auto;
       }
-
-      .main{
-        order:2;
-      }
-
-      .left-panel{
-        order:1;
-      }
-
-      .right-panel{
-        order:3;
-      }
+      .main{order:2}
+      .left-panel{order:1}
+      .right-panel{order:3}
     }
 
-    @media (max-width: 760px){
+    @media (max-width:760px){
       .app{
         padding:8px;
         gap:8px;
@@ -399,14 +324,7 @@
         padding:14px 12px;
       }
 
-      .panel h2{
-        font-size:1.55rem;
-      }
-
-      .workspace-topbar{
-        border-radius:16px;
-        padding:12px;
-      }
+      .panel h2{font-size:1.55rem}
 
       .workspace{
         border-radius:18px;
@@ -415,7 +333,7 @@
       }
 
       .page{
-        width:min(100%, 390px);
+        width:min(100%,390px);
       }
 
       .page-inner{
@@ -431,394 +349,400 @@
         font-size:.93rem;
         line-height:1.45;
       }
-
-      .editor-text{
-        min-height:170px;
-      }
-
-      .row{
-        flex-direction:column;
-      }
     }
   </style>
 </head>
 <body>
 
-  <div class="app">
-    <!-- PAINEL ESQUERDO -->
-    <aside class="panel left-panel">
-      <h2>Estrutura</h2>
+<div class="app">
+  <aside class="panel left-panel">
+    <h2>Estrutura</h2>
 
-      <div class="status" id="statusBox">
-        Nenhuma obra carregada ainda.
+    <div class="status" id="statusBox">Nenhuma obra carregada ainda.</div>
+
+    <div class="card-soft control-group">
+      <label for="fileInput"><strong>Subir obra</strong></label>
+      <input class="file" type="file" id="fileInput" accept=".txt,.docx" />
+      <small class="mini-note">Agora esta versão lê TXT e DOCX. PDF fica para a próxima etapa.</small>
+    </div>
+
+    <div class="card-soft control-group">
+      <label for="bookTitle"><strong>Título provisório</strong></label>
+      <input class="input" id="bookTitle" type="text" placeholder="Digite o título da obra" value="Obra em preparação" />
+    </div>
+
+    <div class="card-soft control-group">
+      <label for="chapterMode"><strong>Detecção de capítulos</strong></label>
+      <select class="select" id="chapterMode">
+        <option value="auto">Automática simples</option>
+        <option value="manual">Manual</option>
+      </select>
+    </div>
+
+    <div class="card-soft control-group">
+      <button class="button" id="renderBtn" type="button">Atualizar prévia</button>
+      <button class="button secondary" id="newBookBtn" type="button">Novo livro</button>
+    </div>
+
+    <div class="card-soft control-group">
+      <strong>Resumo rápido</strong>
+      <small>Formato-base: 16×23 · Prévia central ativa · Painéis verdes</small>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="workspace-topbar">
+      <div class="meta">
+        <span class="pill"><strong>Pólux</strong> diagramador de prosa</span>
+        <span class="pill">Base: <strong>16×23 cm</strong></span>
+        <span class="pill" id="pageCountPill">Páginas: <strong>0</strong></span>
+      </div>
+      <div class="meta">
+        <span class="pill">Modo: <strong>prévia central</strong></span>
+      </div>
+    </div>
+
+    <section class="workspace" id="workspace">
+      <div class="empty-state" id="emptyState">
+        <h3 style="margin-top:0;">Área central de diagramação</h3>
+        <p style="margin-bottom:0;">
+          Suba um arquivo TXT ou DOCX, ou cole o texto abaixo. A prévia aparecerá aqui.
+        </p>
       </div>
 
-      <div class="card-soft control-group">
-        <label for="fileInput"><strong>Subir obra</strong></label>
-        <input class="file" type="file" id="fileInput" accept=".txt,.md,.html,.docx,.pdf" />
-        <small class="mini-note">Nesta fase, TXT funciona melhor. DOCX e PDF entram como leitura simples, quando possível.</small>
-      </div>
+      <div class="book-stage" id="bookStage"></div>
+    </section>
 
-      <div class="card-soft control-group">
-        <label for="bookTitle"><strong>Título provisório</strong></label>
-        <input class="input" id="bookTitle" type="text" placeholder="Digite o título da obra" value="Obra em preparação" />
-      </div>
+    <section class="editor-zone">
+      <h3>Texto-base da obra</h3>
+      <textarea id="editorText" class="editor-text" placeholder="Cole aqui o texto da obra, se preferir."></textarea>
+    </section>
+  </main>
 
-      <div class="card-soft control-group">
-        <label for="chapterMode"><strong>Detecção de capítulos</strong></label>
-        <select class="select" id="chapterMode">
-          <option value="auto">Automática simples</option>
-          <option value="manual">Manual</option>
-        </select>
-      </div>
+  <aside class="panel right-panel">
+    <h2>Configuração</h2>
 
-      <div class="card-soft control-group">
-        <button class="button" id="renderBtn">Atualizar prévia</button>
-        <button class="button secondary" id="newBookBtn">Novo livro</button>
-      </div>
+    <div class="card-soft control-group">
+      <label for="bodyFont"><strong>Fonte do corpo</strong></label>
+      <select class="select" id="bodyFont">
+        <option value="Georgia">Georgia</option>
+        <option value="'Times New Roman'">Times New Roman</option>
+        <option value="Garamond">Garamond</option>
+      </select>
+    </div>
 
-      <div class="card-soft control-group">
-        <h3>Resumo rápido</h3>
-        <p id="summaryInfo">Formato-base: 16×23 · Prévia central ativa · Painéis verdes</p>
-      </div>
-    </aside>
+    <div class="card-soft control-group">
+      <label for="fontSize"><strong>Tamanho da fonte</strong></label>
+      <select class="select" id="fontSize">
+        <option value="0.96">Padrão</option>
+        <option value="0.90">Menor</option>
+        <option value="1.02">Maior</option>
+        <option value="1.08">Mais aberta</option>
+      </select>
+    </div>
 
-    <!-- CENTRO -->
-    <main class="main">
-      <div class="workspace-topbar">
-        <div class="meta">
-          <span class="pill"><strong>Pólux</strong> diagramador de prosa</span>
-          <span class="pill">Base: <strong>16×23 cm</strong></span>
-          <span class="pill" id="pageCountPill">Páginas: <strong>0</strong></span>
-        </div>
-        <div class="meta">
-          <span class="pill" id="viewModePill">Modo: <strong>prévia central</strong></span>
-        </div>
-      </div>
+    <div class="card-soft control-group">
+      <label for="lineHeight"><strong>Entrelinha</strong></label>
+      <select class="select" id="lineHeight">
+        <option value="1.52">1.52</option>
+        <option value="1.45">1.45</option>
+        <option value="1.60">1.60</option>
+        <option value="1.70">1.70</option>
+      </select>
+    </div>
 
-      <section class="workspace" id="workspace">
-        <div class="empty-state" id="emptyState">
-          <h3 style="margin-top:0;">Área central de diagramação</h3>
-          <p style="margin-bottom:0;">
-            Suba um arquivo ou cole o texto abaixo. A prévia do livro aparecerá aqui, no centro, sem esmagar a tela do celular.
-          </p>
-        </div>
+    <div class="card-soft control-group">
+      <button class="button" id="capitularBtn" type="button">Capitular</button>
+      <button class="button secondary" id="ornamentBtn" type="button">Ornamento</button>
+      <button class="button warn" id="pdfBtn" type="button">Exportar PDF</button>
+      <button class="button danger" id="finalizeBtn" type="button">Finalizar + limpar</button>
+    </div>
 
-        <div class="book-stage" id="bookStage"></div>
-      </section>
+    <div class="card-soft control-group">
+      <strong>Regra de limpeza</strong>
+      <small>Ao finalizar, o workspace apaga o conteúdo da obra para evitar resíduos no próximo livro.</small>
+    </div>
+  </aside>
+</div>
 
-      <section class="editor-zone">
-        <h3>Texto-base da obra</h3>
-        <textarea id="editorText" class="editor-text" placeholder="Cole aqui o texto da obra, se preferir."></textarea>
-      </section>
-    </main>
+<script>
+  let dropcapEnabled = false;
+  let ornamentEnabled = false;
 
-    <!-- PAINEL DIREITO -->
-    <aside class="panel right-panel">
-      <h2>Configuração</h2>
+  const editorText = document.getElementById('editorText');
+  const bookTitle = document.getElementById('bookTitle');
+  const chapterMode = document.getElementById('chapterMode');
+  const bodyFont = document.getElementById('bodyFont');
+  const fontSize = document.getElementById('fontSize');
+  const lineHeight = document.getElementById('lineHeight');
 
-      <div class="card-soft control-group">
-        <label for="bodyFont"><strong>Fonte do corpo</strong></label>
-        <select class="select" id="bodyFont">
-          <option value="Georgia">Georgia</option>
-          <option value="'Times New Roman'">Times New Roman</option>
-          <option value="Garamond">Garamond</option>
-          <option value="'Libre Baskerville'">Libre Baskerville</option>
-        </select>
-      </div>
+  const renderBtn = document.getElementById('renderBtn');
+  const newBookBtn = document.getElementById('newBookBtn');
+  const capitularBtn = document.getElementById('capitularBtn');
+  const ornamentBtn = document.getElementById('ornamentBtn');
+  const pdfBtn = document.getElementById('pdfBtn');
+  const finalizeBtn = document.getElementById('finalizeBtn');
 
-      <div class="card-soft control-group">
-        <label for="fontSize"><strong>Tamanho da fonte</strong></label>
-        <select class="select" id="fontSize">
-          <option value="0.96">Padrão</option>
-          <option value="0.90">Menor</option>
-          <option value="1.02">Maior</option>
-          <option value="1.08">Mais aberta</option>
-        </select>
-      </div>
+  const bookStage = document.getElementById('bookStage');
+  const emptyState = document.getElementById('emptyState');
+  const statusBox = document.getElementById('statusBox');
+  const pageCountPill = document.getElementById('pageCountPill');
 
-      <div class="card-soft control-group">
-        <label for="lineHeight"><strong>Entrelinha</strong></label>
-        <select class="select" id="lineHeight">
-          <option value="1.52">1.52</option>
-          <option value="1.45">1.45</option>
-          <option value="1.60">1.60</option>
-          <option value="1.70">1.70</option>
-        </select>
-      </div>
+  bindFileInput();
 
-      <div class="card-soft control-group">
-        <button class="button" id="capitularBtn">Capitular</button>
-        <button class="button secondary" id="ornamentBtn">Ornamento</button>
-        <button class="button warn" id="pdfBtn">Exportar PDF</button>
-        <button class="button danger" id="finalizeBtn">Finalizar + limpar</button>
-      </div>
+  renderBtn.addEventListener('click', renderPreview);
+  newBookBtn.addEventListener('click', resetWorkspace);
+  capitularBtn.addEventListener('click', toggleCapitular);
+  ornamentBtn.addEventListener('click', toggleOrnament);
+  pdfBtn.addEventListener('click', exportPDF);
+  finalizeBtn.addEventListener('click', finalizeAndClear);
 
-      <div class="card-soft control-group">
-        <h3>Regra de limpeza</h3>
-        <p>Ao finalizar, o workspace apaga o conteúdo da obra para evitar resíduos no próximo livro.</p>
-      </div>
-    </aside>
-  </div>
+  bodyFont.addEventListener('change', renderPreview);
+  fontSize.addEventListener('change', renderPreview);
+  lineHeight.addEventListener('change', renderPreview);
+  bookTitle.addEventListener('input', renderPreview);
 
-  <script>
-    const fileInput = document.getElementById('fileInput');
-    const editorText = document.getElementById('editorText');
-    const bookTitle = document.getElementById('bookTitle');
-    const chapterMode = document.getElementById('chapterMode');
-    const bodyFont = document.getElementById('bodyFont');
-    const fontSize = document.getElementById('fontSize');
-    const lineHeight = document.getElementById('lineHeight');
+  function bindFileInput(){
+    const input = document.getElementById('fileInput');
+    input.addEventListener('change', handleFileUpload);
+  }
 
-    const renderBtn = document.getElementById('renderBtn');
-    const newBookBtn = document.getElementById('newBookBtn');
-    const capitularBtn = document.getElementById('capitularBtn');
-    const ornamentBtn = document.getElementById('ornamentBtn');
-    const pdfBtn = document.getElementById('pdfBtn');
-    const finalizeBtn = document.getElementById('finalizeBtn');
+  async function handleFileUpload(event){
+    const file = event.target.files[0];
+    if(!file){
+      statusBox.textContent = 'Nenhum arquivo selecionado.';
+      return;
+    }
 
-    const bookStage = document.getElementById('bookStage');
-    const emptyState = document.getElementById('emptyState');
-    const statusBox = document.getElementById('statusBox');
-    const pageCountPill = document.getElementById('pageCountPill');
-    const summaryInfo = document.getElementById('summaryInfo');
+    const lowerName = file.name.toLowerCase();
+    statusBox.textContent = 'Lendo arquivo: ' + file.name;
 
-    let dropcapEnabled = false;
-    let ornamentEnabled = false;
-
-    fileInput.addEventListener('change', handleFileUpload);
-    renderBtn.addEventListener('click', renderPreview);
-    newBookBtn.addEventListener('click', resetWorkspace);
-    capitularBtn.addEventListener('click', toggleCapitular);
-    ornamentBtn.addEventListener('click', toggleOrnament);
-    pdfBtn.addEventListener('click', exportPDF);
-    finalizeBtn.addEventListener('click', finalizeAndClear);
-
-    bookTitle.addEventListener('input', renderPreview);
-    bodyFont.addEventListener('change', renderPreview);
-    fontSize.addEventListener('change', renderPreview);
-    lineHeight.addEventListener('change', renderPreview);
-
-    function handleFileUpload(event){
-      const file = event.target.files[0];
-      if(!file) return;
-
-      const name = file.name.toLowerCase();
-      statusBox.textContent = 'Lendo arquivo: ' + file.name;
-
-      if(name.endsWith('.txt') || name.endsWith('.md') || name.endsWith('.html')){
-        const reader = new FileReader();
-        reader.onload = function(e){
-          editorText.value = stripHtmlIfNeeded(String(e.target.result || ''));
-          statusBox.textContent = 'Arquivo carregado com sucesso: ' + file.name;
-          renderPreview();
-        };
-        reader.readAsText(file, 'UTF-8');
+    try{
+      if(lowerName.endsWith('.txt')){
+        const text = await file.text();
+        editorText.value = normalizeText(text);
+        statusBox.textContent = 'TXT carregado com sucesso: ' + file.name;
+        autoFillTitleFromText();
+        renderPreview();
         return;
       }
 
-      if(name.endsWith('.docx') || name.endsWith('.pdf')){
-        statusBox.textContent = 'Nesta versão-base, TXT funciona melhor. DOCX/PDF podem exigir adaptação posterior.';
+      if(lowerName.endsWith('.docx')){
+        const arrayBuffer = await file.arrayBuffer();
+        const result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+        const text = normalizeText(result.value || '');
+        editorText.value = text;
+        statusBox.textContent = 'DOCX carregado com sucesso: ' + file.name;
+        autoFillTitleFromText();
+        renderPreview();
         return;
       }
 
-      statusBox.textContent = 'Formato não suportado nesta fase. Use TXT para teste inicial.';
+      statusBox.textContent = 'Formato ainda não suportado nesta etapa. Use TXT ou DOCX.';
+    }catch(error){
+      console.error(error);
+      statusBox.textContent = 'Erro ao ler arquivo. Tente novamente com TXT ou DOCX simples.';
     }
+  }
 
-    function stripHtmlIfNeeded(text){
-      return text
-        .replace(/<br\\s*\\/?>/gi, '\\n')
-        .replace(/<[^>]+>/g, '')
-        .replace(/&nbsp;/g, ' ')
-        .trim();
+  function autoFillTitleFromText(){
+    const text = editorText.value.trim();
+    if(!text) return;
+    if(bookTitle.value.trim() && bookTitle.value.trim() !== 'Obra em preparação') return;
+
+    const lines = normalizeText(text).split('\n').map(l => l.trim()).filter(Boolean);
+    if(lines.length && lines[0].length <= 80){
+      bookTitle.value = lines[0];
     }
+  }
 
-    function normalizeText(text){
-      return text
-        .replace(/\\r\\n/g, '\\n')
-        .replace(/\\r/g, '\\n')
-        .replace(/\\n{3,}/g, '\\n\\n')
-        .trim();
-    }
+  function normalizeText(text){
+    return String(text || '')
+      .replace(/\r\n/g, '\n')
+      .replace(/\r/g, '\n')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+  }
 
-    function splitIntoParagraphs(text){
-      return normalizeText(text)
-        .split(/\\n\\s*\\n/)
-        .map(p => p.trim())
-        .filter(Boolean);
-    }
+  function splitIntoParagraphs(text){
+    return normalizeText(text)
+      .split(/\n\s*\n/)
+      .map(p => p.trim())
+      .filter(Boolean);
+  }
 
-    function detectChapters(paragraphs){
-      if(chapterMode.value === 'manual'){
-        return paragraphs;
+  function detectChapters(paragraphs){
+    if(chapterMode.value === 'manual') return paragraphs;
+
+    const result = [];
+    paragraphs.forEach(p => {
+      const isChapter = /^(cap[ií]tulo\s+[\divxlcdm]+|cap[ií]tulo\s+\d+|parte\s+\d+|pr[oó]logo|ep[ií]logo)$/i.test(p.trim());
+      if(isChapter){
+        result.push('[QUEBRA_CAPITULO]');
+        result.push(p);
+      }else{
+        result.push(p);
       }
+    });
+    return result;
+  }
 
-      return paragraphs.map(p => {
-        return p.replace(
-          /^(cap[ií]tulo\\s+[\\divxlcdm]+|cap[ií]tulo\\s+\\d+|parte\\s+\\d+|pr[oó]logo|ep[ií]logo)\\s*$/gim,
-          '\\n$1\\n'
-        );
-      });
-    }
+  function paginateText(text){
+    const clean = normalizeText(text);
+    if(!clean) return [];
 
-    function paginateText(text){
-      const clean = normalizeText(text);
-      if(!clean){
-        return [];
-      }
+    const paragraphs = splitIntoParagraphs(clean);
+    const treated = detectChapters(paragraphs);
 
-      const paragraphs = splitIntoParagraphs(clean);
-      const treatedParagraphs = detectChapters(paragraphs);
+    const pages = [];
+    const maxCharsPerPage = window.innerWidth <= 760 ? 1050 : 1600;
 
-      const pages = [];
-      const maxCharsPerPage = window.innerWidth <= 760 ? 1050 : 1650;
+    let current = '';
+    let currentLength = 0;
 
-      let currentPage = '';
-      let currentLength = 0;
-
-      treatedParagraphs.forEach((paragraph, index) => {
-        const block = paragraph + '\\n\\n';
-        const blockLength = block.length;
-
-        if(currentLength + blockLength > maxCharsPerPage && currentPage.trim().length){
-          pages.push(currentPage.trim());
-          currentPage = block;
-          currentLength = blockLength;
-        } else {
-          currentPage += block;
-          currentLength += blockLength;
+    treated.forEach((item) => {
+      if(item === '[QUEBRA_CAPITULO]'){
+        if(current.trim()){
+          pages.push(current.trim());
+          current = '';
+          currentLength = 0;
         }
-
-        if(index === treatedParagraphs.length - 1 && currentPage.trim().length){
-          pages.push(currentPage.trim());
-        }
-      });
-
-      return pages;
-    }
-
-    function extractPossibleTitle(text){
-      const lines = normalizeText(text).split('\\n').map(l => l.trim()).filter(Boolean);
-      if(lines.length === 0) return bookTitle.value || 'Obra em preparação';
-
-      const first = lines[0];
-      if(first.length <= 80){
-        return first;
-      }
-      return bookTitle.value || 'Obra em preparação';
-    }
-
-    function renderPreview(){
-      const text = editorText.value.trim();
-
-      if(!text){
-        bookStage.innerHTML = '';
-        emptyState.classList.remove('hidden');
-        pageCountPill.innerHTML = 'Páginas: <strong>0</strong>';
-        summaryInfo.textContent = 'Formato-base: 16×23 · Prévia central ativa · Painéis verdes';
-        statusBox.textContent = 'Nenhuma obra carregada ainda.';
         return;
       }
 
-      emptyState.classList.add('hidden');
-
-      const pages = paginateText(text);
-      const title = bookTitle.value.trim() || extractPossibleTitle(text);
-      const font = bodyFont.value;
-      const size = fontSize.value;
-      const leading = lineHeight.value;
-
-      bookStage.innerHTML = '';
-
-      pages.forEach((pageText, i) => {
-        const page = document.createElement('article');
-        page.className = 'page' + (dropcapEnabled && i === 0 ? ' dropcap-active' : '');
-
-        const inner = document.createElement('div');
-        inner.className = 'page-inner';
-
-        const titleEl = document.createElement('h1');
-        titleEl.className = 'page-title';
-        titleEl.textContent = i === 0 ? title : '';
-
-        const content = document.createElement('div');
-        content.className = 'page-content';
-        content.style.fontFamily = font;
-        content.style.fontSize = size + 'rem';
-        content.style.lineHeight = leading;
-        content.textContent = pageText;
-
-        if(ornamentEnabled && i > 0){
-          const ornament = document.createElement('div');
-          ornament.className = 'ornament';
-          ornament.textContent = '❦';
-          inner.appendChild(ornament);
-        }
-
-        if(i === 0 && titleEl.textContent){
-          inner.appendChild(titleEl);
-        }
-
-        inner.appendChild(content);
-
-        const pageNumber = document.createElement('div');
-        pageNumber.className = 'page-number';
-        pageNumber.textContent = 'Página ' + (i + 1);
-
-        page.appendChild(inner);
-        page.appendChild(pageNumber);
-
-        bookStage.appendChild(page);
-      });
-
-      pageCountPill.innerHTML = 'Páginas: <strong>' + pages.length + '</strong>';
-      summaryInfo.textContent = 'Prévia atualizada · ' + pages.length + ' página(s) · base 16×23';
-      statusBox.textContent = 'Prévia montada com sucesso.';
-    }
-
-    function toggleCapitular(){
-      dropcapEnabled = !dropcapEnabled;
-      capitularBtn.textContent = dropcapEnabled ? 'Capitular: ON' : 'Capitular';
-      renderPreview();
-    }
-
-    function toggleOrnament(){
-      ornamentEnabled = !ornamentEnabled;
-      ornamentBtn.textContent = ornamentEnabled ? 'Ornamento: ON' : 'Ornamento';
-      renderPreview();
-    }
-
-    function exportPDF(){
-      if(!editorText.value.trim()){
-        alert('Carregue ou cole uma obra antes de exportar.');
-        return;
+      const block = item + '\n\n';
+      if(currentLength + block.length > maxCharsPerPage && current.trim()){
+        pages.push(current.trim());
+        current = block;
+        currentLength = block.length;
+      }else{
+        current += block;
+        currentLength += block.length;
       }
-      window.print();
+    });
+
+    if(current.trim()){
+      pages.push(current.trim());
     }
 
-    function finalizeAndClear(){
-      if(editorText.value.trim()){
-        const confirmed = confirm('Finalizar esta obra e limpar o workspace?');
-        if(!confirmed) return;
-      }
-      resetWorkspace();
-    }
+    return pages;
+  }
 
-    function resetWorkspace(){
-      fileInput.value = '';
-      editorText.value = '';
-      bookTitle.value = 'Obra em preparação';
-      dropcapEnabled = false;
-      ornamentEnabled = false;
-      capitularBtn.textContent = 'Capitular';
-      ornamentBtn.textContent = 'Ornamento';
+  function renderPreview(){
+    const text = normalizeText(editorText.value);
+    if(!text){
       bookStage.innerHTML = '';
       emptyState.classList.remove('hidden');
-      statusBox.textContent = 'Workspace limpo. Pronto para novo livro.';
       pageCountPill.innerHTML = 'Páginas: <strong>0</strong>';
-      summaryInfo.textContent = 'Formato-base: 16×23 · Prévia central ativa · Painéis verdes';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      statusBox.textContent = 'Sem texto para diagramar ainda.';
+      return;
     }
-  </script>
+
+    const pages = paginateText(text);
+    const title = bookTitle.value.trim() || 'Obra em preparação';
+    const font = bodyFont.value;
+    const size = fontSize.value;
+    const leading = lineHeight.value;
+
+    bookStage.innerHTML = '';
+    emptyState.classList.add('hidden');
+
+    pages.forEach((pageText, index) => {
+      const page = document.createElement('article');
+      page.className = 'page' + (dropcapEnabled && index === 0 ? ' dropcap-active' : '');
+
+      const inner = document.createElement('div');
+      inner.className = 'page-inner';
+
+      if(index === 0){
+        const titleEl = document.createElement('h1');
+        titleEl.className = 'page-title';
+        titleEl.textContent = title;
+        inner.appendChild(titleEl);
+      }
+
+      if(ornamentEnabled && index > 0){
+        const ornament = document.createElement('div');
+        ornament.className = 'ornament';
+        ornament.textContent = '❦';
+        inner.appendChild(ornament);
+      }
+
+      const content = document.createElement('div');
+      content.className = 'page-content';
+      content.style.fontFamily = font;
+      content.style.fontSize = size + 'rem';
+      content.style.lineHeight = leading;
+      content.textContent = pageText;
+
+      const number = document.createElement('div');
+      number.className = 'page-number';
+      number.textContent = 'Página ' + (index + 1);
+
+      inner.appendChild(content);
+      page.appendChild(inner);
+      page.appendChild(number);
+      bookStage.appendChild(page);
+    });
+
+    pageCountPill.innerHTML = 'Páginas: <strong>' + pages.length + '</strong>';
+    statusBox.textContent = 'Prévia atualizada com sucesso.';
+  }
+
+  function toggleCapitular(){
+    dropcapEnabled = !dropcapEnabled;
+    capitularBtn.textContent = dropcapEnabled ? 'Capitular: ON' : 'Capitular';
+    renderPreview();
+  }
+
+  function toggleOrnament(){
+    ornamentEnabled = !ornamentEnabled;
+    ornamentBtn.textContent = ornamentEnabled ? 'Ornamento: ON' : 'Ornamento';
+    renderPreview();
+  }
+
+  function exportPDF(){
+    const text = normalizeText(editorText.value);
+    if(!text){
+      alert('Carregue ou cole uma obra antes de exportar.');
+      return;
+    }
+    window.print();
+  }
+
+  function finalizeAndClear(){
+    if(editorText.value.trim()){
+      const ok = confirm('Finalizar esta obra e limpar o workspace?');
+      if(!ok) return;
+    }
+    resetWorkspace();
+  }
+
+  function resetWorkspace(){
+    editorText.value = '';
+    bookTitle.value = 'Obra em preparação';
+    chapterMode.value = 'auto';
+    bodyFont.value = 'Georgia';
+    fontSize.value = '0.96';
+    lineHeight.value = '1.52';
+    dropcapEnabled = false;
+    ornamentEnabled = false;
+    capitularBtn.textContent = 'Capitular';
+    ornamentBtn.textContent = 'Ornamento';
+    bookStage.innerHTML = '';
+    emptyState.classList.remove('hidden');
+    pageCountPill.innerHTML = 'Páginas: <strong>0</strong>';
+    statusBox.textContent = 'Workspace limpo. Pronto para novo livro.';
+    resetFileInputElement();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function resetFileInputElement(){
+    const oldInput = document.getElementById('fileInput');
+    const newInput = oldInput.cloneNode(true);
+    oldInput.parentNode.replaceChild(newInput, oldInput);
+    bindFileInput();
+  }
+</script>
 </body>
 </html>
