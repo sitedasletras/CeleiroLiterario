@@ -13,10 +13,17 @@
       --ink:#1f2430;
       --muted:#5d6675;
       --line:#d8ddd8;
+
       --green-1:#173726;
       --green-2:#1d5c40;
       --green-3:#2d7c58;
       --green-4:#5aa58f;
+
+      --motor-1:#e7f3ed;
+      --motor-2:#d8ebe1;
+      --motor-card:#f7fcf9;
+      --motor-line:#cfe0d8;
+
       --shadow:0 10px 28px rgba(0,0,0,.10);
 
       --page-width-px:470px;
@@ -424,7 +431,8 @@
     }
 
     .motor-box{
-      background:linear-gradient(180deg,#f8faf9,#eef3f0);
+      background:linear-gradient(180deg,var(--motor-1),var(--motor-2));
+      border-color:var(--motor-line);
     }
 
     .motor-top{
@@ -438,13 +446,13 @@
 
     .motor-grid{
       display:grid;
-      grid-template-columns:1.1fr 1.3fr;
+      grid-template-columns:1.08fr 1.32fr;
       gap:14px;
     }
 
     .motor-card{
-      background:#fff;
-      border:1px solid #dde5df;
+      background:var(--motor-card);
+      border:1px solid var(--motor-line);
       border-radius:18px;
       padding:12px;
       box-shadow:0 6px 18px rgba(31,36,48,.05);
@@ -461,7 +469,7 @@
 
     .motor-preview{
       background:#fff;
-      border:1px solid #d8e0da;
+      border:1px solid var(--motor-line);
       border-radius:14px;
       padding:22px 24px;
       min-height:240px;
@@ -496,7 +504,7 @@
 
     .issue{
       background:#fff;
-      border:1px solid #e0e5ec;
+      border:1px solid #d8e2dc;
       border-left:5px solid #d6a33a;
       border-radius:14px;
       padding:12px;
@@ -580,7 +588,7 @@
 
     .stat{
       background:#f6f8fb;
-      border:1px solid #dde4ec;
+      border:1px solid var(--motor-line);
       border-radius:14px;
       padding:12px;
     }
@@ -666,7 +674,7 @@
 
       <div class="card-soft">
         <label for="fileInput"><strong>Subir obra</strong></label>
-        <input class="file" type="file" id="fileInput" accept=".txt,.docx" />
+        <input class="file" type="file" id="fileInput" accept=".txt,.doc,.docx" />
       </div>
 
       <div class="card-soft">
@@ -983,4 +991,1151 @@
 
   <script>
     const ORNAMENTS = ['', '❦', '✶', '✧ ✧ ✧', '— ✦ —', '✤', '❋', '✦', '☙ ❧'];
-    const CM_TO_PX = 37.795275590
+    const CM_TO_PX = 37.7952755906;
+
+    let fileInput = document.getElementById('fileInput');
+    const editorText = document.getElementById('editorText');
+    const bookTitle = document.getElementById('bookTitle');
+    const bookSize = document.getElementById('bookSize');
+    const chapterStartMode = document.getElementById('chapterStartMode');
+    const bodyFont = document.getElementById('bodyFont');
+    const fontSize = document.getElementById('fontSize');
+    const lineHeight = document.getElementById('lineHeight');
+    const paragraphIndent = document.getElementById('paragraphIndent');
+    const paragraphGap = document.getElementById('paragraphGap');
+    const dropcapStyle = document.getElementById('dropcapStyle');
+    const viewMode = document.getElementById('viewMode');
+    const renderBtn = document.getElementById('renderBtn');
+    const lapidarBtn = document.getElementById('lapidarBtn');
+    const newBookBtn = document.getElementById('newBookBtn');
+    const pdfBtn = document.getElementById('pdfBtn');
+    const finalizeBtn = document.getElementById('finalizeBtn');
+    const prevPageBtn = document.getElementById('prevPageBtn');
+    const nextPageBtn = document.getElementById('nextPageBtn');
+    const statusBox = document.getElementById('statusBox');
+    const sizePill = document.getElementById('sizePill');
+    const pageCountPill = document.getElementById('pageCountPill');
+    const pageViewPill = document.getElementById('pageViewPill');
+    const rulesSummary = document.getElementById('rulesSummary');
+    const bookStage = document.getElementById('bookStage');
+    const emptyState = document.getElementById('emptyState');
+    const measureRoot = document.getElementById('measureRoot');
+    const workspaceControls = document.getElementById('workspaceControls');
+
+    const compositionMode = document.getElementById('compositionMode');
+    const correctionLevel = document.getElementById('correctionLevel');
+    const hyphenationMode = document.getElementById('hyphenationMode');
+    const widowOrphanMode = document.getElementById('widowOrphanMode');
+    const motorParagraphIndent = document.getElementById('motorParagraphIndent');
+    const motorParagraphGap = document.getElementById('motorParagraphGap');
+    const motorBodyFont = document.getElementById('motorBodyFont');
+    const motorFontSize = document.getElementById('motorFontSize');
+    const motorLineHeight = document.getElementById('motorLineHeight');
+    const motorDropcapStyle = document.getElementById('motorDropcapStyle');
+    const processBtn = document.getElementById('processBtn');
+    const applyBtn = document.getElementById('applyBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const ornamentGrid = document.getElementById('ornamentGrid');
+    const motorPreview = document.getElementById('motorPreview');
+    const motorIssuesList = document.getElementById('motorIssuesList');
+    const motorModePill = document.getElementById('motorModePill');
+    const motorIssuesPill = document.getElementById('motorIssuesPill');
+    const statParagraphs = document.getElementById('statParagraphs');
+    const statWords = document.getElementById('statWords');
+    const statHyphenated = document.getElementById('statHyphenated');
+    const statWarnings = document.getElementById('statWarnings');
+    const motorBox = document.getElementById('motorBox');
+
+    let debounceTimer = null;
+    let renderedPages = [];
+    let currentPageIndex = 0;
+    let ornamentFromMotor = '';
+    let processedText = '';
+    let processedParagraphs = [];
+    let detectedIssues = [];
+    let selectedOrnament = '';
+
+    bindFileInput();
+    renderBtn.addEventListener('click', renderPreview);
+    lapidarBtn.addEventListener('click', scrollToMotor);
+    newBookBtn.addEventListener('click', resetWorkspace);
+    pdfBtn.addEventListener('click', exportPDF);
+    finalizeBtn.addEventListener('click', finalizeAndClear);
+    prevPageBtn.addEventListener('click', () => stepPage(-1));
+    nextPageBtn.addEventListener('click', () => stepPage(1));
+
+    [
+      bookTitle, bookSize, chapterStartMode, bodyFont, fontSize,
+      lineHeight, paragraphIndent, paragraphGap, dropcapStyle, viewMode
+    ].forEach(el => el.addEventListener('change', renderPreview));
+
+    [
+      compositionMode, correctionLevel, hyphenationMode, widowOrphanMode,
+      motorParagraphIndent, motorParagraphGap, motorBodyFont,
+      motorFontSize, motorLineHeight, motorDropcapStyle
+    ].forEach(el => el.addEventListener('change', processText));
+
+    processBtn.addEventListener('click', processText);
+    applyBtn.addEventListener('click', applyProcessedToBook);
+    copyBtn.addEventListener('click', copyProcessedText);
+    downloadBtn.addEventListener('click', downloadProcessedText);
+
+    editorText.addEventListener('input', autoRenderSoon);
+    editorText.addEventListener('paste', autoRenderSoon);
+    window.addEventListener('resize', fitStageScale);
+
+    buildOrnamentGrid();
+    syncMotorFromBook();
+    processText();
+    applyMetrics();
+    renderCurrentView();
+
+    function bindFileInput(){
+      fileInput.addEventListener('change', handleFileUpload);
+    }
+
+    function scrollToMotor(){
+      motorBox.scrollIntoView({ behavior:'smooth', block:'start' });
+      statusBox.textContent = 'Painel do Motor do Miolo aberto abaixo da prévia.';
+    }
+
+    function autoRenderSoon(){
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        syncMotorFromBook();
+        processText();
+        renderPreview();
+      }, 180);
+    }
+
+    function syncMotorFromBook(){
+      motorParagraphIndent.value = paragraphIndent.value;
+      motorParagraphGap.value = paragraphGap.value;
+      motorBodyFont.value = bodyFont.value;
+      motorFontSize.value = fontSize.value;
+      motorLineHeight.value = lineHeight.value;
+      motorDropcapStyle.value = dropcapStyle.value;
+    }
+
+    async function handleFileUpload(event){
+      const file = event.target.files[0];
+      if(!file) return;
+
+      const name = file.name.toLowerCase();
+      statusBox.textContent = 'Lendo arquivo: ' + file.name;
+
+      try{
+        if(name.endsWith('.txt')){
+          editorText.value = await file.text();
+        }
+        else if(name.endsWith('.docx')){
+          const arrayBuffer = await file.arrayBuffer();
+          const result = await mammoth.extractRawText({ arrayBuffer });
+          editorText.value = result.value || '';
+        }
+        else if(name.endsWith('.doc')){
+          const text = await readLegacyDocAsText(file);
+          editorText.value = text || '';
+        }
+        else{
+          statusBox.textContent = 'Formato não suportado ainda. Use TXT, DOC ou DOCX.';
+          return;
+        }
+
+        if(!normalizeText(editorText.value)){
+          statusBox.textContent = 'Arquivo lido, mas sem texto detectado. Se for DOC muito antigo, tente salvar como DOCX.';
+          processText();
+          renderPreview();
+          return;
+        }
+
+        statusBox.textContent = 'Arquivo carregado com sucesso: ' + file.name;
+        rulesSummary.textContent = 'Texto carregado no Pólux.';
+        syncMotorFromBook();
+        processText();
+        renderPreview();
+      }catch(error){
+        console.error(error);
+        statusBox.textContent = 'Erro ao ler arquivo.';
+      }
+    }
+
+    function readLegacyDocAsText(file){
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+          try{
+            const raw = e.target.result || '';
+            const cleaned = String(raw)
+              .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, ' ')
+              .replace(/[^\x20-\x7EÀ-ÿ\n\r\t]/g, ' ')
+              .replace(/[ ]{2,}/g, ' ')
+              .replace(/\r\n/g, '\n')
+              .replace(/\r/g, '\n')
+              .replace(/\n{3,}/g, '\n\n')
+              .trim();
+
+            resolve(cleaned);
+          } catch (err){
+            reject(err);
+          }
+        };
+
+        reader.onerror = reject;
+        reader.readAsText(file, 'latin1');
+      });
+    }
+
+    function normalizeText(text){
+      return String(text || '')
+        .replace(/\r\n/g, '\n')
+        .replace(/\r/g, '\n')
+        .replace(/\t/g, '    ')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+    }
+
+    function splitParagraphs(text){
+      return normalizeText(text)
+        .split(/\n\s*\n/)
+        .map(p => p.trim())
+        .filter(Boolean);
+    }
+
+    function getPageSizeCm(){
+      if(bookSize.value === '16x23') return { w:16, h:23, label:'16 × 23 cm' };
+      if(bookSize.value === 'a5') return { w:14.8, h:21, label:'A5' };
+      return { w:15.24, h:22.86, label:'6 × 9 pol.' };
+    }
+
+    function applyMetrics(){
+      const size = getPageSizeCm();
+      const widthPx = size.w * CM_TO_PX;
+      const heightPx = size.h * CM_TO_PX;
+
+      document.documentElement.style.setProperty('--page-width-px', `${widthPx}px`);
+      document.documentElement.style.setProperty('--page-height-px', `${heightPx}px`);
+      document.documentElement.style.setProperty('--margin-top-px', `${2.4 * CM_TO_PX}px`);
+      document.documentElement.style.setProperty('--margin-bottom-px', `${2.5 * CM_TO_PX}px`);
+      document.documentElement.style.setProperty('--margin-left-px', `${2.6 * CM_TO_PX}px`);
+      document.documentElement.style.setProperty('--margin-right-px', `${2.1 * CM_TO_PX}px`);
+
+      sizePill.innerHTML = `<strong>${size.label}</strong>`;
+      return { size, widthPx, heightPx };
+    }
+
+    function detectBlocks(text){
+      const paragraphs = splitParagraphs(text);
+      const blocks = [];
+
+      for(let i = 0; i < paragraphs.length; i++){
+        const p = paragraphs[i];
+        const next = paragraphs[i + 1] || '';
+
+        if(/^cap[ií]tulo\s+/i.test(p)){
+          const chapter = { title:p, subtitle:'' };
+
+          if(
+            next &&
+            next.length < 90 &&
+            !/[.!?…]$/.test(next) &&
+            !/^cap[ií]tulo\s+/i.test(next)
+          ){
+            chapter.subtitle = next;
+            i++;
+          }
+
+          blocks.push({ type:'chapter', chapter });
+        } else {
+          blocks.push({ type:'paragraph', text:p });
+        }
+      }
+
+      return blocks;
+    }
+
+    function createMeasurePage(chapter){
+      const { widthPx, heightPx } = applyMetrics();
+
+      const page = document.createElement('div');
+      page.className = 'page';
+      page.style.width = widthPx + 'px';
+      page.style.height = heightPx + 'px';
+
+      const inner = document.createElement('div');
+      inner.className = 'page-inner';
+
+      const content = document.createElement('div');
+      content.className = 'page-content';
+      content.style.fontFamily = bodyFont.value;
+      content.style.fontSize = fontSize.value + 'rem';
+      content.style.lineHeight = lineHeight.value;
+      content.style.setProperty('--paragraph-indent', paragraphIndent.value + 'em');
+      content.style.setProperty('--paragraph-gap', paragraphGap.value + 'em');
+
+      if(Number(paragraphIndent.value) > 0) page.classList.add('paragraph-indent');
+      if(dropcapStyle.value === 'simple') page.classList.add('dropcap-simple');
+      if(dropcapStyle.value === 'classic') page.classList.add('dropcap-classic');
+      if(dropcapStyle.value === 'ornamental') page.classList.add('dropcap-ornamental');
+
+      if(chapter){
+        const header = document.createElement('div');
+        header.className = 'chapter-header';
+
+        const title = document.createElement('h1');
+        title.className = 'chapter-title';
+        title.textContent = chapter.title || '';
+        header.appendChild(title);
+
+        if(chapter.subtitle){
+          const subtitle = document.createElement('div');
+          subtitle.className = 'chapter-subtitle';
+          subtitle.textContent = chapter.subtitle;
+          header.appendChild(subtitle);
+        }
+
+        inner.appendChild(header);
+      }
+
+      inner.appendChild(content);
+      page.appendChild(inner);
+      return { page, content };
+    }
+
+    function pushBlankPage(pages, label = 'Página reservada'){
+      pages.push({ kind:'blank', label });
+    }
+
+    function paginateReal(text){
+      const blocks = detectBlocks(text);
+      const pages = [];
+      let current = null;
+      let measure = null;
+
+      function startPage(chapter = null, ornament = ''){
+        measure = createMeasurePage(chapter);
+        measureRoot.innerHTML = '';
+        measureRoot.appendChild(measure.page);
+
+        current = {
+          kind:'text',
+          chapterOpening: !!chapter,
+          chapterTitle: chapter ? chapter.title : '',
+          chapterSubtitle: chapter ? chapter.subtitle : '',
+          paragraphs: [],
+          ornament
+        };
+      }
+
+      startPage();
+
+      for(let i = 0; i < blocks.length; i++){
+        const block = blocks[i];
+
+        if(block.type === 'chapter'){
+          if(current && (current.paragraphs.length || current.chapterOpening)){
+            pages.push(current);
+          }
+
+          if(chapterStartMode.value === 'page'){
+            pushBlankPage(pages);
+          } else if(chapterStartMode.value === 'sheet'){
+            pushBlankPage(pages);
+            pushBlankPage(pages);
+          } else if(chapterStartMode.value === 'odd'){
+            if((pages.length + 1) % 2 === 0){
+              pushBlankPage(pages);
+            }
+          }
+
+          startPage(block.chapter, ornamentFromMotor || '');
+          continue;
+        }
+
+        const p = document.createElement('p');
+        p.textContent = block.text;
+        if(current.chapterOpening && current.paragraphs.length === 0){
+          p.classList.add('first-para');
+        }
+        measure.content.appendChild(p);
+
+        if(measure.content.scrollHeight > measure.content.clientHeight){
+          measure.content.removeChild(p);
+
+          if(current.paragraphs.length === 0){
+            current.paragraphs.push(block.text);
+            pages.push(current);
+            startPage();
+            continue;
+          }
+
+          pages.push(current);
+          startPage();
+
+          const p2 = document.createElement('p');
+          p2.textContent = block.text;
+          if(current.chapterOpening && current.paragraphs.length === 0){
+            p2.classList.add('first-para');
+          }
+          measure.content.appendChild(p2);
+
+          if(measure.content.scrollHeight > measure.content.clientHeight){
+            measure.content.removeChild(p2);
+            current.paragraphs.push(block.text);
+            pages.push(current);
+            startPage();
+          } else {
+            current.paragraphs.push(block.text);
+          }
+        } else {
+          current.paragraphs.push(block.text);
+        }
+      }
+
+      if(current && (current.paragraphs.length || current.chapterOpening)){
+        pages.push(current);
+      }
+
+      measureRoot.innerHTML = '';
+      return pages;
+    }
+
+    function renderOnePage(pageData, index){
+      const { widthPx, heightPx } = applyMetrics();
+
+      const page = document.createElement('article');
+      page.className = 'page';
+      page.style.width = widthPx + 'px';
+      page.style.height = heightPx + 'px';
+
+      if(pageData.kind === 'blank'){
+        page.classList.add('blank-page');
+
+        const holder = document.createElement('div');
+        holder.className = 'blank-holder';
+        holder.textContent = pageData.label || 'Página reservada';
+        page.appendChild(holder);
+
+        const number = document.createElement('div');
+        number.className = 'page-number';
+        number.textContent = 'Página ' + (index + 1);
+        page.appendChild(number);
+        return page;
+      }
+
+      const inner = document.createElement('div');
+      inner.className = 'page-inner';
+
+      if(Number(paragraphIndent.value) > 0) page.classList.add('paragraph-indent');
+      if(dropcapStyle.value === 'simple') page.classList.add('dropcap-simple');
+      if(dropcapStyle.value === 'classic') page.classList.add('dropcap-classic');
+      if(dropcapStyle.value === 'ornamental') page.classList.add('dropcap-ornamental');
+
+      if(pageData.chapterOpening){
+        const header = document.createElement('div');
+        header.className = 'chapter-header';
+
+        const title = document.createElement('h1');
+        title.className = 'chapter-title';
+        title.textContent = pageData.chapterTitle || '';
+        header.appendChild(title);
+
+        if(pageData.chapterSubtitle){
+          const subtitle = document.createElement('div');
+          subtitle.className = 'chapter-subtitle';
+          subtitle.textContent = pageData.chapterSubtitle;
+          header.appendChild(subtitle);
+        }
+
+        inner.appendChild(header);
+      }
+
+      const content = document.createElement('div');
+      content.className = 'page-content';
+      content.style.fontFamily = bodyFont.value;
+      content.style.fontSize = fontSize.value + 'rem';
+      content.style.lineHeight = lineHeight.value;
+      content.style.setProperty('--paragraph-indent', paragraphIndent.value + 'em');
+      content.style.setProperty('--paragraph-gap', paragraphGap.value + 'em');
+
+      pageData.paragraphs.forEach((para, idx) => {
+        const p = document.createElement('p');
+        p.textContent = para;
+        if(pageData.chapterOpening && idx === 0) p.classList.add('first-para');
+        content.appendChild(p);
+      });
+
+      if(pageData.ornament){
+        const orn = document.createElement('div');
+        orn.className = 'ornament-slot';
+        orn.textContent = pageData.ornament;
+        content.appendChild(orn);
+      }
+
+      inner.appendChild(content);
+      page.appendChild(inner);
+
+      const number = document.createElement('div');
+      number.className = 'page-number';
+      number.textContent = 'Página ' + (index + 1);
+      page.appendChild(number);
+
+      return page;
+    }
+
+    function fitStageScale(){
+      const pages = bookStage.querySelectorAll('.page');
+      if(!pages.length){
+        bookStage.style.transform = 'scale(1)';
+        return;
+      }
+
+      const stageWrap = document.querySelector('.stage-wrap');
+      const pageWidth = pages[0].offsetWidth || 470;
+      const gap = viewMode.value === 'spread' ? 22 : 0;
+      const targetWidth =
+        viewMode.value === 'spread' && pages.length > 1
+          ? (pageWidth * 2 + gap)
+          : pageWidth;
+
+      const available = Math.max(320, stageWrap.clientWidth - 24);
+      let scale = available / targetWidth;
+
+      if(scale > 1.12) scale = 1.12;
+      if(scale < 0.62) scale = 0.62;
+
+      bookStage.style.transform = `scale(${scale})`;
+    }
+
+    function updateNavigationVisibility(){
+      if(renderedPages.length > 0){
+        workspaceControls.classList.add('show');
+      } else {
+        workspaceControls.classList.remove('show');
+      }
+    }
+
+    function renderCurrentView(){
+      bookStage.innerHTML = '';
+      updateNavigationVisibility();
+
+      if(!renderedPages.length){
+        emptyState.classList.remove('hidden');
+        pageCountPill.innerHTML = 'Páginas: <strong>0</strong>';
+        pageViewPill.textContent = 'Sem páginas';
+        prevPageBtn.disabled = true;
+        nextPageBtn.disabled = true;
+        fitStageScale();
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      if(viewMode.value === 'single'){
+        currentPageIndex = Math.max(0, Math.min(currentPageIndex, renderedPages.length - 1));
+        bookStage.appendChild(renderOnePage(renderedPages[currentPageIndex], currentPageIndex));
+
+        pageViewPill.textContent = `Página ${currentPageIndex + 1} de ${renderedPages.length}`;
+        prevPageBtn.disabled = currentPageIndex <= 0;
+        nextPageBtn.disabled = currentPageIndex >= renderedPages.length - 1;
+      } else {
+        let leftIndex = currentPageIndex;
+        if(leftIndex % 2 !== 0) leftIndex -= 1;
+        if(leftIndex < 0) leftIndex = 0;
+        if(leftIndex >= renderedPages.length) leftIndex = Math.max(0, renderedPages.length - 1);
+
+        currentPageIndex = leftIndex;
+
+        bookStage.appendChild(renderOnePage(renderedPages[leftIndex], leftIndex));
+
+        if(renderedPages[leftIndex + 1]){
+          bookStage.appendChild(renderOnePage(renderedPages[leftIndex + 1], leftIndex + 1));
+          pageViewPill.textContent = `Páginas ${leftIndex + 1}-${leftIndex + 2} de ${renderedPages.length}`;
+        } else {
+          pageViewPill.textContent = `Página ${leftIndex + 1} de ${renderedPages.length}`;
+        }
+
+        prevPageBtn.disabled = leftIndex <= 0;
+        nextPageBtn.disabled = leftIndex + 2 >= renderedPages.length;
+      }
+
+      pageCountPill.innerHTML = `Páginas: <strong>${renderedPages.length}</strong>`;
+      requestAnimationFrame(fitStageScale);
+    }
+
+    function stepPage(direction){
+      if(!renderedPages.length) return;
+
+      if(viewMode.value === 'single'){
+        currentPageIndex += direction;
+      } else {
+        currentPageIndex += direction * 2;
+      }
+
+      currentPageIndex = Math.max(0, Math.min(currentPageIndex, renderedPages.length - 1));
+      renderCurrentView();
+    }
+
+    function renderPreview(){
+      const text = normalizeText(editorText.value);
+      applyMetrics();
+
+      if(!text){
+        renderedPages = [];
+        currentPageIndex = 0;
+        statusBox.textContent = 'Sem texto para diagramar ainda.';
+        renderCurrentView();
+        return;
+      }
+
+      renderedPages = paginateReal(text);
+      currentPageIndex = 0;
+
+      if(renderedPages.length){
+        statusBox.textContent = 'Prévia atualizada com sucesso.';
+      } else {
+        statusBox.textContent = 'Texto presente, mas sem páginas renderizadas.';
+      }
+
+      renderCurrentView();
+    }
+
+    function exportPDF(){
+      if(!normalizeText(editorText.value)){
+        alert('Carregue ou cole uma obra antes de exportar.');
+        return;
+      }
+
+      if(!renderedPages.length){
+        renderPreview();
+      }
+
+      setTimeout(() => window.print(), 120);
+    }
+
+    function finalizeAndClear(){
+      if(normalizeText(editorText.value)){
+        const ok = confirm('Finalizar esta obra e limpar o workspace?');
+        if(!ok) return;
+      }
+      resetWorkspace();
+    }
+
+    function resetWorkspace(){
+      editorText.value = '';
+      bookTitle.value = '';
+      bookSize.value = '16x23';
+      chapterStartMode.value = 'flow';
+      bodyFont.value = 'Georgia';
+      fontSize.value = '0.96';
+      lineHeight.value = '1.52';
+      paragraphIndent.value = '1.00';
+      paragraphGap.value = '0.20';
+      dropcapStyle.value = 'none';
+      viewMode.value = 'single';
+
+      compositionMode.value = 'prose';
+      correctionLevel.value = 'light';
+      hyphenationMode.value = 'off';
+      widowOrphanMode.value = 'off';
+      motorParagraphIndent.value = '1.00';
+      motorParagraphGap.value = '0.20';
+      motorBodyFont.value = 'Georgia';
+      motorFontSize.value = '0.96';
+      motorLineHeight.value = '1.52';
+      motorDropcapStyle.value = 'none';
+
+      renderedPages = [];
+      currentPageIndex = 0;
+      ornamentFromMotor = '';
+      processedText = '';
+      processedParagraphs = [];
+      detectedIssues = [];
+      selectedOrnament = '';
+
+      buildOrnamentGrid();
+
+      const oldInput = fileInput;
+      const newInput = oldInput.cloneNode(true);
+      oldInput.parentNode.replaceChild(newInput, oldInput);
+      fileInput = newInput;
+      bindFileInput();
+
+      statusBox.textContent = 'Workspace limpo. Pronto para novo livro.';
+      rulesSummary.textContent = 'Sem lapidação ainda.';
+      processText();
+      renderCurrentView();
+    }
+
+    function readableMode(mode){
+      return mode === 'hybrid' ? 'híbrido' : 'prosa';
+    }
+
+    function buildOrnamentGrid(){
+      ornamentGrid.innerHTML = '';
+      ORNAMENTS.forEach((orn) => {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'ornament-item' + (orn === selectedOrnament ? ' active' : '');
+        item.textContent = orn || 'Nenhum';
+        item.onclick = () => {
+          selectedOrnament = orn;
+          buildOrnamentGrid();
+          processText();
+        };
+        ornamentGrid.appendChild(item);
+      });
+    }
+
+    function escapeHtml(text){
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function hyphenateWordPT(word, level){
+      if(word.length < 7) return word;
+      if(/^\d+$/.test(word)) return word;
+
+      const vowels = 'aeiouáéíóúâêôãõàüAEIOUÁÉÍÓÚÂÊÔÃÕÀÜ';
+      const points = [];
+
+      for(let i = 2; i < word.length - 2; i++){
+        const a = word[i - 1];
+        const b = word[i];
+        const prev = word[i - 2];
+        const next = word[i + 1];
+
+        const aV = vowels.includes(a);
+        const bV = vowels.includes(b);
+        const prevV = vowels.includes(prev);
+        const nextV = vowels.includes(next);
+
+        if(aV && !bV && nextV){
+          points.push(i);
+        } else if(prevV && !aV && !bV && nextV){
+          points.push(i);
+        } else if(!aV && bV && !nextV && i < word.length - 3){
+          points.push(i + 1);
+        }
+      }
+
+      const unique = [...new Set(points)].filter(p => p > 2 && p < word.length - 2);
+      if(!unique.length) return word;
+
+      const chosen = level === 'light'
+        ? unique.filter((_, idx) => idx % 2 === 0)
+        : unique;
+
+      let out = '';
+      for(let i = 0; i < word.length; i++){
+        out += word[i];
+        if(chosen.includes(i + 1)) out += '\u00AD';
+      }
+      return out;
+    }
+
+    function hyphenateText(text, level){
+      let count = 0;
+      const result = text.replace(/[A-Za-zÀ-ÿ-]{7,}/g, (word) => {
+        const hyphenated = hyphenateWordPT(word, level);
+        if(hyphenated !== word) count += 1;
+        return hyphenated;
+      });
+      return { text: result, count };
+    }
+
+    function applyLightCorrections(text){
+      let out = text;
+
+      out = out.replace(/[ ]{2,}/g, ' ');
+      out = out.replace(/\s+,/g, ',');
+      out = out.replace(/\s+\./g, '.');
+      out = out.replace(/\s+!/g, '!');
+      out = out.replace(/\s+\?/g, '?');
+      out = out.replace(/\.\.+/g, '...');
+      out = out.replace(/!!+/g, '!');
+      out = out.replace(/\?\?+/g, '?');
+      out = out.replace(/ ,/g, ',');
+      out = out.replace(/ ;/g, ';');
+      out = out.replace(/ :/g, ':');
+      out = out.replace(/ \)/g, ')');
+      out = out.replace(/\( /g, '(');
+      out = out.replace(/\bHouveram\b/g, 'Houve');
+      out = out.replace(/\bhouveram\b/g, 'houve');
+      out = out.replace(/\bPra mim fazer\b/g, 'Para eu fazer');
+      out = out.replace(/\bpra mim fazer\b/g, 'para eu fazer');
+
+      return out;
+    }
+
+    function applyMediumCorrections(text){
+      let out = applyLightCorrections(text);
+
+      out = out.replace(/\bA gente fomos\b/g, 'A gente foi');
+      out = out.replace(/\ba gente fomos\b/g, 'a gente foi');
+      out = out.replace(/\bA nível de\b/g, 'Em nível de');
+      out = out.replace(/\ba nível de\b/g, 'em nível de');
+      out = out.replace(/([a-záéíóúâêôãõàç])\s+mas\s+/gi, '$1, mas ');
+      out = out.replace(/\bmais eu\b/g, 'mas eu');
+      out = out.replace(/\bMais eu\b/g, 'Mas eu');
+      out = out.replace(/\bmais também\b/g, 'mas também');
+      out = out.replace(/\bMais também\b/g, 'Mas também');
+
+      return out;
+    }
+
+    function detectIssues(originalText, processedTextValue){
+      const issues = [];
+      const paragraphs = splitParagraphs(processedTextValue);
+
+      paragraphs.forEach((p, idx) => {
+        if(/\b(\w+)\s+\1\b/i.test(p)){
+          issues.push({
+            kind:'repeat-word',
+            paragraphIndex:idx,
+            snippet:p.match(/\b(\w+)\s+\1\b/i)[0],
+            title:'Palavra repetida'
+          });
+        }
+
+        if(/[ ]{2,}/.test(p)){
+          issues.push({
+            kind:'double-space',
+            paragraphIndex:idx,
+            snippet:p,
+            title:'Espaço duplo'
+          });
+        }
+
+        if(/[!?]{2,}/.test(p) || /\.{4,}/.test(p)){
+          issues.push({
+            kind:'punctuation-repeat',
+            paragraphIndex:idx,
+            snippet:p,
+            title:'Pontuação repetida'
+          });
+        }
+
+        const lines = p.split('\n').map(v => v.trim()).filter(Boolean);
+        if(lines.length > 1){
+          for(let i = 1; i < lines.length; i++){
+            const prev = lines[i - 1];
+            const curr = lines[i];
+            const startsLower = /^[a-záéíóúâêôãõàç]/.test(curr);
+            const prevEndsSoft = /[,;:–—-]$/.test(prev) || !/[.!?…]$/.test(prev);
+            if(startsLower && prevEndsSoft){
+              issues.push({
+                kind:'join-line',
+                paragraphIndex:idx,
+                lineIndex:i,
+                snippet:prev + '\n' + curr,
+                title:'Quebra suspeita de linha'
+              });
+            }
+          }
+        }
+
+        if(/\ba gente fomos\b/i.test(p)){
+          issues.push({
+            kind:'agreement',
+            paragraphIndex:idx,
+            snippet:p.match(/\ba gente fomos\b/i)[0],
+            title:'Concordância suspeita'
+          });
+        }
+
+        if(/\bhouveram\b/i.test(p)){
+          issues.push({
+            kind:'houveram',
+            paragraphIndex:idx,
+            snippet:p.match(/\bhouveram\b/i)[0],
+            title:'Uso suspeito de “houveram”'
+          });
+        }
+
+        if(/\bpra mim fazer\b/i.test(p)){
+          issues.push({
+            kind:'pra-mim-fazer',
+            paragraphIndex:idx,
+            snippet:p.match(/\bpra mim fazer\b/i)[0],
+            title:'Construção suspeita'
+          });
+        }
+
+        if(/\ba nível de\b/i.test(p)){
+          issues.push({
+            kind:'a-nivel',
+            paragraphIndex:idx,
+            snippet:p.match(/\ba nível de\b/i)[0],
+            title:'Expressão suspeita'
+          });
+        }
+
+        if(/\bmais eu\b/i.test(p) || /\bmais também\b/i.test(p)){
+          issues.push({
+            kind:'mais-mas',
+            paragraphIndex:idx,
+            snippet:p,
+            title:'“Mais” possivelmente no lugar de “mas”'
+          });
+        }
+      });
+
+      return issues;
+    }
+
+    function detectWidowOrphanWarnings(paragraphs){
+      const mode = widowOrphanMode.value;
+      if(mode === 'off') return [];
+
+      const warnings = [];
+
+      paragraphs.forEach((p, idx) => {
+        const words = p.replace(/\n/g, ' ').split(/\s+/).filter(Boolean);
+        if(words.length >= 10){
+          const lastWords = words.slice(-1).join(' ');
+          if(lastWords.length <= 3){
+            warnings.push(`Parágrafo ${idx + 1}: fechamento fraco na última linha.`);
+          }
+        }
+
+        if(mode === 'tight' && words.length > 22){
+          warnings.push(`Parágrafo ${idx + 1}: revisar possível viúva/órfã na diagramação.`);
+        }
+      });
+
+      return warnings;
+    }
+
+    function renderMotorPreview(paragraphs, warnings){
+      motorPreview.className = 'motor-preview prose';
+
+      if(Number(motorParagraphIndent.value) > 0){
+        motorPreview.classList.add('indent');
+      }
+
+      motorPreview.style.setProperty('--paragraph-indent', motorParagraphIndent.value + 'em');
+      motorPreview.style.setProperty('--paragraph-gap', motorParagraphGap.value + 'em');
+      motorPreview.style.fontFamily = motorBodyFont.value;
+      motorPreview.style.fontSize = motorFontSize.value + 'rem';
+      motorPreview.style.lineHeight = motorLineHeight.value;
+
+      let html = paragraphs.map((p, idx) => {
+        const cls = idx === 0 ? ' class="first-para"' : '';
+        return `<p${cls}>${escapeHtml(p).replace(/\u00AD/g, '&shy;').replace(/\n/g, '<br>')}</p>`;
+      }).join('');
+
+      if(selectedOrnament){
+        html += `<div class="ornament-preview">${escapeHtml(selectedOrnament)}</div>`;
+      }
+
+      if(warnings.length){
+        html += `<div class="warning-box">${warnings.join('<br>')}</div>`;
+      }
+
+      motorPreview.innerHTML = html || '<div class="hint">Nenhuma análise ainda.</div>';
+    }
+
+    function renderIssues(){
+      if(!detectedIssues.length){
+        motorIssuesList.innerHTML = '<div class="hint">Nenhum alerta encontrado.</div>';
+        return;
+      }
+
+      motorIssuesList.innerHTML = '';
+
+      detectedIssues.forEach((issue, idx) => {
+        const box = document.createElement('div');
+        box.className = 'issue';
+
+        const title = document.createElement('div');
+        title.className = 'issue-title';
+        title.textContent = `${idx + 1}. ${issue.title}`;
+        box.appendChild(title);
+
+        const snippet = document.createElement('div');
+        snippet.className = 'issue-snippet';
+        snippet.textContent = issue.snippet;
+        box.appendChild(snippet);
+
+        if(issue.kind === 'join-line'){
+          const actions = document.createElement('div');
+          actions.className = 'issue-actions';
+
+          const joinBtn = document.createElement('button');
+          joinBtn.className = 'mini-btn primary';
+          joinBtn.textContent = 'Juntar linha';
+          joinBtn.onclick = () => applyJoinLineIssue(issue);
+
+          const keepBtn = document.createElement('button');
+          keepBtn.className = 'mini-btn';
+          keepBtn.textContent = 'Ignorar';
+          keepBtn.onclick = () => {
+            detectedIssues = detectedIssues.filter((_, i) => i !== idx);
+            renderIssues();
+            updateMotorCounters();
+          };
+
+          actions.appendChild(joinBtn);
+          actions.appendChild(keepBtn);
+          box.appendChild(actions);
+        }
+
+        motorIssuesList.appendChild(box);
+      });
+    }
+
+    function applyJoinLineIssue(issue){
+      const p = processedParagraphs[issue.paragraphIndex];
+      if(!p) return;
+
+      const lines = p.split('\n').map(v => v.trim()).filter(Boolean);
+      if(issue.lineIndex <= 0 || issue.lineIndex >= lines.length) return;
+
+      lines[issue.lineIndex - 1] = lines[issue.lineIndex - 1] + ' ' + lines[issue.lineIndex];
+      lines.splice(issue.lineIndex, 1);
+
+      processedParagraphs[issue.paragraphIndex] = lines.join('\n');
+      processedText = processedParagraphs.join('\n\n');
+
+      const warnings = detectWidowOrphanWarnings(processedParagraphs);
+      detectedIssues = detectIssues(editorText.value, processedText);
+      renderMotorPreview(processedParagraphs, warnings);
+      renderIssues();
+      updateMotorCounters();
+    }
+
+    function updateMotorCounters(hyphenCount = null){
+      const raw = normalizeText(editorText.value);
+      const wordCount = raw ? raw.replace(/\n/g, ' ').split(/\s+/).filter(Boolean).length : 0;
+
+      if(hyphenCount === null){
+        hyphenCount = (processedText.match(/\u00AD/g) || []).length;
+      }
+
+      statParagraphs.textContent = String(processedParagraphs.length);
+      statWords.textContent = String(wordCount);
+      statHyphenated.textContent = String(hyphenCount);
+      statWarnings.textContent = String(detectedIssues.length);
+
+      motorModePill.textContent = 'Modo: ' + readableMode(compositionMode.value);
+      motorIssuesPill.textContent = detectedIssues.length
+        ? `${detectedIssues.length} alerta(s)`
+        : 'Sem análise ainda';
+    }
+
+    function processText(){
+      const raw = normalizeText(editorText.value);
+
+      if(!raw){
+        processedText = '';
+        processedParagraphs = [];
+        detectedIssues = [];
+        motorPreview.innerHTML = '<div class="hint">Nenhuma análise ainda.</div>';
+        motorIssuesList.innerHTML = '<div class="hint">Nenhuma análise ainda.</div>';
+        motorModePill.textContent = 'Modo: prosa';
+        motorIssuesPill.textContent = 'Sem análise ainda';
+        statParagraphs.textContent = '0';
+        statWords.textContent = '0';
+        statHyphenated.textContent = '0';
+        statWarnings.textContent = '0';
+        return;
+      }
+
+      let baseText = raw;
+
+      if(correctionLevel.value === 'medium'){
+        baseText = applyMediumCorrections(baseText);
+      } else {
+        baseText = applyLightCorrections(baseText);
+      }
+
+      let paragraphs = splitParagraphs(baseText);
+      let hyphenatedCount = 0;
+
+      if(hyphenationMode.value !== 'off'){
+        const level = hyphenationMode.value === 'medium' ? 'medium' : 'light';
+        const newParagraphs = [];
+
+        paragraphs.forEach((p) => {
+          const res = hyphenateText(p, level);
+          newParagraphs.push(res.text);
+          hyphenatedCount += res.count;
+        });
+
+        paragraphs = newParagraphs;
+      }
+
+      processedParagraphs = paragraphs;
+      processedText = paragraphs.join('\n\n');
+      detectedIssues = detectIssues(raw, processedText);
+
+      const warnings = detectWidowOrphanWarnings(processedParagraphs);
+      renderMotorPreview(processedParagraphs, warnings);
+      renderIssues();
+      updateMotorCounters(hyphenatedCount);
+    }
+
+    function applyProcessedToBook(){
+      if(!processedText){
+        statusBox.textContent = 'Nada para aplicar no livro ainda.';
+        return;
+      }
+
+      editorText.value = processedText.replace(/\u00AD/g, '');
+      ornamentFromMotor = selectedOrnament;
+
+      paragraphIndent.value = motorParagraphIndent.value;
+      paragraphGap.value = motorParagraphGap.value;
+      bodyFont.value = motorBodyFont.value;
+      fontSize.value = motorFontSize.value;
+      lineHeight.value = motorLineHeight.value;
+      dropcapStyle.value = motorDropcapStyle.value;
+
+      statusBox.textContent = 'Lapidação aplicada ao livro.';
+      rulesSummary.textContent =
+        `Texto lapidado aplicado • Alertas: ${detectedIssues.length} • Ornamento: ${ornamentFromMotor || 'nenhum'}`;
+
+      renderPreview();
+      window.scrollTo({ top:0, behavior:'smooth' });
+    }
+
+    async function copyProcessedText(){
+      if(!processedText){
+        statusBox.textContent = 'Nada para copiar ainda.';
+        return;
+      }
+
+      try{
+        await navigator.clipboard.writeText(processedText.replace(/\u00AD/g, ''));
+        statusBox.textContent = 'Texto lapidado copiado.';
+      }catch(error){
+        console.error(error);
+        statusBox.textContent = 'Não foi possível copiar.';
+      }
+    }
+
+    function downloadProcessedText(){
+      if(!processedText){
+        statusBox.textContent = 'Nada para baixar ainda.';
+        return;
+      }
+
+      const blob = new Blob([processedText.replace(/\u00AD/g, '')], { type:'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'texto_lapidado_polux.txt';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      statusBox.textContent = 'TXT lapidado baixado.';
+    }
+  </script>
+</body>
+</html>
