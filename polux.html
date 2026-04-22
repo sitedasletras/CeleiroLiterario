@@ -13,10 +13,10 @@
       --ink:#1f2430;
       --muted:#5d6675;
       --line:#d8ddd8;
-      --green-1:#183b28;
-      --green-2:#1f5a3d;
-      --green-3:#2b7a57;
-      --green-4:#3d9770;
+      --green-1:#173726;
+      --green-2:#1d5c40;
+      --green-3:#2d7c58;
+      --green-4:#5aa58f;
       --shadow:0 10px 28px rgba(0,0,0,.10);
 
       --page-width-px:470px;
@@ -25,9 +25,6 @@
       --margin-right-px:79px;
       --margin-bottom-px:94px;
       --margin-left-px:98px;
-
-      --panel-left:220px;
-      --panel-right:220px;
     }
 
     *{box-sizing:border-box}
@@ -37,7 +34,7 @@
       padding:0;
       background:var(--bg);
       color:var(--ink);
-      font-family:Georgia, "Times New Roman", serif;
+      font-family:Georgia,"Times New Roman",serif;
     }
 
     body{overflow-x:hidden}
@@ -45,13 +42,13 @@
     .app{
       min-height:100vh;
       display:grid;
-      grid-template-columns:var(--panel-left) minmax(0,1fr) var(--panel-right);
+      grid-template-columns:220px minmax(0,1fr) 220px;
       gap:14px;
       padding:14px;
     }
 
     .panel{
-      background:linear-gradient(180deg,var(--green-1),var(--green-2) 55%, #4f9e8f 100%);
+      background:linear-gradient(180deg,var(--green-1),var(--green-2) 55%, var(--green-4) 100%);
       color:#fff;
       border-radius:22px;
       box-shadow:var(--shadow);
@@ -69,7 +66,7 @@
 
     .panel h2{
       margin:0;
-      font-size:1.9rem;
+      font-size:1.8rem;
       line-height:1;
     }
 
@@ -99,7 +96,7 @@
       min-height:48px;
     }
 
-    .input,.select,.button,.file{
+    .input,.select,.button,.file,.textarea{
       width:100%;
       border-radius:12px;
       border:none;
@@ -107,12 +104,18 @@
       font-family:inherit;
     }
 
-    .input,.select,.file{
+    .input,.select,.file,.textarea{
       background:#f8fbff;
       color:#132018;
       border:1px solid #c7d1de;
       padding:10px;
       outline:none;
+    }
+
+    .textarea{
+      min-height:220px;
+      resize:vertical;
+      line-height:1.55;
     }
 
     .button{
@@ -129,9 +132,10 @@
       opacity:.96;
     }
 
-    .button.secondary{background:#2d6a4f}
+    .button.secondary{background:#2f6a49}
     .button.warn{background:#8c5e1f}
     .button.danger{background:#7a2c2c}
+    .button.blue{background:#446b88}
 
     .row{
       display:flex;
@@ -150,7 +154,7 @@
       gap:14px;
     }
 
-    .topbar,.rules-box,.editor-zone{
+    .topbar,.rules-box,.editor-zone,.motor-box{
       background:#fbfaf7;
       border:1px solid var(--line);
       border-radius:20px;
@@ -186,7 +190,7 @@
       white-space:nowrap;
     }
 
-    .rules-box h3,.editor-zone h3{
+    .rules-box h3,.editor-zone h3,.motor-box h3{
       margin:0 0 8px 0;
       font-size:1rem;
     }
@@ -218,9 +222,7 @@
       flex-wrap:wrap;
     }
 
-    .workspace-controls.show{
-      display:flex;
-    }
+    .workspace-controls.show{display:flex}
 
     .nav-btn{
       border:none;
@@ -248,7 +250,7 @@
       color:#445248;
     }
 
-    .hidden{display:none !important}
+    .hidden{display:none!important}
 
     .stage-wrap{
       width:100%;
@@ -345,7 +347,7 @@
     .page-content p{margin:0}
     .page-content p + p{margin-top:var(--paragraph-gap,0.20em)}
     .paragraph-indent .page-content p{text-indent:var(--paragraph-indent,1em)}
-    .page-content p.first-para{text-indent:0 !important}
+    .page-content p.first-para{text-indent:0!important}
 
     .dropcap-simple .page-content p.first-para::first-letter,
     .dropcap-classic .page-content p.first-para::first-letter,
@@ -421,35 +423,216 @@
       z-index:-1;
     }
 
-    @media (max-width:1280px){
-      :root{
-        --panel-left:200px;
-        --panel-right:200px;
-      }
+    .motor-box{
+      background:linear-gradient(180deg,#f8faf9,#eef3f0);
     }
 
-    @media (max-width:1100px){
-      .app{
-        grid-template-columns:1fr;
-      }
+    .motor-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+
+    .motor-grid{
+      display:grid;
+      grid-template-columns:1.1fr 1.3fr;
+      gap:14px;
+    }
+
+    .motor-card{
+      background:#fff;
+      border:1px solid #dde5df;
+      border-radius:18px;
+      padding:12px;
+      box-shadow:0 6px 18px rgba(31,36,48,.05);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .motor-card h4{
+      margin:0;
+      font-size:1rem;
+      color:#234132;
+    }
+
+    .motor-preview{
+      background:#fff;
+      border:1px solid #d8e0da;
+      border-radius:14px;
+      padding:22px 24px;
+      min-height:240px;
+      max-width:680px;
+      width:100%;
+      margin:0 auto;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+      line-height:1.55;
+      overflow:auto;
+    }
+
+    .motor-preview.prose{text-align:justify}
+    .motor-preview p{margin:0;color:#202733}
+    .motor-preview p + p{margin-top:var(--paragraph-gap,.35em)}
+    .motor-preview.indent p{text-indent:var(--paragraph-indent,1.25em)}
+    .motor-preview.indent p.first-para{text-indent:0}
+    .motor-preview .ornament-preview{
+      text-align:center;
+      margin:16px 0 8px;
+      font-size:1.2rem;
+      color:#637166;
+      letter-spacing:.08em;
+    }
+
+    .motor-issue-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      max-height:420px;
+      overflow:auto;
+    }
+
+    .issue{
+      background:#fff;
+      border:1px solid #e0e5ec;
+      border-left:5px solid #d6a33a;
+      border-radius:14px;
+      padding:12px;
+    }
+
+    .issue-title{
+      font-size:.95rem;
+      font-weight:700;
+      color:#243041;
+      margin-bottom:6px;
+    }
+
+    .issue-snippet{
+      font-size:.95rem;
+      color:#495567;
+      line-height:1.45;
+      white-space:pre-wrap;
+    }
+
+    .issue-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    .mini-btn{
+      border:none;
+      border-radius:10px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-weight:700;
+      background:#eef4f8;
+      color:#233040;
+    }
+
+    .mini-btn.primary{
+      background:#2f6f4e;
+      color:#fff;
+    }
+
+    .mini-btn.warn{
+      background:#8c5d1f;
+      color:#fff;
+    }
+
+    .hint{
+      font-size:.9rem;
+      color:#687285;
+      line-height:1.45;
+    }
+
+    .ornament-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:8px;
+    }
+
+    .ornament-item{
+      border:1px solid #d7dee7;
+      background:#fff;
+      border-radius:12px;
+      padding:10px;
+      text-align:center;
+      cursor:pointer;
+      font-size:1.1rem;
+      color:#344152;
+    }
+
+    .ornament-item.active{
+      border-color:#446b88;
+      background:#eef4f8;
+      font-weight:700;
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .stat{
+      background:#f6f8fb;
+      border:1px solid #dde4ec;
+      border-radius:14px;
+      padding:12px;
+    }
+
+    .stat-label{
+      font-size:.86rem;
+      color:#687285;
+      margin-bottom:4px;
+    }
+
+    .stat-value{
+      font-size:1.05rem;
+      font-weight:700;
+      color:#1f2b38;
+    }
+
+    .warning-box{
+      margin-top:16px;
+      padding:12px;
+      border-radius:14px;
+      background:#fff8ea;
+      border:1px solid #ead9aa;
+      color:#7a5a12;
+      font-size:.95rem;
+      line-height:1.45;
+    }
+
+    @media (max-width:1200px){
+      .app{grid-template-columns:1fr}
       .panel{
         position:relative;
         top:auto;
         min-height:auto;
         max-height:none;
       }
+      .motor-grid{grid-template-columns:1fr}
+      .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
     }
 
     @media (max-width:760px){
       .app{padding:8px;gap:8px}
       .panel{border-radius:18px;padding:14px 12px}
       .panel h2{font-size:1.55rem}
-      .workspace,.topbar,.rules-box,.editor-zone{border-radius:18px}
+      .workspace,.topbar,.rules-box,.editor-zone,.motor-box{border-radius:18px}
+      .motor-preview{padding:18px 16px}
+      .stats-grid{grid-template-columns:1fr}
+      .ornament-grid{grid-template-columns:1fr 1fr}
     }
 
     @media print{
       body{background:#fff}
-      .panel,.topbar,.rules-box,.editor-zone,.workspace-controls,.empty-state{display:none !important}
+      .panel,.topbar,.rules-box,.editor-zone,.motor-box,.workspace-controls,.empty-state{display:none!important}
       .app{display:block;padding:0}
       .workspace{
         background:#fff;
@@ -462,7 +645,7 @@
         padding:0;
       }
       .book-stage{
-        transform:none !important;
+        transform:none!important;
         display:block;
       }
       .page{
@@ -515,7 +698,7 @@
 
       <div class="card-soft">
         <button class="button" id="renderBtn" type="button">Atualizar prévia</button>
-        <button class="button secondary" id="lapidarBtn" type="button">Abrir Motor do Miolo</button>
+        <button class="button blue" id="lapidarBtn" type="button">Lapidar no painel abaixo</button>
         <button class="button secondary" id="newBookBtn" type="button">Novo livro</button>
       </div>
     </aside>
@@ -538,7 +721,7 @@
 
       <section class="rules-box">
         <h3>Estado atual</h3>
-        <p id="rulesSummary">Sem lapidação externa ainda.</p>
+        <p id="rulesSummary">Sem lapidação ainda.</p>
       </section>
 
       <section class="workspace" id="workspace">
@@ -554,6 +737,166 @@
 
         <div class="stage-wrap">
           <div class="book-stage" id="bookStage"></div>
+        </div>
+      </section>
+
+      <section class="motor-box" id="motorBox">
+        <div class="motor-top">
+          <div>
+            <h3>Motor do Miolo integrado</h3>
+            <div class="hint">Ajuste aqui. A prévia do livro continua acima, no próprio Pólux.</div>
+          </div>
+          <div class="meta">
+            <span class="pill" id="motorModePill">Modo: prosa</span>
+            <span class="pill" id="motorIssuesPill">Sem análise ainda</span>
+          </div>
+        </div>
+
+        <div class="stats-grid" style="margin-bottom:14px;">
+          <div class="stat">
+            <div class="stat-label">Parágrafos</div>
+            <div class="stat-value" id="statParagraphs">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Palavras</div>
+            <div class="stat-value" id="statWords">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Hifenizadas</div>
+            <div class="stat-value" id="statHyphenated">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Alertas</div>
+            <div class="stat-value" id="statWarnings">0</div>
+          </div>
+        </div>
+
+        <div class="motor-grid">
+          <div class="motor-card">
+            <h4>Painel técnico</h4>
+
+            <div class="row">
+              <div>
+                <label for="compositionMode"><strong>Modo</strong></label>
+                <select class="select" id="compositionMode">
+                  <option value="prose">Prosa</option>
+                  <option value="hybrid">Híbrido</option>
+                </select>
+              </div>
+              <div>
+                <label for="correctionLevel"><strong>Correção</strong></label>
+                <select class="select" id="correctionLevel">
+                  <option value="light">Leve</option>
+                  <option value="medium">Média</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label for="hyphenationMode"><strong>Hifenização</strong></label>
+                <select class="select" id="hyphenationMode">
+                  <option value="off">Desligada</option>
+                  <option value="light">Leve</option>
+                  <option value="medium">Moderada</option>
+                </select>
+              </div>
+              <div>
+                <label for="widowOrphanMode"><strong>Viúva/órfã</strong></label>
+                <select class="select" id="widowOrphanMode">
+                  <option value="off">Só observar</option>
+                  <option value="warn">Sinalizar</option>
+                  <option value="tight">Sinalizar mais</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label for="motorParagraphIndent"><strong>Recuo</strong></label>
+                <select class="select" id="motorParagraphIndent">
+                  <option value="1.00">1.00</option>
+                  <option value="1.25">1.25</option>
+                  <option value="0.80">0.80</option>
+                  <option value="0">Sem recuo</option>
+                </select>
+              </div>
+              <div>
+                <label for="motorParagraphGap"><strong>Espaço</strong></label>
+                <select class="select" id="motorParagraphGap">
+                  <option value="0.20">0.20</option>
+                  <option value="0.35">0.35</option>
+                  <option value="0.50">0.50</option>
+                  <option value="0.05">0.05</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label for="motorBodyFont"><strong>Fonte</strong></label>
+                <select class="select" id="motorBodyFont">
+                  <option value="Georgia">Georgia</option>
+                  <option value="'Times New Roman'">Times New Roman</option>
+                  <option value="Garamond">Garamond</option>
+                  <option value="'Libre Baskerville'">Libre Baskerville</option>
+                </select>
+              </div>
+              <div>
+                <label for="motorFontSize"><strong>Tamanho</strong></label>
+                <select class="select" id="motorFontSize">
+                  <option value="0.96">Padrão</option>
+                  <option value="0.90">Menor</option>
+                  <option value="1.02">Maior</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label for="motorLineHeight"><strong>Entrelinha</strong></label>
+                <select class="select" id="motorLineHeight">
+                  <option value="1.52">1.52</option>
+                  <option value="1.45">1.45</option>
+                  <option value="1.60">1.60</option>
+                </select>
+              </div>
+              <div>
+                <label for="motorDropcapStyle"><strong>Capitular</strong></label>
+                <select class="select" id="motorDropcapStyle">
+                  <option value="none">Sem capitular</option>
+                  <option value="simple">Simples</option>
+                  <option value="classic">Clássica</option>
+                  <option value="ornamental">Ornamental leve</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label><strong>Ornamentos</strong></label>
+              <div class="ornament-grid" id="ornamentGrid" style="margin-top:8px;"></div>
+            </div>
+
+            <div class="row">
+              <div><button class="button blue" id="processBtn" type="button">Lapidar texto</button></div>
+              <div><button class="button" id="applyBtn" type="button">Aplicar no livro</button></div>
+            </div>
+
+            <div class="row">
+              <div><button class="button secondary" id="copyBtn" type="button">Copiar lapidado</button></div>
+              <div><button class="button warn" id="downloadBtn" type="button">Baixar TXT</button></div>
+            </div>
+          </div>
+
+          <div class="motor-card">
+            <h4>Prévia técnica da lapidação</h4>
+            <div id="motorPreview" class="motor-preview prose"></div>
+
+            <h4 style="margin-top:10px;">Alertas encontrados</h4>
+            <div id="motorIssuesList" class="motor-issue-list">
+              <div class="hint">Nenhuma análise ainda.</div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -639,687 +982,5 @@
   <div id="measureRoot" class="ghost-measure"></div>
 
   <script>
-    const CM_TO_PX = 37.7952755906;
-
-    const fileInput = document.getElementById('fileInput');
-    const editorText = document.getElementById('editorText');
-    const bookTitle = document.getElementById('bookTitle');
-    const bookSize = document.getElementById('bookSize');
-    const chapterStartMode = document.getElementById('chapterStartMode');
-    const bodyFont = document.getElementById('bodyFont');
-    const fontSize = document.getElementById('fontSize');
-    const lineHeight = document.getElementById('lineHeight');
-    const paragraphIndent = document.getElementById('paragraphIndent');
-    const paragraphGap = document.getElementById('paragraphGap');
-    const dropcapStyle = document.getElementById('dropcapStyle');
-    const viewMode = document.getElementById('viewMode');
-    const renderBtn = document.getElementById('renderBtn');
-    const lapidarBtn = document.getElementById('lapidarBtn');
-    const newBookBtn = document.getElementById('newBookBtn');
-    const pdfBtn = document.getElementById('pdfBtn');
-    const finalizeBtn = document.getElementById('finalizeBtn');
-    const prevPageBtn = document.getElementById('prevPageBtn');
-    const nextPageBtn = document.getElementById('nextPageBtn');
-    const statusBox = document.getElementById('statusBox');
-    const sizePill = document.getElementById('sizePill');
-    const pageCountPill = document.getElementById('pageCountPill');
-    const pageViewPill = document.getElementById('pageViewPill');
-    const rulesSummary = document.getElementById('rulesSummary');
-    const bookStage = document.getElementById('bookStage');
-    const emptyState = document.getElementById('emptyState');
-    const measureRoot = document.getElementById('measureRoot');
-    const workspaceControls = document.getElementById('workspaceControls');
-
-    let debounceTimer = null;
-    let renderedPages = [];
-    let currentPageIndex = 0;
-    let ornamentFromMotor = '';
-    let lapidadorWindow = null;
-    let lapidadorReady = false;
-    let pendingLapidadorPayload = null;
-
-    fileInput.addEventListener('change', handleFileUpload);
-    renderBtn.addEventListener('click', renderPreview);
-    lapidarBtn.addEventListener('click', openLapidador);
-    newBookBtn.addEventListener('click', resetWorkspace);
-    pdfBtn.addEventListener('click', exportPDF);
-    finalizeBtn.addEventListener('click', finalizeAndClear);
-    prevPageBtn.addEventListener('click', () => stepPage(-1));
-    nextPageBtn.addEventListener('click', () => stepPage(1));
-
-    [
-      bookTitle, bookSize, chapterStartMode, bodyFont, fontSize,
-      lineHeight, paragraphIndent, paragraphGap, dropcapStyle, viewMode
-    ].forEach(el => el.addEventListener('change', renderPreview));
-
-    editorText.addEventListener('input', autoRenderSoon);
-    editorText.addEventListener('paste', autoRenderSoon);
-
-    window.addEventListener('resize', fitStageScale);
-    window.addEventListener('message', receiveFromLapidador);
-
-    function autoRenderSoon(){
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(renderPreview, 180);
-    }
-
-    async function handleFileUpload(event){
-      const file = event.target.files[0];
-      if(!file) return;
-
-      const lower = file.name.toLowerCase();
-      statusBox.textContent = 'Lendo arquivo: ' + file.name;
-
-      try{
-        if(lower.endsWith('.txt')){
-          editorText.value = await file.text();
-        } else if(lower.endsWith('.docx')){
-          const arrayBuffer = await file.arrayBuffer();
-          const result = await mammoth.extractRawText({ arrayBuffer });
-          editorText.value = result.value || '';
-        } else {
-          statusBox.textContent = 'Formato não suportado. Use TXT ou DOCX.';
-          return;
-        }
-
-        if(!normalizeText(editorText.value)){
-          statusBox.textContent = 'Arquivo lido, mas sem texto extraível.';
-          renderPreview();
-          return;
-        }
-
-        statusBox.textContent = 'Arquivo carregado com sucesso: ' + file.name;
-        rulesSummary.textContent = 'Texto carregado no Pólux. Prévia pronta para atualização.';
-        renderPreview();
-      }catch(error){
-        console.error(error);
-        statusBox.textContent = 'Erro ao ler arquivo.';
-      }
-    }
-
-    function buildLapidadorPayload(){
-      return {
-        type: 'lapidar-miolo-load',
-        sourceApp: 'Polux',
-        moduleMode: 'prosa',
-        text: editorText.value || '',
-        bookTitle: bookTitle.value || '',
-        bookSize: bookSize.value,
-        chapterStartMode: chapterStartMode.value,
-        bodyFont: bodyFont.value,
-        fontSize: fontSize.value,
-        lineHeight: lineHeight.value,
-        paragraphIndent: paragraphIndent.value,
-        paragraphGap: paragraphGap.value,
-        dropcapStyle: dropcapStyle.value,
-        compositionMode: 'prose',
-        hyphenationMode: 'light',
-        ornament: ornamentFromMotor
-      };
-    }
-
-    function openLapidador(){
-      const url = 'motor_lapidacao_miolo.html';
-
-      if(!lapidadorWindow || lapidadorWindow.closed){
-        lapidadorWindow = window.open(url, '_blank', 'width=1500,height=950');
-        lapidadorReady = false;
-      } else {
-        lapidadorWindow.focus();
-      }
-
-      pendingLapidadorPayload = buildLapidadorPayload();
-      statusBox.textContent = 'Abrindo Motor do Miolo... aguardando conexão.';
-      rulesSummary.textContent = 'Pólux aguardando o motor ficar pronto.';
-
-      setTimeout(() => {
-        trySendPayloadToLapidador();
-      }, 250);
-    }
-
-    function trySendPayloadToLapidador(){
-      if(
-        lapidadorWindow &&
-        !lapidadorWindow.closed &&
-        lapidadorReady &&
-        pendingLapidadorPayload
-      ){
-        try{
-          lapidadorWindow.postMessage(pendingLapidadorPayload, '*');
-          statusBox.textContent = 'Texto enviado ao Motor de Lapidação do Miolo.';
-          rulesSummary.textContent = 'Motor aberto e texto enviado com sucesso.';
-          pendingLapidadorPayload = null;
-        }catch(error){
-          console.error(error);
-          statusBox.textContent = 'Falha ao enviar o texto ao motor.';
-        }
-      }
-    }
-
-    function receiveFromLapidador(event){
-      const data = event.data;
-      if(!data || typeof data !== 'object') return;
-
-      if(data.type === 'lapidar-miolo-ready'){
-        lapidadorReady = true;
-        statusBox.textContent = 'Motor do Miolo conectado.';
-        rulesSummary.textContent = 'Conexão com o motor estabelecida.';
-        trySendPayloadToLapidador();
-        return;
-      }
-
-      if(data.type !== 'lapidar-miolo-result') return;
-
-      editorText.value = data.text || editorText.value;
-      ornamentFromMotor = data.ornament || '';
-      if(data.paragraphIndent !== undefined) paragraphIndent.value = String(data.paragraphIndent);
-      if(data.paragraphGap !== undefined) paragraphGap.value = String(data.paragraphGap);
-      if(data.bodyFont) bodyFont.value = data.bodyFont;
-      if(data.fontSize) fontSize.value = String(data.fontSize);
-      if(data.lineHeight) lineHeight.value = String(data.lineHeight);
-      if(data.dropcapStyle) dropcapStyle.value = data.dropcapStyle;
-
-      rulesSummary.textContent =
-        `Texto voltou do Motor do Miolo • Quebras suspeitas: ${(data.issues || []).length} • Ornamento: ${ornamentFromMotor || 'nenhum'}`;
-      rulesSummary.dataset.locked = '1';
-      statusBox.textContent = 'Texto refinado recebido do Motor de Lapidação do Miolo.';
-      renderPreview();
-    }
-
-    function normalizeText(text){
-      return String(text || '')
-        .replace(/\r\n/g, '\n')
-        .replace(/\r/g, '\n')
-        .replace(/\t/g, '    ')
-        .replace(/\n{3,}/g, '\n\n')
-        .trim();
-    }
-
-    function splitParagraphs(text){
-      return normalizeText(text)
-        .split(/\n\s*\n/)
-        .map(p => p.trim())
-        .filter(Boolean);
-    }
-
-    function getPageSizeCm(){
-      if(bookSize.value === '16x23') return { w:16, h:23, label:'16 × 23 cm' };
-      if(bookSize.value === 'a5') return { w:14.8, h:21, label:'A5' };
-      return { w:15.24, h:22.86, label:'6 × 9 pol.' };
-    }
-
-    function applyMetrics(){
-      const size = getPageSizeCm();
-      const widthPx = size.w * CM_TO_PX;
-      const heightPx = size.h * CM_TO_PX;
-
-      document.documentElement.style.setProperty('--page-width-px', `${widthPx}px`);
-      document.documentElement.style.setProperty('--page-height-px', `${heightPx}px`);
-      document.documentElement.style.setProperty('--margin-top-px', `${2.4 * CM_TO_PX}px`);
-      document.documentElement.style.setProperty('--margin-bottom-px', `${2.5 * CM_TO_PX}px`);
-      document.documentElement.style.setProperty('--margin-left-px', `${2.6 * CM_TO_PX}px`);
-      document.documentElement.style.setProperty('--margin-right-px', `${2.1 * CM_TO_PX}px`);
-
-      sizePill.innerHTML = `<strong>${size.label}</strong>`;
-      return { size, widthPx, heightPx };
-    }
-
-    function detectBlocks(text){
-      const paragraphs = splitParagraphs(text);
-      const blocks = [];
-
-      for(let i = 0; i < paragraphs.length; i++){
-        const p = paragraphs[i];
-        const next = paragraphs[i + 1] || '';
-
-        if(/^cap[ií]tulo\s+/i.test(p)){
-          const chapter = { title:p, subtitle:'' };
-
-          if(
-            next &&
-            next.length < 90 &&
-            !/[.!?…]$/.test(next) &&
-            !/^cap[ií]tulo\s+/i.test(next)
-          ){
-            chapter.subtitle = next;
-            i++;
-          }
-
-          blocks.push({ type:'chapter', chapter });
-        } else {
-          blocks.push({ type:'paragraph', text:p });
-        }
-      }
-
-      return blocks;
-    }
-
-    function createMeasurePage(chapter){
-      const { widthPx, heightPx } = applyMetrics();
-
-      const page = document.createElement('div');
-      page.className = 'page';
-      page.style.width = widthPx + 'px';
-      page.style.height = heightPx + 'px';
-
-      const inner = document.createElement('div');
-      inner.className = 'page-inner';
-
-      const content = document.createElement('div');
-      content.className = 'page-content';
-      content.style.fontFamily = bodyFont.value;
-      content.style.fontSize = fontSize.value + 'rem';
-      content.style.lineHeight = lineHeight.value;
-      content.style.setProperty('--paragraph-indent', paragraphIndent.value + 'em');
-      content.style.setProperty('--paragraph-gap', paragraphGap.value + 'em');
-
-      if(Number(paragraphIndent.value) > 0) page.classList.add('paragraph-indent');
-      if(dropcapStyle.value === 'simple') page.classList.add('dropcap-simple');
-      if(dropcapStyle.value === 'classic') page.classList.add('dropcap-classic');
-      if(dropcapStyle.value === 'ornamental') page.classList.add('dropcap-ornamental');
-
-      if(chapter){
-        const header = document.createElement('div');
-        header.className = 'chapter-header';
-
-        const title = document.createElement('h1');
-        title.className = 'chapter-title';
-        title.textContent = chapter.title || '';
-        header.appendChild(title);
-
-        if(chapter.subtitle){
-          const subtitle = document.createElement('div');
-          subtitle.className = 'chapter-subtitle';
-          subtitle.textContent = chapter.subtitle;
-          header.appendChild(subtitle);
-        }
-
-        inner.appendChild(header);
-      }
-
-      inner.appendChild(content);
-      page.appendChild(inner);
-      return { page, content };
-    }
-
-    function pushBlankPage(pages, label = 'Página reservada'){
-      pages.push({ kind:'blank', label });
-    }
-
-    function canParagraphFitOnFreshPage(text, chapterOpening = false){
-      const measure = createMeasurePage(null);
-      measureRoot.innerHTML = '';
-      measureRoot.appendChild(measure.page);
-
-      const p = document.createElement('p');
-      p.textContent = text;
-      if(chapterOpening) p.classList.add('first-para');
-      measure.content.appendChild(p);
-
-      const fits = measure.content.scrollHeight <= measure.content.clientHeight;
-      measureRoot.innerHTML = '';
-      return fits;
-    }
-
-    function paginateReal(text){
-      const blocks = detectBlocks(text);
-      const pages = [];
-
-      let current = null;
-      let measure = null;
-
-      function startPage(chapter = null, ornament = ''){
-        measure = createMeasurePage(chapter);
-        measureRoot.innerHTML = '';
-        measureRoot.appendChild(measure.page);
-
-        current = {
-          kind:'text',
-          chapterOpening: !!chapter,
-          chapterTitle: chapter ? chapter.title : '',
-          chapterSubtitle: chapter ? chapter.subtitle : '',
-          paragraphs: [],
-          ornament
-        };
-      }
-
-      startPage();
-
-      for(let i = 0; i < blocks.length; i++){
-        const block = blocks[i];
-
-        if(block.type === 'chapter'){
-          if(current && (current.paragraphs.length || current.chapterOpening)){
-            pages.push(current);
-          }
-
-          if(chapterStartMode.value === 'page'){
-            pushBlankPage(pages);
-          } else if(chapterStartMode.value === 'sheet'){
-            pushBlankPage(pages);
-            pushBlankPage(pages);
-          } else if(chapterStartMode.value === 'odd'){
-            if((pages.length + 1) % 2 === 0){
-              pushBlankPage(pages);
-            }
-          }
-
-          startPage(block.chapter, ornamentFromMotor || '');
-          continue;
-        }
-
-        const p = document.createElement('p');
-        p.textContent = block.text;
-        if(current.chapterOpening && current.paragraphs.length === 0){
-          p.classList.add('first-para');
-        }
-        measure.content.appendChild(p);
-
-        if(measure.content.scrollHeight > measure.content.clientHeight){
-          measure.content.removeChild(p);
-
-          if(current.paragraphs.length === 0){
-            current.paragraphs.push(block.text);
-            pages.push(current);
-            startPage();
-            continue;
-          }
-
-          pages.push(current);
-          startPage();
-
-          const p2 = document.createElement('p');
-          p2.textContent = block.text;
-          if(current.chapterOpening && current.paragraphs.length === 0){
-            p2.classList.add('first-para');
-          }
-          measure.content.appendChild(p2);
-
-          if(measure.content.scrollHeight > measure.content.clientHeight){
-            measure.content.removeChild(p2);
-            current.paragraphs.push(block.text);
-            pages.push(current);
-            startPage();
-          } else {
-            current.paragraphs.push(block.text);
-          }
-        } else {
-          current.paragraphs.push(block.text);
-        }
-      }
-
-      if(current && (current.paragraphs.length || current.chapterOpening)){
-        pages.push(current);
-      }
-
-      measureRoot.innerHTML = '';
-      return pages;
-    }
-
-    function renderOnePage(pageData, index){
-      const { widthPx, heightPx } = applyMetrics();
-
-      const page = document.createElement('article');
-      page.className = 'page';
-      page.style.width = widthPx + 'px';
-      page.style.height = heightPx + 'px';
-
-      if(pageData.kind === 'blank'){
-        page.classList.add('blank-page');
-
-        const holder = document.createElement('div');
-        holder.className = 'blank-holder';
-        holder.textContent = pageData.label || 'Página reservada';
-        page.appendChild(holder);
-
-        const number = document.createElement('div');
-        number.className = 'page-number';
-        number.textContent = 'Página ' + (index + 1);
-        page.appendChild(number);
-
-        return page;
-      }
-
-      const inner = document.createElement('div');
-      inner.className = 'page-inner';
-
-      if(Number(paragraphIndent.value) > 0) page.classList.add('paragraph-indent');
-      if(dropcapStyle.value === 'simple') page.classList.add('dropcap-simple');
-      if(dropcapStyle.value === 'classic') page.classList.add('dropcap-classic');
-      if(dropcapStyle.value === 'ornamental') page.classList.add('dropcap-ornamental');
-
-      if(pageData.chapterOpening){
-        const header = document.createElement('div');
-        header.className = 'chapter-header';
-
-        const title = document.createElement('h1');
-        title.className = 'chapter-title';
-        title.textContent = pageData.chapterTitle || '';
-        header.appendChild(title);
-
-        if(pageData.chapterSubtitle){
-          const subtitle = document.createElement('div');
-          subtitle.className = 'chapter-subtitle';
-          subtitle.textContent = pageData.chapterSubtitle;
-          header.appendChild(subtitle);
-        }
-
-        inner.appendChild(header);
-      }
-
-      const content = document.createElement('div');
-      content.className = 'page-content';
-      content.style.fontFamily = bodyFont.value;
-      content.style.fontSize = fontSize.value + 'rem';
-      content.style.lineHeight = lineHeight.value;
-      content.style.setProperty('--paragraph-indent', paragraphIndent.value + 'em');
-      content.style.setProperty('--paragraph-gap', paragraphGap.value + 'em');
-
-      pageData.paragraphs.forEach((para, idx) => {
-        const p = document.createElement('p');
-        p.textContent = para;
-        if(pageData.chapterOpening && idx === 0) p.classList.add('first-para');
-        content.appendChild(p);
-      });
-
-      if(pageData.ornament){
-        const orn = document.createElement('div');
-        orn.className = 'ornament-slot';
-        orn.textContent = pageData.ornament;
-        content.appendChild(orn);
-      }
-
-      inner.appendChild(content);
-      page.appendChild(inner);
-
-      const number = document.createElement('div');
-      number.className = 'page-number';
-      number.textContent = 'Página ' + (index + 1);
-      page.appendChild(number);
-
-      return page;
-    }
-
-    function fitStageScale(){
-      const pages = bookStage.querySelectorAll('.page');
-      if(!pages.length){
-        bookStage.style.transform = 'scale(1)';
-        return;
-      }
-
-      const stageWrap = document.querySelector('.stage-wrap');
-      const pageWidth = pages[0].offsetWidth || 470;
-      const gap = viewMode.value === 'spread' ? 22 : 0;
-      const targetWidth =
-        viewMode.value === 'spread' && pages.length > 1
-          ? (pageWidth * 2 + gap)
-          : pageWidth;
-
-      const available = Math.max(320, stageWrap.clientWidth - 24);
-      let scale = available / targetWidth;
-
-      if(scale > 1.12) scale = 1.12;
-      if(scale < 0.62) scale = 0.62;
-
-      bookStage.style.transform = `scale(${scale})`;
-    }
-
-    function updateNavigationVisibility(){
-      if(renderedPages.length > 0){
-        workspaceControls.classList.add('show');
-      } else {
-        workspaceControls.classList.remove('show');
-      }
-    }
-
-    function renderCurrentView(){
-      bookStage.innerHTML = '';
-      updateNavigationVisibility();
-
-      if(!renderedPages.length){
-        emptyState.classList.remove('hidden');
-        pageCountPill.innerHTML = 'Páginas: <strong>0</strong>';
-        pageViewPill.textContent = 'Sem páginas';
-        prevPageBtn.disabled = true;
-        nextPageBtn.disabled = true;
-        fitStageScale();
-        return;
-      }
-
-      emptyState.classList.add('hidden');
-
-      if(viewMode.value === 'single'){
-        currentPageIndex = Math.max(0, Math.min(currentPageIndex, renderedPages.length - 1));
-        bookStage.appendChild(renderOnePage(renderedPages[currentPageIndex], currentPageIndex));
-
-        pageViewPill.textContent = `Página ${currentPageIndex + 1} de ${renderedPages.length}`;
-        prevPageBtn.disabled = currentPageIndex <= 0;
-        nextPageBtn.disabled = currentPageIndex >= renderedPages.length - 1;
-      } else {
-        let leftIndex = currentPageIndex;
-
-        if(leftIndex % 2 !== 0) leftIndex -= 1;
-        if(leftIndex < 0) leftIndex = 0;
-        if(leftIndex >= renderedPages.length) leftIndex = Math.max(0, renderedPages.length - 1);
-
-        currentPageIndex = leftIndex;
-
-        bookStage.appendChild(renderOnePage(renderedPages[leftIndex], leftIndex));
-
-        if(renderedPages[leftIndex + 1]){
-          bookStage.appendChild(renderOnePage(renderedPages[leftIndex + 1], leftIndex + 1));
-          pageViewPill.textContent = `Páginas ${leftIndex + 1}-${leftIndex + 2} de ${renderedPages.length}`;
-        } else {
-          pageViewPill.textContent = `Página ${leftIndex + 1} de ${renderedPages.length}`;
-        }
-
-        prevPageBtn.disabled = leftIndex <= 0;
-        nextPageBtn.disabled = leftIndex + 2 >= renderedPages.length;
-      }
-
-      pageCountPill.innerHTML = `Páginas: <strong>${renderedPages.length}</strong>`;
-      requestAnimationFrame(fitStageScale);
-    }
-
-    function stepPage(direction){
-      if(!renderedPages.length) return;
-
-      if(viewMode.value === 'single'){
-        currentPageIndex += direction;
-      } else {
-        currentPageIndex += direction * 2;
-      }
-
-      currentPageIndex = Math.max(0, Math.min(currentPageIndex, renderedPages.length - 1));
-      renderCurrentView();
-    }
-
-    function renderPreview(){
-      const text = normalizeText(editorText.value);
-      applyMetrics();
-
-      if(!text){
-        renderedPages = [];
-        currentPageIndex = 0;
-        statusBox.textContent = 'Sem texto para diagramar ainda.';
-        if(!rulesSummary.dataset.locked){
-          rulesSummary.textContent = 'Sem lapidação externa ainda.';
-        }
-        renderCurrentView();
-        return;
-      }
-
-      renderedPages = paginateReal(text);
-      currentPageIndex = 0;
-
-      if(renderedPages.length){
-        statusBox.textContent = 'Prévia atualizada com sucesso.';
-        if(!rulesSummary.dataset.locked){
-          rulesSummary.textContent =
-            ornamentFromMotor
-              ? `Paginação pronta • Ornamento ativo: ${ornamentFromMotor}`
-              : 'Paginação pronta.';
-        }
-      } else {
-        statusBox.textContent = 'Texto presente, mas sem páginas renderizadas.';
-      }
-
-      renderCurrentView();
-    }
-
-    function exportPDF(){
-      if(!normalizeText(editorText.value)){
-        alert('Carregue ou cole uma obra antes de exportar.');
-        return;
-      }
-
-      if(!renderedPages.length){
-        renderPreview();
-      }
-
-      setTimeout(() => window.print(), 120);
-    }
-
-    function finalizeAndClear(){
-      if(normalizeText(editorText.value)){
-        const ok = confirm('Finalizar esta obra e limpar o workspace?');
-        if(!ok) return;
-      }
-      resetWorkspace();
-    }
-
-    function resetWorkspace(){
-      editorText.value = '';
-      bookTitle.value = '';
-      bookSize.value = '16x23';
-      chapterStartMode.value = 'flow';
-      bodyFont.value = 'Georgia';
-      fontSize.value = '0.96';
-      lineHeight.value = '1.52';
-      paragraphIndent.value = '1.00';
-      paragraphGap.value = '0.20';
-      dropcapStyle.value = 'none';
-      viewMode.value = 'single';
-
-      renderedPages = [];
-      currentPageIndex = 0;
-      ornamentFromMotor = '';
-      rulesSummary.dataset.locked = '';
-
-      const oldInput = fileInput;
-      const newInput = oldInput.cloneNode(true);
-      oldInput.parentNode.replaceChild(newInput, oldInput);
-      newInput.addEventListener('change', handleFileUpload);
-
-      window.fileInput = newInput;
-
-      statusBox.textContent = 'Workspace limpo. Pronto para novo livro.';
-      rulesSummary.textContent = 'Sem lapidação externa ainda.';
-      renderCurrentView();
-    }
-
-    applyMetrics();
-    renderCurrentView();
-  </script>
-</body>
-</html>
+    const ORNAMENTS = ['', '❦', '✶', '✧ ✧ ✧', '— ✦ —', '✤', '❋', '✦', '☙ ❧'];
+    const CM_TO_PX = 37.795275590
