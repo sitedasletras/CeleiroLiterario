@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lapidar — Diagramação | Celeiro Literário</title>
+  <title>Lapidar — Diagramadores</title>
   <style>
     :root{
       --bg:#f4f1ea;
@@ -11,15 +11,11 @@
       --ink:#1f2430;
       --muted:#5f6b78;
       --line:#d8ddd8;
-
       --green-1:#173726;
       --green-2:#1d5c40;
       --green-3:#2d7c58;
       --green-4:#5aa58f;
-
-      --gold:#b5842f;
       --shadow:0 14px 34px rgba(0,0,0,.10);
-      --radius:22px;
     }
 
     *{box-sizing:border-box}
@@ -34,11 +30,12 @@
 
     body{
       min-height:100vh;
+      padding:12px;
     }
 
     .wrap{
-      width:min(1200px, calc(100vw - 24px));
-      margin:12px auto;
+      width:min(1180px, 100%);
+      margin:0 auto;
       display:grid;
       grid-template-columns:260px minmax(0,1fr);
       gap:14px;
@@ -59,17 +56,13 @@
       align-self:start;
     }
 
-    .brand{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
     .brand small{
+      display:block;
       font-size:.9rem;
       letter-spacing:.08em;
       text-transform:uppercase;
       opacity:.85;
+      margin-bottom:8px;
     }
 
     .brand h1{
@@ -79,9 +72,9 @@
     }
 
     .brand p{
-      margin:0;
+      margin:10px 0 0 0;
       color:rgba(255,255,255,.92);
-      line-height:1.4;
+      line-height:1.45;
       font-size:.98rem;
     }
 
@@ -117,10 +110,10 @@
     }
 
     .side-actions{
+      margin-top:auto;
       display:flex;
       flex-direction:column;
       gap:8px;
-      margin-top:auto;
     }
 
     .btn{
@@ -222,14 +215,6 @@
       gap:14px;
     }
 
-    .grid-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
     .grid-head h3{
       margin:0;
       font-size:1.35rem;
@@ -237,7 +222,7 @@
     }
 
     .grid-head p{
-      margin:0;
+      margin:8px 0 0 0;
       color:var(--muted);
       line-height:1.4;
     }
@@ -259,13 +244,6 @@
       box-shadow:0 10px 22px rgba(0,0,0,.05);
     }
 
-    .card-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:12px;
-    }
-
     .tag{
       font-size:.82rem;
       font-weight:700;
@@ -276,7 +254,8 @@
       border:1px solid #dbe4dc;
       border-radius:999px;
       padding:6px 10px;
-      white-space:nowrap;
+      display:inline-block;
+      width:max-content;
     }
 
     .card h4{
@@ -319,13 +298,6 @@
       flex:1 1 180px;
     }
 
-    .btn-outline{
-      background:#fff;
-      color:#244033;
-      border:1px solid #ced8cf;
-      flex:1 1 140px;
-    }
-
     .footer-note{
       border-top:1px dashed #d4dbd4;
       padding-top:10px;
@@ -351,9 +323,11 @@
     }
 
     @media (max-width:760px){
+      body{
+        padding:6px;
+      }
+
       .wrap{
-        width:min(100vw - 12px, 1200px);
-        margin:6px auto;
         gap:8px;
       }
 
@@ -396,27 +370,26 @@
       <div class="brand">
         <small>Celeiro Literário</small>
         <h1>Lapidar</h1>
-        <p>Hub de diagramação do Celeiro. Escolha manualmente o diagramador. Nada aqui redireciona sozinho.</p>
+        <p>Hub da diagramação. Escolha abaixo o diagramador correto.</p>
       </div>
 
       <div class="side-card">
-        <h2>Fluxo</h2>
+        <h2>Fluxo atual</h2>
         <ul>
-          <li>Entrar no Celeiro</li>
-          <li>Abrir Lapidar</li>
-          <li>Escolher o diagramador</li>
-          <li>Seguir para o módulo desejado</li>
+          <li>Celeiro Literário</li>
+          <li>Lapidar</li>
+          <li>Escolha do diagramador</li>
+          <li>Abertura manual do módulo</li>
         </ul>
       </div>
 
       <div class="side-card">
-        <h2>Estado atual</h2>
-        <p>Esta página é apenas a ponte da diagramação. Ela não joga direto em nenhum módulo.</p>
+        <h2>Observação</h2>
+        <p>Esta página não deve redirecionar sozinha. Ela deve apenas exibir os quatro setores da diagramação.</p>
       </div>
 
       <div class="side-actions">
-        <a class="btn btn-primary" href="painel_setores.html">Voltar ao Celeiro</a>
-        <a class="btn btn-secondary" href="index.html">Tela inicial</a>
+        <a class="btn btn-primary" href="index.html">Voltar ao Celeiro</a>
       </div>
     </aside>
 
@@ -425,39 +398,33 @@
         <div>
           <h2>Área de Diagramação</h2>
           <p>
-            Aqui ficam os diagramadores do Celeiro Literário. Você escolhe manualmente qual abrir.
-            O Lapidar agora volta a funcionar como hub, e não como atalho automático para a diagramação.
+            Aqui estão os quatro diagramadores principais do Lapidar.
+            A entrada correta do Celeiro agora leva para esta página.
           </p>
         </div>
 
         <div class="seal">
           <strong>Lapidar</strong>
-          <span>Diagramação editorial assistida dentro do Celeiro Literário</span>
+          <span>Diagramação editorial dentro do Celeiro Literário</span>
         </div>
       </section>
 
       <section class="grid-shell">
         <div class="grid-head">
-          <div>
-            <h3>Diagramadores disponíveis</h3>
-            <p>Escolha abaixo o ambiente certo para o tipo de obra.</p>
-          </div>
+          <h3>Escolha o diagramador</h3>
+          <p>Abra manualmente o setor desejado.</p>
         </div>
 
         <div class="diagram-grid">
           <article class="card">
-            <div class="card-top">
-              <div>
-                <div class="tag">Prosa</div>
-                <h4>Pólux</h4>
-              </div>
-            </div>
-            <p>Diagramador de prosa e livros narrativos em fluxo contínuo.</p>
+            <span class="tag">Prosa</span>
+            <h4>Pólux</h4>
+            <p>Diagramador de prosa e narrativa contínua.</p>
             <ul class="features">
               <li>Capítulos</li>
-              <li>Página ímpar</li>
-              <li>Respiro editorial</li>
-              <li>Motor do miolo acoplado</li>
+              <li>Fluxo contínuo</li>
+              <li>Prévia editorial</li>
+              <li>Miolo narrativo</li>
             </ul>
             <div class="card-actions">
               <a class="btn btn-open" href="polux.html">Abrir Pólux</a>
@@ -465,18 +432,14 @@
           </article>
 
           <article class="card">
-            <div class="card-top">
-              <div>
-                <div class="tag">Poesia</div>
-                <h4>Castor</h4>
-              </div>
-            </div>
-            <p>Diagramador de poesia, versos, formas fixas e estrutura poética.</p>
+            <span class="tag">Poesia</span>
+            <h4>Castor</h4>
+            <p>Diagramador de poesia e formas poéticas.</p>
             <ul class="features">
-              <li>Poemas</li>
+              <li>Versos</li>
               <li>Estrofes</li>
-              <li>Preservação métrica</li>
-              <li>Preview editorial</li>
+              <li>Preservação visual</li>
+              <li>Preview poético</li>
             </ul>
             <div class="card-actions">
               <a class="btn btn-open" href="castor.html">Abrir Castor</a>
@@ -484,18 +447,14 @@
           </article>
 
           <article class="card">
-            <div class="card-top">
-              <div>
-                <div class="tag">Híbrido</div>
-                <h4>Centauro</h4>
-              </div>
-            </div>
-            <p>Diagramador híbrido para obras misturando prosa, poesia e estruturas combinadas.</p>
+            <span class="tag">Híbrido</span>
+            <h4>Centauro</h4>
+            <p>Diagramador híbrido para obras mistas.</p>
             <ul class="features">
-              <li>Texto misto</li>
-              <li>Transição entre blocos</li>
-              <li>Controle de ritmo visual</li>
-              <li>Layout híbrido</li>
+              <li>Prosa + poesia</li>
+              <li>Blocos mistos</li>
+              <li>Transições visuais</li>
+              <li>Layout combinado</li>
             </ul>
             <div class="card-actions">
               <a class="btn btn-open" href="centauro.html">Abrir Centauro</a>
@@ -503,28 +462,23 @@
           </article>
 
           <article class="card">
-            <div class="card-top">
-              <div>
-                <div class="tag">Cordel</div>
-                <h4>Qui(RON)xadá</h4>
-              </div>
-            </div>
-            <p>Diagramador de cordel, sextilhas e estética popular editorial.</p>
+            <span class="tag">Cordel</span>
+            <h4>Qui(RON)xadá</h4>
+            <p>Diagramador de cordel e estrutura popular.</p>
             <ul class="features">
               <li>Sextilhas</li>
               <li>Cordel</li>
               <li>Formato popular</li>
-              <li>Controle simples</li>
+              <li>Leitura simples</li>
             </ul>
             <div class="card-actions">
-              <a class="btn btn-open" href="quironxada.html">Abrir Qui(RON)xadá</a>
+              <a class="btn btn-open" href="modulo_quironxada.html">Abrir Qui(RON)xadá</a>
             </div>
           </article>
         </div>
 
         <div class="footer-note">
-          Se o seu arquivo do Qui(RON)xadá estiver com outro nome, troque só o link do botão correspondente.
-          O importante aqui é que o <strong>Lapidar ficou parado no hub</strong> e não entra mais direto em diagramação sozinho.
+          O Celeiro deve entrar aqui primeiro. Depois você escolhe Pólux, Castor, Centauro ou Qui(RON)xadá.
         </div>
       </section>
     </main>
