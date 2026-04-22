@@ -6,14 +6,14 @@
 <title>Pólux — Diagramador de Prosa</title>
 <style>
 :root{
-  --bg:#f5f1e8;
+  --bg:#f4efe3;
   --ink:#1f2340;
   --line:#d8dee6;
   --green:#2f7d57;
-  --green-soft:#5e9a79;
-  --green-panel:#edf6f0;
-  --gold:#c79a2b;
-  --red:#b64747;
+  --green-soft:#75a988;
+  --green-panel:#eef6f0;
+  --gold:#c6932a;
+  --red:#b94a4a;
 
   --page-width:148mm;
   --page-height:210mm;
@@ -23,13 +23,10 @@
   --page-padding-left:16mm;
 
   --body-font:"Georgia", serif;
-  --title-font:"Georgia", serif;
-  --subtitle-font:"Georgia", serif;
-
-  --body-size:14pt;
-  --title1-size:22pt;
-  --title2-size:16pt;
-  --line-height:1.42;
+  --body-size:12pt;
+  --title1-size:16pt;
+  --title2-size:12pt;
+  --line-height:1.32;
   --indent:1cm;
   --safe-bottom:12mm;
 }
@@ -38,7 +35,7 @@ body{
   margin:0;
   font-family:Georgia, serif;
   background:var(--bg);
-  color:#202020;
+  color:#232323;
 }
 .app{
   max-width:1600px;
@@ -56,7 +53,7 @@ body{
 h1{
   margin:0;
   color:var(--ink);
-  font-size:32px;
+  font-size:30px;
 }
 .top-actions{
   display:flex;
@@ -72,7 +69,7 @@ h1{
   font-family:inherit;
 }
 .btn.green{background:var(--green); color:white;}
-.btn.gold{background:var(--gold); color:#2a220d;}
+.btn.gold{background:var(--gold); color:#2e2208;}
 .btn.red{background:var(--red); color:white;}
 
 .entry{
@@ -150,6 +147,7 @@ select,input[type="number"]{
   color:#445160;
   line-height:1.45;
 }
+
 .preview-shell{
   background:white;
   border:1px solid var(--line);
@@ -227,14 +225,19 @@ select,input[type="number"]{
   font-family:var(--body-font);
   font-size:var(--body-size);
   line-height:var(--line-height);
+  text-align:left;
 }
 .block{
-  margin:0 0 .48em 0;
+  display:block;
+  width:100%;
+  max-width:100%;
+  margin:0 0 .44em 0;
   color:#222;
+  overflow-wrap:anywhere;
+  word-break:normal;
 }
 .block.title1{
   text-align:center;
-  font-family:var(--title-font);
   font-size:var(--title1-size);
   font-weight:700;
   color:var(--ink);
@@ -242,7 +245,6 @@ select,input[type="number"]{
 }
 .block.title2{
   text-align:center;
-  font-family:var(--subtitle-font);
   font-size:var(--title2-size);
   font-style:italic;
   font-weight:700;
@@ -250,31 +252,39 @@ select,input[type="number"]{
   margin:0 0 6mm;
 }
 .block.body{
-  text-align:justify;
   text-indent:var(--indent);
-  orphans:2;
-  widows:2;
+}
+.block.body.long{
+  text-align:justify;
+}
+.block.body.short{
+  text-align:left;
 }
 .block.dialogue{
   text-align:left;
   text-indent:0;
   padding-left:0;
   margin-left:0;
-  max-width:100%;
-  overflow-wrap:break-word;
+}
+.block.dialogue + .block.body,
+.block.dialogue + .block.dialogue{
+  margin-top:.08em;
+}
+.block.after-drop{
+  text-indent:0 !important;
 }
 .dropcap-wrap{
   text-indent:0 !important;
   display:block;
   overflow:hidden;
-  min-height:2.7em;
+  min-height:2.35em;
 }
 .dropcap{
   float:left;
-  font-size:3.15em;
+  font-size:3.0em;
   line-height:.78;
   font-weight:700;
-  margin:.01em .035em 0 0;
+  margin:.01em .01em 0 0;
   padding:0;
 }
 .page-number{
@@ -307,6 +317,7 @@ select,input[type="number"]{
   font-family:var(--body-font);
   font-size:var(--body-size);
   line-height:var(--line-height);
+  text-align:left;
 }
 @media (max-width:1200px){
   .workspace{grid-template-columns:1fr;}
@@ -336,12 +347,12 @@ Rovonilson Reigns Bautista aprendeu cedo que o mundo não diminui o passo para n
 Naquela noite, ele tinha nove anos e segurava uma mochila pequena contra o peito.
 
 Capítulo 2
-A Estrada de Concreto
+A Primeira Manhã
 
-Nada ali pedia licença.
-O asfalto guardava o calor do dia e devolvia aos pés uma fadiga antiga.
-— Anda logo — disse a mulher, sem virar o rosto.
-Ele olhou adiante e percebeu que a cidade era maior do que qualquer promessa.</textarea>
+A manhã revelou o que a noite havia escondido.
+Havia mais gente do que ele imaginava.
+— Primeira vez? — perguntou.
+Ele não respondeu.</textarea>
     <div class="entry-actions">
       <button id="updateBtn" class="btn green" type="button">Atualizar prévia</button>
       <span class="file-note">Cole o texto e clique em atualizar prévia.</span>
@@ -371,25 +382,25 @@ Ele olhou adiante e percebeu que a cidade era maior do que qualquer promessa.</t
 
       <div class="field">
         <label for="bodySize">Tamanho do corpo (pt)</label>
-        <input id="bodySize" type="number" value="14" min="10" max="18" />
+        <input id="bodySize" type="number" value="12" min="10" max="18" />
       </div>
 
       <div class="field">
         <label for="title1Size">Tamanho do título 1 (pt)</label>
-        <input id="title1Size" type="number" value="22" min="14" max="36" />
+        <input id="title1Size" type="number" value="16" min="14" max="36" />
       </div>
 
       <div class="field">
         <label for="title2Size">Tamanho do título 2 (pt)</label>
-        <input id="title2Size" type="number" value="16" min="12" max="30" />
+        <input id="title2Size" type="number" value="12" min="10" max="30" />
       </div>
 
       <div class="field">
         <label for="lineHeight">Entrelinha</label>
         <select id="lineHeight">
-          <option value="1.28">Compacta</option>
-          <option value="1.42" selected>Confortável</option>
-          <option value="1.58">Ampla</option>
+          <option value="1.24">Compacta</option>
+          <option value="1.32" selected>Confortável</option>
+          <option value="1.42">Ampla</option>
         </select>
       </div>
     </aside>
@@ -426,15 +437,15 @@ Ele olhou adiante e percebeu que a cidade era maior do que qualquer promessa.</t
       <h3>Aparência e estilos</h3>
       <div class="field">
         <label>Leitura do texto</label>
-        <div class="small-note">Título 1: “Capítulo 1”, “Parte 1” e equivalentes.<br>Título 2: linha seguinte como tema do capítulo.<br>Frases e diálogos seguem separados.</div>
+        <div class="small-note">Título 1: “Capítulo 1”, “Parte 1” e equivalentes.<br>Título 2: linha seguinte como tema do capítulo.<br>Se não houver “Capítulo”, o primeiro título sozinho também pode abrir o capítulo.</div>
       </div>
       <div class="field">
         <label>Letra capitular</label>
-        <div class="small-note">Entrará no primeiro parágrafo textual de cada capítulo quando esse parágrafo for realmente longo.</div>
+        <div class="small-note">A letra capitular entra no primeiro parágrafo de corpo de cada capítulo.</div>
       </div>
       <div class="field">
         <label>Observação</label>
-        <div class="small-note">Diálogos ficaram dentro da área útil da página e respeitam a largura da diagramação.</div>
+        <div class="small-note">Diálogos ficam alinhados à esquerda e não saem da largura útil da diagramação.</div>
       </div>
     </aside>
   </div>
@@ -481,91 +492,70 @@ function isDialogue(line){
   return line.trim().startsWith('—');
 }
 
-function splitIntoUnits(line){
+function looksLikeStandaloneTitle(line){
   const clean = line.trim();
-  if(!clean) return [];
-  if(isDialogue(clean)) return [{type:'dialogue', text:clean}];
-
-  const parts = clean
-    .replace(/([.!?…])\s+(?=[A-ZÁÉÍÓÚÂÊÔÃÕÀÜ—])/g, '$1|||')
-    .split('|||')
-    .map(s => s.trim())
-    .filter(Boolean);
-
-  return parts.map(t => ({
-    type: t.startsWith('—') ? 'dialogue' : 'body',
-    text: t
-  }));
-}
-
-function shouldUseDropcap(text){
-  const chars = text.replace(/\s+/g,' ').trim().length;
-  const words = text.trim().split(/\s+/).length;
-  return chars >= 110 && words >= 16;
+  if(!clean) return false;
+  if(isTitle1(clean)) return false;
+  if(isDialogue(clean)) return false;
+  if(clean.length > 80) return false;
+  if(/[.!?…]$/.test(clean)) return false;
+  const words = clean.split(/\s+/).length;
+  return words <= 8;
 }
 
 function parseBlocks(raw){
   const text = normalizeText(raw);
   const lines = text.split('\n');
   const blocks = [];
+  let chapter = 0;
   let waitingSubtitle = false;
-  let chapterIndex = 0;
-  let standaloneTitleMode = false;
 
   for(let i=0;i<lines.length;i++){
     const line = lines[i].trim();
     if(!line) continue;
 
     if(isTitle1(line)){
-      chapterIndex += 1;
-      blocks.push({type:'title1', text:line, chapter:chapterIndex});
+      chapter += 1;
+      blocks.push({type:'title1', text:line, chapter});
       waitingSubtitle = true;
-      standaloneTitleMode = false;
       continue;
     }
 
-    if(waitingSubtitle){
-      blocks.push({type:'title2', text:line, chapter:chapterIndex || 1});
+    if(waitingSubtitle && looksLikeStandaloneTitle(line)){
+      blocks.push({type:'title2', text:line, chapter});
       waitingSubtitle = false;
-      standaloneTitleMode = false;
+      continue;
+    }
+    waitingSubtitle = false;
+
+    if(chapter === 0 && looksLikeStandaloneTitle(line)){
+      chapter = 1;
+      blocks.push({type:'title1', text:line, chapter});
       continue;
     }
 
-    if(!chapterIndex && i === 0){
-      chapterIndex = 1;
-      blocks.push({type:'title1', text:line, chapter:chapterIndex});
-      standaloneTitleMode = true;
-      continue;
-    }
+    if(chapter === 0) chapter = 1;
 
-    const units = splitIntoUnits(line);
-    units.forEach(unit=>{
-      blocks.push({
-        type:unit.type,
-        text:unit.text,
-        chapter:chapterIndex || 1,
-        dropcap:false
-      });
-    });
-  }
-
-  if(standaloneTitleMode){
-    const firstBody = blocks.find(b => b.type === 'body');
-    if(firstBody){
-      firstBody.chapter = 1;
+    if(isDialogue(line)){
+      blocks.push({type:'dialogue', text:line, chapter});
+    } else {
+      blocks.push({type:'body', text:line, chapter, dropcap:false});
     }
   }
 
-  const firstTextualByChapter = new Map();
+  const firstBodyPerChapter = new Map();
   for(const block of blocks){
-    if((block.type === 'body' || block.type === 'dialogue') && !firstTextualByChapter.has(block.chapter)){
-      firstTextualByChapter.set(block.chapter, block);
+    if(block.type === 'body' && !firstBodyPerChapter.has(block.chapter)){
+      firstBodyPerChapter.set(block.chapter, block);
     }
   }
+  for(const block of firstBodyPerChapter.values()){
+    block.dropcap = true;
+  }
 
-  for(const [chapter, block] of firstTextualByChapter.entries()){
-    if(block.type === 'body' && shouldUseDropcap(block.text)){
-      block.dropcap = true;
+  for(let i=0;i<blocks.length;i++){
+    if(blocks[i].type === 'body' && i > 0 && blocks[i-1].dropcap){
+      blocks[i].afterDrop = true;
     }
   }
 
@@ -590,6 +580,13 @@ function escapeHtml(str){
 function buildBlockElement(block){
   const div = document.createElement('div');
   div.className = 'block ' + block.type;
+
+  if(block.type === 'body'){
+    const words = block.text.trim().split(/\s+/).length;
+    const chars = block.text.trim().length;
+    div.classList.add((words >= 10 || chars >= 65) ? 'long' : 'short');
+    if(block.afterDrop) div.classList.add('after-drop');
+  }
 
   if(block.dropcap && block.type === 'body'){
     div.classList.add('dropcap-wrap');
@@ -629,25 +626,24 @@ function paginate(blocks){
 
   for(const block of blocks){
     if(block.type === 'title1') currentHead = block.text;
-
     const trial = [...current, block];
+
     if(fitsCurrentPage(trial)){
       current = trial;
       continue;
     }
 
     if(current.length === 0){
-      current = trial;
-      pages.push({blocks:[...current], runningHead:currentHead});
+      pages.push({blocks:[block], runningHead:currentHead});
       current = [];
       continue;
     }
 
     const last = current[current.length - 1];
     if(last && (last.type === 'title1' || last.type === 'title2')){
-      const popped = current.pop();
+      const carry = current.pop();
       pages.push({blocks:[...current], runningHead:findRunningHead(current) || currentHead});
-      current = [popped, block];
+      current = [carry, block];
       continue;
     }
 
@@ -658,11 +654,9 @@ function paginate(blocks){
   if(current.length){
     pages.push({blocks:[...current], runningHead:findRunningHead(current) || currentHead});
   }
-
   if(!pages.length){
     pages = [{blocks:[], runningHead:'—'}];
   }
-
   currentPage = 0;
 }
 
