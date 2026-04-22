@@ -1,154 +1,78 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Celeiro Literário</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Celeiro Literário</title>
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Georgia, "Times New Roman", serif;
-      background: #f4f1ea;
-      color: #1f1a17;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
+<style>
 
-    .painel {
-      width: 100%;
-      max-width: 760px;
-      background: #f8f5ef;
-      border: 1px solid #d7cec2;
-      border-radius: 18px;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-      padding: 36px 24px;
-      text-align: center;
-    }
+body{
+margin:0;
+font-family:Georgia;
+background:#f4f1ea;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+}
 
-    .selo {
-      width: 86px;
-      height: 86px;
-      margin: 0 auto 18px auto;
-      border-radius: 50%;
-      background: #efe6d7;
-      border: 1px solid #d4c6b2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 34px;
-      color: #8b6f47;
-      font-weight: bold;
-    }
+.box{
+background:white;
+padding:40px;
+border-radius:20px;
+box-shadow:0 12px 28px rgba(0,0,0,.12);
+text-align:center;
+}
 
-    h1 {
-      margin: 0 0 10px 0;
-      font-size: 2.2rem;
-      line-height: 1.1;
-      color: #1d1713;
-    }
+h1{
+margin:0 0 10px 0;
+}
 
-    .sub {
-      margin: 0 auto 30px auto;
-      max-width: 560px;
-      font-size: 1.05rem;
-      line-height: 1.6;
-      color: #4a4139;
-    }
+p{
+margin-bottom:30px;
+color:#666;
+}
 
-    .bloco-botoes {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      margin-top: 24px;
-    }
+button{
+background:#2d7c58;
+border:none;
+color:white;
+padding:14px 28px;
+border-radius:12px;
+font-size:16px;
+cursor:pointer;
+}
 
-    .botao {
-      display: block;
-      width: 100%;
-      text-decoration: none;
-      padding: 18px 20px;
-      border-radius: 14px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      transition: 0.2s ease;
-      border: 1px solid transparent;
-    }
+button:hover{
+opacity:.9;
+}
 
-    .botao:hover {
-      transform: translateY(-2px);
-    }
+</style>
 
-    .botao-lapidar {
-      background: #2f5d50;
-      color: #ffffff;
-      border-color: #23463c;
-    }
-
-    .botao-lapidar:hover {
-      background: #264c42;
-    }
-
-    .botao-futuro {
-      background: #e9e1d5;
-      color: #5f554b;
-      border-color: #d0c2b0;
-      cursor: not-allowed;
-    }
-
-    .rodape {
-      margin-top: 28px;
-      font-size: 0.95rem;
-      color: #6f6459;
-      line-height: 1.6;
-    }
-
-    @media (max-width: 600px) {
-      .painel {
-        padding: 28px 18px;
-      }
-
-      h1 {
-        font-size: 1.8rem;
-      }
-
-      .sub {
-        font-size: 1rem;
-      }
-
-      .botao {
-        font-size: 1rem;
-        padding: 16px;
-      }
-    }
-  </style>
 </head>
+
 <body>
-  <main class="painel">
-    <div class="selo">CL</div>
 
-    <h1>Celeiro Literário</h1>
+<div class="box">
 
-    <p class="sub">
-      Ambiente central das ferramentas autorais e editoriais.
-      Tudo o que nascer daqui em diante ficará dentro desta casa principal.
-    </p>
+<h1>Celeiro Literário</h1>
 
-    <section class="bloco-botoes">
-      <a class="botao botao-lapidar" href="lapidar.html">Entrar em Lapidar</a>
-      <span class="botao botao-futuro">Outras ferramentas do Celeiro — em preparação</span>
-    </section>
+<p>Entrada do ambiente editorial</p>
 
-    <div class="rodape">
-      Celeiro Literário — núcleo principal de trabalho.<br>
-      Lapidar agora existe dentro do Celeiro, com seus sistemas próprios.
-    </div>
-  </main>
+<button onclick="entrar()">Entrar</button>
+
+</div>
+
+<script>
+
+function entrar(){
+
+window.location.href="painel_setores.html"
+
+}
+
+</script>
+
 </body>
 </html>
