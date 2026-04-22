@@ -8,7 +8,6 @@
 :root{
   --bg:#f5f1e8;
   --ink:#1f2340;
-  --soft:#eef3f6;
   --line:#d8dee6;
   --green:#2f7d57;
   --gold:#c79a2b;
@@ -18,7 +17,7 @@
   --page-height:210mm;
   --page-padding-top:14mm;
   --page-padding-right:14mm;
-  --page-padding-bottom:16mm;
+  --page-padding-bottom:18mm;
   --page-padding-left:16mm;
 
   --body-font:"Georgia", serif;
@@ -30,6 +29,7 @@
   --title2-size:16pt;
   --line-height:1.42;
   --indent:1.25cm;
+  --safe-bottom:12mm;
 }
 *{box-sizing:border-box}
 body{
@@ -85,7 +85,7 @@ h1{
 }
 textarea{
   width:100%;
-  min-height:160px;
+  min-height:170px;
   resize:vertical;
   border:1px solid #c9d1db;
   border-radius:10px;
@@ -212,20 +212,23 @@ select,input[type="number"]{
   margin-bottom:6mm;
 }
 .page-body{
-  height:calc(100% - 10mm);
+  height:calc(100% - 10mm - var(--safe-bottom));
   overflow:hidden;
   font-family:var(--body-font);
   font-size:var(--body-size);
   line-height:var(--line-height);
 }
-.block{margin:0 0 .40em 0; color:#222;}
+.block{
+  margin:0 0 .40em 0;
+  color:#222;
+}
 .block.title1{
   text-align:center;
   font-family:var(--title-font);
   font-size:var(--title1-size);
   font-weight:700;
   color:var(--ink);
-  margin:11mm 0 3mm;
+  margin:9mm 0 2.2mm;
 }
 .block.title2{
   text-align:center;
@@ -234,7 +237,7 @@ select,input[type="number"]{
   font-style:italic;
   font-weight:700;
   color:var(--ink);
-  margin:0 0 7mm;
+  margin:0 0 6mm;
 }
 .block.body{
   text-align:justify;
@@ -247,21 +250,17 @@ select,input[type="number"]{
   text-indent:0;
   margin-left:0;
 }
-.block.ornament{
-  text-align:center;
-  font-size:18pt;
-  color:var(--ink);
-  margin:4mm 0;
-}
 .dropcap-wrap{
   text-indent:0 !important;
+  display:flow-root;
+  clear:both;
 }
 .dropcap{
   float:left;
-  font-size:3.05em;
-  line-height:.78;
+  font-size:3.2em;
+  line-height:.83;
   font-weight:700;
-  margin:.03em .10em -.02em 0;
+  margin:.01em .06em 0 0;
   padding:0;
 }
 .page-number{
@@ -289,13 +288,12 @@ select,input[type="number"]{
   padding:var(--page-padding-top) var(--page-padding-right) var(--page-padding-bottom) var(--page-padding-left);
 }
 .measure-body{
-  height:calc(100% - 10mm);
+  height:calc(100% - 10mm - var(--safe-bottom));
   overflow:hidden;
   font-family:var(--body-font);
   font-size:var(--body-size);
   line-height:var(--line-height);
 }
-
 @media (max-width:1200px){
   .workspace{grid-template-columns:1fr;}
 }
@@ -422,7 +420,7 @@ Ele olhou adiante e percebeu que a cidade era maior do que qualquer promessa.</t
       </div>
       <div class="field">
         <label>Observação</label>
-        <div class="small-note">A prévia sempre usa uma página visível por vez, sem mural infinito.</div>
+        <div class="small-note">A prévia agora reserva uma margem de segurança no rodapé para reduzir variação e evitar estouro.</div>
       </div>
     </aside>
   </div>
@@ -453,6 +451,7 @@ const lineHeight = document.getElementById('lineHeight');
 
 let pages = [];
 let currentPage = 0;
+let allBlocks = [];
 
 function normalizeText(text){
   return text.replace(/\r/g,'').replace(/\t/g,' ').replace(/[ ]/g,' ');
@@ -487,33 +486,22 @@ function parseBlocks(raw){
   const blocks = [];
   let waitingSubtitle = false;
   let chapterIndex = 0;
-  let pendingOrnament = false;
 
   for(let i=0;i<lines.length;i++){
-    let line = lines[i].trim();
-    if(!line){
-      pendingOrnament = false;
-      continue;
-    }
+    const line = lines[i].trim();
+    if(!line) continue;
 
     if(isTitle1(line)){
       chapterIndex += 1;
       blocks.push({type:'title1', text:line, chapter:chapterIndex});
       waitingSubtitle = true;
-      pendingOrnament = false;
       continue;
     }
 
     if(waitingSubtitle){
       blocks.push({type:'title2', text:line, chapter:chapterIndex || 1});
       waitingSubtitle = false;
-      pendingOrnament = true;
       continue;
-    }
-
-    if(pendingOrnament){
-      // sem inserir ornamento automático visível por enquanto
-      pendingOrnament = false;
     }
 
     const units = splitIntoUnits(line);
@@ -530,9 +518,7 @@ function parseBlocks(raw){
   const seenChapter = new Set();
   for(const block of blocks){
     if((block.type === 'body' || block.type === 'dialogue') && !seenChapter.has(block.chapter)){
-      if(block.type === 'body'){
-        block.dropcap = true;
-      }
+      if(block.type === 'body') block.dropcap = true;
       seenChapter.add(block.chapter);
     }
   }
@@ -546,6 +532,13 @@ function setVars(){
   document.documentElement.style.setProperty('--title1-size', title1Size.value + 'pt');
   document.documentElement.style.setProperty('--title2-size', title2Size.value + 'pt');
   document.documentElement.style.setProperty('--line-height', lineHeight.value);
+}
+
+function escapeHtml(str){
+  return str
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
 }
 
 function buildBlockElement(block){
@@ -563,58 +556,6 @@ function buildBlockElement(block){
   return div;
 }
 
-function escapeHtml(str){
-  return str
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;');
-}
-
-function paginate(blocks){
-  measureBody.innerHTML = '';
-  pages = [];
-  let current = [];
-  let currentChapterTitle = '—';
-
-  for(const block of blocks){
-    if(block.type === 'title1') currentChapterTitle = block.text;
-
-    const element = buildBlockElement(block);
-    measureBody.appendChild(element);
-
-    if(measureBody.scrollHeight > measureBody.clientHeight){
-      measureBody.removeChild(element);
-
-      if(current.length === 0){
-        // força incluir bloco grande demais, para evitar página vazia
-        measureBody.appendChild(element);
-        current.push(block);
-        pages.push({blocks:[...current], runningHead:currentChapterTitle});
-        measureBody.innerHTML = '';
-        current = [];
-      } else {
-        pages.push({blocks:[...current], runningHead:findRunningHead(current) || currentChapterTitle});
-        measureBody.innerHTML = '';
-        current = [];
-        const element2 = buildBlockElement(block);
-        measureBody.appendChild(element2);
-        current.push(block);
-      }
-    } else {
-      current.push(block);
-    }
-  }
-
-  if(current.length){
-    pages.push({blocks:[...current], runningHead:findRunningHead(current) || currentChapterTitle});
-  }
-
-  if(!pages.length){
-    pages = [{blocks:[], runningHead:'—'}];
-  }
-  currentPage = 0;
-}
-
 function findRunningHead(pageBlocks){
   for(const b of pageBlocks){
     if(b.type === 'title1') return b.text;
@@ -629,7 +570,54 @@ function findRunningHead(pageBlocks){
   return '—';
 }
 
-let allBlocks = [];
+function fitsCurrentPage(blocks){
+  measureBody.innerHTML = '';
+  blocks.forEach(block => measureBody.appendChild(buildBlockElement(block)));
+  return measureBody.scrollHeight <= measureBody.clientHeight;
+}
+
+function paginate(blocks){
+  pages = [];
+  let current = [];
+  let currentHead = '—';
+
+  for(const block of blocks){
+    if(block.type === 'title1') currentHead = block.text;
+
+    const trial = [...current, block];
+    if(fitsCurrentPage(trial)){
+      current = trial;
+      continue;
+    }
+
+    if(current.length === 0){
+      current = trial;
+      pages.push({blocks:[...current], runningHead:currentHead});
+      current = [];
+      continue;
+    }
+
+    const last = current[current.length - 1];
+    if(last && (last.type === 'title1' || last.type === 'title2')){
+      const popped = current.pop();
+      pages.push({blocks:[...current], runningHead:findRunningHead(current) || currentHead});
+      current = [popped, block];
+      continue;
+    }
+
+    pages.push({blocks:[...current], runningHead:findRunningHead(current) || currentHead});
+    current = [block];
+  }
+
+  if(current.length){
+    pages.push({blocks:[...current], runningHead:findRunningHead(current) || currentHead});
+  }
+
+  if(!pages.length){
+    pages = [{blocks:[], runningHead:'—'}];
+  }
+  currentPage = 0;
+}
 
 function renderPage(index){
   const page = pages[index] || pages[0];
