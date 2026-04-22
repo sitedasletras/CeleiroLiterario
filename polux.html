@@ -5,537 +5,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pólux — Diagramador de Prosa</title>
   <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
-
   <style>
-    :root{
-      --bg:#f4f1ea;
-      --paper:#ffffff;
-      --ink:#1e2521;
-      --muted:#5b655f;
-      --line:#d4ddd6;
-      --green-1:#184A2E;
-      --green-2:#1F5E3B;
-      --green-3:#2A7A4D;
-      --shadow:0 10px 28px rgba(0,0,0,.10);
-      --page-width-px:470px;
-      --page-height-px:676px;
-      --margin-top-px:52px;
-      --margin-right-px:42px;
-      --margin-bottom-px:54px;
-      --margin-left-px:46px;
-    }
-
-    *{ box-sizing:border-box; }
-
-    html,body{
-      margin:0;
-      padding:0;
-      background:var(--bg);
-      color:var(--ink);
-      font-family:Georgia, "Times New Roman", serif;
-      min-height:100%;
-    }
-
-    body{ overflow-x:hidden; }
-
-    .app{
-      min-height:100vh;
-      display:grid;
-      grid-template-columns:280px minmax(340px,1fr) 280px;
-      gap:14px;
-      padding:14px;
-    }
-
-    .panel{
-      background:linear-gradient(180deg,var(--green-1),var(--green-2));
-      color:#fff;
-      border-radius:22px;
-      box-shadow:var(--shadow);
-      padding:18px 16px;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      min-height:calc(100vh - 28px);
-      position:sticky;
-      top:14px;
-      align-self:start;
-    }
-
-    .panel h2{
-      margin:0;
-      font-size:2rem;
-      line-height:1;
-    }
-
-    .card-soft{
-      background:rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:16px;
-      padding:12px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
-    .panel label,
-    .panel small,
-    .panel p{
-      margin:0;
-      color:rgba(255,255,255,.94);
-      line-height:1.35;
-    }
-
-    .status{
-      font-size:.92rem;
-      color:#eff9f0;
-      background:rgba(255,255,255,.12);
-      border-radius:14px;
-      padding:10px 12px;
-      border:1px solid rgba(255,255,255,.14);
-      min-height:48px;
-    }
-
-    .row{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .row > *{
-      flex:1 1 120px;
-    }
-
-    .input,.select,.button,.file{
-      width:100%;
-      border-radius:14px;
-      border:none;
-      font-size:1rem;
-      font-family:inherit;
-    }
-
-    .input,.select,.file{
-      background:#f6fbf7;
-      color:#132018;
-      border:1px solid #b9d3c1;
-      padding:12px;
-      outline:none;
-    }
-
-    .button{
-      background:var(--green-3);
-      color:white;
-      padding:12px 14px;
-      cursor:pointer;
-      font-weight:700;
-      transition:.12s ease;
-    }
-
-    .button:hover{
-      transform:translateY(-1px);
-      opacity:.96;
-    }
-
-    .button.secondary{ background:#2f6a49; }
-    .button.warn{ background:#8c5e1f; }
-    .button.danger{ background:#7a2c2c; }
-
-    .main{
-      min-width:0;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
-
-    .workspace-topbar,
-    .rules-box,
-    .editor-zone{
-      background:#fbfaf7;
-      border:1px solid var(--line);
-      border-radius:20px;
-      box-shadow:var(--shadow);
-      padding:14px 16px;
-    }
-
-    .workspace-topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    .meta{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px 16px;
-      align-items:center;
-      color:#314038;
-      font-size:.98rem;
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:999px;
-      background:#eef5ef;
-      border:1px solid #d4ddd5;
-      white-space:nowrap;
-    }
-
-    .rules-box{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
-    .rules-box h3{
-      margin:0;
-      color:#22312a;
-      font-size:1.02rem;
-    }
-
-    .rules-box p{
-      margin:0;
-      color:#506056;
-      line-height:1.4;
-    }
-
-    .workspace{
-      background:linear-gradient(180deg,#e8ece8,#dfe7df);
-      border-radius:24px;
-      border:1px solid #cfd8cf;
-      box-shadow:var(--shadow);
-      padding:18px 12px 24px;
-      min-height:540px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:14px;
-      overflow:auto;
-    }
-
-    .workspace-controls{
-      width:100%;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .nav-btn{
-      border:none;
-      border-radius:12px;
-      padding:10px 14px;
-      background:#2f6a49;
-      color:#fff;
-      font-weight:700;
-      cursor:pointer;
-    }
-
-    .nav-btn:disabled{
-      opacity:.45;
-      cursor:not-allowed;
-    }
-
-    .empty-state{
-      width:min(100%, 760px);
-      background:rgba(255,255,255,.78);
-      border:2px dashed #b7c3b7;
-      border-radius:22px;
-      padding:30px 22px;
-      text-align:center;
-      color:#445248;
-    }
-
-    .book-stage{
-      width:100%;
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      align-items:flex-start;
-      gap:18px;
-    }
-
-    .book-stage.single{
-      justify-content:center;
-    }
-
-    .page{
-      width:var(--page-width-px);
-      height:var(--page-height-px);
-      background:var(--paper);
-      border:1px solid #d8ddd8;
-      box-shadow:0 8px 26px rgba(0,0,0,.10);
-      border-radius:4px;
-      position:relative;
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-      flex:0 0 auto;
-    }
-
-    .page.blank-page{
-      background:linear-gradient(180deg,#fff,#fcfcfc);
-    }
-
-    .page-image-placeholder{
-      position:absolute;
-      left:var(--margin-left-px);
-      top:var(--margin-top-px);
-      width:calc(var(--page-width-px) - var(--margin-left-px) - var(--margin-right-px));
-      height:calc(var(--page-height-px) - var(--margin-top-px) - var(--margin-bottom-px));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:28px;
-      color:#68746d;
-      font-size:1rem;
-      line-height:1.5;
-      border:2px dashed #cdd6cf;
-      border-radius:18px;
-    }
-
-    .page-inner{
-      position:absolute;
-      left:var(--margin-left-px);
-      top:var(--margin-top-px);
-      width:calc(var(--page-width-px) - var(--margin-left-px) - var(--margin-right-px));
-      height:calc(var(--page-height-px) - var(--margin-top-px) - var(--margin-bottom-px));
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-    }
-
-    .chapter-header{
-      margin-bottom:16px;
-      text-align:center;
-      flex:0 0 auto;
-    }
-
-    .chapter-title{
-      margin:0;
-      font-size:1.45rem;
-      line-height:1.1;
-      font-weight:700;
-      color:#18201d;
-      cursor:text;
-    }
-
-    .chapter-subtitle{
-      margin:8px 0 0;
-      font-size:1.02rem;
-      line-height:1.2;
-      color:#5b665f;
-      font-style:italic;
-      cursor:text;
-    }
-
-    .page-content{
-      font-size:1rem;
-      line-height:1.52;
-      text-align:justify;
-      white-space:normal;
-      word-wrap:break-word;
-      overflow:hidden;
-      flex:1 1 auto;
-      position:relative;
-    }
-
-    .page-content p{
-      margin:0;
-      cursor:text;
-    }
-
-    .page-content p + p{
-      margin-top:var(--paragraph-gap, 0.20em);
-    }
-
-    .paragraph-indent .page-content p{
-      text-indent:var(--paragraph-indent, 1.25em);
-    }
-
-    .page-content p.first-para{
-      text-indent:0 !important;
-    }
-
-    .dropcap-simple .page-content p.first-para::first-letter,
-    .dropcap-classic .page-content p.first-para::first-letter,
-    .dropcap-ornamental .page-content p.first-para::first-letter{
-      float:left;
-      font-weight:700;
-      color:#1b261f;
-      line-height:.82;
-    }
-
-    .dropcap-simple .page-content p.first-para::first-letter{
-      font-size:3.2em;
-      margin-right:.10em;
-      margin-top:.03em;
-    }
-
-    .dropcap-classic .page-content p.first-para::first-letter{
-      font-size:3.9em;
-      margin-right:.08em;
-      margin-top:.01em;
-      font-family:Georgia, "Times New Roman", serif;
-    }
-
-    .dropcap-ornamental .page-content p.first-para::first-letter{
-      font-size:4em;
-      margin-right:.10em;
-      margin-top:.02em;
-      font-family:"Times New Roman", Georgia, serif;
-      border:1px solid #b7c1b9;
-      padding:.08em .16em .04em;
-      background:#f6f4ef;
-      box-shadow:inset 0 0 0 2px #ebe7db;
-    }
-
-    .ornament-slot{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:10px 0 4px;
-      color:#617066;
-      font-size:1.1rem;
-      text-align:center;
-      user-select:none;
-      margin-top:10px;
-    }
-
-    .page-number{
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:10px;
-      text-align:center;
-      font-size:.95rem;
-      color:#5a645f;
-    }
-
-    .editor-zone{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .editor-zone h3{
-      margin:0;
-      color:#22312a;
-      font-size:1.03rem;
-    }
-
-    .editor-text{
-      width:100%;
-      min-height:220px;
-      resize:vertical;
-      border-radius:16px;
-      border:1px solid #cfd8cf;
-      background:#fff;
-      padding:14px;
-      font-family:Georgia, "Times New Roman", serif;
-      font-size:1rem;
-      line-height:1.55;
-      color:#202522;
-      outline:none;
-    }
-
-    .ghost-measure{
-      position:absolute;
-      visibility:hidden;
-      left:-99999px;
-      top:-99999px;
-      background:#fff;
-      overflow:hidden;
-      pointer-events:none;
-      z-index:-1;
-    }
-
-    @media (max-width:1200px){
-      .app{
-        grid-template-columns:1fr;
-      }
-      .panel{
-        position:relative;
-        top:auto;
-        min-height:auto;
-      }
-    }
-
-    @media (max-width:760px){
-      .app{
-        padding:8px;
-        gap:8px;
-      }
-
-      .panel{
-        border-radius:18px;
-        padding:14px 12px;
-      }
-
-      .panel h2{
-        font-size:1.55rem;
-      }
-
-      .workspace,
-      .workspace-topbar,
-      .rules-box,
-      .editor-zone{
-        border-radius:18px;
-      }
-
-      .workspace{
-        padding:12px 8px 18px;
-        min-height:420px;
-      }
-
-      .page{
-        transform:scale(.92);
-        transform-origin:top center;
-      }
-    }
+    :root{--bg:#f4f1ea;--paper:#ffffff;--ink:#1f2430;--muted:#5d6675;--line:#d8ddd8;--green-1:#184A2E;--green-2:#1F5E3B;--green-3:#2A7A4D;--shadow:0 10px 28px rgba(0,0,0,.10);--page-width-px:470px;--page-height-px:676px;--margin-top-px:90px;--margin-right-px:79px;--margin-bottom-px:94px;--margin-left-px:98px;}
+    *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif} body{overflow-x:hidden}
+    .app{min-height:100vh;display:grid;grid-template-columns:250px minmax(360px,1fr) 250px;gap:14px;padding:14px}
+    .panel{background:linear-gradient(180deg,var(--green-1),var(--green-2));color:#fff;border-radius:22px;box-shadow:var(--shadow);padding:16px 14px;display:flex;flex-direction:column;gap:12px;min-height:calc(100vh - 28px);position:sticky;top:14px;align-self:start;max-height:calc(100vh - 28px);overflow:auto}
+    .panel h2{margin:0;font-size:1.7rem;line-height:1}
+    .card-soft{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px}
+    .panel label,.panel small,.panel p{margin:0;line-height:1.3}
+    .status{font-size:.92rem;color:#eef6ff;background:rgba(255,255,255,.12);border-radius:14px;padding:10px 12px;border:1px solid rgba(255,255,255,.14);min-height:48px}
+    .input,.select,.button,.file{width:100%;border-radius:12px;border:none;font-size:.98rem;font-family:inherit}
+    .input,.select,.file{background:#f8fbff;color:#132018;border:1px solid #c7d1de;padding:10px;outline:none}
+    .button{background:var(--green-3);color:#fff;padding:11px 13px;cursor:pointer;font-weight:700;transition:.12s ease}
+    .button:hover{transform:translateY(-1px);opacity:.96}.button.secondary{background:#2f6a49}.button.warn{background:#8c5e1f}.button.danger{background:#7a2c2c}
+    .row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1 1 110px}
+    .main{min-width:0;display:flex;flex-direction:column;gap:14px}
+    .topbar,.rules-box,.editor-zone{background:#fbfaf7;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:14px 16px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .meta{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;color:#314038;font-size:.96rem}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#eef5ef;border:1px solid #d4ddd5;white-space:nowrap}
+    .rules-box h3,.editor-zone h3{margin:0 0 8px 0;font-size:1rem}.rules-box p{margin:0;color:#506056;line-height:1.4}
+    .workspace{background:linear-gradient(180deg,#e8ece8,#dfe7df);border-radius:24px;border:1px solid #cfd8cf;box-shadow:var(--shadow);padding:14px;min-height:520px;display:flex;flex-direction:column;gap:12px;overflow:auto}
+    .workspace-controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+    .nav-btn{border:none;border-radius:12px;padding:10px 14px;background:#2f6a49;color:#fff;font-weight:700;cursor:pointer}.nav-btn:disabled{opacity:.45;cursor:not-allowed}
+    .empty-state{width:min(100%,760px);margin:0 auto;background:rgba(255,255,255,.78);border:2px dashed #b7c3b7;border-radius:22px;padding:30px 22px;text-align:center;color:#445248}
+    .stage-wrap{width:100%;display:flex;justify-content:center;overflow:auto;padding:6px 0 14px}
+    .book-stage{display:flex;gap:22px;align-items:flex-start;justify-content:center;transform-origin:top center}
+    .page{width:var(--page-width-px);height:var(--page-height-px);background:var(--paper);border:1px solid #d8ddd8;box-shadow:0 8px 26px rgba(0,0,0,.10);border-radius:4px;position:relative;overflow:hidden;flex:0 0 auto}
+    .page.blank-page{background:linear-gradient(180deg,#fff,#fcfcfc)}
+    .page-inner{position:absolute;left:var(--margin-left-px);top:var(--margin-top-px);width:calc(var(--page-width-px) - var(--margin-left-px) - var(--margin-right-px));height:calc(var(--page-height-px) - var(--margin-top-px) - var(--margin-bottom-px));overflow:hidden;display:flex;flex-direction:column}
+    .blank-holder{position:absolute;left:var(--margin-left-px);top:var(--margin-top-px);width:calc(var(--page-width-px) - var(--margin-left-px) - var(--margin-right-px));height:calc(var(--page-height-px) - var(--margin-top-px) - var(--margin-bottom-px));display:flex;align-items:center;justify-content:center;border:2px dashed #d7ddd9;border-radius:18px;color:#6a756d;text-align:center;padding:24px}
+    .chapter-header{margin-bottom:14px;text-align:center;flex:0 0 auto}
+    .chapter-title{margin:0;font-size:1.45rem;line-height:1.1;font-weight:700;color:#18201d}.chapter-subtitle{margin:8px 0 0;font-size:1rem;line-height:1.2;color:#5b665f;font-style:italic}
+    .page-content{font-size:1rem;line-height:1.52;text-align:justify;word-wrap:break-word;overflow:hidden;flex:1 1 auto;font-family:Georgia,'Times New Roman',serif}
+    .page-content p{margin:0}.page-content p + p{margin-top:var(--paragraph-gap,0.20em)} .paragraph-indent .page-content p{text-indent:var(--paragraph-indent,1em)} .page-content p.first-para{text-indent:0!important}
+    .dropcap-simple .page-content p.first-para::first-letter,.dropcap-classic .page-content p.first-para::first-letter,.dropcap-ornamental .page-content p.first-para::first-letter{float:left;font-weight:700;color:#1b261f;line-height:.82}
+    .dropcap-simple .page-content p.first-para::first-letter{font-size:3.2em;margin-right:.10em;margin-top:.03em}
+    .dropcap-classic .page-content p.first-para::first-letter{font-size:3.9em;margin-right:.08em;margin-top:.01em}
+    .dropcap-ornamental .page-content p.first-para::first-letter{font-size:4em;margin-right:.10em;margin-top:.02em;border:1px solid #b7c1b9;padding:.08em .16em .04em;background:#f6f4ef;box-shadow:inset 0 0 0 2px #ebe7db}
+    .ornament-slot{text-align:center;margin-top:10px;padding-top:10px;font-size:1.1rem;color:#627066;border-top:1px dashed #d9e1db}
+    .page-number{position:absolute;left:0;right:0;bottom:10px;text-align:center;font-size:.95rem;color:#5a645f}
+    .editor-text{width:100%;min-height:220px;resize:vertical;border-radius:16px;border:1px solid #cfd8cf;background:#fff;padding:14px;font-family:Georgia,'Times New Roman',serif;font-size:1rem;line-height:1.55;color:#202522;outline:none}
+    .ghost-measure{position:absolute;visibility:hidden;left:-99999px;top:-99999px;pointer-events:none;z-index:-1}
+    @media (max-width:1200px){.app{grid-template-columns:1fr}.panel{position:relative;top:auto;min-height:auto;max-height:none}}
+    @media (max-width:760px){.app{padding:8px;gap:8px}.panel{border-radius:18px;padding:14px 12px}.panel h2{font-size:1.55rem}.workspace,.topbar,.rules-box,.editor-zone{border-radius:18px}}
   </style>
 </head>
 <body>
   <div class="app">
     <aside class="panel">
       <h2>Pólux</h2>
-
       <div class="status" id="statusBox">Nenhuma obra carregada ainda.</div>
-
       <div class="card-soft">
         <label for="fileInput"><strong>Subir obra</strong></label>
         <input class="file" type="file" id="fileInput" accept=".txt,.docx" />
       </div>
-
       <div class="card-soft">
         <label for="bookTitle"><strong>Título da obra</strong></label>
-        <input class="input" id="bookTitle" type="text" placeholder="Opcional" value="" />
+        <input class="input" id="bookTitle" type="text" placeholder="Opcional" />
       </div>
-
       <div class="card-soft">
-        <label for="bookSize"><strong>Formato</strong></label>
-        <select class="select" id="bookSize">
-          <option value="16x23">16 x 23 cm</option>
-          <option value="a5">A5</option>
-          <option value="6x9">6 x 9 pol.</option>
-        </select>
+        <div class="row">
+          <div>
+            <label for="bookSize"><strong>Formato</strong></label>
+            <select class="select" id="bookSize">
+              <option value="16x23">16 x 23 cm</option>
+              <option value="a5">A5</option>
+              <option value="6x9">6 x 9 pol.</option>
+            </select>
+          </div>
+          <div>
+            <label for="chapterStartMode"><strong>Abertura</strong></label>
+            <select class="select" id="chapterStartMode">
+              <option value="flow">Continuar direto</option>
+              <option value="odd">Página ímpar</option>
+              <option value="page">Reservar 1 página</option>
+              <option value="sheet">Reservar 1 folha</option>
+            </select>
+          </div>
+        </div>
       </div>
-
-      <div class="card-soft">
-        <label for="chapterStartMode"><strong>Abertura de capítulos</strong></label>
-        <select class="select" id="chapterStartMode">
-          <option value="flow">Continuar direto</option>
-          <option value="odd">Começar em página ímpar</option>
-          <option value="page">Reservar 1 página antes</option>
-          <option value="sheet">Reservar 1 folha inteira antes</option>
-        </select>
-      </div>
-
       <div class="card-soft">
         <button class="button" id="renderBtn" type="button">Atualizar prévia</button>
         <button class="button secondary" id="lapidarBtn" type="button">Abrir Motor do Miolo</button>
@@ -544,13 +93,12 @@
     </aside>
 
     <main class="main">
-      <div class="workspace-topbar">
+      <div class="topbar">
         <div class="meta">
           <span class="pill" id="sizePill">Formato atual</span>
           <span class="pill" id="pageCountPill">Páginas: <strong>0</strong></span>
           <span class="pill" id="pageViewPill">Página 1</span>
         </div>
-
         <div class="meta">
           <select class="select" id="viewMode" style="min-width:180px;">
             <option value="single">Página única</option>
@@ -569,13 +117,13 @@
           <button class="nav-btn" id="prevPageBtn" type="button">← Página anterior</button>
           <button class="nav-btn" id="nextPageBtn" type="button">Próxima página →</button>
         </div>
-
         <div class="empty-state" id="emptyState">
           <h3 style="margin-top:0;">Área central de diagramação</h3>
-          <p style="margin-bottom:0;">O Motor de Lapidação do Miolo pode ser chamado daqui.</p>
+          <p style="margin-bottom:0;">Agora com paginação por altura real da página.</p>
         </div>
-
-        <div class="book-stage single" id="bookStage"></div>
+        <div class="stage-wrap">
+          <div class="book-stage" id="bookStage"></div>
+        </div>
       </section>
 
       <section class="editor-zone">
@@ -586,49 +134,56 @@
 
     <aside class="panel">
       <h2>Configuração</h2>
-
       <div class="card-soft">
         <label for="bodyFont"><strong>Fonte do corpo</strong></label>
         <select class="select" id="bodyFont">
           <option value="Georgia">Georgia</option>
           <option value="'Times New Roman'">Times New Roman</option>
           <option value="Garamond">Garamond</option>
+          <option value="'Libre Baskerville'">Libre Baskerville</option>
         </select>
       </div>
-
       <div class="card-soft">
-        <label for="fontSize"><strong>Fonte</strong></label>
-        <select class="select" id="fontSize">
-          <option value="0.96">Padrão</option>
-          <option value="0.90">Menor</option>
-          <option value="1.02">Maior</option>
-        </select>
-
-        <label for="lineHeight"><strong>Entrelinha</strong></label>
-        <select class="select" id="lineHeight">
-          <option value="1.52">1.52</option>
-          <option value="1.45">1.45</option>
-          <option value="1.60">1.60</option>
-        </select>
+        <div class="row">
+          <div>
+            <label for="fontSize"><strong>Fonte</strong></label>
+            <select class="select" id="fontSize">
+              <option value="0.96">Padrão</option>
+              <option value="0.90">Menor</option>
+              <option value="1.02">Maior</option>
+            </select>
+          </div>
+          <div>
+            <label for="lineHeight"><strong>Entrelinha</strong></label>
+            <select class="select" id="lineHeight">
+              <option value="1.52">1.52</option>
+              <option value="1.45">1.45</option>
+              <option value="1.60">1.60</option>
+            </select>
+          </div>
+        </div>
       </div>
-
       <div class="card-soft">
-        <label for="paragraphIndent"><strong>Recuo do parágrafo</strong></label>
-        <select class="select" id="paragraphIndent">
-          <option value="1.00">1.00</option>
-          <option value="1.25">1.25</option>
-          <option value="0.80">0.80</option>
-          <option value="0">Sem recuo</option>
-        </select>
-
-        <label for="paragraphGap"><strong>Espaço entre parágrafos</strong></label>
-        <select class="select" id="paragraphGap">
-          <option value="0.20">0.20</option>
-          <option value="0.35">0.35</option>
-          <option value="0.50">0.50</option>
-        </select>
+        <div class="row">
+          <div>
+            <label for="paragraphIndent"><strong>Recuo</strong></label>
+            <select class="select" id="paragraphIndent">
+              <option value="1.00">1.00</option>
+              <option value="1.25">1.25</option>
+              <option value="0.80">0.80</option>
+              <option value="0">Sem recuo</option>
+            </select>
+          </div>
+          <div>
+            <label for="paragraphGap"><strong>Espaço</strong></label>
+            <select class="select" id="paragraphGap">
+              <option value="0.20">0.20</option>
+              <option value="0.35">0.35</option>
+              <option value="0.50">0.50</option>
+            </select>
+          </div>
+        </div>
       </div>
-
       <div class="card-soft">
         <label for="dropcapStyle"><strong>Capitular</strong></label>
         <select class="select" id="dropcapStyle">
@@ -638,7 +193,6 @@
           <option value="ornamental">Ornamental leve</option>
         </select>
       </div>
-
       <div class="card-soft">
         <button class="button warn" id="pdfBtn" type="button">Exportar PDF</button>
         <button class="button danger" id="finalizeBtn" type="button">Finalizar + limpar</button>
@@ -650,7 +204,6 @@
 
   <script>
     const CM_TO_PX = 37.7952755906;
-
     const fileInput = document.getElementById('fileInput');
     const editorText = document.getElementById('editorText');
     const bookTitle = document.getElementById('bookTitle');
@@ -663,7 +216,6 @@
     const paragraphGap = document.getElementById('paragraphGap');
     const dropcapStyle = document.getElementById('dropcapStyle');
     const viewMode = document.getElementById('viewMode');
-
     const renderBtn = document.getElementById('renderBtn');
     const lapidarBtn = document.getElementById('lapidarBtn');
     const newBookBtn = document.getElementById('newBookBtn');
@@ -671,7 +223,6 @@
     const finalizeBtn = document.getElementById('finalizeBtn');
     const prevPageBtn = document.getElementById('prevPageBtn');
     const nextPageBtn = document.getElementById('nextPageBtn');
-
     const statusBox = document.getElementById('statusBox');
     const sizePill = document.getElementById('sizePill');
     const pageCountPill = document.getElementById('pageCountPill');
@@ -695,27 +246,23 @@
     finalizeBtn.addEventListener('click', finalizeAndClear);
     prevPageBtn.addEventListener('click', () => stepPage(-1));
     nextPageBtn.addEventListener('click', () => stepPage(1));
-
     [bookTitle, bookSize, chapterStartMode, bodyFont, fontSize, lineHeight, paragraphIndent, paragraphGap, dropcapStyle, viewMode]
       .forEach(el => el.addEventListener('change', renderPreview));
-
     editorText.addEventListener('input', autoRenderSoon);
     editorText.addEventListener('paste', autoRenderSoon);
-
+    window.addEventListener('resize', fitStageScale);
     window.addEventListener('message', receiveFromLapidador);
 
     function autoRenderSoon(){
       clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(renderPreview, 180);
+      debounceTimer = setTimeout(renderPreview, 160);
     }
 
     async function handleFileUpload(event){
       const file = event.target.files[0];
       if(!file) return;
-
       const lower = file.name.toLowerCase();
       statusBox.textContent = 'Lendo arquivo: ' + file.name;
-
       try{
         if(lower.endsWith('.txt')){
           editorText.value = await file.text();
@@ -727,10 +274,9 @@
           statusBox.textContent = 'Formato não suportado. Use TXT ou DOCX.';
           return;
         }
-
         statusBox.textContent = 'Arquivo carregado com sucesso: ' + file.name;
         renderPreview();
-      } catch (error){
+      }catch(error){
         console.error(error);
         statusBox.textContent = 'Erro ao ler arquivo.';
       }
@@ -739,7 +285,6 @@
     function openLapidador(){
       const url = 'motor_lapidacao_miolo.html';
       lapidadorWindow = window.open(url, '_blank', 'width=1500,height=950');
-
       const payload = {
         type: 'lapidar-miolo-load',
         sourceApp: 'Polux',
@@ -750,156 +295,237 @@
         paragraphGap: paragraphGap.value,
         ornament: ornamentFromMotor
       };
-
-      const sendPayload = () => {
+      setTimeout(() => {
         try{
           if(lapidadorWindow && !lapidadorWindow.closed){
             lapidadorWindow.postMessage(payload, '*');
             statusBox.textContent = 'Texto enviado ao Motor de Lapidação do Miolo.';
           }
-        } catch (error){
-          console.error(error);
-        }
-      };
-
-      setTimeout(sendPayload, 700);
+        } catch (error){ console.error(error); }
+      }, 700);
     }
 
     function receiveFromLapidador(event){
       const data = event.data;
-      if(!data || typeof data !== 'object') return;
-      if(data.type !== 'lapidar-miolo-result') return;
-
+      if(!data || typeof data !== 'object' || data.type !== 'lapidar-miolo-result') return;
       editorText.value = data.text || editorText.value;
       ornamentFromMotor = data.ornament || '';
       if(data.paragraphIndent) paragraphIndent.value = data.paragraphIndent;
       if(data.paragraphGap) paragraphGap.value = data.paragraphGap;
-
-      rulesSummary.textContent =
-        `Texto voltou do Motor do Miolo • Quebras suspeitas: ${(data.issues || []).length} • Ornamento: ${ornamentFromMotor || 'nenhum'}`;
-
+      rulesSummary.textContent = `Texto voltou do Motor do Miolo • Quebras suspeitas: ${(data.issues || []).length} • Ornamento: ${ornamentFromMotor || 'nenhum'}`;
+      rulesSummary.dataset.locked = '1';
       statusBox.textContent = 'Texto refinado recebido do Motor de Lapidação do Miolo.';
       renderPreview();
     }
 
     function normalizeText(text){
-      return String(text || '')
-        .replace(/\r\n/g, '\n')
-        .replace(/\r/g, '\n')
-        .replace(/\n{3,}/g, '\n\n')
-        .trim();
-    }
+      return String(text || '').replace(/
+/g,'
+').replace(/
+/g,'
+').replace(/
+{3,}/g,'
 
+').trim();
+    }
     function splitParagraphs(text){
-      return normalizeText(text)
-        .split(/\n\s*\n/)
-        .map(p => p.trim())
-        .filter(Boolean);
+      return normalizeText(text).split(/
+\s*
+/).map(p => p.trim()).filter(Boolean);
     }
-
     function getPageSizeCm(){
-      if(bookSize.value === '16x23') return { w:16, h:23, label:'16 × 23 cm' };
-      if(bookSize.value === 'a5') return { w:14.8, h:21, label:'A5' };
-      return { w:15.24, h:22.86, label:'6 × 9 pol.' };
+      if(bookSize.value === '16x23') return {w:16,h:23,label:'16 × 23 cm'};
+      if(bookSize.value === 'a5') return {w:14.8,h:21,label:'A5'};
+      return {w:15.24,h:22.86,label:'6 × 9 pol.'};
     }
-
     function applyMetrics(){
       const size = getPageSizeCm();
-      document.documentElement.style.setProperty('--page-width-px', `${size.w * CM_TO_PX}px`);
-      document.documentElement.style.setProperty('--page-height-px', `${size.h * CM_TO_PX}px`);
+      const widthPx = size.w * CM_TO_PX;
+      const heightPx = size.h * CM_TO_PX;
+      document.documentElement.style.setProperty('--page-width-px', `${widthPx}px`);
+      document.documentElement.style.setProperty('--page-height-px', `${heightPx}px`);
+      document.documentElement.style.setProperty('--margin-top-px', `${2.4 * CM_TO_PX}px`);
+      document.documentElement.style.setProperty('--margin-bottom-px', `${2.5 * CM_TO_PX}px`);
+      document.documentElement.style.setProperty('--margin-left-px', `${2.6 * CM_TO_PX}px`);
+      document.documentElement.style.setProperty('--margin-right-px', `${2.1 * CM_TO_PX}px`);
       sizePill.innerHTML = `<strong>${size.label}</strong>`;
-      return size;
+      return {size,widthPx,heightPx};
     }
 
-    function createPage(textBlocks, chapter, ornament){
-      return {
-        kind:'text',
-        chapterOpening: !!chapter,
-        chapterTitle: chapter ? chapter.title : '',
-        chapterSubtitle: chapter ? chapter.subtitle : '',
-        paragraphs: textBlocks,
-        ornament: ornament || ''
-      };
-    }
-
-    function parseStructure(text){
+    function detectBlocks(text){
       const paragraphs = splitParagraphs(text);
       const blocks = [];
-      let pendingChapter = null;
-
-      paragraphs.forEach((p) => {
-        if(/^cap[ií]tulo/i.test(p)){
-          pendingChapter = { title:p, subtitle:'' };
-          return;
+      for(let i=0;i<paragraphs.length;i++){
+        const p = paragraphs[i];
+        const next = paragraphs[i+1] || '';
+        if(/^cap[ií]tulo\s+/i.test(p)){
+          const chapter = {title:p, subtitle:''};
+          if(next && next.length < 90 && !/[.!?…]$/.test(next) && !/^cap[ií]tulo\s+/i.test(next)){
+            chapter.subtitle = next;
+            i++;
+          }
+          blocks.push({type:'chapter', chapter});
+        } else {
+          blocks.push({type:'paragraph', text:p});
         }
-
-        if(pendingChapter && p.length < 90 && !/[.!?…]$/.test(p)){
-          pendingChapter.subtitle = p;
-          return;
-        }
-
-        blocks.push({
-          chapter: pendingChapter,
-          text: p
-        });
-        pendingChapter = null;
-      });
-
+      }
       return blocks;
     }
 
-    function paginate(text){
-      const structure = parseStructure(text);
+    function createMeasurePage(pageNo, chapter){
+      const {widthPx,heightPx} = applyMetrics();
+      const page = document.createElement('div');
+      page.className = 'page';
+      page.style.width = widthPx + 'px';
+      page.style.height = heightPx + 'px';
+      const inner = document.createElement('div');
+      inner.className = 'page-inner';
+      const content = document.createElement('div');
+      content.className = 'page-content';
+      content.style.fontFamily = bodyFont.value;
+      content.style.fontSize = fontSize.value + 'rem';
+      content.style.lineHeight = lineHeight.value;
+      content.style.setProperty('--paragraph-indent', paragraphIndent.value + 'em');
+      content.style.setProperty('--paragraph-gap', paragraphGap.value + 'em');
+      if(Number(paragraphIndent.value) > 0) page.classList.add('paragraph-indent');
+      if(dropcapStyle.value === 'simple') page.classList.add('dropcap-simple');
+      if(dropcapStyle.value === 'classic') page.classList.add('dropcap-classic');
+      if(dropcapStyle.value === 'ornamental') page.classList.add('dropcap-ornamental');
+      if(chapter){
+        const header = document.createElement('div');
+        header.className = 'chapter-header';
+        const title = document.createElement('h1');
+        title.className = 'chapter-title';
+        title.textContent = chapter.title || '';
+        header.appendChild(title);
+        if(chapter.subtitle){
+          const subtitle = document.createElement('div');
+          subtitle.className = 'chapter-subtitle';
+          subtitle.textContent = chapter.subtitle;
+          header.appendChild(subtitle);
+        }
+        inner.appendChild(header);
+      }
+      inner.appendChild(content);
+      page.appendChild(inner);
+      return {page, inner, content};
+    }
+
+    function pushBlankPage(pages, label='Página reservada'){
+      pages.push({kind:'blank', label});
+    }
+
+    function paginateReal(text){
+      const blocks = detectBlocks(text);
       const pages = [];
-      const maxChars = 1500;
+      let current = null;
+      let pageNo = 0;
+      let measure = null;
 
-      structure.forEach((block, idx) => {
-        if(block.chapter){
+      function startPage(chapter = null, ornament=''){
+        pageNo += 1;
+        measure = createMeasurePage(pageNo, chapter);
+        measureRoot.innerHTML = '';
+        measureRoot.appendChild(measure.page);
+        current = {
+          kind:'text',
+          pageNo,
+          chapterOpening: !!chapter,
+          chapterTitle: chapter ? chapter.title : '',
+          chapterSubtitle: chapter ? chapter.subtitle : '',
+          paragraphs: [],
+          ornament
+        };
+      }
+
+      startPage();
+
+      for(let i=0;i<blocks.length;i++){
+        const block = blocks[i];
+
+        if(block.type === 'chapter'){
+          // fecha página atual se tiver conteúdo
+          if(current.paragraphs.length || current.chapterOpening){
+            pages.push(current);
+          } else {
+            pageNo -= 1;
+          }
+
           if(chapterStartMode.value === 'page'){
-            pages.push({ kind:'blank' });
+            pageNo += 1; pushBlankPage(pages);
           } else if(chapterStartMode.value === 'sheet'){
-            pages.push({ kind:'blank' });
-            pages.push({ kind:'blank' });
-          } else if(chapterStartMode.value === 'odd' && (pages.length + 1) % 2 === 0){
-            pages.push({ kind:'blank' });
+            pageNo += 1; pushBlankPage(pages);
+            pageNo += 1; pushBlankPage(pages);
+          } else if(chapterStartMode.value === 'odd'){
+            if((pages.length + 1) % 2 === 0){ pageNo += 1; pushBlankPage(pages); }
           }
+
+          startPage(block.chapter, ornamentFromMotor || '');
+          continue;
         }
 
-        const paragraphs = splitParagraphs(block.text);
-        let buffer = [];
-        let count = 0;
-        let firstPageOfChapter = true;
+        const p = document.createElement('p');
+        p.textContent = block.text;
+        if(current.chapterOpening && current.paragraphs.length === 0) p.classList.add('first-para');
+        measure.content.appendChild(p);
 
-        paragraphs.forEach((p) => {
-          if(count + p.length > maxChars && buffer.length){
-            pages.push(createPage(buffer, firstPageOfChapter ? block.chapter : null, firstPageOfChapter ? ornamentFromMotor : ''));
-            buffer = [];
-            count = 0;
-            firstPageOfChapter = false;
+        if(measure.content.scrollHeight > measure.content.clientHeight){
+          measure.content.removeChild(p);
+
+          // evita página vazia
+          if(current.paragraphs.length === 0){
+            measure.content.appendChild(p);
+            current.paragraphs.push(block.text);
+            pages.push(current);
+            startPage();
+            continue;
           }
-          buffer.push(p);
-          count += p.length;
-        });
 
-        if(buffer.length){
-          pages.push(createPage(buffer, firstPageOfChapter ? block.chapter : null, firstPageOfChapter ? ornamentFromMotor : ''));
+          // controle simples de viúva/órfã:
+          // se a próxima página ficaria só com um parágrafo pequeno, tenta puxar mais um da página anterior
+          pages.push(current);
+          startPage();
+
+          const p2 = document.createElement('p');
+          p2.textContent = block.text;
+          measure.content.appendChild(p2);
+          current.paragraphs.push(block.text);
+        } else {
+          current.paragraphs.push(block.text);
         }
-      });
+      }
 
+      if(current && (current.paragraphs.length || current.chapterOpening)){
+        pages.push(current);
+      }
+
+      // tentativa leve de reduzir páginas com 1 único parágrafo
+      for(let i=1;i<pages.length;i++){
+        const prev = pages[i-1];
+        const cur = pages[i];
+        if(prev.kind === 'text' && cur.kind === 'text' && cur.paragraphs.length === 1 && prev.paragraphs.length > 2){
+          const moved = prev.paragraphs.pop();
+          cur.paragraphs.unshift(moved);
+        }
+      }
+
+      measureRoot.innerHTML = '';
       return pages;
     }
 
     function renderOnePage(pageData, index){
+      const {widthPx,heightPx} = applyMetrics();
       const page = document.createElement('article');
       page.className = 'page';
+      page.style.width = widthPx + 'px';
+      page.style.height = heightPx + 'px';
 
       if(pageData.kind === 'blank'){
         page.classList.add('blank-page');
         const holder = document.createElement('div');
-        holder.className = 'page-image-placeholder';
-        holder.textContent = 'Página reservada';
+        holder.className = 'blank-holder';
+        holder.textContent = pageData.label || 'Página reservada';
         page.appendChild(holder);
-
         const number = document.createElement('div');
         number.className = 'page-number';
         number.textContent = 'Página ' + (index + 1);
@@ -909,27 +535,24 @@
 
       const inner = document.createElement('div');
       inner.className = 'page-inner';
-
-      if(Number(paragraphIndent.value) > 0){
-        page.classList.add('paragraph-indent');
-      }
+      if(Number(paragraphIndent.value) > 0) page.classList.add('paragraph-indent');
+      if(dropcapStyle.value === 'simple') page.classList.add('dropcap-simple');
+      if(dropcapStyle.value === 'classic') page.classList.add('dropcap-classic');
+      if(dropcapStyle.value === 'ornamental') page.classList.add('dropcap-ornamental');
 
       if(pageData.chapterOpening){
         const header = document.createElement('div');
         header.className = 'chapter-header';
-
         const title = document.createElement('h1');
         title.className = 'chapter-title';
         title.textContent = pageData.chapterTitle || '';
         header.appendChild(title);
-
         if(pageData.chapterSubtitle){
           const subtitle = document.createElement('div');
           subtitle.className = 'chapter-subtitle';
           subtitle.textContent = pageData.chapterSubtitle;
           header.appendChild(subtitle);
         }
-
         inner.appendChild(header);
       }
 
@@ -941,16 +564,10 @@
       content.style.setProperty('--paragraph-indent', paragraphIndent.value + 'em');
       content.style.setProperty('--paragraph-gap', paragraphGap.value + 'em');
 
-      if(dropcapStyle.value === 'simple') page.classList.add('dropcap-simple');
-      if(dropcapStyle.value === 'classic') page.classList.add('dropcap-classic');
-      if(dropcapStyle.value === 'ornamental') page.classList.add('dropcap-ornamental');
-
       pageData.paragraphs.forEach((para, idx) => {
         const p = document.createElement('p');
         p.textContent = para;
-        if(idx === 0 && pageData.chapterOpening){
-          p.classList.add('first-para');
-        }
+        if(pageData.chapterOpening && idx === 0) p.classList.add('first-para');
         content.appendChild(p);
       });
 
@@ -963,13 +580,28 @@
 
       inner.appendChild(content);
       page.appendChild(inner);
-
       const number = document.createElement('div');
       number.className = 'page-number';
       number.textContent = 'Página ' + (index + 1);
       page.appendChild(number);
-
       return page;
+    }
+
+    function fitStageScale(){
+      const pages = bookStage.querySelectorAll('.page');
+      if(!pages.length){
+        bookStage.style.transform = 'scale(1)';
+        return;
+      }
+      const stageWrap = document.querySelector('.stage-wrap');
+      const pageWidth = pages[0].offsetWidth || 470;
+      const gap = viewMode.value === 'spread' ? 22 : 0;
+      const targetWidth = (viewMode.value === 'spread' && pages.length > 1) ? (pageWidth * 2 + gap) : pageWidth;
+      const available = Math.max(320, stageWrap.clientWidth - 24);
+      let scale = available / targetWidth;
+      if(scale > 1.18) scale = 1.18;
+      if(scale < 0.80) scale = 0.80;
+      bookStage.style.transform = `scale(${scale})`;
     }
 
     function renderCurrentView(){
@@ -981,38 +613,33 @@
         pageViewPill.textContent = 'Página 1';
         prevPageBtn.disabled = true;
         nextPageBtn.disabled = true;
+        fitStageScale();
         return;
       }
 
       if(viewMode.value === 'single'){
-        bookStage.classList.add('single');
         currentPageIndex = Math.max(0, Math.min(currentPageIndex, renderedPages.length - 1));
         bookStage.appendChild(renderOnePage(renderedPages[currentPageIndex], currentPageIndex));
         pageViewPill.textContent = `Página ${currentPageIndex + 1} de ${renderedPages.length}`;
         prevPageBtn.disabled = currentPageIndex <= 0;
         nextPageBtn.disabled = currentPageIndex >= renderedPages.length - 1;
       } else {
-        bookStage.classList.remove('single');
         const leftIndex = Math.max(0, currentPageIndex - (currentPageIndex % 2));
         currentPageIndex = leftIndex;
         bookStage.appendChild(renderOnePage(renderedPages[leftIndex], leftIndex));
-        if(renderedPages[leftIndex + 1]){
-          bookStage.appendChild(renderOnePage(renderedPages[leftIndex + 1], leftIndex + 1));
-        }
+        if(renderedPages[leftIndex + 1]) bookStage.appendChild(renderOnePage(renderedPages[leftIndex + 1], leftIndex + 1));
         pageViewPill.textContent = `Páginas ${leftIndex + 1}${renderedPages[leftIndex + 1] ? ' e ' + (leftIndex + 2) : ''} de ${renderedPages.length}`;
         prevPageBtn.disabled = leftIndex <= 0;
         nextPageBtn.disabled = leftIndex + 2 >= renderedPages.length;
       }
 
       pageCountPill.innerHTML = `Páginas: <strong>${renderedPages.length}</strong>`;
+      requestAnimationFrame(fitStageScale);
     }
 
     function stepPage(direction){
-      if(viewMode.value === 'single'){
-        currentPageIndex += direction;
-      } else {
-        currentPageIndex += direction * 2;
-      }
+      if(viewMode.value === 'single') currentPageIndex += direction;
+      else currentPageIndex += direction * 2;
       currentPageIndex = Math.max(0, Math.min(currentPageIndex, renderedPages.length - 1));
       renderCurrentView();
     }
@@ -1020,25 +647,21 @@
     function renderPreview(){
       const text = normalizeText(editorText.value);
       applyMetrics();
-
       if(!text){
         renderedPages = [];
         currentPageIndex = 0;
         bookStage.innerHTML = '';
         emptyState.classList.remove('hidden');
         statusBox.textContent = 'Sem texto para diagramar ainda.';
-        rulesSummary.textContent = 'Sem lapidação externa ainda.';
+        if(!rulesSummary.dataset.locked) rulesSummary.textContent = 'Sem lapidação externa ainda.';
         renderCurrentView();
         return;
       }
-
-      renderedPages = paginate(text);
+      renderedPages = paginateReal(text);
       currentPageIndex = 0;
       statusBox.textContent = 'Prévia atualizada com sucesso.';
-      if(!rulesSummary.textContent || rulesSummary.textContent === 'Sem lapidação externa ainda.'){
-        rulesSummary.textContent = ornamentFromMotor
-          ? `Ornamento vindo do motor: ${ornamentFromMotor}`
-          : 'Sem lapidação externa ainda.';
+      if(!rulesSummary.dataset.locked){
+        rulesSummary.textContent = ornamentFromMotor ? `Ornamento vindo do motor: ${ornamentFromMotor}` : 'Paginação real por altura ativada.';
       }
       renderCurrentView();
     }
@@ -1074,7 +697,7 @@
       renderedPages = [];
       currentPageIndex = 0;
       ornamentFromMotor = '';
-
+      rulesSummary.dataset.locked = '';
       bookStage.innerHTML = '';
       emptyState.classList.remove('hidden');
       statusBox.textContent = 'Workspace limpo. Pronto para novo livro.';
