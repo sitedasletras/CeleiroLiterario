@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Motor de Lapidação do Miolo</title>
+
+  <style>
+    :root{
+      --bg:#f3f0ec;
+      --card:#ffffff;
+      --ink:#1f2430;
+      --muted:#5d6675;
+      --line:#d9dee7;
+      --panel:#243447;
+      --panel-2:#31465f;
+      --accent:#7a4f14;
+      --accent-2:#446b88;
+      --ok:#2f6f4e;
+      --warn:#8c5d1f;
+      --danger:#7f2f2f;
+      --shadow:0 10px 28px rgba(31,36,48,.10);
+      --radius:18px;
+    }
+
+    *{ box-sizing:border-box; }
+
+    html,body{
+      margin:0;
+      padding:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:Georgia, "Times New Roman", serif;
+      min-height:100%;
+    }
+
+    body{ overflow-x:hidden; }
+
+    .app{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:320px minmax(360px,1fr) 320px;
+      gap:14px;
+      padding:14px;
+    }
+
+    .panel{
+      background:linear-gradient(180deg,var(--panel),var(--panel-2));
+      color:#fff;
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:18px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      min-height:calc(100vh - 28px);
+      position:sticky;
+      top:14px;
+      align-self:start;
+    }
+
+    .panel h2{
+      margin:0;
+      font-size:1.85rem;
+      line-height:1;
+    }
+
+    .panel h3{
+      margin:0;
+      font-size:1rem;
+    }
+
+    .card-soft{
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .panel label,
+    .panel small,
+    .panel p{
+      margin:0;
+      color:rgba(255,255,255,.94);
+      line-height:1.35;
+    }
+
+    .status{
+      font-size:.92rem;
+      color:#eef6ff;
+      background:rgba(255,255,255,.12);
+      border-radius:14px;
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,.14);
+      min-height:48px;
+    }
+
+    .row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .row > *{
+      flex:1 1 120px;
+    }
+
+    .input,.select,.button,.file,.textarea{
+      width:100%;
+      border-radius:14px;
+      border:none;
+      font-size:1rem;
+      font-family:inherit;
+    }
+
+    .input,.select,.textarea,.file{
+      background:#f8fbff;
+      color:#132018;
+      border:1px solid #c7d1de;
+      padding:12px;
+      outline:none;
+    }
+
+    .textarea{
+      min-height:170px;
+      resize:vertical;
+      line-height:1.5;
+    }
+
+    .button{
+      background:var(--accent-2);
+      color:#fff;
+      padding:12px 14px;
+      cursor:pointer;
+      font-weight:700;
+      transition:.12s ease;
+    }
+
+    .button:hover{
+      transform:translateY(-1px);
+      opacity:.96;
+    }
+
+    .button.ok{ background:var(--ok); }
+    .button.warn{ background:var(--warn); }
+    .button.danger{ background:var(--danger); }
+
+    .main{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .box{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      padding:14px 16px;
+    }
+
+    .box h3{
+      margin:0 0 8px 0;
+      color:#243041;
+      font-size:1.04rem;
+    }
+
+    .meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px 14px;
+      align-items:center;
+      color:#314038;
+      font-size:.96rem;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#eef4f8;
+      border:1px solid #d4dde7;
+      white-space:nowrap;
+    }
+
+    .preview-wrap{
+      background:linear-gradient(180deg,#edf1f5,#e2e8ef);
+      border-radius:24px;
+      border:1px solid #d0d9e3;
+      box-shadow:var(--shadow);
+      padding:20px 16px 24px;
+      min-height:540px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .toolbar-left,
+    .toolbar-right{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .preview{
+      background:#fff;
+      border:1px solid #d8dee8;
+      border-radius:16px;
+      padding:28px 30px;
+      min-height:420px;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+      overflow:auto;
+    }
+
+    .preview.prose{
+      text-align:justify;
+    }
+
+    .preview.freeverse,
+    .preview.ode,
+    .preview.fixed{
+      text-align:left;
+      white-space:pre-wrap;
+    }
+
+    .preview p{
+      margin:0;
+      color:#202733;
+    }
+
+    .preview.prose p + p,
+    .preview.hybrid p + p{
+      margin-top:var(--paragraph-gap, .35em);
+    }
+
+    .preview.indent p{
+      text-indent:var(--paragraph-indent, 1.25em);
+    }
+
+    .preview.indent p.first-para{
+      text-indent:0;
+    }
+
+    .preview .warning{
+      margin-top:16px;
+      padding:10px 12px;
+      border-radius:12px;
+      background:#fff4dc;
+      border:1px solid #ecd59a;
+      color:#6e5521;
+      font-size:.93rem;
+      line-height:1.4;
+    }
+
+    .preview .line-flag{
+      background:linear-gradient(180deg, transparent 55%, rgba(238,211,110,.35) 55%);
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:10px;
+    }
+
+    .stat{
+      background:#f6f8fb;
+      border:1px solid #dde4ec;
+      border-radius:14px;
+      padding:12px;
+    }
+
+    .stat-label{
+      font-size:.86rem;
+      color:#687285;
+      margin-bottom:4px;
+    }
+
+    .stat-value{
+      font-size:1.05rem;
+      font-weight:700;
+      color:#1f2b38;
+    }
+
+    .ghost-measure{
+      position:absolute;
+      visibility:hidden;
+      left:-99999px;
+      top:-99999px;
+      width:700px;
+      padding:28px 30px;
+      background:#fff;
+      border:1px solid #d8dee8;
+      line-height:1.55;
+      white-space:normal;
+      text-align:justify;
+      pointer-events:none;
+      z-index:-1;
+    }
+
+    @media (max-width:1200px){
+      .app{
+        grid-template-columns:1fr;
+      }
+
+      .panel{
+        position:relative;
+        top:auto;
+        min-height:auto;
+      }
+    }
+
+    @media (max-width:760px){
+      .app{
+        padding:8px;
+        gap:8px;
+      }
+
+      .panel{
+        border-radius:18px;
+        padding:14px 12px;
+      }
+
+      .panel h2{
+        font-size:1.55rem;
+      }
+
+      .box,
+      .preview-wrap{
+        border-radius:18px;
+      }
+
+      .preview{
+        padding:18px 16px;
+      }
+
+      .stats-grid{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="panel">
+      <h2>Miolo</h2>
+
+      <div class="status" id="statusBox">Motor pronto. Cole texto ou suba arquivo para lapidação.</div>
+
+      <div class="card-soft">
+        <label for="fileInput"><strong>Subir texto</strong></label>
+        <input class="file" type="file" id="fileInput" accept=".txt,.docx" />
+        <small>TXT e DOCX. Este motor trabalha separado do Pólux.</small>
+      </div>
+
+      <div class="card-soft">
+        <label for="compositionMode"><strong>Modo de composição</strong></label>
+        <select class="select" id="compositionMode">
+          <option value="prose">Prosa</option>
+          <option value="freeverse">Verso livre</option>
+          <option value="ode">Ode</option>
+          <option value="fixed">Forma fixa</option>
+          <option value="hybrid">Híbrido</option>
+        </select>
+      </div>
+
+      <div class="card-soft">
+        <label for="hyphenationMode"><strong>Hifenização</strong></label>
+        <select class="select" id="hyphenationMode">
+          <option value="off">Desligada</option>
+          <option value="light">Automática leve</option>
+          <option value="medium">Automática moderada</option>
+        </select>
+        <small>Odes e versos livres podem usar hifenização. Formas fixas exigem mais cuidado.</small>
+      </div>
+
+      <div class="card-soft">
+        <label for="widowOrphanMode"><strong>Viúva e órfã</strong></label>
+        <select class="select" id="widowOrphanMode">
+          <option value="off">Apenas observar</option>
+          <option value="warn">Sinalizar</option>
+          <option value="tight">Ajuste leve</option>
+        </select>
+      </div>
+
+      <div class="card-soft">
+        <div class="row">
+          <div>
+            <label for="paragraphIndent"><strong>Recuo</strong></label>
+            <select class="select" id="paragraphIndent">
+              <option value="1.25">1.25</option>
+              <option value="1.00">1.00</option>
+              <option value="0.80">0.80</option>
+              <option value="0">Sem recuo</option>
+            </select>
+          </div>
+          <div>
+            <label for="paragraphGap"><strong>Espaço</strong></label>
+            <select class="select" id="paragraphGap">
+              <option value="0.35">0.35</option>
+              <option value="0.20">0.20</option>
+              <option value="0.50">0.50</option>
+              <option value="0.05">0.05</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-soft">
+        <button class="button" id="processBtn" type="button">Lapidar texto</button>
+        <button class="button ok" id="copyBtn" type="button">Copiar resultado</button>
+        <button class="button warn" id="downloadBtn" type="button">Baixar TXT lapidado</button>
+        <button class="button danger" id="clearBtn" type="button">Limpar</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="box">
+        <div class="meta">
+          <span class="pill">Motor de Lapidação do Miolo</span>
+          <span class="pill" id="modePill">Modo: prosa</span>
+          <span class="pill" id="hyphenPill">Hifenização: desligada</span>
+        </div>
+      </section>
+
+      <section class="box">
+        <h3>Texto-base</h3>
+        <textarea id="sourceText" class="textarea" placeholder="Cole aqui o texto-base que será refinado pelo motor."></textarea>
+      </section>
+
+      <section class="preview-wrap">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <strong>Prévia lapidada</strong>
+          </div>
+          <div class="toolbar-right">
+            <span class="pill" id="issuesPill">Sem análise ainda</span>
+          </div>
+        </div>
+
+        <div id="preview" class="preview prose"></div>
+      </section>
+    </main>
+
+    <aside class="panel">
+      <h2>Análise</h2>
+
+      <div class="card-soft">
+        <h3>Função do motor</h3>
+        <p>Este motor cuida de hifenização, parágrafo, observação de viúva/órfã e polimento do miolo para Pólux, Castor, Centauro e Qui(RON)xadá.</p>
+      </div>
+
+      <div class="card-soft">
+        <h3>Leitura por forma</h3>
+        <p><strong>Prosa:</strong> hifenização ampla.</p>
+        <p><strong>Verso livre:</strong> hifenização opcional.</p>
+        <p><strong>Ode:</strong> hifenização permitida.</p>
+        <p><strong>Forma fixa:</strong> hifenização restrita.</p>
+      </div>
+
+      <div class="card-soft">
+        <h3>Resumo técnico</h3>
+        <div class="stats-grid">
+          <div class="stat">
+            <div class="stat-label">Parágrafos</div>
+            <div class="stat-value" id="statParagraphs">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Palavras</div>
+            <div class="stat-value" id="statWords">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Palavras hifenizadas</div>
+            <div class="stat-value" id="statHyphenated">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Alertas</div>
+            <div class="stat-value" id="statWarnings">0</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div id="measureRoot" class="ghost-measure"></div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const sourceText = document.getElementById('sourceText');
+    const compositionMode = document.getElementById('compositionMode');
+    const hyphenationMode = document.getElementById('hyphenationMode');
+    const widowOrphanMode = document.getElementById('widowOrphanMode');
+    const paragraphIndent = document.getElementById('paragraphIndent');
+    const paragraphGap = document.getElementById('paragraphGap');
+    const processBtn = document.getElementById('processBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const clearBtn = document.getElementById('clearBtn');
+
+    const preview = document.getElementById('preview');
+    const statusBox = document.getElementById('statusBox');
+    const modePill = document.getElementById('modePill');
+    const hyphenPill = document.getElementById('hyphenPill');
+    const issuesPill = document.getElementById('issuesPill');
+
+    const statParagraphs = document.getElementById('statParagraphs');
+    const statWords = document.getElementById('statWords');
+    const statHyphenated = document.getElementById('statHyphenated');
+    const statWarnings = document.getElementById('statWarnings');
+
+    const measureRoot = document.getElementById('measureRoot');
+
+    let processedText = '';
+    let processedHtml = '';
+
+    fileInput.addEventListener('change', handleFileUpload);
+    processBtn.addEventListener('click', processText);
+    copyBtn.addEventListener('click', copyProcessedText);
+    downloadBtn.addEventListener('click', downloadProcessedText);
+    clearBtn.addEventListener('click', clearAll);
+
+    [compositionMode, hyphenationMode, widowOrphanMode, paragraphIndent, paragraphGap]
+      .forEach(el => el.addEventListener('change', processText));
+
+    async function handleFileUpload(event){
+      const file = event.target.files[0];
+      if(!file) return;
+
+      const lower = file.name.toLowerCase();
+      statusBox.textContent = 'Lendo arquivo: ' + file.name;
+
+      try{
+        if(lower.endsWith('.txt')){
+          sourceText.value = await file.text();
+        } else if(lower.endsWith('.docx')){
+          const arrayBuffer = await file.arrayBuffer();
+          const result = await mammoth.extractRawText({ arrayBuffer });
+          sourceText.value = result.value || '';
+        } else {
+          statusBox.textContent = 'Formato não suportado. Use TXT ou DOCX.';
+          return;
+        }
+
+        statusBox.textContent = 'Arquivo carregado com sucesso: ' + file.name;
+        processText();
+      } catch (error){
+        console.error(error);
+        statusBox.textContent = 'Erro ao ler arquivo.';
+      }
+    }
+
+    function normalizeText(text){
+      return String(text || '')
+        .replace(/\r\n/g, '\n')
+        .replace(/\r/g, '\n')
+        .replace(/\t/g, '    ')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+    }
+
+    function splitParagraphs(text){
+      return normalizeText(text)
+        .split(/\n\s*\n/)
+        .map(p => p.trim())
+        .filter(Boolean);
+    }
+
+    function shouldUseHyphenationByMode(){
+      const mode = compositionMode.value;
+      const hyph = hyphenationMode.value;
+
+      if(hyph === 'off') return false;
+      if(mode === 'prose') return true;
+      if(mode === 'hybrid') return true;
+      if(mode === 'ode') return true;
+      if(mode === 'freeverse') return true;
+      if(mode === 'fixed') return false;
+
+      return false;
+    }
+
+    function hyphenateWordPT(word, level){
+      const clean = word;
+      if(clean.length < 7) return clean;
+      if(/^\d+$/.test(clean)) return clean;
+      if(/[A-ZÁÉÍÓÚÂÊÔÃÕÇ]{3,}/.test(clean) && !/[a-záéíóúâêôãõç]/.test(clean)) return clean;
+
+      const vowels = 'aeiouáéíóúâêôãõàüAEIOUÁÉÍÓÚÂÊÔÃÕÀÜ';
+      const points = [];
+
+      for(let i = 2; i < clean.length - 2; i++){
+        const a = clean[i - 1];
+        const b = clean[i];
+        const prev = clean[i - 2];
+        const next = clean[i + 1];
+
+        const aV = vowels.includes(a);
+        const bV = vowels.includes(b);
+        const prevV = vowels.includes(prev);
+        const nextV = vowels.includes(next);
+
+        if(aV && !bV && nextV){
+          points.push(i);
+        } else if(!aV && bV && !nextV && i < clean.length - 3){
+          points.push(i + 1);
+        } else if(prevV && !aV && !bV && nextV){
+          points.push(i);
+        }
+      }
+
+      const unique = [...new Set(points)].filter(p => p > 2 && p < clean.length - 2);
+      if(!unique.length) return clean;
+
+      let chosen = [];
+      if(level === 'light'){
+        chosen = unique.filter((_, idx) => idx % 2 === 0);
+      } else {
+        chosen = unique;
+      }
+
+      let out = '';
+      for(let i = 0; i < clean.length; i++){
+        out += clean[i];
+        if(chosen.includes(i + 1)){
+          out += '\u00AD';
+        }
+      }
+      return out;
+    }
+
+    function hyphenateText(text, level){
+      let count = 0;
+      const result = text.replace(/[A-Za-zÀ-ÿ-]{7,}/g, (word) => {
+        const hyphenated = hyphenateWordPT(word, level);
+        if(hyphenated !== word) count += 1;
+        return hyphenated;
+      });
+      return { text: result, count };
+    }
+
+    function renderPreviewHtml(paragraphs, warnings){
+      const mode = compositionMode.value;
+      preview.className = 'preview';
+      preview.classList.add(mode);
+
+      if(mode === 'prose' || mode === 'hybrid'){
+        if(Number(paragraphIndent.value) > 0){
+          preview.classList.add('indent');
+        }
+      }
+
+      preview.style.setProperty('--paragraph-indent', paragraphIndent.value + 'em');
+      preview.style.setProperty('--paragraph-gap', paragraphGap.value + 'em');
+
+      let html = '';
+
+      if(mode === 'prose' || mode === 'hybrid'){
+        html = paragraphs.map((p, idx) => {
+          const cls = idx === 0 ? ' class="first-para"' : '';
+          return `<p${cls}>${escapeHtml(p).replace(/\u00AD/g, '&shy;')}</p>`;
+        }).join('');
+      } else {
+        html = `<div>${escapeHtml(paragraphs.join('\n\n')).replace(/\n/g,'<br>').replace(/\u00AD/g, '&shy;')}</div>`;
+      }
+
+      if(warnings.length){
+        html += `<div class="warning">${warnings.join('<br>')}</div>`;
+      }
+
+      preview.innerHTML = html;
+      processedHtml = html;
+    }
+
+    function escapeHtml(text){
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function detectWidowOrphanWarnings(paragraphs){
+      const mode = widowOrphanMode.value;
+      if(mode === 'off') return [];
+
+      measureRoot.innerHTML = '';
+      measureRoot.style.fontFamily = getComputedStyle(preview).fontFamily || 'Georgia, serif';
+      measureRoot.style.fontSize = '1rem';
+      measureRoot.style.lineHeight = '1.55';
+      measureRoot.style.textAlign = compositionMode.value === 'prose' || compositionMode.value === 'hybrid' ? 'justify' : 'left';
+      measureRoot.style.whiteSpace = compositionMode.value === 'prose' || compositionMode.value === 'hybrid' ? 'normal' : 'pre-wrap';
+
+      const warnings = [];
+
+      paragraphs.forEach((p, idx) => {
+        const para = document.createElement('p');
+        para.style.margin = '0 0 10px 0';
+        para.style.width = '640px';
+        para.innerHTML = escapeHtml(p).replace(/\u00AD/g, '&shy;');
+        measureRoot.appendChild(para);
+
+        const lines = Math.round(para.getBoundingClientRect().height / 24);
+        const words = p.split(/\s+/).filter(Boolean);
+
+        if(lines <= 1 && words.length > 8){
+          warnings.push(`Parágrafo ${idx + 1}: bloco comprimido demais para análise.`);
+        }
+
+        if(words.length >= 10){
+          const lastWords = words.slice(-1).join(' ');
+          if(lastWords.length <= 3){
+            warnings.push(`Parágrafo ${idx + 1}: possível fechamento fraco na última linha.`);
+          }
+        }
+
+        if(mode === 'tight' && words.length > 22 && lines >= 5){
+          warnings.push(`Parágrafo ${idx + 1}: revisar quebra por viúva/órfã no diagramador.`);
+        }
+      });
+
+      return warnings;
+    }
+
+    function processText(){
+      const raw = normalizeText(sourceText.value);
+      const mode = compositionMode.value;
+      const hyph = hyphenationMode.value;
+
+      modePill.textContent = 'Modo: ' + readableMode(mode);
+      hyphenPill.textContent = 'Hifenização: ' + readableHyphen(hyph);
+
+      if(!raw){
+        processedText = '';
+        processedHtml = '';
+        preview.innerHTML = '';
+        issuesPill.textContent = 'Sem análise ainda';
+        statParagraphs.textContent = '0';
+        statWords.textContent = '0';
+        statHyphenated.textContent = '0';
+        statWarnings.textContent = '0';
+        statusBox.textContent = 'Cole texto ou suba arquivo para lapidação.';
+        return;
+      }
+
+      let paragraphs = splitParagraphs(raw);
+      let hyphenatedCount = 0;
+
+      if(shouldUseHyphenationByMode()){
+        const level = hyph === 'medium' ? 'medium' : 'light';
+        const resultParagraphs = [];
+
+        paragraphs.forEach((p) => {
+          const res = hyphenateText(p, level);
+          resultParagraphs.push(res.text);
+          hyphenatedCount += res.count;
+        });
+
+        paragraphs = resultParagraphs;
+      }
+
+      const warnings = detectWidowOrphanWarnings(paragraphs);
+
+      processedText = paragraphs.join('\n\n');
+      renderPreviewHtml(paragraphs, warnings);
+
+      const wordCount = raw.split(/\s+/).filter(Boolean).length;
+      statParagraphs.textContent = String(paragraphs.length);
+      statWords.textContent = String(wordCount);
+      statHyphenated.textContent = String(hyphenatedCount);
+      statWarnings.textContent = String(warnings.length);
+
+      issuesPill.textContent = warnings.length
+        ? `${warnings.length} alerta(s)`
+        : 'Sem alertas relevantes';
+
+      statusBox.textContent = 'Texto lapidado com sucesso.';
+    }
+
+    function readableMode(mode){
+      const map = {
+        prose:'prosa',
+        freeverse:'verso livre',
+        ode:'ode',
+        fixed:'forma fixa',
+        hybrid:'híbrido'
+      };
+      return map[mode] || mode;
+    }
+
+    function readableHyphen(mode){
+      const map = {
+        off:'desligada',
+        light:'leve',
+        medium:'moderada'
+      };
+      return map[mode] || mode;
+    }
+
+    async function copyProcessedText(){
+      if(!processedText){
+        statusBox.textContent = 'Nada para copiar ainda.';
+        return;
+      }
+
+      try{
+        await navigator.clipboard.writeText(processedText.replace(/\u00AD/g, ''));
+        statusBox.textContent = 'Resultado copiado com sucesso.';
+      } catch (error){
+        console.error(error);
+        statusBox.textContent = 'Não foi possível copiar.';
+      }
+    }
+
+    function downloadProcessedText(){
+      if(!processedText){
+        statusBox.textContent = 'Nada para baixar ainda.';
+        return;
+      }
+
+      const blob = new Blob([processedText.replace(/\u00AD/g, '')], { type:'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'texto_lapidado_miolo.txt';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      statusBox.textContent = 'TXT lapidado baixado.';
+    }
+
+    function clearAll(){
+      sourceText.value = '';
+      processedText = '';
+      processedHtml = '';
+      preview.innerHTML = '';
+      issuesPill.textContent = 'Sem análise ainda';
+      statParagraphs.textContent = '0';
+      statWords.textContent = '0';
+      statHyphenated.textContent = '0';
+      statWarnings.textContent = '0';
+      statusBox.textContent = 'Motor limpo. Pronto para novo texto.';
+
+      const oldInput = document.getElementById('fileInput');
+      const newInput = oldInput.cloneNode(true);
+      oldInput.parentNode.replaceChild(newInput, oldInput);
+      newInput.addEventListener('change', handleFileUpload);
+    }
+
+    processText();
+  </script>
+</body>
+</html>
