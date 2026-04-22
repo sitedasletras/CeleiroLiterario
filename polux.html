@@ -6,12 +6,13 @@
 <title>Pólux — Diagramador de Prosa</title>
 <style>
 :root{
-  --bg:#f4efe3;
-  --ink:#1f2340;
-  --line:#d8dee6;
+  --bg:#f5f0e5;
+  --ink:#202547;
+  --line:#d7dde3;
   --green:#2f7d57;
-  --green-soft:#75a988;
-  --green-panel:#eef6f0;
+  --green-strong:#2f7d57;
+  --green-soft:#5f9b78;
+  --green-panel:#dfeee3;
   --gold:#c6932a;
   --red:#b94a4a;
 
@@ -22,12 +23,12 @@
   --page-padding-bottom:18mm;
   --page-padding-left:16mm;
 
-  --body-font:"Georgia", serif;
   --body-size:12pt;
   --title1-size:16pt;
   --title2-size:12pt;
-  --line-height:1.32;
+  --line-height:1.30;
   --indent:1cm;
+  --dialogue-indent:0.85cm;
   --safe-bottom:12mm;
 }
 *{box-sizing:border-box}
@@ -35,10 +36,10 @@ body{
   margin:0;
   font-family:Georgia, serif;
   background:var(--bg);
-  color:#232323;
+  color:#222;
 }
 .app{
-  max-width:1600px;
+  max-width:1650px;
   margin:0 auto;
   padding:20px 18px 28px;
 }
@@ -68,12 +69,12 @@ h1{
   cursor:pointer;
   font-family:inherit;
 }
-.btn.green{background:var(--green); color:white;}
+.btn.green{background:var(--green-strong); color:#fff;}
 .btn.gold{background:var(--gold); color:#2e2208;}
-.btn.red{background:var(--red); color:white;}
+.btn.red{background:var(--red); color:#fff;}
 
 .entry{
-  background:white;
+  background:#fff;
   border:1px solid var(--line);
   border-radius:16px;
   padding:16px;
@@ -86,7 +87,7 @@ h1{
 }
 textarea{
   width:100%;
-  min-height:170px;
+  min-height:180px;
   resize:vertical;
   border:1px solid #c9d1db;
   border-radius:10px;
@@ -108,19 +109,19 @@ textarea{
 
 .workspace{
   display:grid;
-  grid-template-columns:280px 1fr 300px;
+  grid-template-columns:300px minmax(420px, 1fr) 310px;
   gap:14px;
   align-items:start;
 }
 .panel{
-  background:white;
+  background:#fff;
   border:1px solid var(--line);
   border-radius:16px;
   padding:16px;
 }
 .panel.green-panel{
   background:var(--green-panel);
-  border-color:#cfe3d6;
+  border-color:#bdd7c5;
 }
 .panel h3{
   margin:0 0 12px;
@@ -132,7 +133,7 @@ textarea{
   display:block;
   font-weight:700;
   margin-bottom:6px;
-  color:#354052;
+  color:#31404f;
 }
 select,input[type="number"]{
   width:100%;
@@ -140,16 +141,27 @@ select,input[type="number"]{
   border-radius:10px;
   border:1px solid #cbd4de;
   font-family:inherit;
-  background:white;
+  background:#fff;
+}
+.checkline{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-weight:700;
+  color:#31404f;
+}
+.checkline input{
+  width:auto;
+  transform:scale(1.15);
 }
 .small-note{
   font-size:12px;
-  color:#445160;
+  color:#425162;
   line-height:1.45;
 }
 
 .preview-shell{
-  background:white;
+  background:#fff;
   border:1px solid var(--line);
   border-radius:16px;
   padding:16px;
@@ -199,7 +211,7 @@ select,input[type="number"]{
   width:min(calc(var(--page-width) + 2px), 100%);
   aspect-ratio:148 / 210;
   margin:0 auto;
-  background:white;
+  background:#fff;
   border:1px solid #cfd6dd;
   border-radius:12px;
   position:relative;
@@ -222,7 +234,6 @@ select,input[type="number"]{
 .page-body{
   height:calc(100% - 10mm - var(--safe-bottom));
   overflow:hidden;
-  font-family:var(--body-font);
   font-size:var(--body-size);
   line-height:var(--line-height);
   text-align:left;
@@ -234,7 +245,6 @@ select,input[type="number"]{
   margin:0 0 .44em 0;
   color:#222;
   overflow-wrap:anywhere;
-  word-break:normal;
 }
 .block.title1{
   text-align:center;
@@ -253,38 +263,30 @@ select,input[type="number"]{
 }
 .block.body{
   text-indent:var(--indent);
-}
-.block.body.long{
-  text-align:justify;
-}
-.block.body.short{
   text-align:left;
 }
 .block.dialogue{
   text-align:left;
-  text-indent:0;
-  padding-left:0;
-  margin-left:0;
+  text-indent:calc(var(--dialogue-indent) * -1);
+  padding-left:var(--dialogue-indent);
+  margin-left:var(--dialogue-indent);
+  max-width:calc(100% - var(--dialogue-indent));
 }
-.block.dialogue + .block.body,
-.block.dialogue + .block.dialogue{
+.block.dialogue + .block.body{
   margin-top:.08em;
 }
-.block.after-drop{
-  text-indent:0 !important;
-}
+
 .dropcap-wrap{
   text-indent:0 !important;
-  display:block;
   overflow:hidden;
-  min-height:2.35em;
+  min-height:2.2em;
 }
 .dropcap{
   float:left;
-  font-size:3.0em;
-  line-height:.78;
+  font-size:2.55em;
+  line-height:.88;
   font-weight:700;
-  margin:.01em .01em 0 0;
+  margin:0 .06em 0 0;
   padding:0;
 }
 .page-number{
@@ -304,7 +306,7 @@ select,input[type="number"]{
   width:var(--page-width);
   height:var(--page-height);
   overflow:hidden;
-  background:white;
+  background:#fff;
 }
 .measure-inner{
   position:absolute;
@@ -314,7 +316,6 @@ select,input[type="number"]{
 .measure-body{
   height:calc(100% - 10mm - var(--safe-bottom));
   overflow:hidden;
-  font-family:var(--body-font);
   font-size:var(--body-size);
   line-height:var(--line-height);
   text-align:left;
@@ -330,7 +331,7 @@ select,input[type="number"]{
     <h1>Pólux — Diagramador de Prosa</h1>
     <div class="top-actions">
       <button class="btn gold" type="button">Retornar</button>
-      <button class="btn red" type="button">Sair</button>
+      <button class="btn red" type="button">Sair do sistema</button>
     </div>
   </div>
 
@@ -351,8 +352,12 @@ A Primeira Manhã
 
 A manhã revelou o que a noite havia escondido.
 Havia mais gente do que ele imaginava.
+Homens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa, um senhor que dobrava papelão com método quase profissional.
 — Primeira vez? — perguntou.
-Ele não respondeu.</textarea>
+Ele não respondeu.
+Ela observou a mochila.
+— A gente percebe.
+Rovonilson apertou as alças nos ombros.</textarea>
     <div class="entry-actions">
       <button id="updateBtn" class="btn green" type="button">Atualizar prévia</button>
       <span class="file-note">Cole o texto e clique em atualizar prévia.</span>
@@ -398,10 +403,17 @@ Ele não respondeu.</textarea>
       <div class="field">
         <label for="lineHeight">Entrelinha</label>
         <select id="lineHeight">
-          <option value="1.24">Compacta</option>
-          <option value="1.32" selected>Confortável</option>
-          <option value="1.42">Ampla</option>
+          <option value="1.22">Compacta</option>
+          <option value="1.30" selected>Confortável</option>
+          <option value="1.38">Ampla</option>
         </select>
+      </div>
+
+      <div class="field">
+        <label class="checkline">
+          <input id="dropcapToggle" type="checkbox" checked />
+          Ativar letra capitular
+        </label>
       </div>
     </aside>
 
@@ -441,11 +453,11 @@ Ele não respondeu.</textarea>
       </div>
       <div class="field">
         <label>Letra capitular</label>
-        <div class="small-note">A letra capitular entra no primeiro parágrafo de corpo de cada capítulo.</div>
+        <div class="small-note">Agora ela pode ser ligada e desligada. Também só entra quando o primeiro parágrafo do capítulo for comprido o bastante para não abrir buracão.</div>
       </div>
       <div class="field">
         <label>Observação</label>
-        <div class="small-note">Diálogos ficam alinhados à esquerda e não saem da largura útil da diagramação.</div>
+        <div class="small-note">Diálogos usam recuo pendente dentro da largura útil da página, sem sair da diagramação.</div>
       </div>
     </aside>
   </div>
@@ -473,18 +485,18 @@ const bodySize = document.getElementById('bodySize');
 const title1Size = document.getElementById('title1Size');
 const title2Size = document.getElementById('title2Size');
 const lineHeight = document.getElementById('lineHeight');
+const dropcapToggle = document.getElementById('dropcapToggle');
 
 let pages = [];
 let currentPage = 0;
 let allBlocks = [];
 
 function normalizeText(text){
-  return text.replace(/\r/g,'').replace(/\t/g,' ').replace(/[ ]/g,' ');
+  return text.replace(/\r/g,'').replace(/\t/g,' ').replace(/[ ]/g,' ').replace(/\n{3,}/g, '\n\n');
 }
 
 function isTitle1(line){
   const clean = line.trim();
-  if(!clean) return false;
   return /^(cap[íi]tulo|capitulo|parte|livro|ato|seção|secao|cena)\s+[\wivxlcdm0-9\-]+/i.test(clean);
 }
 
@@ -495,12 +507,17 @@ function isDialogue(line){
 function looksLikeStandaloneTitle(line){
   const clean = line.trim();
   if(!clean) return false;
-  if(isTitle1(clean)) return false;
-  if(isDialogue(clean)) return false;
+  if(isTitle1(clean) || isDialogue(clean)) return false;
   if(clean.length > 80) return false;
-  if(/[.!?…]$/.test(clean)) return false;
+  if(/[.!?…:]$/.test(clean)) return false;
   const words = clean.split(/\s+/).length;
   return words <= 8;
+}
+
+function paragraphLongEnoughForDropcap(text){
+  const clean = text.trim();
+  const words = clean.split(/\s+/).length;
+  return clean.length >= 70 && words >= 10;
 }
 
 function parseBlocks(raw){
@@ -512,7 +529,10 @@ function parseBlocks(raw){
 
   for(let i=0;i<lines.length;i++){
     const line = lines[i].trim();
-    if(!line) continue;
+    if(!line){
+      waitingSubtitle = false;
+      continue;
+    }
 
     if(isTitle1(line)){
       chapter += 1;
@@ -549,13 +569,10 @@ function parseBlocks(raw){
       firstBodyPerChapter.set(block.chapter, block);
     }
   }
-  for(const block of firstBodyPerChapter.values()){
-    block.dropcap = true;
-  }
 
-  for(let i=0;i<blocks.length;i++){
-    if(blocks[i].type === 'body' && i > 0 && blocks[i-1].dropcap){
-      blocks[i].afterDrop = true;
+  for(const block of firstBodyPerChapter.values()){
+    if(dropcapToggle.checked && paragraphLongEnoughForDropcap(block.text)){
+      block.dropcap = true;
     }
   }
 
@@ -580,13 +597,6 @@ function escapeHtml(str){
 function buildBlockElement(block){
   const div = document.createElement('div');
   div.className = 'block ' + block.type;
-
-  if(block.type === 'body'){
-    const words = block.text.trim().split(/\s+/).length;
-    const chars = block.text.trim().length;
-    div.classList.add((words >= 10 || chars >= 65) ? 'long' : 'short');
-    if(block.afterDrop) div.classList.add('after-drop');
-  }
 
   if(block.dropcap && block.type === 'body'){
     div.classList.add('dropcap-wrap');
@@ -692,7 +702,7 @@ nextBtn.addEventListener('click', ()=>{
   }
 });
 
-[indentSelect, bodySize, title1Size, title2Size, lineHeight].forEach(el=>{
+[indentSelect, bodySize, title1Size, title2Size, lineHeight, dropcapToggle].forEach(el=>{
   el.addEventListener('change', rebuild);
 });
 
