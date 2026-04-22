@@ -25,28 +25,16 @@ font-family:Georgia, serif;
 }
 
 .app{
-max-width:1600px;
+max-width:1500px;
 margin:auto;
 padding:20px;
-}
-
-button{
-padding:10px 16px;
-border-radius:10px;
-border:none;
-cursor:pointer;
-font-weight:bold;
-}
-
-.green{
-background:#2f7d57;
-color:white;
 }
 
 .workspace{
 display:grid;
 grid-template-columns:280px 1fr 280px;
-gap:12px;
+gap:14px;
+align-items:start;
 }
 
 .panel{
@@ -72,20 +60,22 @@ position:relative;
 }
 
 .page-content{
-height:calc(100% - 30mm);
+height:calc(100% - 24mm);
 line-height:var(--line-height);
 font-size:var(--body-size);
 text-align:justify;
+overflow:hidden;
 }
 
 .block{
-margin-bottom:8pt;
+margin-bottom:6pt;
 }
 
 .block.title1{
 font-size:var(--title-size);
 text-align:center;
-margin-top:8mm;
+margin-top:10mm;
+margin-bottom:4mm;
 }
 
 .block.title2{
@@ -109,6 +99,22 @@ margin-bottom:-.08em;
 font-weight:bold;
 }
 
+button{
+padding:10px 16px;
+border-radius:10px;
+border:none;
+cursor:pointer;
+font-weight:bold;
+background:#2f7d57;
+color:white;
+}
+
+textarea{
+width:100%;
+height:140px;
+margin-bottom:10px;
+}
+
 </style>
 </head>
 
@@ -118,27 +124,17 @@ font-weight:bold;
 
 <h1>Pólux — Diagramador de Prosa</h1>
 
-<div>
+<textarea id="sourceText"></textarea>
 
-<textarea id="sourceText" style="width:100%;height:140px;"></textarea>
+<button onclick="processSource()">Atualizar prévia</button>
 
 <br><br>
-
-<button class="green" onclick="processSource()">Atualizar prévia</button>
-
-</div>
-
-<br>
 
 <div class="workspace">
 
 <div class="panel">
 
-<label>Formato</label>
-
-<select onchange="updatePreview()">
-<option>A5</option>
-</select>
+Formato A5 ativo
 
 </div>
 
@@ -154,7 +150,7 @@ font-weight:bold;
 
 <div class="panel">
 
-Letra capitular automática por capítulo
+Letra capitular automática por capítulo ativa
 
 </div>
 
@@ -166,12 +162,6 @@ Letra capitular automática por capítulo
 
 let blocks=[]
 
-function splitParagraphIntoSentences(paragraph){
-
-return paragraph.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [paragraph]
-
-}
-
 function isChapter(line){
 
 return /^cap[ií]tulo/i.test(line)
@@ -182,11 +172,13 @@ function processSource(){
 
 const text=document.getElementById("sourceText").value.trim()
 
+if(!text) return
+
 blocks=[]
 
 const lines=text.split("\n")
 
-let newChapter=true
+let firstParagraphOfChapter=true
 
 lines.forEach(line=>{
 
@@ -198,29 +190,29 @@ if(isChapter(line)){
 
 blocks.push({type:"title1",text:line})
 
-newChapter=true
+firstParagraphOfChapter=true
 
 return
 
 }
 
-if(newChapter){
+if(firstParagraphOfChapter){
 
 blocks.push({type:"title2",text:line})
 
-newChapter=false
+firstParagraphOfChapter=false
 
 return
 
 }
 
-splitParagraphIntoSentences(line).forEach(sentence=>{
-
-blocks.push({type:"body",text:sentence,dropcap:newChapter})
-
-newChapter=false
-
+blocks.push({
+type:"body",
+text:line,
+dropcap:firstParagraphOfChapter
 })
+
+firstParagraphOfChapter=false
 
 })
 
@@ -232,15 +224,15 @@ render()
 
 function applyDropcaps(){
 
-let firstParagraph=true
+let firstFound=false
 
 blocks.forEach(block=>{
 
-if(block.type==="body" && firstParagraph){
+if(block.type==="body" && !firstFound){
 
 block.dropcap=true
 
-firstParagraph=false
+firstFound=true
 
 }else{
 
@@ -284,14 +276,7 @@ container.appendChild(div)
 
 }
 
-function updatePreview(){
-
-render()
-
-}
-
 </script>
 
 </body>
-
 </html>
