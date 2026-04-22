@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui(RON)xadá — Diagramador de Cordel</title>
+
+<style>
+
+body{
+font-family: Georgia, serif;
+background:#f3eee6;
+margin:0;
+padding:0;
+color:#2a2a2a;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:30px;
+background:#efe6d7;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.logo-box{
+width:60px;
+height:60px;
+background:#a76322;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+border-radius:14px;
+}
+
+.header-buttons{
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.btn{
+border:none;
+padding:14px 18px;
+border-radius:12px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.limpar{background:#f1e4cd;}
+.preview{background:#a76322;color:white;}
+.retornar{background:#b6901b;}
+.sair{background:#a33434;color:white;}
+
+.info-bar{
+display:flex;
+gap:20px;
+padding:20px 30px;
+}
+
+.tag{
+background:white;
+padding:12px 18px;
+border-radius:18px;
+font-weight:bold;
+}
+
+.editor{
+padding:30px;
+}
+
+textarea{
+width:100%;
+height:220px;
+border-radius:12px;
+padding:15px;
+border:none;
+font-family:Georgia;
+font-size:16px;
+}
+
+.preview-area{
+display:flex;
+justify-content:center;
+margin-top:40px;
+}
+
+.page{
+width:320px;
+height:480px;
+background:white;
+padding:40px;
+box-shadow:0 0 15px rgba(0,0,0,0.15);
+}
+
+.page h1{
+text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+
+<div class="logo-box">Q</div>
+
+<div>
+
+<h2>Qui(RON)xadá — Diagramador de Cordel</h2>
+
+<p>
+Módulo do Celeiro Literário / Lapidar para miolo de cordel
+com formatos próprios, tipografia básica e prévia folheável.
+</p>
+
+</div>
+
+</div>
+
+<div class="header-buttons">
+
+<button class="btn limpar">Limpar obra</button>
+
+<button class="btn preview" onclick="gerar()">Atualizar prévia</button>
+
+<button class="btn retornar">Retornar</button>
+
+<button class="btn sair">Sair do sistema</button>
+
+</div>
+
+</header>
+
+
+<section class="info-bar">
+
+<div class="tag">Formato: 11 x 16 cm</div>
+
+<div class="tag">Fonte: Georgia 12 pt</div>
+
+<div class="tag" id="paginas">Páginas: 1</div>
+
+</section>
+
+
+<section class="editor">
+
+<h3>Texto-base do cordel</h3>
+
+<textarea id="entrada">
+
+O Romance do Qui(RON)xadá
+Organização do Celeiro Literário
+
+Na estrada do meu sertão
+Vai cantando a voz primeira
+Feita de barro e de sol
+Feita de rima certeira
+Qui(RON)xadá nasce agora
+Pra honrar a arte faceira
+
+Seis versos por cada estrofe
+Com respiro entre as sextilhas
+Sem esmagar o poema
+Nem matar suas trilhas
+Cordel nasce bem cuidado
+Respeitando suas trilhas
+
+</textarea>
+
+
+<div class="preview-area">
+
+<div class="page" id="saida">
+
+<h1>Prévia aparecerá aqui</h1>
+
+</div>
+
+</div>
+
+</section>
+
+
+<script>
+
+function gerar(){
+
+let texto = document.getElementById("entrada").value
+
+let linhas = texto.split("\n")
+
+let html=""
+
+linhas.forEach(linha=>{
+
+if(linha.trim()==""){
+
+html+="<br>"
+
+}
+
+else if(linha.length<35){
+
+html+="<h3>"+linha+"</h3>"
+
+}
+
+else{
+
+html+="<p>"+linha+"</p>"
+
+}
+
+})
+
+document.getElementById("saida").innerHTML=html
+
+}
+
+</script>
+
+
+</body>
+</html>
