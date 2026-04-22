@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pólux — Diagramador de Prosa</title>
   <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
+
   <style>
     :root{
       --bg:#f4f1ea;
@@ -17,13 +18,13 @@
       --green-3:#2A7A4D;
       --shadow:0 10px 28px rgba(0,0,0,.10);
 
-      --page-width-px: 470px;
-      --page-height-px: 676px;
+      --page-width-px:470px;
+      --page-height-px:676px;
 
-      --margin-top-px: 52px;
-      --margin-right-px: 42px;
-      --margin-bottom-px: 54px;
-      --margin-left-px: 46px;
+      --margin-top-px:52px;
+      --margin-right-px:42px;
+      --margin-bottom-px:54px;
+      --margin-left-px:46px;
     }
 
     *{ box-sizing:border-box; }
@@ -42,7 +43,7 @@
     .app{
       min-height:100vh;
       display:grid;
-      grid-template-columns:300px minmax(360px, 1fr) 300px;
+      grid-template-columns:280px minmax(340px,1fr) 280px;
       gap:14px;
       padding:14px;
     }
@@ -60,6 +61,25 @@
       position:sticky;
       top:14px;
       align-self:start;
+      transition:all .18s ease;
+    }
+
+    .panel.collapsed{
+      width:74px;
+      min-width:74px;
+      padding:16px 10px;
+      overflow:hidden;
+    }
+
+    .panel.collapsed .panel-inner{
+      display:none;
+    }
+
+    .panel-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
     }
 
     .panel h2{
@@ -68,9 +88,30 @@
       line-height:1;
     }
 
-    .panel h3{
-      margin:0;
-      font-size:1rem;
+    .panel-toggle{
+      border:none;
+      background:rgba(255,255,255,.16);
+      color:#fff;
+      border-radius:10px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    .collapsed .panel-top{
+      justify-content:center;
+    }
+
+    .collapsed .panel-title-short{
+      display:block;
+      writing-mode:vertical-rl;
+      transform:rotate(180deg);
+      font-weight:700;
+      letter-spacing:.08em;
+    }
+
+    .panel-title-short{
+      display:none;
     }
 
     .card-soft{
@@ -144,6 +185,10 @@
     .button.secondary{ background:#2f6a49; }
     .button.warn{ background:#8c5e1f; }
     .button.danger{ background:#7a2c2c; }
+    .button.ghost{
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.15);
+    }
 
     .main{
       min-width:0;
@@ -213,13 +258,37 @@
       border-radius:24px;
       border:1px solid #cfd8cf;
       box-shadow:var(--shadow);
-      padding:22px 16px 28px;
+      padding:18px 12px 24px;
       min-height:540px;
       display:flex;
       flex-direction:column;
       align-items:center;
-      gap:18px;
+      gap:14px;
       overflow:auto;
+    }
+
+    .workspace-controls{
+      width:100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .nav-btn{
+      border:none;
+      border-radius:12px;
+      padding:10px 14px;
+      background:#2f6a49;
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .nav-btn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
     }
 
     .empty-state{
@@ -239,6 +308,10 @@
       justify-content:center;
       align-items:flex-start;
       gap:18px;
+    }
+
+    .book-stage.single{
+      justify-content:center;
     }
 
     .page{
@@ -292,6 +365,7 @@
       margin-bottom:16px;
       text-align:center;
       flex:0 0 auto;
+      position:relative;
     }
 
     .chapter-title{
@@ -320,6 +394,7 @@
       word-wrap:break-word;
       overflow:hidden;
       flex:1 1 auto;
+      position:relative;
     }
 
     .page-content p{
@@ -372,6 +447,26 @@
       box-shadow:inset 0 0 0 2px #ebe7db;
     }
 
+    .ornament-slot{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 0 4px;
+      color:#617066;
+      font-size:1.1rem;
+      text-align:center;
+      cursor:pointer;
+      user-select:none;
+    }
+
+    .ornament-slot.empty{
+      color:#b7bfb9;
+      font-size:.92rem;
+      border-top:1px dashed #d9e1db;
+      margin-top:10px;
+      padding-top:12px;
+    }
+
     .page-number{
       position:absolute;
       left:0;
@@ -409,7 +504,31 @@
       outline:none;
     }
 
-    .hidden{ display:none !important; }
+    .inline-editor{
+      width:100%;
+      border:1px solid #c7d2ca;
+      border-radius:10px;
+      padding:8px 10px;
+      font-family:inherit;
+      font-size:inherit;
+      line-height:inherit;
+      color:inherit;
+      background:#fffefb;
+      outline:none;
+    }
+
+    .inline-editor.title-editor{
+      font-size:1.35rem;
+      text-align:center;
+      font-weight:700;
+    }
+
+    .inline-editor.subtitle-editor{
+      font-size:1rem;
+      text-align:center;
+      font-style:italic;
+      color:#5b665f;
+    }
 
     .ghost-measure{
       position:absolute;
@@ -427,7 +546,8 @@
       .panel,
       .workspace-topbar,
       .rules-box,
-      .editor-zone{
+      .editor-zone,
+      .workspace-controls{
         display:none !important;
       }
       .app{
@@ -460,7 +580,34 @@
       }
     }
 
-    @media (max-width:1180px){
+    @media (max-width:1360px){
+      .app{
+        grid-template-columns:74px minmax(320px,1fr) 74px;
+      }
+      .panel{
+        width:74px;
+        min-width:74px;
+        padding:16px 10px;
+      }
+      .panel .panel-inner{
+        display:none;
+      }
+      .panel-title-short{
+        display:block;
+        writing-mode:vertical-rl;
+        transform:rotate(180deg);
+        font-weight:700;
+        letter-spacing:.08em;
+      }
+      .panel-top{
+        justify-content:center;
+      }
+      .panel-toggle{
+        display:none;
+      }
+    }
+
+    @media (max-width:980px){
       .app{
         grid-template-columns:1fr;
       }
@@ -468,6 +615,18 @@
         position:relative;
         top:auto;
         min-height:auto;
+        width:auto;
+        min-width:0;
+        padding:14px 12px;
+      }
+      .panel .panel-inner{
+        display:block;
+      }
+      .panel-title-short{
+        display:none;
+      }
+      .panel-toggle{
+        display:inline-block;
       }
       .left-panel{ order:1; }
       .main{ order:2; }
@@ -481,7 +640,6 @@
       }
       .panel{
         border-radius:18px;
-        padding:14px 12px;
       }
       .panel h2{
         font-size:1.55rem;
@@ -505,109 +663,126 @@
 </head>
 <body>
   <div class="app">
-    <aside class="panel left-panel">
-      <h2>Estrutura</h2>
-
-      <div class="status" id="statusBox">Nenhuma obra carregada ainda.</div>
-
-      <div class="card-soft">
-        <label for="fileInput"><strong>Subir obra</strong></label>
-        <input class="file" type="file" id="fileInput" accept=".txt,.docx" />
-        <small>TXT e DOCX.</small>
+    <aside class="panel left-panel" id="leftPanel">
+      <div class="panel-top">
+        <h2>Pólux</h2>
+        <span class="panel-title-short">Estrutura</span>
+        <button class="panel-toggle" type="button" onclick="togglePanel('left')">◀</button>
       </div>
 
-      <div class="card-soft">
-        <label for="bookTitle"><strong>Título da obra</strong></label>
-        <input class="input" id="bookTitle" type="text" placeholder="Opcional" value="" />
-      </div>
+      <div class="panel-inner">
+        <div class="status" id="statusBox">Nenhuma obra carregada ainda.</div>
 
-      <div class="card-soft">
-        <label for="bookSize"><strong>Formato</strong></label>
-        <select class="select" id="bookSize">
-          <option value="16x23">16 x 23 cm</option>
-          <option value="a5">A5</option>
-          <option value="6x9">6 x 9 pol.</option>
-          <option value="custom">Personalizado</option>
-        </select>
+        <div class="card-soft">
+          <label for="fileInput"><strong>Subir obra</strong></label>
+          <input class="file" type="file" id="fileInput" accept=".txt,.docx" />
+          <small>TXT e DOCX.</small>
+        </div>
 
-        <div class="row" id="customSizeRow" style="display:none;">
-          <div>
-            <label for="customWidth">Largura</label>
-            <input class="input" id="customWidth" type="number" step="0.1" value="16" />
-          </div>
-          <div>
-            <label for="customHeight">Altura</label>
-            <input class="input" id="customHeight" type="number" step="0.1" value="23" />
+        <div class="card-soft">
+          <label for="bookTitle"><strong>Título da obra</strong></label>
+          <input class="input" id="bookTitle" type="text" placeholder="Opcional" value="" />
+        </div>
+
+        <div class="card-soft">
+          <label for="bookSize"><strong>Formato</strong></label>
+          <select class="select" id="bookSize">
+            <option value="16x23">16 x 23 cm</option>
+            <option value="a5">A5</option>
+            <option value="6x9">6 x 9 pol.</option>
+            <option value="custom">Personalizado</option>
+          </select>
+
+          <div class="row" id="customSizeRow" style="display:none;">
+            <div>
+              <label for="customWidth">Largura</label>
+              <input class="input" id="customWidth" type="number" step="0.1" value="16" />
+            </div>
+            <div>
+              <label for="customHeight">Altura</label>
+              <input class="input" id="customHeight" type="number" step="0.1" value="23" />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="card-soft">
-        <label><strong>Margens (cm)</strong></label>
-        <div class="row">
-          <div>
-            <label for="marginTop">Sup.</label>
-            <input class="input" id="marginTop" type="number" step="0.1" value="2.5" />
+        <div class="card-soft">
+          <label for="marginMode"><strong>Tipo de margem</strong></label>
+          <select class="select" id="marginMode">
+            <option value="mirror">Espelho</option>
+            <option value="equal">Igual</option>
+            <option value="custom">Personalizada</option>
+          </select>
+
+          <label><strong>Margens (cm)</strong></label>
+          <div class="row">
+            <div>
+              <label for="marginTop">Sup.</label>
+              <input class="input" id="marginTop" type="number" step="0.1" value="2.5" />
+            </div>
+            <div>
+              <label for="marginBottom">Inf.</label>
+              <input class="input" id="marginBottom" type="number" step="0.1" value="2.5" />
+            </div>
           </div>
-          <div>
-            <label for="marginBottom">Inf.</label>
-            <input class="input" id="marginBottom" type="number" step="0.1" value="2.5" />
+          <div class="row">
+            <div>
+              <label for="marginInside">Int.</label>
+              <input class="input" id="marginInside" type="number" step="0.1" value="3.0" />
+            </div>
+            <div>
+              <label for="marginOutside">Ext.</label>
+              <input class="input" id="marginOutside" type="number" step="0.1" value="2.0" />
+            </div>
           </div>
         </div>
-        <div class="row">
-          <div>
-            <label for="marginInside">Int.</label>
-            <input class="input" id="marginInside" type="number" step="0.1" value="3.0" />
-          </div>
-          <div>
-            <label for="marginOutside">Ext.</label>
-            <input class="input" id="marginOutside" type="number" step="0.1" value="2.0" />
-          </div>
+
+        <div class="card-soft">
+          <label for="chapterPatternRule"><strong>Capítulo + subtítulo</strong></label>
+          <select class="select" id="chapterPatternRule">
+            <option value="ask">Perguntar quando detectar</option>
+            <option value="split">Separar automaticamente</option>
+            <option value="keep">Manter tudo em uma linha</option>
+          </select>
         </div>
-      </div>
 
-      <div class="card-soft">
-        <label for="chapterPatternRule"><strong>Capítulo + subtítulo</strong></label>
-        <select class="select" id="chapterPatternRule">
-          <option value="ask">Perguntar quando detectar</option>
-          <option value="split">Separar automaticamente</option>
-          <option value="keep">Manter tudo em uma linha</option>
-        </select>
-      </div>
+        <div class="card-soft">
+          <label for="chapterStartMode"><strong>Abertura de capítulos</strong></label>
+          <select class="select" id="chapterStartMode">
+            <option value="flow">Continuar direto</option>
+            <option value="odd">Começar em página ímpar</option>
+            <option value="page">Reservar 1 página antes</option>
+            <option value="sheet">Reservar 1 folha inteira antes</option>
+          </select>
+        </div>
 
-      <div class="card-soft">
-        <label for="chapterStartMode"><strong>Abertura de capítulos</strong></label>
-        <select class="select" id="chapterStartMode">
-          <option value="flow">Continuar direto</option>
-          <option value="odd">Começar em página ímpar</option>
-          <option value="page">Reservar 1 página antes</option>
-          <option value="sheet">Reservar 1 folha inteira antes</option>
-        </select>
-      </div>
+        <div class="card-soft">
+          <label for="blankPageLabel"><strong>Reserva</strong></label>
+          <select class="select" id="blankPageLabel">
+            <option value="blank">Página em branco</option>
+            <option value="placeholder">Página reservada para imagem futura</option>
+          </select>
+        </div>
 
-      <div class="card-soft">
-        <label for="blankPageLabel"><strong>Reserva</strong></label>
-        <select class="select" id="blankPageLabel">
-          <option value="blank">Página em branco</option>
-          <option value="placeholder">Página reservada para imagem futura</option>
-        </select>
-      </div>
-
-      <div class="card-soft">
-        <button class="button" id="renderBtn" type="button">Atualizar prévia</button>
-        <button class="button secondary" id="newBookBtn" type="button">Novo livro</button>
+        <div class="card-soft">
+          <button class="button" id="renderBtn" type="button">Atualizar prévia</button>
+          <button class="button secondary" id="newBookBtn" type="button">Novo livro</button>
+        </div>
       </div>
     </aside>
 
     <main class="main">
       <div class="workspace-topbar">
         <div class="meta">
-          <span class="pill"><strong>Pólux</strong> diagramador de prosa</span>
-          <span class="pill" id="sizePill">Base: <strong>16 × 23 cm</strong></span>
+          <span class="pill" id="sizePill">Formato atual</span>
           <span class="pill" id="pageCountPill">Páginas: <strong>0</strong></span>
+          <span class="pill" id="pageViewPill">Página 1</span>
         </div>
+
         <div class="meta">
-          <span class="pill">Área útil calculada automaticamente</span>
+          <select class="select" id="viewMode" style="min-width:180px;">
+            <option value="single">Página única</option>
+            <option value="spread">Livro aberto</option>
+          </select>
         </div>
       </div>
 
@@ -617,11 +792,18 @@
       </section>
 
       <section class="workspace" id="workspace">
+        <div class="workspace-controls">
+          <button class="nav-btn" id="prevPageBtn" type="button">← Página anterior</button>
+          <button class="nav-btn" id="nextPageBtn" type="button">Próxima página →</button>
+          <button class="nav-btn" id="insertOrnamentBtn" type="button">Inserir ornamento nesta página</button>
+        </div>
+
         <div class="empty-state" id="emptyState">
           <h3 style="margin-top:0;">Área central de diagramação</h3>
-          <p style="margin-bottom:0;">Agora a paginação é calculada pela área útil da página.</p>
+          <p style="margin-bottom:0;">Visualização em página única ou livro aberto, com navegação.</p>
         </div>
-        <div class="book-stage" id="bookStage"></div>
+
+        <div class="book-stage single" id="bookStage"></div>
       </section>
 
       <section class="editor-zone">
@@ -630,74 +812,80 @@
       </section>
     </main>
 
-    <aside class="panel right-panel">
-      <h2>Configuração</h2>
-
-      <div class="card-soft">
-        <label for="bodyFont"><strong>Fonte do corpo</strong></label>
-        <select class="select" id="bodyFont">
-          <option value="Georgia">Georgia</option>
-          <option value="'Times New Roman'">Times New Roman</option>
-          <option value="Garamond">Garamond</option>
-          <option value="'Libre Baskerville'">Libre Baskerville</option>
-        </select>
+    <aside class="panel right-panel" id="rightPanel">
+      <div class="panel-top">
+        <h2>Config</h2>
+        <span class="panel-title-short">Configuração</span>
+        <button class="panel-toggle" type="button" onclick="togglePanel('right')">▶</button>
       </div>
 
-      <div class="card-soft">
-        <label for="fontSize"><strong>Fonte</strong></label>
-        <select class="select" id="fontSize">
-          <option value="0.96">Padrão</option>
-          <option value="0.90">Menor</option>
-          <option value="1.02">Maior</option>
-          <option value="1.08">Mais aberta</option>
-        </select>
+      <div class="panel-inner">
+        <div class="card-soft">
+          <label for="bodyFont"><strong>Fonte do corpo</strong></label>
+          <select class="select" id="bodyFont">
+            <option value="Georgia">Georgia</option>
+            <option value="'Times New Roman'">Times New Roman</option>
+            <option value="Garamond">Garamond</option>
+            <option value="'Libre Baskerville'">Libre Baskerville</option>
+          </select>
+        </div>
 
-        <label for="lineHeight"><strong>Entrelinha</strong></label>
-        <select class="select" id="lineHeight">
-          <option value="1.52">1.52</option>
-          <option value="1.45">1.45</option>
-          <option value="1.60">1.60</option>
-          <option value="1.70">1.70</option>
-        </select>
-      </div>
+        <div class="card-soft">
+          <label for="fontSize"><strong>Fonte</strong></label>
+          <select class="select" id="fontSize">
+            <option value="0.96">Padrão</option>
+            <option value="0.90">Menor</option>
+            <option value="1.02">Maior</option>
+            <option value="1.08">Mais aberta</option>
+          </select>
 
-      <div class="card-soft">
-        <label for="paragraphIndent"><strong>Recuo do parágrafo</strong></label>
-        <select class="select" id="paragraphIndent">
-          <option value="0.80">Suave</option>
-          <option value="1.00">1.00</option>
-          <option value="1.25">1.25</option>
-          <option value="0">Sem recuo</option>
-        </select>
+          <label for="lineHeight"><strong>Entrelinha</strong></label>
+          <select class="select" id="lineHeight">
+            <option value="1.52">1.52</option>
+            <option value="1.45">1.45</option>
+            <option value="1.60">1.60</option>
+            <option value="1.70">1.70</option>
+          </select>
+        </div>
 
-        <label for="paragraphGap"><strong>Espaço entre parágrafos</strong></label>
-        <select class="select" id="paragraphGap">
-          <option value="0.20">0.20</option>
-          <option value="0.35">0.35</option>
-          <option value="0.50">0.50</option>
-          <option value="0.05">0.05</option>
-        </select>
-      </div>
+        <div class="card-soft">
+          <label for="paragraphIndent"><strong>Recuo do parágrafo</strong></label>
+          <select class="select" id="paragraphIndent">
+            <option value="0.80">Suave</option>
+            <option value="1.00">1.00</option>
+            <option value="1.25">1.25</option>
+            <option value="0">Sem recuo</option>
+          </select>
 
-      <div class="card-soft">
-        <label for="dropcapStyle"><strong>Capitular</strong></label>
-        <select class="select" id="dropcapStyle">
-          <option value="none">Sem capitular</option>
-          <option value="simple">Simples</option>
-          <option value="classic">Clássica</option>
-          <option value="ornamental">Ornamental leve</option>
-        </select>
+          <label for="paragraphGap"><strong>Espaço entre parágrafos</strong></label>
+          <select class="select" id="paragraphGap">
+            <option value="0.20">0.20</option>
+            <option value="0.35">0.35</option>
+            <option value="0.50">0.50</option>
+            <option value="0.05">0.05</option>
+          </select>
+        </div>
 
-        <label for="dropcapApply"><strong>Aplicar capitular</strong></label>
-        <select class="select" id="dropcapApply">
-          <option value="all">Em todos os capítulos</option>
-          <option value="first">Somente no primeiro capítulo</option>
-        </select>
-      </div>
+        <div class="card-soft">
+          <label for="dropcapStyle"><strong>Capitular</strong></label>
+          <select class="select" id="dropcapStyle">
+            <option value="none">Sem capitular</option>
+            <option value="simple">Simples</option>
+            <option value="classic">Clássica</option>
+            <option value="ornamental">Ornamental leve</option>
+          </select>
 
-      <div class="card-soft">
-        <button class="button warn" id="pdfBtn" type="button">Exportar PDF</button>
-        <button class="button danger" id="finalizeBtn" type="button">Finalizar + limpar</button>
+          <label for="dropcapApply"><strong>Aplicar capitular</strong></label>
+          <select class="select" id="dropcapApply">
+            <option value="all">Em todos os capítulos</option>
+            <option value="first">Somente no primeiro capítulo</option>
+          </select>
+        </div>
+
+        <div class="card-soft">
+          <button class="button warn" id="pdfBtn" type="button">Exportar PDF</button>
+          <button class="button danger" id="finalizeBtn" type="button">Finalizar + limpar</button>
+        </div>
       </div>
     </aside>
   </div>
@@ -714,6 +902,7 @@
     const customWidth = document.getElementById('customWidth');
     const customHeight = document.getElementById('customHeight');
     const customSizeRow = document.getElementById('customSizeRow');
+    const marginMode = document.getElementById('marginMode');
     const marginTop = document.getElementById('marginTop');
     const marginBottom = document.getElementById('marginBottom');
     const marginInside = document.getElementById('marginInside');
@@ -728,15 +917,20 @@
     const paragraphGap = document.getElementById('paragraphGap');
     const dropcapStyle = document.getElementById('dropcapStyle');
     const dropcapApply = document.getElementById('dropcapApply');
+    const viewMode = document.getElementById('viewMode');
 
     const renderBtn = document.getElementById('renderBtn');
     const newBookBtn = document.getElementById('newBookBtn');
     const pdfBtn = document.getElementById('pdfBtn');
     const finalizeBtn = document.getElementById('finalizeBtn');
+    const prevPageBtn = document.getElementById('prevPageBtn');
+    const nextPageBtn = document.getElementById('nextPageBtn');
+    const insertOrnamentBtn = document.getElementById('insertOrnamentBtn');
 
     const statusBox = document.getElementById('statusBox');
     const sizePill = document.getElementById('sizePill');
     const pageCountPill = document.getElementById('pageCountPill');
+    const pageViewPill = document.getElementById('pageViewPill');
     const rulesSummary = document.getElementById('rulesSummary');
     const bookStage = document.getElementById('bookStage');
     const emptyState = document.getElementById('emptyState');
@@ -744,23 +938,37 @@
 
     let debounceTimer = null;
     let bookRules = { chapterSplitDecision: null };
+    let renderedPages = [];
+    let currentPageIndex = 0;
 
     fileInput.addEventListener('change', handleFileUpload);
     renderBtn.addEventListener('click', renderPreview);
     newBookBtn.addEventListener('click', resetWorkspace);
     pdfBtn.addEventListener('click', exportPDF);
     finalizeBtn.addEventListener('click', finalizeAndClear);
+    prevPageBtn.addEventListener('click', () => stepPage(-1));
+    nextPageBtn.addEventListener('click', () => stepPage(1));
+    insertOrnamentBtn.addEventListener('click', insertOrnamentOnCurrentPage);
 
-    [bookTitle, bookSize, customWidth, customHeight, marginTop, marginBottom, marginInside, marginOutside,
+    [bookTitle, bookSize, customWidth, customHeight, marginMode, marginTop, marginBottom, marginInside, marginOutside,
      chapterPatternRule, chapterStartMode, blankPageLabel, bodyFont, fontSize, lineHeight,
-     paragraphIndent, paragraphGap, dropcapStyle, dropcapApply]
+     paragraphIndent, paragraphGap, dropcapStyle, dropcapApply, viewMode]
       .forEach(el => el.addEventListener('change', handleSettingsChange));
 
     editorText.addEventListener('input', autoRenderSoon);
     editorText.addEventListener('paste', autoRenderSoon);
 
+    function togglePanel(side){
+      const panel = side === 'left' ? document.getElementById('leftPanel') : document.getElementById('rightPanel');
+      panel.classList.toggle('collapsed');
+    }
+
     function handleSettingsChange(){
       customSizeRow.style.display = bookSize.value === 'custom' ? 'flex' : 'none';
+
+      if(marginMode.value === 'equal'){
+        marginOutside.value = marginInside.value;
+      }
       renderPreview();
     }
 
@@ -922,28 +1130,51 @@
       };
     }
 
-    function applyPageMetrics(){
-      const size = getPageSizeCm();
+    function getMarginsCm(pageNumber){
+      const top = Number(marginTop.value) || 2.5;
+      const bottom = Number(marginBottom.value) || 2.5;
+      const inside = Number(marginInside.value) || 3.0;
+      const outside = Number(marginOutside.value) || 2.0;
 
+      if(marginMode.value === 'equal'){
+        return { top, bottom, left: inside, right: inside };
+      }
+
+      if(marginMode.value === 'custom'){
+        return { top, bottom, left: inside, right: outside };
+      }
+
+      // espelho
+      const isOdd = pageNumber % 2 === 1;
+      return {
+        top,
+        bottom,
+        left: isOdd ? inside : outside,
+        right: isOdd ? outside : inside
+      };
+    }
+
+    function applyPageMetricsExample(){
+      const size = getPageSizeCm();
       const widthPx = size.w * CM_TO_PX;
       const heightPx = size.h * CM_TO_PX;
-
       document.documentElement.style.setProperty('--page-width-px', `${widthPx}px`);
       document.documentElement.style.setProperty('--page-height-px', `${heightPx}px`);
-      document.documentElement.style.setProperty('--margin-top-px', `${(Number(marginTop.value)||2.5)*CM_TO_PX}px`);
-      document.documentElement.style.setProperty('--margin-bottom-px', `${(Number(marginBottom.value)||2.5)*CM_TO_PX}px`);
-      document.documentElement.style.setProperty('--margin-left-px', `${(Number(marginInside.value)||3.0)*CM_TO_PX}px`);
-      document.documentElement.style.setProperty('--margin-right-px', `${(Number(marginOutside.value)||2.0)*CM_TO_PX}px`);
-
-      sizePill.innerHTML = `Base: <strong>${size.label}</strong>`;
+      sizePill.innerHTML = `<strong>${size.label}</strong>`;
       return size;
     }
 
-    function createMeasurementPage(pageData, widthPx, heightPx){
+    function createMeasurementPage(pageData, widthPx, heightPx, pageNumber){
       const page = document.createElement('div');
       page.className = 'page';
       page.style.width = widthPx + 'px';
       page.style.height = heightPx + 'px';
+
+      const margins = getMarginsCm(pageNumber);
+      page.style.setProperty('--margin-top-px', `${margins.top * CM_TO_PX}px`);
+      page.style.setProperty('--margin-bottom-px', `${margins.bottom * CM_TO_PX}px`);
+      page.style.setProperty('--margin-left-px', `${margins.left * CM_TO_PX}px`);
+      page.style.setProperty('--margin-right-px', `${margins.right * CM_TO_PX}px`);
 
       const inner = document.createElement('div');
       inner.className = 'page-inner';
@@ -1001,6 +1232,13 @@
         content.appendChild(p);
       });
 
+      if(pageData.ornament){
+        const orn = document.createElement('div');
+        orn.className = 'ornament-slot';
+        orn.textContent = pageData.ornament;
+        content.appendChild(orn);
+      }
+
       inner.appendChild(content);
       page.appendChild(inner);
       return { page, inner, content };
@@ -1018,12 +1256,12 @@
         pages.push({ kind: blankPageLabel.value === 'placeholder' ? 'placeholder' : 'blank' });
       }
 
-      function currentPageNumber(){
+      function nextPageNumber(){
         return pages.length + 1;
       }
 
       function ensureNextChapterOnOdd(){
-        const next = currentPageNumber();
+        const next = nextPageNumber();
         if(next % 2 === 0){
           pages.push({ kind:'blank' });
         }
@@ -1038,8 +1276,8 @@
           if(chapterStartMode.value === 'page'){
             addBlankPage();
           } else if(chapterStartMode.value === 'sheet'){
-            // manter o capítulo sempre começando em ímpar após uma folha inteira
-            const next = currentPageNumber();
+            // sempre deixa 2 páginas reservadas e próximo capítulo começando em ímpar
+            const next = nextPageNumber();
             if(next % 2 === 1){
               addBlankPage();
               addBlankPage();
@@ -1058,10 +1296,11 @@
             chapterTitle:block.title || '',
             chapterSubtitle:block.subtitle || '',
             paragraphs:[],
-            chapterIndex
+            chapterIndex,
+            ornament:''
           };
 
-          const { page, content } = createMeasurementPage(pageData, widthPx, heightPx);
+          const { page, content } = createMeasurementPage(pageData, widthPx, heightPx, nextPageNumber());
           measureRoot.innerHTML = '';
           measureRoot.appendChild(page);
 
@@ -1070,6 +1309,7 @@
 
           if(nextBodyBlock){
             const paras = splitParagraphs(nextBodyBlock.text || '');
+
             for(let p = 0; p < paras.length; p++){
               const testP = document.createElement('p');
               testP.textContent = paras[p];
@@ -1078,14 +1318,6 @@
 
               if(content.scrollHeight > content.clientHeight){
                 content.removeChild(testP);
-
-                // controle básico de viúva/órfã
-                const existing = Array.from(content.querySelectorAll('p'));
-                if(existing.length === 1){
-                  pageData.paragraphs.push(paras[p]);
-                  existing[0].remove();
-                  content.innerHTML = '';
-                }
                 break;
               } else {
                 pageData.paragraphs.push(paras[p]);
@@ -1093,7 +1325,12 @@
               }
             }
 
-            if(consumedParagraphs > 0){
+            // controle simples de viúva/órfã
+            if(pageData.paragraphs.length === 1 && paras.length - consumedParagraphs > 0){
+              const moved = pageData.paragraphs.pop();
+              consumedParagraphs--;
+              nextBodyBlock.text = [moved].concat(paras.slice(consumedParagraphs + 1)).join('\n\n');
+            } else if(consumedParagraphs > 0){
               const remaining = paras.slice(consumedParagraphs);
               nextBodyBlock.text = remaining.join('\n\n');
               if(!nextBodyBlock.text.trim()){
@@ -1116,14 +1353,16 @@
               chapterTitle:'',
               chapterSubtitle:'',
               paragraphs:[],
-              chapterIndex
+              chapterIndex,
+              ornament:''
             };
 
-            const { page, content } = createMeasurementPage(pageData, widthPx, heightPx);
+            const { page, content } = createMeasurementPage(pageData, widthPx, heightPx, nextPageNumber());
             measureRoot.innerHTML = '';
             measureRoot.appendChild(page);
 
             let consumed = 0;
+
             for(let p = 0; p < remainingParagraphs.length; p++){
               const testP = document.createElement('p');
               testP.textContent = remainingParagraphs[p];
@@ -1131,18 +1370,17 @@
 
               if(content.scrollHeight > content.clientHeight){
                 content.removeChild(testP);
-
-                // evitar órfã: não deixar uma única linha/único parágrafo solto
-                if(pageData.paragraphs.length <= 1 && remainingParagraphs.length > 1){
-                  if(pageData.paragraphs.length === 1){
-                    remainingParagraphs.unshift(pageData.paragraphs.pop());
-                  }
-                }
                 break;
               } else {
                 pageData.paragraphs.push(remainingParagraphs[p]);
                 consumed++;
               }
+            }
+
+            // órfã/viúva simples
+            if(pageData.paragraphs.length === 1 && remainingParagraphs.length > 1){
+              pageData.paragraphs = [];
+              consumed = 0;
             }
 
             if(consumed === 0){
@@ -1160,9 +1398,16 @@
       return pages;
     }
 
-    function renderPage(pageData, index){
+    function renderSinglePage(pageData, index){
+      const pageNumber = index + 1;
       const page = document.createElement('article');
       page.className = 'page';
+
+      const margins = getMarginsCm(pageNumber);
+      page.style.setProperty('--margin-top-px', `${margins.top * CM_TO_PX}px`);
+      page.style.setProperty('--margin-bottom-px', `${margins.bottom * CM_TO_PX}px`);
+      page.style.setProperty('--margin-left-px', `${margins.left * CM_TO_PX}px`);
+      page.style.setProperty('--margin-right-px', `${margins.right * CM_TO_PX}px`);
 
       if(pageData.kind === 'blank' || pageData.kind === 'placeholder'){
         page.classList.add('blank-page');
@@ -1175,7 +1420,7 @@
 
         const number = document.createElement('div');
         number.className = 'page-number';
-        number.textContent = 'Página ' + (index + 1);
+        number.textContent = 'Página ' + pageNumber;
         page.appendChild(number);
         return page;
       }
@@ -1198,12 +1443,18 @@
         const title = document.createElement('h1');
         title.className = 'chapter-title';
         title.textContent = pageData.chapterTitle || '';
+        title.dataset.role = 'chapter-title';
+        title.dataset.pageIndex = index;
+        title.addEventListener('dblclick', startInlineEdit);
         header.appendChild(title);
 
         if(pageData.chapterSubtitle){
           const subtitle = document.createElement('div');
           subtitle.className = 'chapter-subtitle';
           subtitle.textContent = pageData.chapterSubtitle;
+          subtitle.dataset.role = 'chapter-subtitle';
+          subtitle.dataset.pageIndex = index;
+          subtitle.addEventListener('dblclick', startInlineEdit);
           header.appendChild(subtitle);
         }
 
@@ -1232,53 +1483,184 @@
       pageData.paragraphs.forEach((para, idx) => {
         const p = document.createElement('p');
         p.textContent = para;
+        p.dataset.role = 'paragraph';
+        p.dataset.pageIndex = index;
+        p.dataset.paragraphIndex = idx;
+        p.addEventListener('dblclick', startInlineEdit);
         if(idx === 0 && pageData.chapterOpening) p.classList.add('first-para');
         content.appendChild(p);
       });
+
+      const ornament = document.createElement('div');
+      ornament.className = 'ornament-slot ' + (pageData.ornament ? '' : 'empty');
+      ornament.textContent = pageData.ornament || 'Duplo clique para inserir ornamento';
+      ornament.dataset.role = 'ornament';
+      ornament.dataset.pageIndex = index;
+      ornament.addEventListener('dblclick', startInlineEdit);
+      content.appendChild(ornament);
 
       inner.appendChild(content);
       page.appendChild(inner);
 
       const number = document.createElement('div');
       number.className = 'page-number';
-      number.textContent = 'Página ' + (index + 1);
+      number.textContent = 'Página ' + pageNumber;
       page.appendChild(number);
 
       return page;
     }
 
+    function renderCurrentView(){
+      bookStage.innerHTML = '';
+      emptyState.classList.toggle('hidden', renderedPages.length > 0);
+
+      if(!renderedPages.length){
+        pageCountPill.innerHTML = 'Páginas: <strong>0</strong>';
+        pageViewPill.textContent = 'Página 1';
+        prevPageBtn.disabled = true;
+        nextPageBtn.disabled = true;
+        return;
+      }
+
+      if(viewMode.value === 'single'){
+        bookStage.classList.add('single');
+        const safeIndex = Math.max(0, Math.min(currentPageIndex, renderedPages.length - 1));
+        currentPageIndex = safeIndex;
+        bookStage.appendChild(renderSinglePage(renderedPages[safeIndex], safeIndex));
+        pageViewPill.textContent = `Página ${safeIndex + 1} de ${renderedPages.length}`;
+        prevPageBtn.disabled = safeIndex <= 0;
+        nextPageBtn.disabled = safeIndex >= renderedPages.length - 1;
+      } else {
+        bookStage.classList.remove('single');
+        const leftIndex = Math.max(0, currentPageIndex - (currentPageIndex % 2));
+        currentPageIndex = leftIndex;
+        bookStage.appendChild(renderSinglePage(renderedPages[leftIndex], leftIndex));
+        if(renderedPages[leftIndex + 1]){
+          bookStage.appendChild(renderSinglePage(renderedPages[leftIndex + 1], leftIndex + 1));
+        }
+        pageViewPill.textContent = `Páginas ${leftIndex + 1}${renderedPages[leftIndex + 1] ? ' e ' + (leftIndex + 2) : ''} de ${renderedPages.length}`;
+        prevPageBtn.disabled = leftIndex <= 0;
+        nextPageBtn.disabled = leftIndex + 2 >= renderedPages.length;
+      }
+
+      pageCountPill.innerHTML = `Páginas: <strong>${renderedPages.length}</strong>`;
+    }
+
+    function stepPage(direction){
+      if(viewMode.value === 'single'){
+        currentPageIndex += direction;
+      } else {
+        currentPageIndex += direction * 2;
+      }
+      currentPageIndex = Math.max(0, Math.min(currentPageIndex, renderedPages.length - 1));
+      renderCurrentView();
+    }
+
+    function insertOrnamentOnCurrentPage(){
+      if(!renderedPages.length) return;
+      const idx = currentPageIndex;
+      if(!renderedPages[idx] || renderedPages[idx].kind !== 'text') return;
+
+      const options = ['❦','✶','— ✦ —','✧ ✧ ✧','✤'];
+      const current = renderedPages[idx].ornament || '';
+      const promptText = 'Digite um ornamento ou deixe um destes:\n' + options.join('   ');
+      const value = prompt(promptText, current || '❦');
+      if(value === null) return;
+      renderedPages[idx].ornament = value.trim();
+      renderCurrentView();
+    }
+
+    function startInlineEdit(event){
+      const el = event.currentTarget;
+      if(el.querySelector('textarea, input')) return;
+
+      const role = el.dataset.role;
+      const pageIndex = Number(el.dataset.pageIndex);
+      const paragraphIndex = el.dataset.paragraphIndex !== undefined ? Number(el.dataset.paragraphIndex) : null;
+
+      let editor;
+      if(role === 'paragraph'){
+        editor = document.createElement('textarea');
+        editor.className = 'inline-editor';
+        editor.style.minHeight = '90px';
+        editor.value = el.textContent;
+      } else {
+        editor = document.createElement('input');
+        editor.type = 'text';
+        editor.className = 'inline-editor ' + (role === 'chapter-title' ? 'title-editor' : role === 'chapter-subtitle' ? 'subtitle-editor' : '');
+        editor.value = role === 'ornament' && el.classList.contains('empty') ? '' : el.textContent;
+      }
+
+      const oldValue = el.textContent;
+      el.innerHTML = '';
+      el.appendChild(editor);
+      editor.focus();
+      if(editor.select) editor.select();
+
+      function finish(save){
+        const model = renderedPages[pageIndex];
+        if(save && model){
+          const newValue = editor.value.trim();
+          if(role === 'chapter-title'){
+            model.chapterTitle = newValue;
+          } else if(role === 'chapter-subtitle'){
+            model.chapterSubtitle = newValue;
+          } else if(role === 'paragraph' && paragraphIndex !== null){
+            model.paragraphs[paragraphIndex] = newValue;
+          } else if(role === 'ornament'){
+            model.ornament = newValue;
+          }
+        }
+        renderCurrentView();
+      }
+
+      editor.addEventListener('keydown', (e) => {
+        if(role !== 'paragraph' && e.key === 'Enter'){
+          e.preventDefault();
+          finish(true);
+        }
+        if(e.key === 'Escape'){
+          e.preventDefault();
+          editor.value = oldValue;
+          finish(false);
+        }
+        if(role === 'paragraph' && e.key === 'Enter' && e.ctrlKey){
+          e.preventDefault();
+          finish(true);
+        }
+      });
+
+      editor.addEventListener('blur', () => finish(true));
+    }
+
     function renderPreview(){
       const text = normalizeText(editorText.value);
-      applyPageMetrics();
+      const size = applyPageMetricsExample();
 
       if(!text){
+        renderedPages = [];
+        currentPageIndex = 0;
         bookStage.innerHTML = '';
         emptyState.classList.remove('hidden');
-        pageCountPill.innerHTML = 'Páginas: <strong>0</strong>';
         statusBox.textContent = 'Sem texto para diagramar ainda.';
         updateRulesSummary();
+        renderCurrentView();
         return;
       }
 
       const structure = parseStructure(text);
-      const pages = paginateByMeasuredHeight(structure);
-
-      bookStage.innerHTML = '';
-      emptyState.classList.add('hidden');
-
-      pages.forEach((pageData, index) => {
-        bookStage.appendChild(renderPage(pageData, index));
-      });
-
-      pageCountPill.innerHTML = 'Páginas: <strong>' + pages.length + '</strong>';
+      renderedPages = paginateByMeasuredHeight(structure);
+      currentPageIndex = 0;
       statusBox.textContent = 'Prévia atualizada com sucesso.';
       updateRulesSummary();
+      renderCurrentView();
     }
 
     function updateRulesSummary(){
       const size = getPageSizeCm();
-      const innerW = (size.w - (Number(marginInside.value)||3) - (Number(marginOutside.value)||2)).toFixed(2);
-      const innerH = (size.h - (Number(marginTop.value)||2.5) - (Number(marginBottom.value)||2.5)).toFixed(2);
+      const leftMargins = getMarginsCm(1);
+      const innerW = (size.w - leftMargins.left - leftMargins.right).toFixed(2);
+      const innerH = (size.h - leftMargins.top - leftMargins.bottom).toFixed(2);
 
       const startModeMap = {
         flow:'continuação direta',
@@ -1287,12 +1669,18 @@
         sheet:'reserva de 1 folha inteira'
       };
 
+      const marginMap = {
+        mirror:'espelho',
+        equal:'igual',
+        custom:'personalizada'
+      };
+
       rulesSummary.textContent =
-        `Formato ${size.label} • Área útil ${innerW} × ${innerH} cm • Abertura: ${startModeMap[chapterStartMode.value]} • Recuo ${paragraphIndent.value} • Espaço ${paragraphGap.value}`;
+        `Formato ${size.label} • Margem ${marginMap[marginMode.value]} • Área útil ${innerW} × ${innerH} cm • Abertura: ${startModeMap[chapterStartMode.value]} • Recuo ${paragraphIndent.value} • Espaço ${paragraphGap.value}`;
     }
 
     function exportPDF(){
-      if(!editorText.value.trim()){
+      if(!editorText.value.trim() && !renderedPages.length){
         alert('Carregue ou cole uma obra antes de exportar.');
         return;
       }
@@ -1300,7 +1688,7 @@
     }
 
     function finalizeAndClear(){
-      if(editorText.value.trim()){
+      if(editorText.value.trim() || renderedPages.length){
         const ok = confirm('Finalizar esta obra e limpar o workspace?');
         if(!ok) return;
       }
@@ -1314,6 +1702,7 @@
       customWidth.value = '16';
       customHeight.value = '23';
       customSizeRow.style.display = 'none';
+      marginMode.value = 'mirror';
       marginTop.value = '2.5';
       marginBottom.value = '2.5';
       marginInside.value = '3.0';
@@ -1328,19 +1717,24 @@
       paragraphGap.value = '0.20';
       dropcapStyle.value = 'none';
       dropcapApply.value = 'all';
+      viewMode.value = 'single';
       bookRules.chapterSplitDecision = null;
+      renderedPages = [];
+      currentPageIndex = 0;
 
       bookStage.innerHTML = '';
       emptyState.classList.remove('hidden');
       pageCountPill.innerHTML = 'Páginas: <strong>0</strong>';
+      pageViewPill.textContent = 'Página 1';
       statusBox.textContent = 'Workspace limpo. Pronto para novo livro.';
       rulesSummary.textContent = 'Ainda sem regras aplicadas.';
-      applyPageMetrics();
+      applyPageMetricsExample();
+      renderCurrentView();
     }
 
-    applyPageMetrics();
+    applyPageMetricsExample();
     updateRulesSummary();
+    renderCurrentView();
   </script>
 </body>
 </html>
-
