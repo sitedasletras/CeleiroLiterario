@@ -1,78 +1,74 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Celeiro Literário</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Celeiro Literário</title>
+  <style>
+    body{
+      margin:0;
+      font-family:Georgia,"Times New Roman",serif;
+      background:#ece8de;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:16px;
+      box-sizing:border-box;
+    }
 
-<style>
+    .box{
+      background:#f7f7f4;
+      width:min(92vw, 720px);
+      border-radius:28px;
+      box-shadow:0 14px 30px rgba(0,0,0,.10);
+      text-align:center;
+      padding:48px 24px;
+    }
 
-body{
-margin:0;
-font-family:Georgia;
-background:#f4f1ea;
-display:flex;
-align-items:center;
-justify-content:center;
-height:100vh;
-}
+    h1{
+      margin:0 0 18px 0;
+      font-size:clamp(2.1rem, 5vw, 3.4rem);
+      color:#000;
+      line-height:1.05;
+    }
 
-.box{
-background:white;
-padding:40px;
-border-radius:20px;
-box-shadow:0 12px 28px rgba(0,0,0,.12);
-text-align:center;
-}
+    p{
+      margin:0 0 34px 0;
+      color:#7a7a7a;
+      font-size:clamp(1rem, 2.4vw, 1.4rem);
+      line-height:1.4;
+    }
 
-h1{
-margin:0 0 10px 0;
-}
+    button{
+      border:none;
+      background:#4d956f;
+      color:#fff;
+      font-size:clamp(1.1rem, 2.6vw, 1.5rem);
+      padding:18px 42px;
+      border-radius:20px;
+      cursor:pointer;
+      font-family:inherit;
+      transition:.15s ease;
+    }
 
-p{
-margin-bottom:30px;
-color:#666;
-}
-
-button{
-background:#2d7c58;
-border:none;
-color:white;
-padding:14px 28px;
-border-radius:12px;
-font-size:16px;
-cursor:pointer;
-}
-
-button:hover{
-opacity:.9;
-}
-
-</style>
-
+    button:hover{
+      transform:translateY(-1px);
+      opacity:.96;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="box">
+    <h1>Celeiro Literário</h1>
+    <p>Entrada do ambiente editorial</p>
+    <button onclick="entrar()">Entrar</button>
+  </div>
 
-<div class="box">
-
-<h1>Celeiro Literário</h1>
-
-<p>Entrada do ambiente editorial</p>
-
-<button onclick="entrar()">Entrar</button>
-
-</div>
-
-<script>
-
-function entrar(){
-
-window.location.href="painel_setores.html"
-
-}
-
-</script>
-
+  <script>
+    function entrar(){
+      window.location.href = "lapidar.html";
+    }
+  </script>
 </body>
 </html>
