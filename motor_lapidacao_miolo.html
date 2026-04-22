@@ -20,7 +20,6 @@
       --warn:#8c5d1f;
       --danger:#7f2f2f;
       --shadow:0 10px 28px rgba(31,36,48,.10);
-      --radius:18px;
     }
 
     *{box-sizing:border-box}
@@ -125,7 +124,7 @@
     }
 
     .textarea{
-      min-height:170px;
+      min-height:200px;
       resize:vertical;
       line-height:1.5;
     }
@@ -195,7 +194,7 @@
       border:1px solid #d0d9e3;
       box-shadow:var(--shadow);
       padding:20px 16px 24px;
-      min-height:540px;
+      min-height:520px;
       display:flex;
       flex-direction:column;
       gap:14px;
@@ -259,6 +258,14 @@
 
     .preview.indent p.first-para{
       text-indent:0;
+    }
+
+    .preview .ornament-preview{
+      text-align:center;
+      margin:16px 0 8px;
+      font-size:1.25rem;
+      color:#637166;
+      letter-spacing:.08em;
     }
 
     .issue-list{
@@ -342,6 +349,29 @@
       color:#1f2b38;
     }
 
+    .ornament-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px;
+    }
+
+    .ornament-item{
+      border:1px solid #d7dee7;
+      background:#fff;
+      border-radius:12px;
+      padding:10px;
+      text-align:center;
+      cursor:pointer;
+      font-size:1.1rem;
+      color:#344152;
+    }
+
+    .ornament-item.active{
+      border-color:#446b88;
+      background:#eef4f8;
+      font-weight:700;
+    }
+
     .hint{
       font-size:.9rem;
       color:#687285;
@@ -352,7 +382,6 @@
       .app{
         grid-template-columns:1fr;
       }
-
       .panel{
         position:relative;
         top:auto;
@@ -386,6 +415,10 @@
 
       .stats-grid{
         grid-template-columns:1fr;
+      }
+
+      .ornament-grid{
+        grid-template-columns:1fr 1fr;
       }
     }
   </style>
@@ -457,6 +490,12 @@
       </div>
 
       <div class="card-soft">
+        <label><strong>Ornamentos</strong></label>
+        <div class="ornament-grid" id="ornamentGrid"></div>
+        <small>Esse ornamento também pode ser enviado de volta ao Pólux.</small>
+      </div>
+
+      <div class="card-soft">
         <button class="button" id="processBtn" type="button">Lapidar texto</button>
         <button class="button ok" id="sendBackBtn" type="button">Enviar para módulo chamador</button>
         <button class="button ok" id="copyBtn" type="button">Copiar resultado</button>
@@ -506,7 +545,7 @@
 
       <div class="card-soft">
         <h3>Função do motor</h3>
-        <p>Este motor centraliza saneamento de texto para Pólux, Castor, Centauro e Qui(RON)xadá.</p>
+        <p>Centraliza saneamento de texto para Pólux, Castor, Centauro e Qui(RON)xadá.</p>
       </div>
 
       <div class="card-soft">
@@ -516,6 +555,7 @@
         <p>• continuação provável de oração</p>
         <p>• hifenização</p>
         <p>• viúva e órfã</p>
+        <p>• ornamento selecionado</p>
       </div>
 
       <div class="card-soft">
@@ -542,12 +582,14 @@
 
       <div class="card-soft">
         <h3>Ligação aberta</h3>
-        <p>Esta HTML já está pronta para receber texto por <strong>postMessage</strong> e devolver o resultado ao módulo chamador.</p>
+        <p>Pronto para receber texto por <strong>postMessage</strong> e devolver o resultado ao Pólux. Depois serve aos outros diagramadores.</p>
       </div>
     </aside>
   </div>
 
   <script>
+    const ORNAMENTS = ['','❦','✶','✧ ✧ ✧','— ✦ —','✤','❋','✦','☙ ❧'];
+
     const fileInput = document.getElementById('fileInput');
     const sourceText = document.getElementById('sourceText');
     const compositionMode = document.getElementById('compositionMode');
@@ -568,6 +610,7 @@
     const hyphenPill = document.getElementById('hyphenPill');
     const issuesPill = document.getElementById('issuesPill');
     const issuesList = document.getElementById('issuesList');
+    const ornamentGrid = document.getElementById('ornamentGrid');
 
     const statParagraphs = document.getElementById('statParagraphs');
     const statWords = document.getElementById('statWords');
@@ -578,6 +621,7 @@
     let processedParagraphs = [];
     let detectedIssues = [];
     let sourceApp = 'manual';
+    let selectedOrnament = '';
 
     fileInput.addEventListener('change', handleFileUpload);
     processBtn.addEventListener('click', processText);
@@ -591,6 +635,24 @@
 
     window.addEventListener('message', handleIncomingMessage);
 
+    buildOrnamentGrid();
+
+    function buildOrnamentGrid(){
+      ornamentGrid.innerHTML = '';
+      ORNAMENTS.forEach((orn) => {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'ornament-item' + (orn === selectedOrnament ? ' active' : '');
+        item.textContent = orn || 'Nenhum';
+        item.onclick = () => {
+          selectedOrnament = orn;
+          buildOrnamentGrid();
+          processText();
+        };
+        ornamentGrid.appendChild(item);
+      });
+    }
+
     function handleIncomingMessage(event){
       const data = event.data;
       if(!data || typeof data !== 'object') return;
@@ -599,10 +661,15 @@
       sourceApp = data.sourceApp || 'externo';
       sourcePill.textContent = 'Origem: ' + sourceApp;
       sourceText.value = normalizeText(data.text || '');
+
       if(data.compositionMode) compositionMode.value = data.compositionMode;
       if(data.hyphenationMode) hyphenationMode.value = data.hyphenationMode;
       if(data.paragraphIndent) paragraphIndent.value = data.paragraphIndent;
       if(data.paragraphGap) paragraphGap.value = data.paragraphGap;
+      if(data.ornament !== undefined){
+        selectedOrnament = data.ornament;
+        buildOrnamentGrid();
+      }
 
       statusBox.textContent = 'Texto recebido de ' + sourceApp + '.';
       processText();
@@ -715,7 +782,7 @@
       const unique = [...new Set(points)].filter(p => p > 2 && p < word.length - 2);
       if(!unique.length) return word;
 
-      let chosen = level === 'light'
+      const chosen = level === 'light'
         ? unique.filter((_, idx) => idx % 2 === 0)
         : unique;
 
@@ -869,6 +936,10 @@
         html = `<div>${escapeHtml(paragraphs.join('\n\n')).replace(/\n/g,'<br>').replace(/\u00AD/g, '&shy;')}</div>`;
       }
 
+      if(selectedOrnament){
+        html += `<div class="ornament-preview">${escapeHtml(selectedOrnament)}</div>`;
+      }
+
       if(warnings.length){
         html += `<div class="warning">${warnings.join('<br>')}</div>`;
       }
@@ -989,7 +1060,10 @@
         compositionMode: compositionMode.value,
         text: processedText.replace(/\u00AD/g, ''),
         hyphenatedText: processedText,
-        issues: detectedIssues
+        issues: detectedIssues,
+        ornament: selectedOrnament,
+        paragraphIndent: paragraphIndent.value,
+        paragraphGap: paragraphGap.value
       };
 
       if(window.opener && !window.opener.closed){
@@ -1042,6 +1116,8 @@
       processedParagraphs = [];
       detectedIssues = [];
       sourceApp = 'manual';
+      selectedOrnament = '';
+      buildOrnamentGrid();
       sourcePill.textContent = 'Origem: manual';
       preview.innerHTML = '';
       issuesList.innerHTML = '<div class="hint">Nenhuma análise ainda.</div>';
