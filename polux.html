@@ -10,6 +10,8 @@
   --ink:#1f2340;
   --line:#d8dee6;
   --green:#2f7d57;
+  --green-soft:#5e9a79;
+  --green-panel:#edf6f0;
   --gold:#c79a2b;
   --red:#b64747;
 
@@ -28,7 +30,7 @@
   --title1-size:22pt;
   --title2-size:16pt;
   --line-height:1.42;
-  --indent:1.25cm;
+  --indent:1cm;
   --safe-bottom:12mm;
 }
 *{box-sizing:border-box}
@@ -49,6 +51,7 @@ body{
   align-items:center;
   gap:12px;
   margin-bottom:14px;
+  flex-wrap:wrap;
 }
 h1{
   margin:0;
@@ -58,6 +61,7 @@ h1{
 .top-actions{
   display:flex;
   gap:10px;
+  flex-wrap:wrap;
 }
 .btn{
   border:none;
@@ -117,6 +121,10 @@ textarea{
   border-radius:16px;
   padding:16px;
 }
+.panel.green-panel{
+  background:var(--green-panel);
+  border-color:#cfe3d6;
+}
 .panel h3{
   margin:0 0 12px;
   color:var(--ink);
@@ -139,7 +147,8 @@ select,input[type="number"]{
 }
 .small-note{
   font-size:12px;
-  color:#6a7380;
+  color:#445160;
+  line-height:1.45;
 }
 .preview-shell{
   background:white;
@@ -174,6 +183,7 @@ select,input[type="number"]{
 .nav-buttons{
   display:flex;
   gap:8px;
+  flex-wrap:wrap;
 }
 .muted-chip{
   background:#eef4f7;
@@ -219,7 +229,7 @@ select,input[type="number"]{
   line-height:var(--line-height);
 }
 .block{
-  margin:0 0 .42em 0;
+  margin:0 0 .48em 0;
   color:#222;
 }
 .block.title1{
@@ -248,7 +258,7 @@ select,input[type="number"]{
 .block.dialogue{
   text-align:left;
   text-indent:0;
-  padding-left:.15cm;
+  padding-left:0;
   margin-left:0;
   max-width:100%;
   overflow-wrap:break-word;
@@ -257,14 +267,14 @@ select,input[type="number"]{
   text-indent:0 !important;
   display:block;
   overflow:hidden;
-  min-height:2.8em;
+  min-height:2.7em;
 }
 .dropcap{
   float:left;
-  font-size:3.05em;
-  line-height:.82;
+  font-size:3.15em;
+  line-height:.78;
   font-weight:700;
-  margin:.02em .08em 0 0;
+  margin:.01em .035em 0 0;
   padding:0;
 }
 .page-number{
@@ -339,7 +349,7 @@ Ele olhou adiante e percebeu que a cidade era maior do que qualquer promessa.</t
   </section>
 
   <div class="workspace">
-    <aside class="panel">
+    <aside class="panel green-panel">
       <h3>Estrutura editorial</h3>
 
       <div class="field">
@@ -353,8 +363,8 @@ Ele olhou adiante e percebeu que a cidade era maior do que qualquer promessa.</t
         <label for="indentSelect">Recuo da 1ª linha</label>
         <select id="indentSelect">
           <option value="0.8cm">0,8 cm</option>
-          <option value="1cm">1,0 cm</option>
-          <option value="1.25cm" selected>1,25 cm</option>
+          <option value="1cm" selected>1,0 cm</option>
+          <option value="1.25cm">1,25 cm</option>
           <option value="1.5cm">1,5 cm</option>
         </select>
       </div>
@@ -412,7 +422,7 @@ Ele olhou adiante e percebeu que a cidade era maior do que qualquer promessa.</t
       </div>
     </main>
 
-    <aside class="panel">
+    <aside class="panel green-panel">
       <h3>Aparência e estilos</h3>
       <div class="field">
         <label>Leitura do texto</label>
@@ -420,11 +430,11 @@ Ele olhou adiante e percebeu que a cidade era maior do que qualquer promessa.</t
       </div>
       <div class="field">
         <label>Letra capitular</label>
-        <div class="small-note">Agora só entra quando o primeiro parágrafo do capítulo for longo o bastante para não abrir um vão feio.</div>
+        <div class="small-note">Entrará no primeiro parágrafo textual de cada capítulo quando esse parágrafo for realmente longo.</div>
       </div>
       <div class="field">
         <label>Observação</label>
-        <div class="small-note">Diálogos ficaram presos dentro da área útil da página, sem estourar para fora da diagramação.</div>
+        <div class="small-note">Diálogos ficaram dentro da área útil da página e respeitam a largura da diagramação.</div>
       </div>
     </aside>
   </div>
@@ -491,7 +501,7 @@ function splitIntoUnits(line){
 function shouldUseDropcap(text){
   const chars = text.replace(/\s+/g,' ').trim().length;
   const words = text.trim().split(/\s+/).length;
-  return chars >= 95 && words >= 14;
+  return chars >= 110 && words >= 16;
 }
 
 function parseBlocks(raw){
@@ -500,6 +510,7 @@ function parseBlocks(raw){
   const blocks = [];
   let waitingSubtitle = false;
   let chapterIndex = 0;
+  let standaloneTitleMode = false;
 
   for(let i=0;i<lines.length;i++){
     const line = lines[i].trim();
@@ -509,12 +520,21 @@ function parseBlocks(raw){
       chapterIndex += 1;
       blocks.push({type:'title1', text:line, chapter:chapterIndex});
       waitingSubtitle = true;
+      standaloneTitleMode = false;
       continue;
     }
 
     if(waitingSubtitle){
       blocks.push({type:'title2', text:line, chapter:chapterIndex || 1});
       waitingSubtitle = false;
+      standaloneTitleMode = false;
+      continue;
+    }
+
+    if(!chapterIndex && i === 0){
+      chapterIndex = 1;
+      blocks.push({type:'title1', text:line, chapter:chapterIndex});
+      standaloneTitleMode = true;
       continue;
     }
 
@@ -529,15 +549,22 @@ function parseBlocks(raw){
     });
   }
 
-  const firstBodyByChapter = new Map();
-  for(const block of blocks){
-    if(block.type === 'body' && !firstBodyByChapter.has(block.chapter)){
-      firstBodyByChapter.set(block.chapter, block);
+  if(standaloneTitleMode){
+    const firstBody = blocks.find(b => b.type === 'body');
+    if(firstBody){
+      firstBody.chapter = 1;
     }
   }
 
-  for(const [chapter, block] of firstBodyByChapter.entries()){
-    if(shouldUseDropcap(block.text)){
+  const firstTextualByChapter = new Map();
+  for(const block of blocks){
+    if((block.type === 'body' || block.type === 'dialogue') && !firstTextualByChapter.has(block.chapter)){
+      firstTextualByChapter.set(block.chapter, block);
+    }
+  }
+
+  for(const [chapter, block] of firstTextualByChapter.entries()){
+    if(block.type === 'body' && shouldUseDropcap(block.text)){
       block.dropcap = true;
     }
   }
@@ -582,7 +609,7 @@ function findRunningHead(pageBlocks){
   for(let i=pageBlocks.length-1;i>=0;i--){
     if(pageBlocks[i].chapter){
       const chap = pageBlocks[i].chapter;
-      const title = allBlocks.find(x => x.type==='title1' && x.chapter===chap);
+      const title = allBlocks.find(x => x.type === 'title1' && x.chapter === chap);
       if(title) return title.text;
     }
   }
