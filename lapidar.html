@@ -1,238 +1,533 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Qui(RON)xadá — Diagramador de Cordel</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lapidar — Diagramação | Celeiro Literário</title>
+  <style>
+    :root{
+      --bg:#f4f1ea;
+      --paper:#fffdf8;
+      --ink:#1f2430;
+      --muted:#5f6b78;
+      --line:#d8ddd8;
 
-<style>
+      --green-1:#173726;
+      --green-2:#1d5c40;
+      --green-3:#2d7c58;
+      --green-4:#5aa58f;
 
-body{
-font-family: Georgia, serif;
-background:#f3eee6;
-margin:0;
-padding:0;
-color:#2a2a2a;
-}
+      --gold:#b5842f;
+      --shadow:0 14px 34px rgba(0,0,0,.10);
+      --radius:22px;
+    }
 
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:30px;
-background:#efe6d7;
-}
+    *{box-sizing:border-box}
 
-.logo{
-display:flex;
-align-items:center;
-gap:15px;
-}
+    html,body{
+      margin:0;
+      padding:0;
+      background:linear-gradient(180deg,#f6f3ec 0%, #ece7dd 100%);
+      color:var(--ink);
+      font-family:Georgia,"Times New Roman",serif;
+    }
 
-.logo-box{
-width:60px;
-height:60px;
-background:#a76322;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:28px;
-border-radius:14px;
-}
+    body{
+      min-height:100vh;
+    }
 
-.header-buttons{
-display:flex;
-flex-direction:column;
-gap:12px;
-}
+    .wrap{
+      width:min(1200px, calc(100vw - 24px));
+      margin:12px auto;
+      display:grid;
+      grid-template-columns:260px minmax(0,1fr);
+      gap:14px;
+    }
 
-.btn{
-border:none;
-padding:14px 18px;
-border-radius:12px;
-font-weight:bold;
-cursor:pointer;
-}
+    .sidebar{
+      background:linear-gradient(180deg,var(--green-1),var(--green-2) 55%,var(--green-4) 100%);
+      color:#fff;
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:18px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      min-height:calc(100vh - 24px);
+      position:sticky;
+      top:12px;
+      align-self:start;
+    }
 
-.limpar{background:#f1e4cd;}
-.preview{background:#a76322;color:white;}
-.retornar{background:#b6901b;}
-.sair{background:#a33434;color:white;}
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
 
-.info-bar{
-display:flex;
-gap:20px;
-padding:20px 30px;
-}
+    .brand small{
+      font-size:.9rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      opacity:.85;
+    }
 
-.tag{
-background:white;
-padding:12px 18px;
-border-radius:18px;
-font-weight:bold;
-}
+    .brand h1{
+      margin:0;
+      font-size:2rem;
+      line-height:1;
+    }
 
-.editor{
-padding:30px;
-}
+    .brand p{
+      margin:0;
+      color:rgba(255,255,255,.92);
+      line-height:1.4;
+      font-size:.98rem;
+    }
 
-textarea{
-width:100%;
-height:220px;
-border-radius:12px;
-padding:15px;
-border:none;
-font-family:Georgia;
-font-size:16px;
-}
+    .side-card{
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:18px;
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
 
-.preview-area{
-display:flex;
-justify-content:center;
-margin-top:40px;
-}
+    .side-card h2{
+      margin:0;
+      font-size:1rem;
+    }
 
-.page{
-width:320px;
-height:480px;
-background:white;
-padding:40px;
-box-shadow:0 0 15px rgba(0,0,0,0.15);
-}
+    .side-card p,
+    .side-card li{
+      margin:0;
+      color:rgba(255,255,255,.95);
+      line-height:1.35;
+      font-size:.95rem;
+    }
 
-.page h1{
-text-align:center;
-}
+    .side-card ul{
+      margin:0;
+      padding-left:18px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
 
-</style>
+    .side-actions{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-top:auto;
+    }
 
+    .btn{
+      appearance:none;
+      border:none;
+      border-radius:14px;
+      padding:12px 14px;
+      font-family:inherit;
+      font-size:1rem;
+      font-weight:700;
+      cursor:pointer;
+      text-decoration:none;
+      text-align:center;
+      transition:.12s ease;
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      gap:8px;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+      opacity:.97;
+    }
+
+    .btn-primary{
+      background:#f7faf7;
+      color:#173726;
+    }
+
+    .btn-secondary{
+      background:rgba(255,255,255,.14);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.16);
+    }
+
+    .main{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .hero,
+    .grid-shell{
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+    }
+
+    .hero{
+      padding:22px 24px;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 220px;
+      gap:16px;
+      align-items:center;
+    }
+
+    .hero h2{
+      margin:0 0 10px 0;
+      font-size:2rem;
+      line-height:1.05;
+      color:#1f2e28;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.5;
+      font-size:1.02rem;
+    }
+
+    .seal{
+      border:1px solid #d9dfd8;
+      border-radius:20px;
+      padding:16px;
+      background:linear-gradient(180deg,#fbfbf8,#f1eee6);
+      text-align:center;
+    }
+
+    .seal strong{
+      display:block;
+      font-size:1.2rem;
+      color:#294236;
+      margin-bottom:6px;
+    }
+
+    .seal span{
+      display:block;
+      color:#6b746d;
+      line-height:1.35;
+      font-size:.95rem;
+    }
+
+    .grid-shell{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .grid-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .grid-head h3{
+      margin:0;
+      font-size:1.35rem;
+      color:#213229;
+    }
+
+    .grid-head p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.4;
+    }
+
+    .diagram-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .card{
+      border:1px solid #d8ddd8;
+      background:linear-gradient(180deg,#fffefb 0%, #f5f2ea 100%);
+      border-radius:22px;
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      box-shadow:0 10px 22px rgba(0,0,0,.05);
+    }
+
+    .card-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+    }
+
+    .tag{
+      font-size:.82rem;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#6d7a73;
+      background:#eef3ef;
+      border:1px solid #dbe4dc;
+      border-radius:999px;
+      padding:6px 10px;
+      white-space:nowrap;
+    }
+
+    .card h4{
+      margin:0;
+      font-size:1.5rem;
+      line-height:1.05;
+      color:#1c2b24;
+    }
+
+    .card p{
+      margin:0;
+      color:#5d6675;
+      line-height:1.45;
+      font-size:1rem;
+    }
+
+    .features{
+      margin:0;
+      padding-left:18px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      color:#415049;
+    }
+
+    .features li{
+      line-height:1.35;
+    }
+
+    .card-actions{
+      margin-top:auto;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .btn-open{
+      background:var(--green-3);
+      color:#fff;
+      flex:1 1 180px;
+    }
+
+    .btn-outline{
+      background:#fff;
+      color:#244033;
+      border:1px solid #ced8cf;
+      flex:1 1 140px;
+    }
+
+    .footer-note{
+      border-top:1px dashed #d4dbd4;
+      padding-top:10px;
+      color:#6b746d;
+      line-height:1.45;
+      font-size:.94rem;
+    }
+
+    @media (max-width:1024px){
+      .wrap{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:relative;
+        top:auto;
+        min-height:auto;
+      }
+
+      .hero{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:760px){
+      .wrap{
+        width:min(100vw - 12px, 1200px);
+        margin:6px auto;
+        gap:8px;
+      }
+
+      .sidebar,
+      .hero,
+      .grid-shell{
+        border-radius:18px;
+      }
+
+      .diagram-grid{
+        grid-template-columns:1fr;
+      }
+
+      .hero{
+        padding:18px 16px;
+      }
+
+      .grid-shell{
+        padding:14px;
+      }
+
+      .card{
+        padding:16px;
+        border-radius:18px;
+      }
+
+      .brand h1{
+        font-size:1.7rem;
+      }
+
+      .hero h2{
+        font-size:1.6rem;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <aside class="sidebar">
+      <div class="brand">
+        <small>Celeiro Literário</small>
+        <h1>Lapidar</h1>
+        <p>Hub de diagramação do Celeiro. Escolha manualmente o diagramador. Nada aqui redireciona sozinho.</p>
+      </div>
 
-<header>
+      <div class="side-card">
+        <h2>Fluxo</h2>
+        <ul>
+          <li>Entrar no Celeiro</li>
+          <li>Abrir Lapidar</li>
+          <li>Escolher o diagramador</li>
+          <li>Seguir para o módulo desejado</li>
+        </ul>
+      </div>
 
-<div class="logo">
+      <div class="side-card">
+        <h2>Estado atual</h2>
+        <p>Esta página é apenas a ponte da diagramação. Ela não joga direto em nenhum módulo.</p>
+      </div>
 
-<div class="logo-box">Q</div>
+      <div class="side-actions">
+        <a class="btn btn-primary" href="painel_setores.html">Voltar ao Celeiro</a>
+        <a class="btn btn-secondary" href="index.html">Tela inicial</a>
+      </div>
+    </aside>
 
-<div>
+    <main class="main">
+      <section class="hero">
+        <div>
+          <h2>Área de Diagramação</h2>
+          <p>
+            Aqui ficam os diagramadores do Celeiro Literário. Você escolhe manualmente qual abrir.
+            O Lapidar agora volta a funcionar como hub, e não como atalho automático para a diagramação.
+          </p>
+        </div>
 
-<h2>Qui(RON)xadá — Diagramador de Cordel</h2>
+        <div class="seal">
+          <strong>Lapidar</strong>
+          <span>Diagramação editorial assistida dentro do Celeiro Literário</span>
+        </div>
+      </section>
 
-<p>
-Módulo do Celeiro Literário / Lapidar para miolo de cordel
-com formatos próprios, tipografia básica e prévia folheável.
-</p>
+      <section class="grid-shell">
+        <div class="grid-head">
+          <div>
+            <h3>Diagramadores disponíveis</h3>
+            <p>Escolha abaixo o ambiente certo para o tipo de obra.</p>
+          </div>
+        </div>
 
-</div>
+        <div class="diagram-grid">
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <div class="tag">Prosa</div>
+                <h4>Pólux</h4>
+              </div>
+            </div>
+            <p>Diagramador de prosa e livros narrativos em fluxo contínuo.</p>
+            <ul class="features">
+              <li>Capítulos</li>
+              <li>Página ímpar</li>
+              <li>Respiro editorial</li>
+              <li>Motor do miolo acoplado</li>
+            </ul>
+            <div class="card-actions">
+              <a class="btn btn-open" href="polux.html">Abrir Pólux</a>
+            </div>
+          </article>
 
-</div>
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <div class="tag">Poesia</div>
+                <h4>Castor</h4>
+              </div>
+            </div>
+            <p>Diagramador de poesia, versos, formas fixas e estrutura poética.</p>
+            <ul class="features">
+              <li>Poemas</li>
+              <li>Estrofes</li>
+              <li>Preservação métrica</li>
+              <li>Preview editorial</li>
+            </ul>
+            <div class="card-actions">
+              <a class="btn btn-open" href="castor.html">Abrir Castor</a>
+            </div>
+          </article>
 
-<div class="header-buttons">
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <div class="tag">Híbrido</div>
+                <h4>Centauro</h4>
+              </div>
+            </div>
+            <p>Diagramador híbrido para obras misturando prosa, poesia e estruturas combinadas.</p>
+            <ul class="features">
+              <li>Texto misto</li>
+              <li>Transição entre blocos</li>
+              <li>Controle de ritmo visual</li>
+              <li>Layout híbrido</li>
+            </ul>
+            <div class="card-actions">
+              <a class="btn btn-open" href="centauro.html">Abrir Centauro</a>
+            </div>
+          </article>
 
-<button class="btn limpar">Limpar obra</button>
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <div class="tag">Cordel</div>
+                <h4>Qui(RON)xadá</h4>
+              </div>
+            </div>
+            <p>Diagramador de cordel, sextilhas e estética popular editorial.</p>
+            <ul class="features">
+              <li>Sextilhas</li>
+              <li>Cordel</li>
+              <li>Formato popular</li>
+              <li>Controle simples</li>
+            </ul>
+            <div class="card-actions">
+              <a class="btn btn-open" href="quironxada.html">Abrir Qui(RON)xadá</a>
+            </div>
+          </article>
+        </div>
 
-<button class="btn preview" onclick="gerar()">Atualizar prévia</button>
-
-<button class="btn retornar">Retornar</button>
-
-<button class="btn sair">Sair do sistema</button>
-
-</div>
-
-</header>
-
-
-<section class="info-bar">
-
-<div class="tag">Formato: 11 x 16 cm</div>
-
-<div class="tag">Fonte: Georgia 12 pt</div>
-
-<div class="tag" id="paginas">Páginas: 1</div>
-
-</section>
-
-
-<section class="editor">
-
-<h3>Texto-base do cordel</h3>
-
-<textarea id="entrada">
-
-O Romance do Qui(RON)xadá
-Organização do Celeiro Literário
-
-Na estrada do meu sertão
-Vai cantando a voz primeira
-Feita de barro e de sol
-Feita de rima certeira
-Qui(RON)xadá nasce agora
-Pra honrar a arte faceira
-
-Seis versos por cada estrofe
-Com respiro entre as sextilhas
-Sem esmagar o poema
-Nem matar suas trilhas
-Cordel nasce bem cuidado
-Respeitando suas trilhas
-
-</textarea>
-
-
-<div class="preview-area">
-
-<div class="page" id="saida">
-
-<h1>Prévia aparecerá aqui</h1>
-
-</div>
-
-</div>
-
-</section>
-
-
-<script>
-
-function gerar(){
-
-let texto = document.getElementById("entrada").value
-
-let linhas = texto.split("\n")
-
-let html=""
-
-linhas.forEach(linha=>{
-
-if(linha.trim()==""){
-
-html+="<br>"
-
-}
-
-else if(linha.length<35){
-
-html+="<h3>"+linha+"</h3>"
-
-}
-
-else{
-
-html+="<p>"+linha+"</p>"
-
-}
-
-})
-
-document.getElementById("saida").innerHTML=html
-
-}
-
-</script>
-
-
+        <div class="footer-note">
+          Se o seu arquivo do Qui(RON)xadá estiver com outro nome, troque só o link do botão correspondente.
+          O importante aqui é que o <strong>Lapidar ficou parado no hub</strong> e não entra mais direto em diagramação sozinho.
+        </div>
+      </section>
+    </main>
+  </div>
 </body>
 </html>
