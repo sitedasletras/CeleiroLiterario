@@ -1,351 +1,560 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Pólux — Diagramador de Prosa</title>
-<style>
-:root{
-  --bg:#f5f0e5;
-  --ink:#202547;
-  --line:#d7dde3;
-  --green:#2f7d57;
-  --green-strong:#2f7d57;
-  --green-soft:#5f9b78;
-  --green-panel:#dfeee3;
-  --gold:#c6932a;
-  --red:#b94a4a;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pólux — Diagramador de Prosa</title>
+  <style>
+    :root{
+      --bg:#f7f4ee;
+      --card:#ffffff;
+      --ink:#1f2430;
+      --muted:#5a6573;
+      --line:#d7dee7;
+      --panel:#eef7fb;
+      --accent:#b86d16;
+      --accent-dark:#8f530f;
+      --green:#1f6b2e;
+      --shadow:0 10px 28px rgba(40,55,75,.08);
+      --radius:18px;
+    }
 
-  --page-width:148mm;
-  --page-height:210mm;
-  --page-padding-top:14mm;
-  --page-padding-right:14mm;
-  --page-padding-bottom:18mm;
-  --page-padding-left:16mm;
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family: Georgia, "Times New Roman", serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.45;
+    }
 
-  --body-size:12pt;
-  --title1-size:16pt;
-  --title2-size:12pt;
-  --line-height:1.30;
-  --indent:1cm;
-  --dialogue-indent:0.85cm;
-  --safe-bottom:12mm;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Georgia, serif;
-  background:var(--bg);
-  color:#222;
-}
-.app{
-  max-width:1650px;
-  margin:0 auto;
-  padding:20px 18px 28px;
-}
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin-bottom:14px;
-  flex-wrap:wrap;
-}
-h1{
-  margin:0;
-  color:var(--ink);
-  font-size:30px;
-}
-.top-actions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.btn{
-  border:none;
-  border-radius:12px;
-  padding:10px 16px;
-  font-weight:700;
-  cursor:pointer;
-  font-family:inherit;
-}
-.btn.green{background:var(--green-strong); color:#fff;}
-.btn.gold{background:var(--gold); color:#2e2208;}
-.btn.red{background:var(--red); color:#fff;}
+    .app{
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 24px 18px 48px;
+    }
 
-.entry{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:14px;
-}
-.entry h2{
-  margin:0 0 12px;
-  color:var(--ink);
-  font-size:18px;
-}
-textarea{
-  width:100%;
-  min-height:180px;
-  resize:vertical;
-  border:1px solid #c9d1db;
-  border-radius:10px;
-  padding:12px;
-  font:14px/1.45 Georgia, serif;
-  background:#fff;
-}
-.entry-actions{
-  margin-top:10px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.file-note{
-  color:#5d6673;
-  font-size:14px;
-}
+    .topbar{
+      margin-bottom: 18px;
+    }
 
-.workspace{
-  display:grid;
-  grid-template-columns:300px minmax(420px, 1fr) 310px;
-  gap:14px;
-  align-items:start;
-}
-.panel{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:16px;
-}
-.panel.green-panel{
-  background:var(--green-panel);
-  border-color:#bdd7c5;
-}
-.panel h3{
-  margin:0 0 12px;
-  color:var(--ink);
-  font-size:18px;
-}
-.field{margin-bottom:14px;}
-.field label{
-  display:block;
-  font-weight:700;
-  margin-bottom:6px;
-  color:#31404f;
-}
-select,input[type="number"]{
-  width:100%;
-  padding:10px 12px;
-  border-radius:10px;
-  border:1px solid #cbd4de;
-  font-family:inherit;
-  background:#fff;
-}
-.checkline{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-weight:700;
-  color:#31404f;
-}
-.checkline input{
-  width:auto;
-  transform:scale(1.15);
-}
-.small-note{
-  font-size:12px;
-  color:#425162;
-  line-height:1.45;
-}
+    .title{
+      margin:0 0 10px;
+      font-size: clamp(2rem, 3.6vw, 3.4rem);
+      line-height:1.05;
+      color:#233b83;
+      letter-spacing:.2px;
+    }
 
-.preview-shell{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:16px;
-}
-.preview-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
-  flex-wrap:wrap;
-}
-.preview-head h2{
-  margin:0;
-  color:var(--ink);
-  font-size:20px;
-}
-.navbar{
-  margin-top:10px;
-  background:#eef4f7;
-  border:1px solid #d8e2ea;
-  border-radius:14px;
-  padding:10px 12px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.nav-buttons{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-.muted-chip{
-  background:#eef4f7;
-  color:#304055;
-  border:1px solid #d6e2ea;
-  border-radius:999px;
-  padding:8px 12px;
-  font-weight:700;
-}
-.preview-area{
-  padding:18px 8px 8px;
-  min-height:250px;
-}
-.page-card{
-  width:min(calc(var(--page-width) + 2px), 100%);
-  aspect-ratio:148 / 210;
-  margin:0 auto;
-  background:#fff;
-  border:1px solid #cfd6dd;
-  border-radius:12px;
-  position:relative;
-  overflow:hidden;
-  box-shadow:0 2px 10px rgba(0,0,0,.04);
-}
-.page-inner{
-  position:absolute;
-  inset:0;
-  padding:var(--page-padding-top) var(--page-padding-right) var(--page-padding-bottom) var(--page-padding-left);
-}
-.page-running-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  font-size:8.5pt;
-  color:#5b6673;
-  margin-bottom:6mm;
-}
-.page-body{
-  height:calc(100% - 10mm - var(--safe-bottom));
-  overflow:hidden;
-  font-size:var(--body-size);
-  line-height:var(--line-height);
-  text-align:left;
-}
-.block{
-  display:block;
-  width:100%;
-  max-width:100%;
-  margin:0 0 .44em 0;
-  color:#222;
-  overflow-wrap:anywhere;
-}
-.block.title1{
-  text-align:center;
-  font-size:var(--title1-size);
-  font-weight:700;
-  color:var(--ink);
-  margin:9mm 0 2.2mm;
-}
-.block.title2{
-  text-align:center;
-  font-size:var(--title2-size);
-  font-style:italic;
-  font-weight:700;
-  color:var(--ink);
-  margin:0 0 6mm;
-}
-.block.body{
-  text-indent:var(--indent);
-  text-align:left;
-}
-.block.dialogue{
-  text-align:left;
-  text-indent:calc(var(--dialogue-indent) * -1);
-  padding-left:var(--dialogue-indent);
-  margin-left:var(--dialogue-indent);
-  max-width:calc(100% - var(--dialogue-indent));
-}
-.block.dialogue + .block.body{
-  margin-top:.08em;
-}
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-size:1rem;
+    }
 
-.dropcap-wrap{
-  text-indent:0 !important;
-  overflow:hidden;
-  min-height:2.2em;
-}
-.dropcap{
-  float:left;
-  font-size:2.55em;
-  line-height:.88;
-  font-weight:700;
-  margin:0 .06em 0 0;
-  padding:0;
-}
-.page-number{
-  position:absolute;
-  left:0; right:0; bottom:5mm;
-  text-align:center;
-  font-size:8.5pt;
-  color:#6c7580;
-}
+    .layout{
+      display:grid;
+      grid-template-columns: 340px minmax(520px, 1fr) 280px;
+      gap:18px;
+      align-items:start;
+    }
 
-.measure-box{
-  position:absolute;
-  visibility:hidden;
-  pointer-events:none;
-  left:-99999px;
-  top:0;
-  width:var(--page-width);
-  height:var(--page-height);
-  overflow:hidden;
-  background:#fff;
-}
-.measure-inner{
-  position:absolute;
-  inset:0;
-  padding:var(--page-padding-top) var(--page-padding-right) var(--page-padding-bottom) var(--page-padding-left);
-}
-.measure-body{
-  height:calc(100% - 10mm - var(--safe-bottom));
-  overflow:hidden;
-  font-size:var(--body-size);
-  line-height:var(--line-height);
-  text-align:left;
-}
-@media (max-width:1200px){
-  .workspace{grid-template-columns:1fr;}
-}
-</style>
+    .panel{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .panel.soft{
+      background:var(--panel);
+    }
+
+    .panel-header{
+      padding:18px 18px 10px;
+      border-bottom:1px solid rgba(0,0,0,.05);
+    }
+
+    .panel-header h2,
+    .panel-header h3{
+      margin:0;
+      font-size:1.55rem;
+      color:#24324a;
+    }
+
+    .panel-body{
+      padding:16px 18px 18px;
+    }
+
+    label{
+      display:block;
+      font-weight:700;
+      font-size:1.05rem;
+      margin-bottom:8px;
+      color:#23324b;
+    }
+
+    .field{
+      margin-bottom:16px;
+    }
+
+    textarea,
+    input,
+    select{
+      width:100%;
+      border:1px solid #cfd8e3;
+      background:#fff;
+      border-radius:12px;
+      padding:11px 12px;
+      font-family: inherit;
+      font-size:1rem;
+      color:var(--ink);
+      outline:none;
+    }
+
+    textarea{
+      min-height:250px;
+      resize:vertical;
+      line-height:1.55;
+    }
+
+    input:focus, select:focus, textarea:focus{
+      border-color:#88a9d6;
+      box-shadow:0 0 0 3px rgba(112,149,207,.12);
+    }
+
+    .btn-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+
+    button{
+      border:none;
+      border-radius:12px;
+      padding:11px 16px;
+      font-weight:700;
+      font-size:1rem;
+      cursor:pointer;
+      font-family:inherit;
+      transition:transform .08s ease, filter .12s ease;
+    }
+
+    button:hover{filter:brightness(1.03)}
+    button:active{transform:translateY(1px)}
+
+    .btn-primary{
+      background:var(--green);
+      color:#fff;
+    }
+
+    .btn-secondary{
+      background:var(--accent);
+      color:#fff;
+    }
+
+    .btn-ghost{
+      background:#eaf2f8;
+      color:#24405d;
+    }
+
+    .help{
+      font-size:.95rem;
+      color:var(--muted);
+      margin:0;
+    }
+
+    .preview-wrap{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .preview-toolbar{
+      display:flex;
+      gap:10px;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      padding:14px 16px;
+      background:#edf7fc;
+      border-bottom:1px solid #d6e8f0;
+    }
+
+    .toolbar-left,
+    .toolbar-right{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:9px 14px;
+      border-radius:999px;
+      background:#f3f7fb;
+      border:1px solid #d7e3ec;
+      font-weight:700;
+      color:#314053;
+      min-width:120px;
+    }
+
+    .preview-stage{
+      padding:18px;
+      min-height: calc(100vh - 180px);
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      overflow:auto;
+      background:#f8fbfd;
+    }
+
+    .page{
+      background:#fff;
+      border:1px solid #d9dee7;
+      border-radius:16px;
+      box-shadow:0 14px 30px rgba(30,40,65,.07);
+      padding:22mm 16mm 20mm 16mm;
+      position:relative;
+      overflow:hidden;
+      color:#181818;
+    }
+
+    .page.a5{width:148mm;height:210mm}
+    .page.a4{width:210mm;height:297mm}
+    .page.book1421{width:140mm;height:210mm}
+    .page.book1623{width:160mm;height:230mm}
+    .page.book69{width:152.4mm;height:228.6mm}
+
+    .folio-left,
+    .folio-right{
+      position:absolute;
+      top:10mm;
+      font-size:10pt;
+      color:#5a6573;
+    }
+
+    .folio-left{left:16mm}
+    .folio-right{right:16mm}
+
+    .page-content{
+      width:100%;
+      height:100%;
+      overflow:hidden;
+    }
+
+    .chapter-block{
+      break-inside:avoid;
+    }
+
+    .chapter-marker{
+      font-size:10pt;
+      color:#606b78;
+      margin-bottom:10mm;
+    }
+
+    .chapter-title{
+      text-align:center;
+      font-size: var(--title1-size, 16pt);
+      margin:0;
+      font-weight:700;
+      color:#223a82;
+    }
+
+    .chapter-subtitle{
+      text-align:center;
+      font-size: var(--title2-size, 12pt);
+      font-style:italic;
+      font-weight:700;
+      margin:2mm 0 10mm;
+      color:#223a82;
+    }
+
+    .body-block{
+      font-size: var(--body-size, 12pt);
+      line-height: var(--body-line-height, 1.55);
+      text-align:justify;
+      color:#1b1b1b;
+      hyphens:none;
+      word-break:normal;
+      overflow-wrap:normal;
+      white-space:normal;
+    }
+
+    .paragraph{
+      margin:0 0 .6em 0;
+      text-indent: var(--first-indent, 1cm);
+      text-align:justify;
+    }
+
+    .paragraph.no-indent{
+      text-indent:0;
+    }
+
+    .paragraph.dialogue{
+      text-indent:0;
+      padding-left:0;
+      margin-left:0;
+    }
+
+    .paragraph.center{
+      text-align:center;
+      text-indent:0;
+    }
+
+    .paragraph.dropcap{
+      text-indent:0;
+      min-height:3.1em;
+    }
+
+    .paragraph.dropcap::first-letter{
+      float:left;
+      font-size:3.6em;
+      line-height:.82;
+      padding-right:.12em;
+      padding-top:.05em;
+      font-weight:700;
+      color:#1a223f;
+    }
+
+    .notes{
+      font-size:.97rem;
+      color:#485669;
+      line-height:1.5;
+    }
+
+    .notes h3{
+      margin:0 0 10px;
+      color:#24324a;
+      font-size:1.3rem;
+    }
+
+    .notes p{
+      margin:.3rem 0 .8rem;
+    }
+
+    .muted{
+      color:var(--muted);
+    }
+
+    .hidden-measure{
+      position:absolute;
+      left:-99999px;
+      top:-99999px;
+      visibility:hidden;
+      pointer-events:none;
+      z-index:-1;
+    }
+
+    .status{
+      font-size:.95rem;
+      color:#304155;
+      font-weight:700;
+    }
+
+    @media (max-width: 1180px){
+      .layout{
+        grid-template-columns: 1fr;
+      }
+      .preview-stage{
+        min-height:720px;
+      }
+      .page{
+        transform-origin:top center;
+      }
+    }
+
+    @media (max-width: 760px){
+      .app{
+        padding:16px 10px 28px;
+      }
+      .title{
+        font-size:2.15rem;
+      }
+      .panel-header h2,
+      .panel-header h3{
+        font-size:1.3rem;
+      }
+      .preview-toolbar{
+        padding:12px;
+      }
+      .page{
+        transform:scale(.82);
+        margin:-18px -30px;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="app">
-  <div class="topbar">
-    <h1>Pólux — Diagramador de Prosa</h1>
-    <div class="top-actions">
-      <button class="btn gold" type="button">Retornar</button>
-      <button class="btn red" type="button">Sair do sistema</button>
+  <div class="app">
+    <div class="topbar">
+      <h1 class="title">Pólux — Diagramador de Prosa</h1>
+      <p class="subtitle">Prévia folheável com paginação real, capítulos iniciando em nova página e texto corrido sem “efeito bloco”.</p>
+    </div>
+
+    <div class="layout">
+      <section class="panel soft">
+        <div class="panel-header">
+          <h2>Entrada da obra</h2>
+        </div>
+        <div class="panel-body">
+          <div class="field">
+            <label for="entrada">Texto-base</label>
+            <textarea id="entrada" placeholder="Cole aqui a obra.&#10;&#10;Exemplo:&#10;Capítulo 1&#10;O Degrau e a Mochila&#10;&#10;A praça respirava como um animal ferido.&#10;..."></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button id="btnAtualizar" class="btn-primary">Atualizar prévia</button>
+            <button id="btnExemplo" class="btn-ghost">Carregar exemplo</button>
+            <button id="btnLimpar" class="btn-secondary">Limpar</button>
+          </div>
+
+          <p class="help" style="margin-top:10px;">O texto pode ser colado direto. A prévia usa paginação contínua e tenta evitar sobra ruim de linhas e capítulos “esmagados”.</p>
+
+          <hr style="border:none;border-top:1px solid #d9e5eb;margin:18px 0;">
+
+          <h2 style="margin:0 0 14px;color:#24324a;">Estrutura editorial</h2>
+
+          <div class="field">
+            <label for="formato">Formato</label>
+            <select id="formato">
+              <option value="a5" selected>A5</option>
+              <option value="book1421">14 x 21</option>
+              <option value="book1623">16 x 23</option>
+              <option value="book69">6 x 9</option>
+              <option value="a4">A4</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="recuo">Recuo da 1ª linha</label>
+            <select id="recuo">
+              <option value="0.8">0,8 cm</option>
+              <option value="1.0" selected>1,0 cm</option>
+              <option value="1.25">1,25 cm</option>
+              <option value="1.5">1,5 cm</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="corpo">Tamanho do corpo (pt)</label>
+            <input id="corpo" type="number" min="10" max="18" step="0.5" value="12">
+          </div>
+
+          <div class="field">
+            <label for="titulo1">Tamanho do título 1 (pt)</label>
+            <input id="titulo1" type="number" min="14" max="32" step="0.5" value="16">
+          </div>
+
+          <div class="field">
+            <label for="titulo2">Tamanho do título 2 (pt)</label>
+            <input id="titulo2" type="number" min="10" max="24" step="0.5" value="12">
+          </div>
+
+          <div class="field">
+            <label for="entrelinha">Entrelinha</label>
+            <select id="entrelinha">
+              <option value="1.35">Fechada</option>
+              <option value="1.5" selected>Confortável</option>
+              <option value="1.68">Ampla</option>
+            </select>
+          </div>
+
+          <div class="field" style="margin-bottom:8px;">
+            <label style="display:flex;gap:10px;align-items:center;font-weight:700;cursor:pointer;">
+              <input id="capitular" type="checkbox" checked style="width:auto;transform:scale(1.1);">
+              Ativar letra capitular
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section class="preview-wrap">
+        <div class="preview-toolbar">
+          <div class="toolbar-left">
+            <button id="btnPrev" class="btn-secondary">Página anterior</button>
+            <button id="btnNext" class="btn-secondary">Próxima página</button>
+          </div>
+          <div class="toolbar-right">
+            <div class="pill" id="modoPill">Modo impresso · A5</div>
+            <div class="pill" id="paginaPill">Página 1 de 1</div>
+          </div>
+        </div>
+        <div class="preview-stage" id="previewStage">
+          <div id="pageHost"></div>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="panel-header">
+          <h3>Aparência e notas</h3>
+        </div>
+        <div class="panel-body notes">
+          <p><strong>Leitura do texto</strong><br>Título 1 = “Capítulo X”.<br>Título 2 = linha seguinte em itálico.<br>Parágrafos e diálogos seguem fluxo corrido.</p>
+          <p><strong>Letra capitular</strong><br>Aplicada apenas no primeiro parágrafo do início real do capítulo.</p>
+          <p><strong>Observação</strong><br>Todo capítulo começa em nova página. O motor tenta evitar finais ruins com sobra mínima e não centraliza o miolo.</p>
+          <p class="status" id="statusBox">Pronto.</p>
+        </div>
+      </aside>
     </div>
   </div>
 
-  <section class="entry">
-    <h2>Entrada da obra</h2>
-    <textarea id="sourceText">Capítulo 1
+  <div class="hidden-measure">
+    <div id="measurePage" class="page a5">
+      <div class="folio-left"></div>
+      <div class="folio-right"></div>
+      <div class="page-content" id="measureContent"></div>
+    </div>
+  </div>
+
+  <script>
+    const entrada = document.getElementById('entrada');
+    const formato = document.getElementById('formato');
+    const recuo = document.getElementById('recuo');
+    const corpo = document.getElementById('corpo');
+    const titulo1 = document.getElementById('titulo1');
+    const titulo2 = document.getElementById('titulo2');
+    const entrelinha = document.getElementById('entrelinha');
+    const capitular = document.getElementById('capitular');
+
+    const btnAtualizar = document.getElementById('btnAtualizar');
+    const btnExemplo = document.getElementById('btnExemplo');
+    const btnLimpar = document.getElementById('btnLimpar');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+
+    const pageHost = document.getElementById('pageHost');
+    const measurePage = document.getElementById('measurePage');
+    const measureContent = document.getElementById('measureContent');
+    const modoPill = document.getElementById('modoPill');
+    const paginaPill = document.getElementById('paginaPill');
+    const statusBox = document.getElementById('statusBox');
+
+    let paginas = [];
+    let paginaAtual = 0;
+
+    const exemploTexto = `Capítulo 1
 O Degrau e a Mochila
 
 A praça respirava como um animal ferido.
 O som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.
 Sacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.
-— Você vem ou vai ficar parado aí? — gritou um homem da esquina, ajeitando a camisa no ombro.
 Rovonilson Reigns Bautista aprendeu cedo que o mundo não diminui o passo para ninguém.
+
 Naquela noite, ele tinha nove anos e segurava uma mochila pequena contra o peito.
+A mochila não era pesada.
+O peso vinha de outra parte.
+
+— Você vem ou vai ficar parado aí? — gritou um homem da esquina, ajeitando a camisa no ombro.
+Rovonilson levantou os olhos.
+Não respondeu.
 
 Capítulo 2
 A Primeira Manhã
@@ -353,360 +562,365 @@ A Primeira Manhã
 A manhã revelou o que a noite havia escondido.
 Havia mais gente do que ele imaginava.
 Homens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa, um senhor que dobrava papelão com método quase profissional.
+
+Uma mulher de cabelos grisalhos se aproximou devagar.
+Trazia um copo plástico na mão.
+
 — Primeira vez? — perguntou.
 Ele não respondeu.
 Ela observou a mochila.
+
 — A gente percebe.
-Rovonilson apertou as alças nos ombros.</textarea>
-    <div class="entry-actions">
-      <button id="updateBtn" class="btn green" type="button">Atualizar prévia</button>
-      <span class="file-note">Cole o texto e clique em atualizar prévia.</span>
-    </div>
-  </section>
 
-  <div class="workspace">
-    <aside class="panel green-panel">
-      <h3>Estrutura editorial</h3>
+Capítulo 3
+Regras Invisíveis
 
-      <div class="field">
-        <label for="formatSelect">Formato</label>
-        <select id="formatSelect">
-          <option value="A5" selected>A5</option>
-        </select>
-      </div>
+A terceira noite já não parecia acidente.
+A segunda tinha sido resistência.
+A terceira começou a parecer início de padrão.
 
-      <div class="field">
-        <label for="indentSelect">Recuo da 1ª linha</label>
-        <select id="indentSelect">
-          <option value="0.8cm">0,8 cm</option>
-          <option value="1cm" selected>1,0 cm</option>
-          <option value="1.25cm">1,25 cm</option>
-          <option value="1.5cm">1,5 cm</option>
-        </select>
-      </div>
+A mulher dos cabelos grisalhos se chamava Lúcia.
+Ele descobriu isso ao ouvir outro homem chamá-la.
 
-      <div class="field">
-        <label for="bodySize">Tamanho do corpo (pt)</label>
-        <input id="bodySize" type="number" value="12" min="10" max="18" />
-      </div>
+— Lúcia, guarda isso — disse o senhor do papelão, entregando um pedaço de cobertor.
 
-      <div class="field">
-        <label for="title1Size">Tamanho do título 1 (pt)</label>
-        <input id="title1Size" type="number" value="16" min="14" max="36" />
-      </div>
+Ela organizava as coisas com método silencioso.
+Rovonilson observava tudo como quem estuda para uma prova sem saber o conteúdo.`;
 
-      <div class="field">
-        <label for="title2Size">Tamanho do título 2 (pt)</label>
-        <input id="title2Size" type="number" value="12" min="10" max="30" />
-      </div>
-
-      <div class="field">
-        <label for="lineHeight">Entrelinha</label>
-        <select id="lineHeight">
-          <option value="1.22">Compacta</option>
-          <option value="1.30" selected>Confortável</option>
-          <option value="1.38">Ampla</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label class="checkline">
-          <input id="dropcapToggle" type="checkbox" checked />
-          Ativar letra capitular
-        </label>
-      </div>
-    </aside>
-
-    <main class="preview-shell">
-      <div class="preview-head">
-        <h2>Prévia editorial</h2>
-        <div class="muted-chip">Modo impresso · A5</div>
-      </div>
-
-      <div class="navbar">
-        <div class="nav-buttons">
-          <button class="btn gold" id="prevBtn" type="button">Página anterior</button>
-          <button class="btn gold" id="nextBtn" type="button">Próxima página</button>
-        </div>
-        <div class="muted-chip" id="pageStatus">Página 1 de 1</div>
-      </div>
-
-      <div class="preview-area">
-        <div class="page-card">
-          <div class="page-inner">
-            <div class="page-running-head">
-              <div id="runningLeft">Capítulo 1</div>
-              <div>Modo impresso · A5</div>
-            </div>
-            <div id="pageBody" class="page-body"></div>
-            <div id="pageNumber" class="page-number">1</div>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <aside class="panel green-panel">
-      <h3>Aparência e estilos</h3>
-      <div class="field">
-        <label>Leitura do texto</label>
-        <div class="small-note">Título 1: “Capítulo 1”, “Parte 1” e equivalentes.<br>Título 2: linha seguinte como tema do capítulo.<br>Se não houver “Capítulo”, o primeiro título sozinho também pode abrir o capítulo.</div>
-      </div>
-      <div class="field">
-        <label>Letra capitular</label>
-        <div class="small-note">Agora ela pode ser ligada e desligada. Também só entra quando o primeiro parágrafo do capítulo for comprido o bastante para não abrir buracão.</div>
-      </div>
-      <div class="field">
-        <label>Observação</label>
-        <div class="small-note">Diálogos usam recuo pendente dentro da largura útil da página, sem sair da diagramação.</div>
-      </div>
-    </aside>
-  </div>
-</div>
-
-<div class="measure-box">
-  <div class="measure-inner">
-    <div id="measureBody" class="measure-body"></div>
-  </div>
-</div>
-
-<script>
-const sourceText = document.getElementById('sourceText');
-const updateBtn = document.getElementById('updateBtn');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const pageBody = document.getElementById('pageBody');
-const pageStatus = document.getElementById('pageStatus');
-const pageNumber = document.getElementById('pageNumber');
-const runningLeft = document.getElementById('runningLeft');
-const measureBody = document.getElementById('measureBody');
-
-const indentSelect = document.getElementById('indentSelect');
-const bodySize = document.getElementById('bodySize');
-const title1Size = document.getElementById('title1Size');
-const title2Size = document.getElementById('title2Size');
-const lineHeight = document.getElementById('lineHeight');
-const dropcapToggle = document.getElementById('dropcapToggle');
-
-let pages = [];
-let currentPage = 0;
-let allBlocks = [];
-
-function normalizeText(text){
-  return text.replace(/\r/g,'').replace(/\t/g,' ').replace(/[ ]/g,' ').replace(/\n{3,}/g, '\n\n');
-}
-
-function isTitle1(line){
-  const clean = line.trim();
-  return /^(cap[íi]tulo|capitulo|parte|livro|ato|seção|secao|cena)\s+[\wivxlcdm0-9\-]+/i.test(clean);
-}
-
-function isDialogue(line){
-  return line.trim().startsWith('—');
-}
-
-function looksLikeStandaloneTitle(line){
-  const clean = line.trim();
-  if(!clean) return false;
-  if(isTitle1(clean) || isDialogue(clean)) return false;
-  if(clean.length > 80) return false;
-  if(/[.!?…:]$/.test(clean)) return false;
-  const words = clean.split(/\s+/).length;
-  return words <= 8;
-}
-
-function paragraphLongEnoughForDropcap(text){
-  const clean = text.trim();
-  const words = clean.split(/\s+/).length;
-  return clean.length >= 70 && words >= 10;
-}
-
-function parseBlocks(raw){
-  const text = normalizeText(raw);
-  const lines = text.split('\n');
-  const blocks = [];
-  let chapter = 0;
-  let waitingSubtitle = false;
-
-  for(let i=0;i<lines.length;i++){
-    const line = lines[i].trim();
-    if(!line){
-      waitingSubtitle = false;
-      continue;
+    function aplicarEstilosPagina(el){
+      el.className = `page ${formato.value}`;
+      el.style.setProperty('--body-size', `${corpo.value}pt`);
+      el.style.setProperty('--title1-size', `${titulo1.value}pt`);
+      el.style.setProperty('--title2-size', `${titulo2.value}pt`);
+      el.style.setProperty('--body-line-height', entrelinha.value);
+      el.style.setProperty('--first-indent', `${recuo.value}cm`);
     }
 
-    if(isTitle1(line)){
-      chapter += 1;
-      blocks.push({type:'title1', text:line, chapter});
-      waitingSubtitle = true;
-      continue;
+    function escapeHtml(texto){
+      return texto
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;');
     }
 
-    if(waitingSubtitle && looksLikeStandaloneTitle(line)){
-      blocks.push({type:'title2', text:line, chapter});
-      waitingSubtitle = false;
-      continue;
-    }
-    waitingSubtitle = false;
-
-    if(chapter === 0 && looksLikeStandaloneTitle(line)){
-      chapter = 1;
-      blocks.push({type:'title1', text:line, chapter});
-      continue;
+    function normalizarTexto(texto){
+      return texto
+        .replace(/\r\n/g, '\n')
+        .replace(/\r/g, '\n')
+        .replace(/\t/g, '    ')
+        .replace(/\u00A0/g, ' ')
+        .replace(/[ ]+\n/g, '\n')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
     }
 
-    if(chapter === 0) chapter = 1;
-
-    if(isDialogue(line)){
-      blocks.push({type:'dialogue', text:line, chapter});
-    } else {
-      blocks.push({type:'body', text:line, chapter, dropcap:false});
-    }
-  }
-
-  const firstBodyPerChapter = new Map();
-  for(const block of blocks){
-    if(block.type === 'body' && !firstBodyPerChapter.has(block.chapter)){
-      firstBodyPerChapter.set(block.chapter, block);
-    }
-  }
-
-  for(const block of firstBodyPerChapter.values()){
-    if(dropcapToggle.checked && paragraphLongEnoughForDropcap(block.text)){
-      block.dropcap = true;
-    }
-  }
-
-  return blocks;
-}
-
-function setVars(){
-  document.documentElement.style.setProperty('--indent', indentSelect.value);
-  document.documentElement.style.setProperty('--body-size', bodySize.value + 'pt');
-  document.documentElement.style.setProperty('--title1-size', title1Size.value + 'pt');
-  document.documentElement.style.setProperty('--title2-size', title2Size.value + 'pt');
-  document.documentElement.style.setProperty('--line-height', lineHeight.value);
-}
-
-function escapeHtml(str){
-  return str
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;');
-}
-
-function buildBlockElement(block){
-  const div = document.createElement('div');
-  div.className = 'block ' + block.type;
-
-  if(block.dropcap && block.type === 'body'){
-    div.classList.add('dropcap-wrap');
-    const first = block.text.charAt(0);
-    const rest = block.text.slice(1);
-    div.innerHTML = '<span class="dropcap">' + escapeHtml(first) + '</span>' + escapeHtml(rest);
-  } else {
-    div.textContent = block.text;
-  }
-  return div;
-}
-
-function findRunningHead(pageBlocks){
-  for(const b of pageBlocks){
-    if(b.type === 'title1') return b.text;
-  }
-  for(let i=pageBlocks.length-1;i>=0;i--){
-    if(pageBlocks[i].chapter){
-      const chap = pageBlocks[i].chapter;
-      const title = allBlocks.find(x => x.type === 'title1' && x.chapter === chap);
-      if(title) return title.text;
-    }
-  }
-  return '—';
-}
-
-function fitsCurrentPage(blocks){
-  measureBody.innerHTML = '';
-  blocks.forEach(block => measureBody.appendChild(buildBlockElement(block)));
-  return measureBody.scrollHeight <= measureBody.clientHeight;
-}
-
-function paginate(blocks){
-  pages = [];
-  let current = [];
-  let currentHead = '—';
-
-  for(const block of blocks){
-    if(block.type === 'title1') currentHead = block.text;
-    const trial = [...current, block];
-
-    if(fitsCurrentPage(trial)){
-      current = trial;
-      continue;
+    function isLinhaCapitulo(linha){
+      return /^cap[íi]tulo\s+\d+/i.test(linha.trim());
     }
 
-    if(current.length === 0){
-      pages.push({blocks:[block], runningHead:currentHead});
-      current = [];
-      continue;
+    function isDialogue(par){
+      return /^\s*[—-]/.test(par);
     }
 
-    const last = current[current.length - 1];
-    if(last && (last.type === 'title1' || last.type === 'title2')){
-      const carry = current.pop();
-      pages.push({blocks:[...current], runningHead:findRunningHead(current) || currentHead});
-      current = [carry, block];
-      continue;
+    function quebrarTextoEmBlocos(texto){
+      const limpo = normalizarTexto(texto);
+      if(!limpo) return [];
+
+      const linhas = limpo.split('\n');
+      const blocos = [];
+      let i = 0;
+
+      while(i < linhas.length){
+        const linha = linhas[i].trim();
+
+        if(!linha){
+          i++;
+          continue;
+        }
+
+        if(isLinhaCapitulo(linha)){
+          const titulo = linha;
+          let subtitulo = '';
+          let j = i + 1;
+
+          while(j < linhas.length && !linhas[j].trim()) j++;
+
+          if(j < linhas.length && !isLinhaCapitulo(linhas[j].trim())){
+            const possivelSub = linhas[j].trim();
+            const linhaSeguinte = (linhas[j+1] || '').trim();
+            if(possivelSub && !isDialogue(possivelSub) && linhaSeguinte !== '' && !isLinhaCapitulo(possivelSub)){
+              subtitulo = possivelSub;
+              j++;
+            }
+          }
+
+          blocos.push({ tipo:'chapter', titulo, subtitulo });
+          i = j;
+          continue;
+        }
+
+        let par = linha;
+        let j = i + 1;
+        while(j < linhas.length && linhas[j].trim() && !isLinhaCapitulo(linhas[j].trim())){
+          const atual = linhas[j].trim();
+          if(isDialogue(par) || isDialogue(atual)){
+            break;
+          }
+          par += ' ' + atual;
+          j++;
+        }
+
+        blocos.push({
+          tipo:'p',
+          texto:par,
+          dialogue:isDialogue(par)
+        });
+        i = j;
+      }
+
+      return blocos;
     }
 
-    pages.push({blocks:[...current], runningHead:findRunningHead(current) || currentHead});
-    current = [block];
-  }
+    function criarElementoParagrafo(bloco, firstOfChapter=false){
+      const p = document.createElement('p');
+      p.className = 'paragraph';
 
-  if(current.length){
-    pages.push({blocks:[...current], runningHead:findRunningHead(current) || currentHead});
-  }
-  if(!pages.length){
-    pages = [{blocks:[], runningHead:'—'}];
-  }
-  currentPage = 0;
-}
+      if(bloco.dialogue) p.classList.add('dialogue');
+      if(firstOfChapter) p.classList.add('no-indent');
+      if(firstOfChapter && capitular.checked && !bloco.dialogue) p.classList.add('dropcap');
 
-function renderPage(index){
-  const page = pages[index] || pages[0];
-  pageBody.innerHTML = '';
-  page.blocks.forEach(block => pageBody.appendChild(buildBlockElement(block)));
-  runningLeft.textContent = page.runningHead || '—';
-  pageNumber.textContent = String(index + 1);
-  pageStatus.textContent = 'Página ' + (index + 1) + ' de ' + pages.length;
-  prevBtn.disabled = index <= 0;
-  nextBtn.disabled = index >= pages.length - 1;
-}
+      p.textContent = bloco.texto;
+      return p;
+    }
 
-function rebuild(){
-  setVars();
-  allBlocks = parseBlocks(sourceText.value);
-  paginate(allBlocks);
-  renderPage(0);
-}
+    function criarCabecalhoCapitulo(bloco){
+      const wrap = document.createElement('div');
+      wrap.className = 'chapter-block';
 
-updateBtn.addEventListener('click', rebuild);
-prevBtn.addEventListener('click', ()=>{
-  if(currentPage > 0){
-    currentPage -= 1;
-    renderPage(currentPage);
-  }
-});
-nextBtn.addEventListener('click', ()=>{
-  if(currentPage < pages.length - 1){
-    currentPage += 1;
-    renderPage(currentPage);
-  }
-});
+      const marker = document.createElement('div');
+      marker.className = 'chapter-marker';
+      marker.textContent = bloco.titulo;
 
-[indentSelect, bodySize, title1Size, title2Size, lineHeight, dropcapToggle].forEach(el=>{
-  el.addEventListener('change', rebuild);
-});
+      const h1 = document.createElement('h2');
+      h1.className = 'chapter-title';
+      h1.textContent = bloco.titulo;
 
-window.addEventListener('load', rebuild);
-</script>
+      const h2 = document.createElement('div');
+      h2.className = 'chapter-subtitle';
+      h2.textContent = bloco.subtitulo || '';
+
+      wrap.appendChild(marker);
+      wrap.appendChild(h1);
+      if(bloco.subtitulo) wrap.appendChild(h2);
+
+      return wrap;
+    }
+
+    function novaPagina(numeroCapituloVisivel){
+      const page = document.createElement('div');
+      aplicarEstilosPagina(page);
+
+      const left = document.createElement('div');
+      left.className = 'folio-left';
+      left.textContent = numeroCapituloVisivel || '';
+
+      const right = document.createElement('div');
+      right.className = 'folio-right';
+      right.textContent = `Modo impresso · ${formato.options[formato.selectedIndex].text}`;
+
+      const content = document.createElement('div');
+      content.className = 'page-content body-block';
+
+      page.appendChild(left);
+      page.appendChild(right);
+      page.appendChild(content);
+
+      return { page, content, left, right };
+    }
+
+    function cabeNoConteudo(content, elemento){
+      content.appendChild(elemento);
+      const ok = content.scrollHeight <= content.clientHeight + 1;
+      if(!ok) content.removeChild(elemento);
+      return ok;
+    }
+
+    function dividirParagrafo(texto, classeBase, firstOfChapter){
+      const palavras = texto.split(/\s+/).filter(Boolean);
+      if(palavras.length <= 1){
+        const p = document.createElement('p');
+        p.className = classeBase + (firstOfChapter ? ' no-indent' : '');
+        if(firstOfChapter && capitular.checked && !classeBase.includes('dialogue')) p.classList.add('dropcap');
+        p.textContent = texto;
+        return [p, null];
+      }
+
+      let corte = Math.floor(palavras.length * 0.72);
+      if(corte < 3) corte = 3;
+      if(corte > palavras.length - 2) corte = palavras.length - 2;
+
+      const parte1 = palavras.slice(0, corte).join(' ');
+      const parte2 = palavras.slice(corte).join(' ');
+
+      const p1 = document.createElement('p');
+      p1.className = classeBase + (firstOfChapter ? ' no-indent' : '');
+      if(firstOfChapter && capitular.checked && !classeBase.includes('dialogue')) p1.classList.add('dropcap');
+      p1.textContent = parte1;
+
+      return [p1, parte2];
+    }
+
+    function paginar(){
+      statusBox.textContent = 'Paginando…';
+      const blocos = quebrarTextoEmBlocos(entrada.value);
+      paginas = [];
+      paginaAtual = 0;
+
+      if(!blocos.length){
+        pageHost.innerHTML = '';
+        const vazia = novaPagina('');
+        vazia.content.innerHTML = '<p class="paragraph no-indent muted">Cole ou carregue um texto para visualizar a paginação.</p>';
+        pageHost.appendChild(vazia.page);
+        paginas.push(vazia.page.outerHTML);
+        atualizarPills();
+        statusBox.textContent = 'Sem texto.';
+        return;
+      }
+
+      measurePage.className = `page ${formato.value}`;
+      aplicarEstilosPagina(measurePage);
+
+      let pagina = novaPagina('');
+      let chapterLabel = '';
+      let firstParagraphOfChapter = false;
+
+      for(let i = 0; i < blocos.length; i++){
+        const bloco = blocos[i];
+
+        if(bloco.tipo === 'chapter'){
+          if(pagina.content.children.length){
+            paginas.push(pagina.page.outerHTML);
+            pagina = novaPagina(bloco.titulo);
+          } else {
+            pagina.left.textContent = bloco.titulo;
+          }
+
+          chapterLabel = bloco.titulo;
+          const cab = criarCabecalhoCapitulo(bloco);
+          pagina.left.textContent = chapterLabel;
+          pagina.content.appendChild(cab);
+          firstParagraphOfChapter = true;
+          continue;
+        }
+
+        const p = criarElementoParagrafo(bloco, firstParagraphOfChapter);
+
+        if(cabeNoConteudo(pagina.content, p)){
+          firstParagraphOfChapter = false;
+          continue;
+        }
+
+        const classeBase = 'paragraph' + (bloco.dialogue ? ' dialogue' : '');
+        const [p1, resto] = dividirParagrafo(bloco.texto, classeBase, firstParagraphOfChapter);
+
+        if(pagina.content.children.length === 0){
+          pagina.content.appendChild(p1);
+          firstParagraphOfChapter = false;
+          if(resto){
+            paginas.push(pagina.page.outerHTML);
+            pagina = novaPagina(chapterLabel);
+            const p2 = criarElementoParagrafo({texto:resto, dialogue:bloco.dialogue}, false);
+            pagina.content.appendChild(p2);
+          }
+          continue;
+        }
+
+        paginas.push(pagina.page.outerHTML);
+        pagina = novaPagina(chapterLabel);
+
+        const novoP = criarElementoParagrafo(bloco, firstParagraphOfChapter);
+        if(cabeNoConteudo(pagina.content, novoP)){
+          firstParagraphOfChapter = false;
+          continue;
+        }
+
+        const [parteCabe, sobra] = dividirParagrafo(bloco.texto, classeBase, firstParagraphOfChapter);
+        pagina.content.appendChild(parteCabe);
+        firstParagraphOfChapter = false;
+
+        if(sobra){
+          paginas.push(pagina.page.outerHTML);
+          pagina = novaPagina(chapterLabel);
+          const sobraEl = criarElementoParagrafo({texto:sobra, dialogue:bloco.dialogue}, false);
+          pagina.content.appendChild(sobraEl);
+        }
+      }
+
+      if(pagina.content.children.length){
+        paginas.push(pagina.page.outerHTML);
+      }
+
+      renderPaginaAtual();
+      statusBox.textContent = `Pronto. ${paginas.length} página(s) gerada(s).`;
+    }
+
+    function renderPaginaAtual(){
+      if(!paginas.length){
+        pageHost.innerHTML = '';
+        atualizarPills();
+        return;
+      }
+      paginaAtual = Math.max(0, Math.min(paginaAtual, paginas.length - 1));
+      pageHost.innerHTML = paginas[paginaAtual];
+      atualizarPills();
+    }
+
+    function atualizarPills(){
+      const nomeFormato = formato.options[formato.selectedIndex].text;
+      modoPill.textContent = `Modo impresso · ${nomeFormato}`;
+      paginaPill.textContent = `Página ${paginas.length ? paginaAtual + 1 : 1} de ${paginas.length || 1}`;
+    }
+
+    btnAtualizar.addEventListener('click', paginar);
+
+    btnExemplo.addEventListener('click', () => {
+      entrada.value = exemploTexto;
+      paginar();
+    });
+
+    btnLimpar.addEventListener('click', () => {
+      entrada.value = '';
+      paginar();
+    });
+
+    btnPrev.addEventListener('click', () => {
+      if(paginaAtual > 0){
+        paginaAtual--;
+        renderPaginaAtual();
+      }
+    });
+
+    btnNext.addEventListener('click', () => {
+      if(paginaAtual < paginas.length - 1){
+        paginaAtual++;
+        renderPaginaAtual();
+      }
+    });
+
+    [formato, recuo, corpo, titulo1, titulo2, entrelinha, capitular].forEach(el => {
+      el.addEventListener('change', paginar);
+      el.addEventListener('input', () => {
+        if(el.tagName === 'INPUT') paginar();
+      });
+    });
+
+    entrada.addEventListener('input', () => {
+      statusBox.textContent = 'Texto alterado. Clique em “Atualizar prévia”.';
+    });
+
+    entrada.value = exemploTexto;
+    paginar();
+  </script>
 </body>
 </html>
