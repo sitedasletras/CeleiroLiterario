@@ -17,10 +17,8 @@
       --green-2:#1F5E3B;
       --green-3:#2A7A4D;
       --shadow:0 10px 28px rgba(0,0,0,.10);
-
       --page-width-px:470px;
       --page-height-px:676px;
-
       --margin-top-px:52px;
       --margin-right-px:42px;
       --margin-bottom-px:54px;
@@ -61,57 +59,12 @@
       position:sticky;
       top:14px;
       align-self:start;
-      transition:all .18s ease;
-    }
-
-    .panel.collapsed{
-      width:74px;
-      min-width:74px;
-      padding:16px 10px;
-      overflow:hidden;
-    }
-
-    .panel.collapsed .panel-inner{
-      display:none;
-    }
-
-    .panel-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:8px;
     }
 
     .panel h2{
       margin:0;
       font-size:2rem;
       line-height:1;
-    }
-
-    .panel-toggle{
-      border:none;
-      background:rgba(255,255,255,.16);
-      color:#fff;
-      border-radius:10px;
-      padding:8px 10px;
-      cursor:pointer;
-      font-weight:700;
-    }
-
-    .collapsed .panel-top{
-      justify-content:center;
-    }
-
-    .collapsed .panel-title-short{
-      display:block;
-      writing-mode:vertical-rl;
-      transform:rotate(180deg);
-      font-weight:700;
-      letter-spacing:.08em;
-    }
-
-    .panel-title-short{
-      display:none;
     }
 
     .card-soft{
@@ -122,16 +75,6 @@
       display:flex;
       flex-direction:column;
       gap:8px;
-    }
-
-    .row{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .row > *{
-      flex:1 1 110px;
     }
 
     .panel label,
@@ -150,6 +93,16 @@
       padding:10px 12px;
       border:1px solid rgba(255,255,255,.14);
       min-height:48px;
+    }
+
+    .row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .row > *{
+      flex:1 1 120px;
     }
 
     .input,.select,.button,.file{
@@ -185,10 +138,6 @@
     .button.secondary{ background:#2f6a49; }
     .button.warn{ background:#8c5e1f; }
     .button.danger{ background:#7a2c2c; }
-    .button.ghost{
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.15);
-    }
 
     .main{
       min-width:0;
@@ -365,7 +314,6 @@
       margin-bottom:16px;
       text-align:center;
       flex:0 0 auto;
-      position:relative;
     }
 
     .chapter-title{
@@ -455,16 +403,8 @@
       color:#617066;
       font-size:1.1rem;
       text-align:center;
-      cursor:pointer;
       user-select:none;
-    }
-
-    .ornament-slot.empty{
-      color:#b7bfb9;
-      font-size:.92rem;
-      border-top:1px dashed #d9e1db;
       margin-top:10px;
-      padding-top:12px;
     }
 
     .page-number{
@@ -504,32 +444,6 @@
       outline:none;
     }
 
-    .inline-editor{
-      width:100%;
-      border:1px solid #c7d2ca;
-      border-radius:10px;
-      padding:8px 10px;
-      font-family:inherit;
-      font-size:inherit;
-      line-height:inherit;
-      color:inherit;
-      background:#fffefb;
-      outline:none;
-    }
-
-    .inline-editor.title-editor{
-      font-size:1.35rem;
-      text-align:center;
-      font-weight:700;
-    }
-
-    .inline-editor.subtitle-editor{
-      font-size:1rem;
-      text-align:center;
-      font-style:italic;
-      color:#5b665f;
-    }
-
     .ghost-measure{
       position:absolute;
       visibility:hidden;
@@ -541,73 +455,7 @@
       z-index:-1;
     }
 
-    @media print{
-      body{ background:#fff; }
-      .panel,
-      .workspace-topbar,
-      .rules-box,
-      .editor-zone,
-      .workspace-controls{
-        display:none !important;
-      }
-      .app{
-        display:block;
-        padding:0;
-      }
-      .main{
-        display:block;
-      }
-      .workspace{
-        background:#fff;
-        border:none;
-        box-shadow:none;
-        padding:0;
-        min-height:auto;
-      }
-      .book-stage{
-        display:block;
-      }
-      .page{
-        width:100%;
-        height:auto;
-        min-height:100vh;
-        max-width:none;
-        box-shadow:none;
-        border:none;
-        page-break-after:always;
-        break-after:page;
-        margin:0;
-      }
-    }
-
-    @media (max-width:1360px){
-      .app{
-        grid-template-columns:74px minmax(320px,1fr) 74px;
-      }
-      .panel{
-        width:74px;
-        min-width:74px;
-        padding:16px 10px;
-      }
-      .panel .panel-inner{
-        display:none;
-      }
-      .panel-title-short{
-        display:block;
-        writing-mode:vertical-rl;
-        transform:rotate(180deg);
-        font-weight:700;
-        letter-spacing:.08em;
-      }
-      .panel-top{
-        justify-content:center;
-      }
-      .panel-toggle{
-        display:none;
-      }
-    }
-
-    @media (max-width:980px){
+    @media (max-width:1200px){
       .app{
         grid-template-columns:1fr;
       }
@@ -615,22 +463,7 @@
         position:relative;
         top:auto;
         min-height:auto;
-        width:auto;
-        min-width:0;
-        padding:14px 12px;
       }
-      .panel .panel-inner{
-        display:block;
-      }
-      .panel-title-short{
-        display:none;
-      }
-      .panel-toggle{
-        display:inline-block;
-      }
-      .left-panel{ order:1; }
-      .main{ order:2; }
-      .right-panel{ order:3; }
     }
 
     @media (max-width:760px){
@@ -638,22 +471,28 @@
         padding:8px;
         gap:8px;
       }
+
       .panel{
         border-radius:18px;
+        padding:14px 12px;
       }
+
       .panel h2{
         font-size:1.55rem;
       }
+
       .workspace,
       .workspace-topbar,
       .rules-box,
       .editor-zone{
         border-radius:18px;
       }
+
       .workspace{
         padding:12px 8px 18px;
         min-height:420px;
       }
+
       .page{
         transform:scale(.92);
         transform-origin:top center;
@@ -663,110 +502,44 @@
 </head>
 <body>
   <div class="app">
-    <aside class="panel left-panel" id="leftPanel">
-      <div class="panel-top">
-        <h2>Pólux</h2>
-        <span class="panel-title-short">Estrutura</span>
-        <button class="panel-toggle" type="button" onclick="togglePanel('left')">◀</button>
+    <aside class="panel">
+      <h2>Pólux</h2>
+
+      <div class="status" id="statusBox">Nenhuma obra carregada ainda.</div>
+
+      <div class="card-soft">
+        <label for="fileInput"><strong>Subir obra</strong></label>
+        <input class="file" type="file" id="fileInput" accept=".txt,.docx" />
       </div>
 
-      <div class="panel-inner">
-        <div class="status" id="statusBox">Nenhuma obra carregada ainda.</div>
+      <div class="card-soft">
+        <label for="bookTitle"><strong>Título da obra</strong></label>
+        <input class="input" id="bookTitle" type="text" placeholder="Opcional" value="" />
+      </div>
 
-        <div class="card-soft">
-          <label for="fileInput"><strong>Subir obra</strong></label>
-          <input class="file" type="file" id="fileInput" accept=".txt,.docx" />
-          <small>TXT e DOCX.</small>
-        </div>
+      <div class="card-soft">
+        <label for="bookSize"><strong>Formato</strong></label>
+        <select class="select" id="bookSize">
+          <option value="16x23">16 x 23 cm</option>
+          <option value="a5">A5</option>
+          <option value="6x9">6 x 9 pol.</option>
+        </select>
+      </div>
 
-        <div class="card-soft">
-          <label for="bookTitle"><strong>Título da obra</strong></label>
-          <input class="input" id="bookTitle" type="text" placeholder="Opcional" value="" />
-        </div>
+      <div class="card-soft">
+        <label for="chapterStartMode"><strong>Abertura de capítulos</strong></label>
+        <select class="select" id="chapterStartMode">
+          <option value="flow">Continuar direto</option>
+          <option value="odd">Começar em página ímpar</option>
+          <option value="page">Reservar 1 página antes</option>
+          <option value="sheet">Reservar 1 folha inteira antes</option>
+        </select>
+      </div>
 
-        <div class="card-soft">
-          <label for="bookSize"><strong>Formato</strong></label>
-          <select class="select" id="bookSize">
-            <option value="16x23">16 x 23 cm</option>
-            <option value="a5">A5</option>
-            <option value="6x9">6 x 9 pol.</option>
-            <option value="custom">Personalizado</option>
-          </select>
-
-          <div class="row" id="customSizeRow" style="display:none;">
-            <div>
-              <label for="customWidth">Largura</label>
-              <input class="input" id="customWidth" type="number" step="0.1" value="16" />
-            </div>
-            <div>
-              <label for="customHeight">Altura</label>
-              <input class="input" id="customHeight" type="number" step="0.1" value="23" />
-            </div>
-          </div>
-        </div>
-
-        <div class="card-soft">
-          <label for="marginMode"><strong>Tipo de margem</strong></label>
-          <select class="select" id="marginMode">
-            <option value="mirror">Espelho</option>
-            <option value="equal">Igual</option>
-            <option value="custom">Personalizada</option>
-          </select>
-
-          <label><strong>Margens (cm)</strong></label>
-          <div class="row">
-            <div>
-              <label for="marginTop">Sup.</label>
-              <input class="input" id="marginTop" type="number" step="0.1" value="2.5" />
-            </div>
-            <div>
-              <label for="marginBottom">Inf.</label>
-              <input class="input" id="marginBottom" type="number" step="0.1" value="2.5" />
-            </div>
-          </div>
-          <div class="row">
-            <div>
-              <label for="marginInside">Int.</label>
-              <input class="input" id="marginInside" type="number" step="0.1" value="3.0" />
-            </div>
-            <div>
-              <label for="marginOutside">Ext.</label>
-              <input class="input" id="marginOutside" type="number" step="0.1" value="2.0" />
-            </div>
-          </div>
-        </div>
-
-        <div class="card-soft">
-          <label for="chapterPatternRule"><strong>Capítulo + subtítulo</strong></label>
-          <select class="select" id="chapterPatternRule">
-            <option value="ask">Perguntar quando detectar</option>
-            <option value="split">Separar automaticamente</option>
-            <option value="keep">Manter tudo em uma linha</option>
-          </select>
-        </div>
-
-        <div class="card-soft">
-          <label for="chapterStartMode"><strong>Abertura de capítulos</strong></label>
-          <select class="select" id="chapterStartMode">
-            <option value="flow">Continuar direto</option>
-            <option value="odd">Começar em página ímpar</option>
-            <option value="page">Reservar 1 página antes</option>
-            <option value="sheet">Reservar 1 folha inteira antes</option>
-          </select>
-        </div>
-
-        <div class="card-soft">
-          <label for="blankPageLabel"><strong>Reserva</strong></label>
-          <select class="select" id="blankPageLabel">
-            <option value="blank">Página em branco</option>
-            <option value="placeholder">Página reservada para imagem futura</option>
-          </select>
-        </div>
-
-        <div class="card-soft">
-          <button class="button" id="renderBtn" type="button">Atualizar prévia</button>
-          <button class="button secondary" id="newBookBtn" type="button">Novo livro</button>
-        </div>
+      <div class="card-soft">
+        <button class="button" id="renderBtn" type="button">Atualizar prévia</button>
+        <button class="button secondary" id="lapidarBtn" type="button">Abrir Motor do Miolo</button>
+        <button class="button secondary" id="newBookBtn" type="button">Novo livro</button>
       </div>
     </aside>
 
@@ -787,20 +560,19 @@
       </div>
 
       <section class="rules-box">
-        <h3>Regras ativas do livro</h3>
-        <p id="rulesSummary">Ainda sem regras aplicadas.</p>
+        <h3>Estado atual</h3>
+        <p id="rulesSummary">Sem lapidação externa ainda.</p>
       </section>
 
       <section class="workspace" id="workspace">
         <div class="workspace-controls">
           <button class="nav-btn" id="prevPageBtn" type="button">← Página anterior</button>
           <button class="nav-btn" id="nextPageBtn" type="button">Próxima página →</button>
-          <button class="nav-btn" id="insertOrnamentBtn" type="button">Inserir ornamento nesta página</button>
         </div>
 
         <div class="empty-state" id="emptyState">
           <h3 style="margin-top:0;">Área central de diagramação</h3>
-          <p style="margin-bottom:0;">Visualização em página única ou livro aberto, com navegação.</p>
+          <p style="margin-bottom:0;">O Motor de Lapidação do Miolo pode ser chamado daqui.</p>
         </div>
 
         <div class="book-stage single" id="bookStage"></div>
@@ -812,80 +584,64 @@
       </section>
     </main>
 
-    <aside class="panel right-panel" id="rightPanel">
-      <div class="panel-top">
-        <h2>Config</h2>
-        <span class="panel-title-short">Configuração</span>
-        <button class="panel-toggle" type="button" onclick="togglePanel('right')">▶</button>
+    <aside class="panel">
+      <h2>Configuração</h2>
+
+      <div class="card-soft">
+        <label for="bodyFont"><strong>Fonte do corpo</strong></label>
+        <select class="select" id="bodyFont">
+          <option value="Georgia">Georgia</option>
+          <option value="'Times New Roman'">Times New Roman</option>
+          <option value="Garamond">Garamond</option>
+        </select>
       </div>
 
-      <div class="panel-inner">
-        <div class="card-soft">
-          <label for="bodyFont"><strong>Fonte do corpo</strong></label>
-          <select class="select" id="bodyFont">
-            <option value="Georgia">Georgia</option>
-            <option value="'Times New Roman'">Times New Roman</option>
-            <option value="Garamond">Garamond</option>
-            <option value="'Libre Baskerville'">Libre Baskerville</option>
-          </select>
-        </div>
+      <div class="card-soft">
+        <label for="fontSize"><strong>Fonte</strong></label>
+        <select class="select" id="fontSize">
+          <option value="0.96">Padrão</option>
+          <option value="0.90">Menor</option>
+          <option value="1.02">Maior</option>
+        </select>
 
-        <div class="card-soft">
-          <label for="fontSize"><strong>Fonte</strong></label>
-          <select class="select" id="fontSize">
-            <option value="0.96">Padrão</option>
-            <option value="0.90">Menor</option>
-            <option value="1.02">Maior</option>
-            <option value="1.08">Mais aberta</option>
-          </select>
+        <label for="lineHeight"><strong>Entrelinha</strong></label>
+        <select class="select" id="lineHeight">
+          <option value="1.52">1.52</option>
+          <option value="1.45">1.45</option>
+          <option value="1.60">1.60</option>
+        </select>
+      </div>
 
-          <label for="lineHeight"><strong>Entrelinha</strong></label>
-          <select class="select" id="lineHeight">
-            <option value="1.52">1.52</option>
-            <option value="1.45">1.45</option>
-            <option value="1.60">1.60</option>
-            <option value="1.70">1.70</option>
-          </select>
-        </div>
+      <div class="card-soft">
+        <label for="paragraphIndent"><strong>Recuo do parágrafo</strong></label>
+        <select class="select" id="paragraphIndent">
+          <option value="1.00">1.00</option>
+          <option value="1.25">1.25</option>
+          <option value="0.80">0.80</option>
+          <option value="0">Sem recuo</option>
+        </select>
 
-        <div class="card-soft">
-          <label for="paragraphIndent"><strong>Recuo do parágrafo</strong></label>
-          <select class="select" id="paragraphIndent">
-            <option value="0.80">Suave</option>
-            <option value="1.00">1.00</option>
-            <option value="1.25">1.25</option>
-            <option value="0">Sem recuo</option>
-          </select>
+        <label for="paragraphGap"><strong>Espaço entre parágrafos</strong></label>
+        <select class="select" id="paragraphGap">
+          <option value="0.20">0.20</option>
+          <option value="0.35">0.35</option>
+          <option value="0.50">0.50</option>
+        </select>
+      </div>
 
-          <label for="paragraphGap"><strong>Espaço entre parágrafos</strong></label>
-          <select class="select" id="paragraphGap">
-            <option value="0.20">0.20</option>
-            <option value="0.35">0.35</option>
-            <option value="0.50">0.50</option>
-            <option value="0.05">0.05</option>
-          </select>
-        </div>
+      <div class="card-soft">
+        <label for="dropcapStyle"><strong>Capitular</strong></label>
+        <select class="select" id="dropcapStyle">
+          <option value="none">Sem capitular</option>
+          <option value="simple">Simples</option>
+          <option value="classic">Clássica</option>
+          <option value="ornamental">Ornamental leve</option>
+        </select>
+      </div>
 
-        <div class="card-soft">
-          <label for="dropcapStyle"><strong>Capitular</strong></label>
-          <select class="select" id="dropcapStyle">
-            <option value="none">Sem capitular</option>
-            <option value="simple">Simples</option>
-            <option value="classic">Clássica</option>
-            <option value="ornamental">Ornamental leve</option>
-          </select>
-
-          <label for="dropcapApply"><strong>Aplicar capitular</strong></label>
-          <select class="select" id="dropcapApply">
-            <option value="all">Em todos os capítulos</option>
-            <option value="first">Somente no primeiro capítulo</option>
-          </select>
-        </div>
-
-        <div class="card-soft">
-          <button class="button warn" id="pdfBtn" type="button">Exportar PDF</button>
-          <button class="button danger" id="finalizeBtn" type="button">Finalizar + limpar</button>
-        </div>
+      <div class="card-soft">
+        <button class="button warn" id="pdfBtn" type="button">Exportar PDF</button>
+        <button class="button danger" id="finalizeBtn" type="button">Finalizar + limpar</button>
       </div>
     </aside>
   </div>
@@ -899,33 +655,22 @@
     const editorText = document.getElementById('editorText');
     const bookTitle = document.getElementById('bookTitle');
     const bookSize = document.getElementById('bookSize');
-    const customWidth = document.getElementById('customWidth');
-    const customHeight = document.getElementById('customHeight');
-    const customSizeRow = document.getElementById('customSizeRow');
-    const marginMode = document.getElementById('marginMode');
-    const marginTop = document.getElementById('marginTop');
-    const marginBottom = document.getElementById('marginBottom');
-    const marginInside = document.getElementById('marginInside');
-    const marginOutside = document.getElementById('marginOutside');
-    const chapterPatternRule = document.getElementById('chapterPatternRule');
     const chapterStartMode = document.getElementById('chapterStartMode');
-    const blankPageLabel = document.getElementById('blankPageLabel');
     const bodyFont = document.getElementById('bodyFont');
     const fontSize = document.getElementById('fontSize');
     const lineHeight = document.getElementById('lineHeight');
     const paragraphIndent = document.getElementById('paragraphIndent');
     const paragraphGap = document.getElementById('paragraphGap');
     const dropcapStyle = document.getElementById('dropcapStyle');
-    const dropcapApply = document.getElementById('dropcapApply');
     const viewMode = document.getElementById('viewMode');
 
     const renderBtn = document.getElementById('renderBtn');
+    const lapidarBtn = document.getElementById('lapidarBtn');
     const newBookBtn = document.getElementById('newBookBtn');
     const pdfBtn = document.getElementById('pdfBtn');
     const finalizeBtn = document.getElementById('finalizeBtn');
     const prevPageBtn = document.getElementById('prevPageBtn');
     const nextPageBtn = document.getElementById('nextPageBtn');
-    const insertOrnamentBtn = document.getElementById('insertOrnamentBtn');
 
     const statusBox = document.getElementById('statusBox');
     const sizePill = document.getElementById('sizePill');
@@ -937,40 +682,27 @@
     const measureRoot = document.getElementById('measureRoot');
 
     let debounceTimer = null;
-    let bookRules = { chapterSplitDecision: null };
     let renderedPages = [];
     let currentPageIndex = 0;
+    let ornamentFromMotor = '';
+    let lapidadorWindow = null;
 
     fileInput.addEventListener('change', handleFileUpload);
     renderBtn.addEventListener('click', renderPreview);
+    lapidarBtn.addEventListener('click', openLapidador);
     newBookBtn.addEventListener('click', resetWorkspace);
     pdfBtn.addEventListener('click', exportPDF);
     finalizeBtn.addEventListener('click', finalizeAndClear);
     prevPageBtn.addEventListener('click', () => stepPage(-1));
     nextPageBtn.addEventListener('click', () => stepPage(1));
-    insertOrnamentBtn.addEventListener('click', insertOrnamentOnCurrentPage);
 
-    [bookTitle, bookSize, customWidth, customHeight, marginMode, marginTop, marginBottom, marginInside, marginOutside,
-     chapterPatternRule, chapterStartMode, blankPageLabel, bodyFont, fontSize, lineHeight,
-     paragraphIndent, paragraphGap, dropcapStyle, dropcapApply, viewMode]
-      .forEach(el => el.addEventListener('change', handleSettingsChange));
+    [bookTitle, bookSize, chapterStartMode, bodyFont, fontSize, lineHeight, paragraphIndent, paragraphGap, dropcapStyle, viewMode]
+      .forEach(el => el.addEventListener('change', renderPreview));
 
     editorText.addEventListener('input', autoRenderSoon);
     editorText.addEventListener('paste', autoRenderSoon);
 
-    function togglePanel(side){
-      const panel = side === 'left' ? document.getElementById('leftPanel') : document.getElementById('rightPanel');
-      panel.classList.toggle('collapsed');
-    }
-
-    function handleSettingsChange(){
-      customSizeRow.style.display = bookSize.value === 'custom' ? 'flex' : 'none';
-
-      if(marginMode.value === 'equal'){
-        marginOutside.value = marginInside.value;
-      }
-      renderPreview();
-    }
+    window.addEventListener('message', receiveFromLapidador);
 
     function autoRenderSoon(){
       clearTimeout(debounceTimer);
@@ -985,51 +717,77 @@
       statusBox.textContent = 'Lendo arquivo: ' + file.name;
 
       try{
-        let text = '';
         if(lower.endsWith('.txt')){
-          text = await file.text();
+          editorText.value = await file.text();
         } else if(lower.endsWith('.docx')){
           const arrayBuffer = await file.arrayBuffer();
           const result = await mammoth.extractRawText({ arrayBuffer });
-          text = result.value || '';
+          editorText.value = result.value || '';
         } else {
           statusBox.textContent = 'Formato não suportado. Use TXT ou DOCX.';
           return;
         }
 
-        editorText.value = normalizeText(text);
         statusBox.textContent = 'Arquivo carregado com sucesso: ' + file.name;
-        inferBookTitleIfNeeded();
         renderPreview();
-      } catch (e){
-        console.error(e);
+      } catch (error){
+        console.error(error);
         statusBox.textContent = 'Erro ao ler arquivo.';
       }
     }
 
-    function inferBookTitleIfNeeded(){
-      const text = normalizeText(editorText.value);
-      if(!text || bookTitle.value.trim()) return;
-      const lines = text.split('\n').map(v => v.trim()).filter(Boolean);
-      if(lines.length && !looksLikeChapterLine(lines[0]) && lines[0].length <= 80){
-        bookTitle.value = lines[0];
-      }
+    function openLapidador(){
+      const url = 'motor_lapidacao_miolo.html';
+      lapidadorWindow = window.open(url, '_blank', 'width=1500,height=950');
+
+      const payload = {
+        type: 'lapidar-miolo-load',
+        sourceApp: 'Polux',
+        text: editorText.value || '',
+        compositionMode: 'prose',
+        hyphenationMode: 'light',
+        paragraphIndent: paragraphIndent.value,
+        paragraphGap: paragraphGap.value,
+        ornament: ornamentFromMotor
+      };
+
+      const sendPayload = () => {
+        try{
+          if(lapidadorWindow && !lapidadorWindow.closed){
+            lapidadorWindow.postMessage(payload, '*');
+            statusBox.textContent = 'Texto enviado ao Motor de Lapidação do Miolo.';
+          }
+        } catch (error){
+          console.error(error);
+        }
+      };
+
+      setTimeout(sendPayload, 700);
+    }
+
+    function receiveFromLapidador(event){
+      const data = event.data;
+      if(!data || typeof data !== 'object') return;
+      if(data.type !== 'lapidar-miolo-result') return;
+
+      editorText.value = data.text || editorText.value;
+      ornamentFromMotor = data.ornament || '';
+      if(data.paragraphIndent) paragraphIndent.value = data.paragraphIndent;
+      if(data.paragraphGap) paragraphGap.value = data.paragraphGap;
+
+      rulesSummary.textContent =
+        `Texto voltou do Motor do Miolo • Quebras suspeitas: ${(data.issues || []).length} • Ornamento: ${ornamentFromMotor || 'nenhum'}`;
+
+      statusBox.textContent = 'Texto refinado recebido do Motor de Lapidação do Miolo.';
+      renderPreview();
     }
 
     function normalizeText(text){
       return String(text || '')
         .replace(/\r\n/g, '\n')
         .replace(/\r/g, '\n')
-        .replace(/\t/g, '    ')
         .replace(/\n{3,}/g, '\n\n')
         .trim();
-    }
-
-    function looksLikeChapterLine(line){
-      const t = String(line || '').trim();
-      return /^(cap[ií]tulo\s+\d+|cap[ií]tulo\s+[ivxlcdm]+|parte\s+\d+|pr[oó]logo|ep[ií]logo)$/i.test(t)
-        || /^(cap[ií]tulo\s+\d+\s*[-—:]\s*.+)$/i.test(t)
-        || /^(cap[ií]tulo\s+[ivxlcdm]+\s*[-—:]\s*.+)$/i.test(t);
     }
 
     function splitParagraphs(text){
@@ -1039,153 +797,122 @@
         .filter(Boolean);
     }
 
-    function analyzeChapterPattern(paragraphs){
-      const candidates = paragraphs.filter(p =>
-        /^(cap[ií]tulo\s+\d+|cap[ií]tulo\s+[ivxlcdm]+)\s*[-—:]\s*.+$/i.test(p.trim())
-      );
-
-      if(candidates.length >= 2 && chapterPatternRule.value === 'ask' && bookRules.chapterSplitDecision === null){
-        const yes = confirm('Detectei padrão tipo "Capítulo 1 - À noite". Deseja separar automaticamente em título e subtítulo para o livro inteiro?');
-        bookRules.chapterSplitDecision = yes ? 'split' : 'keep';
-      } else if(chapterPatternRule.value === 'split'){
-        bookRules.chapterSplitDecision = 'split';
-      } else if(chapterPatternRule.value === 'keep'){
-        bookRules.chapterSplitDecision = 'keep';
-      }
-    }
-
-    function parseStructure(text){
-      const paragraphs = splitParagraphs(text);
-      analyzeChapterPattern(paragraphs);
-
-      const blocks = [];
-      let startedBook = false;
-
-      for(let i = 0; i < paragraphs.length; i++){
-        const raw = paragraphs[i];
-        const next = paragraphs[i + 1] || '';
-        const trimmed = raw.trim();
-
-        const splitPattern = /^(cap[ií]tulo\s+\d+|cap[ií]tulo\s+[ivxlcdm]+)\s*[-—:]\s*(.+)$/i;
-        const exactChapter = /^(cap[ií]tulo\s+\d+|cap[ií]tulo\s+[ivxlcdm]+|parte\s+\d+|pr[oó]logo|ep[ií]logo)$/i;
-
-        if(bookRules.chapterSplitDecision === 'split' && splitPattern.test(trimmed)){
-          const m = trimmed.match(splitPattern);
-          blocks.push({ type:'chapter', title:m[1], subtitle:m[2] });
-          startedBook = true;
-          continue;
-        }
-
-        if(exactChapter.test(trimmed)){
-          let subtitle = '';
-          if(next && !looksLikeParagraphAsBody(next) && !looksLikeChapterLine(next)){
-            subtitle = next.trim();
-            i += 1;
-          }
-          blocks.push({ type:'chapter', title:trimmed, subtitle });
-          startedBook = true;
-          continue;
-        }
-
-        blocks.push({
-          type: startedBook ? 'body' : 'front',
-          text: trimmed
-        });
-      }
-
-      return mergeBlocks(blocks);
-    }
-
-    function looksLikeParagraphAsBody(text){
-      const t = String(text || '').trim();
-      if(!t) return false;
-      if(t.length > 90) return true;
-      if(/[.!?…]$/.test(t)) return true;
-      return false;
-    }
-
-    function mergeBlocks(blocks){
-      const merged = [];
-      for(const block of blocks){
-        const last = merged[merged.length - 1];
-        if(block.type === 'body' && last && last.type === 'body'){
-          last.text += '\n\n' + block.text;
-        } else if(block.type === 'front' && last && last.type === 'front'){
-          last.text += '\n\n' + block.text;
-        } else {
-          merged.push({...block});
-        }
-      }
-      return merged;
-    }
-
     function getPageSizeCm(){
       if(bookSize.value === '16x23') return { w:16, h:23, label:'16 × 23 cm' };
       if(bookSize.value === 'a5') return { w:14.8, h:21, label:'A5' };
-      if(bookSize.value === '6x9') return { w:15.24, h:22.86, label:'6 × 9 pol.' };
-      return {
-        w: Number(customWidth.value) || 16,
-        h: Number(customHeight.value) || 23,
-        label: `${Number(customWidth.value)||16} × ${Number(customHeight.value)||23} cm`
-      };
+      return { w:15.24, h:22.86, label:'6 × 9 pol.' };
     }
 
-    function getMarginsCm(pageNumber){
-      const top = Number(marginTop.value) || 2.5;
-      const bottom = Number(marginBottom.value) || 2.5;
-      const inside = Number(marginInside.value) || 3.0;
-      const outside = Number(marginOutside.value) || 2.0;
-
-      if(marginMode.value === 'equal'){
-        return { top, bottom, left: inside, right: inside };
-      }
-
-      if(marginMode.value === 'custom'){
-        return { top, bottom, left: inside, right: outside };
-      }
-
-      // espelho
-      const isOdd = pageNumber % 2 === 1;
-      return {
-        top,
-        bottom,
-        left: isOdd ? inside : outside,
-        right: isOdd ? outside : inside
-      };
-    }
-
-    function applyPageMetricsExample(){
+    function applyMetrics(){
       const size = getPageSizeCm();
-      const widthPx = size.w * CM_TO_PX;
-      const heightPx = size.h * CM_TO_PX;
-      document.documentElement.style.setProperty('--page-width-px', `${widthPx}px`);
-      document.documentElement.style.setProperty('--page-height-px', `${heightPx}px`);
+      document.documentElement.style.setProperty('--page-width-px', `${size.w * CM_TO_PX}px`);
+      document.documentElement.style.setProperty('--page-height-px', `${size.h * CM_TO_PX}px`);
       sizePill.innerHTML = `<strong>${size.label}</strong>`;
       return size;
     }
 
-    function createMeasurementPage(pageData, widthPx, heightPx, pageNumber){
-      const page = document.createElement('div');
-      page.className = 'page';
-      page.style.width = widthPx + 'px';
-      page.style.height = heightPx + 'px';
+    function createPage(textBlocks, chapter, ornament){
+      return {
+        kind:'text',
+        chapterOpening: !!chapter,
+        chapterTitle: chapter ? chapter.title : '',
+        chapterSubtitle: chapter ? chapter.subtitle : '',
+        paragraphs: textBlocks,
+        ornament: ornament || ''
+      };
+    }
 
-      const margins = getMarginsCm(pageNumber);
-      page.style.setProperty('--margin-top-px', `${margins.top * CM_TO_PX}px`);
-      page.style.setProperty('--margin-bottom-px', `${margins.bottom * CM_TO_PX}px`);
-      page.style.setProperty('--margin-left-px', `${margins.left * CM_TO_PX}px`);
-      page.style.setProperty('--margin-right-px', `${margins.right * CM_TO_PX}px`);
+    function parseStructure(text){
+      const paragraphs = splitParagraphs(text);
+      const blocks = [];
+      let pendingChapter = null;
+
+      paragraphs.forEach((p) => {
+        if(/^cap[ií]tulo/i.test(p)){
+          pendingChapter = { title:p, subtitle:'' };
+          return;
+        }
+
+        if(pendingChapter && p.length < 90 && !/[.!?…]$/.test(p)){
+          pendingChapter.subtitle = p;
+          return;
+        }
+
+        blocks.push({
+          chapter: pendingChapter,
+          text: p
+        });
+        pendingChapter = null;
+      });
+
+      return blocks;
+    }
+
+    function paginate(text){
+      const structure = parseStructure(text);
+      const pages = [];
+      const maxChars = 1500;
+
+      structure.forEach((block, idx) => {
+        if(block.chapter){
+          if(chapterStartMode.value === 'page'){
+            pages.push({ kind:'blank' });
+          } else if(chapterStartMode.value === 'sheet'){
+            pages.push({ kind:'blank' });
+            pages.push({ kind:'blank' });
+          } else if(chapterStartMode.value === 'odd' && (pages.length + 1) % 2 === 0){
+            pages.push({ kind:'blank' });
+          }
+        }
+
+        const paragraphs = splitParagraphs(block.text);
+        let buffer = [];
+        let count = 0;
+        let firstPageOfChapter = true;
+
+        paragraphs.forEach((p) => {
+          if(count + p.length > maxChars && buffer.length){
+            pages.push(createPage(buffer, firstPageOfChapter ? block.chapter : null, firstPageOfChapter ? ornamentFromMotor : ''));
+            buffer = [];
+            count = 0;
+            firstPageOfChapter = false;
+          }
+          buffer.push(p);
+          count += p.length;
+        });
+
+        if(buffer.length){
+          pages.push(createPage(buffer, firstPageOfChapter ? block.chapter : null, firstPageOfChapter ? ornamentFromMotor : ''));
+        }
+      });
+
+      return pages;
+    }
+
+    function renderOnePage(pageData, index){
+      const page = document.createElement('article');
+      page.className = 'page';
+
+      if(pageData.kind === 'blank'){
+        page.classList.add('blank-page');
+        const holder = document.createElement('div');
+        holder.className = 'page-image-placeholder';
+        holder.textContent = 'Página reservada';
+        page.appendChild(holder);
+
+        const number = document.createElement('div');
+        number.className = 'page-number';
+        number.textContent = 'Página ' + (index + 1);
+        page.appendChild(number);
+        return page;
+      }
 
       const inner = document.createElement('div');
       inner.className = 'page-inner';
 
-      const indentValue = Number(paragraphIndent.value);
-      const gapValue = Number(paragraphGap.value);
-
-      page.style.setProperty('--paragraph-indent', indentValue + 'em');
-      page.style.setProperty('--paragraph-gap', gapValue + 'em');
-
-      if(indentValue > 0) page.classList.add('paragraph-indent');
+      if(Number(paragraphIndent.value) > 0){
+        page.classList.add('paragraph-indent');
+      }
 
       if(pageData.chapterOpening){
         const header = document.createElement('div');
@@ -1211,24 +938,19 @@
       content.style.fontFamily = bodyFont.value;
       content.style.fontSize = fontSize.value + 'rem';
       content.style.lineHeight = lineHeight.value;
+      content.style.setProperty('--paragraph-indent', paragraphIndent.value + 'em');
+      content.style.setProperty('--paragraph-gap', paragraphGap.value + 'em');
 
-      const shouldDropcap =
-        dropcapStyle.value !== 'none' &&
-        (
-          (dropcapApply.value === 'all' && pageData.chapterOpening) ||
-          (dropcapApply.value === 'first' && pageData.chapterOpening && pageData.chapterIndex === 1)
-        );
-
-      if(shouldDropcap){
-        if(dropcapStyle.value === 'simple') page.classList.add('dropcap-simple');
-        if(dropcapStyle.value === 'classic') page.classList.add('dropcap-classic');
-        if(dropcapStyle.value === 'ornamental') page.classList.add('dropcap-ornamental');
-      }
+      if(dropcapStyle.value === 'simple') page.classList.add('dropcap-simple');
+      if(dropcapStyle.value === 'classic') page.classList.add('dropcap-classic');
+      if(dropcapStyle.value === 'ornamental') page.classList.add('dropcap-ornamental');
 
       pageData.paragraphs.forEach((para, idx) => {
         const p = document.createElement('p');
         p.textContent = para;
-        if(idx === 0 && pageData.chapterOpening) p.classList.add('first-para');
+        if(idx === 0 && pageData.chapterOpening){
+          p.classList.add('first-para');
+        }
         content.appendChild(p);
       });
 
@@ -1241,270 +963,10 @@
 
       inner.appendChild(content);
       page.appendChild(inner);
-      return { page, inner, content };
-    }
-
-    function paginateByMeasuredHeight(structure){
-      const size = getPageSizeCm();
-      const widthPx = size.w * CM_TO_PX;
-      const heightPx = size.h * CM_TO_PX;
-
-      const pages = [];
-      let chapterIndex = 0;
-
-      function addBlankPage(){
-        pages.push({ kind: blankPageLabel.value === 'placeholder' ? 'placeholder' : 'blank' });
-      }
-
-      function nextPageNumber(){
-        return pages.length + 1;
-      }
-
-      function ensureNextChapterOnOdd(){
-        const next = nextPageNumber();
-        if(next % 2 === 0){
-          pages.push({ kind:'blank' });
-        }
-      }
-
-      for(let i = 0; i < structure.length; i++){
-        const block = structure[i];
-
-        if(block.type === 'chapter'){
-          chapterIndex += 1;
-
-          if(chapterStartMode.value === 'page'){
-            addBlankPage();
-          } else if(chapterStartMode.value === 'sheet'){
-            // sempre deixa 2 páginas reservadas e próximo capítulo começando em ímpar
-            const next = nextPageNumber();
-            if(next % 2 === 1){
-              addBlankPage();
-              addBlankPage();
-            } else {
-              addBlankPage();
-              addBlankPage();
-              ensureNextChapterOnOdd();
-            }
-          } else if(chapterStartMode.value === 'odd'){
-            ensureNextChapterOnOdd();
-          }
-
-          const pageData = {
-            kind:'text',
-            chapterOpening:true,
-            chapterTitle:block.title || '',
-            chapterSubtitle:block.subtitle || '',
-            paragraphs:[],
-            chapterIndex,
-            ornament:''
-          };
-
-          const { page, content } = createMeasurementPage(pageData, widthPx, heightPx, nextPageNumber());
-          measureRoot.innerHTML = '';
-          measureRoot.appendChild(page);
-
-          let nextBodyBlock = structure[i + 1] && structure[i + 1].type === 'body' ? structure[i + 1] : null;
-          let consumedParagraphs = 0;
-
-          if(nextBodyBlock){
-            const paras = splitParagraphs(nextBodyBlock.text || '');
-
-            for(let p = 0; p < paras.length; p++){
-              const testP = document.createElement('p');
-              testP.textContent = paras[p];
-              if(pageData.paragraphs.length === 0) testP.classList.add('first-para');
-              content.appendChild(testP);
-
-              if(content.scrollHeight > content.clientHeight){
-                content.removeChild(testP);
-                break;
-              } else {
-                pageData.paragraphs.push(paras[p]);
-                consumedParagraphs++;
-              }
-            }
-
-            // controle simples de viúva/órfã
-            if(pageData.paragraphs.length === 1 && paras.length - consumedParagraphs > 0){
-              const moved = pageData.paragraphs.pop();
-              consumedParagraphs--;
-              nextBodyBlock.text = [moved].concat(paras.slice(consumedParagraphs + 1)).join('\n\n');
-            } else if(consumedParagraphs > 0){
-              const remaining = paras.slice(consumedParagraphs);
-              nextBodyBlock.text = remaining.join('\n\n');
-              if(!nextBodyBlock.text.trim()){
-                structure.splice(i + 1, 1);
-              }
-            }
-          }
-
-          pages.push(pageData);
-          continue;
-        }
-
-        if(block.type === 'front' || block.type === 'body'){
-          let remainingParagraphs = splitParagraphs(block.text || '');
-
-          while(remainingParagraphs.length){
-            const pageData = {
-              kind:'text',
-              chapterOpening:false,
-              chapterTitle:'',
-              chapterSubtitle:'',
-              paragraphs:[],
-              chapterIndex,
-              ornament:''
-            };
-
-            const { page, content } = createMeasurementPage(pageData, widthPx, heightPx, nextPageNumber());
-            measureRoot.innerHTML = '';
-            measureRoot.appendChild(page);
-
-            let consumed = 0;
-
-            for(let p = 0; p < remainingParagraphs.length; p++){
-              const testP = document.createElement('p');
-              testP.textContent = remainingParagraphs[p];
-              content.appendChild(testP);
-
-              if(content.scrollHeight > content.clientHeight){
-                content.removeChild(testP);
-                break;
-              } else {
-                pageData.paragraphs.push(remainingParagraphs[p]);
-                consumed++;
-              }
-            }
-
-            // órfã/viúva simples
-            if(pageData.paragraphs.length === 1 && remainingParagraphs.length > 1){
-              pageData.paragraphs = [];
-              consumed = 0;
-            }
-
-            if(consumed === 0){
-              pageData.paragraphs.push(remainingParagraphs.shift());
-            } else {
-              remainingParagraphs = remainingParagraphs.slice(consumed);
-            }
-
-            pages.push(pageData);
-          }
-        }
-      }
-
-      measureRoot.innerHTML = '';
-      return pages;
-    }
-
-    function renderSinglePage(pageData, index){
-      const pageNumber = index + 1;
-      const page = document.createElement('article');
-      page.className = 'page';
-
-      const margins = getMarginsCm(pageNumber);
-      page.style.setProperty('--margin-top-px', `${margins.top * CM_TO_PX}px`);
-      page.style.setProperty('--margin-bottom-px', `${margins.bottom * CM_TO_PX}px`);
-      page.style.setProperty('--margin-left-px', `${margins.left * CM_TO_PX}px`);
-      page.style.setProperty('--margin-right-px', `${margins.right * CM_TO_PX}px`);
-
-      if(pageData.kind === 'blank' || pageData.kind === 'placeholder'){
-        page.classList.add('blank-page');
-        const holder = document.createElement('div');
-        holder.className = 'page-image-placeholder';
-        holder.textContent = pageData.kind === 'placeholder'
-          ? 'Página reservada para imagem futura'
-          : 'Página em branco reservada';
-        page.appendChild(holder);
-
-        const number = document.createElement('div');
-        number.className = 'page-number';
-        number.textContent = 'Página ' + pageNumber;
-        page.appendChild(number);
-        return page;
-      }
-
-      const inner = document.createElement('div');
-      inner.className = 'page-inner';
-
-      const indentValue = Number(paragraphIndent.value);
-      const gapValue = Number(paragraphGap.value);
-
-      page.style.setProperty('--paragraph-indent', indentValue + 'em');
-      page.style.setProperty('--paragraph-gap', gapValue + 'em');
-
-      if(indentValue > 0) page.classList.add('paragraph-indent');
-
-      if(pageData.chapterOpening){
-        const header = document.createElement('div');
-        header.className = 'chapter-header';
-
-        const title = document.createElement('h1');
-        title.className = 'chapter-title';
-        title.textContent = pageData.chapterTitle || '';
-        title.dataset.role = 'chapter-title';
-        title.dataset.pageIndex = index;
-        title.addEventListener('dblclick', startInlineEdit);
-        header.appendChild(title);
-
-        if(pageData.chapterSubtitle){
-          const subtitle = document.createElement('div');
-          subtitle.className = 'chapter-subtitle';
-          subtitle.textContent = pageData.chapterSubtitle;
-          subtitle.dataset.role = 'chapter-subtitle';
-          subtitle.dataset.pageIndex = index;
-          subtitle.addEventListener('dblclick', startInlineEdit);
-          header.appendChild(subtitle);
-        }
-
-        inner.appendChild(header);
-      }
-
-      const content = document.createElement('div');
-      content.className = 'page-content';
-      content.style.fontFamily = bodyFont.value;
-      content.style.fontSize = fontSize.value + 'rem';
-      content.style.lineHeight = lineHeight.value;
-
-      const shouldDropcap =
-        dropcapStyle.value !== 'none' &&
-        (
-          (dropcapApply.value === 'all' && pageData.chapterOpening) ||
-          (dropcapApply.value === 'first' && pageData.chapterOpening && pageData.chapterIndex === 1)
-        );
-
-      if(shouldDropcap){
-        if(dropcapStyle.value === 'simple') page.classList.add('dropcap-simple');
-        if(dropcapStyle.value === 'classic') page.classList.add('dropcap-classic');
-        if(dropcapStyle.value === 'ornamental') page.classList.add('dropcap-ornamental');
-      }
-
-      pageData.paragraphs.forEach((para, idx) => {
-        const p = document.createElement('p');
-        p.textContent = para;
-        p.dataset.role = 'paragraph';
-        p.dataset.pageIndex = index;
-        p.dataset.paragraphIndex = idx;
-        p.addEventListener('dblclick', startInlineEdit);
-        if(idx === 0 && pageData.chapterOpening) p.classList.add('first-para');
-        content.appendChild(p);
-      });
-
-      const ornament = document.createElement('div');
-      ornament.className = 'ornament-slot ' + (pageData.ornament ? '' : 'empty');
-      ornament.textContent = pageData.ornament || 'Duplo clique para inserir ornamento';
-      ornament.dataset.role = 'ornament';
-      ornament.dataset.pageIndex = index;
-      ornament.addEventListener('dblclick', startInlineEdit);
-      content.appendChild(ornament);
-
-      inner.appendChild(content);
-      page.appendChild(inner);
 
       const number = document.createElement('div');
       number.className = 'page-number';
-      number.textContent = 'Página ' + pageNumber;
+      number.textContent = 'Página ' + (index + 1);
       page.appendChild(number);
 
       return page;
@@ -1524,19 +986,18 @@
 
       if(viewMode.value === 'single'){
         bookStage.classList.add('single');
-        const safeIndex = Math.max(0, Math.min(currentPageIndex, renderedPages.length - 1));
-        currentPageIndex = safeIndex;
-        bookStage.appendChild(renderSinglePage(renderedPages[safeIndex], safeIndex));
-        pageViewPill.textContent = `Página ${safeIndex + 1} de ${renderedPages.length}`;
-        prevPageBtn.disabled = safeIndex <= 0;
-        nextPageBtn.disabled = safeIndex >= renderedPages.length - 1;
+        currentPageIndex = Math.max(0, Math.min(currentPageIndex, renderedPages.length - 1));
+        bookStage.appendChild(renderOnePage(renderedPages[currentPageIndex], currentPageIndex));
+        pageViewPill.textContent = `Página ${currentPageIndex + 1} de ${renderedPages.length}`;
+        prevPageBtn.disabled = currentPageIndex <= 0;
+        nextPageBtn.disabled = currentPageIndex >= renderedPages.length - 1;
       } else {
         bookStage.classList.remove('single');
         const leftIndex = Math.max(0, currentPageIndex - (currentPageIndex % 2));
         currentPageIndex = leftIndex;
-        bookStage.appendChild(renderSinglePage(renderedPages[leftIndex], leftIndex));
+        bookStage.appendChild(renderOnePage(renderedPages[leftIndex], leftIndex));
         if(renderedPages[leftIndex + 1]){
-          bookStage.appendChild(renderSinglePage(renderedPages[leftIndex + 1], leftIndex + 1));
+          bookStage.appendChild(renderOnePage(renderedPages[leftIndex + 1], leftIndex + 1));
         }
         pageViewPill.textContent = `Páginas ${leftIndex + 1}${renderedPages[leftIndex + 1] ? ' e ' + (leftIndex + 2) : ''} de ${renderedPages.length}`;
         prevPageBtn.disabled = leftIndex <= 0;
@@ -1556,86 +1017,9 @@
       renderCurrentView();
     }
 
-    function insertOrnamentOnCurrentPage(){
-      if(!renderedPages.length) return;
-      const idx = currentPageIndex;
-      if(!renderedPages[idx] || renderedPages[idx].kind !== 'text') return;
-
-      const options = ['❦','✶','— ✦ —','✧ ✧ ✧','✤'];
-      const current = renderedPages[idx].ornament || '';
-      const promptText = 'Digite um ornamento ou deixe um destes:\n' + options.join('   ');
-      const value = prompt(promptText, current || '❦');
-      if(value === null) return;
-      renderedPages[idx].ornament = value.trim();
-      renderCurrentView();
-    }
-
-    function startInlineEdit(event){
-      const el = event.currentTarget;
-      if(el.querySelector('textarea, input')) return;
-
-      const role = el.dataset.role;
-      const pageIndex = Number(el.dataset.pageIndex);
-      const paragraphIndex = el.dataset.paragraphIndex !== undefined ? Number(el.dataset.paragraphIndex) : null;
-
-      let editor;
-      if(role === 'paragraph'){
-        editor = document.createElement('textarea');
-        editor.className = 'inline-editor';
-        editor.style.minHeight = '90px';
-        editor.value = el.textContent;
-      } else {
-        editor = document.createElement('input');
-        editor.type = 'text';
-        editor.className = 'inline-editor ' + (role === 'chapter-title' ? 'title-editor' : role === 'chapter-subtitle' ? 'subtitle-editor' : '');
-        editor.value = role === 'ornament' && el.classList.contains('empty') ? '' : el.textContent;
-      }
-
-      const oldValue = el.textContent;
-      el.innerHTML = '';
-      el.appendChild(editor);
-      editor.focus();
-      if(editor.select) editor.select();
-
-      function finish(save){
-        const model = renderedPages[pageIndex];
-        if(save && model){
-          const newValue = editor.value.trim();
-          if(role === 'chapter-title'){
-            model.chapterTitle = newValue;
-          } else if(role === 'chapter-subtitle'){
-            model.chapterSubtitle = newValue;
-          } else if(role === 'paragraph' && paragraphIndex !== null){
-            model.paragraphs[paragraphIndex] = newValue;
-          } else if(role === 'ornament'){
-            model.ornament = newValue;
-          }
-        }
-        renderCurrentView();
-      }
-
-      editor.addEventListener('keydown', (e) => {
-        if(role !== 'paragraph' && e.key === 'Enter'){
-          e.preventDefault();
-          finish(true);
-        }
-        if(e.key === 'Escape'){
-          e.preventDefault();
-          editor.value = oldValue;
-          finish(false);
-        }
-        if(role === 'paragraph' && e.key === 'Enter' && e.ctrlKey){
-          e.preventDefault();
-          finish(true);
-        }
-      });
-
-      editor.addEventListener('blur', () => finish(true));
-    }
-
     function renderPreview(){
       const text = normalizeText(editorText.value);
-      const size = applyPageMetricsExample();
+      applyMetrics();
 
       if(!text){
         renderedPages = [];
@@ -1643,44 +1027,24 @@
         bookStage.innerHTML = '';
         emptyState.classList.remove('hidden');
         statusBox.textContent = 'Sem texto para diagramar ainda.';
-        updateRulesSummary();
+        rulesSummary.textContent = 'Sem lapidação externa ainda.';
         renderCurrentView();
         return;
       }
 
-      const structure = parseStructure(text);
-      renderedPages = paginateByMeasuredHeight(structure);
+      renderedPages = paginate(text);
       currentPageIndex = 0;
       statusBox.textContent = 'Prévia atualizada com sucesso.';
-      updateRulesSummary();
+      if(!rulesSummary.textContent || rulesSummary.textContent === 'Sem lapidação externa ainda.'){
+        rulesSummary.textContent = ornamentFromMotor
+          ? `Ornamento vindo do motor: ${ornamentFromMotor}`
+          : 'Sem lapidação externa ainda.';
+      }
       renderCurrentView();
     }
 
-    function updateRulesSummary(){
-      const size = getPageSizeCm();
-      const leftMargins = getMarginsCm(1);
-      const innerW = (size.w - leftMargins.left - leftMargins.right).toFixed(2);
-      const innerH = (size.h - leftMargins.top - leftMargins.bottom).toFixed(2);
-
-      const startModeMap = {
-        flow:'continuação direta',
-        odd:'capítulo em página ímpar',
-        page:'reserva de 1 página',
-        sheet:'reserva de 1 folha inteira'
-      };
-
-      const marginMap = {
-        mirror:'espelho',
-        equal:'igual',
-        custom:'personalizada'
-      };
-
-      rulesSummary.textContent =
-        `Formato ${size.label} • Margem ${marginMap[marginMode.value]} • Área útil ${innerW} × ${innerH} cm • Abertura: ${startModeMap[chapterStartMode.value]} • Recuo ${paragraphIndent.value} • Espaço ${paragraphGap.value}`;
-    }
-
     function exportPDF(){
-      if(!editorText.value.trim() && !renderedPages.length){
+      if(!editorText.value.trim()){
         alert('Carregue ou cole uma obra antes de exportar.');
         return;
       }
@@ -1688,7 +1052,7 @@
     }
 
     function finalizeAndClear(){
-      if(editorText.value.trim() || renderedPages.length){
+      if(editorText.value.trim()){
         const ok = confirm('Finalizar esta obra e limpar o workspace?');
         if(!ok) return;
       }
@@ -1699,41 +1063,26 @@
       editorText.value = '';
       bookTitle.value = '';
       bookSize.value = '16x23';
-      customWidth.value = '16';
-      customHeight.value = '23';
-      customSizeRow.style.display = 'none';
-      marginMode.value = 'mirror';
-      marginTop.value = '2.5';
-      marginBottom.value = '2.5';
-      marginInside.value = '3.0';
-      marginOutside.value = '2.0';
-      chapterPatternRule.value = 'ask';
       chapterStartMode.value = 'flow';
-      blankPageLabel.value = 'blank';
       bodyFont.value = 'Georgia';
       fontSize.value = '0.96';
       lineHeight.value = '1.52';
       paragraphIndent.value = '1.00';
       paragraphGap.value = '0.20';
       dropcapStyle.value = 'none';
-      dropcapApply.value = 'all';
       viewMode.value = 'single';
-      bookRules.chapterSplitDecision = null;
       renderedPages = [];
       currentPageIndex = 0;
+      ornamentFromMotor = '';
 
       bookStage.innerHTML = '';
       emptyState.classList.remove('hidden');
-      pageCountPill.innerHTML = 'Páginas: <strong>0</strong>';
-      pageViewPill.textContent = 'Página 1';
       statusBox.textContent = 'Workspace limpo. Pronto para novo livro.';
-      rulesSummary.textContent = 'Ainda sem regras aplicadas.';
-      applyPageMetricsExample();
+      rulesSummary.textContent = 'Sem lapidação externa ainda.';
       renderCurrentView();
     }
 
-    applyPageMetricsExample();
-    updateRulesSummary();
+    applyMetrics();
     renderCurrentView();
   </script>
 </body>
