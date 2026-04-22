@@ -219,7 +219,7 @@ select,input[type="number"]{
   line-height:var(--line-height);
 }
 .block{
-  margin:0 0 .40em 0;
+  margin:0 0 .42em 0;
   color:#222;
 }
 .block.title1{
@@ -246,21 +246,25 @@ select,input[type="number"]{
   widows:2;
 }
 .block.dialogue{
-  text-align:justify;
+  text-align:left;
   text-indent:0;
+  padding-left:.15cm;
   margin-left:0;
+  max-width:100%;
+  overflow-wrap:break-word;
 }
 .dropcap-wrap{
   text-indent:0 !important;
-  display:flow-root;
-  clear:both;
+  display:block;
+  overflow:hidden;
+  min-height:2.8em;
 }
 .dropcap{
   float:left;
-  font-size:3.2em;
-  line-height:.83;
+  font-size:3.05em;
+  line-height:.82;
   font-weight:700;
-  margin:.01em .06em 0 0;
+  margin:.02em .08em 0 0;
   padding:0;
 }
 .page-number{
@@ -383,7 +387,7 @@ Ele olhou adiante e percebeu que a cidade era maior do que qualquer promessa.</t
     <main class="preview-shell">
       <div class="preview-head">
         <h2>Prévia editorial</h2>
-        <div class="muted-chip" id="modeChip">Modo impresso · A5</div>
+        <div class="muted-chip">Modo impresso · A5</div>
       </div>
 
       <div class="navbar">
@@ -412,15 +416,15 @@ Ele olhou adiante e percebeu que a cidade era maior do que qualquer promessa.</t
       <h3>Aparência e estilos</h3>
       <div class="field">
         <label>Leitura do texto</label>
-        <div class="small-note">Título 1: linhas como “Capítulo 1”, “Parte 1” e equivalentes.<br>Título 2: a linha seguinte, quando for o tema do capítulo.<br>Corpo: frases e diálogos separados.</div>
+        <div class="small-note">Título 1: “Capítulo 1”, “Parte 1” e equivalentes.<br>Título 2: linha seguinte como tema do capítulo.<br>Frases e diálogos seguem separados.</div>
       </div>
       <div class="field">
         <label>Letra capitular</label>
-        <div class="small-note">Aplica automaticamente no primeiro bloco de corpo de cada capítulo.</div>
+        <div class="small-note">Agora só entra quando o primeiro parágrafo do capítulo for longo o bastante para não abrir um vão feio.</div>
       </div>
       <div class="field">
         <label>Observação</label>
-        <div class="small-note">A prévia agora reserva uma margem de segurança no rodapé para reduzir variação e evitar estouro.</div>
+        <div class="small-note">Diálogos ficaram presos dentro da área útil da página, sem estourar para fora da diagramação.</div>
       </div>
     </aside>
   </div>
@@ -463,10 +467,14 @@ function isTitle1(line){
   return /^(cap[íi]tulo|capitulo|parte|livro|ato|seção|secao|cena)\s+[\wivxlcdm0-9\-]+/i.test(clean);
 }
 
+function isDialogue(line){
+  return line.trim().startsWith('—');
+}
+
 function splitIntoUnits(line){
   const clean = line.trim();
   if(!clean) return [];
-  if(clean.startsWith('—')) return [{type:'dialogue', text:clean}];
+  if(isDialogue(clean)) return [{type:'dialogue', text:clean}];
 
   const parts = clean
     .replace(/([.!?…])\s+(?=[A-ZÁÉÍÓÚÂÊÔÃÕÀÜ—])/g, '$1|||')
@@ -478,6 +486,12 @@ function splitIntoUnits(line){
     type: t.startsWith('—') ? 'dialogue' : 'body',
     text: t
   }));
+}
+
+function shouldUseDropcap(text){
+  const chars = text.replace(/\s+/g,' ').trim().length;
+  const words = text.trim().split(/\s+/).length;
+  return chars >= 95 && words >= 14;
 }
 
 function parseBlocks(raw){
@@ -515,11 +529,16 @@ function parseBlocks(raw){
     });
   }
 
-  const seenChapter = new Set();
+  const firstBodyByChapter = new Map();
   for(const block of blocks){
-    if((block.type === 'body' || block.type === 'dialogue') && !seenChapter.has(block.chapter)){
-      if(block.type === 'body') block.dropcap = true;
-      seenChapter.add(block.chapter);
+    if(block.type === 'body' && !firstBodyByChapter.has(block.chapter)){
+      firstBodyByChapter.set(block.chapter, block);
+    }
+  }
+
+  for(const [chapter, block] of firstBodyByChapter.entries()){
+    if(shouldUseDropcap(block.text)){
+      block.dropcap = true;
     }
   }
 
@@ -616,6 +635,7 @@ function paginate(blocks){
   if(!pages.length){
     pages = [{blocks:[], runningHead:'—'}];
   }
+
   currentPage = 0;
 }
 
