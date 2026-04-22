@@ -103,7 +103,7 @@
       min-height:48px;
     }
 
-    .input,.select,.button,.file,.textarea{
+    .input,.select,.button,.file{
       width:100%;
       border-radius:12px;
       border:none;
@@ -111,18 +111,12 @@
       font-family:inherit;
     }
 
-    .input,.select,.file,.textarea{
+    .input,.select,.file{
       background:#f8fbff;
       color:#132018;
       border:1px solid #c7d1de;
       padding:10px;
       outline:none;
-    }
-
-    .textarea{
-      min-height:220px;
-      resize:vertical;
-      line-height:1.55;
     }
 
     .button{
@@ -161,7 +155,7 @@
       gap:14px;
     }
 
-    .topbar,.rules-box,.editor-zone,.motor-box{
+    .topbar,.rules-box,.motor-box{
       background:#fbfaf7;
       border:1px solid var(--line);
       border-radius:20px;
@@ -197,7 +191,7 @@
       white-space:nowrap;
     }
 
-    .rules-box h3,.editor-zone h3,.motor-box h3{
+    .rules-box h3,.motor-box h3{
       margin:0 0 8px 0;
       font-size:1rem;
     }
@@ -214,7 +208,7 @@
       border:1px solid #cfd8cf;
       box-shadow:var(--shadow);
       padding:14px;
-      min-height:520px;
+      min-height:620px;
       display:flex;
       flex-direction:column;
       gap:12px;
@@ -235,7 +229,7 @@
       border:none;
       border-radius:12px;
       padding:10px 14px;
-      background:#2f6a49;
+      background:#1e2a24;
       color:#fff;
       font-weight:700;
       cursor:pointer;
@@ -326,7 +320,7 @@
 
     .chapter-title{
       margin:0;
-      font-size:1.45rem;
+      font-size:1.55rem;
       line-height:1.1;
       font-weight:700;
       color:#18201d;
@@ -341,9 +335,18 @@
       font-weight:700;
     }
 
+    .section-title-3{
+      margin:0 0 10px 0;
+      font-size:1rem;
+      line-height:1.2;
+      font-weight:700;
+      color:#30443a;
+      text-align:left;
+    }
+
     .page-content{
       font-size:1rem;
-      line-height:1.52;
+      line-height:1.55;
       text-align:justify;
       word-wrap:break-word;
       overflow:hidden;
@@ -406,21 +409,6 @@
       color:#5a645f;
     }
 
-    .editor-text{
-      width:100%;
-      min-height:220px;
-      resize:vertical;
-      border-radius:16px;
-      border:1px solid #cfd8cf;
-      background:#fff;
-      padding:14px;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:1rem;
-      line-height:1.55;
-      color:#202522;
-      outline:none;
-    }
-
     .ghost-measure{
       position:absolute;
       visibility:hidden;
@@ -446,7 +434,7 @@
 
     .motor-grid{
       display:grid;
-      grid-template-columns:1.08fr 1.32fr;
+      grid-template-columns:1fr;
       gap:14px;
     }
 
@@ -458,7 +446,7 @@
       box-shadow:0 6px 18px rgba(31,36,48,.05);
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap:12px;
     }
 
     .motor-card h4{
@@ -471,9 +459,9 @@
       background:#fff;
       border:1px solid var(--motor-line);
       border-radius:14px;
-      padding:22px 24px;
-      min-height:240px;
-      max-width:680px;
+      padding:18px 20px;
+      min-height:220px;
+      max-width:100%;
       width:100%;
       margin:0 auto;
       box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
@@ -498,7 +486,7 @@
       display:flex;
       flex-direction:column;
       gap:10px;
-      max-height:420px;
+      max-height:300px;
       overflow:auto;
     }
 
@@ -543,11 +531,6 @@
 
     .mini-btn.primary{
       background:#2f6f4e;
-      color:#fff;
-    }
-
-    .mini-btn.warn{
-      background:#8c5d1f;
       color:#fff;
     }
 
@@ -624,7 +607,6 @@
         min-height:auto;
         max-height:none;
       }
-      .motor-grid{grid-template-columns:1fr}
       .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
     }
 
@@ -632,15 +614,15 @@
       .app{padding:8px;gap:8px}
       .panel{border-radius:18px;padding:14px 12px}
       .panel h2{font-size:1.55rem}
-      .workspace,.topbar,.rules-box,.editor-zone,.motor-box{border-radius:18px}
-      .motor-preview{padding:18px 16px}
+      .workspace,.topbar,.rules-box,.motor-box{border-radius:18px}
+      .motor-preview{padding:16px 14px}
       .stats-grid{grid-template-columns:1fr}
       .ornament-grid{grid-template-columns:1fr 1fr}
     }
 
     @media print{
       body{background:#fff}
-      .panel,.topbar,.rules-box,.editor-zone,.motor-box,.workspace-controls,.empty-state{display:none!important}
+      .panel,.topbar,.rules-box,.motor-box,.workspace-controls,.empty-state{display:none!important}
       .app{display:block;padding:0}
       .workspace{
         background:#fff;
@@ -683,30 +665,28 @@
       </div>
 
       <div class="card-soft">
-        <div class="row">
-          <div>
-            <label for="bookSize"><strong>Formato</strong></label>
-            <select class="select" id="bookSize">
-              <option value="16x23">16 x 23 cm</option>
-              <option value="a5">A5</option>
-              <option value="6x9">6 x 9 pol.</option>
-            </select>
-          </div>
-          <div>
-            <label for="chapterStartMode"><strong>Abertura</strong></label>
-            <select class="select" id="chapterStartMode">
-              <option value="flow">Continuar direto</option>
-              <option value="odd">Página ímpar</option>
-              <option value="page">Reservar 1 página</option>
-              <option value="sheet">Reservar 1 folha</option>
-            </select>
-          </div>
+        <div>
+          <label for="bookSize"><strong>Formato</strong></label>
+          <select class="select" id="bookSize">
+            <option value="16x23">16 x 23 cm</option>
+            <option value="a5">A5</option>
+            <option value="6x9">6 x 9 pol.</option>
+          </select>
+        </div>
+        <div>
+          <label for="chapterStartMode"><strong>Abertura</strong></label>
+          <select class="select" id="chapterStartMode">
+            <option value="flow">Continuar direto</option>
+            <option value="odd">Capítulo em página ímpar</option>
+            <option value="page">Reservar 1 página</option>
+            <option value="sheet">Reservar 1 folha</option>
+          </select>
         </div>
       </div>
 
       <div class="card-soft">
         <button class="button" id="renderBtn" type="button">Atualizar prévia</button>
-        <button class="button blue" id="lapidarBtn" type="button">Lapidar no painel abaixo</button>
+        <button class="button blue" id="lapidarBtn" type="button">Ir ao Motor do Miolo</button>
         <button class="button secondary" id="newBookBtn" type="button">Novo livro</button>
       </div>
     </aside>
@@ -740,19 +720,153 @@
 
         <div class="empty-state" id="emptyState">
           <h3 style="margin-top:0;">Área central de diagramação</h3>
-          <p style="margin-bottom:0;">Suba uma obra ou cole o texto para o miolo aparecer aqui.</p>
+          <p style="margin-bottom:0;">Suba uma obra para o miolo aparecer aqui.</p>
         </div>
 
         <div class="stage-wrap">
           <div class="book-stage" id="bookStage"></div>
         </div>
       </section>
+    </main>
 
-      <section class="motor-box" id="motorBox">
+    <aside class="panel">
+      <h2>Motor</h2>
+
+      <div class="status" id="motorStatusBox">Motor do Miolo pronto.</div>
+
+      <div class="card-soft">
+        <label for="textStyle"><strong>Estilo do texto</strong></label>
+        <select class="select" id="textStyle">
+          <option value="normal">Normal</option>
+          <option value="title1">Título 1</option>
+          <option value="title2">Título 2</option>
+          <option value="title3">Título 3</option>
+        </select>
+
+        <label for="correctionLevel"><strong>Correção</strong></label>
+        <select class="select" id="correctionLevel">
+          <option value="light">Leve</option>
+          <option value="medium">Média</option>
+        </select>
+
+        <label for="spacingMode"><strong>Parágrafo</strong></label>
+        <select class="select" id="spacingMode">
+          <option value="no-space">Sem espaço</option>
+          <option value="with-space">Com espaço</option>
+          <option value="custom">Personalizado</option>
+        </select>
+
+        <div class="row">
+          <div>
+            <label for="hyphenationMode"><strong>Hifenização</strong></label>
+            <select class="select" id="hyphenationMode">
+              <option value="off">Desligada</option>
+              <option value="light">Leve</option>
+              <option value="medium">Moderada</option>
+            </select>
+          </div>
+          <div>
+            <label for="widowOrphanMode"><strong>Viúva/órfã</strong></label>
+            <select class="select" id="widowOrphanMode">
+              <option value="off">Observar</option>
+              <option value="warn">Sinalizar</option>
+              <option value="tight">Sinalizar mais</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="fontFamily"><strong>Fonte</strong></label>
+            <select class="select" id="fontFamily">
+              <option value="Georgia">Georgia</option>
+              <option value="'Times New Roman'">Times New Roman</option>
+              <option value="Garamond">Garamond</option>
+              <option value="'Libre Baskerville'">Libre Baskerville</option>
+            </select>
+          </div>
+          <div>
+            <label for="fontSize"><strong>Tamanho</strong></label>
+            <select class="select" id="fontSize">
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13" selected>13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="titleFontSize"><strong>Título</strong></label>
+            <select class="select" id="titleFontSize">
+              <option value="16">16</option>
+              <option value="18" selected>18</option>
+              <option value="20">20</option>
+              <option value="22">22</option>
+              <option value="24">24</option>
+            </select>
+          </div>
+          <div>
+            <label for="lineHeight"><strong>Entrelinha</strong></label>
+            <select class="select" id="lineHeight">
+              <option value="1.35">1.35</option>
+              <option value="1.45">1.45</option>
+              <option value="1.52" selected>1.52</option>
+              <option value="1.60">1.60</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="paragraphIndent"><strong>Recuo</strong></label>
+            <select class="select" id="paragraphIndent">
+              <option value="0">0</option>
+              <option value="0.8">0.8</option>
+              <option value="1">1</option>
+              <option value="1.25" selected>1.25</option>
+            </select>
+          </div>
+          <div>
+            <label for="paragraphGap"><strong>Espaço</strong></label>
+            <select class="select" id="paragraphGap">
+              <option value="0">0</option>
+              <option value="0.2" selected>0.2</option>
+              <option value="0.35">0.35</option>
+              <option value="0.5">0.5</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="dropcapStyle"><strong>Capitular</strong></label>
+        <select class="select" id="dropcapStyle">
+          <option value="none">Sem capitular</option>
+          <option value="simple">Simples</option>
+          <option value="classic" selected>Clássica</option>
+          <option value="ornamental">Ornamental</option>
+        </select>
+
+        <div>
+          <label><strong>Ornamentos</strong></label>
+          <div class="ornament-grid" id="ornamentGrid"></div>
+        </div>
+
+        <button class="button blue" id="processBtn" type="button">Lapidar texto</button>
+        <button class="button" id="applyBtn" type="button">Aplicar no livro</button>
+        <button class="button secondary" id="copyBtn" type="button">Copiar lapidado</button>
+        <button class="button warn" id="downloadBtn" type="button">Baixar TXT</button>
+        <button class="button warn" id="pdfBtn" type="button">Exportar PDF</button>
+        <button class="button danger" id="finalizeBtn" type="button">Finalizar + limpar</button>
+      </div>
+
+      <div class="motor-box" id="motorBox">
         <div class="motor-top">
           <div>
             <h3>Motor do Miolo integrado</h3>
-            <div class="hint">Ajuste aqui. A prévia do livro continua acima, no próprio Pólux.</div>
+            <div class="hint">Aqui ficam apenas recursos textuais e técnicos reutilizáveis nos outros diagramadores.</div>
           </div>
           <div class="meta">
             <span class="pill" id="motorModePill">Modo: prosa</span>
@@ -781,208 +895,17 @@
 
         <div class="motor-grid">
           <div class="motor-card">
-            <h4>Painel técnico</h4>
-
-            <div class="row">
-              <div>
-                <label for="compositionMode"><strong>Modo</strong></label>
-                <select class="select" id="compositionMode">
-                  <option value="prose">Prosa</option>
-                  <option value="hybrid">Híbrido</option>
-                </select>
-              </div>
-              <div>
-                <label for="correctionLevel"><strong>Correção</strong></label>
-                <select class="select" id="correctionLevel">
-                  <option value="light">Leve</option>
-                  <option value="medium">Média</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="row">
-              <div>
-                <label for="hyphenationMode"><strong>Hifenização</strong></label>
-                <select class="select" id="hyphenationMode">
-                  <option value="off">Desligada</option>
-                  <option value="light">Leve</option>
-                  <option value="medium">Moderada</option>
-                </select>
-              </div>
-              <div>
-                <label for="widowOrphanMode"><strong>Viúva/órfã</strong></label>
-                <select class="select" id="widowOrphanMode">
-                  <option value="off">Só observar</option>
-                  <option value="warn">Sinalizar</option>
-                  <option value="tight">Sinalizar mais</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="row">
-              <div>
-                <label for="motorParagraphIndent"><strong>Recuo</strong></label>
-                <select class="select" id="motorParagraphIndent">
-                  <option value="1.00">1.00</option>
-                  <option value="1.25">1.25</option>
-                  <option value="0.80">0.80</option>
-                  <option value="0">Sem recuo</option>
-                </select>
-              </div>
-              <div>
-                <label for="motorParagraphGap"><strong>Espaço</strong></label>
-                <select class="select" id="motorParagraphGap">
-                  <option value="0.20">0.20</option>
-                  <option value="0.35">0.35</option>
-                  <option value="0.50">0.50</option>
-                  <option value="0.05">0.05</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="row">
-              <div>
-                <label for="motorBodyFont"><strong>Fonte</strong></label>
-                <select class="select" id="motorBodyFont">
-                  <option value="Georgia">Georgia</option>
-                  <option value="'Times New Roman'">Times New Roman</option>
-                  <option value="Garamond">Garamond</option>
-                  <option value="'Libre Baskerville'">Libre Baskerville</option>
-                </select>
-              </div>
-              <div>
-                <label for="motorFontSize"><strong>Tamanho</strong></label>
-                <select class="select" id="motorFontSize">
-                  <option value="0.96">Padrão</option>
-                  <option value="0.90">Menor</option>
-                  <option value="1.02">Maior</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="row">
-              <div>
-                <label for="motorLineHeight"><strong>Entrelinha</strong></label>
-                <select class="select" id="motorLineHeight">
-                  <option value="1.52">1.52</option>
-                  <option value="1.45">1.45</option>
-                  <option value="1.60">1.60</option>
-                </select>
-              </div>
-              <div>
-                <label for="motorDropcapStyle"><strong>Capitular</strong></label>
-                <select class="select" id="motorDropcapStyle">
-                  <option value="none">Sem capitular</option>
-                  <option value="simple">Simples</option>
-                  <option value="classic">Clássica</option>
-                  <option value="ornamental">Ornamental leve</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label><strong>Ornamentos</strong></label>
-              <div class="ornament-grid" id="ornamentGrid" style="margin-top:8px;"></div>
-            </div>
-
-            <div class="row">
-              <div><button class="button blue" id="processBtn" type="button">Lapidar texto</button></div>
-              <div><button class="button" id="applyBtn" type="button">Aplicar no livro</button></div>
-            </div>
-
-            <div class="row">
-              <div><button class="button secondary" id="copyBtn" type="button">Copiar lapidado</button></div>
-              <div><button class="button warn" id="downloadBtn" type="button">Baixar TXT</button></div>
-            </div>
+            <h4>Prévia técnica da lapidação</h4>
+            <div id="motorPreview" class="motor-preview prose"></div>
           </div>
 
           <div class="motor-card">
-            <h4>Prévia técnica da lapidação</h4>
-            <div id="motorPreview" class="motor-preview prose"></div>
-
-            <h4 style="margin-top:10px;">Alertas encontrados</h4>
+            <h4>Alertas encontrados</h4>
             <div id="motorIssuesList" class="motor-issue-list">
               <div class="hint">Nenhuma análise ainda.</div>
             </div>
           </div>
         </div>
-      </section>
-
-      <section class="editor-zone">
-        <h3>Texto-base da obra</h3>
-        <textarea id="editorText" class="editor-text" placeholder="Cole aqui o texto da obra."></textarea>
-      </section>
-    </main>
-
-    <aside class="panel">
-      <h2>Configuração</h2>
-
-      <div class="card-soft">
-        <label for="bodyFont"><strong>Fonte do corpo</strong></label>
-        <select class="select" id="bodyFont">
-          <option value="Georgia">Georgia</option>
-          <option value="'Times New Roman'">Times New Roman</option>
-          <option value="Garamond">Garamond</option>
-          <option value="'Libre Baskerville'">Libre Baskerville</option>
-        </select>
-      </div>
-
-      <div class="card-soft">
-        <div class="row">
-          <div>
-            <label for="fontSize"><strong>Fonte</strong></label>
-            <select class="select" id="fontSize">
-              <option value="0.96">Padrão</option>
-              <option value="0.90">Menor</option>
-              <option value="1.02">Maior</option>
-            </select>
-          </div>
-          <div>
-            <label for="lineHeight"><strong>Entrelinha</strong></label>
-            <select class="select" id="lineHeight">
-              <option value="1.52">1.52</option>
-              <option value="1.45">1.45</option>
-              <option value="1.60">1.60</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="card-soft">
-        <div class="row">
-          <div>
-            <label for="paragraphIndent"><strong>Recuo</strong></label>
-            <select class="select" id="paragraphIndent">
-              <option value="1.00">1.00</option>
-              <option value="1.25">1.25</option>
-              <option value="0.80">0.80</option>
-              <option value="0">Sem recuo</option>
-            </select>
-          </div>
-          <div>
-            <label for="paragraphGap"><strong>Espaço</strong></label>
-            <select class="select" id="paragraphGap">
-              <option value="0.20">0.20</option>
-              <option value="0.35">0.35</option>
-              <option value="0.50">0.50</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="card-soft">
-        <label for="dropcapStyle"><strong>Capitular</strong></label>
-        <select class="select" id="dropcapStyle">
-          <option value="none">Sem capitular</option>
-          <option value="simple">Simples</option>
-          <option value="classic">Clássica</option>
-          <option value="ornamental">Ornamental leve</option>
-        </select>
-      </div>
-
-      <div class="card-soft">
-        <button class="button warn" id="pdfBtn" type="button">Exportar PDF</button>
-        <button class="button danger" id="finalizeBtn" type="button">Finalizar + limpar</button>
       </div>
     </aside>
   </div>
@@ -994,17 +917,16 @@
     const CM_TO_PX = 37.7952755906;
 
     let fileInput = document.getElementById('fileInput');
-    const editorText = document.getElementById('editorText');
+
+    const editorText = document.createElement('textarea');
+    editorText.style.display = 'none';
+    document.body.appendChild(editorText);
+
     const bookTitle = document.getElementById('bookTitle');
     const bookSize = document.getElementById('bookSize');
     const chapterStartMode = document.getElementById('chapterStartMode');
-    const bodyFont = document.getElementById('bodyFont');
-    const fontSize = document.getElementById('fontSize');
-    const lineHeight = document.getElementById('lineHeight');
-    const paragraphIndent = document.getElementById('paragraphIndent');
-    const paragraphGap = document.getElementById('paragraphGap');
-    const dropcapStyle = document.getElementById('dropcapStyle');
     const viewMode = document.getElementById('viewMode');
+
     const renderBtn = document.getElementById('renderBtn');
     const lapidarBtn = document.getElementById('lapidarBtn');
     const newBookBtn = document.getElementById('newBookBtn');
@@ -1012,7 +934,9 @@
     const finalizeBtn = document.getElementById('finalizeBtn');
     const prevPageBtn = document.getElementById('prevPageBtn');
     const nextPageBtn = document.getElementById('nextPageBtn');
+
     const statusBox = document.getElementById('statusBox');
+    const motorStatusBox = document.getElementById('motorStatusBox');
     const sizePill = document.getElementById('sizePill');
     const pageCountPill = document.getElementById('pageCountPill');
     const pageViewPill = document.getElementById('pageViewPill');
@@ -1022,20 +946,24 @@
     const measureRoot = document.getElementById('measureRoot');
     const workspaceControls = document.getElementById('workspaceControls');
 
-    const compositionMode = document.getElementById('compositionMode');
+    const textStyle = document.getElementById('textStyle');
     const correctionLevel = document.getElementById('correctionLevel');
+    const spacingMode = document.getElementById('spacingMode');
     const hyphenationMode = document.getElementById('hyphenationMode');
     const widowOrphanMode = document.getElementById('widowOrphanMode');
-    const motorParagraphIndent = document.getElementById('motorParagraphIndent');
-    const motorParagraphGap = document.getElementById('motorParagraphGap');
-    const motorBodyFont = document.getElementById('motorBodyFont');
-    const motorFontSize = document.getElementById('motorFontSize');
-    const motorLineHeight = document.getElementById('motorLineHeight');
-    const motorDropcapStyle = document.getElementById('motorDropcapStyle');
+    const fontFamily = document.getElementById('fontFamily');
+    const fontSize = document.getElementById('fontSize');
+    const titleFontSize = document.getElementById('titleFontSize');
+    const lineHeight = document.getElementById('lineHeight');
+    const paragraphIndent = document.getElementById('paragraphIndent');
+    const paragraphGap = document.getElementById('paragraphGap');
+    const dropcapStyle = document.getElementById('dropcapStyle');
+
     const processBtn = document.getElementById('processBtn');
     const applyBtn = document.getElementById('applyBtn');
     const copyBtn = document.getElementById('copyBtn');
     const downloadBtn = document.getElementById('downloadBtn');
+
     const ornamentGrid = document.getElementById('ornamentGrid');
     const motorPreview = document.getElementById('motorPreview');
     const motorIssuesList = document.getElementById('motorIssuesList');
@@ -1057,6 +985,7 @@
     let selectedOrnament = '';
 
     bindFileInput();
+
     renderBtn.addEventListener('click', renderPreview);
     lapidarBtn.addEventListener('click', scrollToMotor);
     newBookBtn.addEventListener('click', resetWorkspace);
@@ -1066,14 +995,13 @@
     nextPageBtn.addEventListener('click', () => stepPage(1));
 
     [
-      bookTitle, bookSize, chapterStartMode, bodyFont, fontSize,
-      lineHeight, paragraphIndent, paragraphGap, dropcapStyle, viewMode
+      bookTitle, bookSize, chapterStartMode, viewMode
     ].forEach(el => el.addEventListener('change', renderPreview));
 
     [
-      compositionMode, correctionLevel, hyphenationMode, widowOrphanMode,
-      motorParagraphIndent, motorParagraphGap, motorBodyFont,
-      motorFontSize, motorLineHeight, motorDropcapStyle
+      textStyle, correctionLevel, spacingMode, hyphenationMode, widowOrphanMode,
+      fontFamily, fontSize, titleFontSize, lineHeight,
+      paragraphIndent, paragraphGap, dropcapStyle
     ].forEach(el => el.addEventListener('change', processText));
 
     processBtn.addEventListener('click', processText);
@@ -1081,12 +1009,10 @@
     copyBtn.addEventListener('click', copyProcessedText);
     downloadBtn.addEventListener('click', downloadProcessedText);
 
-    editorText.addEventListener('input', autoRenderSoon);
-    editorText.addEventListener('paste', autoRenderSoon);
     window.addEventListener('resize', fitStageScale);
 
     buildOrnamentGrid();
-    syncMotorFromBook();
+    syncSpacingModeUI();
     processText();
     applyMetrics();
     renderCurrentView();
@@ -1097,25 +1023,7 @@
 
     function scrollToMotor(){
       motorBox.scrollIntoView({ behavior:'smooth', block:'start' });
-      statusBox.textContent = 'Painel do Motor do Miolo aberto abaixo da prévia.';
-    }
-
-    function autoRenderSoon(){
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        syncMotorFromBook();
-        processText();
-        renderPreview();
-      }, 180);
-    }
-
-    function syncMotorFromBook(){
-      motorParagraphIndent.value = paragraphIndent.value;
-      motorParagraphGap.value = paragraphGap.value;
-      motorBodyFont.value = bodyFont.value;
-      motorFontSize.value = fontSize.value;
-      motorLineHeight.value = lineHeight.value;
-      motorDropcapStyle.value = dropcapStyle.value;
+      motorStatusBox.textContent = 'Motor do Miolo aberto.';
     }
 
     async function handleFileUpload(event){
@@ -1151,8 +1059,8 @@
         }
 
         statusBox.textContent = 'Arquivo carregado com sucesso: ' + file.name;
+        motorStatusBox.textContent = 'Texto pronto para lapidação.';
         rulesSummary.textContent = 'Texto carregado no Pólux.';
-        syncMotorFromBook();
         processText();
         renderPreview();
       }catch(error){
@@ -1226,31 +1134,67 @@
       return { size, widthPx, heightPx };
     }
 
+    function styleToBlockType(style){
+      if(style === 'title1') return 'title1';
+      if(style === 'title2') return 'title2';
+      if(style === 'title3') return 'title3';
+      return 'paragraph';
+    }
+
     function detectBlocks(text){
       const paragraphs = splitParagraphs(text);
       const blocks = [];
+      let currentChapter = null;
+      let chapterSubtitle = '';
+      let chapterPending = false;
 
       for(let i = 0; i < paragraphs.length; i++){
         const p = paragraphs[i];
-        const next = paragraphs[i + 1] || '';
 
         if(/^cap[ií]tulo\s+/i.test(p)){
-          const chapter = { title:p, subtitle:'' };
-
-          if(
-            next &&
-            next.length < 90 &&
-            !/[.!?…]$/.test(next) &&
-            !/^cap[ií]tulo\s+/i.test(next)
-          ){
-            chapter.subtitle = next;
-            i++;
+          if(currentChapter){
+            blocks.push({
+              type:'chapter',
+              title:currentChapter,
+              subtitle:chapterSubtitle
+            });
           }
+          currentChapter = p;
+          chapterSubtitle = '';
+          chapterPending = true;
+          continue;
+        }
 
-          blocks.push({ type:'chapter', chapter });
+        if(chapterPending && p.length < 90 && !/[.!?…]$/.test(p)){
+          chapterSubtitle = p;
+          chapterPending = false;
+          continue;
+        }
+
+        if(currentChapter){
+          blocks.push({
+            type:'chapter',
+            title:currentChapter,
+            subtitle:chapterSubtitle
+          });
+          currentChapter = null;
+          chapterSubtitle = '';
+          chapterPending = false;
+        }
+
+        if(/^(defini[cç][aã]o|conceito|nota|observa[cç][aã]o|exemplo)\b/i.test(p)){
+          blocks.push({ type:'title3', text:p });
         } else {
           blocks.push({ type:'paragraph', text:p });
         }
+      }
+
+      if(currentChapter){
+        blocks.push({
+          type:'chapter',
+          title:currentChapter,
+          subtitle:chapterSubtitle
+        });
       }
 
       return blocks;
@@ -1269,8 +1213,8 @@
 
       const content = document.createElement('div');
       content.className = 'page-content';
-      content.style.fontFamily = bodyFont.value;
-      content.style.fontSize = fontSize.value + 'rem';
+      content.style.fontFamily = fontFamily.value;
+      content.style.fontSize = pxToRem(fontSize.value) + 'rem';
       content.style.lineHeight = lineHeight.value;
       content.style.setProperty('--paragraph-indent', paragraphIndent.value + 'em');
       content.style.setProperty('--paragraph-gap', paragraphGap.value + 'em');
@@ -1286,12 +1230,14 @@
 
         const title = document.createElement('h1');
         title.className = 'chapter-title';
+        title.style.fontSize = pxToRem(titleFontSize.value) + 'rem';
         title.textContent = chapter.title || '';
         header.appendChild(title);
 
         if(chapter.subtitle){
           const subtitle = document.createElement('div');
           subtitle.className = 'chapter-subtitle';
+          subtitle.style.fontSize = pxToRem(Math.max(12, Number(titleFontSize.value) - 3)) + 'rem';
           subtitle.textContent = chapter.subtitle;
           header.appendChild(subtitle);
         }
@@ -1302,6 +1248,10 @@
       inner.appendChild(content);
       page.appendChild(inner);
       return { page, content };
+    }
+
+    function pxToRem(px){
+      return Number(px) / 16;
     }
 
     function pushBlankPage(pages, label = 'Página reservada'){
@@ -1324,9 +1274,33 @@
           chapterOpening: !!chapter,
           chapterTitle: chapter ? chapter.title : '',
           chapterSubtitle: chapter ? chapter.subtitle : '',
-          paragraphs: [],
+          items: [],
           ornament
         };
+      }
+
+      function currentNextPageNumber(){
+        return pages.length + 1;
+      }
+
+      function ensureChapterStartPolicy(){
+        if(chapterStartMode.value === 'page'){
+          pushBlankPage(pages);
+          return;
+        }
+
+        if(chapterStartMode.value === 'sheet'){
+          pushBlankPage(pages);
+          pushBlankPage(pages);
+          return;
+        }
+
+        if(chapterStartMode.value === 'odd'){
+          const nextPage = currentNextPageNumber();
+          if(nextPage % 2 === 0){
+            pushBlankPage(pages, 'Página reservada para início em ímpar');
+          }
+        }
       }
 
       startPage();
@@ -1335,37 +1309,36 @@
         const block = blocks[i];
 
         if(block.type === 'chapter'){
-          if(current && (current.paragraphs.length || current.chapterOpening)){
+          if(current && (current.items.length || current.chapterOpening)){
             pages.push(current);
           }
 
-          if(chapterStartMode.value === 'page'){
-            pushBlankPage(pages);
-          } else if(chapterStartMode.value === 'sheet'){
-            pushBlankPage(pages);
-            pushBlankPage(pages);
-          } else if(chapterStartMode.value === 'odd'){
-            if((pages.length + 1) % 2 === 0){
-              pushBlankPage(pages);
-            }
-          }
-
-          startPage(block.chapter, ornamentFromMotor || '');
+          ensureChapterStartPolicy();
+          startPage({ title:block.title, subtitle:block.subtitle }, ornamentFromMotor || '');
           continue;
         }
 
-        const p = document.createElement('p');
-        p.textContent = block.text;
-        if(current.chapterOpening && current.paragraphs.length === 0){
-          p.classList.add('first-para');
+        const node = block.type === 'title3'
+          ? document.createElement('div')
+          : document.createElement('p');
+
+        if(block.type === 'title3'){
+          node.className = 'section-title-3';
+          node.textContent = block.text;
+        } else {
+          node.textContent = block.text;
+          if(current.chapterOpening && current.items.length === 0){
+            node.classList.add('first-para');
+          }
         }
-        measure.content.appendChild(p);
+
+        measure.content.appendChild(node);
 
         if(measure.content.scrollHeight > measure.content.clientHeight){
-          measure.content.removeChild(p);
+          measure.content.removeChild(node);
 
-          if(current.paragraphs.length === 0){
-            current.paragraphs.push(block.text);
+          if(current.items.length === 0){
+            current.items.push({ type:block.type, text:block.text });
             pages.push(current);
             startPage();
             continue;
@@ -1374,27 +1347,36 @@
           pages.push(current);
           startPage();
 
-          const p2 = document.createElement('p');
-          p2.textContent = block.text;
-          if(current.chapterOpening && current.paragraphs.length === 0){
-            p2.classList.add('first-para');
+          const node2 = block.type === 'title3'
+            ? document.createElement('div')
+            : document.createElement('p');
+
+          if(block.type === 'title3'){
+            node2.className = 'section-title-3';
+            node2.textContent = block.text;
+          } else {
+            node2.textContent = block.text;
+            if(current.chapterOpening && current.items.length === 0){
+              node2.classList.add('first-para');
+            }
           }
-          measure.content.appendChild(p2);
+
+          measure.content.appendChild(node2);
 
           if(measure.content.scrollHeight > measure.content.clientHeight){
-            measure.content.removeChild(p2);
-            current.paragraphs.push(block.text);
+            measure.content.removeChild(node2);
+            current.items.push({ type:block.type, text:block.text });
             pages.push(current);
             startPage();
           } else {
-            current.paragraphs.push(block.text);
+            current.items.push({ type:block.type, text:block.text });
           }
         } else {
-          current.paragraphs.push(block.text);
+          current.items.push({ type:block.type, text:block.text });
         }
       }
 
-      if(current && (current.paragraphs.length || current.chapterOpening)){
+      if(current && (current.items.length || current.chapterOpening)){
         pages.push(current);
       }
 
@@ -1439,12 +1421,14 @@
 
         const title = document.createElement('h1');
         title.className = 'chapter-title';
+        title.style.fontSize = pxToRem(titleFontSize.value) + 'rem';
         title.textContent = pageData.chapterTitle || '';
         header.appendChild(title);
 
         if(pageData.chapterSubtitle){
           const subtitle = document.createElement('div');
           subtitle.className = 'chapter-subtitle';
+          subtitle.style.fontSize = pxToRem(Math.max(12, Number(titleFontSize.value) - 3)) + 'rem';
           subtitle.textContent = pageData.chapterSubtitle;
           header.appendChild(subtitle);
         }
@@ -1454,17 +1438,24 @@
 
       const content = document.createElement('div');
       content.className = 'page-content';
-      content.style.fontFamily = bodyFont.value;
-      content.style.fontSize = fontSize.value + 'rem';
+      content.style.fontFamily = fontFamily.value;
+      content.style.fontSize = pxToRem(fontSize.value) + 'rem';
       content.style.lineHeight = lineHeight.value;
       content.style.setProperty('--paragraph-indent', paragraphIndent.value + 'em');
       content.style.setProperty('--paragraph-gap', paragraphGap.value + 'em');
 
-      pageData.paragraphs.forEach((para, idx) => {
-        const p = document.createElement('p');
-        p.textContent = para;
-        if(pageData.chapterOpening && idx === 0) p.classList.add('first-para');
-        content.appendChild(p);
+      pageData.items.forEach((item, idx) => {
+        if(item.type === 'title3'){
+          const t3 = document.createElement('div');
+          t3.className = 'section-title-3';
+          t3.textContent = item.text;
+          content.appendChild(t3);
+        } else {
+          const p = document.createElement('p');
+          p.textContent = item.text;
+          if(pageData.chapterOpening && idx === 0) p.classList.add('first-para');
+          content.appendChild(p);
+        }
       });
 
       if(pageData.ornament){
@@ -1503,7 +1494,7 @@
       const available = Math.max(320, stageWrap.clientWidth - 24);
       let scale = available / targetWidth;
 
-      if(scale > 1.12) scale = 1.12;
+      if(scale > 1.08) scale = 1.08;
       if(scale < 0.62) scale = 0.62;
 
       bookStage.style.transform = `scale(${scale})`;
@@ -1542,6 +1533,7 @@
         nextPageBtn.disabled = currentPageIndex >= renderedPages.length - 1;
       } else {
         let leftIndex = currentPageIndex;
+
         if(leftIndex % 2 !== 0) leftIndex -= 1;
         if(leftIndex < 0) leftIndex = 0;
         if(leftIndex >= renderedPages.length) leftIndex = Math.max(0, renderedPages.length - 1);
@@ -1593,18 +1585,13 @@
       renderedPages = paginateReal(text);
       currentPageIndex = 0;
 
-      if(renderedPages.length){
-        statusBox.textContent = 'Prévia atualizada com sucesso.';
-      } else {
-        statusBox.textContent = 'Texto presente, mas sem páginas renderizadas.';
-      }
-
+      statusBox.textContent = 'Prévia atualizada com sucesso.';
       renderCurrentView();
     }
 
     function exportPDF(){
       if(!normalizeText(editorText.value)){
-        alert('Carregue ou cole uma obra antes de exportar.');
+        alert('Carregue uma obra antes de exportar.');
         return;
       }
 
@@ -1628,24 +1615,20 @@
       bookTitle.value = '';
       bookSize.value = '16x23';
       chapterStartMode.value = 'flow';
-      bodyFont.value = 'Georgia';
-      fontSize.value = '0.96';
-      lineHeight.value = '1.52';
-      paragraphIndent.value = '1.00';
-      paragraphGap.value = '0.20';
-      dropcapStyle.value = 'none';
       viewMode.value = 'single';
 
-      compositionMode.value = 'prose';
+      textStyle.value = 'normal';
       correctionLevel.value = 'light';
+      spacingMode.value = 'no-space';
       hyphenationMode.value = 'off';
       widowOrphanMode.value = 'off';
-      motorParagraphIndent.value = '1.00';
-      motorParagraphGap.value = '0.20';
-      motorBodyFont.value = 'Georgia';
-      motorFontSize.value = '0.96';
-      motorLineHeight.value = '1.52';
-      motorDropcapStyle.value = 'none';
+      fontFamily.value = 'Georgia';
+      fontSize.value = '13';
+      titleFontSize.value = '18';
+      lineHeight.value = '1.52';
+      paragraphIndent.value = '1.25';
+      paragraphGap.value = '0.2';
+      dropcapStyle.value = 'classic';
 
       renderedPages = [];
       currentPageIndex = 0;
@@ -1656,6 +1639,7 @@
       selectedOrnament = '';
 
       buildOrnamentGrid();
+      syncSpacingModeUI();
 
       const oldInput = fileInput;
       const newInput = oldInput.cloneNode(true);
@@ -1664,13 +1648,10 @@
       bindFileInput();
 
       statusBox.textContent = 'Workspace limpo. Pronto para novo livro.';
+      motorStatusBox.textContent = 'Motor limpo.';
       rulesSummary.textContent = 'Sem lapidação ainda.';
       processText();
       renderCurrentView();
-    }
-
-    function readableMode(mode){
-      return mode === 'hybrid' ? 'híbrido' : 'prosa';
     }
 
     function buildOrnamentGrid(){
@@ -1687,6 +1668,16 @@
         };
         ornamentGrid.appendChild(item);
       });
+    }
+
+    function syncSpacingModeUI(){
+      if(spacingMode.value === 'no-space'){
+        paragraphGap.value = '0';
+        paragraphIndent.value = '1.25';
+      } else if(spacingMode.value === 'with-space'){
+        paragraphGap.value = '0.35';
+        paragraphIndent.value = '0';
+      }
     }
 
     function escapeHtml(text){
@@ -1750,7 +1741,6 @@
 
     function applyLightCorrections(text){
       let out = text;
-
       out = out.replace(/[ ]{2,}/g, ' ');
       out = out.replace(/\s+,/g, ',');
       out = out.replace(/\s+\./g, '.');
@@ -1768,13 +1758,11 @@
       out = out.replace(/\bhouveram\b/g, 'houve');
       out = out.replace(/\bPra mim fazer\b/g, 'Para eu fazer');
       out = out.replace(/\bpra mim fazer\b/g, 'para eu fazer');
-
       return out;
     }
 
     function applyMediumCorrections(text){
       let out = applyLightCorrections(text);
-
       out = out.replace(/\bA gente fomos\b/g, 'A gente foi');
       out = out.replace(/\ba gente fomos\b/g, 'a gente foi');
       out = out.replace(/\bA nível de\b/g, 'Em nível de');
@@ -1784,11 +1772,10 @@
       out = out.replace(/\bMais eu\b/g, 'Mas eu');
       out = out.replace(/\bmais também\b/g, 'mas também');
       out = out.replace(/\bMais também\b/g, 'Mas também');
-
       return out;
     }
 
-    function detectIssues(originalText, processedTextValue){
+    function detectIssues(processedTextValue){
       const issues = [];
       const paragraphs = splitParagraphs(processedTextValue);
 
@@ -1838,51 +1825,6 @@
             }
           }
         }
-
-        if(/\ba gente fomos\b/i.test(p)){
-          issues.push({
-            kind:'agreement',
-            paragraphIndex:idx,
-            snippet:p.match(/\ba gente fomos\b/i)[0],
-            title:'Concordância suspeita'
-          });
-        }
-
-        if(/\bhouveram\b/i.test(p)){
-          issues.push({
-            kind:'houveram',
-            paragraphIndex:idx,
-            snippet:p.match(/\bhouveram\b/i)[0],
-            title:'Uso suspeito de “houveram”'
-          });
-        }
-
-        if(/\bpra mim fazer\b/i.test(p)){
-          issues.push({
-            kind:'pra-mim-fazer',
-            paragraphIndex:idx,
-            snippet:p.match(/\bpra mim fazer\b/i)[0],
-            title:'Construção suspeita'
-          });
-        }
-
-        if(/\ba nível de\b/i.test(p)){
-          issues.push({
-            kind:'a-nivel',
-            paragraphIndex:idx,
-            snippet:p.match(/\ba nível de\b/i)[0],
-            title:'Expressão suspeita'
-          });
-        }
-
-        if(/\bmais eu\b/i.test(p) || /\bmais também\b/i.test(p)){
-          issues.push({
-            kind:'mais-mas',
-            paragraphIndex:idx,
-            snippet:p,
-            title:'“Mais” possivelmente no lugar de “mas”'
-          });
-        }
       });
 
       return issues;
@@ -1893,7 +1835,6 @@
       if(mode === 'off') return [];
 
       const warnings = [];
-
       paragraphs.forEach((p, idx) => {
         const words = p.replace(/\n/g, ' ').split(/\s+/).filter(Boolean);
         if(words.length >= 10){
@@ -1907,27 +1848,37 @@
           warnings.push(`Parágrafo ${idx + 1}: revisar possível viúva/órfã na diagramação.`);
         }
       });
-
       return warnings;
     }
 
     function renderMotorPreview(paragraphs, warnings){
       motorPreview.className = 'motor-preview prose';
 
-      if(Number(motorParagraphIndent.value) > 0){
+      if(Number(paragraphIndent.value) > 0){
         motorPreview.classList.add('indent');
       }
 
-      motorPreview.style.setProperty('--paragraph-indent', motorParagraphIndent.value + 'em');
-      motorPreview.style.setProperty('--paragraph-gap', motorParagraphGap.value + 'em');
-      motorPreview.style.fontFamily = motorBodyFont.value;
-      motorPreview.style.fontSize = motorFontSize.value + 'rem';
-      motorPreview.style.lineHeight = motorLineHeight.value;
+      motorPreview.style.setProperty('--paragraph-indent', paragraphIndent.value + 'em');
+      motorPreview.style.setProperty('--paragraph-gap', paragraphGap.value + 'em');
+      motorPreview.style.fontFamily = fontFamily.value;
+      motorPreview.style.fontSize = pxToRem(fontSize.value) + 'rem';
+      motorPreview.style.lineHeight = lineHeight.value;
 
-      let html = paragraphs.map((p, idx) => {
-        const cls = idx === 0 ? ' class="first-para"' : '';
-        return `<p${cls}>${escapeHtml(p).replace(/\u00AD/g, '&shy;').replace(/\n/g, '<br>')}</p>`;
-      }).join('');
+      let html = '';
+      const styleType = styleToBlockType(textStyle.value);
+
+      if(styleType === 'title1'){
+        html = `<div class="chapter-title" style="font-size:${pxToRem(titleFontSize.value)}rem">${escapeHtml(paragraphs[0] || 'Título 1')}</div>`;
+      } else if(styleType === 'title2'){
+        html = `<div class="chapter-subtitle" style="font-size:${pxToRem(Math.max(12, Number(titleFontSize.value) - 3))}rem">${escapeHtml(paragraphs[0] || 'Título 2')}</div>`;
+      } else if(styleType === 'title3'){
+        html = `<div class="section-title-3">${escapeHtml(paragraphs[0] || 'Título 3')}</div>`;
+      } else {
+        html = paragraphs.map((p, idx) => {
+          const cls = idx === 0 ? ' class="first-para"' : '';
+          return `<p${cls}>${escapeHtml(p).replace(/\u00AD/g, '&shy;').replace(/\n/g, '<br>')}</p>`;
+        }).join('');
+      }
 
       if(selectedOrnament){
         html += `<div class="ornament-preview">${escapeHtml(selectedOrnament)}</div>`;
@@ -1971,17 +1922,7 @@
           joinBtn.textContent = 'Juntar linha';
           joinBtn.onclick = () => applyJoinLineIssue(issue);
 
-          const keepBtn = document.createElement('button');
-          keepBtn.className = 'mini-btn';
-          keepBtn.textContent = 'Ignorar';
-          keepBtn.onclick = () => {
-            detectedIssues = detectedIssues.filter((_, i) => i !== idx);
-            renderIssues();
-            updateMotorCounters();
-          };
-
           actions.appendChild(joinBtn);
-          actions.appendChild(keepBtn);
           box.appendChild(actions);
         }
 
@@ -2003,7 +1944,7 @@
       processedText = processedParagraphs.join('\n\n');
 
       const warnings = detectWidowOrphanWarnings(processedParagraphs);
-      detectedIssues = detectIssues(editorText.value, processedText);
+      detectedIssues = detectIssues(processedText);
       renderMotorPreview(processedParagraphs, warnings);
       renderIssues();
       updateMotorCounters();
@@ -2022,7 +1963,7 @@
       statHyphenated.textContent = String(hyphenCount);
       statWarnings.textContent = String(detectedIssues.length);
 
-      motorModePill.textContent = 'Modo: ' + readableMode(compositionMode.value);
+      motorModePill.textContent = 'Modo: prosa';
       motorIssuesPill.textContent = detectedIssues.length
         ? `${detectedIssues.length} alerta(s)`
         : 'Sem análise ainda';
@@ -2030,6 +1971,8 @@
 
     function processText(){
       const raw = normalizeText(editorText.value);
+
+      syncSpacingModeUI();
 
       if(!raw){
         processedText = '';
@@ -2072,12 +2015,14 @@
 
       processedParagraphs = paragraphs;
       processedText = paragraphs.join('\n\n');
-      detectedIssues = detectIssues(raw, processedText);
+      detectedIssues = detectIssues(processedText);
 
       const warnings = detectWidowOrphanWarnings(processedParagraphs);
       renderMotorPreview(processedParagraphs, warnings);
       renderIssues();
       updateMotorCounters(hyphenatedCount);
+
+      motorStatusBox.textContent = 'Texto lapidado.';
     }
 
     function applyProcessedToBook(){
@@ -2086,15 +2031,28 @@
         return;
       }
 
-      editorText.value = processedText.replace(/\u00AD/g, '');
-      ornamentFromMotor = selectedOrnament;
+      const styleType = styleToBlockType(textStyle.value);
+      const cleanText = processedText.replace(/\u00AD/g, '');
 
-      paragraphIndent.value = motorParagraphIndent.value;
-      paragraphGap.value = motorParagraphGap.value;
-      bodyFont.value = motorBodyFont.value;
-      fontSize.value = motorFontSize.value;
-      lineHeight.value = motorLineHeight.value;
-      dropcapStyle.value = motorDropcapStyle.value;
+      if(styleType === 'title1'){
+        const parts = splitParagraphs(editorText.value);
+        parts.unshift(cleanText.split('\n\n')[0]);
+        editorText.value = parts.join('\n\n');
+      } else if(styleType === 'title2'){
+        const parts = splitParagraphs(editorText.value);
+        if(parts.length > 0){
+          parts.splice(1, 0, cleanText.split('\n\n')[0]);
+          editorText.value = parts.join('\n\n');
+        } else {
+          editorText.value = cleanText;
+        }
+      } else if(styleType === 'title3'){
+        editorText.value = normalizeText(editorText.value) + '\n\n' + cleanText.split('\n\n')[0];
+      } else {
+        editorText.value = cleanText;
+      }
+
+      ornamentFromMotor = selectedOrnament;
 
       statusBox.textContent = 'Lapidação aplicada ao livro.';
       rulesSummary.textContent =
@@ -2106,22 +2064,22 @@
 
     async function copyProcessedText(){
       if(!processedText){
-        statusBox.textContent = 'Nada para copiar ainda.';
+        motorStatusBox.textContent = 'Nada para copiar.';
         return;
       }
 
       try{
         await navigator.clipboard.writeText(processedText.replace(/\u00AD/g, ''));
-        statusBox.textContent = 'Texto lapidado copiado.';
+        motorStatusBox.textContent = 'Texto lapidado copiado.';
       }catch(error){
         console.error(error);
-        statusBox.textContent = 'Não foi possível copiar.';
+        motorStatusBox.textContent = 'Não foi possível copiar.';
       }
     }
 
     function downloadProcessedText(){
       if(!processedText){
-        statusBox.textContent = 'Nada para baixar ainda.';
+        motorStatusBox.textContent = 'Nada para baixar.';
         return;
       }
 
@@ -2134,7 +2092,7 @@
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
-      statusBox.textContent = 'TXT lapidado baixado.';
+      motorStatusBox.textContent = 'TXT lapidado baixado.';
     }
   </script>
 </body>
