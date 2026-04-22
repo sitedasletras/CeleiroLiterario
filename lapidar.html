@@ -11,10 +11,21 @@
       --ink:#1f2430;
       --muted:#5f6b78;
       --line:#d8ddd8;
-      --green-1:#173726;
-      --green-2:#1d5c40;
-      --green-3:#2d7c58;
-      --green-4:#5aa58f;
+      --offwhite-1:#f7f4ee;
+      --offwhite-2:#ece7dd;
+      --offwhite-3:#fffaf2;
+      --green:#2d7c58;
+      --green-soft:#edf6f1;
+      --green-line:#cfe2d7;
+      --blue:#4778a8;
+      --blue-soft:#eef4fb;
+      --blue-line:#d1dceb;
+      --beige:#b79c74;
+      --beige-soft:#f7f0e6;
+      --beige-line:#e4d6c1;
+      --earth:#8b5e3c;
+      --earth-soft:#f7eee7;
+      --earth-line:#e3cfbe;
       --shadow:0 14px 34px rgba(0,0,0,.10);
     }
 
@@ -37,13 +48,13 @@
       width:min(1180px, 100%);
       margin:0 auto;
       display:grid;
-      grid-template-columns:260px minmax(0,1fr);
+      grid-template-columns:280px minmax(0,1fr);
       gap:14px;
     }
 
     .sidebar{
-      background:linear-gradient(180deg,var(--green-1),var(--green-2) 55%,var(--green-4) 100%);
-      color:#fff;
+      background:linear-gradient(180deg,var(--offwhite-3),var(--offwhite-1) 55%,var(--offwhite-2) 100%);
+      color:var(--ink);
       border-radius:24px;
       box-shadow:var(--shadow);
       padding:18px 16px;
@@ -54,6 +65,7 @@
       position:sticky;
       top:12px;
       align-self:start;
+      border:1px solid #ddd6ca;
     }
 
     .brand small{
@@ -61,7 +73,7 @@
       font-size:.9rem;
       letter-spacing:.08em;
       text-transform:uppercase;
-      opacity:.85;
+      color:#786d5f;
       margin-bottom:8px;
     }
 
@@ -69,18 +81,19 @@
       margin:0;
       font-size:2rem;
       line-height:1;
+      color:#1e2b25;
     }
 
     .brand p{
       margin:10px 0 0 0;
-      color:rgba(255,255,255,.92);
+      color:#5f6b78;
       line-height:1.45;
       font-size:.98rem;
     }
 
     .side-card{
-      background:rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.55);
+      border:1px solid #ddd7cb;
       border-radius:18px;
       padding:12px;
       display:flex;
@@ -91,12 +104,13 @@
     .side-card h2{
       margin:0;
       font-size:1rem;
+      color:#223027;
     }
 
     .side-card p,
     .side-card li{
       margin:0;
-      color:rgba(255,255,255,.95);
+      color:#4f5c56;
       line-height:1.35;
       font-size:.95rem;
     }
@@ -142,12 +156,7 @@
     .btn-primary{
       background:#f7faf7;
       color:#173726;
-    }
-
-    .btn-secondary{
-      background:rgba(255,255,255,.14);
-      color:#fff;
-      border:1px solid rgba(255,255,255,.16);
+      border:1px solid #d5ddd7;
     }
 
     .main{
@@ -170,6 +179,8 @@
       grid-template-columns:minmax(0,1fr) 220px;
       gap:16px;
       align-items:center;
+      background:linear-gradient(180deg,var(--offwhite-3),var(--offwhite-1));
+      border:1px solid #ddd6ca;
     }
 
     .hero h2{
@@ -244,18 +255,60 @@
       box-shadow:0 10px 22px rgba(0,0,0,.05);
     }
 
+    .card-green{
+      background:linear-gradient(180deg,#f9fcfa 0%, var(--green-soft) 100%);
+      border-color:var(--green-line);
+    }
+
+    .card-blue{
+      background:linear-gradient(180deg,#fbfdff 0%, var(--blue-soft) 100%);
+      border-color:var(--blue-line);
+    }
+
+    .card-beige{
+      background:linear-gradient(180deg,#fffdfa 0%, var(--beige-soft) 100%);
+      border-color:var(--beige-line);
+    }
+
+    .card-earth{
+      background:linear-gradient(180deg,#fffdfa 0%, var(--earth-soft) 100%);
+      border-color:var(--earth-line);
+    }
+
     .tag{
       font-size:.82rem;
       font-weight:700;
       letter-spacing:.08em;
       text-transform:uppercase;
-      color:#6d7a73;
-      background:#eef3ef;
-      border:1px solid #dbe4dc;
       border-radius:999px;
       padding:6px 10px;
       display:inline-block;
       width:max-content;
+      border:1px solid transparent;
+    }
+
+    .tag-green{
+      color:#2f694e;
+      background:#eaf4ee;
+      border-color:#cfe2d7;
+    }
+
+    .tag-blue{
+      color:#476b90;
+      background:#edf3fb;
+      border-color:#d1dceb;
+    }
+
+    .tag-beige{
+      color:#7e6746;
+      background:#f4ede2;
+      border-color:#e4d6c1;
+    }
+
+    .tag-earth{
+      color:#734b2f;
+      background:#f4e9df;
+      border-color:#e3cfbe;
     }
 
     .card h4{
@@ -293,10 +346,14 @@
     }
 
     .btn-open{
-      background:var(--green-3);
       color:#fff;
       flex:1 1 180px;
     }
+
+    .btn-polux{background:var(--green)}
+    .btn-castor{background:var(--blue)}
+    .btn-centauro{background:var(--beige)}
+    .btn-quironxada{background:var(--earth)}
 
     .footer-note{
       border-top:1px dashed #d4dbd4;
@@ -385,7 +442,7 @@
 
       <div class="side-card">
         <h2>Observação</h2>
-        <p>Esta página não deve redirecionar sozinha. Ela deve apenas exibir os quatro setores da diagramação.</p>
+        <p>Esta página deve apenas exibir os quatro setores da diagramação.</p>
       </div>
 
       <div class="side-actions">
@@ -416,8 +473,8 @@
         </div>
 
         <div class="diagram-grid">
-          <article class="card">
-            <span class="tag">Prosa</span>
+          <article class="card card-green">
+            <span class="tag tag-green">Prosa</span>
             <h4>Pólux</h4>
             <p>Diagramador de prosa e narrativa contínua.</p>
             <ul class="features">
@@ -427,12 +484,12 @@
               <li>Miolo narrativo</li>
             </ul>
             <div class="card-actions">
-              <a class="btn btn-open" href="polux.html">Abrir Pólux</a>
+              <a class="btn btn-open btn-polux" href="polux.html">Abrir Pólux</a>
             </div>
           </article>
 
-          <article class="card">
-            <span class="tag">Poesia</span>
+          <article class="card card-blue">
+            <span class="tag tag-blue">Poesia</span>
             <h4>Castor</h4>
             <p>Diagramador de poesia e formas poéticas.</p>
             <ul class="features">
@@ -442,12 +499,12 @@
               <li>Preview poético</li>
             </ul>
             <div class="card-actions">
-              <a class="btn btn-open" href="castor.html">Abrir Castor</a>
+              <a class="btn btn-open btn-castor" href="castor.html">Abrir Castor</a>
             </div>
           </article>
 
-          <article class="card">
-            <span class="tag">Híbrido</span>
+          <article class="card card-beige">
+            <span class="tag tag-beige">Híbrido</span>
             <h4>Centauro</h4>
             <p>Diagramador híbrido para obras mistas.</p>
             <ul class="features">
@@ -457,12 +514,12 @@
               <li>Layout combinado</li>
             </ul>
             <div class="card-actions">
-              <a class="btn btn-open" href="centauro.html">Abrir Centauro</a>
+              <a class="btn btn-open btn-centauro" href="centauro.html">Abrir Centauro</a>
             </div>
           </article>
 
-          <article class="card">
-            <span class="tag">Cordel</span>
+          <article class="card card-earth">
+            <span class="tag tag-earth">Cordel</span>
             <h4>Qui(RON)xadá</h4>
             <p>Diagramador de cordel e estrutura popular.</p>
             <ul class="features">
@@ -472,7 +529,7 @@
               <li>Leitura simples</li>
             </ul>
             <div class="card-actions">
-              <a class="btn btn-open" href="modulo_quironxada.html">Abrir Qui(RON)xadá</a>
+              <a class="btn btn-open btn-quironxada" href="modulo_quironxada.html">Abrir Qui(RON)xadá</a>
             </div>
           </article>
         </div>
