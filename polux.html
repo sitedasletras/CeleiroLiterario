@@ -13,7 +13,6 @@
       --line:#d7dee7;
       --panel:#eef7fb;
       --accent:#b86d16;
-      --accent-dark:#8f530f;
       --green:#1f6b2e;
       --shadow:0 10px 28px rgba(40,55,75,.08);
       --radius:18px;
@@ -29,23 +28,19 @@
     }
 
     .app{
-      max-width: 1600px;
-      margin: 0 auto;
-      padding: 24px 18px 48px;
+      max-width:1600px;
+      margin:0 auto;
+      padding:24px 18px 48px;
     }
 
-    .topbar{
-      margin-bottom: 18px;
-    }
-
+    .topbar{margin-bottom:18px}
     .title{
       margin:0 0 10px;
-      font-size: clamp(2rem, 3.6vw, 3.4rem);
+      font-size:clamp(2rem, 3.6vw, 3.4rem);
       line-height:1.05;
       color:#233b83;
       letter-spacing:.2px;
     }
-
     .subtitle{
       margin:0;
       color:var(--muted);
@@ -54,7 +49,7 @@
 
     .layout{
       display:grid;
-      grid-template-columns: 340px minmax(520px, 1fr) 280px;
+      grid-template-columns:340px minmax(520px,1fr) 280px;
       gap:18px;
       align-items:start;
     }
@@ -67,9 +62,7 @@
       overflow:hidden;
     }
 
-    .panel.soft{
-      background:var(--panel);
-    }
+    .panel.soft{background:var(--panel)}
 
     .panel-header{
       padding:18px 18px 10px;
@@ -83,9 +76,7 @@
       color:#24324a;
     }
 
-    .panel-body{
-      padding:16px 18px 18px;
-    }
+    .panel-body{padding:16px 18px 18px}
 
     label{
       display:block;
@@ -95,9 +86,7 @@
       color:#23324b;
     }
 
-    .field{
-      margin-bottom:16px;
-    }
+    .field{margin-bottom:16px}
 
     textarea,
     input,
@@ -107,7 +96,7 @@
       background:#fff;
       border-radius:12px;
       padding:11px 12px;
-      font-family: inherit;
+      font-family:inherit;
       font-size:1rem;
       color:var(--ink);
       outline:none;
@@ -119,7 +108,9 @@
       line-height:1.55;
     }
 
-    input:focus, select:focus, textarea:focus{
+    input:focus,
+    select:focus,
+    textarea:focus{
       border-color:#88a9d6;
       box-shadow:0 0 0 3px rgba(112,149,207,.12);
     }
@@ -208,7 +199,7 @@
 
     .preview-stage{
       padding:18px;
-      min-height: calc(100vh - 180px);
+      min-height:calc(100vh - 180px);
       display:flex;
       align-items:flex-start;
       justify-content:center;
@@ -248,21 +239,16 @@
       width:100%;
       height:100%;
       overflow:hidden;
+      color:#1b1b1b;
     }
 
     .chapter-block{
-      break-inside:avoid;
-    }
-
-    .chapter-marker{
-      font-size:10pt;
-      color:#606b78;
       margin-bottom:10mm;
     }
 
     .chapter-title{
       text-align:center;
-      font-size: var(--title1-size, 16pt);
+      font-size:var(--title1-size, 16pt);
       margin:0;
       font-weight:700;
       color:#223a82;
@@ -270,7 +256,7 @@
 
     .chapter-subtitle{
       text-align:center;
-      font-size: var(--title2-size, 12pt);
+      font-size:var(--title2-size, 12pt);
       font-style:italic;
       font-weight:700;
       margin:2mm 0 10mm;
@@ -278,10 +264,9 @@
     }
 
     .body-block{
-      font-size: var(--body-size, 12pt);
-      line-height: var(--body-line-height, 1.55);
+      font-size:var(--body-size, 12pt);
+      line-height:var(--body-line-height, 1.5);
       text-align:justify;
-      color:#1b1b1b;
       hyphens:none;
       word-break:normal;
       overflow-wrap:normal;
@@ -290,14 +275,11 @@
 
     .paragraph{
       margin:0 0 .6em 0;
-      text-indent: var(--first-indent, 1cm);
+      text-indent:var(--first-indent, 1cm);
       text-align:justify;
     }
 
-    .paragraph.no-indent{
-      text-indent:0;
-    }
-
+    .paragraph.no-indent{ text-indent:0; }
     .paragraph.dialogue{
       text-indent:0;
       padding-left:0;
@@ -311,7 +293,7 @@
 
     .paragraph.dropcap{
       text-indent:0;
-      min-height:3.1em;
+      min-height:3.2em;
     }
 
     .paragraph.dropcap::first-letter{
@@ -336,13 +318,8 @@
       font-size:1.3rem;
     }
 
-    .notes p{
-      margin:.3rem 0 .8rem;
-    }
-
-    .muted{
-      color:var(--muted);
-    }
+    .notes p{margin:.3rem 0 .8rem}
+    .muted{color:var(--muted)}
 
     .hidden-measure{
       position:absolute;
@@ -359,32 +336,18 @@
       font-weight:700;
     }
 
-    @media (max-width: 1180px){
-      .layout{
-        grid-template-columns: 1fr;
-      }
-      .preview-stage{
-        min-height:720px;
-      }
-      .page{
-        transform-origin:top center;
-      }
+    @media (max-width:1180px){
+      .layout{grid-template-columns:1fr}
+      .preview-stage{min-height:720px}
+      .page{transform-origin:top center}
     }
 
-    @media (max-width: 760px){
-      .app{
-        padding:16px 10px 28px;
-      }
-      .title{
-        font-size:2.15rem;
-      }
+    @media (max-width:760px){
+      .app{padding:16px 10px 28px}
+      .title{font-size:2.15rem}
       .panel-header h2,
-      .panel-header h3{
-        font-size:1.3rem;
-      }
-      .preview-toolbar{
-        padding:12px;
-      }
+      .panel-header h3{font-size:1.3rem}
+      .preview-toolbar{padding:12px}
       .page{
         transform:scale(.82);
         margin:-18px -30px;
@@ -407,7 +370,14 @@
         <div class="panel-body">
           <div class="field">
             <label for="entrada">Texto-base</label>
-            <textarea id="entrada" placeholder="Cole aqui a obra.&#10;&#10;Exemplo:&#10;Capítulo 1&#10;O Degrau e a Mochila&#10;&#10;A praça respirava como um animal ferido.&#10;..."></textarea>
+            <textarea id="entrada" placeholder="Cole aqui a obra.
+
+Exemplo:
+Capítulo 1
+O Degrau e a Mochila
+
+A praça respirava como um animal ferido.
+..."></textarea>
           </div>
 
           <div class="btn-row">
@@ -416,7 +386,7 @@
             <button id="btnLimpar" class="btn-secondary">Limpar</button>
           </div>
 
-          <p class="help" style="margin-top:10px;">O texto pode ser colado direto. A prévia usa paginação contínua e tenta evitar sobra ruim de linhas e capítulos “esmagados”.</p>
+          <p class="help" style="margin-top:10px;">O texto pode ser colado direto. A prévia usa paginação contínua e evita duplicar título, esmagar abertura de capítulo e quebrar à força o primeiro parágrafo.</p>
 
           <hr style="border:none;border-top:1px solid #d9e5eb;margin:18px 0;">
 
@@ -487,6 +457,7 @@
             <div class="pill" id="paginaPill">Página 1 de 1</div>
           </div>
         </div>
+
         <div class="preview-stage" id="previewStage">
           <div id="pageHost"></div>
         </div>
@@ -498,19 +469,19 @@
         </div>
         <div class="panel-body notes">
           <p><strong>Leitura do texto</strong><br>Título 1 = “Capítulo X”.<br>Título 2 = linha seguinte em itálico.<br>Parágrafos e diálogos seguem fluxo corrido.</p>
-          <p><strong>Letra capitular</strong><br>Aplicada apenas no primeiro parágrafo do início real do capítulo.</p>
-          <p><strong>Observação</strong><br>Todo capítulo começa em nova página. O motor tenta evitar finais ruins com sobra mínima e não centraliza o miolo.</p>
+          <p><strong>Letra capitular</strong><br>Aplicada apenas no primeiro parágrafo real que ficar na mesma página da abertura do capítulo.</p>
+          <p><strong>Correção feita</strong><br>Sem título duplicado no topo, sem marcador repetido e com medição real da página antes da quebra.</p>
           <p class="status" id="statusBox">Pronto.</p>
         </div>
       </aside>
     </div>
   </div>
 
-  <div class="hidden-measure">
+  <div class="hidden-measure" aria-hidden="true">
     <div id="measurePage" class="page a5">
-      <div class="folio-left"></div>
-      <div class="folio-right"></div>
-      <div class="page-content" id="measureContent"></div>
+      <div class="folio-left" id="measureLeft"></div>
+      <div class="folio-right" id="measureRight"></div>
+      <div class="page-content body-block" id="measureContent"></div>
     </div>
   </div>
 
@@ -532,7 +503,10 @@
 
     const pageHost = document.getElementById('pageHost');
     const measurePage = document.getElementById('measurePage');
+    const measureLeft = document.getElementById('measureLeft');
+    const measureRight = document.getElementById('measureRight');
     const measureContent = document.getElementById('measureContent');
+
     const modoPill = document.getElementById('modoPill');
     const paginaPill = document.getElementById('paginaPill');
     const statusBox = document.getElementById('statusBox');
@@ -543,49 +517,33 @@
     const exemploTexto = `Capítulo 1
 O Degrau e a Mochila
 
-A praça respirava como um animal ferido.
-O som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela.
-Sacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa.
-Rovonilson Reigns Bautista aprendeu cedo que o mundo não diminui o passo para ninguém.
+A praça respirava como um animal ferido. O som não vinha apenas do vento atravessando as copas das árvores, mas do atrito constante entre a cidade e os que não cabiam nela. Sacolas plásticas raspavam no chão, ônibus suspiravam nos pontos finais, passos ecoavam com pressa. Rovonilson Reigns Bautista aprendeu cedo que o mundo não diminui o passo para ninguém.
 
-Naquela noite, ele tinha nove anos e segurava uma mochila pequena contra o peito.
-A mochila não era pesada.
-O peso vinha de outra parte.
+Naquela noite, ele tinha nove anos e segurava uma mochila pequena contra o peito. A mochila não era pesada. O peso vinha de outra parte.
 
-— Você vem ou vai ficar parado aí? — gritou um homem da esquina, ajeitando a camisa no ombro.
-Rovonilson levantou os olhos.
-Não respondeu.
+— Você vem ou vai ficar parado aí? — gritou um homem da esquina, ajeitando a camisa no ombro. Rovonilson levantou os olhos. Não respondeu.
 
 Capítulo 2
 A Primeira Manhã
 
-A manhã revelou o que a noite havia escondido.
-Havia mais gente do que ele imaginava.
-Homens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa, um senhor que dobrava papelão com método quase profissional.
+A manhã revelou o que a noite havia escondido. Havia mais gente do que ele imaginava. Homens enrolados em cobertores finos, mulheres organizando sacolas como quem organiza casa, um senhor que dobrava papelão com método quase profissional.
 
-Uma mulher de cabelos grisalhos se aproximou devagar.
-Trazia um copo plástico na mão.
+Uma mulher de cabelos grisalhos se aproximou devagar. Trazia um copo plástico na mão.
 
-— Primeira vez? — perguntou.
-Ele não respondeu.
-Ela observou a mochila.
+— Primeira vez? — perguntou. Ele não respondeu. Ela observou a mochila.
 
 — A gente percebe.
 
 Capítulo 3
 Regras Invisíveis
 
-A terceira noite já não parecia acidente.
-A segunda tinha sido resistência.
-A terceira começou a parecer início de padrão.
+A terceira noite já não parecia acidente. A segunda tinha sido resistência. A terceira começou a parecer início de padrão.
 
-A mulher dos cabelos grisalhos se chamava Lúcia.
-Ele descobriu isso ao ouvir outro homem chamá-la.
+A mulher dos cabelos grisalhos se chamava Lúcia. Ele descobriu isso ao ouvir outro homem chamá-la.
 
 — Lúcia, guarda isso — disse o senhor do papelão, entregando um pedaço de cobertor.
 
-Ela organizava as coisas com método silencioso.
-Rovonilson observava tudo como quem estuda para uma prova sem saber o conteúdo.`;
+Ela organizava as coisas com método silencioso. Rovonilson observava tudo como quem estuda para uma prova sem saber o conteúdo.`;
 
     function aplicarEstilosPagina(el){
       el.className = `page ${formato.value}`;
@@ -596,21 +554,13 @@ Rovonilson observava tudo como quem estuda para uma prova sem saber o conteúdo.
       el.style.setProperty('--first-indent', `${recuo.value}cm`);
     }
 
-    function escapeHtml(texto){
-      return texto
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;');
-    }
-
     function normalizarTexto(texto){
       return texto
         .replace(/\r\n/g, '\n')
         .replace(/\r/g, '\n')
         .replace(/\t/g, '    ')
         .replace(/\u00A0/g, ' ')
-        .replace(/[ ]+\n/g, '\n')
+        .replace(/[ \t]+\n/g, '\n')
         .replace(/\n{3,}/g, '\n\n')
         .trim();
     }
@@ -620,7 +570,7 @@ Rovonilson observava tudo como quem estuda para uma prova sem saber o conteúdo.
     }
 
     function isDialogue(par){
-      return /^\s*[—-]/.test(par);
+      return /^\s*[—-]/.test(par.trim());
     }
 
     function quebrarTextoEmBlocos(texto){
@@ -640,33 +590,47 @@ Rovonilson observava tudo como quem estuda para uma prova sem saber o conteúdo.
         }
 
         if(isLinhaCapitulo(linha)){
-          const titulo = linha;
           let subtitulo = '';
           let j = i + 1;
 
           while(j < linhas.length && !linhas[j].trim()) j++;
 
-          if(j < linhas.length && !isLinhaCapitulo(linhas[j].trim())){
+          if(j < linhas.length){
             const possivelSub = linhas[j].trim();
-            const linhaSeguinte = (linhas[j+1] || '').trim();
-            if(possivelSub && !isDialogue(possivelSub) && linhaSeguinte !== '' && !isLinhaCapitulo(possivelSub)){
+            const seguinte = (linhas[j + 1] || '').trim();
+
+            if(
+              possivelSub &&
+              !isLinhaCapitulo(possivelSub) &&
+              !isDialogue(possivelSub) &&
+              seguinte !== ''
+            ){
               subtitulo = possivelSub;
               j++;
             }
           }
 
-          blocos.push({ tipo:'chapter', titulo, subtitulo });
+          blocos.push({
+            tipo:'chapter',
+            titulo:linha,
+            subtitulo
+          });
+
           i = j;
           continue;
         }
 
         let par = linha;
         let j = i + 1;
-        while(j < linhas.length && linhas[j].trim() && !isLinhaCapitulo(linhas[j].trim())){
+
+        while(j < linhas.length){
           const atual = linhas[j].trim();
-          if(isDialogue(par) || isDialogue(atual)){
-            break;
-          }
+
+          if(!atual) break;
+          if(isLinhaCapitulo(atual)) break;
+
+          if(isDialogue(par) || isDialogue(atual)) break;
+
           par += ' ' + atual;
           j++;
         }
@@ -676,13 +640,34 @@ Rovonilson observava tudo como quem estuda para uma prova sem saber o conteúdo.
           texto:par,
           dialogue:isDialogue(par)
         });
+
         i = j;
       }
 
       return blocos;
     }
 
-    function criarElementoParagrafo(bloco, firstOfChapter=false){
+    function criarCabecalhoCapitulo(bloco){
+      const wrap = document.createElement('div');
+      wrap.className = 'chapter-block';
+
+      const h1 = document.createElement('h2');
+      h1.className = 'chapter-title';
+      h1.textContent = bloco.titulo;
+
+      wrap.appendChild(h1);
+
+      if(bloco.subtitulo){
+        const h2 = document.createElement('div');
+        h2.className = 'chapter-subtitle';
+        h2.textContent = bloco.subtitulo;
+        wrap.appendChild(h2);
+      }
+
+      return wrap;
+    }
+
+    function criarElementoParagrafo(bloco, firstOfChapter = false){
       const p = document.createElement('p');
       p.className = 'paragraph';
 
@@ -694,171 +679,160 @@ Rovonilson observava tudo como quem estuda para uma prova sem saber o conteúdo.
       return p;
     }
 
-    function criarCabecalhoCapitulo(bloco){
-      const wrap = document.createElement('div');
-      wrap.className = 'chapter-block';
-
-      const marker = document.createElement('div');
-      marker.className = 'chapter-marker';
-      marker.textContent = bloco.titulo;
-
-      const h1 = document.createElement('h2');
-      h1.className = 'chapter-title';
-      h1.textContent = bloco.titulo;
-
-      const h2 = document.createElement('div');
-      h2.className = 'chapter-subtitle';
-      h2.textContent = bloco.subtitulo || '';
-
-      wrap.appendChild(marker);
-      wrap.appendChild(h1);
-      if(bloco.subtitulo) wrap.appendChild(h2);
-
-      return wrap;
+    function configurarMedidor(chapterLabel = ''){
+      aplicarEstilosPagina(measurePage);
+      measureLeft.textContent = chapterLabel || '';
+      measureRight.textContent = `Modo impresso · ${formato.options[formato.selectedIndex].text}`;
+      measureContent.innerHTML = '';
     }
 
-    function novaPagina(numeroCapituloVisivel){
-      const page = document.createElement('div');
-      aplicarEstilosPagina(page);
-
-      const left = document.createElement('div');
-      left.className = 'folio-left';
-      left.textContent = numeroCapituloVisivel || '';
-
-      const right = document.createElement('div');
-      right.className = 'folio-right';
-      right.textContent = `Modo impresso · ${formato.options[formato.selectedIndex].text}`;
-
-      const content = document.createElement('div');
-      content.className = 'page-content body-block';
-
-      page.appendChild(left);
-      page.appendChild(right);
-      page.appendChild(content);
-
-      return { page, content, left, right };
-    }
-
-    function cabeNoConteudo(content, elemento){
-      content.appendChild(elemento);
-      const ok = content.scrollHeight <= content.clientHeight + 1;
-      if(!ok) content.removeChild(elemento);
+    function cabeNoMedidor(el){
+      measureContent.appendChild(el);
+      const ok = measureContent.scrollHeight <= measureContent.clientHeight + 1;
+      if(!ok){
+        measureContent.removeChild(el);
+      }
       return ok;
     }
 
-    function dividirParagrafo(texto, classeBase, firstOfChapter){
-      const palavras = texto.split(/\s+/).filter(Boolean);
-      if(palavras.length <= 1){
-        const p = document.createElement('p');
-        p.className = classeBase + (firstOfChapter ? ' no-indent' : '');
-        if(firstOfChapter && capitular.checked && !classeBase.includes('dialogue')) p.classList.add('dropcap');
-        p.textContent = texto;
-        return [p, null];
+    function htmlDoMedidor(){
+      return measurePage.outerHTML;
+    }
+
+    function adicionarAoMedidorSemTeste(el){
+      measureContent.appendChild(el);
+    }
+
+    function quebrarParagrafoParaCaber(bloco, firstOfChapter){
+      const palavras = bloco.texto.split(/\s+/).filter(Boolean);
+      if(palavras.length < 2){
+        return { parte1: bloco.texto, parte2: '' };
       }
 
-      let corte = Math.floor(palavras.length * 0.72);
-      if(corte < 3) corte = 3;
-      if(corte > palavras.length - 2) corte = palavras.length - 2;
+      let baixo = 1;
+      let alto = palavras.length - 1;
+      let melhor = 0;
 
-      const parte1 = palavras.slice(0, corte).join(' ');
-      const parte2 = palavras.slice(corte).join(' ');
+      while(baixo <= alto){
+        const meio = Math.floor((baixo + alto) / 2);
+        const testeTexto = palavras.slice(0, meio).join(' ');
+        const pTeste = criarElementoParagrafo(
+          { texto: testeTexto, dialogue: bloco.dialogue },
+          firstOfChapter
+        );
 
-      const p1 = document.createElement('p');
-      p1.className = classeBase + (firstOfChapter ? ' no-indent' : '');
-      if(firstOfChapter && capitular.checked && !classeBase.includes('dialogue')) p1.classList.add('dropcap');
-      p1.textContent = parte1;
+        if(cabeNoMedidor(pTeste)){
+          melhor = meio;
+          measureContent.removeChild(pTeste);
+          baixo = meio + 1;
+        } else {
+          alto = meio - 1;
+        }
+      }
 
-      return [p1, parte2];
+      if(melhor <= 0){
+        melhor = Math.max(1, Math.floor(palavras.length * 0.35));
+      }
+
+      if(melhor >= palavras.length){
+        melhor = palavras.length - 1;
+      }
+
+      return {
+        parte1: palavras.slice(0, melhor).join(' '),
+        parte2: palavras.slice(melhor).join(' ')
+      };
     }
 
     function paginar(){
       statusBox.textContent = 'Paginando…';
+
       const blocos = quebrarTextoEmBlocos(entrada.value);
       paginas = [];
       paginaAtual = 0;
 
       if(!blocos.length){
         pageHost.innerHTML = '';
-        const vazia = novaPagina('');
-        vazia.content.innerHTML = '<p class="paragraph no-indent muted">Cole ou carregue um texto para visualizar a paginação.</p>';
-        pageHost.appendChild(vazia.page);
-        paginas.push(vazia.page.outerHTML);
-        atualizarPills();
+        configurarMedidor('');
+        const aviso = document.createElement('p');
+        aviso.className = 'paragraph no-indent muted';
+        aviso.textContent = 'Cole ou carregue um texto para visualizar a paginação.';
+        adicionarAoMedidorSemTeste(aviso);
+        paginas.push(htmlDoMedidor());
+        renderPaginaAtual();
         statusBox.textContent = 'Sem texto.';
         return;
       }
 
-      measurePage.className = `page ${formato.value}`;
-      aplicarEstilosPagina(measurePage);
-
-      let pagina = novaPagina('');
       let chapterLabel = '';
       let firstParagraphOfChapter = false;
+
+      configurarMedidor('');
 
       for(let i = 0; i < blocos.length; i++){
         const bloco = blocos[i];
 
         if(bloco.tipo === 'chapter'){
-          if(pagina.content.children.length){
-            paginas.push(pagina.page.outerHTML);
-            pagina = novaPagina(bloco.titulo);
-          } else {
-            pagina.left.textContent = bloco.titulo;
+          if(measureContent.children.length > 0){
+            paginas.push(htmlDoMedidor());
           }
 
           chapterLabel = bloco.titulo;
+          configurarMedidor(chapterLabel);
+
           const cab = criarCabecalhoCapitulo(bloco);
-          pagina.left.textContent = chapterLabel;
-          pagina.content.appendChild(cab);
+          adicionarAoMedidorSemTeste(cab);
           firstParagraphOfChapter = true;
           continue;
         }
 
-        const p = criarElementoParagrafo(bloco, firstParagraphOfChapter);
+        let blocoAtual = { ...bloco };
 
-        if(cabeNoConteudo(pagina.content, p)){
-          firstParagraphOfChapter = false;
-          continue;
-        }
+        while(blocoAtual && blocoAtual.texto){
+          const paragrafo = criarElementoParagrafo(blocoAtual, firstParagraphOfChapter);
 
-        const classeBase = 'paragraph' + (bloco.dialogue ? ' dialogue' : '');
-        const [p1, resto] = dividirParagrafo(bloco.texto, classeBase, firstParagraphOfChapter);
-
-        if(pagina.content.children.length === 0){
-          pagina.content.appendChild(p1);
-          firstParagraphOfChapter = false;
-          if(resto){
-            paginas.push(pagina.page.outerHTML);
-            pagina = novaPagina(chapterLabel);
-            const p2 = criarElementoParagrafo({texto:resto, dialogue:bloco.dialogue}, false);
-            pagina.content.appendChild(p2);
+          if(cabeNoMedidor(paragrafo)){
+            firstParagraphOfChapter = false;
+            blocoAtual = null;
+            continue;
           }
-          continue;
-        }
 
-        paginas.push(pagina.page.outerHTML);
-        pagina = novaPagina(chapterLabel);
+          const paginaTemSoCabecalho =
+            measureContent.children.length === 1 &&
+            measureContent.firstElementChild &&
+            measureContent.firstElementChild.classList.contains('chapter-block');
 
-        const novoP = criarElementoParagrafo(bloco, firstParagraphOfChapter);
-        if(cabeNoConteudo(pagina.content, novoP)){
+          const paginaVazia = measureContent.children.length === 0;
+
+          if(paginaVazia || paginaTemSoCabecalho){
+            const corte = quebrarParagrafoParaCaber(blocoAtual, firstParagraphOfChapter);
+            const parte1El = criarElementoParagrafo(
+              { texto: corte.parte1, dialogue: blocoAtual.dialogue },
+              firstParagraphOfChapter
+            );
+            adicionarAoMedidorSemTeste(parte1El);
+            paginas.push(htmlDoMedidor());
+
+            blocoAtual = corte.parte2
+              ? { texto: corte.parte2, dialogue: blocoAtual.dialogue }
+              : null;
+
+            if(blocoAtual){
+              configurarMedidor(chapterLabel);
+            }
+
+            firstParagraphOfChapter = false;
+            continue;
+          }
+
+          paginas.push(htmlDoMedidor());
+          configurarMedidor(chapterLabel);
           firstParagraphOfChapter = false;
-          continue;
-        }
-
-        const [parteCabe, sobra] = dividirParagrafo(bloco.texto, classeBase, firstParagraphOfChapter);
-        pagina.content.appendChild(parteCabe);
-        firstParagraphOfChapter = false;
-
-        if(sobra){
-          paginas.push(pagina.page.outerHTML);
-          pagina = novaPagina(chapterLabel);
-          const sobraEl = criarElementoParagrafo({texto:sobra, dialogue:bloco.dialogue}, false);
-          pagina.content.appendChild(sobraEl);
         }
       }
 
-      if(pagina.content.children.length){
-        paginas.push(pagina.page.outerHTML);
+      if(measureContent.children.length){
+        paginas.push(htmlDoMedidor());
       }
 
       renderPaginaAtual();
@@ -871,6 +845,7 @@ Rovonilson observava tudo como quem estuda para uma prova sem saber o conteúdo.
         atualizarPills();
         return;
       }
+
       paginaAtual = Math.max(0, Math.min(paginaAtual, paginas.length - 1));
       pageHost.innerHTML = paginas[paginaAtual];
       atualizarPills();
