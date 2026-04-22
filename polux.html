@@ -49,7 +49,7 @@
     .app{
       min-height:100vh;
       display:grid;
-      grid-template-columns:220px minmax(0,1fr) 220px;
+      grid-template-columns:220px minmax(0,1fr) 260px;
       gap:14px;
       padding:14px;
     }
@@ -213,6 +213,7 @@
       flex-direction:column;
       gap:12px;
       overflow:auto;
+      position:relative;
     }
 
     .workspace-controls{
@@ -238,6 +239,20 @@
     .nav-btn:disabled{
       opacity:.45;
       cursor:not-allowed;
+    }
+
+    .page-side-indicator{
+      position:absolute;
+      right:14px;
+      top:64px;
+      z-index:3;
+      background:rgba(255,255,255,.9);
+      border:1px solid #cfd8cf;
+      border-radius:12px;
+      padding:8px 10px;
+      font-size:.9rem;
+      color:#2b4036;
+      box-shadow:0 6px 16px rgba(0,0,0,.08);
     }
 
     .empty-state{
@@ -486,7 +501,7 @@
       display:flex;
       flex-direction:column;
       gap:10px;
-      max-height:300px;
+      max-height:320px;
       overflow:auto;
     }
 
@@ -531,6 +546,11 @@
 
     .mini-btn.primary{
       background:#2f6f4e;
+      color:#fff;
+    }
+
+    .mini-btn.warn{
+      background:#8c5d1f;
       color:#fff;
     }
 
@@ -599,6 +619,10 @@
       line-height:1.45;
     }
 
+    @media (max-width:1280px){
+      .app{grid-template-columns:210px minmax(0,1fr) 240px}
+    }
+
     @media (max-width:1200px){
       .app{grid-template-columns:1fr}
       .panel{
@@ -608,6 +632,7 @@
         max-height:none;
       }
       .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .page-side-indicator{position:static; align-self:flex-end; margin-bottom:8px;}
     }
 
     @media (max-width:760px){
@@ -622,7 +647,7 @@
 
     @media print{
       body{background:#fff}
-      .panel,.topbar,.rules-box,.motor-box,.workspace-controls,.empty-state{display:none!important}
+      .panel,.topbar,.rules-box,.motor-box,.workspace-controls,.empty-state,.page-side-indicator{display:none!important}
       .app{display:block;padding:0}
       .workspace{
         background:#fff;
@@ -665,23 +690,35 @@
       </div>
 
       <div class="card-soft">
-        <div>
-          <label for="bookSize"><strong>Formato</strong></label>
-          <select class="select" id="bookSize">
-            <option value="16x23">16 x 23 cm</option>
-            <option value="a5">A5</option>
-            <option value="6x9">6 x 9 pol.</option>
-          </select>
-        </div>
-        <div>
-          <label for="chapterStartMode"><strong>Abertura</strong></label>
-          <select class="select" id="chapterStartMode">
-            <option value="flow">Continuar direto</option>
-            <option value="odd">Capítulo em página ímpar</option>
-            <option value="page">Reservar 1 página</option>
-            <option value="sheet">Reservar 1 folha</option>
-          </select>
-        </div>
+        <label for="bookSize"><strong>Formato</strong></label>
+        <select class="select" id="bookSize">
+          <option value="16x23">16 x 23 cm</option>
+          <option value="a5">A5</option>
+          <option value="6x9">6 x 9 pol.</option>
+        </select>
+
+        <label for="initialStartMode"><strong>Início da obra</strong></label>
+        <select class="select" id="initialStartMode">
+          <option value="start1">Direto na página 1</option>
+          <option value="start2">Reservar 1 página inicial</option>
+          <option value="start3">Reservar 1 folha inicial</option>
+        </select>
+
+        <label for="chapterStartMode"><strong>Início de capítulo</strong></label>
+        <select class="select" id="chapterStartMode">
+          <option value="flow">Continuar direto</option>
+          <option value="odd">Capítulo em página ímpar</option>
+          <option value="page">Reservar 1 página antes</option>
+          <option value="sheet">Reservar 1 folha antes</option>
+        </select>
+
+        <label for="afterChapterSpace"><strong>Após capítulo</strong></label>
+        <select class="select" id="afterChapterSpace">
+          <option value="0">0 páginas</option>
+          <option value="1">1 página</option>
+          <option value="2">2 páginas</option>
+          <option value="3">3 páginas</option>
+        </select>
       </div>
 
       <div class="card-soft">
@@ -717,6 +754,8 @@
           <button class="nav-btn" id="prevPageBtn" type="button">← Página anterior</button>
           <button class="nav-btn" id="nextPageBtn" type="button">Próxima página →</button>
         </div>
+
+        <div class="page-side-indicator" id="pageSideIndicator">Página —</div>
 
         <div class="empty-state" id="emptyState">
           <h3 style="margin-top:0;">Área central de diagramação</h3>
@@ -834,8 +873,8 @@
             <label for="paragraphGap"><strong>Espaço</strong></label>
             <select class="select" id="paragraphGap">
               <option value="0">0</option>
-              <option value="0.2" selected>0.2</option>
-              <option value="0.35">0.35</option>
+              <option value="0.2">0.2</option>
+              <option value="0.35" selected>0.35</option>
               <option value="0.5">0.5</option>
             </select>
           </div>
@@ -866,7 +905,7 @@
         <div class="motor-top">
           <div>
             <h3>Motor do Miolo integrado</h3>
-            <div class="hint">Aqui ficam apenas recursos textuais e técnicos reutilizáveis nos outros diagramadores.</div>
+            <div class="hint">Assistido: detecta sozinho e sugere correção sem pesar o sistema.</div>
           </div>
           <div class="meta">
             <span class="pill" id="motorModePill">Modo: prosa</span>
@@ -924,7 +963,9 @@
 
     const bookTitle = document.getElementById('bookTitle');
     const bookSize = document.getElementById('bookSize');
+    const initialStartMode = document.getElementById('initialStartMode');
     const chapterStartMode = document.getElementById('chapterStartMode');
+    const afterChapterSpace = document.getElementById('afterChapterSpace');
     const viewMode = document.getElementById('viewMode');
 
     const renderBtn = document.getElementById('renderBtn');
@@ -940,6 +981,7 @@
     const sizePill = document.getElementById('sizePill');
     const pageCountPill = document.getElementById('pageCountPill');
     const pageViewPill = document.getElementById('pageViewPill');
+    const pageSideIndicator = document.getElementById('pageSideIndicator');
     const rulesSummary = document.getElementById('rulesSummary');
     const bookStage = document.getElementById('bookStage');
     const emptyState = document.getElementById('emptyState');
@@ -975,7 +1017,6 @@
     const statWarnings = document.getElementById('statWarnings');
     const motorBox = document.getElementById('motorBox');
 
-    let debounceTimer = null;
     let renderedPages = [];
     let currentPageIndex = 0;
     let ornamentFromMotor = '';
@@ -983,6 +1024,7 @@
     let processedParagraphs = [];
     let detectedIssues = [];
     let selectedOrnament = '';
+    let lastUploadedFileName = '';
 
     bindFileInput();
 
@@ -995,7 +1037,7 @@
     nextPageBtn.addEventListener('click', () => stepPage(1));
 
     [
-      bookTitle, bookSize, chapterStartMode, viewMode
+      bookTitle, bookSize, initialStartMode, chapterStartMode, afterChapterSpace, viewMode
     ].forEach(el => el.addEventListener('change', renderPreview));
 
     [
@@ -1030,23 +1072,21 @@
       const file = event.target.files[0];
       if(!file) return;
 
+      lastUploadedFileName = file.name;
       const name = file.name.toLowerCase();
       statusBox.textContent = 'Lendo arquivo: ' + file.name;
 
       try{
         if(name.endsWith('.txt')){
           editorText.value = await file.text();
-        }
-        else if(name.endsWith('.docx')){
+        } else if(name.endsWith('.docx')){
           const arrayBuffer = await file.arrayBuffer();
           const result = await mammoth.extractRawText({ arrayBuffer });
           editorText.value = result.value || '';
-        }
-        else if(name.endsWith('.doc')){
+        } else if(name.endsWith('.doc')){
           const text = await readLegacyDocAsText(file);
           editorText.value = text || '';
-        }
-        else{
+        } else {
           statusBox.textContent = 'Formato não suportado ainda. Use TXT, DOC ou DOCX.';
           return;
         }
@@ -1101,6 +1141,7 @@
         .replace(/\r\n/g, '\n')
         .replace(/\r/g, '\n')
         .replace(/\t/g, '    ')
+        .replace(/\u00A0/g, ' ')
         .replace(/\n{3,}/g, '\n\n')
         .trim();
     }
@@ -1144,42 +1185,19 @@
     function detectBlocks(text){
       const paragraphs = splitParagraphs(text);
       const blocks = [];
-      let currentChapter = null;
-      let chapterSubtitle = '';
-      let chapterPending = false;
 
       for(let i = 0; i < paragraphs.length; i++){
         const p = paragraphs[i];
+        const next = paragraphs[i + 1] || '';
 
         if(/^cap[ií]tulo\s+/i.test(p)){
-          if(currentChapter){
-            blocks.push({
-              type:'chapter',
-              title:currentChapter,
-              subtitle:chapterSubtitle
-            });
+          let subtitle = '';
+          if(next && next.length < 90 && !/[.!?…]$/.test(next) && !/^cap[ií]tulo\s+/i.test(next)){
+            subtitle = next;
+            i++;
           }
-          currentChapter = p;
-          chapterSubtitle = '';
-          chapterPending = true;
+          blocks.push({ type:'chapter', title:p, subtitle });
           continue;
-        }
-
-        if(chapterPending && p.length < 90 && !/[.!?…]$/.test(p)){
-          chapterSubtitle = p;
-          chapterPending = false;
-          continue;
-        }
-
-        if(currentChapter){
-          blocks.push({
-            type:'chapter',
-            title:currentChapter,
-            subtitle:chapterSubtitle
-          });
-          currentChapter = null;
-          chapterSubtitle = '';
-          chapterPending = false;
         }
 
         if(/^(defini[cç][aã]o|conceito|nota|observa[cç][aã]o|exemplo)\b/i.test(p)){
@@ -1187,14 +1205,6 @@
         } else {
           blocks.push({ type:'paragraph', text:p });
         }
-      }
-
-      if(currentChapter){
-        blocks.push({
-          type:'chapter',
-          title:currentChapter,
-          subtitle:chapterSubtitle
-        });
       }
 
       return blocks;
@@ -1258,11 +1268,49 @@
       pages.push({ kind:'blank', label });
     }
 
+    function applyInitialStart(pages){
+      if(initialStartMode.value === 'start2'){
+        pushBlankPage(pages, 'Página inicial reservada');
+      } else if(initialStartMode.value === 'start3'){
+        pushBlankPage(pages, 'Página inicial reservada');
+        pushBlankPage(pages, 'Página inicial reservada');
+      }
+    }
+
+    function applyAfterChapterSpace(pages){
+      const n = Number(afterChapterSpace.value);
+      for(let i = 0; i < n; i++){
+        pushBlankPage(pages, 'Página após capítulo');
+      }
+    }
+
+    function applyChapterStartPolicy(pages){
+      const nextPage = pages.length + 1;
+
+      if(chapterStartMode.value === 'page'){
+        pushBlankPage(pages, 'Página antes do capítulo');
+        return;
+      }
+
+      if(chapterStartMode.value === 'sheet'){
+        pushBlankPage(pages, 'Página antes do capítulo');
+        pushBlankPage(pages, 'Página antes do capítulo');
+        return;
+      }
+
+      if(chapterStartMode.value === 'odd'){
+        if(nextPage % 2 === 0){
+          pushBlankPage(pages, 'Página reservada para capítulo em ímpar');
+        }
+      }
+    }
+
     function paginateReal(text){
       const blocks = detectBlocks(text);
       const pages = [];
       let current = null;
       let measure = null;
+      let startedAnyChapter = false;
 
       function startPage(chapter = null, ornament = ''){
         measure = createMeasurePage(chapter);
@@ -1279,42 +1327,29 @@
         };
       }
 
-      function currentNextPageNumber(){
-        return pages.length + 1;
-      }
-
-      function ensureChapterStartPolicy(){
-        if(chapterStartMode.value === 'page'){
-          pushBlankPage(pages);
-          return;
-        }
-
-        if(chapterStartMode.value === 'sheet'){
-          pushBlankPage(pages);
-          pushBlankPage(pages);
-          return;
-        }
-
-        if(chapterStartMode.value === 'odd'){
-          const nextPage = currentNextPageNumber();
-          if(nextPage % 2 === 0){
-            pushBlankPage(pages, 'Página reservada para início em ímpar');
-          }
+      function closeCurrentPage(){
+        if(current && (current.items.length || current.chapterOpening)){
+          pages.push(current);
         }
       }
 
+      applyInitialStart(pages);
       startPage();
 
       for(let i = 0; i < blocks.length; i++){
         const block = blocks[i];
 
         if(block.type === 'chapter'){
-          if(current && (current.items.length || current.chapterOpening)){
-            pages.push(current);
+          if(startedAnyChapter){
+            closeCurrentPage();
+            applyAfterChapterSpace(pages);
+          } else {
+            closeCurrentPage();
           }
 
-          ensureChapterStartPolicy();
+          applyChapterStartPolicy(pages);
           startPage({ title:block.title, subtitle:block.subtitle }, ornamentFromMotor || '');
+          startedAnyChapter = true;
           continue;
         }
 
@@ -1376,9 +1411,7 @@
         }
       }
 
-      if(current && (current.items.length || current.chapterOpening)){
-        pages.push(current);
-      }
+      closeCurrentPage();
 
       measureRoot.innerHTML = '';
       return pages;
@@ -1516,6 +1549,7 @@
         emptyState.classList.remove('hidden');
         pageCountPill.innerHTML = 'Páginas: <strong>0</strong>';
         pageViewPill.textContent = 'Sem páginas';
+        pageSideIndicator.textContent = 'Página —';
         prevPageBtn.disabled = true;
         nextPageBtn.disabled = true;
         fitStageScale();
@@ -1529,11 +1563,11 @@
         bookStage.appendChild(renderOnePage(renderedPages[currentPageIndex], currentPageIndex));
 
         pageViewPill.textContent = `Página ${currentPageIndex + 1} de ${renderedPages.length}`;
+        pageSideIndicator.textContent = `Página ${currentPageIndex + 1} de ${renderedPages.length}`;
         prevPageBtn.disabled = currentPageIndex <= 0;
         nextPageBtn.disabled = currentPageIndex >= renderedPages.length - 1;
       } else {
         let leftIndex = currentPageIndex;
-
         if(leftIndex % 2 !== 0) leftIndex -= 1;
         if(leftIndex < 0) leftIndex = 0;
         if(leftIndex >= renderedPages.length) leftIndex = Math.max(0, renderedPages.length - 1);
@@ -1545,8 +1579,10 @@
         if(renderedPages[leftIndex + 1]){
           bookStage.appendChild(renderOnePage(renderedPages[leftIndex + 1], leftIndex + 1));
           pageViewPill.textContent = `Páginas ${leftIndex + 1}-${leftIndex + 2} de ${renderedPages.length}`;
+          pageSideIndicator.textContent = `${leftIndex + 1}-${leftIndex + 2} de ${renderedPages.length}`;
         } else {
           pageViewPill.textContent = `Página ${leftIndex + 1} de ${renderedPages.length}`;
+          pageSideIndicator.textContent = `Página ${leftIndex + 1} de ${renderedPages.length}`;
         }
 
         prevPageBtn.disabled = leftIndex <= 0;
@@ -1584,7 +1620,6 @@
 
       renderedPages = paginateReal(text);
       currentPageIndex = 0;
-
       statusBox.textContent = 'Prévia atualizada com sucesso.';
       renderCurrentView();
     }
@@ -1614,7 +1649,9 @@
       editorText.value = '';
       bookTitle.value = '';
       bookSize.value = '16x23';
+      initialStartMode.value = 'start1';
       chapterStartMode.value = 'flow';
+      afterChapterSpace.value = '0';
       viewMode.value = 'single';
 
       textStyle.value = 'normal';
@@ -1627,7 +1664,7 @@
       titleFontSize.value = '18';
       lineHeight.value = '1.52';
       paragraphIndent.value = '1.25';
-      paragraphGap.value = '0.2';
+      paragraphGap.value = '0.35';
       dropcapStyle.value = 'classic';
 
       renderedPages = [];
@@ -1637,6 +1674,7 @@
       processedParagraphs = [];
       detectedIssues = [];
       selectedOrnament = '';
+      lastUploadedFileName = '';
 
       buildOrnamentGrid();
       syncSpacingModeUI();
@@ -1820,10 +1858,21 @@
                 paragraphIndex:idx,
                 lineIndex:i,
                 snippet:prev + '\n' + curr,
-                title:'Quebra suspeita de linha'
+                title:'Possível quebra indevida',
+                suggestion:'Juntar automaticamente'
               });
             }
           }
+        }
+
+        if(/^[A-ZÁÉÍÓÚÂÊÔÃÕÇ][^\.\!\?]{0,50}$/.test(p) && !/^Cap[ií]tulo/i.test(p)){
+          issues.push({
+            kind:'possible-title3',
+            paragraphIndex:idx,
+            snippet:p,
+            title:'Possível Título 3',
+            suggestion:'Transformar em Título 3'
+          });
         }
       });
 
@@ -1913,21 +1962,51 @@
         snippet.textContent = issue.snippet;
         box.appendChild(snippet);
 
-        if(issue.kind === 'join-line'){
-          const actions = document.createElement('div');
-          actions.className = 'issue-actions';
+        const actions = document.createElement('div');
+        actions.className = 'issue-actions';
 
+        if(issue.kind === 'join-line'){
           const joinBtn = document.createElement('button');
           joinBtn.className = 'mini-btn primary';
-          joinBtn.textContent = 'Juntar linha';
+          joinBtn.textContent = 'Corrigir automaticamente';
           joinBtn.onclick = () => applyJoinLineIssue(issue);
 
+          const ignoreBtn = document.createElement('button');
+          ignoreBtn.className = 'mini-btn';
+          ignoreBtn.textContent = 'Ignorar';
+          ignoreBtn.onclick = () => ignoreIssue(idx);
+
           actions.appendChild(joinBtn);
+          actions.appendChild(ignoreBtn);
+        }
+
+        if(issue.kind === 'possible-title3'){
+          const makeTitleBtn = document.createElement('button');
+          makeTitleBtn.className = 'mini-btn warn';
+          makeTitleBtn.textContent = 'Transformar em Título 3';
+          makeTitleBtn.onclick = () => applyTitle3Suggestion(issue);
+
+          const ignoreBtn = document.createElement('button');
+          ignoreBtn.className = 'mini-btn';
+          ignoreBtn.textContent = 'Ignorar';
+          ignoreBtn.onclick = () => ignoreIssue(idx);
+
+          actions.appendChild(makeTitleBtn);
+          actions.appendChild(ignoreBtn);
+        }
+
+        if(actions.childNodes.length){
           box.appendChild(actions);
         }
 
         motorIssuesList.appendChild(box);
       });
+    }
+
+    function ignoreIssue(idx){
+      detectedIssues = detectedIssues.filter((_, i) => i !== idx);
+      renderIssues();
+      updateMotorCounters();
     }
 
     function applyJoinLineIssue(issue){
@@ -1943,11 +2022,31 @@
       processedParagraphs[issue.paragraphIndex] = lines.join('\n');
       processedText = processedParagraphs.join('\n\n');
 
+      editorText.value = processedText.replace(/\u00AD/g, '');
       const warnings = detectWidowOrphanWarnings(processedParagraphs);
       detectedIssues = detectIssues(processedText);
       renderMotorPreview(processedParagraphs, warnings);
       renderIssues();
       updateMotorCounters();
+      renderPreview();
+      motorStatusBox.textContent = 'Quebra corrigida e livro atualizado.';
+    }
+
+    function applyTitle3Suggestion(issue){
+      const p = processedParagraphs[issue.paragraphIndex];
+      if(!p) return;
+
+      processedParagraphs[issue.paragraphIndex] = 'DEFINIÇÃO: ' + p;
+      processedText = processedParagraphs.join('\n\n');
+
+      editorText.value = processedText.replace(/\u00AD/g, '');
+      const warnings = detectWidowOrphanWarnings(processedParagraphs);
+      detectedIssues = detectIssues(processedText);
+      renderMotorPreview(processedParagraphs, warnings);
+      renderIssues();
+      updateMotorCounters();
+      renderPreview();
+      motorStatusBox.textContent = 'Sugestão aplicada e livro atualizado.';
     }
 
     function updateMotorCounters(hyphenCount = null){
@@ -1971,7 +2070,6 @@
 
     function processText(){
       const raw = normalizeText(editorText.value);
-
       syncSpacingModeUI();
 
       if(!raw){
@@ -2021,8 +2119,12 @@
       renderMotorPreview(processedParagraphs, warnings);
       renderIssues();
       updateMotorCounters(hyphenatedCount);
-
       motorStatusBox.textContent = 'Texto lapidado.';
+    }
+
+    function styleToBlockInsertion(style, cleanText){
+      const first = splitParagraphs(cleanText)[0] || cleanText.trim();
+      return first;
     }
 
     function applyProcessedToBook(){
@@ -2033,21 +2135,22 @@
 
       const styleType = styleToBlockType(textStyle.value);
       const cleanText = processedText.replace(/\u00AD/g, '');
+      const insertText = styleToBlockInsertion(styleType, cleanText);
 
       if(styleType === 'title1'){
         const parts = splitParagraphs(editorText.value);
-        parts.unshift(cleanText.split('\n\n')[0]);
+        parts.unshift(insertText);
         editorText.value = parts.join('\n\n');
       } else if(styleType === 'title2'){
         const parts = splitParagraphs(editorText.value);
         if(parts.length > 0){
-          parts.splice(1, 0, cleanText.split('\n\n')[0]);
+          parts.splice(1, 0, insertText);
           editorText.value = parts.join('\n\n');
         } else {
-          editorText.value = cleanText;
+          editorText.value = insertText;
         }
       } else if(styleType === 'title3'){
-        editorText.value = normalizeText(editorText.value) + '\n\n' + cleanText.split('\n\n')[0];
+        editorText.value = normalizeText(editorText.value) + '\n\n' + insertText;
       } else {
         editorText.value = cleanText;
       }
@@ -2087,7 +2190,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'texto_lapidado_polux.txt';
+      a.download = (lastUploadedFileName ? lastUploadedFileName.replace(/\.[^.]+$/, '') : 'texto_lapidado') + '_polux.txt';
       document.body.appendChild(a);
       a.click();
       a.remove();
