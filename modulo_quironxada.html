@@ -1,168 +1,541 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Qui(RON)xadá — Diagramador de Cordel</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qui(RON)xadá — Diagramador de Cordel</title>
+  <style>
+    :root{
+      --bg:#f3eee3;
+      --paper:#fffdf8;
+      --ink:#2b241f;
+      --muted:#6d6156;
+      --line:#dccfbe;
 
-<style>
+      --earth-1:#8c5a2b;
+      --earth-2:#a36b36;
+      --earth-3:#c28745;
+      --earth-4:#ead7be;
 
-body{
-font-family: Georgia, serif;
-background:#f3eee6;
-margin:0;
-padding:0;
-color:#2a2a2a;
-}
+      --ok:#2f7a59;
+      --warn:#b7921e;
+      --danger:#b13a3a;
 
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:30px;
-background:#efe6d7;
-}
+      --card-radius:24px;
+      --shadow:0 12px 28px rgba(71,45,24,.10);
 
-.logo{
-display:flex;
-align-items:center;
-gap:15px;
-}
+      --page-w:416px;
+      --page-h:605px;
+      --page-padding:34px;
+    }
 
-.logo-box{
-width:60px;
-height:60px;
-background:#a76322;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:28px;
-border-radius:14px;
-}
+    *{box-sizing:border-box}
 
-.header-buttons{
-display:flex;
-flex-direction:column;
-gap:12px;
-}
+    html,body{
+      margin:0;
+      padding:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:Georgia,"Times New Roman",serif;
+    }
 
-.btn{
-border:none;
-padding:14px 18px;
-border-radius:12px;
-font-weight:bold;
-cursor:pointer;
-}
+    body{
+      min-height:100vh;
+    }
 
-.limpar{background:#f1e4cd;}
-.preview{background:#a76322;color:white;}
-.retornar{background:#b6901b;}
-.sair{background:#a33434;color:white;}
+    .app{
+      width:min(1280px, calc(100vw - 16px));
+      margin:8px auto;
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:14px;
+    }
 
-.info-bar{
-display:flex;
-gap:20px;
-padding:20px 30px;
-}
+    .panel,
+    .preview-shell,
+    .editor-shell,
+    .stats-shell{
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:var(--card-radius);
+      box-shadow:var(--shadow);
+    }
 
-.tag{
-background:white;
-padding:12px 18px;
-border-radius:18px;
-font-weight:bold;
-}
+    .hero{
+      background:linear-gradient(180deg,#efe5d4 0%, #eadfce 100%);
+      border:1px solid var(--line);
+      border-radius:30px;
+      padding:28px 24px;
+      box-shadow:var(--shadow);
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 230px;
+      gap:20px;
+      align-items:start;
+    }
 
-.editor{
-padding:30px;
-}
+    .hero-left{
+      display:grid;
+      grid-template-columns:52px 1fr;
+      gap:16px;
+      align-items:center;
+    }
 
-textarea{
-width:100%;
-height:220px;
-border-radius:12px;
-padding:15px;
-border:none;
-font-family:Georgia;
-font-size:16px;
-}
+    .q-badge{
+      width:52px;
+      height:84px;
+      border-radius:18px;
+      background:linear-gradient(180deg,var(--earth-2),var(--earth-1));
+      color:#fff7ee;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:2.35rem;
+      line-height:1;
+      box-shadow:0 8px 18px rgba(140,90,43,.22);
+    }
 
-.preview-area{
-display:flex;
-justify-content:center;
-margin-top:40px;
-}
+    .hero h1{
+      margin:0 0 10px 0;
+      font-size:clamp(2rem,4vw,3rem);
+      line-height:1;
+      color:#2a231d;
+    }
 
-.page{
-width:320px;
-height:480px;
-background:white;
-padding:40px;
-box-shadow:0 0 15px rgba(0,0,0,0.15);
-}
+    .hero p{
+      margin:0;
+      font-size:clamp(1rem,2.1vw,1.25rem);
+      color:#4d4339;
+      line-height:1.35;
+    }
 
-.page h1{
-text-align:center;
-}
+    .hero-actions{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
 
-</style>
+    .btn{
+      appearance:none;
+      border:none;
+      border-radius:18px;
+      padding:16px 18px;
+      font-family:inherit;
+      font-size:1.05rem;
+      font-weight:700;
+      cursor:pointer;
+      transition:.15s ease;
+      text-decoration:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      min-height:72px;
+    }
 
+    .btn:hover{
+      transform:translateY(-1px);
+      opacity:.97;
+    }
+
+    .btn-soft{
+      background:#efe2bf;
+      color:#2b241f;
+    }
+
+    .btn-earth{
+      background:var(--earth-2);
+      color:#fff;
+    }
+
+    .btn-warn{
+      background:var(--warn);
+      color:#231d16;
+    }
+
+    .btn-danger{
+      background:var(--danger);
+      color:#fff;
+    }
+
+    .main-left,
+    .main-right{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      min-width:0;
+    }
+
+    .stats-shell{
+      padding:18px;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .stat{
+      background:#faf6ef;
+      border:1px solid #e2d7c7;
+      border-radius:18px;
+      padding:16px 14px;
+      min-height:112px;
+    }
+
+    .stat-label{
+      font-size:1rem;
+      font-weight:700;
+      color:#5d5145;
+      margin-bottom:8px;
+    }
+
+    .stat-value{
+      font-size:1.1rem;
+      font-weight:700;
+      color:#2d241d;
+      line-height:1.2;
+      word-break:break-word;
+    }
+
+    .editor-shell{
+      padding:22px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .editor-shell h2,
+    .preview-shell h2{
+      margin:0;
+      font-size:1.2rem;
+    }
+
+    .editor-box{
+      width:100%;
+      min-height:360px;
+      border:1px solid #d9cebf;
+      border-radius:20px;
+      padding:20px;
+      resize:vertical;
+      background:#fff;
+      color:#241e18;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:1.05rem;
+      line-height:1.45;
+      outline:none;
+    }
+
+    .editor-box:focus{
+      border-color:#ba9c79;
+      box-shadow:0 0 0 3px rgba(194,135,69,.10);
+    }
+
+    .toolbar{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .field label{
+      font-size:.95rem;
+      font-weight:700;
+      color:#5a4c40;
+    }
+
+    .field select{
+      width:100%;
+      border:1px solid #d9cebf;
+      background:#fff;
+      border-radius:14px;
+      padding:12px 10px;
+      font-family:inherit;
+      font-size:1rem;
+      color:#2b241f;
+      outline:none;
+    }
+
+    .preview-shell{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      min-height:100%;
+    }
+
+    .preview-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      background:#f7efe3;
+      border:1px solid #e2d4c1;
+      color:#5c5045;
+      font-size:.94rem;
+      font-weight:700;
+    }
+
+    .preview-stage{
+      background:linear-gradient(180deg,#ede7db 0%, #e6dfd2 100%);
+      border-radius:22px;
+      border:1px solid #dcd2c2;
+      min-height:720px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:22px 12px;
+      overflow:auto;
+    }
+
+    .page{
+      width:var(--page-w);
+      min-height:var(--page-h);
+      background:#fff;
+      border:1px solid #ddd4c6;
+      box-shadow:0 10px 24px rgba(62,45,31,.10);
+      padding:var(--page-padding);
+      position:relative;
+      color:#241d17;
+    }
+
+    .page-title{
+      text-align:center;
+      margin:0 0 20px 0;
+      font-size:2rem;
+      line-height:1.05;
+    }
+
+    .page-subtitle{
+      text-align:center;
+      margin:-10px 0 24px 0;
+      font-size:1.1rem;
+      color:#67584b;
+    }
+
+    .cordel-block{
+      margin:0 0 20px 0;
+      white-space:pre-line;
+      line-height:1.42;
+      font-size:1.16rem;
+      text-align:left;
+    }
+
+    .cordel-block + .cordel-block{
+      margin-top:12px;
+    }
+
+    .analysis-box{
+      border-top:1px dashed #d9ccbc;
+      padding-top:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .analysis-card{
+      background:#faf6ef;
+      border:1px solid #e3d7c7;
+      border-radius:18px;
+      padding:14px;
+    }
+
+    .analysis-card h3{
+      margin:0 0 8px 0;
+      font-size:1rem;
+      color:#483d33;
+    }
+
+    .analysis-card p,
+    .analysis-card li{
+      margin:0;
+      color:#66594d;
+      line-height:1.45;
+      font-size:.96rem;
+    }
+
+    .analysis-card ul{
+      margin:0;
+      padding-left:18px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .footer-note{
+      font-size:.9rem;
+      color:#6e6257;
+      line-height:1.45;
+    }
+
+    @media (max-width:1080px){
+      .app{
+        grid-template-columns:1fr;
+      }
+
+      .hero{
+        grid-template-columns:1fr;
+      }
+
+      .stats-shell{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+    }
+
+    @media (max-width:760px){
+      .app{
+        width:min(100vw - 8px, 1280px);
+        gap:8px;
+        margin:4px auto;
+      }
+
+      .hero{
+        padding:20px 16px;
+        border-radius:24px;
+      }
+
+      .hero-left{
+        grid-template-columns:40px 1fr;
+        gap:12px;
+        align-items:start;
+      }
+
+      .q-badge{
+        width:40px;
+        height:70px;
+        font-size:1.85rem;
+      }
+
+      .stats-shell{
+        grid-template-columns:1fr 1fr;
+        padding:12px;
+      }
+
+      .stat{
+        min-height:98px;
+        padding:14px 12px;
+      }
+
+      .toolbar{
+        grid-template-columns:1fr;
+      }
+
+      .editor-shell,
+      .preview-shell{
+        padding:14px;
+      }
+
+      .editor-box{
+        min-height:300px;
+        padding:16px;
+      }
+
+      .preview-stage{
+        padding:14px 8px;
+        min-height:auto;
+      }
+
+      .page{
+        width:min(100%, 416px);
+        min-height:560px;
+        padding:24px;
+      }
+
+      .cordel-block{
+        font-size:1.08rem;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="app">
+    <section class="main-left">
+      <div class="hero">
+        <div class="hero-left">
+          <div class="q-badge">Q</div>
+          <div>
+            <h1>Qui(RON)xadá — Diagramador de Cordel</h1>
+            <p>Módulo do Celeiro Literário / Lapidar para miolo de cordel com formatos próprios, tipografia básica e prévia folheável.</p>
+          </div>
+        </div>
 
-<header>
+        <div class="hero-actions">
+          <button class="btn btn-soft" id="clearBtn" type="button">Limpar obra</button>
+          <button class="btn btn-earth" id="renderBtn" type="button">Atualizar prévia</button>
+          <a class="btn btn-warn" href="lapidar.html">Retornar</a>
+          <a class="btn btn-danger" href="index.html">Sair do sistema</a>
+        </div>
+      </div>
 
-<div class="logo">
+      <div class="stats-shell">
+        <div class="stat">
+          <div class="stat-label">Formato</div>
+          <div class="stat-value">11 x 16 cm</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Fonte</div>
+          <div class="stat-value" id="fontStat">Georgia<br>12 pt</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Páginas</div>
+          <div class="stat-value" id="pagesStat">1</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Estrutura</div>
+          <div class="stat-value" id="structureStat">Aguardando texto</div>
+        </div>
+      </div>
 
-<div class="logo-box">Q</div>
+      <div class="editor-shell">
+        <h2>Texto-base do cordel</h2>
 
-<div>
+        <div class="toolbar">
+          <div class="field">
+            <label for="fontFamily">Fonte</label>
+            <select id="fontFamily">
+              <option value="Georgia">Georgia</option>
+              <option value="'Times New Roman'">Times New Roman</option>
+              <option value="Garamond">Garamond</option>
+            </select>
+          </div>
 
-<h2>Qui(RON)xadá — Diagramador de Cordel</h2>
+          <div class="field">
+            <label for="fontSize">Tamanho</label>
+            <select id="fontSize">
+              <option value="11">11 pt</option>
+              <option value="12" selected>12 pt</option>
+              <option value="13">13 pt</option>
+              <option value="14">14 pt</option>
+            </select>
+          </div>
 
-<p>
-Módulo do Celeiro Literário / Lapidar para miolo de cordel
-com formatos próprios, tipografia básica e prévia folheável.
-</p>
+          <div class="field">
+            <label for="correctionLevel">Correção</label>
+            <select id="correctionLevel">
+              <option value="light" selected>Leve</option>
+              <option value="medium">Média</option>
+            </select>
+          </div>
+        </div>
 
-</div>
-
-</div>
-
-<div class="header-buttons">
-
-<button class="btn limpar">Limpar obra</button>
-
-<button class="btn preview" onclick="gerar()">Atualizar prévia</button>
-
-<button class="btn retornar">Retornar</button>
-
-<button class="btn sair">Sair do sistema</button>
-
-</div>
-
-</header>
-
-
-<section class="info-bar">
-
-<div class="tag">Formato: 11 x 16 cm</div>
-
-<div class="tag">Fonte: Georgia 12 pt</div>
-
-<div class="tag" id="paginas">Páginas: 1</div>
-
-</section>
-
-
-<section class="editor">
-
-<h3>Texto-base do cordel</h3>
-
-<textarea id="entrada">
-
-O Romance do Qui(RON)xadá
+        <textarea id="sourceText" class="editor-box" placeholder="Cole aqui o cordel...">O Romance do Qui(RON)xadá
 Organização do Celeiro Literário
 
 Na estrada do meu sertão
@@ -173,66 +546,270 @@ Qui(RON)xadá nasce agora
 Pra honrar a arte faceira
 
 Seis versos por cada estrofe
-Com respiro entre as sextilhas
-Sem esmagar o poema
-Nem matar suas trilhas
-Cordel nasce bem cuidado
-Respeitando suas trilhas
+Com respeito ao meu caminho
+Sem quarteto disfarçado
+Nem desvio do versinho
+Cordel pede sextilha
+Do começo ao seu finzinho</textarea>
 
-</textarea>
+        <div class="analysis-box">
+          <div class="analysis-card">
+            <h3>Motor Lapidar integrado</h3>
+            <p>Este módulo já recebe o motor-base de leitura leve, correção básica, detecção de estrofes e reconhecimento de sextilhas.</p>
+          </div>
 
+          <div class="analysis-card">
+            <h3>Alertas do motor</h3>
+            <ul id="alertsList">
+              <li>Aguardando análise.</li>
+            </ul>
+          </div>
 
-<div class="preview-area">
+          <div class="footer-note">
+            Aqui o motor está embutido na própria HTML para você já subir e testar sem remendos. Depois ele pode ser extraído para um arquivo compartilhado entre Pólux, Castor, Centauro e Qui(RON)xadá.
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="page" id="saida">
+    <section class="main-right">
+      <div class="preview-shell">
+        <div class="preview-top">
+          <h2>Prévia</h2>
+          <div class="pill-row">
+            <span class="pill" id="pillEstrofes">Estrofes: 0</span>
+            <span class="pill" id="pillSextilhas">Sextilhas: 0</span>
+            <span class="pill" id="pillModo">Modo: cordel</span>
+          </div>
+        </div>
 
-<h1>Prévia aparecerá aqui</h1>
+        <div class="preview-stage">
+          <article class="page" id="pagePreview"></article>
+        </div>
+      </div>
+    </section>
+  </div>
 
-</div>
+  <script>
+    const MotorLapidar = {
+      normalizeText(text = "") {
+        return String(text)
+          .replace(/\r\n/g, "\n")
+          .replace(/\r/g, "\n")
+          .replace(/\u00A0/g, " ")
+          .replace(/\t/g, "    ")
+          .replace(/[ ]{2,}/g, " ")
+          .replace(/\n{3,}/g, "\n\n")
+          .trim();
+      },
 
-</div>
+      splitBlocks(text = "") {
+        return this.normalizeText(text)
+          .split(/\n\s*\n/)
+          .map(block => block.split("\n").map(line => line.trim()).filter(Boolean))
+          .filter(block => block.length);
+      },
 
-</section>
+      countWords(text = "") {
+        const clean = this.normalizeText(text);
+        if (!clean) return 0;
+        return clean.replace(/\n/g, " ").split(/\s+/).filter(Boolean).length;
+      },
 
+      applyLightCorrections(text = "") {
+        let out = this.normalizeText(text);
+        out = out.replace(/\s+,/g, ",");
+        out = out.replace(/\s+\./g, ".");
+        out = out.replace(/\s+!/g, "!");
+        out = out.replace(/\s+\?/g, "?");
+        out = out.replace(/\.{4,}/g, "...");
+        out = out.replace(/!!+/g, "!");
+        out = out.replace(/\?\?+/g, "?");
+        out = out.replace(/\bPra mim fazer\b/g, "Para eu fazer");
+        out = out.replace(/\bpra mim fazer\b/g, "para eu fazer");
+        out = out.replace(/\bHouveram\b/g, "Houve");
+        out = out.replace(/\bhouveram\b/g, "houve");
+        return out;
+      },
 
-<script>
+      applyMediumCorrections(text = "") {
+        let out = this.applyLightCorrections(text);
+        out = out.replace(/\bA gente fomos\b/g, "A gente foi");
+        out = out.replace(/\ba gente fomos\b/g, "a gente foi");
+        out = out.replace(/\bmais eu\b/g, "mas eu");
+        out = out.replace(/\bMais eu\b/g, "Mas eu");
+        return out;
+      },
 
-function gerar(){
+      classify(text = "") {
+        const blocks = this.splitBlocks(text);
+        let sextilhas = 0;
+        let estrofes = 0;
+        let titulos = 0;
+        let incompletas = 0;
 
-let texto = document.getElementById("entrada").value
+        for (const block of blocks) {
+          if (block.length === 1 && block[0].length <= 70 && !/[.!?…]$/.test(block[0])) {
+            titulos += 1;
+          } else {
+            estrofes += 1;
+            if (block.length === 6) sextilhas += 1;
+            else incompletas += 1;
+          }
+        }
 
-let linhas = texto.split("\n")
+        let primary = "cordel";
+        if (estrofes > 0 && sextilhas === 0) primary = "texto livre";
+        if (estrofes > 0 && sextilhas > 0 && sextilhas < estrofes) primary = "cordel misto";
 
-let html=""
+        return {
+          primary,
+          estrofes,
+          sextilhas,
+          titulos,
+          incompletas,
+          allSextilhas: estrofes > 0 && sextilhas === estrofes
+        };
+      },
 
-linhas.forEach(linha=>{
+      detectAlerts(text = "") {
+        const alerts = [];
+        const blocks = this.splitBlocks(text);
 
-if(linha.trim()==""){
+        blocks.forEach((block, idx) => {
+          if (block.length > 1 && block.length !== 6) {
+            alerts.push(`Bloco ${idx + 1}: está com ${block.length} versos e foge da sextilha.`);
+          }
 
-html+="<br>"
+          block.forEach((line, lineIdx) => {
+            if (line.length > 70) {
+              alerts.push(`Bloco ${idx + 1}, verso ${lineIdx + 1}: verso longo para cordel.`);
+            }
+          });
+        });
 
-}
+        return alerts;
+      },
 
-else if(linha.length<35){
+      process(text = "", options = {}) {
+        const correctionLevel = options.correctionLevel || "light";
+        const corrected = correctionLevel === "medium"
+          ? this.applyMediumCorrections(text)
+          : this.applyLightCorrections(text);
 
-html+="<h3>"+linha+"</h3>"
+        const classification = this.classify(corrected);
+        const alerts = this.detectAlerts(corrected);
 
-}
+        return {
+          originalText: this.normalizeText(text),
+          processedText: corrected,
+          wordCount: this.countWords(corrected),
+          ...classification,
+          alerts
+        };
+      }
+    };
 
-else{
+    const sourceText = document.getElementById("sourceText");
+    const renderBtn = document.getElementById("renderBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const fontFamily = document.getElementById("fontFamily");
+    const fontSize = document.getElementById("fontSize");
+    const correctionLevel = document.getElementById("correctionLevel");
 
-html+="<p>"+linha+"</p>"
+    const pagePreview = document.getElementById("pagePreview");
+    const alertsList = document.getElementById("alertsList");
 
-}
+    const pillEstrofes = document.getElementById("pillEstrofes");
+    const pillSextilhas = document.getElementById("pillSextilhas");
+    const pillModo = document.getElementById("pillModo");
 
-})
+    const pagesStat = document.getElementById("pagesStat");
+    const structureStat = document.getElementById("structureStat");
+    const fontStat = document.getElementById("fontStat");
 
-document.getElementById("saida").innerHTML=html
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
 
-}
+    function estimatePages(processedText) {
+      const words = processedText.replace(/\n/g, " ").split(/\s+/).filter(Boolean).length;
+      return Math.max(1, Math.ceil(words / 130));
+    }
 
-</script>
+    function renderCordelPage() {
+      const result = MotorLapidar.process(sourceText.value, {
+        correctionLevel: correctionLevel.value
+      });
 
+      const blocks = MotorLapidar.splitBlocks(result.processedText);
 
+      fontStat.innerHTML = `${fontFamily.options[fontFamily.selectedIndex].text}<br>${fontSize.value} pt`;
+      pagesStat.textContent = String(estimatePages(result.processedText));
+      structureStat.textContent = result.primary === "cordel"
+        ? "Cordel"
+        : result.primary === "cordel misto"
+          ? "Cordel misto"
+          : "Texto livre";
+
+      pillEstrofes.textContent = `Estrofes: ${result.estrofes}`;
+      pillSextilhas.textContent = `Sextilhas: ${result.sextilhas}`;
+      pillModo.textContent = `Modo: ${result.primary}`;
+
+      pagePreview.style.fontFamily = fontFamily.value;
+      pagePreview.style.fontSize = fontSize.value + "pt";
+
+      let html = "";
+      let titleUsed = false;
+      let subtitleUsed = false;
+
+      blocks.forEach((block) => {
+        if (block.length === 1 && block[0].length <= 70 && !/[.!?…]$/.test(block[0])) {
+          if (!titleUsed) {
+            html += `<h1 class="page-title">${escapeHtml(block[0])}</h1>`;
+            titleUsed = true;
+          } else if (!subtitleUsed) {
+            html += `<div class="page-subtitle">${escapeHtml(block[0])}</div>`;
+            subtitleUsed = true;
+          } else {
+            html += `<div class="cordel-block"><strong>${escapeHtml(block[0])}</strong></div>`;
+          }
+        } else {
+          html += `<div class="cordel-block">${escapeHtml(block.join("\n"))}</div>`;
+        }
+      });
+
+      if (!html) {
+        html = `<h1 class="page-title">Prévia aparecerá aqui</h1>`;
+      }
+
+      pagePreview.innerHTML = html;
+
+      if (result.alerts.length) {
+        alertsList.innerHTML = result.alerts.map(alert => `<li>${escapeHtml(alert)}</li>`).join("");
+      } else if (result.allSextilhas) {
+        alertsList.innerHTML = `<li>Estrutura de sextilhas detectada corretamente.</li>`;
+      } else {
+        alertsList.innerHTML = `<li>Nenhum alerta crítico encontrado.</li>`;
+      }
+    }
+
+    renderBtn.addEventListener("click", renderCordelPage);
+
+    clearBtn.addEventListener("click", () => {
+      sourceText.value = "";
+      renderCordelPage();
+    });
+
+    sourceText.addEventListener("input", renderCordelPage);
+    fontFamily.addEventListener("change", renderCordelPage);
+    fontSize.addEventListener("change", renderCordelPage);
+    correctionLevel.addEventListener("change", renderCordelPage);
+
+    renderCordelPage();
+  </script>
 </body>
 </html>
