@@ -17,9 +17,7 @@
       --green-1:#184A2E;
       --green-2:#1F5E3B;
       --green-3:#2A7A4D;
-      --green-4:#e8f0ea;
       --shadow:0 10px 28px rgba(0,0,0,.10);
-      --radius:18px;
       --page-w:470px;
       --page-ratio:16 / 23;
     }
@@ -49,7 +47,7 @@
       background:linear-gradient(180deg,var(--green-1),var(--green-2));
       color:#fff;
       border-radius:22px;
-      box-shadow:var(--shadow);
+      box-shadow:0 10px 28px rgba(0,0,0,.10);
       padding:18px 16px;
       display:flex;
       flex-direction:column;
@@ -99,7 +97,7 @@
       min-height:48px;
     }
 
-    .input,.select,.button,.file,.textarea{
+    .input,.select,.button,.file{
       width:100%;
       border-radius:14px;
       border:none;
@@ -107,18 +105,12 @@
       font-family:inherit;
     }
 
-    .input,.select,.textarea,.file{
+    .input,.select,.file{
       background:#f6fbf7;
       color:#132018;
       border:1px solid #b9d3c1;
       padding:12px;
       outline:none;
-    }
-
-    .textarea{
-      min-height:160px;
-      resize:vertical;
-      line-height:1.5;
     }
 
     .button{
@@ -138,10 +130,6 @@
     .button.secondary{ background:#2f6a49; }
     .button.warn{ background:#8c5e1f; }
     .button.danger{ background:#7a2c2c; }
-    .button.ghost{
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.15);
-    }
 
     .main{
       min-width:0;
@@ -156,7 +144,7 @@
       background:#fbfaf7;
       border:1px solid var(--line);
       border-radius:20px;
-      box-shadow:var(--shadow);
+      box-shadow:0 10px 28px rgba(0,0,0,.10);
       padding:14px 16px;
     }
 
@@ -210,7 +198,7 @@
       background:linear-gradient(180deg,#e8ece8,#dfe7df);
       border-radius:24px;
       border:1px solid #cfd8cf;
-      box-shadow:var(--shadow);
+      box-shadow:0 10px 28px rgba(0,0,0,.10);
       padding:22px 16px 28px;
       min-height:540px;
       display:flex;
@@ -253,8 +241,7 @@
     }
 
     .page.blank-page{
-      background:
-        linear-gradient(180deg,#fff,#fcfcfc);
+      background:linear-gradient(180deg,#fff,#fcfcfc);
     }
 
     .page-image-placeholder{
@@ -292,7 +279,7 @@
       line-height:1.1;
       font-weight:700;
       color:#18201d;
-      text-transform:none;
+      cursor:text;
     }
 
     .chapter-subtitle{
@@ -301,6 +288,7 @@
       line-height:1.2;
       color:#5b665f;
       font-style:italic;
+      cursor:text;
     }
 
     .page-content{
@@ -315,6 +303,7 @@
 
     .page-content p{
       margin:0;
+      cursor:text;
     }
 
     .page-content p + p{
@@ -325,8 +314,7 @@
       text-indent:var(--paragraph-indent, 1.25em);
     }
 
-    .paragraph-indent .page-content p.first-para,
-    .chapter-opening .page-content p.first-para{
+    .paragraph-indent .page-content p.first-para{
       text-indent:0;
     }
 
@@ -334,27 +322,31 @@
     .dropcap-classic .page-content p.first-para::first-letter,
     .dropcap-ornamental .page-content p.first-para::first-letter{
       float:left;
-      margin-right:8px;
       font-weight:700;
-      line-height:.82;
       color:#1b261f;
+      line-height:.82;
     }
 
     .dropcap-simple .page-content p.first-para::first-letter{
-      font-size:3.3em;
+      font-size:3.2em;
+      margin-right:.16em;
+      margin-top:.03em;
     }
 
     .dropcap-classic .page-content p.first-para::first-letter{
-      font-size:3.8em;
+      font-size:3.9em;
+      margin-right:.10em;
+      margin-top:.01em;
       font-family:Georgia, "Times New Roman", serif;
     }
 
     .dropcap-ornamental .page-content p.first-para::first-letter{
       font-size:4em;
+      margin-right:.12em;
+      margin-top:.02em;
       font-family:"Times New Roman", Georgia, serif;
       border:1px solid #b7c1b9;
-      padding:.12em .18em .08em;
-      margin-top:.02em;
+      padding:.08em .16em .04em;
       background:#f6f4ef;
       box-shadow:inset 0 0 0 2px #ebe7db;
     }
@@ -396,22 +388,34 @@
       outline:none;
     }
 
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
+    .inline-editor{
+      width:100%;
+      border:1px solid #c7d2ca;
+      border-radius:10px;
+      padding:8px 10px;
+      font-family:inherit;
+      font-size:inherit;
+      line-height:inherit;
+      color:inherit;
+      background:#fffefb;
+      outline:none;
     }
 
-    .row > *{
-      flex:1 1 140px;
+    .inline-editor.title-editor{
+      font-size:1.35rem;
+      text-align:center;
+      font-weight:700;
     }
 
-    .hidden{ display:none !important; }
+    .inline-editor.subtitle-editor{
+      font-size:1rem;
+      text-align:center;
+      font-style:italic;
+      color:#5b665f;
+    }
 
     @media print{
-      body{
-        background:#fff;
-      }
+      body{ background:#fff; }
       .panel,
       .workspace-topbar,
       .rules-box,
@@ -498,9 +502,6 @@
         font-size:.93rem;
         line-height:1.45;
       }
-      .row{
-        flex-direction:column;
-      }
     }
   </style>
 </head>
@@ -514,7 +515,7 @@
       <div class="card-soft">
         <label for="fileInput"><strong>Subir obra</strong></label>
         <input class="file" type="file" id="fileInput" accept=".txt,.docx" />
-        <small>TXT e DOCX. Nesta fase o Pólux continua leve.</small>
+        <small>TXT e DOCX. O Pólux continua leve.</small>
       </div>
 
       <div class="card-soft">
@@ -526,7 +527,7 @@
       <div class="card-soft">
         <label for="chapterPatternRule"><strong>Capítulo + subtítulo</strong></label>
         <select class="select" id="chapterPatternRule">
-          <option value="ask">Perguntar quando detectar padrão</option>
+          <option value="ask">Perguntar quando detectar</option>
           <option value="split">Separar automaticamente</option>
           <option value="keep">Manter tudo em uma linha</option>
         </select>
@@ -537,13 +538,13 @@
         <select class="select" id="chapterStartMode">
           <option value="flow">Continuar direto</option>
           <option value="odd">Começar em página ímpar</option>
-          <option value="blank">Reservar página em branco antes</option>
-          <option value="blank-odd">Reservar página em branco + ímpar</option>
+          <option value="page">Reservar 1 página antes</option>
+          <option value="sheet">Reservar 1 folha inteira antes</option>
         </select>
       </div>
 
       <div class="card-soft">
-        <label for="blankPageLabel"><strong>Página reservada</strong></label>
+        <label for="blankPageLabel"><strong>Reserva</strong></label>
         <select class="select" id="blankPageLabel">
           <option value="blank">Página em branco</option>
           <option value="placeholder">Página reservada para imagem futura</option>
@@ -557,7 +558,7 @@
 
       <div class="card-soft">
         <h3>Observação</h3>
-        <p>As imagens continuam fora do Pólux. Aqui ele só reserva a página.</p>
+        <p>As imagens continuam fora do Pólux. Aqui ele só prepara a estrutura.</p>
       </div>
     </aside>
 
@@ -569,7 +570,7 @@
           <span class="pill" id="pageCountPill">Páginas: <strong>0</strong></span>
         </div>
         <div class="meta">
-          <span class="pill" id="rulesPill">Regras globais prontas</span>
+          <span class="pill">Duplo clique para editar na prévia</span>
         </div>
       </div>
 
@@ -588,7 +589,7 @@
 
       <section class="editor-zone">
         <h3>Texto-base da obra</h3>
-        <textarea id="editorText" class="editor-text" placeholder="Cole aqui o texto da obra. Ao colar ou digitar, a prévia atualiza sozinha."></textarea>
+        <textarea id="editorText" class="editor-text" placeholder="Cole aqui o texto da obra."></textarea>
       </section>
     </main>
 
@@ -606,43 +607,38 @@
       </div>
 
       <div class="card-soft">
-        <div class="row">
-          <div>
-            <label for="fontSize"><strong>Fonte</strong></label>
-            <select class="select" id="fontSize">
-              <option value="0.96">Padrão</option>
-              <option value="0.90">Menor</option>
-              <option value="1.02">Maior</option>
-              <option value="1.08">Mais aberta</option>
-            </select>
-          </div>
-          <div>
-            <label for="lineHeight"><strong>Entrelinha</strong></label>
-            <select class="select" id="lineHeight">
-              <option value="1.52">1.52</option>
-              <option value="1.45">1.45</option>
-              <option value="1.60">1.60</option>
-              <option value="1.70">1.70</option>
-            </select>
-          </div>
-        </div>
+        <label for="fontSize"><strong>Fonte</strong></label>
+        <select class="select" id="fontSize">
+          <option value="0.96">Padrão</option>
+          <option value="0.90">Menor</option>
+          <option value="1.02">Maior</option>
+          <option value="1.08">Mais aberta</option>
+        </select>
+
+        <label for="lineHeight"><strong>Entrelinha</strong></label>
+        <select class="select" id="lineHeight">
+          <option value="1.52">1.52</option>
+          <option value="1.45">1.45</option>
+          <option value="1.60">1.60</option>
+          <option value="1.70">1.70</option>
+        </select>
       </div>
 
       <div class="card-soft">
         <label for="paragraphIndent"><strong>Recuo do parágrafo</strong></label>
         <select class="select" id="paragraphIndent">
-          <option value="1.25">1.25</option>
+          <option value="0.80">Suave</option>
           <option value="1.00">1.00</option>
-          <option value="0.80">0.80</option>
+          <option value="1.25">1.25</option>
           <option value="0">Sem recuo</option>
         </select>
 
         <label for="paragraphGap"><strong>Espaço entre parágrafos</strong></label>
         <select class="select" id="paragraphGap">
-          <option value="0.35">0.35</option>
           <option value="0.20">0.20</option>
+          <option value="0.35">0.35</option>
           <option value="0.50">0.50</option>
-          <option value="0">Sem espaço extra</option>
+          <option value="0.05">0.05</option>
         </select>
       </div>
 
@@ -704,6 +700,8 @@
     let bookRules = {
       chapterSplitDecision: null
     };
+
+    let currentRenderModel = [];
 
     fileInput.addEventListener('change', handleFileUpload);
     renderBtn.addEventListener('click', renderPreview);
@@ -917,8 +915,18 @@
         currentCount = 0;
       }
 
-      function addBlankPlaceholder(){
+      function addReservedPage(){
         pushCurrentPage();
+        pages.push({
+          kind: blankPageLabel.value === 'placeholder' ? 'placeholder' : 'blank'
+        });
+      }
+
+      function addReservedSheet(){
+        pushCurrentPage();
+        pages.push({
+          kind: blankPageLabel.value === 'placeholder' ? 'placeholder' : 'blank'
+        });
         pages.push({
           kind: blankPageLabel.value === 'placeholder' ? 'placeholder' : 'blank'
         });
@@ -928,9 +936,7 @@
         pushCurrentPage();
         const nextPageNumber = pages.length + 1;
         if(nextPageNumber % 2 === 0){
-          pages.push({
-            kind:'blank'
-          });
+          pages.push({ kind:'blank' });
         }
       }
 
@@ -938,11 +944,11 @@
         if(block.type === 'chapter'){
           chapterCount += 1;
 
-          if(chapterStartMode.value === 'blank' || chapterStartMode.value === 'blank-odd'){
-            addBlankPlaceholder();
-          }
-
-          if(chapterStartMode.value === 'odd' || chapterStartMode.value === 'blank-odd'){
+          if(chapterStartMode.value === 'page'){
+            addReservedPage();
+          } else if(chapterStartMode.value === 'sheet'){
+            addReservedSheet();
+          } else if(chapterStartMode.value === 'odd'){
             ensureNextChapterStartsOnOdd();
           } else {
             pushCurrentPage();
@@ -958,7 +964,7 @@
         }
 
         if(!currentPage){
-          startTextPage({ chapterOpening: false, chapterIndex: chapterCount || 1 });
+          startTextPage({ chapterOpening:false, chapterIndex:chapterCount || 1 });
         }
 
         const paragraphs = splitParagraphs(block.text || '');
@@ -981,6 +987,7 @@
       const text = normalizeText(editorText.value);
 
       if(!text){
+        currentRenderModel = [];
         bookStage.innerHTML = '';
         emptyState.classList.remove('hidden');
         pageCountPill.innerHTML = 'Páginas: <strong>0</strong>';
@@ -991,6 +998,7 @@
 
       const structure = parseStructure(text);
       const pages = createPages(structure);
+      currentRenderModel = pages;
 
       bookStage.innerHTML = '';
       emptyState.classList.add('hidden');
@@ -998,6 +1006,7 @@
       pages.forEach((pageData, index) => {
         const page = document.createElement('article');
         page.className = 'page';
+        page.dataset.pageIndex = index;
 
         if(pageData.kind === 'blank' || pageData.kind === 'placeholder'){
           page.classList.add('blank-page');
@@ -1022,28 +1031,35 @@
         const contentWrap = document.createElement('div');
         contentWrap.className = 'page-content';
 
-        page.style.setProperty('--paragraph-indent', paragraphIndent.value + 'em');
-        page.style.setProperty('--paragraph-gap', paragraphGap.value + 'em');
+        const indentValue = Number(paragraphIndent.value);
+        const gapValue = Number(paragraphGap.value);
 
-        if(Number(paragraphIndent.value) > 0){
+        page.style.setProperty('--paragraph-indent', indentValue + 'em');
+        page.style.setProperty('--paragraph-gap', gapValue + 'em');
+
+        if(indentValue > 0){
           page.classList.add('paragraph-indent');
         }
 
         if(pageData.chapterOpening){
-          page.classList.add('chapter-opening');
-
           const header = document.createElement('div');
           header.className = 'chapter-header';
 
           const title = document.createElement('h1');
           title.className = 'chapter-title';
           title.textContent = pageData.chapterTitle || '';
+          title.dataset.role = 'chapter-title';
+          title.dataset.pageIndex = index;
+          title.addEventListener('dblclick', startInlineEdit);
           header.appendChild(title);
 
           if(pageData.chapterSubtitle){
             const subtitle = document.createElement('div');
             subtitle.className = 'chapter-subtitle';
             subtitle.textContent = pageData.chapterSubtitle;
+            subtitle.dataset.role = 'chapter-subtitle';
+            subtitle.dataset.pageIndex = index;
+            subtitle.addEventListener('dblclick', startInlineEdit);
             header.appendChild(subtitle);
           }
 
@@ -1070,7 +1086,20 @@
         pageData.paragraphs.forEach((para, pIndex) => {
           const p = document.createElement('p');
           p.textContent = para;
-          if(pIndex === 0) p.classList.add('first-para');
+          p.dataset.role = 'paragraph';
+          p.dataset.pageIndex = index;
+          p.dataset.paragraphIndex = pIndex;
+          p.addEventListener('dblclick', startInlineEdit);
+
+          const isChapterOpeningPara = pIndex === 0 && pageData.chapterOpening;
+          if(isChapterOpeningPara){
+            p.classList.add('first-para');
+          } else if(indentValue === 0){
+            p.style.textIndent = '0';
+            p.style.paddingLeft = '.45em';
+            p.style.paddingRight = '.2em';
+          }
+
           contentWrap.appendChild(p);
         });
 
@@ -1090,6 +1119,193 @@
       updateRulesSummary();
     }
 
+    function startInlineEdit(event){
+      const el = event.currentTarget;
+      if(el.querySelector('textarea, input')) return;
+
+      const role = el.dataset.role;
+      const pageIndex = Number(el.dataset.pageIndex);
+      const paragraphIndex = el.dataset.paragraphIndex !== undefined ? Number(el.dataset.paragraphIndex) : null;
+
+      let editor;
+      if(role === 'paragraph'){
+        editor = document.createElement('textarea');
+        editor.className = 'inline-editor';
+        editor.style.minHeight = '90px';
+        editor.value = el.textContent;
+      } else {
+        editor = document.createElement('input');
+        editor.type = 'text';
+        editor.className = 'inline-editor ' + (role === 'chapter-title' ? 'title-editor' : 'subtitle-editor');
+        editor.value = el.textContent;
+      }
+
+      const oldValue = el.textContent;
+      el.innerHTML = '';
+      el.appendChild(editor);
+      editor.focus();
+      if(editor.select) editor.select();
+
+      function finish(save){
+        const model = currentRenderModel[pageIndex];
+        if(save && model){
+          const newValue = editor.value.trim();
+          if(role === 'chapter-title'){
+            model.chapterTitle = newValue;
+          } else if(role === 'chapter-subtitle'){
+            model.chapterSubtitle = newValue;
+          } else if(role === 'paragraph' && paragraphIndex !== null){
+            model.paragraphs[paragraphIndex] = newValue;
+          }
+        }
+        rerenderFromModel();
+      }
+
+      editor.addEventListener('keydown', (e) => {
+        if(role !== 'paragraph' && e.key === 'Enter'){
+          e.preventDefault();
+          finish(true);
+        }
+        if(e.key === 'Escape'){
+          e.preventDefault();
+          editor.value = oldValue;
+          finish(false);
+        }
+        if(role === 'paragraph' && e.key === 'Enter' && e.ctrlKey){
+          e.preventDefault();
+          finish(true);
+        }
+      });
+
+      editor.addEventListener('blur', () => finish(true));
+    }
+
+    function rerenderFromModel(){
+      const pages = currentRenderModel;
+      bookStage.innerHTML = '';
+
+      if(!pages.length){
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      pages.forEach((pageData, index) => {
+        const page = document.createElement('article');
+        page.className = 'page';
+        page.dataset.pageIndex = index;
+
+        if(pageData.kind === 'blank' || pageData.kind === 'placeholder'){
+          page.classList.add('blank-page');
+          const holder = document.createElement('div');
+          holder.className = 'page-image-placeholder';
+          holder.textContent = pageData.kind === 'placeholder'
+            ? 'Página reservada para imagem futura'
+            : 'Página em branco reservada';
+          page.appendChild(holder);
+
+          const number = document.createElement('div');
+          number.className = 'page-number';
+          number.textContent = 'Página ' + (index + 1);
+          page.appendChild(number);
+          bookStage.appendChild(page);
+          return;
+        }
+
+        const inner = document.createElement('div');
+        inner.className = 'page-inner';
+
+        const contentWrap = document.createElement('div');
+        contentWrap.className = 'page-content';
+
+        const indentValue = Number(paragraphIndent.value);
+        const gapValue = Number(paragraphGap.value);
+
+        page.style.setProperty('--paragraph-indent', indentValue + 'em');
+        page.style.setProperty('--paragraph-gap', gapValue + 'em');
+
+        if(indentValue > 0){
+          page.classList.add('paragraph-indent');
+        }
+
+        if(pageData.chapterOpening){
+          const header = document.createElement('div');
+          header.className = 'chapter-header';
+
+          const title = document.createElement('h1');
+          title.className = 'chapter-title';
+          title.textContent = pageData.chapterTitle || '';
+          title.dataset.role = 'chapter-title';
+          title.dataset.pageIndex = index;
+          title.addEventListener('dblclick', startInlineEdit);
+          header.appendChild(title);
+
+          if(pageData.chapterSubtitle){
+            const subtitle = document.createElement('div');
+            subtitle.className = 'chapter-subtitle';
+            subtitle.textContent = pageData.chapterSubtitle;
+            subtitle.dataset.role = 'chapter-subtitle';
+            subtitle.dataset.pageIndex = index;
+            subtitle.addEventListener('dblclick', startInlineEdit);
+            header.appendChild(subtitle);
+          }
+
+          inner.appendChild(header);
+        }
+
+        const shouldDropcap =
+          dropcapStyle.value !== 'none' &&
+          (
+            (dropcapApply.value === 'all' && pageData.chapterOpening) ||
+            (dropcapApply.value === 'first' && pageData.chapterOpening && pageData.chapterIndex === 1)
+          );
+
+        if(shouldDropcap){
+          if(dropcapStyle.value === 'simple') page.classList.add('dropcap-simple');
+          if(dropcapStyle.value === 'classic') page.classList.add('dropcap-classic');
+          if(dropcapStyle.value === 'ornamental') page.classList.add('dropcap-ornamental');
+        }
+
+        contentWrap.style.fontFamily = bodyFont.value;
+        contentWrap.style.fontSize = fontSize.value + 'rem';
+        contentWrap.style.lineHeight = lineHeight.value;
+
+        pageData.paragraphs.forEach((para, pIndex) => {
+          const p = document.createElement('p');
+          p.textContent = para;
+          p.dataset.role = 'paragraph';
+          p.dataset.pageIndex = index;
+          p.dataset.paragraphIndex = pIndex;
+          p.addEventListener('dblclick', startInlineEdit);
+
+          const isChapterOpeningPara = pIndex === 0 && pageData.chapterOpening;
+          if(isChapterOpeningPara){
+            p.classList.add('first-para');
+          } else if(indentValue === 0){
+            p.style.textIndent = '0';
+            p.style.paddingLeft = '.45em';
+            p.style.paddingRight = '.2em';
+          }
+
+          contentWrap.appendChild(p);
+        });
+
+        inner.appendChild(contentWrap);
+        page.appendChild(inner);
+
+        const number = document.createElement('div');
+        number.className = 'page-number';
+        number.textContent = 'Página ' + (index + 1);
+        page.appendChild(number);
+
+        bookStage.appendChild(page);
+      });
+
+      pageCountPill.innerHTML = 'Páginas: <strong>' + pages.length + '</strong>';
+      updateRulesSummary();
+    }
+
     function updateRulesSummary(){
       const rules = [];
       const splitRuleMap = {
@@ -1106,9 +1322,9 @@
 
       const startModeMap = {
         flow:'continuação direta',
-        odd:'capítulos em página ímpar',
-        blank:'página reservada antes do capítulo',
-        'blank-odd':'página reservada + capítulo em ímpar'
+        odd:'capítulo em página ímpar',
+        page:'reserva de 1 página',
+        sheet:'reserva de 1 folha inteira'
       };
       rules.push('Abertura: ' + startModeMap[chapterStartMode.value]);
 
@@ -1116,7 +1332,7 @@
         blank:'em branco',
         placeholder:'reservada para imagem futura'
       };
-      rules.push('Página reservada: ' + blankLabelMap[blankPageLabel.value]);
+      rules.push('Reserva: ' + blankLabelMap[blankPageLabel.value]);
 
       const dropMap = {
         none:'sem capitular',
@@ -1125,8 +1341,7 @@
         ornamental:'capitular ornamental leve'
       };
       rules.push('Capitular: ' + dropMap[dropcapStyle.value]);
-
-      rules.push('Aplicação: ' + (dropcapApply.value === 'all' ? 'todos os capítulos' : 'somente primeiro capítulo'));
+      rules.push('Aplicação: ' + (dropcapApply.value === 'all' ? 'todos os capítulos' : 'somente primeiro'));
       rules.push('Parágrafo: recuo ' + paragraphIndent.value + ' / espaço ' + paragraphGap.value);
 
       rulesSummary.textContent = rules.join(' • ');
@@ -1134,7 +1349,7 @@
 
     function exportPDF(){
       const text = normalizeText(editorText.value);
-      if(!text){
+      if(!text && !currentRenderModel.length){
         alert('Carregue ou cole uma obra antes de exportar.');
         return;
       }
@@ -1142,7 +1357,7 @@
     }
 
     function finalizeAndClear(){
-      if(editorText.value.trim()){
+      if(editorText.value.trim() || currentRenderModel.length){
         const ok = confirm('Finalizar esta obra e limpar o workspace?');
         if(!ok) return;
       }
@@ -1158,11 +1373,12 @@
       bodyFont.value = 'Georgia';
       fontSize.value = '0.96';
       lineHeight.value = '1.52';
-      paragraphIndent.value = '1.25';
-      paragraphGap.value = '0.35';
+      paragraphIndent.value = '0.80';
+      paragraphGap.value = '0.20';
       dropcapStyle.value = 'none';
       dropcapApply.value = 'all';
       bookRules.chapterSplitDecision = null;
+      currentRenderModel = [];
 
       bookStage.innerHTML = '';
       emptyState.classList.remove('hidden');
