@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OKapista — Criador de Capas de Livros</title>
+
+<style>
+
+:root{
+--bg:#f4efe7;
+--card:#ffffff;
+--ink:#1e1e1e;
+--muted:#6f6a62;
+--line:#ddd6c9;
+--literario:#4d956f;
+--cordel:#5a3d2b;
+--outros:#7b6a58;
+--shadow:0 14px 28px rgba(0,0,0,.08);
+--radius:26px;
+}
+
+*{
+box-sizing:border-box;
+}
+
+html,body{
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Georgia,"Times New Roman",serif;
+background:var(--bg);
+display:flex;
+align-items:center;
+justify-content:center;
+min-height:100vh;
+padding:16px;
+}
+
+.box{
+background:var(--card);
+width:min(95vw,980px);
+padding:42px 28px 32px;
+border-radius:var(--radius);
+box-shadow:var(--shadow);
+text-align:center;
+}
+
+h1{
+margin:0 0 10px;
+font-size:clamp(2.4rem,5vw,3.5rem);
+}
+
+.sub{
+color:var(--muted);
+margin-bottom:30px;
+font-size:1.1rem;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:18px;
+}
+
+.card{
+border:none;
+border-radius:22px;
+padding:26px;
+font-family:inherit;
+color:white;
+cursor:pointer;
+text-align:left;
+transition:.2s;
+box-shadow:0 10px 20px rgba(0,0,0,.08);
+}
+
+.card:hover{
+transform:translateY(-2px);
+opacity:.97;
+}
+
+.card h2{
+margin:0 0 10px;
+font-size:1.8rem;
+}
+
+.card p{
+margin:0;
+font-size:1.05rem;
+line-height:1.4;
+}
+
+.literario{
+background:var(--literario);
+}
+
+.cordel{
+background:var(--cordel);
+}
+
+.outros{
+background:var(--outros);
+}
+
+.footer{
+margin-top:26px;
+color:var(--muted);
+font-size:.95rem;
+}
+
+.actions{
+margin-top:24px;
+display:flex;
+gap:12px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.btn{
+border:none;
+padding:12px 22px;
+border-radius:16px;
+font-family:inherit;
+font-weight:700;
+cursor:pointer;
+transition:.2s;
+box-shadow:0 8px 18px rgba(0,0,0,.08);
+}
+
+.btn:hover{
+transform:translateY(-1px);
+}
+
+.voltar{
+background:#d9a441;
+color:#2a1d0d;
+}
+
+.sair{
+background:#a63d40;
+color:white;
+}
+
+@media(max-width:640px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.actions{
+flex-direction:column;
+}
+
+.btn{
+width:100%;
+}
+
+.card{
+text-align:center;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>OKapista</h1>
+
+<p class="sub">
+Criador de Capas de Livros do Lapidar
+</p>
+
+<div class="grid">
+
+<button class="card literario"
+onclick="abrir('faca_kapa_literario.html')">
+
+<h2>Faça Kapa Livros Literários</h2>
+
+<p>
+Gerador de capas para romances, contos, poesia e obras híbridas.
+Frente, lombada e contracapa editorial.
+</p>
+
+</button>
+
+
+<button class="card cordel"
+onclick="abrir('faca_kapa_cordel.html')">
+
+<h2>Faça Kapa Cordel</h2>
+
+<p>
+Gerador de capas estilo folheto popular com selo sertão,
+xilogravura e contracapa automática.
+</p>
+
+</button>
+
+
+<button class="card outros"
+onclick="abrir('faca_kapa_outros.html')">
+
+<h2>Faça Kapa Outros Livros</h2>
+
+<p>
+Capas para obras técnicas, infantis, acadêmicas,
+coleções especiais e formatos personalizados.
+</p>
+
+</button>
+
+</div>
+
+
+<div class="actions">
+
+<button class="btn voltar"
+onclick="voltarLapidar()">
+Retornar ao Lapidar
+</button>
+
+<button class="btn sair"
+onclick="sairSistema()">
+Sair do sistema
+</button>
+
+</div>
+
+
+<div class="footer">
+
+OKapista organiza o setor editorial de criação de capas do Celeiro Literário.
+
+</div>
+
+</div>
+
+
+<script>
+
+function abrir(pagina){
+
+window.location.href = pagina;
+
+}
+
+
+function voltarLapidar(){
+
+window.location.href = "lapidar.html";
+
+}
+
+
+function sairSistema(){
+
+alert("Saída simbólica do sistema. Depois conectaremos ao fluxo real.");
+
+}
+
+</script>
+
+</body>
+</html>
