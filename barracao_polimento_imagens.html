@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barracão de Polimento das Imagens</title>
+  <style>
+    :root{
+      --bg:#ece8de;
+      --card:#f7f4ee;
+      --panel:#fffdfa;
+      --ink:#1f1f1b;
+      --muted:#6f6a62;
+      --line:#ddd6c9;
+      --accent:#6a4a34;
+      --accent-2:#8a6a52;
+      --ok:#3f7a5a;
+      --warn:#d9a441;
+      --danger:#a63d40;
+      --shadow:0 12px 28px rgba(0,0,0,.10);
+      --radius:24px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+
+    body{
+      font-family:Georgia,"Times New Roman",serif;
+      background:var(--bg);
+      color:var(--ink);
+      padding:16px;
+    }
+
+    .wrap{
+      max-width:1400px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:380px minmax(320px,1fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    .panel,
+    .stage{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      border:1px solid var(--line);
+      overflow:hidden;
+    }
+
+    .head{
+      padding:16px 18px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(106,74,52,.10), rgba(106,74,52,.04));
+    }
+
+    .head h1,
+    .head h2{
+      margin:0;
+      line-height:1.06;
+    }
+
+    .head p{
+      margin:8px 0 0 0;
+      color:var(--muted);
+      line-height:1.45;
+      font-size:1rem;
+    }
+
+    .panel-body{
+      padding:16px;
+    }
+
+    .field{
+      margin-bottom:14px;
+    }
+
+    .field label{
+      display:block;
+      font-weight:700;
+      margin-bottom:6px;
+      font-size:.96rem;
+    }
+
+    .field small{
+      display:block;
+      margin-top:5px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+
+    input[type="range"],
+    input[type="text"],
+    select{
+      width:100%;
+    }
+
+    input[type="range"]{
+      accent-color:var(--accent);
+    }
+
+    .stat{
+      font-size:.92rem;
+      color:#584d44;
+      margin-top:4px;
+    }
+
+    .check{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:var(--panel);
+      margin-bottom:8px;
+    }
+
+    .check input{
+      margin-top:2px;
+    }
+
+    .check span{
+      line-height:1.35;
+      font-size:.95rem;
+    }
+
+    .row-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .btns{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+
+    button{
+      border:none;
+      border-radius:16px;
+      padding:12px 16px;
+      font:inherit;
+      font-weight:700;
+      cursor:pointer;
+      transition:.18s ease;
+      box-shadow:0 8px 18px rgba(0,0,0,.08);
+    }
+
+    button:hover{transform:translateY(-1px)}
+
+    .btn-main{background:var(--ok); color:#fff}
+    .btn-brown{background:var(--accent); color:#fff}
+    .btn-warn{background:var(--warn); color:#2b1d0d}
+    .btn-danger{background:var(--danger); color:#fff}
+
+    .stage{
+      padding:16px;
+    }
+
+    .stage-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+
+    .stage-top h2{
+      margin:0 0 6px 0;
+      font-size:1.15rem;
+    }
+
+    .stage-top p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.4;
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#f4eadb;
+      font-size:.92rem;
+      font-weight:700;
+      color:#5a4533;
+    }
+
+    .status::before{
+      content:"";
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--ok);
+      box-shadow:0 0 0 4px rgba(63,122,90,.12);
+    }
+
+    .preview-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+
+    .preview-card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:20px;
+      overflow:hidden;
+    }
+
+    .preview-card h3{
+      margin:0;
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      font-size:1.05rem;
+      background:rgba(255,255,255,.55);
+    }
+
+    .canvas-wrap{
+      padding:16px;
+      display:grid;
+      place-items:center;
+      min-height:420px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.24), rgba(0,0,0,.02)),
+        repeating-linear-gradient(45deg, rgba(106,74,52,.03) 0 8px, transparent 8px 16px),
+        #efe7db;
+    }
+
+    .image-stage{
+      width:min(100%, 440px);
+      aspect-ratio:3 / 4;
+      background:#f8f5ee;
+      border:3px solid #1a1a1a;
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      place-items:center;
+    }
+
+    .image-stage.simple-border{
+      border-width:1px;
+    }
+
+    .image-stage.double-border::before{
+      content:"";
+      position:absolute;
+      inset:14px;
+      border:2px solid rgba(0,0,0,.55);
+      pointer-events:none;
+    }
+
+    .image-stage.soft-shadow{
+      box-shadow:0 14px 36px rgba(0,0,0,.15);
+    }
+
+    .image-stage img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:none;
+      user-select:none;
+      -webkit-user-drag:none;
+      transform-origin:center center;
+    }
+
+    .image-stage.contain img{
+      object-fit:contain;
+      background:#f7f3ec;
+    }
+
+    .image-stage.show img{
+      display:block;
+    }
+
+    .placeholder{
+      padding:20px;
+      text-align:center;
+      color:#6f675d;
+      line-height:1.5;
+      max-width:280px;
+    }
+
+    .image-stage.show .placeholder{
+      display:none;
+    }
+
+    .tips{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:10px;
+    }
+
+    .tip{
+      background:#fffaf2;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      color:var(--muted);
+      font-size:.93rem;
+      line-height:1.4;
+    }
+
+    .print-only-title{
+      display:none;
+    }
+
+    @media (max-width: 1100px){
+      .wrap{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 760px){
+      .preview-grid{
+        grid-template-columns:1fr;
+      }
+
+      .row-2{
+        grid-template-columns:1fr;
+      }
+
+      .btns{
+        flex-direction:column;
+      }
+
+      button{
+        width:100%;
+      }
+
+      .canvas-wrap{
+        min-height:300px;
+      }
+    }
+
+    @media print{
+      body{
+        background:#fff;
+        padding:0;
+      }
+
+      .panel,
+      .stage-top,
+      .tips{
+        display:none !important;
+      }
+
+      .wrap{
+        display:block;
+        max-width:none;
+      }
+
+      .stage{
+        box-shadow:none;
+        border:none;
+        padding:0;
+      }
+
+      .preview-grid{
+        grid-template-columns:1fr 1fr;
+        gap:12px;
+      }
+
+      .preview-card{
+        box-shadow:none;
+        border:none;
+      }
+
+      .preview-card h3{
+        display:none;
+      }
+
+      .canvas-wrap{
+        background:#fff;
+        min-height:auto;
+        padding:0;
+      }
+
+      .print-only-title{
+        display:block;
+        text-align:center;
+        font-size:1.3rem;
+        margin:0 0 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <section class="panel">
+      <div class="head">
+        <h1>Barracão de Polimento das Imagens</h1>
+        <p>Tratamento leve de imagens para capas e materiais editoriais. Aqui entra só o que roda liso no navegador.</p>
+      </div>
+
+      <div class="panel-body">
+
+        <div class="field">
+          <label for="imagemInput">Imagem-base</label>
+          <input id="imagemInput" type="file" accept="image/*" />
+          <small>Envie a imagem que deseja preparar antes de levar ao OKapista.</small>
+        </div>
+
+        <div class="field">
+          <label for="nomeProjeto">Nome do projeto</label>
+          <input id="nomeProjeto" type="text" value="Projeto de imagem editorial" />
+        </div>
+
+        <div class="field">
+          <label for="preset">Preset rápido</label>
+          <select id="preset">
+            <option value="neutro" selected>Neutro</option>
+            <option value="cordel_pb">Cordel preto e branco</option>
+            <option value="capa_literaria">Capa literária</option>
+            <option value="contraste_forte">Contraste forte</option>
+            <option value="suave">Suave</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="brilho">Brilho</label>
+          <input id="brilho" type="range" min="50" max="160" value="100" />
+          <div class="stat"><span id="brilhoVal">100</span>%</div>
+        </div>
+
+        <div class="field">
+          <label for="contraste">Contraste</label>
+          <input id="contraste" type="range" min="50" max="200" value="100" />
+          <div class="stat"><span id="contrasteVal">100</span>%</div>
+        </div>
+
+        <div class="field">
+          <label for="saturacao">Saturação</label>
+          <input id="saturacao" type="range" min="0" max="180" value="100" />
+          <div class="stat"><span id="saturacaoVal">100</span>%</div>
+        </div>
+
+        <div class="field">
+          <label for="cinza">Preto e branco</label>
+          <input id="cinza" type="range" min="0" max="100" value="0" />
+          <div class="stat"><span id="cinzaVal">0</span>%</div>
+        </div>
+
+        <div class="field">
+          <label for="sepia">Sépia</label>
+          <input id="sepia" type="range" min="0" max="100" value="0" />
+          <div class="stat"><span id="sepiaVal">0</span>%</div>
+        </div>
+
+        <div class="field">
+          <label for="rotacao">Rotação</label>
+          <input id="rotacao" type="range" min="-15" max="15" value="0" />
+          <div class="stat"><span id="rotacaoVal">0</span>°</div>
+        </div>
+
+        <div class="field">
+          <label for="zoom">Zoom</label>
+          <input id="zoom" type="range" min="80" max="140" value="100" />
+          <div class="stat"><span id="zoomVal">100</span>%</div>
+        </div>
+
+        <div class="field">
+          <label>Acabamento</label>
+          <label class="check"><input type="checkbox" id="bordaDupla" checked /><span>Moldura dupla editorial</span></label>
+          <label class="check"><input type="checkbox" id="sombraSuave" checked /><span>Sombra suave da peça</span></label>
+          <label class="check"><input type="checkbox" id="modoContain" /><span>Enquadrar inteiro na peça</span></label>
+        </div>
+
+        <div class="btns">
+          <button class="btn-main" id="btnAtualizar">Atualizar visual</button>
+          <button class="btn-brown" id="btnResetar">Resetar ajustes</button>
+          <button class="btn-warn" onclick="window.location.href='okapista.html'">Ir para OKapista</button>
+          <button class="btn-danger" onclick="window.location.href='lapidar.html'">Retornar ao Lapidar</button>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="stage">
+      <div class="stage-top">
+        <div>
+          <h2>Prévia do polimento</h2>
+          <p>Comparação entre original e versão tratada. Sem peso desnecessário, sem travar o navegador.</p>
+        </div>
+        <div class="status" id="statusLabel">Barracão pronto</div>
+      </div>
+
+      <h2 class="print-only-title">Barracão de Polimento das Imagens</h2>
+
+      <div class="preview-grid">
+        <div class="preview-card">
+          <h3>Original</h3>
+          <div class="canvas-wrap">
+            <div class="image-stage show simple-border contain" id="stageOriginal">
+              <img id="imgOriginal" alt="Imagem original" />
+              <div class="placeholder">
+                Envie uma imagem para começar o polimento leve.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview-card">
+          <h3>Polida</h3>
+          <div class="canvas-wrap">
+            <div class="image-stage show double-border soft-shadow" id="stageEditada">
+              <img id="imgEditada" alt="Imagem editada" />
+              <div class="placeholder">
+                A versão tratada aparecerá aqui com os ajustes visuais escolhidos.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tips">
+        <div class="tip"><strong>Uso ideal:</strong> preparar imagem antes da capa.</div>
+        <div class="tip"><strong>Leve:</strong> só ajustes rápidos que rodam bem no navegador.</div>
+        <div class="tip"><strong>Cordel:</strong> use o preset preto e branco para base xilogravada.</div>
+        <div class="tip"><strong>Fluxo:</strong> polir aqui → levar ao OKapista depois.</div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    const el = {
+      imagemInput: document.getElementById('imagemInput'),
+      nomeProjeto: document.getElementById('nomeProjeto'),
+      preset: document.getElementById('preset'),
+      brilho: document.getElementById('brilho'),
+      contraste: document.getElementById('contraste'),
+      saturacao: document.getElementById('saturacao'),
+      cinza: document.getElementById('cinza'),
+      sepia: document.getElementById('sepia'),
+      rotacao: document.getElementById('rotacao'),
+      zoom: document.getElementById('zoom'),
+      bordaDupla: document.getElementById('bordaDupla'),
+      sombraSuave: document.getElementById('sombraSuave'),
+      modoContain: document.getElementById('modoContain'),
+      btnAtualizar: document.getElementById('btnAtualizar'),
+      btnResetar: document.getElementById('btnResetar'),
+      brilhoVal: document.getElementById('brilhoVal'),
+      contrasteVal: document.getElementById('contrasteVal'),
+      saturacaoVal: document.getElementById('saturacaoVal'),
+      cinzaVal: document.getElementById('cinzaVal'),
+      sepiaVal: document.getElementById('sepiaVal'),
+      rotacaoVal: document.getElementById('rotacaoVal'),
+      zoomVal: document.getElementById('zoomVal'),
+      imgOriginal: document.getElementById('imgOriginal'),
+      imgEditada: document.getElementById('imgEditada'),
+      stageOriginal: document.getElementById('stageOriginal'),
+      stageEditada: document.getElementById('stageEditada'),
+      statusLabel: document.getElementById('statusLabel')
+    };
+
+    function atualizarNumeros(){
+      el.brilhoVal.textContent = el.brilho.value;
+      el.contrasteVal.textContent = el.contraste.value;
+      el.saturacaoVal.textContent = el.saturacao.value;
+      el.cinzaVal.textContent = el.cinza.value;
+      el.sepiaVal.textContent = el.sepia.value;
+      el.rotacaoVal.textContent = el.rotacao.value;
+      el.zoomVal.textContent = el.zoom.value;
+    }
+
+    function aplicarPreset(){
+      const p = el.preset.value;
+
+      if(p === 'cordel_pb'){
+        el.brilho.value = 105;
+        el.contraste.value = 160;
+        el.saturacao.value = 0;
+        el.cinza.value = 100;
+        el.sepia.value = 0;
+      } else if(p === 'capa_literaria'){
+        el.brilho.value = 102;
+        el.contraste.value = 118;
+        el.saturacao.value = 90;
+        el.cinza.value = 0;
+        el.sepia.value = 12;
+      } else if(p === 'contraste_forte'){
+        el.brilho.value = 98;
+        el.contraste.value = 175;
+        el.saturacao.value = 100;
+        el.cinza.value = 0;
+        el.sepia.value = 0;
+      } else if(p === 'suave'){
+        el.brilho.value = 108;
+        el.contraste.value = 92;
+        el.saturacao.value = 92;
+        el.cinza.value = 0;
+        el.sepia.value = 8;
+      } else {
+        el.brilho.value = 100;
+        el.contraste.value = 100;
+        el.saturacao.value = 100;
+        el.cinza.value = 0;
+        el.sepia.value = 0;
+      }
+
+      el.rotacao.value = 0;
+      el.zoom.value = 100;
+      atualizarNumeros();
+      aplicarVisual();
+    }
+
+    function aplicarVisual(){
+      atualizarNumeros();
+
+      const filtro = [
+        `brightness(${el.brilho.value}%)`,
+        `contrast(${el.contraste.value}%)`,
+        `saturate(${el.saturacao.value}%)`,
+        `grayscale(${el.cinza.value}%)`,
+        `sepia(${el.sepia.value}%)`
+      ].join(' ');
+
+      const transform = `scale(${Number(el.zoom.value)/100}) rotate(${el.rotacao.value}deg)`;
+
+      el.imgEditada.style.filter = filtro;
+      el.imgEditada.style.transform = transform;
+
+      el.stageEditada.classList.toggle('double-border', el.bordaDupla.checked);
+      el.stageEditada.classList.toggle('simple-border', !el.bordaDupla.checked);
+      el.stageEditada.classList.toggle('soft-shadow', el.sombraSuave.checked);
+      el.stageEditada.classList.toggle('contain', el.modoContain.checked);
+
+      el.statusLabel.textContent = 'Barracão pronto • ajustes aplicados';
+    }
+
+    function resetarTudo(){
+      el.preset.value = 'neutro';
+      el.brilho.value = 100;
+      el.contraste.value = 100;
+      el.saturacao.value = 100;
+      el.cinza.value = 0;
+      el.sepia.value = 0;
+      el.rotacao.value = 0;
+      el.zoom.value = 100;
+      el.bordaDupla.checked = true;
+      el.sombraSuave.checked = true;
+      el.modoContain.checked = false;
+      atualizarNumeros();
+      aplicarVisual();
+      el.statusLabel.textContent = 'Barracão pronto • ajustes resetados';
+    }
+
+    el.imagemInput.addEventListener('change', (ev) => {
+      const file = ev.target.files && ev.target.files[0];
+      if(!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        el.imgOriginal.src = reader.result;
+        el.imgEditada.src = reader.result;
+        el.stageOriginal.classList.add('show');
+        el.stageEditada.classList.add('show');
+        el.statusLabel.textContent = 'Barracão pronto • imagem carregada';
+        aplicarVisual();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    el.preset.addEventListener('change', aplicarPreset);
+    el.btnAtualizar.addEventListener('click', aplicarVisual);
+    el.btnResetar.addEventListener('click', resetarTudo);
+
+    [
+      el.brilho,
+      el.contraste,
+      el.saturacao,
+      el.cinza,
+      el.sepia,
+      el.rotacao,
+      el.zoom,
+      el.bordaDupla,
+      el.sombraSuave,
+      el.modoContain
+    ].forEach(item => {
+      item.addEventListener('input', aplicarVisual);
+      item.addEventListener('change', aplicarVisual);
+    });
+
+    atualizarNumeros();
+    aplicarVisual();
+  </script>
+</body>
+</html>
