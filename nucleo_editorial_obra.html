@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Núcleo Editorial da Obra</title>
+
+<style>
+:root{
+--bg:#ece8de;
+--card:#f7f4ee;
+--ink:#1f1f1b;
+--muted:#6f6a62;
+--line:#ddd6c9;
+--accent:#6f5fa8;
+--shadow:0 12px 28px rgba(0,0,0,.10);
+--radius:24px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+
+body{
+min-height:100vh;
+font-family:Georgia,"Times New Roman",serif;
+background:var(--bg);
+color:var(--ink);
+display:flex;
+align-items:center;
+justify-content:center;
+padding:16px;
+}
+
+.container{
+width:min(92vw,980px);
+background:var(--card);
+border-radius:var(--radius);
+box-shadow:var(--shadow);
+border:1px solid var(--line);
+padding:34px 26px;
+}
+
+.tag{
+display:inline-block;
+padding:6px 12px;
+border-radius:999px;
+background:#eee9fa;
+color:#5b4f97;
+font-size:.88rem;
+font-weight:700;
+letter-spacing:.05em;
+text-transform:uppercase;
+margin-bottom:14px;
+}
+
+h1{
+margin:0 0 12px 0;
+font-size:clamp(2.2rem,5vw,3.4rem);
+line-height:1.05;
+}
+
+p{
+margin:0 0 18px 0;
+color:var(--muted);
+font-size:1.08rem;
+line-height:1.5;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px;
+margin-top:18px;
+}
+
+.card{
+background:#fff;
+border-radius:18px;
+border:1px solid var(--line);
+padding:20px;
+text-align:center;
+transition:.18s ease;
+cursor:pointer;
+}
+
+.card:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 18px rgba(0,0,0,.08);
+}
+
+.card h2{
+margin:6px 0 10px 0;
+font-size:1.25rem;
+}
+
+.card p{
+font-size:.95rem;
+}
+
+.note{
+margin-top:18px;
+padding:14px 16px;
+border:1px dashed #cfc6b8;
+border-radius:16px;
+background:rgba(255,255,255,.45);
+color:#6a645d;
+line-height:1.45;
+}
+
+.actions{
+margin-top:24px;
+display:flex;
+gap:12px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.btn{
+border:none;
+border-radius:16px;
+padding:14px 20px;
+font:inherit;
+font-weight:700;
+cursor:pointer;
+transition:.18s ease;
+box-shadow:0 8px 18px rgba(0,0,0,.08);
+}
+
+.btn:hover{
+transform:translateY(-1px);
+}
+
+.btn-back{
+background:#d9a441;
+color:#2a1d0d;
+}
+
+.btn-home{
+background:var(--accent);
+color:#fff;
+}
+
+@media (max-width:780px){
+.grid{
+grid-template-columns:1fr;
+}
+
+.container{
+padding:28px 18px;
+}
+
+.actions{
+flex-direction:column;
+}
+
+.btn{
+width:100%;
+}
+}
+</style>
+</head>
+
+<body>
+
+<main class="container">
+
+<div class="tag">Lapidar — Núcleo Editorial</div>
+
+<h1>Núcleo Editorial da Obra</h1>
+
+<p>
+Este setor reúne os braços editoriais responsáveis por compreender, avaliar,
+lapidar e adaptar a obra. Aqui ficam as etapas de análise, parecer, refinamento
+e segunda língua.
+</p>
+
+<div class="grid">
+
+<div class="card" onclick="window.location.href='analisador_obra.html'">
+<h2>Analisador de Obra</h2>
+<p>Leitura estrutural, diagnóstico narrativo e reconhecimento editorial.</p>
+</div>
+
+<div class="card" onclick="window.location.href='avaliacao_literaria.html'">
+<h2>Avaliação Literária</h2>
+<p>Pareceres, relatórios críticos e Raio-X de Progressão da Obra.</p>
+</div>
+
+<div class="card" onclick="window.location.href='lapidacao_literaria.html'">
+<h2>Lapidação Literária</h2>
+<p>Humanização, coerência, ritmo textual e preservação da voz autoral.</p>
+</div>
+
+<div class="card" onclick="window.location.href='segunda_linguas.html'">
+<h2>Segunda Língua(s)</h2>
+<p>Tradução editorial e adaptação de idioma da obra.</p>
+</div>
+
+</div>
+
+<div class="note">
+Mesário do Núcleo Editorial da Obra consolidará automaticamente as contribuições realizadas neste setor.
+</div>
+
+<div class="actions">
+
+<button class="btn btn-back"
+onclick="window.location.href='lapidar.html'">
+Retornar ao Lapidar
+</button>
+
+<button class="btn btn-home"
+onclick="window.location.href='index.html'">
+Ir ao Celeiro
+</button>
+
+</div>
+
+</main>
+
+</body>
+</html>
