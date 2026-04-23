@@ -17,7 +17,6 @@
       --earth-2:#7c431f;
       --earth-3:#9b5b2a;
       --earth-4:#c48343;
-      --earth-5:#efe2d0;
 
       --ok:#2f7a59;
       --warn:#b7921e;
@@ -30,6 +29,10 @@
       --page-h:520px;
       --page-pad-x:24px;
       --page-pad-y:22px;
+
+      --preview-font-family: Georgia, "Times New Roman", serif;
+      --preview-font-size: 11pt;
+      --preview-line-height: 1.25;
     }
 
     *{box-sizing:border-box}
@@ -42,9 +45,7 @@
       font-family:Georgia,"Times New Roman",serif;
     }
 
-    body{
-      min-height:100vh;
-    }
+    body{min-height:100vh}
 
     .app{
       width:min(1540px, calc(100vw - 12px));
@@ -419,7 +420,11 @@
 
     .page-inner{
       height:calc(100% - 24px);
-      overflow:hidden;
+      overflow:auto;
+      font-family:var(--preview-font-family);
+      font-size:var(--preview-font-size);
+      line-height:var(--preview-line-height);
+      padding-right:4px;
     }
 
     .meta-note{
@@ -430,21 +435,29 @@
       font-style:italic;
     }
 
+    .editable-block{
+      outline:none;
+      border-radius:8px;
+      padding:2px 4px;
+      margin:0 0 14px 0;
+      white-space:pre-wrap;
+    }
+
+    .editable-block:focus{
+      background:#fff8ef;
+      box-shadow:0 0 0 2px rgba(194,135,69,.16);
+    }
+
     .intertitle{
       text-align:center;
-      font-size:1.02rem;
+      font-size:1.04em;
       font-weight:700;
-      margin:0 0 14px 0;
       color:#4b3a2c;
       letter-spacing:.02em;
       text-transform:uppercase;
     }
 
-    .cordel-block{
-      margin:0 0 15px 0;
-      white-space:pre-line;
-      line-height:1.38;
-      font-size:1rem;
+    .stanza{
       text-align:left;
     }
 
@@ -569,7 +582,6 @@
       .app{
         grid-template-columns:1fr;
       }
-
       .panel{
         position:relative;
         top:auto;
@@ -653,8 +665,8 @@
         <label for="fontFamily"><strong>Fonte</strong></label>
         <select class="select" id="fontFamily">
           <option value="Georgia">Georgia</option>
-          <option value="'Times New Roman'">Times New Roman</option>
-          <option value="Garamond">Garamond</option>
+          <option value='"Times New Roman", serif'>Times New Roman</option>
+          <option value="Garamond, serif">Garamond</option>
         </select>
 
         <label for="fontSize"><strong>Tamanho</strong></label>
@@ -705,7 +717,7 @@
         <div class="q-badge">Q</div>
         <div>
           <h1>Qui(RON)xadá — Diagramador de Cordel</h1>
-          <p>Paginação por sextilha, intertítulos preservados e apresentação pensada para folheto.</p>
+          <p>Paginação por sextilha, intertítulos preservados e edição direta dentro da prévia.</p>
         </div>
       </section>
 
@@ -787,7 +799,7 @@
 
       <div class="card">
         <h3>Leitura estrutural</h3>
-        <p>Reconhece intertítulos, sextilhas e quebras suspeitas. Agora a correção acontece dentro do texto-base.</p>
+        <p>Reconhece intertítulos, sextilhas e quebras suspeitas. Agora a correção acontece dentro do texto-base e a prévia pode ser editada.</p>
       </div>
 
       <div class="card">
@@ -833,6 +845,7 @@
 
     let paginatedPages = [];
     let currentSpreadIndex = 0;
+    let currentUnits = [];
 
     function escapeHtml(text) {
       return String(text)
@@ -847,27 +860,35 @@
       if (format === "11x16") {
         document.documentElement.style.setProperty("--page-w", "350px");
         document.documentElement.style.setProperty("--page-h", "520px");
+        document.documentElement.style.setProperty("--page-pad-x", "24px");
+        document.documentElement.style.setProperty("--page-pad-y", "22px");
       } else if (format === "10.5x15.5") {
         document.documentElement.style.setProperty("--page-w", "334px");
         document.documentElement.style.setProperty("--page-h", "500px");
+        document.documentElement.style.setProperty("--page-pad-x", "22px");
+        document.documentElement.style.setProperty("--page-pad-y", "20px");
       } else if (format === "11x17") {
         document.documentElement.style.setProperty("--page-w", "362px");
         document.documentElement.style.setProperty("--page-h", "560px");
+        document.documentElement.style.setProperty("--page-pad-x", "24px");
+        document.documentElement.style.setProperty("--page-pad-y", "22px");
       } else {
         document.documentElement.style.setProperty("--page-w", "430px");
         document.documentElement.style.setProperty("--page-h", "650px");
+        document.documentElement.style.setProperty("--page-pad-x", "30px");
+        document.documentElement.style.setProperty("--page-pad-y", "26px");
       }
+
+      document.documentElement.style.setProperty("--preview-font-family", fontFamily.value);
+      document.documentElement.style.setProperty("--preview-font-size", fontSize.value + "pt");
+      document.documentElement.style.setProperty("--preview-line-height", lineHeight.value);
     }
 
     function getSextilhasPerPage() {
-      const format = cordelFormat.value;
-      if (format === "13.5x19") return 4;
-      if (format === "11x17") return 4;
-      if (format === "10.5x15.5") return 4;
       return 4;
     }
 
-    function normalizeCordelBlocks(text) {
+    function normalizeCordelUnits(text) {
       const rawBlocks = MotorLapidar.splitBlocks(text);
       const result = [];
 
@@ -888,11 +909,10 @@
       return result;
     }
 
-    function paginateCordel(processedText) {
+    function paginateCordel(units) {
       const sextilhasPerPage = getSextilhasPerPage();
-      const units = normalizeCordelBlocks(processedText);
-
       const pages = [];
+
       let currentPage = [];
       let sextilhasCount = 0;
 
@@ -908,14 +928,9 @@
         const unit = units[i];
 
         if (unit.type === "intertitle") {
-          const nextUnit = units[i + 1];
-          const needsNewPage = sextilhasCount >= sextilhasPerPage ||
-            (nextUnit && nextUnit.type === "stanza" && sextilhasCount === sextilhasPerPage - 0);
-
           if (currentPage.length && sextilhasCount >= sextilhasPerPage) {
             pushPage();
           }
-
           currentPage.push(unit);
           continue;
         }
@@ -924,7 +939,6 @@
           if (sextilhasCount >= sextilhasPerPage) {
             pushPage();
           }
-
           currentPage.push(unit);
           sextilhasCount += 1;
         }
@@ -954,22 +968,42 @@
         return page;
       }
 
-      let html = `<div class="page-inner">`;
+      const inner = document.createElement("div");
+      inner.className = "page-inner";
 
       if (pageNumber === 1 && (bookTitle.value.trim() || bookSubtitle.value.trim())) {
-        html += `<div class="meta-note">Metadados do folheto registrados à esquerda. O miolo começa abaixo.</div>`;
+        const note = document.createElement("div");
+        note.className = "meta-note";
+        note.textContent = "Metadados do folheto registrados à esquerda. O miolo começa abaixo.";
+        inner.appendChild(note);
       }
 
-      pageData.forEach(item => {
+      pageData.forEach((item, itemIndex) => {
+        const block = document.createElement("div");
+        block.className = "editable-block " + (item.type === "intertitle" ? "intertitle" : "stanza");
+        block.contentEditable = "true";
+        block.dataset.pageNumber = pageNumber;
+        block.dataset.itemIndex = itemIndex;
+        block.dataset.type = item.type;
+        block.spellcheck = false;
+
         if (item.type === "intertitle") {
-          html += `<div class="intertitle">${escapeHtml(item.text)}</div>`;
+          block.innerText = item.text;
         } else {
-          html += `<div class="cordel-block">${escapeHtml(item.lines.join("\n"))}</div>`;
+          block.innerText = item.lines.join("\n");
         }
+
+        block.addEventListener("input", syncPreviewToSource);
+        inner.appendChild(block);
       });
 
-      html += `</div><div class="page-number">${pageNumber}</div>`;
-      page.innerHTML = html;
+      page.appendChild(inner);
+
+      const num = document.createElement("div");
+      num.className = "page-number";
+      num.textContent = pageNumber;
+      page.appendChild(num);
+
       return page;
     }
 
@@ -1078,6 +1112,28 @@
     window.fixJoinLine = fixJoinLine;
     window.fixTitleCase = fixTitleCase;
 
+    function syncPreviewToSource() {
+      const pageNodes = Array.from(document.querySelectorAll(".page .page-inner"));
+      const units = [];
+
+      pageNodes.forEach(pageNode => {
+        const blocks = Array.from(pageNode.querySelectorAll(".editable-block"));
+        blocks.forEach(block => {
+          const text = block.innerText.replace(/\r/g, "").trim();
+          if (!text) return;
+
+          if (block.dataset.type === "intertitle") {
+            units.push(text);
+          } else {
+            units.push(text.split("\n").map(line => line.trim()).filter(Boolean).join("\n"));
+          }
+        });
+      });
+
+      sourceText.value = units.join("\n\n");
+      statusBox.textContent = "Texto alterado direto na prévia.";
+    }
+
     function renderAlerts(alerts) {
       if (!alerts || !alerts.length) {
         alertsList.innerHTML = `<div class="footer-note">Nenhum alerta crítico encontrado.</div>`;
@@ -1128,8 +1184,10 @@
         autoFixTitleCase: false
       });
 
+      currentUnits = normalizeCordelUnits(result.processedText);
+
       const totalFolheto = Number(pageCount.value);
-      const contentPages = paginateCordel(result.processedText);
+      const contentPages = paginateCordel(currentUnits);
       paginatedPages = padToFolheto(contentPages, totalFolheto);
 
       if (currentSpreadIndex * 2 >= paginatedPages.length) {
@@ -1186,6 +1244,65 @@
     });
 
     sourceText.addEventListener("input", renderAll);
+
+    function normalizeCordelUnits(text) {
+      const rawBlocks = MotorLapidar.splitBlocks(text);
+      const result = [];
+
+      rawBlocks.forEach(block => {
+        if (block.length === 1 && MotorLapidar.isLikelyTitle(block[0])) {
+          result.push({
+            type: "intertitle",
+            text: block[0]
+          });
+        } else {
+          result.push({
+            type: "stanza",
+            lines: block
+          });
+        }
+      });
+
+      return result;
+    }
+
+    function paginateCordel(units) {
+      const sextilhasPerPage = 4;
+      const pages = [];
+      let currentPage = [];
+      let sextilhasCount = 0;
+
+      function pushPage() {
+        if (currentPage.length) {
+          pages.push(currentPage);
+          currentPage = [];
+          sextilhasCount = 0;
+        }
+      }
+
+      for (let i = 0; i < units.length; i++) {
+        const unit = units[i];
+
+        if (unit.type === "intertitle") {
+          if (currentPage.length && sextilhasCount >= sextilhasPerPage) {
+            pushPage();
+          }
+          currentPage.push(unit);
+          continue;
+        }
+
+        if (unit.type === "stanza") {
+          if (sextilhasCount >= sextilhasPerPage) {
+            pushPage();
+          }
+          currentPage.push(unit);
+          sextilhasCount += 1;
+        }
+      }
+
+      pushPage();
+      return pages;
+    }
 
     renderAll();
   </script>
