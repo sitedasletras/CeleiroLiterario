@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Faça Kapa Livros Literários</title>
+  <style>
+    :root{
+      --bg:#efe9df;
+      --paper:#f8f4ec;
+      --panel:#fffdfa;
+      --ink:#1f1c19;
+      --muted:#6e665d;
+      --line:#d9cfbf;
+      --accent:#5d4a3b;
+      --accent-2:#8a735c;
+      --ok:#3f7a5a;
+      --warn:#d6a23f;
+      --danger:#a33e42;
+      --shadow:0 10px 28px rgba(40,30,20,.10);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family: Georgia, "Times New Roman", serif;
+      color:var(--ink);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.35), rgba(0,0,0,.03)),
+        repeating-linear-gradient(90deg, rgba(93,74,59,.02) 0 2px, transparent 2px 12px),
+        var(--bg);
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      backdrop-filter: blur(8px);
+      background:rgba(248,244,236,.92);
+      border-bottom:1px solid rgba(93,74,59,.12);
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .seal{
+      width:54px;
+      height:54px;
+      border-radius:50%;
+      border:2px solid var(--accent);
+      display:grid;
+      place-items:center;
+      background:radial-gradient(circle at 35% 35%, #fff, #eee1cf 65%, #ddc6a6 100%);
+      box-shadow:var(--shadow);
+      font-weight:700;
+      color:var(--accent);
+      flex:0 0 auto;
+      font-size:1.05rem;
+    }
+
+    .titles h1{
+      margin:0;
+      font-size:1.18rem;
+      line-height:1.1;
+    }
+
+    .titles p{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.28;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      border:none;
+      border-radius:12px;
+      padding:11px 14px;
+      font-size:.95rem;
+      font-weight:700;
+      cursor:pointer;
+      transition:.18s ease;
+      box-shadow:var(--shadow);
+      font-family:inherit;
+    }
+
+    .btn:hover{transform:translateY(-1px)}
+    .btn:active{transform:translateY(1px)}
+
+    .btn-green{background:var(--ok);color:#fff}
+    .btn-yellow{background:var(--warn);color:#2b1c0d}
+    .btn-red{background:var(--danger);color:#fff}
+    .btn-brown{background:var(--accent);color:#fff}
+
+    .wrap{
+      max-width:1600px;
+      margin:0 auto;
+      padding:18px;
+      display:grid;
+      grid-template-columns:400px minmax(320px,1fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .panel-head{
+      padding:14px 16px;
+      background:linear-gradient(180deg, rgba(138,115,92,.13), rgba(138,115,92,.05));
+      border-bottom:1px solid var(--line);
+    }
+
+    .panel-head h2{
+      margin:0;
+      font-size:1.04rem;
+    }
+
+    .panel-head p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.4;
+    }
+
+    .panel-body{padding:16px}
+
+    .field{margin-bottom:14px}
+
+    .field label{
+      display:block;
+      font-weight:700;
+      margin-bottom:6px;
+      font-size:.95rem;
+    }
+
+    .field small{
+      display:block;
+      color:var(--muted);
+      margin-top:5px;
+      line-height:1.35;
+    }
+
+    input[type="text"], textarea, select, input[type="number"]{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:#fffdfa;
+      color:var(--ink);
+      padding:11px 12px;
+      font:inherit;
+      outline:none;
+    }
+
+    textarea{
+      min-height:92px;
+      resize:vertical;
+    }
+
+    input:focus, textarea:focus, select:focus{
+      border-color:var(--accent-2);
+      box-shadow:0 0 0 3px rgba(138,115,92,.12);
+    }
+
+    .row-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .checks{
+      display:grid;
+      gap:8px;
+    }
+
+    .check{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:10px 12px;
+      background:#fffdfa;
+      border:1px solid var(--line);
+      border-radius:12px;
+    }
+
+    .check input{margin-top:3px}
+    .check span{font-size:.95rem; line-height:1.35}
+
+    .preset-options{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+    }
+
+    .preset-btn{
+      border:1px solid var(--line);
+      background:#fffdfa;
+      border-radius:12px;
+      padding:10px;
+      font:inherit;
+      font-weight:700;
+      cursor:pointer;
+      color:#2a2018;
+    }
+
+    .preset-btn.active{
+      border-color:var(--accent);
+      background:#f4ecdf;
+      color:var(--accent);
+    }
+
+    .hidden-input{display:none}
+
+    .stage{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:16px;
+    }
+
+    .stage-top{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:14px;
+    }
+
+    .stage-top h2{
+      margin:0;
+      font-size:1.08rem;
+    }
+
+    .stage-top p{
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#f4eadb;
+      border:1px solid var(--line);
+      color:var(--accent);
+      font-weight:700;
+      font-size:.9rem;
+    }
+
+    .status::before{
+      content:"";
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--ok);
+      box-shadow:0 0 0 4px rgba(63,122,90,.12);
+    }
+
+    .preview-shell{
+      background:linear-gradient(180deg, #e8dcc8, #d9c4a2);
+      border:1px solid #ccb492;
+      border-radius:22px;
+      padding:22px;
+      overflow:auto;
+    }
+
+    .cover-open{
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      gap:0;
+      min-width:max-content;
+      margin:0 auto;
+    }
+
+    .back-page,
+    .spine-page,
+    .front-page{
+      position:relative;
+      overflow:hidden;
+      color:#16110e;
+      box-shadow:0 18px 40px rgba(0,0,0,.18);
+      background:#f5f1e8;
+    }
+
+    .back-page,
+    .front-page{
+      width:420px;
+      height:630px;
+      border:12px solid #111;
+    }
+
+    .back-page{border-right-width:6px}
+    .front-page{border-left-width:6px}
+
+    .spine-page{
+      width:54px;
+      height:630px;
+      border-top:12px solid #111;
+      border-bottom:12px solid #111;
+      background:linear-gradient(180deg, #ebe1d3 0%, #dfcfbb 100%);
+    }
+
+    .back-page::before,
+    .back-page::after,
+    .front-page::before,
+    .front-page::after{
+      content:"";
+      position:absolute;
+      inset:14px;
+      border:2px solid rgba(17,17,17,.14);
+      pointer-events:none;
+    }
+
+    .back-page::after,
+    .front-page::after{
+      inset:28px;
+      border-style:dashed;
+      opacity:.28;
+    }
+
+    .spine-page::before{
+      content:"";
+      position:absolute;
+      left:8px;
+      right:8px;
+      top:18px;
+      bottom:18px;
+      border:1px solid rgba(17,17,17,.18);
+      pointer-events:none;
+    }
+
+    .front-overlay,
+    .back-overlay{
+      position:absolute;
+      inset:0;
+      opacity:.10;
+      pointer-events:none;
+      background:
+        repeating-linear-gradient(90deg, rgba(0,0,0,.16) 0 1px, transparent 1px 11px),
+        repeating-linear-gradient(0deg, rgba(0,0,0,.06) 0 1px, transparent 1px 13px);
+    }
+
+    .front-inner{
+      position:relative;
+      z-index:2;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      padding:34px 28px 26px;
+      text-align:center;
+    }
+
+    .front-category{
+      font-size:.84rem;
+      letter-spacing:1.8px;
+      text-transform:uppercase;
+      font-weight:700;
+    }
+
+    .front-title{
+      font-size:clamp(2rem, 4vw, 2.9rem);
+      line-height:1.02;
+      margin:12px 0 8px;
+      text-transform:uppercase;
+      letter-spacing:.8px;
+      font-weight:700;
+      white-space:pre-line;
+    }
+
+    .front-subtitle{
+      font-size:1rem;
+      line-height:1.3;
+      min-height:2.6em;
+      color:#2a231d;
+      padding:0 8px;
+      white-space:pre-line;
+    }
+
+    .front-band,
+    .front-author-band{
+      border-top:3px solid #111;
+      border-bottom:3px solid #111;
+      padding:10px 8px;
+      background:rgba(255,255,255,.22);
+    }
+
+    .front-author{
+      font-size:1rem;
+      font-weight:700;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      line-height:1.3;
+      white-space:pre-line;
+    }
+
+    .front-extra{
+      margin-top:6px;
+      font-size:.9rem;
+      line-height:1.3;
+    }
+
+    .art-box{
+      flex:1;
+      display:grid;
+      place-items:center;
+      padding:18px 0;
+    }
+
+    .literary-art{
+      width:100%;
+      max-width:312px;
+      height:320px;
+      border:4px solid #111;
+      background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.15));
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      place-items:center;
+    }
+
+    .literary-art img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:none;
+      filter:contrast(1.08) saturate(.88);
+    }
+
+    .literary-art.has-image img{display:block}
+    .literary-art.has-image .default-art{display:none}
+
+    .default-art{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+    }
+
+    .art-frame{
+      width:78%;
+      height:78%;
+      border:3px solid #111;
+      position:relative;
+    }
+
+    .art-frame::before{
+      content:"";
+      position:absolute;
+      left:18px;
+      right:18px;
+      top:18px;
+      bottom:18px;
+      border:2px solid rgba(17,17,17,.5);
+    }
+
+    .art-circle{
+      position:absolute;
+      width:90px;
+      height:90px;
+      border:4px solid #111;
+      border-radius:50%;
+      top:22%;
+      left:50%;
+      transform:translateX(-50%);
+    }
+
+    .art-book{
+      position:absolute;
+      width:120px;
+      height:72px;
+      left:50%;
+      bottom:18%;
+      transform:translateX(-50%);
+      border:4px solid #111;
+      border-top-left-radius:0;
+      border-top-right-radius:0;
+      background:transparent;
+    }
+
+    .art-book::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:-2px;
+      bottom:-2px;
+      width:4px;
+      background:#111;
+      transform:translateX(-50%);
+    }
+
+    .art-line{
+      position:absolute;
+      left:50%;
+      width:130px;
+      height:4px;
+      background:#111;
+      transform:translateX(-50%);
+      bottom:12%;
+    }
+
+    .back-inner{
+      position:relative;
+      z-index:2;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      padding:28px 28px 22px;
+    }
+
+    .back-header{
+      text-align:center;
+      border-top:3px solid #111;
+      border-bottom:3px solid #111;
+      padding:12px 10px;
+      font-weight:700;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      background:rgba(255,255,255,.22);
+    }
+
+    .back-synopsis{
+      flex:1;
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-start;
+      padding:24px 14px 16px;
+    }
+
+    .back-synopsis p{
+      margin:0;
+      font-size:1.08rem;
+      line-height:1.6;
+      text-align:center;
+      width:100%;
+      white-space:pre-line;
+    }
+
+    .back-author{
+      text-align:center;
+      font-weight:700;
+      font-size:1.04rem;
+      line-height:1.35;
+      margin-bottom:12px;
+      white-space:pre-line;
+    }
+
+    .seal-block{
+      margin-top:auto;
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      padding-top:10px;
+    }
+
+    .seal-image-wrap{
+      width:136px;
+      height:136px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      background:#f4ecdf;
+      border:2px solid rgba(17,17,17,.12);
+    }
+
+    .seal-image{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:none;
+    }
+
+    .seal-placeholder{
+      width:100%;
+      height:100%;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding:16px;
+      font-weight:700;
+      font-size:.88rem;
+      line-height:1.25;
+      color:#2f241c;
+      background:radial-gradient(circle at 50% 50%, #f6eee2 0%, #efe4d2 100%);
+    }
+
+    .seal-block.has-seal-image .seal-image{display:block}
+    .seal-block.has-seal-image .seal-placeholder{display:none}
+
+    .seal-text{
+      font-size:.92rem;
+      line-height:1.35;
+      font-weight:700;
+      text-transform:uppercase;
+      white-space:pre-line;
+    }
+
+    .spine-inner{
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      z-index:2;
+      padding:18px 0;
+    }
+
+    .spine-text{
+      writing-mode:vertical-rl;
+      transform:rotate(180deg);
+      text-align:center;
+      font-weight:700;
+      font-size:.88rem;
+      letter-spacing:1px;
+      line-height:1.3;
+      text-transform:uppercase;
+      color:#2f241c;
+      white-space:pre-line;
+    }
+
+    .tips{
+      margin-top:14px;
+      display:grid;
+      gap:10px;
+      grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
+    }
+
+    .tip{
+      background:#fffaf2;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      font-size:.92rem;
+      color:var(--muted);
+    }
+
+    .foot-actions{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .mode-classico.front-page,
+    .mode-classico.back-page{
+      background:linear-gradient(180deg, #f8f4ec 0%, #efe6d7 100%);
+    }
+
+    .mode-poesia.front-page,
+    .mode-poesia.back-page{
+      background:linear-gradient(180deg, #f3eef5 0%, #e8deeb 100%);
+    }
+
+    .mode-hibrido.front-page,
+    .mode-hibrido.back-page{
+      background:linear-gradient(180deg, #f5f1e8 0%, #eadfcf 100%);
+    }
+
+    .mode-romance.front-page,
+    .mode-romance.back-page{
+      background:linear-gradient(180deg, #f6ede8 0%, #ecd8cc 100%);
+    }
+
+    @media (max-width: 1180px){
+      .wrap{grid-template-columns:1fr}
+    }
+
+    @media (max-width: 900px){
+      .preview-shell{
+        padding:16px;
+      }
+
+      .cover-open{
+        transform:scale(.82);
+        transform-origin:top center;
+      }
+
+      .preview-shell.scaled{
+        min-height:650px;
+      }
+    }
+
+    @media (max-width: 640px){
+      .topbar{
+        padding:12px;
+        align-items:flex-start;
+      }
+
+      .wrap{
+        padding:12px;
+      }
+
+      .row-2,
+      .preset-options{
+        grid-template-columns:1fr;
+      }
+
+      .top-actions{
+        width:100%;
+        display:grid;
+        grid-template-columns:1fr;
+      }
+
+      .btn{
+        width:100%;
+      }
+
+      .preview-shell{
+        padding:12px;
+      }
+
+      .cover-open{
+        transform:scale(.55);
+        transform-origin:top left;
+      }
+
+      .preview-shell.scaled{
+        min-height:460px;
+      }
+
+      .foot-actions{
+        flex-direction:column;
+      }
+    }
+
+    @media print{
+      .topbar,
+      .panel,
+      .tips,
+      .foot-actions,
+      .stage-top{
+        display:none !important;
+      }
+
+      body{
+        background:#fff;
+      }
+
+      .wrap{
+        display:block;
+        max-width:none;
+        margin:0;
+        padding:0;
+      }
+
+      .stage{
+        border:none;
+        box-shadow:none;
+        padding:0;
+      }
+
+      .preview-shell{
+        border:none;
+        background:#fff;
+        padding:0;
+        border-radius:0;
+        overflow:visible;
+      }
+
+      .cover-open{
+        transform:none !important;
+        min-width:auto;
+        width:100%;
+        justify-content:flex-start;
+      }
+
+      .back-page,
+      .front-page,
+      .spine-page{
+        box-shadow:none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="seal">FKL</div>
+      <div class="titles">
+        <h1>Faça Kapa Livros Literários</h1>
+        <p>Frente, lombada e contracapa para prosa, poesia e obras híbridas do ambiente editorial.</p>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button class="btn btn-green" id="btnAtualizar">Atualizar prévia</button>
+      <button class="btn btn-yellow" onclick="window.location.href='okapista.html'">Retornar</button>
+      <button class="btn btn-red" onclick="alert('Saída simbólica do sistema. Depois ligamos este botão ao fluxo real do seu sistema.')">Sair do sistema</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Estrutura da capa literária</h2>
+        <p>Preencha frente, lombada e contracapa. Este módulo é a base para romances, poesia, híbridos e obras literárias em geral.</p>
+      </div>
+
+      <div class="panel-body">
+        <div class="field">
+          <label for="categoria">Faixa superior / categoria</label>
+          <input id="categoria" type="text" value="Romance Literário" />
+          <small>Exemplo: Romance Literário, Poesia Contemporânea, Ficção Híbrida, Contos, Ensaios Literários.</small>
+        </div>
+
+        <div class="field">
+          <label for="titulo">Título</label>
+          <textarea id="titulo">A Casa das Horas Quietas</textarea>
+        </div>
+
+        <div class="field">
+          <label for="subtitulo">Subtítulo</label>
+          <textarea id="subtitulo">um romance sobre memória, espera e permanência</textarea>
+        </div>
+
+        <div class="field">
+          <label for="autor">Autor / Organização</label>
+          <input id="autor" type="text" value="Wagner Planas" />
+        </div>
+
+        <div class="row-2">
+          <div class="field">
+            <label for="modo">Linha visual</label>
+            <select id="modo">
+              <option value="classico" selected>Clássico</option>
+              <option value="poesia">Poesia</option>
+              <option value="hibrido">Híbrido</option>
+              <option value="romance">Romance</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="tamanho">Formato do livro</label>
+            <select id="tamanho">
+              <option value="14x21">14 x 21 cm</option>
+              <option value="16x23" selected>16 x 23 cm</option>
+              <option value="16x27">16 x 27 cm</option>
+              <option value="6x9">6 x 9 pol</option>
+              <option value="a5">A5</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="field">
+            <label for="paginas">Número de páginas</label>
+            <input id="paginas" type="number" min="20" step="2" value="180" />
+          </div>
+
+          <div class="field">
+            <label for="miolo">Tipo de miolo</label>
+            <select id="miolo">
+              <option value="offset75" selected>Offset 75g</option>
+              <option value="offset90">Offset 90g</option>
+              <option value="polen80">Pólen 80g</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="sinopse">Sinopse / contracapa</label>
+          <textarea id="sinopse">Entre o silêncio das casas antigas e a permanência invisível das lembranças, esta obra percorre corredores afetivos, ausências delicadas e reencontros interiores. Um livro sobre o que o tempo apaga, o que a memória devolve e o que a literatura transforma em permanência.</textarea>
+        </div>
+
+        <div class="field">
+          <label for="extra">Linha complementar da frente</label>
+          <input id="extra" type="text" value="edição literária do Celeiro" />
+          <small>Texto opcional abaixo do autor na frente.</small>
+        </div>
+
+        <div class="field">
+          <label>Elementos visuais</label>
+          <div class="checks">
+            <label class="check"><input type="checkbox" id="mostrarSubtitulo" checked><span>Mostrar subtítulo na frente</span></label>
+            <label class="check"><input type="checkbox" id="mostrarCategoria" checked><span>Mostrar faixa superior / categoria</span></label>
+            <label class="check"><input type="checkbox" id="mostrarAutor" checked><span>Mostrar campo de autor na frente</span></label>
+            <label class="check"><input type="checkbox" id="usarMoldura" checked><span>Usar moldura editorial forte</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Preset editorial</label>
+          <div class="preset-options" id="presetOptions">
+            <button type="button" class="preset-btn active" data-preset="classico">Clássico</button>
+            <button type="button" class="preset-btn" data-preset="poesia">Poesia</button>
+            <button type="button" class="preset-btn" data-preset="hibrido">Híbrido</button>
+            <button type="button" class="preset-btn" data-preset="romance">Romance</button>
+          </div>
+          <small>O preset altera o clima visual geral da capa.</small>
+        </div>
+
+        <div class="field">
+          <label for="imagemInput">Imagem da frente / arte-base</label>
+          <input class="hidden-input" id="imagemInput" type="file" accept="image/*" />
+          <button class="btn btn-brown" type="button" id="btnImagem">Escolher imagem da frente</button>
+          <small>Se enviar imagem, ela entra como arte central da frente.</small>
+        </div>
+
+        <div class="field">
+          <label for="seloInput">Imagem do selo editorial</label>
+          <input class="hidden-input" id="seloInput" type="file" accept="image/*" />
+          <button class="btn btn-brown" type="button" id="btnSelo">Escolher selo</button>
+          <small>Use aqui o selo institucional do Celeiro / Lapidar / Site das Letras.</small>
+        </div>
+
+        <div class="field">
+          <label for="tipoSelo">Regra do selo da contracapa</label>
+          <select id="tipoSelo">
+            <option value="institucional" selected>Institucional do Celeiro</option>
+            <option value="nenhum">Nenhum selo</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="observacao">Observações do projeto</label>
+          <textarea id="observacao" placeholder="Ex.: capa mais sóbria, mais clássica, mais poética, menos informação, visual de coleção, contraste mais forte..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="stage">
+      <div class="stage-top">
+        <div>
+          <h2>Prévia da capa completa</h2>
+          <p>Frente, lombada e contracapa prontas para revisão visual e exportação em PDF.</p>
+        </div>
+        <div class="status" id="statusLabel">Prévia pronta</div>
+      </div>
+
+      <div class="preview-shell scaled" id="previewShell">
+        <div class="cover-open" id="coverOpen">
+          <div class="back-page mode-classico" id="backPage">
+            <div class="back-overlay"></div>
+
+            <div class="back-inner">
+              <div class="back-header">Contracapa</div>
+
+              <div class="back-synopsis">
+                <p id="previewSinopse">Entre o silêncio das casas antigas e a permanência invisível das lembranças, esta obra percorre corredores afetivos, ausências delicadas e reencontros interiores. Um livro sobre o que o tempo apaga, o que a memória devolve e o que a literatura transforma em permanência.</p>
+              </div>
+
+              <div class="back-author" id="previewAutorBack">Wagner Planas</div>
+
+              <div class="seal-block" id="sealBlock">
+                <div class="seal-image-wrap">
+                  <img id="sealImage" class="seal-image" alt="Selo editorial" />
+                  <div class="seal-placeholder" id="sealPlaceholder">SELO<br>EDITORIAL</div>
+                </div>
+                <div class="seal-text" id="sealText">CELEIRO LITERÁRIO — LAPIDAR
+Site das Letras Edições Literárias</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="spine-page" id="spinePage">
+            <div class="spine-inner">
+              <div class="spine-text" id="spineText">A Casa das Horas Quietas
+Wagner Planas</div>
+            </div>
+          </div>
+
+          <div class="front-page mode-classico" id="frontPage">
+            <div class="front-overlay"></div>
+
+            <div class="front-inner">
+              <div class="front-band" id="frontBand">
+                <div class="front-category" id="previewCategoria">Romance Literário</div>
+                <div class="front-title" id="previewTitulo">A Casa das Horas Quietas</div>
+                <div class="front-subtitle" id="previewSubtitulo">um romance sobre memória, espera e permanência</div>
+              </div>
+
+              <div class="art-box">
+                <div class="literary-art" id="artBox">
+                  <img id="uploadedArt" alt="Arte enviada pelo usuário" />
+                  <div class="default-art">
+                    <div class="art-frame">
+                      <div class="art-circle"></div>
+                      <div class="art-book"></div>
+                      <div class="art-line"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="front-author-band" id="authorBand">
+                <div class="front-author" id="previewAutor">Wagner Planas</div>
+                <div class="front-extra" id="previewExtra">edição literária do Celeiro</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tips">
+        <div class="tip"><strong>Base pronta:</strong> capa literária para romances, poesia e obras híbridas.</div>
+        <div class="tip"><strong>Frente ativa:</strong> com arte central, título, subtítulo e autor.</div>
+        <div class="tip"><strong>Contracapa ativa:</strong> sinopse, autor e selo institucional centralizado.</div>
+        <div class="tip"><strong>Lombada automática:</strong> calculada por páginas e tipo de miolo.</div>
+      </div>
+
+      <div class="foot-actions">
+        <button class="btn btn-green" onclick="window.print()">Imprimir / Salvar em PDF</button>
+        <button class="btn btn-brown" id="btnLimparImagem">Remover imagem da frente</button>
+        <button class="btn btn-brown" id="btnLimparSelo">Remover selo</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const ids = {
+      categoria: document.getElementById('categoria'),
+      titulo: document.getElementById('titulo'),
+      subtitulo: document.getElementById('subtitulo'),
+      autor: document.getElementById('autor'),
+      modo: document.getElementById('modo'),
+      tamanho: document.getElementById('tamanho'),
+      paginas: document.getElementById('paginas'),
+      miolo: document.getElementById('miolo'),
+      sinopse: document.getElementById('sinopse'),
+      extra: document.getElementById('extra'),
+      tipoSelo: document.getElementById('tipoSelo'),
+      mostrarSubtitulo: document.getElementById('mostrarSubtitulo'),
+      mostrarCategoria: document.getElementById('mostrarCategoria'),
+      mostrarAutor: document.getElementById('mostrarAutor'),
+      usarMoldura: document.getElementById('usarMoldura'),
+      observacao: document.getElementById('observacao'),
+      imagemInput: document.getElementById('imagemInput'),
+      btnImagem: document.getElementById('btnImagem'),
+      btnLimparImagem: document.getElementById('btnLimparImagem'),
+      seloInput: document.getElementById('seloInput'),
+      btnSelo: document.getElementById('btnSelo'),
+      btnLimparSelo: document.getElementById('btnLimparSelo'),
+      btnAtualizar: document.getElementById('btnAtualizar'),
+      frontPage: document.getElementById('frontPage'),
+      backPage: document.getElementById('backPage'),
+      spinePage: document.getElementById('spinePage'),
+      previewCategoria: document.getElementById('previewCategoria'),
+      previewTitulo: document.getElementById('previewTitulo'),
+      previewSubtitulo: document.getElementById('previewSubtitulo'),
+      previewAutor: document.getElementById('previewAutor'),
+      previewExtra: document.getElementById('previewExtra'),
+      previewSinopse: document.getElementById('previewSinopse'),
+      previewAutorBack: document.getElementById('previewAutorBack'),
+      frontBand: document.getElementById('frontBand'),
+      authorBand: document.getElementById('authorBand'),
+      artBox: document.getElementById('artBox'),
+      uploadedArt: document.getElementById('uploadedArt'),
+      statusLabel: document.getElementById('statusLabel'),
+      presetOptions: document.getElementById('presetOptions'),
+      spineText: document.getElementById('spineText'),
+      sealText: document.getElementById('sealText'),
+      sealBlock: document.getElementById('sealBlock'),
+      sealImage: document.getElementById('sealImage'),
+      sealPlaceholder: document.getElementById('sealPlaceholder')
+    };
+
+    let currentPreset = 'classico';
+    let userLoadedSeal = false;
+
+    function safeText(value, fallback){
+      const text = String(value || '').trim();
+      return text || fallback;
+    }
+
+    function getPaperFactor(){
+      if(ids.miolo.value === 'offset90') return 0.060;
+      if(ids.miolo.value === 'polen80') return 0.055;
+      return 0.050;
+    }
+
+    function applyFormat(){
+      const format = ids.tamanho.value;
+      let panelWidth = 420;
+      let panelHeight = 630;
+
+      if(format === '14x21'){
+        panelWidth = 390;
+        panelHeight = 585;
+      } else if(format === '16x23'){
+        panelWidth = 420;
+        panelHeight = 604;
+      } else if(format === '16x27'){
+        panelWidth = 445;
+        panelHeight = 664;
+      } else if(format === '6x9'){
+        panelWidth = 430;
+        panelHeight = 645;
+      } else if(format === 'a5'){
+        panelWidth = 400;
+        panelHeight = 566;
+      }
+
+      [ids.frontPage, ids.backPage].forEach(el => {
+        el.style.width = panelWidth + 'px';
+        el.style.height = panelHeight + 'px';
+      });
+
+      const pages = Math.max(20, parseInt(ids.paginas.value || '180', 10));
+      const factor = getPaperFactor();
+      const mm = Math.max(4, pages * factor);
+      const px = Math.min(140, Math.max(36, Math.round(mm * 4.2)));
+
+      ids.spinePage.style.width = px + 'px';
+      ids.spinePage.style.height = panelHeight + 'px';
+    }
+
+    function applyPreset(preset){
+      ids.frontPage.classList.remove('mode-classico','mode-poesia','mode-hibrido','mode-romance');
+      ids.backPage.classList.remove('mode-classico','mode-poesia','mode-hibrido','mode-romance');
+
+      ids.frontPage.classList.add('mode-' + preset);
+      ids.backPage.classList.add('mode-' + preset);
+
+      if(preset === 'poesia'){
+        ids.statusLabel.textContent = 'Prévia pronta • Poesia';
+      } else if(preset === 'hibrido'){
+        ids.statusLabel.textContent = 'Prévia pronta • Híbrido';
+      } else if(preset === 'romance'){
+        ids.statusLabel.textContent = 'Prévia pronta • Romance';
+      } else {
+        ids.statusLabel.textContent = 'Prévia pronta • Clássico';
+      }
+    }
+
+    function updateSpine(){
+      const title = safeText(ids.titulo.value, 'Sem título');
+      const author = safeText(ids.autor.value, 'Autor não informado');
+      ids.spineText.textContent = title + '\\n' + author;
+    }
+
+    function updateSeal(){
+      if(ids.tipoSelo.value === 'nenhum'){
+        ids.sealBlock.style.display = 'none';
+        return;
+      }
+
+      ids.sealBlock.style.display = 'flex';
+      ids.sealText.textContent = 'CELEIRO LITERÁRIO — LAPIDAR\\nSite das Letras Edições Literárias';
+      ids.sealPlaceholder.innerHTML = 'SELO<br>CELEIRO<br>LAPIDAR';
+
+      if(!userLoadedSeal){
+        ids.sealBlock.classList.remove('has-seal-image');
+        ids.sealImage.src = '';
+      }
+    }
+
+    function updatePreview(){
+      ids.previewCategoria.textContent = safeText(ids.categoria.value, 'Livro Literário');
+      ids.previewTitulo.textContent = safeText(ids.titulo.value, 'Sem título');
+      ids.previewSubtitulo.textContent = safeText(ids.subtitulo.value, '');
+      ids.previewAutor.textContent = safeText(ids.autor.value, 'Autor não informado');
+      ids.previewAutorBack.textContent = safeText(ids.autor.value, 'Autor não informado');
+      ids.previewExtra.textContent = safeText(ids.extra.value, '');
+      ids.previewSinopse.textContent = safeText(ids.sinopse.value, 'Sinopse não informada.');
+
+      ids.previewSubtitulo.style.display = ids.mostrarSubtitulo.checked ? 'block' : 'none';
+      ids.previewCategoria.style.display = ids.mostrarCategoria.checked ? 'block' : 'none';
+      ids.authorBand.style.display = ids.mostrarAutor.checked ? 'block' : 'none';
+
+      ids.frontPage.style.borderWidth = ids.usarMoldura.checked ? '12px' : '6px';
+      ids.backPage.style.borderWidth = ids.usarMoldura.checked ? '12px' : '6px';
+      ids.backPage.style.borderRightWidth = ids.usarMoldura.checked ? '6px' : '3px';
+      ids.frontPage.style.borderLeftWidth = ids.usarMoldura.checked ? '6px' : '3px';
+      ids.frontBand.style.borderTopWidth = ids.usarMoldura.checked ? '3px' : '1px';
+      ids.frontBand.style.borderBottomWidth = ids.usarMoldura.checked ? '3px' : '1px';
+      ids.authorBand.style.borderTopWidth = ids.usarMoldura.checked ? '3px' : '1px';
+      ids.authorBand.style.borderBottomWidth = ids.usarMoldura.checked ? '3px' : '1px';
+
+      applyFormat();
+      applyPreset(currentPreset);
+      updateSpine();
+      updateSeal();
+    }
+
+    ids.btnAtualizar.addEventListener('click', updatePreview);
+
+    ['input','change'].forEach(evt => {
+      [
+        ids.categoria,
+        ids.titulo,
+        ids.subtitulo,
+        ids.autor,
+        ids.modo,
+        ids.tamanho,
+        ids.paginas,
+        ids.miolo,
+        ids.sinopse,
+        ids.extra,
+        ids.tipoSelo,
+        ids.mostrarSubtitulo,
+        ids.mostrarCategoria,
+        ids.mostrarAutor,
+        ids.usarMoldura
+      ].forEach(el => el.addEventListener(evt, updatePreview));
+    });
+
+    ids.presetOptions.addEventListener('click', (e) => {
+      const btn = e.target.closest('.preset-btn');
+      if(!btn) return;
+
+      currentPreset = btn.dataset.preset || 'classico';
+      ids.modo.value = currentPreset;
+
+      [...ids.presetOptions.querySelectorAll('.preset-btn')].forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      updatePreview();
+    });
+
+    ids.modo.addEventListener('change', () => {
+      currentPreset = ids.modo.value;
+      [...ids.presetOptions.querySelectorAll('.preset-btn')].forEach(b => {
+        b.classList.toggle('active', b.dataset.preset === currentPreset);
+      });
+      updatePreview();
+    });
+
+    ids.btnImagem.addEventListener('click', () => ids.imagemInput.click());
+
+    ids.imagemInput.addEventListener('change', (event) => {
+      const file = event.target.files && event.target.files[0];
+      if(!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        ids.uploadedArt.src = reader.result;
+        ids.artBox.classList.add('has-image');
+        updatePreview();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    ids.btnLimparImagem.addEventListener('click', () => {
+      ids.imagemInput.value = '';
+      ids.uploadedArt.src = '';
+      ids.artBox.classList.remove('has-image');
+      updatePreview();
+    });
+
+    ids.btnSelo.addEventListener('click', () => ids.seloInput.click());
+
+    ids.seloInput.addEventListener('change', (event) => {
+      const file = event.target.files && event.target.files[0];
+      if(!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        ids.sealImage.src = reader.result;
+        ids.sealBlock.classList.add('has-seal-image');
+        userLoadedSeal = true;
+        updatePreview();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    ids.btnLimparSelo.addEventListener('click', () => {
+      ids.seloInput.value = '';
+      ids.sealImage.src = '';
+      ids.sealBlock.classList.remove('has-seal-image');
+      userLoadedSeal = false;
+      updatePreview();
+    });
+
+    updatePreview();
+  </script>
+</body>
+</html>
