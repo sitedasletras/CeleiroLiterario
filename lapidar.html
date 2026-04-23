@@ -6,7 +6,6 @@
 <title>Lapidar</title>
 
 <style>
-
 body{
 margin:0;
 font-family:Georgia,"Times New Roman",serif;
@@ -14,6 +13,7 @@ background:#ece8de;
 display:flex;
 justify-content:center;
 padding:40px 16px;
+box-sizing:border-box;
 }
 
 .container{
@@ -32,11 +32,15 @@ margin-bottom:24px;
 h1{
 margin:0 0 12px 0;
 font-size:2.6rem;
+line-height:1.05;
+color:#000;
 }
 
 p{
 color:#6d6d6d;
 font-size:1.2rem;
+line-height:1.4;
+margin:0;
 }
 
 .section{
@@ -54,6 +58,8 @@ box-shadow:0 8px 22px rgba(0,0,0,.08);
 .card h2{
 margin:0 0 8px 0;
 font-size:1.8rem;
+line-height:1.1;
+color:#000;
 }
 
 .card p{
@@ -62,23 +68,66 @@ margin:0 0 14px 0;
 
 button{
 border:none;
-background:#3f7a5a;
-color:white;
 padding:16px 26px;
 border-radius:16px;
 font-size:1.1rem;
 cursor:pointer;
+font-family:inherit;
+transition:.18s ease;
 }
 
 button:hover{
 transform:translateY(-1px);
 }
 
-.secondary{
+.btn-gramador{
+background:#3f7a5a;
+color:white;
+}
+
+.btn-okapista{
 background:#c49a4c;
 color:black;
 }
 
+.footer-note{
+margin-top:18px;
+font-size:1rem;
+color:#7a7368;
+line-height:1.45;
+}
+
+@media (max-width:640px){
+body{
+padding:18px 12px;
+}
+
+.box{
+padding:24px 18px;
+border-radius:20px;
+}
+
+h1{
+font-size:2.2rem;
+}
+
+p{
+font-size:1.05rem;
+}
+
+.card{
+padding:20px 18px;
+}
+
+.card h2{
+font-size:1.55rem;
+}
+
+button{
+width:100%;
+font-size:1rem;
+}
+}
 </style>
 </head>
 
@@ -87,42 +136,32 @@ color:black;
 <div class="container">
 
 <div class="box">
-
 <h1>Lapidar</h1>
-
 <p>Escolha abaixo o setor editorial.</p>
-
 </div>
 
 <div class="section">
 
 <div class="card">
-
 <h2>Dias Gramador de Livros</h2>
-
 <p>Área completa de diagramação editorial.</p>
-
-<button onclick="window.location.href='painel_setores.html'">
+<button class="btn-gramador" onclick="window.location.href='dias_gramador_livros.html'">
 Abrir Diagramadores
 </button>
-
 </div>
 
 <div class="card">
-
 <h2>OKapista — Criador de Capas de Livros</h2>
-
 <p>Ambiente de criação de capas literárias.</p>
-
-<button class="secondary"
-onclick="window.location.href='okapista.html'">
-
+<button class="btn-okapista" onclick="window.location.href='okapista.html'">
 Abrir OKapista
-
 </button>
+</div>
 
 </div>
 
+<div class="box footer-note">
+Lapidar organiza os setores editoriais do Celeiro Literário em dois caminhos principais: diagramação e criação de capas.
 </div>
 
 </div>
