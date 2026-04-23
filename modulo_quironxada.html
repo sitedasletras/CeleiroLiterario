@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Qui(RON)xadá — Diagramador de Cordel</title>
+  <script src="motor_lapidar.js"></script>
   <style>
     :root{
       --bg:#f3eee3;
@@ -26,7 +27,8 @@
 
       --page-w:416px;
       --page-h:605px;
-      --page-padding:30px;
+      --page-padding-x:30px;
+      --page-padding-y:28px;
     }
 
     *{box-sizing:border-box}
@@ -42,10 +44,10 @@
     body{min-height:100vh}
 
     .app{
-      width:min(1360px, calc(100vw - 16px));
+      width:min(1460px, calc(100vw - 16px));
       margin:8px auto;
       display:grid;
-      grid-template-columns:240px minmax(0,1fr) 270px;
+      grid-template-columns:250px minmax(0,1fr) 300px;
       gap:14px;
       align-items:start;
     }
@@ -81,7 +83,7 @@
 
     .panel h2{
       margin:0;
-      font-size:1.7rem;
+      font-size:1.72rem;
       line-height:1;
     }
 
@@ -146,14 +148,14 @@
       color:#5f5246;
     }
 
-    .input,.select,.file,.btn{
+    .input,.select,.btn{
       width:100%;
       font-family:inherit;
       font-size:.98rem;
       border-radius:12px;
     }
 
-    .input,.select,.file{
+    .input,.select{
       border:1px solid #d9cebf;
       background:#fff;
       color:#2b241f;
@@ -243,7 +245,7 @@
 
     .hero p{
       color:#4d4339;
-      font-size:1.1rem;
+      font-size:1.08rem;
     }
 
     .stats-shell{
@@ -290,7 +292,7 @@
 
     .toolbar{
       display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
+      grid-template-columns:repeat(5,minmax(0,1fr));
       gap:10px;
     }
 
@@ -320,54 +322,12 @@
       box-shadow:0 0 0 3px rgba(194,135,69,.10);
     }
 
-    .preview-stage{
-      background:linear-gradient(180deg,#ede7db 0%, #e6dfd2 100%);
-      border-radius:20px;
-      border:1px solid #dcd2c2;
-      min-height:720px;
+    .preview-top{
       display:flex;
-      align-items:flex-start;
-      justify-content:center;
-      padding:22px 12px;
-      overflow:auto;
-    }
-
-    .page{
-      width:var(--page-w);
-      min-height:var(--page-h);
-      background:#fff;
-      border:1px solid #ddd4c6;
-      box-shadow:0 10px 24px rgba(62,45,31,.10);
-      padding:var(--page-padding);
-      position:relative;
-      color:#241d17;
-    }
-
-    .page-title{
-      text-align:center;
-      margin:0 0 18px 0;
-      font-size:2rem;
-      line-height:1.05;
-    }
-
-    .page-subtitle{
-      text-align:center;
-      margin:-8px 0 22px 0;
-      font-size:1.08rem;
-      color:#67584b;
-    }
-
-    .cordel-block{
-      margin:0 0 18px 0;
-      white-space:pre-line;
-      line-height:1.42;
-      font-size:1.16rem;
-      text-align:left;
-    }
-
-    .cordel-block strong{
-      display:block;
-      margin-bottom:6px;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
     }
 
     .pill-row{
@@ -387,6 +347,148 @@
       color:#5c5045;
       font-size:.94rem;
       font-weight:700;
+    }
+
+    .preview-stage{
+      background:linear-gradient(180deg,#ede7db 0%, #e6dfd2 100%);
+      border-radius:20px;
+      border:1px solid #dcd2c2;
+      min-height:760px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      padding:16px 12px;
+      overflow:auto;
+    }
+
+    .page-nav{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .nav-btn{
+      border:none;
+      border-radius:12px;
+      padding:10px 14px;
+      background:#6f4b2a;
+      color:#fff;
+      font-family:inherit;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .nav-btn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+
+    .spread-indicator{
+      background:#fff7ee;
+      border:1px solid #e2d1bf;
+      border-radius:12px;
+      padding:10px 14px;
+      color:#6f4b2a;
+      font-weight:700;
+      min-width:180px;
+      text-align:center;
+    }
+
+    .spread-wrap{
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .page{
+      width:var(--page-w);
+      min-height:var(--page-h);
+      background:#fff;
+      border:1px solid #ddd4c6;
+      box-shadow:0 10px 24px rgba(62,45,31,.10);
+      padding:var(--page-padding-y) var(--page-padding-x);
+      position:relative;
+      color:#241d17;
+      flex:0 0 auto;
+    }
+
+    .page.blank{
+      background:linear-gradient(180deg,#fff,#faf7f1);
+    }
+
+    .page-header{
+      margin-bottom:18px;
+    }
+
+    .page-title{
+      text-align:center;
+      margin:0 0 14px 0;
+      font-size:1.95rem;
+      line-height:1.05;
+    }
+
+    .page-subtitle{
+      text-align:center;
+      margin:-6px 0 20px 0;
+      font-size:1.05rem;
+      color:#67584b;
+    }
+
+    .cordel-block{
+      margin:0 0 18px 0;
+      white-space:pre-line;
+      line-height:1.42;
+      font-size:1.12rem;
+      text-align:left;
+    }
+
+    .page-number{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:12px;
+      text-align:center;
+      font-size:.95rem;
+      color:#74675c;
+      font-weight:700;
+    }
+
+    .blank-holder{
+      border:2px dashed #ddcfbc;
+      border-radius:16px;
+      min-height:calc(var(--page-h) - 120px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:18px;
+      color:#8a7c70;
+      font-size:1rem;
+    }
+
+    .measure-root{
+      position:absolute;
+      visibility:hidden;
+      left:-99999px;
+      top:-99999px;
+      pointer-events:none;
+    }
+
+    .measure-page{
+      width:var(--page-w);
+      min-height:var(--page-h);
+      padding:var(--page-padding-y) var(--page-padding-x);
+      background:#fff;
+      border:1px solid #ddd4c6;
+      font-family:Georgia,"Times New Roman",serif;
+    }
+
+    .measure-content{
+      min-height:0;
     }
 
     .impose-grid{
@@ -441,12 +543,6 @@
       color:#2b241f;
     }
 
-    .footer-note{
-      font-size:.9rem;
-      color:#6e6257;
-      line-height:1.45;
-    }
-
     .analysis-list{
       margin:0;
       padding-left:18px;
@@ -455,7 +551,59 @@
       gap:6px;
     }
 
-    @media (max-width:1160px){
+    .alert-item{
+      background:#fff;
+      border:1px solid #e2d7c7;
+      border-left:5px solid #c28745;
+      border-radius:12px;
+      padding:10px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .alert-title{
+      font-weight:700;
+      color:#4d4339;
+      font-size:.95rem;
+    }
+
+    .alert-snippet{
+      color:#66584c;
+      font-size:.92rem;
+      white-space:pre-line;
+      line-height:1.35;
+    }
+
+    .alert-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .mini-btn{
+      border:none;
+      border-radius:10px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-weight:700;
+      font-family:inherit;
+      background:#efe2bf;
+      color:#2b241f;
+    }
+
+    .mini-btn.ok{
+      background:#2f7a59;
+      color:#fff;
+    }
+
+    .footer-note{
+      font-size:.9rem;
+      color:#6e6257;
+      line-height:1.45;
+    }
+
+    @media (max-width:1220px){
       .app{
         grid-template-columns:1fr;
       }
@@ -468,13 +616,12 @@
 
     @media (max-width:760px){
       .app{
-        width:min(100vw - 8px, 1360px);
+        width:min(100vw - 8px, 1460px);
         gap:8px;
         margin:4px auto;
       }
 
-      .hero,.stats-shell,.editor-shell,.preview-shell,.impose-shell,
-      .panel{
+      .hero,.stats-shell,.editor-shell,.preview-shell,.impose-shell,.panel{
         border-radius:18px;
       }
 
@@ -515,11 +662,15 @@
       }
 
       .cordel-block{
-        font-size:1.06rem;
+        font-size:1.04rem;
       }
 
       .impose-grid{
         grid-template-columns:1fr;
+      }
+
+      .spread-wrap{
+        gap:10px;
       }
     }
   </style>
@@ -529,16 +680,16 @@
     <aside class="panel left-panel">
       <h2>Qui(RON)xadá</h2>
 
-      <div class="status" id="statusBox">Pronto para diagramar cordel.</div>
+      <div class="status" id="statusBox">Pronto para diagramar cordel com paginação real.</div>
 
       <div class="card">
         <label for="bookTitle"><strong>Título do cordel</strong></label>
-        <input class="input" id="bookTitle" type="text" placeholder="Opcional" value="O Romance do Qui(RON)xadá" />
+        <input class="input" id="bookTitle" type="text" placeholder="Opcional" value="Qui(RON)xadá" />
       </div>
 
       <div class="card">
         <label for="bookSubtitle"><strong>Subtítulo / organização</strong></label>
-        <input class="input" id="bookSubtitle" type="text" placeholder="Opcional" value="Organização do Celeiro Literário" />
+        <input class="input" id="bookSubtitle" type="text" placeholder="Opcional" value="Sertão Nordestino" />
       </div>
 
       <div class="card">
@@ -559,16 +710,16 @@
 
         <label for="fontSize"><strong>Tamanho</strong></label>
         <select class="select" id="fontSize">
-          <option value="11">11 pt</option>
-          <option value="12" selected>12 pt</option>
+          <option value="11" selected>11 pt</option>
+          <option value="12">12 pt</option>
           <option value="13">13 pt</option>
           <option value="14">14 pt</option>
         </select>
 
         <label for="lineHeight"><strong>Entrelinha</strong></label>
         <select class="select" id="lineHeight">
-          <option value="1.25">1.25</option>
-          <option value="1.35" selected>1.35</option>
+          <option value="1.25" selected>1.25</option>
+          <option value="1.35">1.35</option>
           <option value="1.45">1.45</option>
           <option value="1.55">1.55</option>
         </select>
@@ -581,7 +732,7 @@
           <option value="medium">Média</option>
         </select>
 
-        <label for="pageCount"><strong>Total de páginas do folheto</strong></label>
+        <label for="pageCount"><strong>Total do folheto</strong></label>
         <select class="select" id="pageCount">
           <option value="8">8 páginas</option>
           <option value="12">12 páginas</option>
@@ -591,13 +742,10 @@
           <option value="28">28 páginas</option>
           <option value="32">32 páginas</option>
         </select>
-
-        <small>Esse total ajuda a gerar a ordem de montagem do folheto.</small>
       </div>
 
       <div class="card">
-        <button class="btn btn-earth" id="renderBtn" type="button">Atualizar prévia</button>
-        <button class="btn btn-soft" id="clearBtn" type="button">Limpar obra</button>
+        <button class="btn btn-earth" id="clearBtn" type="button">Limpar obra</button>
         <a class="btn btn-warn" href="lapidar.html">Retornar</a>
         <a class="btn btn-danger" href="index.html">Sair do sistema</a>
       </div>
@@ -609,7 +757,7 @@
           <div class="q-badge">Q</div>
           <div>
             <h1>Qui(RON)xadá — Diagramador de Cordel</h1>
-            <p>Módulo do Celeiro Literário / Lapidar para miolo de cordel com formato próprio, sextilhas e apoio de montagem do folheto.</p>
+            <p>Módulo do Celeiro Literário / Lapidar com paginação real de folheto, visual em páginas e apoio de montagem do cordel.</p>
           </div>
         </div>
       </section>
@@ -617,24 +765,47 @@
       <section class="stats-shell">
         <div class="stat">
           <div class="stat-label">Formato</div>
-          <div class="stat-value" id="formatStat">11 x 16 cm</div>
+          <div class="stat-value" id="formatStat">10,5 x 15,5 cm</div>
         </div>
         <div class="stat">
           <div class="stat-label">Fonte</div>
-          <div class="stat-value" id="fontStat">Georgia<br>12 pt</div>
+          <div class="stat-value" id="fontStat">Georgia<br>11 pt</div>
         </div>
         <div class="stat">
-          <div class="stat-label">Páginas</div>
-          <div class="stat-value" id="pagesStat">16</div>
+          <div class="stat-label">Páginas usadas</div>
+          <div class="stat-value" id="pagesUsedStat">0</div>
         </div>
         <div class="stat">
-          <div class="stat-label">Estrutura</div>
-          <div class="stat-value" id="structureStat">Aguardando texto</div>
+          <div class="stat-label">Folheto</div>
+          <div class="stat-value" id="structureStat">16 páginas</div>
         </div>
       </section>
 
       <section class="editor-shell">
         <h2>Texto-base do cordel</h2>
+
+        <div class="toolbar">
+          <div class="field">
+            <label>Estrofes</label>
+            <div class="pill" id="pillEstrofes">0</div>
+          </div>
+          <div class="field">
+            <label>Sextilhas</label>
+            <div class="pill" id="pillSextilhas">0</div>
+          </div>
+          <div class="field">
+            <label>Modo</label>
+            <div class="pill" id="pillModo">cordel</div>
+          </div>
+          <div class="field">
+            <label>Páginas reais</label>
+            <div class="pill" id="pillPaginas">0</div>
+          </div>
+          <div class="field">
+            <label>Folha atual</label>
+            <div class="pill" id="pillFolha">1</div>
+          </div>
+        </div>
 
         <textarea id="sourceText" class="editor-box" placeholder="Cole aqui o cordel...">Na estrada do meu sertão
 Vai cantando a voz primeira
@@ -649,24 +820,27 @@ Sem quarteto disfarçado
 Nem desvio do versinho
 Cordel pede sextilha
 Do começo ao seu finzinho</textarea>
-
-        <div class="pill-row">
-          <span class="pill" id="pillEstrofes">Estrofes: 0</span>
-          <span class="pill" id="pillSextilhas">Sextilhas: 0</span>
-          <span class="pill" id="pillModo">Modo: cordel</span>
-        </div>
       </section>
 
       <section class="preview-shell">
-        <h2>Prévia do cordel</h2>
+        <div class="preview-top">
+          <h2>Prévia paginada</h2>
+        </div>
+
         <div class="preview-stage">
-          <article class="page" id="pagePreview"></article>
+          <div class="page-nav">
+            <button class="nav-btn" id="prevSpreadBtn" type="button">← Páginas anteriores</button>
+            <div class="spread-indicator" id="spreadIndicator">Páginas —</div>
+            <button class="nav-btn" id="nextSpreadBtn" type="button">Próximas páginas →</button>
+          </div>
+
+          <div class="spread-wrap" id="spreadWrap"></div>
         </div>
       </section>
 
       <section class="impose-shell">
         <h2>Montagem do folheto</h2>
-        <p class="footer-note">Esta área mostra a ordem de imposição para impressão e dobra do cordel. Exemplo: página 16 com 1, 2 com 15, 14 com 3, e assim por diante.</p>
+        <p class="footer-note">Aqui você vê a imposição do caderno. Exemplo: 16 com 1, 2 com 15, 14 com 3, 4 com 13...</p>
         <div class="impose-grid" id="imposeGrid"></div>
       </section>
     </main>
@@ -674,146 +848,104 @@ Do começo ao seu finzinho</textarea>
     <aside class="panel right-panel">
       <h2>Motor Lapidar</h2>
 
-      <div class="status" id="motorStatusBox">Motor leve embutido e ativo no Qui(RON)xadá.</div>
+      <div class="status" id="motorStatusBox">Motor leve ativo no Qui(RON)xadá.</div>
 
       <div class="card">
         <h3>Leitura estrutural</h3>
-        <p>Reconhece blocos, estrofes, sextilhas e cordel misto sem pesar o sistema.</p>
+        <p>Reconhece blocos, estrofes, sextilhas, quebra suspeita e título seguido de minúscula.</p>
       </div>
 
       <div class="card">
         <h3>Alertas</h3>
-        <ul class="analysis-list" id="alertsList">
+        <div id="alertsList" class="analysis-list">
           <li>Aguardando análise.</li>
-        </ul>
+        </div>
       </div>
 
       <div class="card">
         <h3>Observação</h3>
-        <p>Aqui o motor está embutido na HTML inteira para você testar sem remendos. Depois ele pode ser compartilhado com Pólux, Castor e Centauro.</p>
+        <p>Agora a visualização é paginada de verdade, não em fluxo contínuo. Isso aproxima o módulo do comportamento físico do cordel.</p>
       </div>
     </aside>
   </div>
 
+  <div class="measure-root" id="measureRoot"></div>
+
   <script>
-    const MotorLapidar = {
-      normalizeText(text = "") {
-        return String(text)
-          .replace(/\r\n/g, "\n")
-          .replace(/\r/g, "\n")
-          .replace(/\u00A0/g, " ")
-          .replace(/\t/g, "    ")
-          .replace(/[ ]{2,}/g, " ")
-          .replace(/\n{3,}/g, "\n\n")
-          .trim();
-      },
-
-      splitBlocks(text = "") {
-        return this.normalizeText(text)
-          .split(/\n\s*\n/)
-          .map(block => block.split("\n").map(line => line.trim()).filter(Boolean))
-          .filter(block => block.length);
-      },
-
-      countWords(text = "") {
-        const clean = this.normalizeText(text);
-        if (!clean) return 0;
-        return clean.replace(/\n/g, " ").split(/\s+/).filter(Boolean).length;
-      },
-
-      applyLightCorrections(text = "") {
-        let out = this.normalizeText(text);
-        out = out.replace(/\s+,/g, ",");
-        out = out.replace(/\s+\./g, ".");
-        out = out.replace(/\s+!/g, "!");
-        out = out.replace(/\s+\?/g, "?");
-        out = out.replace(/\.{4,}/g, "...");
-        out = out.replace(/!!+/g, "!");
-        out = out.replace(/\?\?+/g, "?");
-        out = out.replace(/\bPra mim fazer\b/g, "Para eu fazer");
-        out = out.replace(/\bpra mim fazer\b/g, "para eu fazer");
-        out = out.replace(/\bHouveram\b/g, "Houve");
-        out = out.replace(/\bhouveram\b/g, "houve");
-        return out;
-      },
-
-      applyMediumCorrections(text = "") {
-        let out = this.applyLightCorrections(text);
-        out = out.replace(/\bA gente fomos\b/g, "A gente foi");
-        out = out.replace(/\ba gente fomos\b/g, "a gente foi");
-        out = out.replace(/\bmais eu\b/g, "mas eu");
-        out = out.replace(/\bMais eu\b/g, "Mas eu");
-        return out;
-      },
-
-      classify(text = "") {
-        const blocks = this.splitBlocks(text);
-        let sextilhas = 0;
-        let estrofes = 0;
-        let titulos = 0;
-        let incompletas = 0;
-
-        for (const block of blocks) {
-          if (block.length === 1 && block[0].length <= 70 && !/[.!?…]$/.test(block[0])) {
-            titulos += 1;
-          } else {
-            estrofes += 1;
-            if (block.length === 6) sextilhas += 1;
-            else incompletas += 1;
-          }
-        }
-
-        let primary = "cordel";
-        if (estrofes > 0 && sextilhas === 0) primary = "texto livre";
-        if (estrofes > 0 && sextilhas > 0 && sextilhas < estrofes) primary = "cordel misto";
-
-        return {
-          primary,
-          estrofes,
-          sextilhas,
-          titulos,
-          incompletas,
-          allSextilhas: estrofes > 0 && sextilhas === estrofes
-        };
-      },
-
-      detectAlerts(text = "") {
-        const alerts = [];
-        const blocks = this.splitBlocks(text);
-
-        blocks.forEach((block, idx) => {
-          if (block.length > 1 && block.length !== 6) {
-            alerts.push(`Bloco ${idx + 1}: está com ${block.length} versos e foge da sextilha.`);
-          }
-
-          block.forEach((line, lineIdx) => {
-            if (line.length > 70) {
-              alerts.push(`Bloco ${idx + 1}, verso ${lineIdx + 1}: verso longo para cordel.`);
+    if (typeof MotorLapidar === "undefined") {
+      const MotorLapidar = {
+        normalizeText(text = "") {
+          return String(text)
+            .replace(/\r\n/g, "\n")
+            .replace(/\r/g, "\n")
+            .replace(/\u00A0/g, " ")
+            .replace(/\t/g, "    ")
+            .replace(/[ ]{2,}/g, " ")
+            .replace(/\n{3,}/g, "\n\n")
+            .trim();
+        },
+        splitBlocks(text = "") {
+          return this.normalizeText(text)
+            .split(/\n\s*\n/)
+            .map(block => block.split("\n").map(line => line.trim()).filter(Boolean))
+            .filter(block => block.length);
+        },
+        countWords(text = "") {
+          const clean = this.normalizeText(text);
+          if (!clean) return 0;
+          return clean.replace(/\n/g, " ").split(/\s+/).filter(Boolean).length;
+        },
+        applyLightCorrections(text = "") {
+          let out = this.normalizeText(text);
+          out = out.replace(/\s+,/g, ",");
+          out = out.replace(/\s+\./g, ".");
+          out = out.replace(/\s+!/g, "!");
+          out = out.replace(/\s+\?/g, "?");
+          out = out.replace(/\.{4,}/g, "...");
+          out = out.replace(/!!+/g, "!");
+          out = out.replace(/\?\?+/g, "?");
+          return out;
+        },
+        applyMediumCorrections(text = "") {
+          return this.applyLightCorrections(text)
+            .replace(/\bA gente fomos\b/g, "A gente foi")
+            .replace(/\ba gente fomos\b/g, "a gente foi");
+        },
+        classify(text = "") {
+          const blocks = this.splitBlocks(text);
+          let sextilhas = 0, estrofes = 0;
+          for (const block of blocks) {
+            if (block.length > 1) {
+              estrofes++;
+              if (block.length === 6) sextilhas++;
             }
-          });
-        });
-
-        return alerts;
-      },
-
-      process(text = "", options = {}) {
-        const correctionLevel = options.correctionLevel || "light";
-        const corrected = correctionLevel === "medium"
-          ? this.applyMediumCorrections(text)
-          : this.applyLightCorrections(text);
-
-        const classification = this.classify(corrected);
-        const alerts = this.detectAlerts(corrected);
-
-        return {
-          originalText: this.normalizeText(text),
-          processedText: corrected,
-          wordCount: this.countWords(corrected),
-          ...classification,
-          alerts
-        };
-      }
-    };
+          }
+          return {
+            primary: sextilhas === estrofes && estrofes > 0 ? "cordel" : "cordel misto",
+            estrofes,
+            sextilhas,
+            allSextilhas: estrofes > 0 && sextilhas === estrofes
+          };
+        },
+        process(text = "", options = {}) {
+          const correctionLevel = options.correctionLevel || "light";
+          const corrected = correctionLevel === "medium"
+            ? this.applyMediumCorrections(text)
+            : this.applyLightCorrections(text);
+          const structure = this.classify(corrected);
+          return {
+            originalText: this.normalizeText(text),
+            processedText: corrected,
+            wordCount: this.countWords(corrected),
+            blocks: this.splitBlocks(corrected).length,
+            totalLines: this.splitBlocks(corrected).reduce((a, b) => a + b.length, 0),
+            alerts: [],
+            ...structure
+          };
+        }
+      };
+      window.MotorLapidar = MotorLapidar;
+    }
 
     const bookTitle = document.getElementById("bookTitle");
     const bookSubtitle = document.getElementById("bookSubtitle");
@@ -825,24 +957,31 @@ Do começo ao seu finzinho</textarea>
     const pageCount = document.getElementById("pageCount");
     const sourceText = document.getElementById("sourceText");
 
-    const renderBtn = document.getElementById("renderBtn");
     const clearBtn = document.getElementById("clearBtn");
-
-    const pagePreview = document.getElementById("pagePreview");
-    const alertsList = document.getElementById("alertsList");
-    const imposeGrid = document.getElementById("imposeGrid");
+    const prevSpreadBtn = document.getElementById("prevSpreadBtn");
+    const nextSpreadBtn = document.getElementById("nextSpreadBtn");
 
     const formatStat = document.getElementById("formatStat");
     const fontStat = document.getElementById("fontStat");
-    const pagesStat = document.getElementById("pagesStat");
+    const pagesUsedStat = document.getElementById("pagesUsedStat");
     const structureStat = document.getElementById("structureStat");
 
     const pillEstrofes = document.getElementById("pillEstrofes");
     const pillSextilhas = document.getElementById("pillSextilhas");
     const pillModo = document.getElementById("pillModo");
+    const pillPaginas = document.getElementById("pillPaginas");
+    const pillFolha = document.getElementById("pillFolha");
 
+    const spreadWrap = document.getElementById("spreadWrap");
+    const spreadIndicator = document.getElementById("spreadIndicator");
+    const imposeGrid = document.getElementById("imposeGrid");
+    const alertsList = document.getElementById("alertsList");
     const statusBox = document.getElementById("statusBox");
     const motorStatusBox = document.getElementById("motorStatusBox");
+    const measureRoot = document.getElementById("measureRoot");
+
+    let paginatedPages = [];
+    let currentSpreadIndex = 0;
 
     function escapeHtml(text) {
       return String(text)
@@ -869,22 +1008,225 @@ Do começo ao seu finzinho</textarea>
       }
     }
 
+    function createMeasurePage() {
+      const page = document.createElement("div");
+      page.className = "measure-page";
+      page.style.fontFamily = fontFamily.value;
+      page.style.fontSize = fontSize.value + "pt";
+      page.style.lineHeight = lineHeight.value;
+
+      const title = bookTitle.value.trim();
+      const subtitle = bookSubtitle.value.trim();
+
+      if (title) {
+        const h = document.createElement("h1");
+        h.className = "page-title";
+        h.style.margin = "0 0 14px 0";
+        h.style.fontSize = "1.95rem";
+        h.style.lineHeight = "1.05";
+        h.style.textAlign = "center";
+        h.textContent = title;
+        page.appendChild(h);
+      }
+
+      if (subtitle) {
+        const s = document.createElement("div");
+        s.className = "page-subtitle";
+        s.style.margin = "-6px 0 20px 0";
+        s.style.fontSize = "1.05rem";
+        s.style.textAlign = "center";
+        s.textContent = subtitle;
+        page.appendChild(s);
+      }
+
+      const content = document.createElement("div");
+      content.className = "measure-content";
+      page.appendChild(content);
+
+      return { page, content };
+    }
+
+    function makeBlockNode(lines) {
+      const node = document.createElement("div");
+      node.className = "cordel-block";
+      node.style.fontFamily = fontFamily.value;
+      node.style.fontSize = fontSize.value + "pt";
+      node.style.lineHeight = lineHeight.value;
+      node.textContent = lines.join("\n");
+      return node;
+    }
+
+    function paginateCordel(processedText) {
+      const blocks = MotorLapidar.splitBlocks(processedText);
+      const pages = [];
+      let currentPageBlocks = [];
+
+      let measure = createMeasurePage();
+      measureRoot.innerHTML = "";
+      measureRoot.appendChild(measure.page);
+
+      for (let i = 0; i < blocks.length; i++) {
+        const block = blocks[i];
+        const node = makeBlockNode(block);
+        measure.content.appendChild(node);
+
+        if (measure.page.scrollHeight > measure.page.clientHeight) {
+          measure.content.removeChild(node);
+
+          if (currentPageBlocks.length) {
+            pages.push([...currentPageBlocks]);
+            currentPageBlocks = [];
+            measure = createMeasurePage();
+            measureRoot.innerHTML = "";
+            measureRoot.appendChild(measure.page);
+          }
+
+          const node2 = makeBlockNode(block);
+          measure.content.appendChild(node2);
+
+          if (measure.page.scrollHeight > measure.page.clientHeight) {
+            measure.content.removeChild(node2);
+
+            const lines = [...block];
+            let temp = [];
+
+            for (let j = 0; j < lines.length; j++) {
+              temp.push(lines[j]);
+              const tempNode = makeBlockNode(temp);
+              measure.content.appendChild(tempNode);
+
+              if (measure.page.scrollHeight > measure.page.clientHeight) {
+                measure.content.removeChild(tempNode);
+
+                if (temp.length === 1) {
+                  currentPageBlocks.push([lines[j]]);
+                  pages.push([...currentPageBlocks]);
+                  currentPageBlocks = [];
+                  measure = createMeasurePage();
+                  measureRoot.innerHTML = "";
+                  measureRoot.appendChild(measure.page);
+                  temp = [];
+                } else {
+                  const fitting = temp.slice(0, -1);
+                  currentPageBlocks.push(fitting);
+                  pages.push([...currentPageBlocks]);
+                  currentPageBlocks = [];
+                  measure = createMeasurePage();
+                  measureRoot.innerHTML = "";
+                  measureRoot.appendChild(measure.page);
+                  temp = [lines[j]];
+                }
+              } else {
+                measure.content.removeChild(tempNode);
+              }
+            }
+
+            if (temp.length) {
+              const finalNode = makeBlockNode(temp);
+              measure.content.appendChild(finalNode);
+              currentPageBlocks.push(temp);
+            }
+          } else {
+            currentPageBlocks.push(block);
+          }
+        } else {
+          currentPageBlocks.push(block);
+        }
+      }
+
+      if (currentPageBlocks.length) {
+        pages.push([...currentPageBlocks]);
+      }
+
+      measureRoot.innerHTML = "";
+      return pages;
+    }
+
+    function renderSinglePage(pageData, pageNumber, isBlank = false) {
+      const article = document.createElement("article");
+      article.className = "page" + (isBlank ? " blank" : "");
+
+      if (isBlank) {
+        article.innerHTML = `
+          <div class="blank-holder">Página reservada / em branco</div>
+          <div class="page-number">${pageNumber}</div>
+        `;
+        return article;
+      }
+
+      let html = "";
+
+      if (pageNumber === 1) {
+        const title = bookTitle.value.trim();
+        const subtitle = bookSubtitle.value.trim();
+
+        if (title || subtitle) {
+          html += `<div class="page-header">`;
+          if (title) html += `<h1 class="page-title">${escapeHtml(title)}</h1>`;
+          if (subtitle) html += `<div class="page-subtitle">${escapeHtml(subtitle)}</div>`;
+          html += `</div>`;
+        }
+      }
+
+      pageData.forEach(block => {
+        html += `<div class="cordel-block">${escapeHtml(block.join("\n"))}</div>`;
+      });
+
+      html += `<div class="page-number">${pageNumber}</div>`;
+      article.innerHTML = html;
+      return article;
+    }
+
+    function padPagesForFolheto(contentPages, folhetoTotal) {
+      const out = [...contentPages];
+      while (out.length < folhetoTotal) out.push(null);
+      return out;
+    }
+
+    function renderSpread() {
+      spreadWrap.innerHTML = "";
+
+      if (!paginatedPages.length) {
+        spreadIndicator.textContent = "Páginas —";
+        prevSpreadBtn.disabled = true;
+        nextSpreadBtn.disabled = true;
+        return;
+      }
+
+      const leftPageNumber = currentSpreadIndex * 2 + 1;
+      const rightPageNumber = leftPageNumber + 1;
+
+      const leftPageData = paginatedPages[leftPageNumber - 1] || null;
+      const rightPageData = paginatedPages[rightPageNumber - 1] || null;
+
+      spreadWrap.appendChild(renderSinglePage(leftPageData, leftPageNumber, !leftPageData));
+      if (rightPageNumber <= paginatedPages.length) {
+        spreadWrap.appendChild(renderSinglePage(rightPageData, rightPageNumber, !rightPageData));
+      }
+
+      spreadIndicator.textContent = rightPageNumber <= paginatedPages.length
+        ? `Páginas ${leftPageNumber}–${rightPageNumber}`
+        : `Página ${leftPageNumber}`;
+
+      pillFolha.textContent = String(currentSpreadIndex + 1);
+
+      prevSpreadBtn.disabled = currentSpreadIndex <= 0;
+      nextSpreadBtn.disabled = (currentSpreadIndex + 1) * 2 >= paginatedPages.length;
+    }
+
     function renderImposition(totalPages) {
       imposeGrid.innerHTML = "";
 
       for (let sheet = 1; sheet <= totalPages / 4; sheet++) {
         const frontLeft = totalPages - (sheet - 1) * 2;
         const frontRight = 1 + (sheet - 1) * 2;
-
         const backLeft = 2 + (sheet - 1) * 2;
         const backRight = totalPages - 1 - (sheet - 1) * 2;
 
         const card = document.createElement("div");
         card.className = "sheet-card";
-
         card.innerHTML = `
           <div class="sheet-head">Folha ${sheet}</div>
-
           <div class="sheet-layout">
             <div class="sheet-side">
               <span>Frente esquerda</span>
@@ -895,7 +1237,6 @@ Do começo ao seu finzinho</textarea>
               <strong>${frontRight}</strong>
             </div>
           </div>
-
           <div class="sheet-layout">
             <div class="sheet-side">
               <span>Verso esquerda</span>
@@ -907,97 +1248,110 @@ Do começo ao seu finzinho</textarea>
             </div>
           </div>
         `;
-
         imposeGrid.appendChild(card);
       }
     }
 
-    function renderCordelPage() {
+    function renderAlerts(alerts) {
+      if (!alerts || !alerts.length) {
+        alertsList.innerHTML = `<li>Nenhum alerta crítico encontrado.</li>`;
+        motorStatusBox.textContent = "Motor ativo • Sem alertas críticos.";
+        return;
+      }
+
+      alertsList.innerHTML = alerts.map((alert, idx) => `
+        <div class="alert-item">
+          <div class="alert-title">${idx + 1}. ${escapeHtml(alert.title || "Alerta")}</div>
+          <div>${escapeHtml(alert.message || "")}</div>
+          ${alert.snippet ? `<div class="alert-snippet">${escapeHtml(alert.snippet)}</div>` : ""}
+          ${alert.suggestion ? `<div><strong>Sugestão:</strong> ${escapeHtml(alert.suggestion)}</div>` : ""}
+          ${alert.kind === "title-lowercase-follow" ? `
+            <div class="alert-actions">
+              <button class="mini-btn ok" type="button" onclick="applyAutoFixTitleCase()">Corrigir automaticamente</button>
+            </div>
+          ` : ""}
+        </div>
+      `).join("");
+
+      motorStatusBox.textContent = `Motor ativo • ${alerts.length} alerta(s) encontrado(s).`;
+    }
+
+    function applyAutoFixTitleCase() {
+      const fixed = MotorLapidar.autoFixTitleLowercase(sourceText.value);
+      sourceText.value = fixed;
+      renderAll();
+    }
+
+    window.applyAutoFixTitleCase = applyAutoFixTitleCase;
+
+    function renderAll() {
       applyFormatSize();
 
       const result = MotorLapidar.process(sourceText.value, {
-        correctionLevel: correctionLevel.value
+        correctionLevel: correctionLevel.value,
+        autoFixTitleCase: false
       });
 
-      const blocks = MotorLapidar.splitBlocks(result.processedText);
+      const folhetoTotal = Number(pageCount.value);
+      const contentPages = paginateCordel(result.processedText);
+      paginatedPages = padPagesForFolheto(contentPages, folhetoTotal);
+
+      if (currentSpreadIndex * 2 >= paginatedPages.length) {
+        currentSpreadIndex = 0;
+      }
 
       formatStat.textContent = cordelFormat.options[cordelFormat.selectedIndex].text;
       fontStat.innerHTML = `${fontFamily.options[fontFamily.selectedIndex].text}<br>${fontSize.value} pt`;
-      pagesStat.textContent = pageCount.value;
-      structureStat.textContent =
-        result.primary === "cordel"
-          ? "Cordel"
-          : result.primary === "cordel misto"
-            ? "Cordel misto"
-            : "Texto livre";
+      pagesUsedStat.textContent = String(contentPages.length);
+      structureStat.textContent = `${folhetoTotal} páginas`;
 
-      pillEstrofes.textContent = `Estrofes: ${result.estrofes}`;
-      pillSextilhas.textContent = `Sextilhas: ${result.sextilhas}`;
-      pillModo.textContent = `Modo: ${result.primary}`;
+      pillEstrofes.textContent = String(result.estrofes ?? 0);
+      pillSextilhas.textContent = String(result.sextilhas ?? 0);
+      pillModo.textContent = result.primary || "cordel";
+      pillPaginas.textContent = String(contentPages.length);
 
-      pagePreview.style.fontFamily = fontFamily.value;
-      pagePreview.style.fontSize = fontSize.value + "pt";
-      pagePreview.style.lineHeight = lineHeight.value;
+      renderSpread();
+      renderImposition(folhetoTotal);
+      renderAlerts(result.alerts || []);
 
-      let html = "";
-      const title = bookTitle.value.trim();
-      const subtitle = bookSubtitle.value.trim();
-
-      if (title) {
-        html += `<h1 class="page-title">${escapeHtml(title)}</h1>`;
-      }
-
-      if (subtitle) {
-        html += `<div class="page-subtitle">${escapeHtml(subtitle)}</div>`;
-      }
-
-      blocks.forEach((block) => {
-        if (block.length === 1 && block[0].length <= 70 && !/[.!?…]$/.test(block[0])) {
-          html += `<div class="cordel-block"><strong>${escapeHtml(block[0])}</strong></div>`;
-        } else {
-          html += `<div class="cordel-block">${escapeHtml(block.join("\n"))}</div>`;
-        }
-      });
-
-      if (!html.trim()) {
-        html = `<h1 class="page-title">Prévia aparecerá aqui</h1>`;
-      }
-
-      pagePreview.innerHTML = html;
-
-      if (result.alerts.length) {
-        alertsList.innerHTML = result.alerts.map(alert => `<li>${escapeHtml(alert)}</li>`).join("");
-        motorStatusBox.textContent = `Motor ativo • ${result.alerts.length} alerta(s) encontrado(s).`;
-      } else if (result.allSextilhas) {
-        alertsList.innerHTML = `<li>Estrutura de sextilhas detectada corretamente.</li>`;
-        motorStatusBox.textContent = "Motor ativo • Sextilhas detectadas corretamente.";
+      if (contentPages.length > folhetoTotal) {
+        statusBox.textContent = `Texto excedeu o folheto: usa ${contentPages.length} páginas, mas o folheto está em ${folhetoTotal}.`;
       } else {
-        alertsList.innerHTML = `<li>Nenhum alerta crítico encontrado.</li>`;
-        motorStatusBox.textContent = "Motor ativo • Sem alertas críticos.";
+        statusBox.textContent = "Prévia paginada atualizada com sucesso.";
       }
-
-      renderImposition(Number(pageCount.value));
-      statusBox.textContent = "Prévia do cordel atualizada com sucesso.";
     }
 
-    renderBtn.addEventListener("click", renderCordelPage);
+    prevSpreadBtn.addEventListener("click", () => {
+      if (currentSpreadIndex > 0) {
+        currentSpreadIndex -= 1;
+        renderSpread();
+      }
+    });
+
+    nextSpreadBtn.addEventListener("click", () => {
+      if ((currentSpreadIndex + 1) * 2 < paginatedPages.length) {
+        currentSpreadIndex += 1;
+        renderSpread();
+      }
+    });
 
     clearBtn.addEventListener("click", () => {
       sourceText.value = "";
-      renderCordelPage();
+      currentSpreadIndex = 0;
+      renderAll();
     });
 
     [
       bookTitle, bookSubtitle, cordelFormat, fontFamily,
       fontSize, lineHeight, correctionLevel, pageCount
     ].forEach(el => {
-      el.addEventListener("change", renderCordelPage);
-      el.addEventListener("input", renderCordelPage);
+      el.addEventListener("change", renderAll);
+      el.addEventListener("input", renderAll);
     });
 
-    sourceText.addEventListener("input", renderCordelPage);
+    sourceText.addEventListener("input", renderAll);
 
-    renderCordelPage();
+    renderAll();
   </script>
 </body>
 </html>
