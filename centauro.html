@@ -1,1659 +1,911 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Centauro — Diagramador Híbrido</title>
   <style>
     :root{
-      --bg:#f3f1f8;
-      --painel:#dcc8ff;
-      --painel-borda:#8f68c7;
-      --painel-sombra:rgba(95, 54, 148, .20);
-      --texto:#2c2438;
-      --muted:#6f6682;
-      --page:#fffdf8;
-      --page-border:#3e4550;
-      --toolbar:#faf7ff;
-      --card:#ffffff;
-      --selecionado:#ecdfff;
-      --manual:#fff3c7;
+      --bg:#f3eee6;
+      --paper:#fffdf9;
+      --ink:#2b241f;
+      --muted:#6a625a;
+      --line:#ddd2c4;
 
-      --btn-base:#ffffff;
-      --btn-borda:#b39ed6;
+      --beige-1:#b39672;
+      --beige-2:#c7b08e;
+      --beige-3:#e7dccb;
+      --beige-4:#f4ede3;
 
-      --btn-marca-bg:#f5efff;
-      --btn-marca-bd:#b396e8;
+      --ok:#2f7a59;
+      --warn:#b7921e;
+      --danger:#b13a3a;
 
-      --btn-estrutura-bg:#efe5ff;
-      --btn-estrutura-bd:#a57fe0;
+      --shadow:0 12px 28px rgba(93,73,49,.10);
+      --radius:22px;
 
-      --btn-pagina-bg:#e7d7ff;
-      --btn-pagina-bd:#8c60d5;
-
-      --tag-bg:#f8f3ff;
-      --tag-bd:#c9b7ec;
-
-      --shadow:0 10px 26px rgba(0,0,0,.08);
+      --page-w:440px;
+      --page-h:640px;
+      --page-padding:34px;
     }
 
-    *{ box-sizing:border-box; }
+    *{box-sizing:border-box}
 
-    body{
+    html,body{
       margin:0;
-      font-family: Georgia, "Times New Roman", serif;
+      padding:0;
       background:var(--bg);
-      color:var(--texto);
-      min-height:100vh;
+      color:var(--ink);
+      font-family:Georgia,"Times New Roman",serif;
     }
 
-    .topo{
-      padding:12px 16px 6px;
-      font-size:14px;
-      color:#4d4460;
-      border-bottom:1px solid #ddd3f0;
-      background:#fbf9ff;
-      position:sticky;
-      top:0;
-      z-index:20;
-    }
+    body{min-height:100vh}
 
-    .layout{
+    .app{
+      width:min(1360px, calc(100vw - 16px));
+      margin:8px auto;
       display:grid;
-      grid-template-columns:320px 1fr;
+      grid-template-columns:240px minmax(0,1fr) 280px;
       gap:14px;
-      padding:14px;
-      min-height:calc(100vh - 44px);
+      align-items:start;
     }
 
-    .painel{
-      background:linear-gradient(180deg, #e5d4ff 0%, #d7c0ff 100%);
-      border:1px solid var(--painel-borda);
-      border-radius:14px;
-      padding:12px;
-      overflow:auto;
-      box-shadow:0 10px 30px var(--painel-sombra);
-      height:calc(100vh - 72px);
-      position:sticky;
-      top:58px;
-      align-self:start;
-    }
-
-    .painel h2{
-      margin:0 0 10px;
-      font-size:18px;
-    }
-
-    .grupo{
-      margin-bottom:10px;
-    }
-
-    .grupo label{
-      display:block;
-      font-size:13px;
-      margin:0 0 4px;
-      font-weight:600;
-    }
-
-    .grupo input,
-    .grupo select,
-    .grupo textarea{
-      width:100%;
-      border:1px solid #ae97d7;
-      border-radius:8px;
-      background:#fff;
-      padding:8px 9px;
-      font-size:14px;
-      color:#2c2438;
-    }
-
-    .grupo textarea{
-      min-height:250px;
-      resize:vertical;
-      line-height:1.45;
-    }
-
-    .linha-dupla{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:8px;
-    }
-
-    .acoes{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:8px;
-    }
-
-    button{
-      border:1px solid var(--btn-borda);
-      background:var(--btn-base);
-      color:#35274e;
-      padding:8px 10px;
-      border-radius:8px;
-      cursor:pointer;
-      font-size:14px;
-      transition:.15s ease;
-    }
-
-    button:hover{
-      transform:translateY(-1px);
-      filter:brightness(1.02);
-    }
-
-    .btn-marca{
-      background:var(--btn-marca-bg);
-      border-color:var(--btn-marca-bd);
-    }
-
-    .btn-estrutura{
-      background:var(--btn-estrutura-bg);
-      border-color:var(--btn-estrutura-bd);
-    }
-
-    .btn-pagina{
-      background:var(--btn-pagina-bg);
-      border-color:var(--btn-pagina-bd);
-      color:#2d1954;
-      font-weight:600;
-    }
-
-    .workspace{
-      display:grid;
-      grid-template-rows:auto auto 1fr;
-      gap:12px;
-      min-width:0;
-    }
-
-    .caixa-texto,
-    .barra-acoes,
-    .bloco-previa{
-      background:var(--card);
-      border:1px solid #e1d8ef;
-      border-radius:12px;
-      padding:12px;
+    .panel{
+      border-radius:var(--radius);
       box-shadow:var(--shadow);
+      min-height:calc(100vh - 16px);
+      position:sticky;
+      top:8px;
+      align-self:start;
+      overflow:auto;
     }
 
-    .caixa-texto h3,
-    .barra-acoes h3,
-    .bloco-previa h3{
-      margin:0 0 8px;
-      font-size:16px;
+    .left-panel{
+      background:linear-gradient(180deg,#9f835f 0%, #b89b76 58%, #e4d6c3 100%);
+      color:#fff;
+      padding:16px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
     }
 
-    .barra-acoes{
-      background:var(--toolbar);
+    .right-panel{
+      background:linear-gradient(180deg,#fbf7f1 0%, #f3ecdf 100%);
+      border:1px solid #ddd2c4;
+      color:#2b241f;
+      padding:16px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .panel h2{
+      margin:0;
+      font-size:1.7rem;
+      line-height:1;
+    }
+
+    .panel h3{
+      margin:0;
+      font-size:1rem;
+      line-height:1.2;
     }
 
     .status{
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:10px;
+      font-size:.92rem;
+      line-height:1.35;
+      border-radius:14px;
+      padding:10px 12px;
+      min-height:48px;
     }
 
-    .bloco-previa{
-      min-height:0;
-      display:flex;
-      flex-direction:column;
+    .left-panel .status{
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.18);
+      color:#fffaf3;
     }
 
-    .barra-previa{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:8px;
-      flex-wrap:wrap;
-    }
-
-    .barra-previa .controles{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-
-    .barra-previa .meta{
-      font-size:13px;
-      color:var(--muted);
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-    }
-
-    .barra-previa select{
-      border:1px solid #b6a4da;
-      border-radius:8px;
-      padding:7px 8px;
+    .right-panel .status{
       background:#fff;
-      color:#382853;
+      border:1px solid #e2d6c8;
+      color:#665d54;
     }
 
-    .visor{
-      flex:1;
-      min-height:0;
-      overflow:auto;
-      padding:12px;
-      background:#fafbfd;
-      border-radius:10px;
-      border:1px solid #ebe3f7;
-      scroll-behavior:smooth;
-    }
-
-    .spreads{
+    .card{
+      border-radius:16px;
+      padding:10px;
       display:flex;
       flex-direction:column;
-      gap:18px;
-      align-items:flex-start;
-      transform-origin:top left;
-    }
-
-    .spread{
-      display:flex;
-      gap:18px;
-      align-items:flex-start;
-      flex-wrap:nowrap;
-    }
-
-    .pagina{
-      background:var(--page);
-      border:2px solid var(--page-border);
-      border-radius:4px;
-      position:relative;
-      box-shadow:0 8px 24px rgba(0,0,0,.10);
-      display:flex;
-      flex-direction:column;
-      flex:0 0 auto;
-    }
-
-    .pagina.a5{ width:148mm; min-height:210mm; }
-    .pagina.f16x23{ width:160mm; min-height:230mm; }
-    .pagina.f6x9{ width:152mm; min-height:229mm; }
-
-    .pagina-inner{
-      padding:20mm 15mm 18mm 20mm;
-      display:flex;
-      flex-direction:column;
-      flex:1;
-      min-height:0;
-    }
-
-    .pagina.margens-normais .pagina-inner{
-      padding:18mm 14mm 17mm 18mm;
-    }
-
-    .pagina.margens-estreitas .pagina-inner{
-      padding:14mm 12mm 14mm 14mm;
-    }
-
-    .cabecalho-pagina{
-      display:flex;
-      justify-content:space-between;
-      font-size:9px;
-      color:#707a84;
-      margin-bottom:8mm;
-      flex:0 0 auto;
-    }
-
-    .miolo{
-      flex:1 1 auto;
-      min-height:0;
-    }
-
-    .rodape-pagina{
-      margin-top:8mm;
-      text-align:center;
-      font-size:10px;
-      color:#7b7b7b;
-      flex:0 0 auto;
-    }
-
-    .linha-item{
-      position:relative;
-      border-radius:6px;
-      transition:.15s ease;
-      padding:1px 3px;
-      cursor:pointer;
-      white-space:pre-wrap;
-      word-break:break-word;
-      outline:none;
-      user-select:text;
-    }
-
-    .linha-item:hover{
-      background:#f4edff;
-    }
-
-    .linha-item.selecionado{
-      background:var(--selecionado);
-      outline:1px solid #c6afea;
-    }
-
-    .linha-item.manual{
-      box-shadow:inset 0 0 0 9999px rgba(255,243,199,.45);
-    }
-
-    .linha-item.editando{
-      background:#fffef0;
-      outline:1px solid #d8c778;
-    }
-
-    .linha-item.break-before::before{
-      content:"↳ nova página";
-      position:absolute;
-      top:-18px;
-      left:0;
-      font-size:11px;
-      color:#7a5f00;
-      background:#fff4c2;
-      border:1px solid #e2d188;
-      border-radius:6px;
-      padding:1px 6px;
-    }
-
-    .linha-item.vazio{
-      min-height:4mm;
-    }
-
-    .linha-item.titulo{
-      text-align:center;
-      font-weight:700;
-      margin-top:4mm;
-      margin-bottom:3mm;
-    }
-
-    .linha-item.subtitulo{
-      text-align:center;
-      font-style:italic;
-      margin-top:-1mm;
-      margin-bottom:3mm;
-    }
-
-    .linha-item.prosa{
-      text-align:justify;
-      text-indent:6mm;
-    }
-
-    .linha-item.prosa-cont{
-      text-align:justify;
-      text-indent:0;
-    }
-
-    .linha-item.dialogo{
-      text-align:left;
-      text-indent:0;
-      padding-left:4mm;
-    }
-
-    .linha-item.poesia{
-      text-align:left;
-      text-indent:0;
-    }
-
-    .linha-item.ornamento{
-      text-align:center;
-      color:#8d8d8d;
-      margin:3mm 0;
-    }
-
-    .tag{
-      display:inline-block;
-      font-size:11px;
-      border:1px solid var(--tag-bd);
-      background:var(--tag-bg);
-      border-radius:999px;
-      padding:3px 8px;
-    }
-
-    .acao-compacta{
-      display:flex;
-      flex-wrap:wrap;
       gap:8px;
     }
 
-    .ajuda{
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.4;
-      margin-top:6px;
+    .left-panel .card{
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.16);
     }
 
-    #medidor{
-      position:absolute;
-      left:-99999px;
-      top:0;
-      visibility:hidden;
-      pointer-events:none;
-      z-index:-1;
+    .right-panel .card{
+      background:#fffdf9;
+      border:1px solid #e5d9cb;
     }
 
-    .measure-page{
-      background:#fff;
-      border:2px solid #000;
-      position:relative;
-      display:flex;
-      flex-direction:column;
+    label, small, p{
+      margin:0;
+      line-height:1.35;
     }
 
-    .measure-inner{
-      padding:20mm 15mm 18mm 20mm;
-      display:flex;
-      flex-direction:column;
-      flex:1;
-      min-height:0;
+    .left-panel label,
+    .left-panel small,
+    .left-panel p{
+      color:#fff8f1;
     }
 
-    .measure-inner.margens-normais{
-      padding:18mm 14mm 17mm 18mm;
+    .right-panel label,
+    .right-panel small,
+    .right-panel p{
+      color:#63594f;
     }
 
-    .measure-inner.margens-estreitas{
-      padding:14mm 12mm 14mm 14mm;
-    }
-
-    .measure-miolo{
-      flex:1 1 auto;
-      min-height:0;
+    .input,.select,.btn{
       width:100%;
+      font-family:inherit;
+      font-size:.98rem;
+      border-radius:12px;
     }
 
-    @media (max-width:980px){
-      .layout{
+    .input,.select{
+      border:1px solid #d8cdbf;
+      background:#fff;
+      color:#2b241f;
+      padding:10px;
+      outline:none;
+    }
+
+    .btn{
+      border:none;
+      padding:11px 12px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.12s ease;
+      text-decoration:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      min-height:48px;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+      opacity:.97;
+    }
+
+    .btn-beige{background:#a48661;color:#fff}
+    .btn-soft{background:#efe5d8;color:#5b4630}
+    .btn-ok{background:var(--ok);color:#fff}
+    .btn-warn{background:var(--warn);color:#231d16}
+    .btn-danger{background:var(--danger);color:#fff}
+
+    .main{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      min-width:0;
+    }
+
+    .hero,
+    .stats-shell,
+    .editor-shell,
+    .preview-shell{
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .hero{
+      background:linear-gradient(180deg,#f4ede3 0%, #ebe1d3 100%);
+      padding:24px 22px;
+      display:grid;
+      grid-template-columns:minmax(0,1fr);
+      gap:14px;
+    }
+
+    .hero-top{
+      display:grid;
+      grid-template-columns:52px 1fr;
+      gap:16px;
+      align-items:center;
+    }
+
+    .badge{
+      width:52px;
+      height:84px;
+      border-radius:18px;
+      background:linear-gradient(180deg,var(--beige-2),var(--beige-1));
+      color:#fffaf3;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:2.3rem;
+      line-height:1;
+      box-shadow:0 8px 18px rgba(163,134,97,.22);
+    }
+
+    .hero h1{
+      margin:0 0 8px 0;
+      font-size:clamp(2rem,4vw,2.8rem);
+      line-height:1;
+      color:#3d2f21;
+    }
+
+    .hero p{
+      color:#655b51;
+      font-size:1.08rem;
+    }
+
+    .stats-shell{
+      padding:16px;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .stat{
+      background:#faf6f0;
+      border:1px solid #e4d9cb;
+      border-radius:16px;
+      padding:14px 12px;
+      min-height:100px;
+    }
+
+    .stat-label{
+      font-size:.98rem;
+      font-weight:700;
+      color:#5d5348;
+      margin-bottom:8px;
+    }
+
+    .stat-value{
+      font-size:1.06rem;
+      font-weight:700;
+      color:#3e3023;
+      line-height:1.25;
+      word-break:break-word;
+    }
+
+    .editor-shell,.preview-shell{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .editor-shell h2,.preview-shell h2{
+      margin:0;
+      font-size:1.2rem;
+    }
+
+    .toolbar{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .editor-box{
+      width:100%;
+      min-height:430px;
+      border:1px solid #d8cdbf;
+      border-radius:18px;
+      padding:18px;
+      resize:vertical;
+      background:#fff;
+      color:#2b241f;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:1.04rem;
+      line-height:1.5;
+      outline:none;
+    }
+
+    .editor-box:focus{
+      border-color:#c1a785;
+      box-shadow:0 0 0 3px rgba(183,150,114,.10);
+    }
+
+    .preview-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      background:#f3eadf;
+      border:1px solid #e2d5c6;
+      color:#5b5248;
+      font-size:.94rem;
+      font-weight:700;
+    }
+
+    .preview-stage{
+      background:linear-gradient(180deg,#efe7db 0%, #e7ddd0 100%);
+      border-radius:20px;
+      border:1px solid #ddd2c4;
+      min-height:720px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:22px 12px;
+      overflow:auto;
+    }
+
+    .page{
+      width:var(--page-w);
+      min-height:var(--page-h);
+      background:#fff;
+      border:1px solid #ddd2c4;
+      box-shadow:0 10px 24px rgba(88,67,43,.10);
+      padding:var(--page-padding);
+      position:relative;
+      color:#2b241f;
+    }
+
+    .page-title{
+      text-align:center;
+      margin:0 0 18px 0;
+      font-size:2rem;
+      line-height:1.05;
+      color:#3d2f21;
+    }
+
+    .page-subtitle{
+      text-align:center;
+      margin:-8px 0 22px 0;
+      font-size:1.08rem;
+      color:#72665b;
+    }
+
+    .hybrid-block{
+      margin:0 0 18px 0;
+      white-space:pre-line;
+      line-height:1.48;
+      font-size:1.08rem;
+      text-align:left;
+    }
+
+    .hybrid-block.poetry{
+      line-height:1.42;
+    }
+
+    .hybrid-block.prose{
+      text-align:justify;
+    }
+
+    .analysis-list{
+      margin:0;
+      padding-left:18px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .footer-note{
+      font-size:.9rem;
+      color:#6e6256;
+      line-height:1.45;
+    }
+
+    @media (max-width:1160px){
+      .app{
+        grid-template-columns:1fr;
+      }
+      .panel{
+        position:relative;
+        top:auto;
+        min-height:auto;
+      }
+    }
+
+    @media (max-width:760px){
+      .app{
+        width:min(100vw - 8px, 1360px);
+        gap:8px;
+        margin:4px auto;
+      }
+
+      .hero,.stats-shell,.editor-shell,.preview-shell,.panel{
+        border-radius:18px;
+      }
+
+      .hero{
+        padding:18px 14px;
+      }
+
+      .hero-top{
+        grid-template-columns:40px 1fr;
+        gap:12px;
+        align-items:start;
+      }
+
+      .badge{
+        width:40px;
+        height:70px;
+        font-size:1.9rem;
+      }
+
+      .stats-shell{
+        grid-template-columns:1fr 1fr;
+        padding:12px;
+      }
+
+      .toolbar{
         grid-template-columns:1fr;
       }
 
-      .painel{
-        position:static;
-        height:auto;
+      .preview-stage{
+        min-height:auto;
+        padding:12px 8px;
       }
 
-      .spread{
-        flex-direction:column;
+      .page{
+        width:min(100%, 440px);
+        min-height:560px;
+        padding:22px;
+      }
+
+      .hybrid-block{
+        font-size:1.02rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="topo">Centauro — Diagramador Híbrido</div>
+  <div class="app">
+    <aside class="panel left-panel">
+      <h2>Centauro</h2>
 
-  <div class="layout">
-    <aside class="painel">
-      <h2>Configuração híbrida</h2>
+      <div class="status" id="statusBox">Pronto para diagramar obra híbrida.</div>
 
-      <div class="grupo">
-        <label for="formato">Formato</label>
-        <select id="formato">
-          <option value="A5" selected>A5</option>
-          <option value="16x23">16x23</option>
-          <option value="6x9">6x9</option>
-        </select>
+      <div class="card">
+        <label for="bookTitle"><strong>Título da obra</strong></label>
+        <input class="input" id="bookTitle" type="text" placeholder="Opcional" value="Centauro — Diagramador Híbrido" />
       </div>
 
-      <div class="grupo">
-        <label for="fonteProsa">Fonte da prosa</label>
-        <select id="fonteProsa">
-          <option value="Georgia" selected>Georgia</option>
-          <option value="'Libre Baskerville', serif">Libre Baskerville</option>
-          <option value="'Times New Roman', serif">Times New Roman</option>
-          <option value="'EB Garamond', serif">EB Garamond</option>
-          <option value="Garamond, serif">Garamond</option>
-        </select>
+      <div class="card">
+        <label for="bookSubtitle"><strong>Subtítulo</strong></label>
+        <input class="input" id="bookSubtitle" type="text" placeholder="Opcional" value="Celeiro Literário / Lapidar" />
       </div>
 
-      <div class="grupo">
-        <label for="fontePoesia">Fonte da poesia</label>
-        <select id="fontePoesia">
-          <option value="'Libre Baskerville', serif" selected>Libre Baskerville</option>
+      <div class="card">
+        <label for="hybridFormat"><strong>Formato</strong></label>
+        <select class="select" id="hybridFormat">
+          <option value="a5" selected>A5</option>
+          <option value="14x21">14 x 21 cm</option>
+          <option value="16x23">16 x 23 cm</option>
+          <option value="6x9">6 x 9 pol.</option>
+        </select>
+
+        <label for="fontFamily"><strong>Fonte</strong></label>
+        <select class="select" id="fontFamily">
           <option value="Georgia">Georgia</option>
-          <option value="'Times New Roman', serif">Times New Roman</option>
-          <option value="'EB Garamond', serif">EB Garamond</option>
-          <option value="Garamond, serif">Garamond</option>
+          <option value="'Times New Roman'">Times New Roman</option>
+          <option value="Garamond">Garamond</option>
+        </select>
+
+        <label for="fontSize"><strong>Tamanho</strong></label>
+        <select class="select" id="fontSize">
+          <option value="11">11 pt</option>
+          <option value="12" selected>12 pt</option>
+          <option value="13">13 pt</option>
+          <option value="14">14 pt</option>
+        </select>
+
+        <label for="lineHeight"><strong>Entrelinha</strong></label>
+        <select class="select" id="lineHeight">
+          <option value="1.30">1.30</option>
+          <option value="1.40" selected>1.40</option>
+          <option value="1.50">1.50</option>
+          <option value="1.60">1.60</option>
         </select>
       </div>
 
-      <div class="grupo">
-        <label for="fonteTitulos">Fonte dos títulos</label>
-        <select id="fonteTitulos">
-          <option value="'Playfair Display', serif" selected>Playfair Display</option>
-          <option value="'Libre Baskerville', serif">Libre Baskerville</option>
-          <option value="'EB Garamond', serif">EB Garamond</option>
-          <option value="Georgia">Georgia</option>
-          <option value="Garamond, serif">Garamond</option>
+      <div class="card">
+        <label for="hybridMode"><strong>Modo híbrido</strong></label>
+        <select class="select" id="hybridMode">
+          <option value="auto" selected>Automático</option>
+          <option value="prose-first">Prosa predominante</option>
+          <option value="poetry-first">Poesia predominante</option>
+        </select>
+
+        <label for="blockSpace"><strong>Espaço entre blocos</strong></label>
+        <select class="select" id="blockSpace">
+          <option value="14">14 px</option>
+          <option value="20" selected>20 px</option>
+          <option value="26">26 px</option>
+          <option value="32">32 px</option>
         </select>
       </div>
 
-      <div class="linha-dupla">
-        <div class="grupo">
-          <label for="tamProsa">Tamanho da prosa (pt)</label>
-          <input id="tamProsa" type="number" value="12" min="8" max="32">
-        </div>
-
-        <div class="grupo">
-          <label for="tamPoesia">Tamanho da poesia (pt)</label>
-          <input id="tamPoesia" type="number" value="12" min="8" max="32">
-        </div>
-      </div>
-
-      <div class="linha-dupla">
-        <div class="grupo">
-          <label for="tamTitulos">Tamanho dos títulos (pt)</label>
-          <input id="tamTitulos" type="number" value="16" min="8" max="40">
-        </div>
-
-        <div class="grupo">
-          <label for="tamDialogo">Tamanho do diálogo (pt)</label>
-          <input id="tamDialogo" type="number" value="12" min="8" max="32">
-        </div>
-      </div>
-
-      <div class="grupo">
-        <label for="entrelinhaProsa">Entrelinha da prosa</label>
-        <select id="entrelinhaProsa">
-          <option value="1.2">Compacta</option>
-          <option value="1.4" selected>Normal</option>
-          <option value="1.6">Respirada</option>
-          <option value="1.8">Ampla</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="entrelinhaPoesia">Entrelinha da poesia</label>
-        <select id="entrelinhaPoesia">
-          <option value="1.15">Compacta</option>
-          <option value="1.35" selected>Normal</option>
-          <option value="1.6">Respirada</option>
-          <option value="1.9">Ampla</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="margens">Margens</label>
-        <select id="margens">
-          <option value="amplas" selected>Amplas</option>
-          <option value="normais">Normais</option>
-          <option value="estreitas">Estreitas</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="hifenizacaoProsa">Hifenização da prosa</label>
-        <select id="hifenizacaoProsa">
-          <option value="sim" selected>Ativa</option>
-          <option value="nao">Desligada</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="ornamentoModo">Ornamento</label>
-        <select id="ornamentoModo">
-          <option value="desligado" selected>Desligado</option>
-          <option value="entreTitulos">Entre títulos</option>
-          <option value="manual">Manual</option>
-        </select>
-      </div>
-
-      <div class="grupo">
-        <label for="ornamentoTipo">Tipo de ornamento</label>
-        <select id="ornamentoTipo">
-          <option value="✻" selected>Floral simples</option>
-          <option value="❦">Floral clássico</option>
-          <option value="✦">Estrela</option>
-          <option value="• • •">Pontos</option>
-          <option value="— § —">Editorial</option>
-        </select>
-      </div>
-
-      <div class="acoes">
-        <button id="btnAplicar" class="btn-pagina">Aplicar</button>
-        <button id="btnCarregarPreview" class="btn-pagina">Carregar texto na prévia</button>
-        <button id="btnLimparTudo" class="btn-estrutura">Limpar tudo</button>
-      </div>
-
-      <div class="ajuda">
-        O Centauro detecta prosa, diálogo e poesia automaticamente. Na prosa, a paginação trabalha por linhas internas do parágrafo.
+      <div class="card">
+        <button class="btn btn-beige" id="renderBtn" type="button">Atualizar prévia</button>
+        <button class="btn btn-soft" id="clearBtn" type="button">Limpar obra</button>
+        <a class="btn btn-warn" href="lapidar.html">Retornar</a>
+        <a class="btn btn-danger" href="index.html">Sair do sistema</a>
       </div>
     </aside>
 
-    <main class="workspace">
-      <section class="caixa-texto">
-        <h3>Caixa de texto híbrido</h3>
-        <div class="grupo" style="margin-bottom:0;">
-          <textarea id="entradaHibrida">Capítulo I
-
-A estrada parecia mais longa naquela noite, e o silêncio do campo não consolava ninguém. O vento batia na janela com uma insistência quase humana.
-
-— Você voltou tarde — disse Helena, sem erguer os olhos.
-
-Ele pousou o chapéu sobre a mesa e respirou antes de responder.
-
-— A estrada estava vazia, mas meu coração não.
-
-Elegia – Noite de Cinzas
-
-O tempo vestiu a casa de neblina
-e o lume antigo já não canta ao lar.
-Meu peito, barco à deriva e sem marina,
-não sabe mais se deve ancorar.
-
-A narrativa prosseguiu sem aviso, como se o poema houvesse nascido dentro do próprio capítulo. Nada ali parecia estranho. Era a mesma história, agora filtrada por outra música.
-
-— Talvez a memória seja isso — murmurou ela. — Um trecho em prosa, outro em luto.
-
-Soneto de Partida
-
-Se a porta bateu, não foi só madeira,
-foi a esperança inteira a se fechar.
-Na sala, a tarde, muda companheira,
-aprendeu com a ausência a soluçar.</textarea>
+    <main class="main">
+      <section class="hero">
+        <div class="hero-top">
+          <div class="badge">C</div>
+          <div>
+            <h1>Centauro — Diagramador Híbrido</h1>
+            <p>Módulo do Celeiro Literário / Lapidar para obras mistas, alternando blocos de prosa e poesia dentro da mesma estrutura editorial.</p>
+          </div>
         </div>
       </section>
 
-      <section class="barra-acoes">
-        <h3>Comandos da prévia híbrida</h3>
-        <div id="statusEdicao" class="status">Selecione uma linha na prévia. Duplo clique edita direto nela.</div>
-        <div class="acao-compacta">
-          <button id="btnSalvarLinha" class="btn-marca">Salvar linha</button>
-          <button id="btnProsa" class="btn-marca">Marcar como prosa</button>
-          <button id="btnDialogo" class="btn-marca">Marcar como diálogo</button>
-          <button id="btnPoesia" class="btn-marca">Marcar como poesia</button>
-          <button id="btnTitulo" class="btn-marca">Marcar como título</button>
-          <button id="btnSubtitulo" class="btn-marca">Marcar como subtítulo</button>
-
-          <button id="btnInserirAbaixo" class="btn-estrutura">Inserir linha abaixo</button>
-          <button id="btnExcluirLinha" class="btn-estrutura">Excluir linha</button>
-          <button id="btnInserirOrnamentoManual" class="btn-estrutura">Inserir ornamento abaixo</button>
-          <button id="btnUnirAcima" class="btn-estrutura">Unir com linha acima</button>
-          <button id="btnUnirAbaixo" class="btn-estrutura">Unir com linha abaixo</button>
-
-          <button id="btnNovaPaginaAqui" class="btn-pagina">Iniciar nova página aqui</button>
-          <button id="btnRemoverQuebra" class="btn-pagina">Remover quebra</button>
+      <section class="stats-shell">
+        <div class="stat">
+          <div class="stat-label">Formato</div>
+          <div class="stat-value" id="formatStat">A5</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Fonte</div>
+          <div class="stat-value" id="fontStat">Georgia<br>12 pt</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Blocos</div>
+          <div class="stat-value" id="blocksStat">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Estrutura</div>
+          <div class="stat-value" id="structureStat">Aguardando texto</div>
         </div>
       </section>
 
-      <section class="bloco-previa">
-        <div class="barra-previa">
-          <h3>Prévia híbrida</h3>
-          <div class="controles">
-            <button id="paginaAnterior" class="btn-pagina">Página anterior</button>
-            <button id="proximaPagina" class="btn-pagina">Próxima página</button>
+      <section class="editor-shell">
+        <h2>Texto-base híbrido</h2>
 
-            <select id="modoEscala" style="width:auto;">
-              <option value="ajustar" selected>Ajustar à tela</option>
-              <option value="real">Escala real</option>
-            </select>
+        <textarea id="sourceText" class="editor-box" placeholder="Cole aqui a obra híbrida...">Exemplo de obra híbrida
 
-            <select id="modoVisualizacao" style="width:auto;">
-              <option value="livro" selected>Modo livro</option>
-              <option value="pagina">Página única</option>
-            </select>
-          </div>
+A estrada seguia quieta pela manhã, e o viajante pensava no peso do tempo sobre a matéria do mundo.
 
-          <div class="meta">
-            <span class="tag" id="metaFormato">Formato A5</span>
-            <span class="tag" id="metaPagina">Página técnica 1 de 1</span>
+No centro da paisagem
+um sino breve respira
+e a tarde dobra lenta
+a sombra que delira
+
+Quando a noite caiu, o mesmo viajante percebeu que a memória também caminhava ao lado dele, em silêncio.</textarea>
+      </section>
+
+      <section class="preview-shell">
+        <div class="preview-top">
+          <h2>Prévia híbrida</h2>
+          <div class="pill-row">
+            <span class="pill" id="pillBlocks">Blocos: 0</span>
+            <span class="pill" id="pillLines">Linhas: 0</span>
+            <span class="pill" id="pillMode">Modo: híbrido</span>
           </div>
         </div>
 
-        <div id="visorPaginas" class="visor">
-          <div id="spreads" class="spreads"></div>
+        <div class="preview-stage">
+          <article class="page" id="pagePreview"></article>
         </div>
       </section>
     </main>
+
+    <aside class="panel right-panel">
+      <h2>Motor Lapidar</h2>
+
+      <div class="status" id="motorStatusBox">Motor leve ativo no painel lateral do Centauro.</div>
+
+      <div class="card">
+        <label for="correctionLevel"><strong>Correção</strong></label>
+        <select class="select" id="correctionLevel">
+          <option value="light" selected>Leve</option>
+          <option value="medium">Média</option>
+        </select>
+      </div>
+
+      <div class="card">
+        <h3>Leitura estrutural</h3>
+        <p>Reconhece prosa, poesia e mistura entre ambas, sem pesar o sistema.</p>
+      </div>
+
+      <div class="card">
+        <h3>Alertas</h3>
+        <ul class="analysis-list" id="alertsList">
+          <li>Aguardando análise.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Observação</h3>
+        <p>Centauro fecha a mesma espinha dorsal visual dos diagramadores, agora adaptada ao modo híbrido.</p>
+      </div>
+
+      <div class="footer-note">
+        Com isso, Pólux, Castor, Centauro e Qui(RON)xadá ficam alinhados na mesma arquitetura visual.
+      </div>
+    </aside>
   </div>
 
-  <div id="medidor"></div>
-
   <script>
-    const entradaHibrida = document.getElementById('entradaHibrida');
-    const visorPaginas = document.getElementById('visorPaginas');
-    const spreadsEl = document.getElementById('spreads');
-    const metaFormato = document.getElementById('metaFormato');
-    const metaPagina = document.getElementById('metaPagina');
-    const medidor = document.getElementById('medidor');
-    const statusEdicao = document.getElementById('statusEdicao');
+    const MotorLapidar = {
+      normalizeText(text = "") {
+        return String(text)
+          .replace(/\r\n/g, "\n")
+          .replace(/\r/g, "\n")
+          .replace(/\u00A0/g, " ")
+          .replace(/\t/g, "    ")
+          .replace(/[ ]{2,}/g, " ")
+          .replace(/\n{3,}/g, "\n\n")
+          .trim();
+      },
 
-    const formato = document.getElementById('formato');
-    const fonteProsa = document.getElementById('fonteProsa');
-    const fontePoesia = document.getElementById('fontePoesia');
-    const fonteTitulos = document.getElementById('fonteTitulos');
-    const tamProsa = document.getElementById('tamProsa');
-    const tamPoesia = document.getElementById('tamPoesia');
-    const tamTitulos = document.getElementById('tamTitulos');
-    const tamDialogo = document.getElementById('tamDialogo');
-    const entrelinhaProsa = document.getElementById('entrelinhaProsa');
-    const entrelinhaPoesia = document.getElementById('entrelinhaPoesia');
-    const margens = document.getElementById('margens');
-    const hifenizacaoProsa = document.getElementById('hifenizacaoProsa');
-    const ornamentoModo = document.getElementById('ornamentoModo');
-    const ornamentoTipo = document.getElementById('ornamentoTipo');
-    const modoEscala = document.getElementById('modoEscala');
-    const modoVisualizacao = document.getElementById('modoVisualizacao');
+      splitBlocks(text = "") {
+        return this.normalizeText(text)
+          .split(/\n\s*\n/)
+          .map(block => block.split("\n").map(line => line.trim()).filter(Boolean))
+          .filter(block => block.length);
+      },
 
-    let linhasBase = [];
-    let linhasProcessadas = [];
-    let paginas = [];
-    let paginaAtual = 0;
-    let linhaSelecionadaId = null;
-    let contadorIds = 1;
-    let editandoId = null;
-    let textoAntesEdicao = '';
-    let autoTimer = null;
-    let ultimoTextoLido = '';
+      countWords(text = "") {
+        const clean = this.normalizeText(text);
+        if (!clean) return 0;
+        return clean.replace(/\n/g, " ").split(/\s+/).filter(Boolean).length;
+      },
 
-    function novoId(){
-      return contadorIds++;
-    }
+      applyLightCorrections(text = "") {
+        let out = this.normalizeText(text);
+        out = out.replace(/\s+,/g, ",");
+        out = out.replace(/\s+\./g, ".");
+        out = out.replace(/\s+!/g, "!");
+        out = out.replace(/\s+\?/g, "?");
+        out = out.replace(/\.{4,}/g, "...");
+        out = out.replace(/!!+/g, "!");
+        out = out.replace(/\?\?+/g, "?");
+        out = out.replace(/\bPra mim fazer\b/g, "Para eu fazer");
+        out = out.replace(/\bpra mim fazer\b/g, "para eu fazer");
+        return out;
+      },
 
-    function criarItem(texto, tipo, manual=false){
-      return {
-        id: novoId(),
-        texto,
-        tipo,
-        manual,
-        pageBreakBefore:false
-      };
-    }
+      applyMediumCorrections(text = "") {
+        let out = this.applyLightCorrections(text);
+        out = out.replace(/\bA gente fomos\b/g, "A gente foi");
+        out = out.replace(/\ba gente fomos\b/g, "a gente foi");
+        out = out.replace(/\bmais eu\b/g, "mas eu");
+        out = out.replace(/\bMais eu\b/g, "Mas eu");
+        return out;
+      },
 
-    function getPageClass(){
-      if(formato.value === '16x23') return 'f16x23';
-      if(formato.value === '6x9') return 'f6x9';
-      return 'a5';
-    }
+      classify(text = "") {
+        const blocks = this.splitBlocks(text);
+        let proseBlocks = 0;
+        let poetryBlocks = 0;
+        let totalLines = 0;
 
-    function getMargemClass(){
-      if(margens.value === 'normais') return 'margens-normais';
-      if(margens.value === 'estreitas') return 'margens-estreitas';
-      return '';
-    }
+        for (const block of blocks) {
+          totalLines += block.length;
 
-    function detectarTipoAutomatico(linhas, i){
-      const atual = (linhas[i] ?? '').trim();
-      const antes = (linhas[i - 1] ?? '').trim();
-      const depois = (linhas[i + 1] ?? '').trim();
-
-      if(atual === '') return 'vazio';
-
-      if(/^[—-]\s?/.test(atual)) return 'dialogo';
-
-      const tituloCurto = atual.length <= 70 && !/[,.!?;:]$/.test(atual) && /^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ0-9]/.test(atual);
-      if(antes === '' && tituloCurto) return 'titulo';
-
-      const linhaCurta = atual.length <= 60;
-      const prevCurta = (linhas[i - 1] ?? '').trim().length <= 60;
-      const nextCurta = (linhas[i + 1] ?? '').trim().length <= 60;
-      const possivelPoesia = linhaCurta && (prevCurta || nextCurta);
-
-      if(possivelPoesia && atual.split(' ').length <= 12) return 'poesia';
-
-      return 'prosa';
-    }
-
-    function parseEntrada(resetSelecao=true){
-      contadorIds = 1;
-      const bruto = entradaHibrida.value.replace(/\r/g, '');
-      ultimoTextoLido = bruto;
-
-      if(resetSelecao){
-        linhaSelecionadaId = null;
-        editandoId = null;
-      }
-
-      const linhas = bruto === '' ? [''] : bruto.split('\n');
-      linhasBase = linhas.map((linha, i) => criarItem(linha, detectarTipoAutomatico(linhas, i), false));
-      aplicarEstrutura();
-      statusEdicao.textContent = 'Texto híbrido carregado na prévia.';
-    }
-
-    function gerarEstruturaComOrnamentos(base){
-      if(ornamentoModo.value === 'desligado') return base.map(x => ({...x}));
-
-      const simbolo = ornamentoTipo.value;
-      const saida = [];
-
-      for(let i = 0; i < base.length; i++){
-        const atual = { ...base[i] };
-
-        if(ornamentoModo.value === 'entreTitulos' && atual.tipo === 'titulo'){
-          const existeAntes = existeConteudoRealAntes(base, i);
-          if(existeAntes){
-            saida.push({
-              id: novoId(),
-              texto: simbolo,
-              tipo:'ornamento',
-              manual:false,
-              pageBreakBefore:false
-            });
-          }
+          const avgLen = block.reduce((sum, line) => sum + line.length, 0) / block.length;
+          if (block.length === 1 && avgLen > 80) proseBlocks += 1;
+          else if (avgLen <= 50) poetryBlocks += 1;
+          else proseBlocks += 1;
         }
 
-        saida.push(atual);
-      }
+        let primary = "híbrido";
+        if (blocks.length === 0) primary = "vazio";
+        else if (proseBlocks > 0 && poetryBlocks === 0) primary = "prosa";
+        else if (poetryBlocks > 0 && proseBlocks === 0) primary = "poesia";
 
-      return saida;
-    }
+        return {
+          primary,
+          blocks: blocks.length,
+          totalLines,
+          proseBlocks,
+          poetryBlocks
+        };
+      },
 
-    function existeConteudoRealAntes(lista, indice){
-      for(let i = indice - 1; i >= 0; i--){
-        if(['prosa','dialogo','poesia','subtitulo'].includes(lista[i].tipo)) return true;
-        if(lista[i].tipo === 'titulo') return false;
-      }
-      return false;
-    }
+      detectAlerts(text = "") {
+        const alerts = [];
+        const blocks = this.splitBlocks(text);
 
-    function criarPaginaMedidora(){
-      const pagina = document.createElement('div');
-      pagina.className = `measure-page ${getPageClass()}`;
-      const inner = document.createElement('div');
-      inner.className = `measure-inner ${getMargemClass()}`;
+        blocks.forEach((block, idx) => {
+          const avgLen = block.reduce((sum, line) => sum + line.length, 0) / block.length;
 
-      const cab = document.createElement('div');
-      cab.style.height = '8mm';
-      cab.style.flex = '0 0 auto';
-
-      const miolo = document.createElement('div');
-      miolo.className = 'measure-miolo';
-
-      const rodape = document.createElement('div');
-      rodape.style.height = '8mm';
-      rodape.style.flex = '0 0 auto';
-
-      inner.appendChild(cab);
-      inner.appendChild(miolo);
-      inner.appendChild(rodape);
-      pagina.appendChild(inner);
-
-      return { pagina, miolo };
-    }
-
-    function criarMedidorLinha(tipo, texto, primeiraLinhaProsa=false){
-      const el = document.createElement('div');
-      el.style.whiteSpace = 'pre-wrap';
-      el.style.wordBreak = 'break-word';
-      el.style.margin = '0';
-      el.style.padding = '0';
-
-      if(tipo === 'titulo'){
-        el.style.fontFamily = fonteTitulos.value;
-        el.style.fontSize = tamTitulos.value + 'pt';
-        el.style.lineHeight = '1.3';
-        el.style.textAlign = 'center';
-        el.style.fontWeight = '700';
-        el.style.marginTop = '4mm';
-        el.style.marginBottom = '3mm';
-      } else if(tipo === 'subtitulo'){
-        el.style.fontFamily = fonteTitulos.value;
-        el.style.fontSize = Math.max(10, Number(tamTitulos.value) - 2) + 'pt';
-        el.style.lineHeight = '1.3';
-        el.style.textAlign = 'center';
-        el.style.fontStyle = 'italic';
-      } else if(tipo === 'poesia'){
-        el.style.fontFamily = fontePoesia.value;
-        el.style.fontSize = tamPoesia.value + 'pt';
-        el.style.lineHeight = entrelinhaPoesia.value;
-        el.style.textAlign = 'left';
-      } else if(tipo === 'dialogo'){
-        el.style.fontFamily = fonteProsa.value;
-        el.style.fontSize = tamDialogo.value + 'pt';
-        el.style.lineHeight = entrelinhaProsa.value;
-        el.style.textAlign = 'left';
-        el.style.paddingLeft = '4mm';
-        el.style.hyphens = 'none';
-      } else if(tipo === 'ornamento'){
-        el.style.fontFamily = fonteTitulos.value;
-        el.style.fontSize = Math.max(10, Number(tamTitulos.value) - 1) + 'pt';
-        el.style.lineHeight = '1.2';
-        el.style.textAlign = 'center';
-        el.style.margin = '3mm 0';
-      } else if(tipo === 'vazio'){
-        el.style.minHeight = '4mm';
-      } else {
-        el.style.fontFamily = fonteProsa.value;
-        el.style.fontSize = tamProsa.value + 'pt';
-        el.style.lineHeight = entrelinhaProsa.value;
-        el.style.textAlign = 'justify';
-        el.style.textIndent = primeiraLinhaProsa ? '6mm' : '0';
-        if(hifenizacaoProsa.value === 'sim'){
-          el.style.hyphens = 'auto';
-          el.lang = 'pt-BR';
-        } else {
-          el.style.hyphens = 'none';
-        }
-      }
-
-      el.textContent = texto || '';
-      return el;
-    }
-
-    function quebrarParagrafoEmLinhas(texto, miolo){
-      const palavras = texto.trim().split(/\s+/).filter(Boolean);
-      if(!palavras.length) return [''];
-
-      const linhas = [];
-      let atual = '';
-
-      for(const palavra of palavras){
-        const tentativa = atual ? atual + ' ' + palavra : palavra;
-        const el = criarMedidorLinha('prosa', tentativa, linhas.length === 0);
-        miolo.innerHTML = '';
-        miolo.appendChild(el);
-
-        if(el.scrollHeight > el.clientHeight + 4 || el.scrollWidth > miolo.clientWidth + 1){
-          if(atual){
-            linhas.push(atual);
-            atual = palavra;
-          } else {
-            linhas.push(tentativa);
-            atual = '';
-          }
-        } else {
-          atual = tentativa;
-        }
-      }
-
-      if(atual) linhas.push(atual);
-      return linhas;
-    }
-
-    function expandirItensParaFluxo(baseItems){
-      const estrutura = criarPaginaMedidora();
-      medidor.innerHTML = '';
-      medidor.appendChild(estrutura.pagina);
-      const miolo = estrutura.miolo;
-      const fluxo = [];
-
-      for(const item of baseItems){
-        if(item.tipo === 'prosa' && item.texto.trim()){
-          const linhas = quebrarParagrafoEmLinhas(item.texto, miolo);
-          linhas.forEach((linha, idx) => {
-            fluxo.push({
-              id: item.id,
-              parentId: item.id,
-              texto: linha,
-              tipo: idx === 0 ? 'prosa' : 'prosa-cont',
-              originalTipo: 'prosa',
-              manual: item.manual,
-              pageBreakBefore: idx === 0 ? item.pageBreakBefore : false,
-              segmentIndex: idx,
-              segmentTotal: linhas.length
-            });
-          });
-        } else {
-          fluxo.push({
-            id: item.id,
-            parentId: item.id,
-            texto: item.texto,
-            tipo: item.tipo,
-            originalTipo: item.tipo,
-            manual: item.manual,
-            pageBreakBefore: item.pageBreakBefore,
-            segmentIndex: 0,
-            segmentTotal: 1
-          });
-        }
-      }
-
-      medidor.innerHTML = '';
-      return fluxo;
-    }
-
-    function paginarPorMedicaoReal(){
-      paginas = [];
-
-      const estrutura = criarPaginaMedidora();
-      medidor.innerHTML = '';
-      medidor.appendChild(estrutura.pagina);
-
-      const mioloMedidor = estrutura.miolo;
-      const alturaDisponivel = mioloMedidor.clientHeight;
-      const fluxo = expandirItensParaFluxo(linhasProcessadas);
-
-      let pagina = [];
-      let i = 0;
-
-      while(i < fluxo.length){
-        const item = fluxo[i];
-
-        if(item.pageBreakBefore && pagina.length > 0){
-          paginas.push(pagina);
-          pagina = [];
-          mioloMedidor.innerHTML = '';
-        }
-
-        if(item.originalTipo === 'prosa'){
-          const grupo = [];
-          while(i < fluxo.length && fluxo[i].parentId === item.parentId && fluxo[i].originalTipo === 'prosa'){
-            grupo.push(fluxo[i]);
-            i++;
+          if (block.length > 1 && avgLen > 85) {
+            alerts.push(`Bloco ${idx + 1}: bloco muito extenso para poesia, parece prosa quebrada.`);
           }
 
-          let fit = 0;
-          mioloMedidor.innerHTML = '';
-          pagina.forEach(seg => mioloMedidor.appendChild(criarLinhaVisual(seg, false)));
-
-          for(let g = 0; g < grupo.length; g++){
-            const el = criarLinhaVisual(grupo[g], false);
-            mioloMedidor.appendChild(el);
-            if(mioloMedidor.scrollHeight <= alturaDisponivel + 1){
-              fit++;
-            } else {
-              mioloMedidor.removeChild(el);
-              break;
-            }
+          if (block.length === 1 && block[0].length < 20) {
+            alerts.push(`Bloco ${idx + 1}: linha muito curta isolada, revisar se é título ou verso solto.`);
           }
-
-          if(fit === grupo.length){
-            pagina.push(...grupo);
-            continue;
-          }
-
-          if(fit === 0){
-            if(pagina.length > 0){
-              paginas.push(pagina);
-              pagina = [];
-              mioloMedidor.innerHTML = '';
-              continue;
-            } else {
-              pagina.push(...grupo);
-              paginas.push(pagina);
-              pagina = [];
-              mioloMedidor.innerHTML = '';
-              continue;
-            }
-          }
-
-          if(fit < 2){
-            paginas.push(pagina);
-            pagina = [];
-            mioloMedidor.innerHTML = '';
-            continue;
-          }
-
-          const restante = grupo.length - fit;
-          if(restante < 2 && grupo.length >= 4){
-            fit = Math.max(2, fit - (2 - restante));
-          }
-
-          pagina.push(...grupo.slice(0, fit));
-          paginas.push(pagina);
-          pagina = [];
-          mioloMedidor.innerHTML = '';
-
-          const sobra = grupo.slice(fit);
-          fluxo.splice(i, 0, ...sobra);
-          continue;
-        }
-
-        const el = criarLinhaVisual(item, false);
-        mioloMedidor.innerHTML = '';
-        pagina.forEach(seg => mioloMedidor.appendChild(criarLinhaVisual(seg, false)));
-        mioloMedidor.appendChild(el);
-
-        if(mioloMedidor.scrollHeight <= alturaDisponivel + 1){
-          pagina.push(item);
-          i++;
-        } else {
-          if(pagina.length === 0){
-            pagina.push(item);
-            i++;
-          }
-          paginas.push(pagina);
-          pagina = [];
-          mioloMedidor.innerHTML = '';
-        }
-      }
-
-      if(pagina.length === 0){
-        pagina.push({
-          id: novoId(),
-          parentId: null,
-          texto:'',
-          tipo:'vazio',
-          originalTipo:'vazio',
-          manual:false,
-          pageBreakBefore:false,
-          segmentIndex:0,
-          segmentTotal:1
         });
-      }
 
-      paginas.push(pagina);
-      medidor.innerHTML = '';
-      if(paginaAtual >= paginas.length) paginaAtual = paginas.length - 1;
-      if(paginaAtual < 0) paginaAtual = 0;
+        return alerts;
+      },
+
+      process(text = "", options = {}) {
+        const correctionLevel = options.correctionLevel || "light";
+        const corrected = correctionLevel === "medium"
+          ? this.applyMediumCorrections(text)
+          : this.applyLightCorrections(text);
+
+        const classification = this.classify(corrected);
+        const alerts = this.detectAlerts(corrected);
+
+        return {
+          originalText: this.normalizeText(text),
+          processedText: corrected,
+          wordCount: this.countWords(corrected),
+          ...classification,
+          alerts
+        };
+      }
+    };
+
+    const bookTitle = document.getElementById("bookTitle");
+    const bookSubtitle = document.getElementById("bookSubtitle");
+    const hybridFormat = document.getElementById("hybridFormat");
+    const fontFamily = document.getElementById("fontFamily");
+    const fontSize = document.getElementById("fontSize");
+    const lineHeight = document.getElementById("lineHeight");
+    const hybridMode = document.getElementById("hybridMode");
+    const blockSpace = document.getElementById("blockSpace");
+    const correctionLevel = document.getElementById("correctionLevel");
+    const sourceText = document.getElementById("sourceText");
+
+    const renderBtn = document.getElementById("renderBtn");
+    const clearBtn = document.getElementById("clearBtn");
+
+    const pagePreview = document.getElementById("pagePreview");
+    const alertsList = document.getElementById("alertsList");
+
+    const formatStat = document.getElementById("formatStat");
+    const fontStat = document.getElementById("fontStat");
+    const blocksStat = document.getElementById("blocksStat");
+    const structureStat = document.getElementById("structureStat");
+
+    const pillBlocks = document.getElementById("pillBlocks");
+    const pillLines = document.getElementById("pillLines");
+    const pillMode = document.getElementById("pillMode");
+
+    const statusBox = document.getElementById("statusBox");
+    const motorStatusBox = document.getElementById("motorStatusBox");
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
     }
 
-    function criarLinhaVisual(item, interativa=true){
-      const div = document.createElement('div');
-      div.className = 'linha-item ' + item.tipo + (item.manual ? ' manual' : '');
-      if(item.pageBreakBefore) div.classList.add('break-before');
+    function applyFormatSize() {
+      const format = hybridFormat.value;
 
-      div.dataset.id = item.parentId ?? item.id;
-      div.dataset.segment = item.segmentIndex ?? 0;
-      div.dataset.tipo = item.originalTipo || item.tipo;
-
-      if(item.tipo === 'vazio'){
-        div.innerHTML = '&nbsp;';
+      if (format === "a5") {
+        document.documentElement.style.setProperty("--page-w", "440px");
+        document.documentElement.style.setProperty("--page-h", "640px");
+      } else if (format === "14x21") {
+        document.documentElement.style.setProperty("--page-w", "440px");
+        document.documentElement.style.setProperty("--page-h", "640px");
+      } else if (format === "16x23") {
+        document.documentElement.style.setProperty("--page-w", "480px");
+        document.documentElement.style.setProperty("--page-h", "700px");
       } else {
-        div.textContent = item.texto;
-      }
-
-      aplicarEstiloLinha(div, item);
-
-      if(interativa){
-        div.addEventListener('click', () => selecionarLinha(item.parentId ?? item.id));
-        div.addEventListener('dblclick', () => iniciarEdicaoInline(item.parentId ?? item.id));
-      }
-
-      return div;
-    }
-
-    function aplicarEstiloLinha(div, item){
-      if(item.tipo === 'titulo'){
-        div.style.fontFamily = fonteTitulos.value;
-        div.style.fontSize = tamTitulos.value + 'pt';
-        div.style.lineHeight = '1.3';
-      } else if(item.tipo === 'subtitulo'){
-        div.style.fontFamily = fonteTitulos.value;
-        div.style.fontSize = Math.max(10, Number(tamTitulos.value) - 2) + 'pt';
-        div.style.lineHeight = '1.3';
-      } else if(item.type === 'poesia' || item.tipo === 'poesia'){
-        div.style.fontFamily = fontePoesia.value;
-        div.style.fontSize = tamPoesia.value + 'pt';
-        div.style.lineHeight = entrelinhaPoesia.value;
-      } else if(item.tipo === 'dialogo'){
-        div.style.fontFamily = fonteProsa.value;
-        div.style.fontSize = tamDialogo.value + 'pt';
-        div.style.lineHeight = entrelinhaProsa.value;
-      } else if(item.tipo === 'ornamento'){
-        div.style.fontFamily = fonteTitulos.value;
-        div.style.fontSize = Math.max(10, Number(tamTitulos.value) - 1) + 'pt';
-        div.style.lineHeight = '1.2';
-      } else if(item.tipo === 'prosa' || item.tipo === 'prosa-cont'){
-        div.style.fontFamily = fonteProsa.value;
-        div.style.fontSize = tamProsa.value + 'pt';
-        div.style.lineHeight = entrelinhaProsa.value;
-        if(hifenizacaoProsa.value === 'sim'){
-          div.style.hyphens = 'auto';
-          div.style.webkitHyphens = 'auto';
-          div.style.msHyphens = 'auto';
-          div.lang = 'pt-BR';
-        } else {
-          div.style.hyphens = 'none';
-          div.style.webkitHyphens = 'none';
-          div.style.msHyphens = 'none';
-        }
-      }
-
-      if(item.tipo === 'vazio'){
-        div.style.minHeight = '4mm';
+        document.documentElement.style.setProperty("--page-w", "480px");
+        document.documentElement.style.setProperty("--page-h", "700px");
       }
     }
 
-    function renderPaginas(){
-      spreadsEl.innerHTML = '';
+    function classifyBlockView(block, mode, globalMode) {
+      const avgLen = block.reduce((sum, line) => sum + line.length, 0) / block.length;
 
-      if(modoVisualizacao.value === 'pagina'){
-        const pageItems = paginas[paginaAtual] || [];
-        const spread = document.createElement('div');
-        spread.className = 'spread';
-        spread.appendChild(criarPaginaCompleta(pageItems, paginaAtual + 1));
-        spreadsEl.appendChild(spread);
+      if (globalMode === "prose-first") {
+        return avgLen < 45 && block.length > 1 ? "poetry" : "prose";
+      }
+
+      if (globalMode === "poetry-first") {
+        return avgLen > 80 && block.length === 1 ? "prose" : "poetry";
+      }
+
+      return (block.length > 1 && avgLen < 55) ? "poetry" : "prose";
+    }
+
+    function renderHybridPage() {
+      applyFormatSize();
+
+      const result = MotorLapidar.process(sourceText.value, {
+        correctionLevel: correctionLevel.value
+      });
+
+      const blocks = MotorLapidar.splitBlocks(result.processedText);
+
+      formatStat.textContent = hybridFormat.options[hybridFormat.selectedIndex].text;
+      fontStat.innerHTML = `${fontFamily.options[fontFamily.selectedIndex].text}<br>${fontSize.value} pt`;
+      blocksStat.textContent = String(result.blocks);
+      structureStat.textContent =
+        result.primary === "híbrido" ? "Híbrido"
+        : result.primary === "prosa" ? "Prosa"
+        : result.primary === "poesia" ? "Poesia"
+        : "Aguardando texto";
+
+      pillBlocks.textContent = `Blocos: ${result.blocks}`;
+      pillLines.textContent = `Linhas: ${result.totalLines}`;
+      pillMode.textContent = `Modo: ${result.primary}`;
+
+      pagePreview.style.fontFamily = fontFamily.value;
+      pagePreview.style.fontSize = fontSize.value + "pt";
+      pagePreview.style.lineHeight = lineHeight.value;
+
+      let html = "";
+      const title = bookTitle.value.trim();
+      const subtitle = bookSubtitle.value.trim();
+
+      if (title) {
+        html += `<h1 class="page-title">${escapeHtml(title)}</h1>`;
+      }
+
+      if (subtitle) {
+        html += `<div class="page-subtitle">${escapeHtml(subtitle)}</div>`;
+      }
+
+      blocks.forEach((block) => {
+        const viewType = classifyBlockView(block, result.primary, hybridMode.value);
+        const cls = viewType === "poetry" ? "hybrid-block poetry" : "hybrid-block prose";
+        html += `<div class="${cls}" style="margin-bottom:${blockSpace.value}px">${escapeHtml(block.join("\n"))}</div>`;
+      });
+
+      if (!html.trim()) {
+        html = `<h1 class="page-title">Prévia aparecerá aqui</h1>`;
+      }
+
+      pagePreview.innerHTML = html;
+
+      if (result.alerts.length) {
+        alertsList.innerHTML = result.alerts.map(alert => `<li>${escapeHtml(alert)}</li>`).join("");
+        motorStatusBox.textContent = `Motor ativo • ${result.alerts.length} alerta(s) encontrado(s).`;
       } else {
-        if(paginaAtual === 0){
-          const spread = document.createElement('div');
-          spread.className = 'spread';
-          spread.appendChild(criarPaginaCompleta(paginas[0] || [], 1));
-          spreadsEl.appendChild(spread);
-        } else {
-          const esquerda = paginaAtual % 2 === 0 ? paginaAtual - 1 : paginaAtual;
-          const direita = esquerda + 1;
-
-          const spread = document.createElement('div');
-          spread.className = 'spread';
-          if(paginas[esquerda]) spread.appendChild(criarPaginaCompleta(paginas[esquerda], esquerda + 1));
-          if(paginas[direita]) spread.appendChild(criarPaginaCompleta(paginas[direita], direita + 1));
-          spreadsEl.appendChild(spread);
-        }
+        alertsList.innerHTML = `<li>Nenhum alerta crítico encontrado.</li>`;
+        motorStatusBox.textContent = "Motor ativo • Sem alertas críticos.";
       }
 
-      destacarSelecionadaNaPagina();
-      requestAnimationFrame(scrollPaginaAtualParaVista);
+      statusBox.textContent = "Prévia híbrida atualizada com sucesso.";
     }
 
-    function criarPaginaCompleta(items, numeroPagina){
-      const page = document.createElement('div');
-      page.className = `pagina ${getPageClass()} ${getMargemClass()}`;
-      page.dataset.pagina = numeroPagina - 1;
-
-      const inner = document.createElement('div');
-      inner.className = 'pagina-inner';
-
-      const cab = document.createElement('div');
-      cab.className = 'cabecalho-pagina';
-      cab.innerHTML = `<span>Centauro</span><span>Página ${numeroPagina}</span>`;
-
-      const miolo = document.createElement('div');
-      miolo.className = 'miolo';
-
-      items.forEach(item => miolo.appendChild(criarLinhaVisual(item, true)));
-
-      const rodape = document.createElement('div');
-      rodape.className = 'rodape-pagina';
-      rodape.textContent = String(numeroPagina);
-
-      inner.appendChild(cab);
-      inner.appendChild(miolo);
-      inner.appendChild(rodape);
-      page.appendChild(inner);
-
-      return page;
-    }
-
-    function atualizarMetas(){
-      metaFormato.textContent = `Formato ${formato.value}`;
-
-      if(modoVisualizacao.value === 'pagina'){
-        metaPagina.textContent = `Página técnica ${paginaAtual + 1} de ${paginas.length}`;
-      } else {
-        if(paginaAtual === 0){
-          metaPagina.textContent = `Página técnica 1 de ${paginas.length}`;
-        } else {
-          const esquerda = paginaAtual % 2 === 0 ? paginaAtual : paginaAtual + 1;
-          const primeira = Math.min(esquerda, paginas.length);
-          const segunda = Math.min(esquerda + 1, paginas.length);
-          metaPagina.textContent = `Folha técnica ${primeira}-${segunda} de ${paginas.length}`;
-        }
-      }
-    }
-
-    function aplicarEscalaVisual(){
-      let escala = 1;
-
-      if(modoEscala.value === 'ajustar'){
-        const pages = spreadsEl.querySelectorAll('.pagina');
-        const first = pages[0];
-        if(first){
-          const larguraPagina = first.offsetWidth;
-          const larguraDisponivel = visorPaginas.clientWidth - 30;
-          let larguraTotal = larguraPagina;
-          if(modoVisualizacao.value === 'livro' && pages.length >= 2){
-            larguraTotal = (larguraPagina * 2) + 18;
-          }
-          escala = Math.min(1, larguraDisponivel / larguraTotal);
-        }
-      }
-
-      spreadsEl.style.transform = `scale(${escala})`;
-    }
-
-    function localizarPaginaDoItem(itemId){
-      for(let p = 0; p < paginas.length; p++){
-        if((paginas[p] || []).some(seg => (seg.parentId ?? seg.id) === itemId)){
-          return p;
-        }
-      }
-      return 0;
-    }
-
-    function aplicarEstrutura(manterContexto=true){
-      const itemContexto = linhaSelecionadaId;
-      linhasProcessadas = gerarEstruturaComOrnamentos(linhasBase);
-      paginarPorMedicaoReal();
-
-      if(manterContexto && itemContexto !== null){
-        paginaAtual = localizarPaginaDoItem(itemContexto);
-      } else {
-        paginaAtual = Math.max(0, Math.min(paginaAtual, paginas.length - 1));
-      }
-
-      renderPaginas();
-      atualizarMetas();
-      aplicarEscalaVisual();
-    }
-
-    function scrollPaginaAtualParaVista(){
-      const alvo = spreadsEl.querySelector(`.pagina[data-pagina="${paginaAtual}"]`);
-      if(alvo){
-        alvo.scrollIntoView({ block:'nearest', inline:'nearest' });
-      }
-    }
-
-    function buscarItemBasePorId(id){
-      return linhasBase.find(item => item.id === id) || null;
-    }
-
-    function selecionarLinha(id){
-      linhaSelecionadaId = id;
-      const item = buscarItemBasePorId(id);
-      if(!item) return;
-      statusEdicao.textContent = `Linha selecionada: ${item.tipo}. Duplo clique para editar direto nela.`;
-      destacarSelecionadaNaPagina();
-    }
-
-    function destacarSelecionadaNaPagina(){
-      document.querySelectorAll('.linha-item').forEach(el => el.classList.remove('selecionado'));
-      if(linhaSelecionadaId === null) return;
-      document.querySelectorAll(`.linha-item[data-id="${linhaSelecionadaId}"]`).forEach(el => el.classList.add('selecionado'));
-    }
-
-    function salvarLinhaSelecionada(){
-      if(linhaSelecionadaId === null) return;
-      if(editandoId !== null){
-        finalizarEdicaoInline(true);
-      } else {
-        const item = buscarItemBasePorId(linhaSelecionadaId);
-        if(item){
-          item.manual = true;
-          aplicarEstrutura(true);
-          reconstruirEntradaAPartirDasLinhas();
-          selecionarLinha(linhaSelecionadaId);
-        }
-      }
-    }
-
-    function reclassificarSelecionada(tipo){
-      if(linhaSelecionadaId === null) return;
-      const item = buscarItemBasePorId(linhaSelecionadaId);
-      if(!item) return;
-
-      item.tipo = tipo;
-      item.manual = true;
-
-      if(tipo === 'ornamento' && !item.texto.trim()){
-        item.texto = ornamentoTipo.value;
-      }
-
-      aplicarEstrutura(true);
-      reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(linhaSelecionadaId);
-    }
-
-    function inserirLinhaAbaixo(){
-      if(linhaSelecionadaId === null) return;
-      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
-      if(index === -1) return;
-
-      const novo = criarItem('', 'vazio', true);
-      linhasBase.splice(index + 1, 0, novo);
-      linhaSelecionadaId = novo.id;
-      aplicarEstrutura(true);
-      reconstruirEntradaAPartirDasLinhas();
-      iniciarEdicaoInline(novo.id);
-    }
-
-    function excluirLinhaSelecionada(){
-      if(linhaSelecionadaId === null) return;
-      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
-      if(index === -1) return;
-
-      const fallback = linhasBase[index - 1]?.id ?? linhasBase[index + 1]?.id ?? null;
-      linhasBase.splice(index, 1);
-      linhaSelecionadaId = fallback;
-      aplicarEstrutura(true);
-      reconstruirEntradaAPartirDasLinhas();
-      statusEdicao.textContent = 'Linha removida.';
-    }
-
-    function inserirOrnamentoManual(){
-      if(linhaSelecionadaId === null) return;
-      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
-      if(index === -1) return;
-
-      const novo = criarItem(ornamentoTipo.value, 'ornamento', true);
-      linhasBase.splice(index + 1, 0, novo);
-      linhaSelecionadaId = novo.id;
-      aplicarEstrutura(true);
-      reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(novo.id);
-    }
-
-    function unirComLinhaAcima(){
-      if(linhaSelecionadaId === null) return;
-      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
-      if(index <= 0) return;
-
-      const atual = linhasBase[index];
-      const acima = linhasBase[index - 1];
-
-      acima.texto = (acima.texto.replace(/\s+$/,'') + ' ' + atual.texto.replace(/^\s+/,'')).trim();
-      acima.manual = true;
-      linhasBase.splice(index, 1);
-      linhaSelecionadaId = acima.id;
-
-      aplicarEstrutura(true);
-      reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(acima.id);
-    }
-
-    function unirComLinhaAbaixo(){
-      if(linhaSelecionadaId === null) return;
-      const index = linhasBase.findIndex(item => item.id === linhaSelecionadaId);
-      if(index === -1 || index >= linhasBase.length - 1) return;
-
-      const atual = linhasBase[index];
-      const abaixo = linhasBase[index + 1];
-
-      atual.texto = (atual.texto.replace(/\s+$/,'') + ' ' + abaixo.texto.replace(/^\s+/,'')).trim();
-      atual.manual = true;
-      linhasBase.splice(index + 1, 1);
-      linhaSelecionadaId = atual.id;
-
-      aplicarEstrutura(true);
-      reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(atual.id);
-    }
-
-    function iniciarNovaPaginaAqui(){
-      if(linhaSelecionadaId === null) return;
-      const item = buscarItemBasePorId(linhaSelecionadaId);
-      if(!item) return;
-      item.pageBreakBefore = true;
-      item.manual = true;
-      aplicarEstrutura(true);
-      reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(item.id);
-    }
-
-    function removerQuebra(){
-      if(linhaSelecionadaId === null) return;
-      const item = buscarItemBasePorId(linhaSelecionadaId);
-      if(!item) return;
-      item.pageBreakBefore = false;
-      item.manual = true;
-      aplicarEstrutura(true);
-      reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(item.id);
-    }
-
-    function reconstruirEntradaAPartirDasLinhas(){
-      entradaHibrida.value = linhasBase.map(item => item.texto).join('\n');
-      ultimoTextoLido = entradaHibrida.value.replace(/\r/g,'');
-    }
-
-    function iniciarEdicaoInline(id){
-      if(editandoId !== null) finalizarEdicaoInline(true);
-
-      const item = buscarItemBasePorId(id);
-      const el = document.querySelector(`.linha-item[data-id="${id}"]`);
-      if(!item || !el) return;
-
-      selecionarLinha(id);
-      editandoId = id;
-      textoAntesEdicao = item.texto;
-
-      el.classList.add('editando');
-      el.contentEditable = 'true';
-      el.spellcheck = false;
-      el.focus();
-      colocarCursorNoFim(el);
-      statusEdicao.textContent = 'Editando direto na prévia. Enter salva. Esc cancela.';
-
-      el.addEventListener('keydown', tratarTeclaEdicao);
-      el.addEventListener('blur', tratarBlurEdicao);
-    }
-
-    function tratarTeclaEdicao(e){
-      if(editandoId === null) return;
-
-      if(e.key === 'Enter'){
-        e.preventDefault();
-        finalizarEdicaoInline(true);
-      }
-
-      if(e.key === 'Escape'){
-        e.preventDefault();
-        finalizarEdicaoInline(false);
-      }
-    }
-
-    function tratarBlurEdicao(){
-      if(editandoId !== null) finalizarEdicaoInline(true);
-    }
-
-    function finalizarEdicaoInline(salvar){
-      const id = editandoId;
-      if(id === null) return;
-
-      const item = buscarItemBasePorId(id);
-      const el = document.querySelector(`.linha-item[data-id="${id}"]`);
-      if(!item || !el){
-        editandoId = null;
-        return;
-      }
-
-      el.removeEventListener('keydown', tratarTeclaEdicao);
-      el.removeEventListener('blur', tratarBlurEdicao);
-      el.contentEditable = 'false';
-      el.classList.remove('editando');
-
-      if(salvar){
-        item.texto = limparTextoVisual(el.innerText || '');
-        item.manual = true;
-        if(item.texto === '') item.tipo = 'vazio';
-      } else {
-        item.texto = textoAntesEdicao;
-      }
-
-      editandoId = null;
-      textoAntesEdicao = '';
-      aplicarEstrutura(true);
-      reconstruirEntradaAPartirDasLinhas();
-      selecionarLinha(id);
-    }
-
-    function limparTextoVisual(txt){
-      return txt.replace(/\u00A0/g, ' ').replace(/\r/g, '').trimEnd();
-    }
-
-    function colocarCursorNoFim(el){
-      const range = document.createRange();
-      const sel = window.getSelection();
-      range.selectNodeContents(el);
-      range.collapse(false);
-      sel.removeAllRanges();
-      sel.addRange(range);
-    }
-
-    function scheduleAutoParse(){
-      clearTimeout(autoTimer);
-      autoTimer = setTimeout(() => {
-        const atual = entradaHibrida.value.replace(/\r/g,'');
-        if(atual !== ultimoTextoLido){
-          parseEntrada(true);
-        }
-      }, 250);
-    }
-
-    function limparTudo(){
-      entradaHibrida.value = '';
-      ultimoTextoLido = '';
-      linhasBase = [criarItem('', 'vazio', false)];
-      linhaSelecionadaId = null;
-      editandoId = null;
-      paginaAtual = 0;
-      aplicarEstrutura(false);
-      statusEdicao.textContent = 'Tudo limpo. Agora cole o novo texto.';
-    }
-
-    function paginaAnteriorFunc(){
-      if(modoVisualizacao.value === 'pagina'){
-        if(paginaAtual > 0) paginaAtual--;
-      } else {
-        if(paginaAtual === 0) return;
-        paginaAtual = Math.max(0, paginaAtual - 2);
-      }
-      renderPaginas();
-      atualizarMetas();
-      aplicarEscalaVisual();
-    }
-
-    function proximaPaginaFunc(){
-      if(modoVisualizacao.value === 'pagina'){
-        if(paginaAtual < paginas.length - 1) paginaAtual++;
-      } else {
-        if(paginaAtual === 0){
-          if(paginas.length > 1) paginaAtual = 1;
-        } else {
-          paginaAtual = Math.min(paginas.length - 1, paginaAtual + 2);
-        }
-      }
-      renderPaginas();
-      atualizarMetas();
-      aplicarEscalaVisual();
-    }
-
-    document.getElementById('btnAplicar').addEventListener('click', () => aplicarEstrutura(true));
-    document.getElementById('btnCarregarPreview').addEventListener('click', () => parseEntrada(true));
-    document.getElementById('btnLimparTudo').addEventListener('click', limparTudo);
-
-    document.getElementById('btnSalvarLinha').addEventListener('click', salvarLinhaSelecionada);
-    document.getElementById('btnProsa').addEventListener('click', () => reclassificarSelecionada('prosa'));
-    document.getElementById('btnDialogo').addEventListener('click', () => reclassificarSelecionada('dialogo'));
-    document.getElementById('btnPoesia').addEventListener('click', () => reclassificarSelecionada('poesia'));
-    document.getElementById('btnTitulo').addEventListener('click', () => reclassificarSelecionada('titulo'));
-    document.getElementById('btnSubtitulo').addEventListener('click', () => reclassificarSelecionada('subtitulo'));
-    document.getElementById('btnInserirAbaixo').addEventListener('click', inserirLinhaAbaixo);
-    document.getElementById('btnExcluirLinha').addEventListener('click', excluirLinhaSelecionada);
-    document.getElementById('btnInserirOrnamentoManual').addEventListener('click', inserirOrnamentoManual);
-    document.getElementById('btnUnirAcima').addEventListener('click', unirComLinhaAcima);
-    document.getElementById('btnUnirAbaixo').addEventListener('click', unirComLinhaAbaixo);
-    document.getElementById('btnNovaPaginaAqui').addEventListener('click', iniciarNovaPaginaAqui);
-    document.getElementById('btnRemoverQuebra').addEventListener('click', removerQuebra);
-
-    document.getElementById('paginaAnterior').addEventListener('click', paginaAnteriorFunc);
-    document.getElementById('proximaPagina').addEventListener('click', proximaPaginaFunc);
+    renderBtn.addEventListener("click", renderHybridPage);
+
+    clearBtn.addEventListener("click", () => {
+      sourceText.value = "";
+      renderHybridPage();
+    });
 
     [
-      formato, fonteProsa, fontePoesia, fonteTitulos, tamProsa, tamPoesia,
-      tamTitulos, tamDialogo, entrelinhaProsa, entrelinhaPoesia,
-      margens, hifenizacaoProsa, ornamentoModo, ornamentoTipo,
-      modoEscala, modoVisualizacao
-    ].forEach(campo => {
-      campo.addEventListener('change', () => {
-        aplicarEstrutura(true);
-      });
+      bookTitle, bookSubtitle, hybridFormat, fontFamily,
+      fontSize, lineHeight, hybridMode, blockSpace, correctionLevel
+    ].forEach(el => {
+      el.addEventListener("change", renderHybridPage);
+      el.addEventListener("input", renderHybridPage);
     });
 
-    entradaHibrida.addEventListener('input', scheduleAutoParse);
-    entradaHibrida.addEventListener('paste', () => setTimeout(scheduleAutoParse, 20));
-    entradaHibrida.addEventListener('change', scheduleAutoParse);
+    sourceText.addEventListener("input", renderHybridPage);
 
-    window.addEventListener('resize', aplicarEscalaVisual);
-
-    document.addEventListener('keydown', (e) => {
-      if(editandoId !== null) return;
-
-      if(e.key === 'Delete' && linhaSelecionadaId !== null){
-        const item = buscarItemBasePorId(linhaSelecionadaId);
-        if(item && item.tipo === 'ornamento'){
-          excluirLinhaSelecionada();
-        }
-      }
-    });
-
-    parseEntrada(true);
+    renderHybridPage();
   </script>
 </body>
 </html>
