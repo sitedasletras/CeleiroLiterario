@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Qui(RON)xadá — Diagramador de Cordel</title>
+  <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
   <script src="motor_lapidar.js"></script>
   <style>
     :root{
@@ -145,14 +146,14 @@
       color:#63594f;
     }
 
-    .input,.select,.btn,.mini-btn{
+    .input,.select,.btn,.mini-btn,.file{
       width:100%;
       font-family:inherit;
       font-size:.97rem;
       border-radius:12px;
     }
 
-    .input,.select{
+    .input,.select,.file{
       border:1px solid #d8cdbf;
       background:#fff;
       color:#2b241f;
@@ -192,6 +193,7 @@
     .btn-earth{background:var(--earth-2);color:#fff}
     .btn-warn{background:var(--warn);color:#231d16}
     .btn-danger{background:var(--danger);color:#fff}
+    .btn-ok{background:var(--ok);color:#fff}
     .mini-btn.ok{background:var(--ok);color:#fff}
     .mini-btn.soft{background:#efe2bf;color:#2b241f}
 
@@ -578,6 +580,10 @@
       line-height:1.45;
     }
 
+    .print-sheet{
+      display:none;
+    }
+
     @media (max-width:1280px){
       .app{
         grid-template-columns:1fr;
@@ -632,6 +638,66 @@
         min-width:unset;
       }
     }
+
+    @media print{
+      body{
+        background:#fff;
+      }
+
+      .app{
+        display:none !important;
+      }
+
+      .print-sheet{
+        display:block;
+      }
+
+      .a4-sheet{
+        width:210mm;
+        height:297mm;
+        padding:12mm;
+        box-sizing:border-box;
+        page-break-after:always;
+        display:grid;
+        grid-template-rows:1fr 1fr;
+        gap:8mm;
+      }
+
+      .a4-row{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:8mm;
+      }
+
+      .mini-page{
+        border:1px solid #333;
+        overflow:hidden;
+        position:relative;
+        padding:6mm;
+        font-family:var(--preview-font-family);
+        font-size:9pt;
+        line-height:1.2;
+        background:#fff;
+      }
+
+      .mini-page .intertitle{
+        font-size:10pt;
+        margin-bottom:4mm;
+      }
+
+      .mini-page .editable-block{
+        margin:0 0 4mm 0;
+        padding:0;
+      }
+
+      .mini-page-number{
+        position:absolute;
+        right:3mm;
+        bottom:2mm;
+        font-size:8pt;
+        color:#333;
+      }
+    }
   </style>
 </head>
 <body>
@@ -640,6 +706,12 @@
       <h2>Qui(RON)xadá</h2>
 
       <div class="status" id="statusBox">Pronto para diagramar folheto de cordel.</div>
+
+      <div class="card">
+        <label for="fileInput"><strong>Upload da obra</strong></label>
+        <input class="file" id="fileInput" type="file" accept=".txt,.doc,.docx" />
+        <small>TXT, DOC e DOCX.</small>
+      </div>
 
       <div class="card">
         <label for="bookTitle"><strong>Título da obra</strong></label>
@@ -664,9 +736,9 @@
 
         <label for="fontFamily"><strong>Fonte</strong></label>
         <select class="select" id="fontFamily">
-          <option value="Georgia">Georgia</option>
+          <option value='Georgia, "Times New Roman", serif'>Georgia</option>
           <option value='"Times New Roman", serif'>Times New Roman</option>
-          <option value="Garamond, serif">Garamond</option>
+          <option value='Garamond, serif'>Garamond</option>
         </select>
 
         <label for="fontSize"><strong>Tamanho</strong></label>
@@ -684,6 +756,26 @@
           <option value="1.35">1.35</option>
           <option value="1.45">1.45</option>
         </select>
+      </div>
+
+      <div class="card">
+        <label for="versosPorEstrofe"><strong>Versos por estrofe</strong></label>
+        <select class="select" id="versosPorEstrofe">
+          <option value="6" selected>6 versos</option>
+          <option value="7">7 versos</option>
+          <option value="8">8 versos</option>
+          <option value="9">9 versos</option>
+          <option value="10">10 versos</option>
+        </select>
+
+        <label for="estrofesPorPagina"><strong>Estrofes por página</strong></label>
+        <select class="select" id="estrofesPorPagina">
+          <option value="4" selected>4 estrofes</option>
+          <option value="5">5 estrofes</option>
+          <option value="6">6 estrofes</option>
+        </select>
+
+        <small id="limitHint">O sistema ajusta automaticamente se a combinação ficar pesada demais.</small>
       </div>
 
       <div class="card">
@@ -706,6 +798,7 @@
       </div>
 
       <div class="card">
+        <button class="btn btn-earth" id="printBtn" type="button">Imprimir A4</button>
         <button class="btn btn-soft" id="clearBtn" type="button">Limpar obra</button>
         <a class="btn btn-warn" href="lapidar.html">Retornar</a>
         <a class="btn btn-danger" href="index.html">Sair do sistema</a>
@@ -717,7 +810,7 @@
         <div class="q-badge">Q</div>
         <div>
           <h1>Qui(RON)xadá — Diagramador de Cordel</h1>
-          <p>Paginação por sextilha, intertítulos preservados e edição direta dentro da prévia.</p>
+          <p>Paginação por estrofes, intertítulos preservados, edição direta na prévia e saída A4 para impressão.</p>
         </div>
       </section>
 
@@ -799,7 +892,7 @@
 
       <div class="card">
         <h3>Leitura estrutural</h3>
-        <p>Reconhece intertítulos, sextilhas e quebras suspeitas. Agora a correção acontece dentro do texto-base e a prévia pode ser editada.</p>
+        <p>Reconhece intertítulos, estrofes, sextilhas, quebras suspeitas e aplica limites editoriais para não deformar a página.</p>
       </div>
 
       <div class="card">
@@ -809,6 +902,8 @@
       </div>
     </aside>
   </div>
+
+  <div id="printSheets" class="print-sheet"></div>
 
   <script>
     const bookTitle = document.getElementById("bookTitle");
@@ -820,8 +915,13 @@
     const correctionLevel = document.getElementById("correctionLevel");
     const pageCount = document.getElementById("pageCount");
     const sourceText = document.getElementById("sourceText");
+    const versosPorEstrofe = document.getElementById("versosPorEstrofe");
+    const estrofesPorPagina = document.getElementById("estrofesPorPagina");
+    const limitHint = document.getElementById("limitHint");
+    const fileInput = document.getElementById("fileInput");
 
     const clearBtn = document.getElementById("clearBtn");
+    const printBtn = document.getElementById("printBtn");
     const prevSpreadBtn = document.getElementById("prevSpreadBtn");
     const nextSpreadBtn = document.getElementById("nextSpreadBtn");
 
@@ -842,6 +942,7 @@
     const alertsList = document.getElementById("alertsList");
     const statusBox = document.getElementById("statusBox");
     const motorStatusBox = document.getElementById("motorStatusBox");
+    const printSheets = document.getElementById("printSheets");
 
     let paginatedPages = [];
     let currentSpreadIndex = 0;
@@ -884,8 +985,28 @@
       document.documentElement.style.setProperty("--preview-line-height", lineHeight.value);
     }
 
-    function getSextilhasPerPage() {
-      return 4;
+    function computeAllowedEstrofes() {
+      const versos = Number(versosPorEstrofe.value);
+      let max = 6;
+
+      if (versos >= 10) max = 4;
+      else if (versos === 9) max = 4;
+      else if (versos === 8) max = 4;
+      else if (versos === 7) max = 5;
+      else max = 6;
+
+      if (cordelFormat.value === "10.5x15.5" && max > 5) max = 5;
+      if (cordelFormat.value === "11x16" && max > 5) max = 5;
+      if (cordelFormat.value === "13.5x19" && max < 4) max = 4;
+
+      let requested = Number(estrofesPorPagina.value);
+      if (requested > max) {
+        estrofesPorPagina.value = String(max);
+        requested = max;
+      }
+
+      limitHint.textContent = `Com ${versos} versos por estrofe, o máximo recomendado aqui é ${max} estrofes por página.`;
+      return requested;
     }
 
     function normalizeCordelUnits(text) {
@@ -910,17 +1031,16 @@
     }
 
     function paginateCordel(units) {
-      const sextilhasPerPage = getSextilhasPerPage();
+      const estrofesPagina = computeAllowedEstrofes();
       const pages = [];
-
       let currentPage = [];
-      let sextilhasCount = 0;
+      let estrofesCount = 0;
 
       function pushPage() {
         if (currentPage.length) {
           pages.push(currentPage);
           currentPage = [];
-          sextilhasCount = 0;
+          estrofesCount = 0;
         }
       }
 
@@ -928,7 +1048,7 @@
         const unit = units[i];
 
         if (unit.type === "intertitle") {
-          if (currentPage.length && sextilhasCount >= sextilhasPerPage) {
+          if (currentPage.length && estrofesCount >= estrofesPagina) {
             pushPage();
           }
           currentPage.push(unit);
@@ -936,11 +1056,11 @@
         }
 
         if (unit.type === "stanza") {
-          if (sextilhasCount >= sextilhasPerPage) {
+          if (estrofesCount >= estrofesPagina) {
             pushPage();
           }
           currentPage.push(unit);
-          sextilhasCount += 1;
+          estrofesCount += 1;
         }
       }
 
@@ -1135,13 +1255,30 @@
     }
 
     function renderAlerts(alerts) {
-      if (!alerts || !alerts.length) {
+      const extras = [];
+      const versos = Number(versosPorEstrofe.value);
+
+      currentUnits.forEach((unit, idx) => {
+        if (unit.type === "stanza" && unit.lines.length !== versos) {
+          extras.push({
+            kind: "stanza-size",
+            title: "Estrofe fora do padrão escolhido",
+            message: `Bloco ${idx + 1}: está com ${unit.lines.length} versos, mas o padrão escolhido é ${versos}.`,
+            snippet: unit.lines.join("\n"),
+            suggestion: "Revisar a estrofe ou ajustar o seletor de versos por estrofe."
+          });
+        }
+      });
+
+      const allAlerts = [...(alerts || []), ...extras];
+
+      if (!allAlerts.length) {
         alertsList.innerHTML = `<div class="footer-note">Nenhum alerta crítico encontrado.</div>`;
         motorStatusBox.textContent = "Motor ativo • Sem alertas críticos.";
         return;
       }
 
-      alertsList.innerHTML = alerts.map((alert, idx) => {
+      alertsList.innerHTML = allAlerts.map((alert, idx) => {
         let actions = "";
 
         if (alert.kind === "join-line") {
@@ -1173,7 +1310,116 @@
         `;
       }).join("");
 
-      motorStatusBox.textContent = `Motor ativo • ${alerts.length} alerta(s) encontrado(s).`;
+      motorStatusBox.textContent = `Motor ativo • ${allAlerts.length} alerta(s) encontrado(s).`;
+    }
+
+    async function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const name = file.name.toLowerCase();
+      statusBox.textContent = `Lendo arquivo: ${file.name}`;
+
+      try {
+        if (name.endsWith(".txt")) {
+          sourceText.value = await file.text();
+        } else if (name.endsWith(".docx")) {
+          const arrayBuffer = await file.arrayBuffer();
+          const result = await mammoth.extractRawText({ arrayBuffer });
+          sourceText.value = result.value || "";
+        } else if (name.endsWith(".doc")) {
+          const text = await readLegacyDocAsText(file);
+          sourceText.value = text;
+        } else {
+          statusBox.textContent = "Formato não suportado. Use TXT, DOC ou DOCX.";
+          return;
+        }
+
+        currentSpreadIndex = 0;
+        renderAll();
+        statusBox.textContent = `Arquivo carregado: ${file.name}`;
+      } catch (err) {
+        console.error(err);
+        statusBox.textContent = "Erro ao ler arquivo.";
+      }
+    }
+
+    function readLegacyDocAsText(file){
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function(e){
+          try{
+            const raw = e.target.result || '';
+            const cleaned = String(raw)
+              .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, ' ')
+              .replace(/[^\x20-\x7EÀ-ÿ\n\r\t]/g, ' ')
+              .replace(/[ ]{2,}/g, ' ')
+              .replace(/\r\n/g, '\n')
+              .replace(/\r/g, '\n')
+              .replace(/\n{3,}/g, '\n\n')
+              .trim();
+            resolve(cleaned);
+          } catch (err){
+            reject(err);
+          }
+        };
+        reader.onerror = reject;
+        reader.readAsText(file, 'latin1');
+      });
+    }
+
+    function buildPrintSheets() {
+      printSheets.innerHTML = "";
+      const totalPages = Number(pageCount.value);
+
+      for (let sheet = 1; sheet <= totalPages / 4; sheet++) {
+        const frontLeft = totalPages - (sheet - 1) * 2;
+        const frontRight = 1 + (sheet - 1) * 2;
+        const backLeft = 2 + (sheet - 1) * 2;
+        const backRight = totalPages - 1 - (sheet - 1) * 2;
+
+        const sheetNode = document.createElement("div");
+        sheetNode.className = "a4-sheet";
+
+        const front = document.createElement("div");
+        front.className = "a4-row";
+        front.appendChild(buildMiniPage(frontLeft));
+        front.appendChild(buildMiniPage(frontRight));
+
+        const back = document.createElement("div");
+        back.className = "a4-row";
+        back.appendChild(buildMiniPage(backLeft));
+        back.appendChild(buildMiniPage(backRight));
+
+        sheetNode.appendChild(front);
+        sheetNode.appendChild(back);
+        printSheets.appendChild(sheetNode);
+      }
+    }
+
+    function buildMiniPage(pageNumber) {
+      const mini = document.createElement("div");
+      mini.className = "mini-page";
+
+      const data = paginatedPages[pageNumber - 1];
+
+      if (!data) {
+        mini.innerHTML = `<div class="mini-page-number">${pageNumber}</div>`;
+        return mini;
+      }
+
+      let html = "";
+      data.forEach(item => {
+        if (item.type === "intertitle") {
+          html += `<div class="intertitle">${escapeHtml(item.text)}</div>`;
+        } else {
+          html += `<div class="editable-block stanza">${escapeHtml(item.lines.join("\n"))}</div>`;
+        }
+      });
+
+      html += `<div class="mini-page-number">${pageNumber}</div>`;
+      mini.innerHTML = html;
+      return mini;
     }
 
     function renderAll() {
@@ -1195,18 +1441,19 @@
       }
 
       formatStat.textContent = cordelFormat.options[cordelFormat.selectedIndex].text;
-      fontStat.innerHTML = `${fontFamily.options[fontFamily.selectedIndex].text}<br>${fontSize.value} pt`;
+      fontStat.innerHTML = `${fontFamily.options[fontFamily.selectedIndex].text.replace(", serif","").replace(/"/g,"")}<br>${fontSize.value} pt`;
       pagesUsedStat.textContent = String(contentPages.length);
       structureStat.textContent = `${totalFolheto} páginas`;
 
-      pillEstrofes.textContent = String(result.estrofes ?? 0);
-      pillSextilhas.textContent = String(result.sextilhas ?? 0);
+      pillEstrofes.textContent = String(currentUnits.filter(u => u.type === "stanza").length);
+      pillSextilhas.textContent = String(currentUnits.filter(u => u.type === "stanza" && u.lines.length === 6).length);
       pillModo.textContent = result.primary || "cordel";
       pillPaginas.textContent = String(contentPages.length);
 
       renderSpread();
       renderImposition(totalFolheto);
       renderAlerts(result.alerts || []);
+      buildPrintSheets();
 
       if (contentPages.length > totalFolheto) {
         statusBox.textContent = `Texto excedeu o folheto: usa ${contentPages.length} páginas, mas o folheto está em ${totalFolheto}.`;
@@ -1235,74 +1482,23 @@
       renderAll();
     });
 
+    printBtn.addEventListener("click", () => {
+      buildPrintSheets();
+      window.print();
+    });
+
+    fileInput.addEventListener("change", handleFileUpload);
+
     [
       bookTitle, bookSubtitle, cordelFormat, fontFamily,
-      fontSize, lineHeight, correctionLevel, pageCount
+      fontSize, lineHeight, correctionLevel, pageCount,
+      versosPorEstrofe, estrofesPorPagina
     ].forEach(el => {
       el.addEventListener("change", renderAll);
       el.addEventListener("input", renderAll);
     });
 
     sourceText.addEventListener("input", renderAll);
-
-    function normalizeCordelUnits(text) {
-      const rawBlocks = MotorLapidar.splitBlocks(text);
-      const result = [];
-
-      rawBlocks.forEach(block => {
-        if (block.length === 1 && MotorLapidar.isLikelyTitle(block[0])) {
-          result.push({
-            type: "intertitle",
-            text: block[0]
-          });
-        } else {
-          result.push({
-            type: "stanza",
-            lines: block
-          });
-        }
-      });
-
-      return result;
-    }
-
-    function paginateCordel(units) {
-      const sextilhasPerPage = 4;
-      const pages = [];
-      let currentPage = [];
-      let sextilhasCount = 0;
-
-      function pushPage() {
-        if (currentPage.length) {
-          pages.push(currentPage);
-          currentPage = [];
-          sextilhasCount = 0;
-        }
-      }
-
-      for (let i = 0; i < units.length; i++) {
-        const unit = units[i];
-
-        if (unit.type === "intertitle") {
-          if (currentPage.length && sextilhasCount >= sextilhasPerPage) {
-            pushPage();
-          }
-          currentPage.push(unit);
-          continue;
-        }
-
-        if (unit.type === "stanza") {
-          if (sextilhasCount >= sextilhasPerPage) {
-            pushPage();
-          }
-          currentPage.push(unit);
-          sextilhasCount += 1;
-        }
-      }
-
-      pushPage();
-      return pages;
-    }
 
     renderAll();
   </script>
