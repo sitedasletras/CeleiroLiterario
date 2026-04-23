@@ -21,12 +21,12 @@
       --warn:#b7921e;
       --danger:#b13a3a;
 
-      --card-radius:24px;
       --shadow:0 12px 28px rgba(71,45,24,.10);
+      --radius:22px;
 
       --page-w:416px;
       --page-h:605px;
-      --page-padding:34px;
+      --page-padding:30px;
     }
 
     *{box-sizing:border-box}
@@ -39,41 +39,181 @@
       font-family:Georgia,"Times New Roman",serif;
     }
 
-    body{
-      min-height:100vh;
-    }
+    body{min-height:100vh}
 
     .app{
-      width:min(1280px, calc(100vw - 16px));
+      width:min(1360px, calc(100vw - 16px));
       margin:8px auto;
       display:grid;
-      grid-template-columns:1.1fr .9fr;
+      grid-template-columns:240px minmax(0,1fr) 270px;
       gap:14px;
+      align-items:start;
     }
 
-    .panel,
-    .preview-shell,
+    .panel{
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      min-height:calc(100vh - 16px);
+      position:sticky;
+      top:8px;
+      align-self:start;
+      overflow:auto;
+    }
+
+    .left-panel{
+      background:linear-gradient(180deg,#6d431e 0%, #9a612f 58%, #c58a4a 100%);
+      color:#fff;
+      padding:16px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .right-panel{
+      background:linear-gradient(180deg,#f6efe5 0%, #efe4d4 100%);
+      border:1px solid #dccfbe;
+      color:#2b241f;
+      padding:16px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .panel h2{
+      margin:0;
+      font-size:1.7rem;
+      line-height:1;
+    }
+
+    .panel h3{
+      margin:0;
+      font-size:1rem;
+      line-height:1.2;
+    }
+
+    .status{
+      font-size:.92rem;
+      line-height:1.35;
+      border-radius:14px;
+      padding:10px 12px;
+      min-height:48px;
+    }
+
+    .left-panel .status{
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.15);
+      color:#fff8f0;
+    }
+
+    .right-panel .status{
+      background:#fffaf4;
+      border:1px solid #e5d8c8;
+      color:#5f5145;
+    }
+
+    .card{
+      border-radius:16px;
+      padding:10px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .left-panel .card{
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+    }
+
+    .right-panel .card{
+      background:#fcf7f0;
+      border:1px solid #e4d7c7;
+    }
+
+    label, small, p{
+      margin:0;
+      line-height:1.35;
+    }
+
+    .left-panel label,
+    .left-panel small,
+    .left-panel p{
+      color:#fff7ef;
+    }
+
+    .right-panel label,
+    .right-panel small,
+    .right-panel p{
+      color:#5f5246;
+    }
+
+    .input,.select,.file,.btn{
+      width:100%;
+      font-family:inherit;
+      font-size:.98rem;
+      border-radius:12px;
+    }
+
+    .input,.select,.file{
+      border:1px solid #d9cebf;
+      background:#fff;
+      color:#2b241f;
+      padding:10px;
+      outline:none;
+    }
+
+    .btn{
+      border:none;
+      padding:11px 12px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.12s ease;
+      text-decoration:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      min-height:48px;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+      opacity:.97;
+    }
+
+    .btn-soft{background:#efe2bf;color:#2b241f}
+    .btn-earth{background:var(--earth-2);color:#fff}
+    .btn-ok{background:var(--ok);color:#fff}
+    .btn-warn{background:var(--warn);color:#231d16}
+    .btn-danger{background:var(--danger);color:#fff}
+    .btn-light{background:#fff7ee;color:#6f4b2a;border:1px solid #e2d1bf}
+
+    .main{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      min-width:0;
+    }
+
+    .hero,
+    .stats-shell,
     .editor-shell,
-    .stats-shell{
+    .preview-shell,
+    .impose-shell{
       background:var(--paper);
       border:1px solid var(--line);
-      border-radius:var(--card-radius);
+      border-radius:var(--radius);
       box-shadow:var(--shadow);
     }
 
     .hero{
       background:linear-gradient(180deg,#efe5d4 0%, #eadfce 100%);
-      border:1px solid var(--line);
-      border-radius:30px;
-      padding:28px 24px;
-      box-shadow:var(--shadow);
+      padding:24px 22px;
       display:grid;
-      grid-template-columns:minmax(0,1fr) 230px;
-      gap:20px;
-      align-items:start;
+      grid-template-columns:minmax(0,1fr);
+      gap:14px;
     }
 
-    .hero-left{
+    .hero-top{
       display:grid;
       grid-template-columns:52px 1fr;
       gap:16px;
@@ -89,84 +229,25 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:2.35rem;
+      font-size:2.3rem;
       line-height:1;
       box-shadow:0 8px 18px rgba(140,90,43,.22);
     }
 
     .hero h1{
-      margin:0 0 10px 0;
-      font-size:clamp(2rem,4vw,3rem);
+      margin:0 0 8px 0;
+      font-size:clamp(2rem,4vw,2.8rem);
       line-height:1;
       color:#2a231d;
     }
 
     .hero p{
-      margin:0;
-      font-size:clamp(1rem,2.1vw,1.25rem);
       color:#4d4339;
-      line-height:1.35;
-    }
-
-    .hero-actions{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .btn{
-      appearance:none;
-      border:none;
-      border-radius:18px;
-      padding:16px 18px;
-      font-family:inherit;
-      font-size:1.05rem;
-      font-weight:700;
-      cursor:pointer;
-      transition:.15s ease;
-      text-decoration:none;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      min-height:72px;
-    }
-
-    .btn:hover{
-      transform:translateY(-1px);
-      opacity:.97;
-    }
-
-    .btn-soft{
-      background:#efe2bf;
-      color:#2b241f;
-    }
-
-    .btn-earth{
-      background:var(--earth-2);
-      color:#fff;
-    }
-
-    .btn-warn{
-      background:var(--warn);
-      color:#231d16;
-    }
-
-    .btn-danger{
-      background:var(--danger);
-      color:#fff;
-    }
-
-    .main-left,
-    .main-right{
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      min-width:0;
+      font-size:1.1rem;
     }
 
     .stats-shell{
-      padding:18px;
+      padding:16px;
       display:grid;
       grid-template-columns:repeat(4,minmax(0,1fr));
       gap:12px;
@@ -175,45 +256,56 @@
     .stat{
       background:#faf6ef;
       border:1px solid #e2d7c7;
-      border-radius:18px;
-      padding:16px 14px;
-      min-height:112px;
+      border-radius:16px;
+      padding:14px 12px;
+      min-height:100px;
     }
 
     .stat-label{
-      font-size:1rem;
+      font-size:.98rem;
       font-weight:700;
       color:#5d5145;
       margin-bottom:8px;
     }
 
     .stat-value{
-      font-size:1.1rem;
+      font-size:1.06rem;
       font-weight:700;
       color:#2d241d;
-      line-height:1.2;
+      line-height:1.25;
       word-break:break-word;
     }
 
-    .editor-shell{
-      padding:22px;
+    .editor-shell,.preview-shell,.impose-shell{
+      padding:18px;
       display:flex;
       flex-direction:column;
-      gap:14px;
+      gap:12px;
     }
 
-    .editor-shell h2,
-    .preview-shell h2{
+    .editor-shell h2,.preview-shell h2,.impose-shell h2{
       margin:0;
       font-size:1.2rem;
     }
 
+    .toolbar{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
     .editor-box{
       width:100%;
-      min-height:360px;
+      min-height:420px;
       border:1px solid #d9cebf;
-      border-radius:20px;
-      padding:20px;
+      border-radius:18px;
+      padding:18px;
       resize:vertical;
       background:#fff;
       color:#241e18;
@@ -228,74 +320,9 @@
       box-shadow:0 0 0 3px rgba(194,135,69,.10);
     }
 
-    .toolbar{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:10px;
-    }
-
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-
-    .field label{
-      font-size:.95rem;
-      font-weight:700;
-      color:#5a4c40;
-    }
-
-    .field select{
-      width:100%;
-      border:1px solid #d9cebf;
-      background:#fff;
-      border-radius:14px;
-      padding:12px 10px;
-      font-family:inherit;
-      font-size:1rem;
-      color:#2b241f;
-      outline:none;
-    }
-
-    .preview-shell{
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      min-height:100%;
-    }
-
-    .preview-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .pill-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
-      background:#f7efe3;
-      border:1px solid #e2d4c1;
-      color:#5c5045;
-      font-size:.94rem;
-      font-weight:700;
-    }
-
     .preview-stage{
       background:linear-gradient(180deg,#ede7db 0%, #e6dfd2 100%);
-      border-radius:22px;
+      border-radius:20px;
       border:1px solid #dcd2c2;
       min-height:720px;
       display:flex;
@@ -318,65 +345,100 @@
 
     .page-title{
       text-align:center;
-      margin:0 0 20px 0;
+      margin:0 0 18px 0;
       font-size:2rem;
       line-height:1.05;
     }
 
     .page-subtitle{
       text-align:center;
-      margin:-10px 0 24px 0;
-      font-size:1.1rem;
+      margin:-8px 0 22px 0;
+      font-size:1.08rem;
       color:#67584b;
     }
 
     .cordel-block{
-      margin:0 0 20px 0;
+      margin:0 0 18px 0;
       white-space:pre-line;
       line-height:1.42;
       font-size:1.16rem;
       text-align:left;
     }
 
-    .cordel-block + .cordel-block{
-      margin-top:12px;
+    .cordel-block strong{
+      display:block;
+      margin-bottom:6px;
     }
 
-    .analysis-box{
-      border-top:1px dashed #d9ccbc;
-      padding-top:14px;
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      background:#f7efe3;
+      border:1px solid #e2d4c1;
+      color:#5c5045;
+      font-size:.94rem;
+      font-weight:700;
+    }
+
+    .impose-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .sheet-card{
+      background:#faf6ef;
+      border:1px solid #e2d7c7;
+      border-radius:18px;
+      padding:14px;
       display:flex;
       flex-direction:column;
       gap:10px;
     }
 
-    .analysis-card{
-      background:#faf6ef;
-      border:1px solid #e3d7c7;
-      border-radius:18px;
-      padding:14px;
-    }
-
-    .analysis-card h3{
-      margin:0 0 8px 0;
+    .sheet-head{
       font-size:1rem;
-      color:#483d33;
+      font-weight:700;
+      color:#4d4339;
     }
 
-    .analysis-card p,
-    .analysis-card li{
-      margin:0;
-      color:#66594d;
-      line-height:1.45;
-      font-size:.96rem;
+    .sheet-layout{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
     }
 
-    .analysis-card ul{
-      margin:0;
-      padding-left:18px;
+    .sheet-side{
+      border:1px dashed #d3c4b0;
+      border-radius:14px;
+      padding:10px;
+      background:#fffdf8;
+      min-height:90px;
       display:flex;
       flex-direction:column;
-      gap:6px;
+      gap:8px;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+    }
+
+    .sheet-side span{
+      font-size:.9rem;
+      color:#7a6c60;
+    }
+
+    .sheet-side strong{
+      font-size:1.25rem;
+      color:#2b241f;
     }
 
     .footer-note{
@@ -385,33 +447,42 @@
       line-height:1.45;
     }
 
-    @media (max-width:1080px){
+    .analysis-list{
+      margin:0;
+      padding-left:18px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    @media (max-width:1160px){
       .app{
         grid-template-columns:1fr;
       }
-
-      .hero{
-        grid-template-columns:1fr;
-      }
-
-      .stats-shell{
-        grid-template-columns:repeat(2,minmax(0,1fr));
+      .panel{
+        position:relative;
+        top:auto;
+        min-height:auto;
       }
     }
 
     @media (max-width:760px){
       .app{
-        width:min(100vw - 8px, 1280px);
+        width:min(100vw - 8px, 1360px);
         gap:8px;
         margin:4px auto;
       }
 
-      .hero{
-        padding:20px 16px;
-        border-radius:24px;
+      .hero,.stats-shell,.editor-shell,.preview-shell,.impose-shell,
+      .panel{
+        border-radius:18px;
       }
 
-      .hero-left{
+      .hero{
+        padding:18px 14px;
+      }
+
+      .hero-top{
         grid-template-columns:40px 1fr;
         gap:12px;
         align-items:start;
@@ -420,7 +491,7 @@
       .q-badge{
         width:40px;
         height:70px;
-        font-size:1.85rem;
+        font-size:1.9rem;
       }
 
       .stats-shell{
@@ -428,66 +499,125 @@
         padding:12px;
       }
 
-      .stat{
-        min-height:98px;
-        padding:14px 12px;
-      }
-
       .toolbar{
         grid-template-columns:1fr;
       }
 
-      .editor-shell,
-      .preview-shell{
-        padding:14px;
-      }
-
-      .editor-box{
-        min-height:300px;
-        padding:16px;
-      }
-
       .preview-stage{
-        padding:14px 8px;
         min-height:auto;
+        padding:12px 8px;
       }
 
       .page{
         width:min(100%, 416px);
         min-height:560px;
-        padding:24px;
+        padding:22px;
       }
 
       .cordel-block{
-        font-size:1.08rem;
+        font-size:1.06rem;
+      }
+
+      .impose-grid{
+        grid-template-columns:1fr;
       }
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <section class="main-left">
-      <div class="hero">
-        <div class="hero-left">
+    <aside class="panel left-panel">
+      <h2>Qui(RON)xadá</h2>
+
+      <div class="status" id="statusBox">Pronto para diagramar cordel.</div>
+
+      <div class="card">
+        <label for="bookTitle"><strong>Título do cordel</strong></label>
+        <input class="input" id="bookTitle" type="text" placeholder="Opcional" value="O Romance do Qui(RON)xadá" />
+      </div>
+
+      <div class="card">
+        <label for="bookSubtitle"><strong>Subtítulo / organização</strong></label>
+        <input class="input" id="bookSubtitle" type="text" placeholder="Opcional" value="Organização do Celeiro Literário" />
+      </div>
+
+      <div class="card">
+        <label for="cordelFormat"><strong>Formato do folheto</strong></label>
+        <select class="select" id="cordelFormat">
+          <option value="11x16" selected>11 x 16 cm</option>
+          <option value="10.5x15.5">10,5 x 15,5 cm</option>
+          <option value="11x17">11 x 17 cm</option>
+          <option value="13.5x19">13,5 x 19 cm</option>
+        </select>
+
+        <label for="fontFamily"><strong>Fonte</strong></label>
+        <select class="select" id="fontFamily">
+          <option value="Georgia">Georgia</option>
+          <option value="'Times New Roman'">Times New Roman</option>
+          <option value="Garamond">Garamond</option>
+        </select>
+
+        <label for="fontSize"><strong>Tamanho</strong></label>
+        <select class="select" id="fontSize">
+          <option value="11">11 pt</option>
+          <option value="12" selected>12 pt</option>
+          <option value="13">13 pt</option>
+          <option value="14">14 pt</option>
+        </select>
+
+        <label for="lineHeight"><strong>Entrelinha</strong></label>
+        <select class="select" id="lineHeight">
+          <option value="1.25">1.25</option>
+          <option value="1.35" selected>1.35</option>
+          <option value="1.45">1.45</option>
+          <option value="1.55">1.55</option>
+        </select>
+      </div>
+
+      <div class="card">
+        <label for="correctionLevel"><strong>Correção</strong></label>
+        <select class="select" id="correctionLevel">
+          <option value="light" selected>Leve</option>
+          <option value="medium">Média</option>
+        </select>
+
+        <label for="pageCount"><strong>Total de páginas do folheto</strong></label>
+        <select class="select" id="pageCount">
+          <option value="8">8 páginas</option>
+          <option value="12">12 páginas</option>
+          <option value="16" selected>16 páginas</option>
+          <option value="20">20 páginas</option>
+          <option value="24">24 páginas</option>
+          <option value="28">28 páginas</option>
+          <option value="32">32 páginas</option>
+        </select>
+
+        <small>Esse total ajuda a gerar a ordem de montagem do folheto.</small>
+      </div>
+
+      <div class="card">
+        <button class="btn btn-earth" id="renderBtn" type="button">Atualizar prévia</button>
+        <button class="btn btn-soft" id="clearBtn" type="button">Limpar obra</button>
+        <a class="btn btn-warn" href="lapidar.html">Retornar</a>
+        <a class="btn btn-danger" href="index.html">Sair do sistema</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="hero">
+        <div class="hero-top">
           <div class="q-badge">Q</div>
           <div>
             <h1>Qui(RON)xadá — Diagramador de Cordel</h1>
-            <p>Módulo do Celeiro Literário / Lapidar para miolo de cordel com formatos próprios, tipografia básica e prévia folheável.</p>
+            <p>Módulo do Celeiro Literário / Lapidar para miolo de cordel com formato próprio, sextilhas e apoio de montagem do folheto.</p>
           </div>
         </div>
+      </section>
 
-        <div class="hero-actions">
-          <button class="btn btn-soft" id="clearBtn" type="button">Limpar obra</button>
-          <button class="btn btn-earth" id="renderBtn" type="button">Atualizar prévia</button>
-          <a class="btn btn-warn" href="lapidar.html">Retornar</a>
-          <a class="btn btn-danger" href="index.html">Sair do sistema</a>
-        </div>
-      </div>
-
-      <div class="stats-shell">
+      <section class="stats-shell">
         <div class="stat">
           <div class="stat-label">Formato</div>
-          <div class="stat-value">11 x 16 cm</div>
+          <div class="stat-value" id="formatStat">11 x 16 cm</div>
         </div>
         <div class="stat">
           <div class="stat-label">Fonte</div>
@@ -495,50 +625,18 @@
         </div>
         <div class="stat">
           <div class="stat-label">Páginas</div>
-          <div class="stat-value" id="pagesStat">1</div>
+          <div class="stat-value" id="pagesStat">16</div>
         </div>
         <div class="stat">
           <div class="stat-label">Estrutura</div>
           <div class="stat-value" id="structureStat">Aguardando texto</div>
         </div>
-      </div>
+      </section>
 
-      <div class="editor-shell">
+      <section class="editor-shell">
         <h2>Texto-base do cordel</h2>
 
-        <div class="toolbar">
-          <div class="field">
-            <label for="fontFamily">Fonte</label>
-            <select id="fontFamily">
-              <option value="Georgia">Georgia</option>
-              <option value="'Times New Roman'">Times New Roman</option>
-              <option value="Garamond">Garamond</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="fontSize">Tamanho</label>
-            <select id="fontSize">
-              <option value="11">11 pt</option>
-              <option value="12" selected>12 pt</option>
-              <option value="13">13 pt</option>
-              <option value="14">14 pt</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="correctionLevel">Correção</label>
-            <select id="correctionLevel">
-              <option value="light" selected>Leve</option>
-              <option value="medium">Média</option>
-            </select>
-          </div>
-        </div>
-
-        <textarea id="sourceText" class="editor-box" placeholder="Cole aqui o cordel...">O Romance do Qui(RON)xadá
-Organização do Celeiro Literário
-
-Na estrada do meu sertão
+        <textarea id="sourceText" class="editor-box" placeholder="Cole aqui o cordel...">Na estrada do meu sertão
 Vai cantando a voz primeira
 Feita de barro e de sol
 Feita de rima certeira
@@ -552,42 +650,49 @@ Nem desvio do versinho
 Cordel pede sextilha
 Do começo ao seu finzinho</textarea>
 
-        <div class="analysis-box">
-          <div class="analysis-card">
-            <h3>Motor Lapidar integrado</h3>
-            <p>Este módulo já recebe o motor-base de leitura leve, correção básica, detecção de estrofes e reconhecimento de sextilhas.</p>
-          </div>
-
-          <div class="analysis-card">
-            <h3>Alertas do motor</h3>
-            <ul id="alertsList">
-              <li>Aguardando análise.</li>
-            </ul>
-          </div>
-
-          <div class="footer-note">
-            Aqui o motor está embutido na própria HTML para você já subir e testar sem remendos. Depois ele pode ser extraído para um arquivo compartilhado entre Pólux, Castor, Centauro e Qui(RON)xadá.
-          </div>
+        <div class="pill-row">
+          <span class="pill" id="pillEstrofes">Estrofes: 0</span>
+          <span class="pill" id="pillSextilhas">Sextilhas: 0</span>
+          <span class="pill" id="pillModo">Modo: cordel</span>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="main-right">
-      <div class="preview-shell">
-        <div class="preview-top">
-          <h2>Prévia</h2>
-          <div class="pill-row">
-            <span class="pill" id="pillEstrofes">Estrofes: 0</span>
-            <span class="pill" id="pillSextilhas">Sextilhas: 0</span>
-            <span class="pill" id="pillModo">Modo: cordel</span>
-          </div>
-        </div>
-
+      <section class="preview-shell">
+        <h2>Prévia do cordel</h2>
         <div class="preview-stage">
           <article class="page" id="pagePreview"></article>
         </div>
+      </section>
+
+      <section class="impose-shell">
+        <h2>Montagem do folheto</h2>
+        <p class="footer-note">Esta área mostra a ordem de imposição para impressão e dobra do cordel. Exemplo: página 16 com 1, 2 com 15, 14 com 3, e assim por diante.</p>
+        <div class="impose-grid" id="imposeGrid"></div>
+      </section>
+    </main>
+
+    <aside class="panel right-panel">
+      <h2>Motor Lapidar</h2>
+
+      <div class="status" id="motorStatusBox">Motor leve embutido e ativo no Qui(RON)xadá.</div>
+
+      <div class="card">
+        <h3>Leitura estrutural</h3>
+        <p>Reconhece blocos, estrofes, sextilhas e cordel misto sem pesar o sistema.</p>
       </div>
-    </section>
+
+      <div class="card">
+        <h3>Alertas</h3>
+        <ul class="analysis-list" id="alertsList">
+          <li>Aguardando análise.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Observação</h3>
+        <p>Aqui o motor está embutido na HTML inteira para você testar sem remendos. Depois ele pode ser compartilhado com Pólux, Castor e Centauro.</p>
+      </div>
+    </aside>
   </div>
 
   <script>
@@ -710,23 +815,34 @@ Do começo ao seu finzinho</textarea>
       }
     };
 
-    const sourceText = document.getElementById("sourceText");
-    const renderBtn = document.getElementById("renderBtn");
-    const clearBtn = document.getElementById("clearBtn");
+    const bookTitle = document.getElementById("bookTitle");
+    const bookSubtitle = document.getElementById("bookSubtitle");
+    const cordelFormat = document.getElementById("cordelFormat");
     const fontFamily = document.getElementById("fontFamily");
     const fontSize = document.getElementById("fontSize");
+    const lineHeight = document.getElementById("lineHeight");
     const correctionLevel = document.getElementById("correctionLevel");
+    const pageCount = document.getElementById("pageCount");
+    const sourceText = document.getElementById("sourceText");
+
+    const renderBtn = document.getElementById("renderBtn");
+    const clearBtn = document.getElementById("clearBtn");
 
     const pagePreview = document.getElementById("pagePreview");
     const alertsList = document.getElementById("alertsList");
+    const imposeGrid = document.getElementById("imposeGrid");
+
+    const formatStat = document.getElementById("formatStat");
+    const fontStat = document.getElementById("fontStat");
+    const pagesStat = document.getElementById("pagesStat");
+    const structureStat = document.getElementById("structureStat");
 
     const pillEstrofes = document.getElementById("pillEstrofes");
     const pillSextilhas = document.getElementById("pillSextilhas");
     const pillModo = document.getElementById("pillModo");
 
-    const pagesStat = document.getElementById("pagesStat");
-    const structureStat = document.getElementById("structureStat");
-    const fontStat = document.getElementById("fontStat");
+    const statusBox = document.getElementById("statusBox");
+    const motorStatusBox = document.getElementById("motorStatusBox");
 
     function escapeHtml(text) {
       return String(text)
@@ -735,25 +851,85 @@ Do começo ao seu finzinho</textarea>
         .replace(/>/g, "&gt;");
     }
 
-    function estimatePages(processedText) {
-      const words = processedText.replace(/\n/g, " ").split(/\s+/).filter(Boolean).length;
-      return Math.max(1, Math.ceil(words / 130));
+    function applyFormatSize() {
+      const format = cordelFormat.value;
+
+      if (format === "11x16") {
+        document.documentElement.style.setProperty("--page-w", "416px");
+        document.documentElement.style.setProperty("--page-h", "605px");
+      } else if (format === "10.5x15.5") {
+        document.documentElement.style.setProperty("--page-w", "398px");
+        document.documentElement.style.setProperty("--page-h", "586px");
+      } else if (format === "11x17") {
+        document.documentElement.style.setProperty("--page-w", "416px");
+        document.documentElement.style.setProperty("--page-h", "642px");
+      } else {
+        document.documentElement.style.setProperty("--page-w", "510px");
+        document.documentElement.style.setProperty("--page-h", "718px");
+      }
+    }
+
+    function renderImposition(totalPages) {
+      imposeGrid.innerHTML = "";
+
+      for (let sheet = 1; sheet <= totalPages / 4; sheet++) {
+        const frontLeft = totalPages - (sheet - 1) * 2;
+        const frontRight = 1 + (sheet - 1) * 2;
+
+        const backLeft = 2 + (sheet - 1) * 2;
+        const backRight = totalPages - 1 - (sheet - 1) * 2;
+
+        const card = document.createElement("div");
+        card.className = "sheet-card";
+
+        card.innerHTML = `
+          <div class="sheet-head">Folha ${sheet}</div>
+
+          <div class="sheet-layout">
+            <div class="sheet-side">
+              <span>Frente esquerda</span>
+              <strong>${frontLeft}</strong>
+            </div>
+            <div class="sheet-side">
+              <span>Frente direita</span>
+              <strong>${frontRight}</strong>
+            </div>
+          </div>
+
+          <div class="sheet-layout">
+            <div class="sheet-side">
+              <span>Verso esquerda</span>
+              <strong>${backLeft}</strong>
+            </div>
+            <div class="sheet-side">
+              <span>Verso direita</span>
+              <strong>${backRight}</strong>
+            </div>
+          </div>
+        `;
+
+        imposeGrid.appendChild(card);
+      }
     }
 
     function renderCordelPage() {
+      applyFormatSize();
+
       const result = MotorLapidar.process(sourceText.value, {
         correctionLevel: correctionLevel.value
       });
 
       const blocks = MotorLapidar.splitBlocks(result.processedText);
 
+      formatStat.textContent = cordelFormat.options[cordelFormat.selectedIndex].text;
       fontStat.innerHTML = `${fontFamily.options[fontFamily.selectedIndex].text}<br>${fontSize.value} pt`;
-      pagesStat.textContent = String(estimatePages(result.processedText));
-      structureStat.textContent = result.primary === "cordel"
-        ? "Cordel"
-        : result.primary === "cordel misto"
-          ? "Cordel misto"
-          : "Texto livre";
+      pagesStat.textContent = pageCount.value;
+      structureStat.textContent =
+        result.primary === "cordel"
+          ? "Cordel"
+          : result.primary === "cordel misto"
+            ? "Cordel misto"
+            : "Texto livre";
 
       pillEstrofes.textContent = `Estrofes: ${result.estrofes}`;
       pillSextilhas.textContent = `Sextilhas: ${result.sextilhas}`;
@@ -761,28 +937,29 @@ Do começo ao seu finzinho</textarea>
 
       pagePreview.style.fontFamily = fontFamily.value;
       pagePreview.style.fontSize = fontSize.value + "pt";
+      pagePreview.style.lineHeight = lineHeight.value;
 
       let html = "";
-      let titleUsed = false;
-      let subtitleUsed = false;
+      const title = bookTitle.value.trim();
+      const subtitle = bookSubtitle.value.trim();
+
+      if (title) {
+        html += `<h1 class="page-title">${escapeHtml(title)}</h1>`;
+      }
+
+      if (subtitle) {
+        html += `<div class="page-subtitle">${escapeHtml(subtitle)}</div>`;
+      }
 
       blocks.forEach((block) => {
         if (block.length === 1 && block[0].length <= 70 && !/[.!?…]$/.test(block[0])) {
-          if (!titleUsed) {
-            html += `<h1 class="page-title">${escapeHtml(block[0])}</h1>`;
-            titleUsed = true;
-          } else if (!subtitleUsed) {
-            html += `<div class="page-subtitle">${escapeHtml(block[0])}</div>`;
-            subtitleUsed = true;
-          } else {
-            html += `<div class="cordel-block"><strong>${escapeHtml(block[0])}</strong></div>`;
-          }
+          html += `<div class="cordel-block"><strong>${escapeHtml(block[0])}</strong></div>`;
         } else {
           html += `<div class="cordel-block">${escapeHtml(block.join("\n"))}</div>`;
         }
       });
 
-      if (!html) {
+      if (!html.trim()) {
         html = `<h1 class="page-title">Prévia aparecerá aqui</h1>`;
       }
 
@@ -790,11 +967,17 @@ Do começo ao seu finzinho</textarea>
 
       if (result.alerts.length) {
         alertsList.innerHTML = result.alerts.map(alert => `<li>${escapeHtml(alert)}</li>`).join("");
+        motorStatusBox.textContent = `Motor ativo • ${result.alerts.length} alerta(s) encontrado(s).`;
       } else if (result.allSextilhas) {
         alertsList.innerHTML = `<li>Estrutura de sextilhas detectada corretamente.</li>`;
+        motorStatusBox.textContent = "Motor ativo • Sextilhas detectadas corretamente.";
       } else {
         alertsList.innerHTML = `<li>Nenhum alerta crítico encontrado.</li>`;
+        motorStatusBox.textContent = "Motor ativo • Sem alertas críticos.";
       }
+
+      renderImposition(Number(pageCount.value));
+      statusBox.textContent = "Prévia do cordel atualizada com sucesso.";
     }
 
     renderBtn.addEventListener("click", renderCordelPage);
@@ -804,10 +987,15 @@ Do começo ao seu finzinho</textarea>
       renderCordelPage();
     });
 
+    [
+      bookTitle, bookSubtitle, cordelFormat, fontFamily,
+      fontSize, lineHeight, correctionLevel, pageCount
+    ].forEach(el => {
+      el.addEventListener("change", renderCordelPage);
+      el.addEventListener("input", renderCordelPage);
+    });
+
     sourceText.addEventListener("input", renderCordelPage);
-    fontFamily.addEventListener("change", renderCordelPage);
-    fontSize.addEventListener("change", renderCordelPage);
-    correctionLevel.addEventListener("change", renderCordelPage);
 
     renderCordelPage();
   </script>
