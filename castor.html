@@ -45,7 +45,7 @@
       width:min(1360px, calc(100vw - 16px));
       margin:8px auto;
       display:grid;
-      grid-template-columns:240px minmax(0,1fr) 270px;
+      grid-template-columns:240px minmax(0,1fr) 280px;
       gap:14px;
       align-items:start;
     }
@@ -318,6 +318,33 @@
       box-shadow:0 0 0 3px rgba(126,166,208,.10);
     }
 
+    .preview-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      background:#eef4fb;
+      border:1px solid #d7e2ef;
+      color:#4d6074;
+      font-size:.94rem;
+      font-weight:700;
+    }
+
     .preview-stage{
       background:linear-gradient(180deg,#edf2f8 0%, #e3eaf4 100%);
       border-radius:20px;
@@ -366,25 +393,6 @@
 
     .poem-centered{
       text-align:center;
-    }
-
-    .pill-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
-      background:#eef4fb;
-      border:1px solid #d7e2ef;
-      color:#4d6074;
-      font-size:.94rem;
-      font-weight:700;
     }
 
     .analysis-list{
@@ -529,12 +537,6 @@
           <option value="24">24 px</option>
           <option value="30">30 px</option>
         </select>
-
-        <label for="correctionLevel"><strong>Correção</strong></label>
-        <select class="select" id="correctionLevel">
-          <option value="light" selected>Leve</option>
-          <option value="medium">Média</option>
-        </select>
       </div>
 
       <div class="card">
@@ -589,16 +591,18 @@ No fundo do silêncio
 a palavra respira
 e o verso dobra
 a sombra que delira</textarea>
-
-        <div class="pill-row">
-          <span class="pill" id="pillBlocks">Blocos: 0</span>
-          <span class="pill" id="pillLines">Versos: 0</span>
-          <span class="pill" id="pillMode">Modo: poesia</span>
-        </div>
       </section>
 
       <section class="preview-shell">
-        <h2>Prévia da poesia</h2>
+        <div class="preview-top">
+          <h2>Prévia da poesia</h2>
+          <div class="pill-row">
+            <span class="pill" id="pillBlocks">Blocos: 0</span>
+            <span class="pill" id="pillLines">Versos: 0</span>
+            <span class="pill" id="pillMode">Modo: poesia</span>
+          </div>
+        </div>
+
         <div class="preview-stage">
           <article class="page" id="pagePreview"></article>
         </div>
@@ -608,7 +612,15 @@ a sombra que delira</textarea>
     <aside class="panel right-panel">
       <h2>Motor Lapidar</h2>
 
-      <div class="status" id="motorStatusBox">Motor leve embutido e ativo no Castor.</div>
+      <div class="status" id="motorStatusBox">Motor leve ativo no painel lateral do Castor.</div>
+
+      <div class="card">
+        <label for="correctionLevel"><strong>Correção</strong></label>
+        <select class="select" id="correctionLevel">
+          <option value="light" selected>Leve</option>
+          <option value="medium">Média</option>
+        </select>
+      </div>
 
       <div class="card">
         <h3>Leitura estrutural</h3>
@@ -624,7 +636,11 @@ a sombra que delira</textarea>
 
       <div class="card">
         <h3>Observação</h3>
-        <p>Castor recebe a mesma espinha dorsal visual dos diagramadores, mas adaptada à poesia.</p>
+        <p>O motor agora está realmente no painel lateral direito, como base replicável para os demais diagramadores.</p>
+      </div>
+
+      <div class="footer-note">
+        Estrutura fixa do Castor alinhada com Pólux e Qui(RON)xadá, mas adaptada à poesia.
       </div>
     </aside>
   </div>
