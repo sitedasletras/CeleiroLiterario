@@ -7,28 +7,29 @@
   <script src="motor_lapidar.js"></script>
   <style>
     :root{
-      --bg:#f3eee3;
+      --bg:#f3eee4;
       --paper:#fffdf8;
       --ink:#2b241f;
-      --muted:#6d6156;
+      --muted:#6e6156;
       --line:#dccfbe;
 
-      --earth-1:#6e3d1d;
-      --earth-2:#8c5a2b;
-      --earth-3:#a36b36;
-      --earth-4:#ead7be;
+      --earth-1:#5f2f17;
+      --earth-2:#7c431f;
+      --earth-3:#9b5b2a;
+      --earth-4:#c48343;
+      --earth-5:#efe2d0;
 
       --ok:#2f7a59;
       --warn:#b7921e;
       --danger:#b13a3a;
 
       --shadow:0 12px 28px rgba(71,45,24,.10);
-      --radius:20px;
+      --radius:18px;
 
-      --page-w:360px;
-      --page-h:540px;
-      --page-pad-x:26px;
-      --page-pad-y:26px;
+      --page-w:350px;
+      --page-h:520px;
+      --page-pad-x:24px;
+      --page-pad-y:22px;
     }
 
     *{box-sizing:border-box}
@@ -46,7 +47,7 @@
     }
 
     .app{
-      width:min(1500px, calc(100vw - 12px));
+      width:min(1540px, calc(100vw - 12px));
       margin:6px auto;
       display:grid;
       grid-template-columns:260px minmax(0,1fr) 320px;
@@ -62,11 +63,10 @@
       top:6px;
       align-self:start;
       overflow:auto;
-      z-index:2;
     }
 
     .left-panel{
-      background:linear-gradient(180deg,#5d2e16 0%, #80431e 38%, #a86433 100%);
+      background:linear-gradient(180deg,var(--earth-1) 0%, var(--earth-2) 34%, var(--earth-3) 72%, #b77339 100%);
       color:#fff;
       padding:14px 12px;
       display:flex;
@@ -75,9 +75,8 @@
     }
 
     .right-panel{
-      background:linear-gradient(180deg,#f9f4ec 0%, #f2e7d8 100%);
-      border:1px solid #dccfbe;
-      color:#2b241f;
+      background:linear-gradient(180deg,#fbf6ef 0%, #f4eadc 100%);
+      border:1px solid #dfd3c4;
       padding:14px 12px;
       display:flex;
       flex-direction:column;
@@ -91,7 +90,7 @@
     }
 
     .status{
-      font-size:.93rem;
+      font-size:.92rem;
       line-height:1.35;
       border-radius:14px;
       padding:10px 12px;
@@ -105,9 +104,9 @@
     }
 
     .right-panel .status{
-      background:#fffaf4;
-      border:1px solid #e6dacb;
-      color:#5f5145;
+      background:#fffdf9;
+      border:1px solid #e5d9cb;
+      color:#62584d;
     }
 
     .card{
@@ -125,7 +124,7 @@
 
     .right-panel .card{
       background:#fffdf9;
-      border:1px solid #e5d9cb;
+      border:1px solid #e4d8ca;
     }
 
     label, small, p{
@@ -148,30 +147,39 @@
     .input,.select,.btn,.mini-btn{
       width:100%;
       font-family:inherit;
-      font-size:.98rem;
+      font-size:.97rem;
       border-radius:12px;
     }
 
     .input,.select{
-      border:1px solid #d9cebf;
+      border:1px solid #d8cdbf;
       background:#fff;
       color:#2b241f;
       padding:10px;
       outline:none;
     }
 
-    .btn{
+    .btn,.mini-btn{
       border:none;
-      padding:11px 12px;
       font-weight:700;
       cursor:pointer;
       transition:.12s ease;
-      text-decoration:none;
+      text-align:center;
+    }
+
+    .btn{
+      min-height:46px;
       display:flex;
       align-items:center;
       justify-content:center;
-      text-align:center;
-      min-height:46px;
+      text-decoration:none;
+      padding:11px 12px;
+    }
+
+    .mini-btn{
+      width:auto;
+      padding:8px 10px;
+      font-size:.9rem;
     }
 
     .btn:hover,.mini-btn:hover{
@@ -179,25 +187,12 @@
       opacity:.97;
     }
 
-    .btn-earth{background:var(--earth-2);color:#fff}
     .btn-soft{background:#efe2bf;color:#2b241f}
+    .btn-earth{background:var(--earth-2);color:#fff}
     .btn-warn{background:var(--warn);color:#231d16}
     .btn-danger{background:var(--danger);color:#fff}
-    .btn-ok{background:var(--ok);color:#fff}
-
-    .mini-btn{
-      border:none;
-      padding:8px 10px;
-      font-weight:700;
-      cursor:pointer;
-      background:#efe2bf;
-      color:#2b241f;
-    }
-
-    .mini-btn.ok{
-      background:#2f7a59;
-      color:#fff;
-    }
+    .mini-btn.ok{background:var(--ok);color:#fff}
+    .mini-btn.soft{background:#efe2bf;color:#2b241f}
 
     .main{
       display:flex;
@@ -219,7 +214,7 @@
 
     .hero{
       background:linear-gradient(180deg,#efe5d4 0%, #eadfce 100%);
-      padding:20px 18px;
+      padding:18px 16px;
       display:grid;
       grid-template-columns:48px 1fr;
       gap:14px;
@@ -228,32 +223,32 @@
 
     .q-badge{
       width:48px;
-      height:78px;
+      height:76px;
       border-radius:18px;
-      background:linear-gradient(180deg,var(--earth-3),var(--earth-1));
+      background:linear-gradient(180deg,var(--earth-4),var(--earth-1));
       color:#fff7ee;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:2.15rem;
+      font-size:2.1rem;
       line-height:1;
       box-shadow:0 8px 18px rgba(140,90,43,.22);
     }
 
     .hero h1{
       margin:0 0 6px 0;
-      font-size:clamp(1.9rem,4vw,2.6rem);
+      font-size:clamp(1.9rem,4vw,2.55rem);
       line-height:1;
       color:#2a231d;
     }
 
     .hero p{
       color:#4d4339;
-      font-size:1.04rem;
+      font-size:1.02rem;
     }
 
     .stats-shell{
-      padding:14px;
+      padding:12px;
       display:grid;
       grid-template-columns:repeat(4,minmax(0,1fr));
       gap:10px;
@@ -264,18 +259,18 @@
       border:1px solid #e2d7c7;
       border-radius:14px;
       padding:12px 10px;
-      min-height:92px;
+      min-height:90px;
     }
 
     .stat-label{
-      font-size:.94rem;
+      font-size:.92rem;
       font-weight:700;
       color:#5d5145;
       margin-bottom:8px;
     }
 
     .stat-value{
-      font-size:1rem;
+      font-size:.98rem;
       font-weight:700;
       color:#2d241d;
       line-height:1.25;
@@ -307,18 +302,18 @@
     }
 
     .pill{
-      display:inline-flex;
+      display:flex;
       align-items:center;
       justify-content:center;
-      gap:8px;
+      min-height:42px;
       padding:10px 12px;
       border-radius:999px;
       background:#f7efe3;
       border:1px solid #e2d4c1;
       color:#5c5045;
-      font-size:.92rem;
+      font-size:.9rem;
       font-weight:700;
-      min-height:42px;
+      text-align:center;
     }
 
     .editor-box{
@@ -353,7 +348,7 @@
       background:linear-gradient(180deg,#ede7db 0%, #e6dfd2 100%);
       border-radius:18px;
       border:1px solid #dcd2c2;
-      min-height:690px;
+      min-height:720px;
       display:flex;
       flex-direction:column;
       gap:12px;
@@ -423,32 +418,33 @@
     }
 
     .page-inner{
-      height:calc(var(--page-h) - (var(--page-pad-y) * 2) - 26px);
+      height:calc(100% - 24px);
       overflow:hidden;
     }
 
     .meta-note{
-      font-size:.86rem;
+      font-size:.84rem;
       color:#7a6b5f;
       margin-bottom:8px;
       text-align:center;
       font-style:italic;
     }
 
-    .cordel-heading{
+    .intertitle{
       text-align:center;
-      font-size:1.06rem;
+      font-size:1.02rem;
       font-weight:700;
       margin:0 0 14px 0;
       color:#4b3a2c;
       letter-spacing:.02em;
+      text-transform:uppercase;
     }
 
     .cordel-block{
-      margin:0 0 16px 0;
+      margin:0 0 15px 0;
       white-space:pre-line;
-      line-height:1.42;
-      font-size:1.04rem;
+      line-height:1.38;
+      font-size:1rem;
       text-align:left;
     }
 
@@ -456,9 +452,9 @@
       position:absolute;
       left:0;
       right:0;
-      bottom:8px;
+      bottom:6px;
       text-align:center;
-      font-size:.9rem;
+      font-size:.88rem;
       color:#74675c;
       font-weight:700;
     }
@@ -492,7 +488,7 @@
     }
 
     .sheet-head{
-      font-size:.98rem;
+      font-size:.96rem;
       font-weight:700;
       color:#4d4339;
     }
@@ -508,7 +504,7 @@
       border-radius:12px;
       padding:10px;
       background:#fffdf8;
-      min-height:82px;
+      min-height:80px;
       display:flex;
       flex-direction:column;
       gap:8px;
@@ -518,12 +514,12 @@
     }
 
     .sheet-side span{
-      font-size:.88rem;
+      font-size:.86rem;
       color:#7a6c60;
     }
 
     .sheet-side strong{
-      font-size:1.18rem;
+      font-size:1.15rem;
       color:#2b241f;
     }
 
@@ -547,12 +543,12 @@
     .alert-title{
       font-weight:700;
       color:#4d4339;
-      font-size:.95rem;
+      font-size:.93rem;
     }
 
     .alert-snippet{
       color:#66584c;
-      font-size:.9rem;
+      font-size:.89rem;
       white-space:pre-line;
       line-height:1.35;
     }
@@ -564,7 +560,7 @@
     }
 
     .footer-note{
-      font-size:.88rem;
+      font-size:.87rem;
       color:#6e6257;
       line-height:1.45;
     }
@@ -583,7 +579,7 @@
 
     @media (max-width:760px){
       .app{
-        width:min(100vw - 6px, 1500px);
+        width:min(100vw - 6px, 1540px);
         gap:8px;
         margin:3px auto;
       }
@@ -613,8 +609,7 @@
       }
 
       .page{
-        width:min(100%, 360px);
-        height:520px;
+        width:min(100%, 340px);
       }
 
       .impose-grid{
@@ -710,7 +705,7 @@
         <div class="q-badge">Q</div>
         <div>
           <h1>Qui(RON)xadá — Diagramador de Cordel</h1>
-          <p>Prévia em páginas reais, navegação por folhas e apoio de montagem do folheto.</p>
+          <p>Paginação por sextilha, intertítulos preservados e apresentação pensada para folheto.</p>
         </div>
       </section>
 
@@ -792,17 +787,13 @@
 
       <div class="card">
         <h3>Leitura estrutural</h3>
-        <p>Reconhece sextilhas, quebras suspeitas e possíveis títulos isolados.</p>
+        <p>Reconhece intertítulos, sextilhas e quebras suspeitas. Agora a correção acontece dentro do texto-base.</p>
       </div>
 
       <div class="card">
         <div id="alertsList" class="analysis-list">
           <div class="footer-note">Aguardando análise.</div>
         </div>
-      </div>
-
-      <div class="card">
-        <p class="footer-note">Agora os alertas podem corrigir a quebra diretamente no texto-base.</p>
       </div>
     </aside>
   </div>
@@ -854,87 +845,92 @@
       const format = cordelFormat.value;
 
       if (format === "11x16") {
-        document.documentElement.style.setProperty("--page-w", "360px");
-        document.documentElement.style.setProperty("--page-h", "540px");
-      } else if (format === "10.5x15.5") {
-        document.documentElement.style.setProperty("--page-w", "344px");
+        document.documentElement.style.setProperty("--page-w", "350px");
         document.documentElement.style.setProperty("--page-h", "520px");
+      } else if (format === "10.5x15.5") {
+        document.documentElement.style.setProperty("--page-w", "334px");
+        document.documentElement.style.setProperty("--page-h", "500px");
       } else if (format === "11x17") {
-        document.documentElement.style.setProperty("--page-w", "370px");
-        document.documentElement.style.setProperty("--page-h", "580px");
+        document.documentElement.style.setProperty("--page-w", "362px");
+        document.documentElement.style.setProperty("--page-h", "560px");
       } else {
         document.documentElement.style.setProperty("--page-w", "430px");
         document.documentElement.style.setProperty("--page-h", "650px");
       }
     }
 
-    function getLinesPerPage() {
+    function getSextilhasPerPage() {
       const format = cordelFormat.value;
-      const size = Number(fontSize.value);
-      const leading = Number(lineHeight.value);
-
-      let base = 26;
-      if (format === "10.5x15.5") base = 24;
-      if (format === "11x17") base = 28;
-      if (format === "13.5x19") base = 34;
-
-      const adjusted = Math.round(base * (11 / size) * (1.25 / leading));
-      return Math.max(14, adjusted);
+      if (format === "13.5x19") return 4;
+      if (format === "11x17") return 4;
+      if (format === "10.5x15.5") return 4;
+      return 4;
     }
 
-    function splitTextToPages(processedText) {
-      const blocks = MotorLapidar.splitBlocks(processedText);
-      const linesPerPage = getLinesPerPage();
+    function normalizeCordelBlocks(text) {
+      const rawBlocks = MotorLapidar.splitBlocks(text);
+      const result = [];
+
+      rawBlocks.forEach(block => {
+        if (block.length === 1 && MotorLapidar.isLikelyTitle(block[0])) {
+          result.push({
+            type: "intertitle",
+            text: block[0]
+          });
+        } else {
+          result.push({
+            type: "stanza",
+            lines: block
+          });
+        }
+      });
+
+      return result;
+    }
+
+    function paginateCordel(processedText) {
+      const sextilhasPerPage = getSextilhasPerPage();
+      const units = normalizeCordelBlocks(processedText);
 
       const pages = [];
       let currentPage = [];
-      let usedLines = 0;
+      let sextilhasCount = 0;
 
       function pushPage() {
-        pages.push(currentPage);
-        currentPage = [];
-        usedLines = 0;
+        if (currentPage.length) {
+          pages.push(currentPage);
+          currentPage = [];
+          sextilhasCount = 0;
+        }
       }
 
-      blocks.forEach(block => {
-        const isHeading = block.length === 1 && MotorLapidar.isLikelyTitle(block[0]);
-        const cost = isHeading ? 2 : block.length + 1;
+      for (let i = 0; i < units.length; i++) {
+        const unit = units[i];
 
-        if (cost > linesPerPage) {
-          const lines = [...block];
-          while (lines.length) {
-            const room = linesPerPage - usedLines;
-            if (room <= 2) {
-              pushPage();
-              continue;
-            }
-            const chunkSize = Math.max(1, room - 1);
-            const part = lines.splice(0, chunkSize);
-            currentPage.push({
-              type: "stanza",
-              lines: part
-            });
-            usedLines += part.length + 1;
-            if (lines.length) pushPage();
+        if (unit.type === "intertitle") {
+          const nextUnit = units[i + 1];
+          const needsNewPage = sextilhasCount >= sextilhasPerPage ||
+            (nextUnit && nextUnit.type === "stanza" && sextilhasCount === sextilhasPerPage - 0);
+
+          if (currentPage.length && sextilhasCount >= sextilhasPerPage) {
+            pushPage();
           }
-          return;
+
+          currentPage.push(unit);
+          continue;
         }
 
-        if (usedLines + cost > linesPerPage) {
-          pushPage();
+        if (unit.type === "stanza") {
+          if (sextilhasCount >= sextilhasPerPage) {
+            pushPage();
+          }
+
+          currentPage.push(unit);
+          sextilhasCount += 1;
         }
-
-        currentPage.push({
-          type: isHeading ? "heading" : "stanza",
-          lines: block
-        });
-        usedLines += cost;
-      });
-
-      if (currentPage.length) {
-        pushPage();
       }
 
+      pushPage();
       return pages;
     }
 
@@ -960,9 +956,13 @@
 
       let html = `<div class="page-inner">`;
 
+      if (pageNumber === 1 && (bookTitle.value.trim() || bookSubtitle.value.trim())) {
+        html += `<div class="meta-note">Metadados do folheto registrados à esquerda. O miolo começa abaixo.</div>`;
+      }
+
       pageData.forEach(item => {
-        if (item.type === "heading") {
-          html += `<div class="cordel-heading">${escapeHtml(item.lines.join(" "))}</div>`;
+        if (item.type === "intertitle") {
+          html += `<div class="intertitle">${escapeHtml(item.text)}</div>`;
         } else {
           html += `<div class="cordel-block">${escapeHtml(item.lines.join("\n"))}</div>`;
         }
@@ -1129,7 +1129,7 @@
       });
 
       const totalFolheto = Number(pageCount.value);
-      const contentPages = splitTextToPages(result.processedText);
+      const contentPages = paginateCordel(result.processedText);
       paginatedPages = padToFolheto(contentPages, totalFolheto);
 
       if (currentSpreadIndex * 2 >= paginatedPages.length) {
