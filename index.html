@@ -19,56 +19,136 @@
 
     .box{
       background:#f7f7f4;
-      width:min(92vw, 720px);
+      width:min(96vw, 920px);
       border-radius:28px;
       box-shadow:0 14px 30px rgba(0,0,0,.10);
       text-align:center;
-      padding:48px 24px;
+      padding:42px 24px 30px;
     }
 
     h1{
-      margin:0 0 18px 0;
+      margin:0 0 14px 0;
       font-size:clamp(2.1rem, 5vw, 3.4rem);
       color:#000;
       line-height:1.05;
     }
 
-    p{
-      margin:0 0 34px 0;
+    .sub{
+      margin:0 0 28px 0;
       color:#7a7a7a;
       font-size:clamp(1rem, 2.4vw, 1.4rem);
       line-height:1.4;
     }
 
-    button{
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));
+      gap:16px;
+      margin-top:10px;
+    }
+
+    .card{
       border:none;
       background:#4d956f;
       color:#fff;
-      font-size:clamp(1.1rem, 2.6vw, 1.5rem);
-      padding:18px 42px;
       border-radius:20px;
       cursor:pointer;
       font-family:inherit;
+      padding:20px 16px;
       transition:.15s ease;
+      box-shadow:0 8px 18px rgba(0,0,0,.08);
     }
 
-    button:hover{
+    .card:hover{
       transform:translateY(-1px);
       opacity:.96;
+    }
+
+    .card h2{
+      margin:0 0 8px 0;
+      font-size:1.25rem;
+      line-height:1.1;
+    }
+
+    .card p{
+      margin:0;
+      font-size:.96rem;
+      line-height:1.35;
+      opacity:.96;
+    }
+
+    .card.castor{ background:#7d6aa8; }
+    .card.centauro{ background:#8b6b52; }
+    .card.quironxada{ background:#a15c3b; }
+    .card.facakapa{ background:#5a3d2b; }
+    .card.lapidar{ background:#2f6f61; }
+
+    .footer-note{
+      margin-top:22px;
+      color:#767676;
+      font-size:.95rem;
+      line-height:1.4;
+    }
+
+    @media (max-width:640px){
+      .box{
+        padding:34px 18px 24px;
+      }
+
+      .grid{
+        grid-template-columns:1fr;
+      }
     }
   </style>
 </head>
 <body>
   <div class="box">
     <h1>Celeiro Literário</h1>
-    <p>Entrada do ambiente editorial</p>
-    <button onclick="entrar()">Entrar</button>
+    <p class="sub">Entrada do ambiente editorial e criativo</p>
+
+    <div class="grid">
+      <button class="card" onclick="abrir('polux.html')">
+        <h2>Pólux</h2>
+        <p>Diagramação de prosa</p>
+      </button>
+
+      <button class="card castor" onclick="abrir('castor.html')">
+        <h2>Castor</h2>
+        <p>Diagramação de poesia</p>
+      </button>
+
+      <button class="card centauro" onclick="abrir('centauro.html')">
+        <h2>Centauro</h2>
+        <p>Diagramação híbrida</p>
+      </button>
+
+      <button class="card quironxada" onclick="abrir('modulo_quironxada.html')">
+        <h2>Qui(RON)xadá</h2>
+        <p>Cordel e folheto popular</p>
+      </button>
+
+      <button class="card facakapa" onclick="abrir('faca_kapa_cordel.html')">
+        <h2>Faça Kapa</h2>
+        <p>Capas para cordel</p>
+      </button>
+
+      <button class="card lapidar" onclick="abrir('lapidar.html')">
+        <h2>Lapidar</h2>
+        <p>Ambiente editorial integrado</p>
+      </button>
+    </div>
+
+    <p class="footer-note">
+      Escolha o módulo que deseja abrir.
+    </p>
   </div>
 
   <script>
-    function entrar(){
-      window.location.href = "lapidar.html";
+    function abrir(pagina){
+      window.location.href = pagina;
     }
   </script>
 </body>
 </html>
+
+    
