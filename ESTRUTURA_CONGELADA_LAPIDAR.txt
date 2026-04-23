@@ -1,0 +1,74 @@
+ESTRUTURA CONGELADA DO LAPIDAR
+
+A partir desta versão, a página lapidar.html fica definida como HUB PRINCIPAL do sistema.
+
+Ela não deve mais receber módulos soltos, remendos ou acréscimos diretos, salvo decisão explícita do criador.
+
+A estrutura oficial fica:
+
+Celeiro Literário
+└── Lapidar
+    ├── Preparação da Obra
+    │   ├── Limpeza do Material
+    │   ├── Desbaste Textual Leve
+    │   ├── Barracão de Polimento das Imagens
+    │   └── Mesário da Preparação da Obra
+    │
+    ├── Dias Gramador de Livros
+    │   ├── Pólux
+    │   ├── Castor
+    │   ├── Centauro
+    │   ├── Qui(RON)xadá
+    │   └── Mesário dos Dias Gramador
+    │
+    ├── OKapista — Criador de Capas
+    │   ├── Faça Kapa Livros Literários
+    │   ├── Faça Kapa Cordel
+    │   ├── Faça Kapa Outros Livros
+    │   └── Mesário do OKapista
+    │
+    ├── Lapidar Pensante
+    │   ├── AN
+    │   ├── DRO
+    │   ├── ID
+    │   ├── NAS Core
+    │   ├── FISA Engine
+    │   ├── FIIISAA Boot Engine
+    │   └── Mesário do Pensante
+    │
+    ├── Núcleo Editorial da Obra
+    │   ├── Analisador de Obra
+    │   ├── Avaliação Literária
+    │   ├── Lapidação Literária
+    │   ├── Segunda Língua(s)
+    │   └── Mesário do Núcleo Editorial
+    │
+    ├── Silo Multimídia
+    │   ├── Silo Sonoro
+    │   ├── Silo Cinematográfico
+    │   ├── Silo Music
+    │   ├── Silo HQ
+    │   └── Mesário do Silo Multimídia
+    │
+    └── Expedição Editorial
+        ├── Mesário Geral
+        ├── conferência final
+        ├── liberação dos materiais
+        └── encerramento da jornada editorial
+
+REGRA DE CONGELAMENTO
+
+1. lapidar.html é o hub central.
+2. Novas ferramentas devem entrar dentro dos setores já existentes.
+3. Não criar novos botões soltos no hub principal sem necessidade real.
+4. Se surgir novo módulo, avaliar primeiro em qual setor ele pertence.
+5. Se for necessário novo setor, registrar antes de alterar o hub.
+6. A prioridade do sistema é leveza, modularidade e estabilidade.
+7. Cada setor pode evoluir internamente sem mexer no hub principal.
+8. A Expedição Editorial permanece como porta final de liberação.
+9. Os mesários funcionam por setor e consolidam no Mesário Geral.
+10. A obra só é liberada ao final, na Expedição Editorial.
+
+STATUS
+
+Estrutura congelada como HUB OFICIAL DO LAPIDAR.
