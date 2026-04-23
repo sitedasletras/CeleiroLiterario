@@ -52,7 +52,7 @@
       width:min(1540px, calc(100vw - 12px));
       margin:6px auto;
       display:grid;
-      grid-template-columns:260px minmax(0,1fr) 320px;
+      grid-template-columns:260px minmax(0,1fr) 340px;
       gap:12px;
       align-items:start;
     }
@@ -60,9 +60,8 @@
     .panel{
       border-radius:var(--radius);
       box-shadow:var(--shadow);
-      min-height:calc(100vh - 12px);
-      position:sticky;
-      top:6px;
+      min-height:auto;
+      position:relative;
       align-self:start;
       overflow:auto;
     }
@@ -574,6 +573,40 @@
       flex-wrap:wrap;
     }
 
+    .guide-table{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:6px;
+    }
+
+    .guide-row{
+      display:grid;
+      grid-template-columns:1.2fr 1fr 1fr;
+      gap:8px;
+      align-items:center;
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid #eadfce;
+      background:#fff;
+      font-size:.88rem;
+      color:#5e5348;
+    }
+
+    .guide-head{
+      font-weight:700;
+      background:#f7efe3;
+    }
+
+    .recommend-box{
+      background:#fff8ef;
+      border:1px solid #e2d4c1;
+      border-radius:12px;
+      padding:10px;
+      color:#5e5348;
+      line-height:1.4;
+      font-size:.9rem;
+    }
+
     .footer-note{
       font-size:.87rem;
       color:#6e6257;
@@ -636,6 +669,10 @@
 
       .nav-btn{
         min-width:unset;
+      }
+
+      .guide-row{
+        grid-template-columns:1fr;
       }
     }
 
@@ -710,7 +747,7 @@
       <div class="card">
         <label for="fileInput"><strong>Upload da obra</strong></label>
         <input class="file" id="fileInput" type="file" accept=".txt,.doc,.docx" />
-        <small>TXT, DOC e DOCX.</small>
+        <small>TXT, DOC e DOCX com limpeza automática.</small>
       </div>
 
       <div class="card">
@@ -886,16 +923,56 @@
     </main>
 
     <aside class="panel right-panel">
-      <h2>Alertas do motor</h2>
+      <h2>Auxiliar do cordel</h2>
 
       <div class="status" id="motorStatusBox">Motor leve ativo no Qui(RON)xadá.</div>
 
       <div class="card">
-        <h3>Leitura estrutural</h3>
-        <p>Reconhece intertítulos, estrofes, sextilhas, quebras suspeitas e aplica limites editoriais para não deformar a página.</p>
+        <h3>Tabela de recomendação</h3>
+        <div class="guide-table">
+          <div class="guide-row guide-head">
+            <div>Versos</div>
+            <div>Estrofes</div>
+            <div>Fonte</div>
+          </div>
+          <div class="guide-row">
+            <div>6 versos</div>
+            <div>4 a 6</div>
+            <div>10–12</div>
+          </div>
+          <div class="guide-row">
+            <div>7 versos</div>
+            <div>4 a 5</div>
+            <div>10–11</div>
+          </div>
+          <div class="guide-row">
+            <div>8 versos</div>
+            <div>4</div>
+            <div>10–11</div>
+          </div>
+          <div class="guide-row">
+            <div>9 versos</div>
+            <div>3 a 4</div>
+            <div>10</div>
+          </div>
+          <div class="guide-row">
+            <div>10 versos</div>
+            <div>3 a 4</div>
+            <div>10</div>
+          </div>
+        </div>
       </div>
 
       <div class="card">
+        <h3>Recomendação atual</h3>
+        <div class="recommend-box" id="recommendBox">
+          Aguardando configuração.
+        </div>
+        <button class="btn btn-ok" id="applyRecommendBtn" type="button">Aplicar recomendação</button>
+      </div>
+
+      <div class="card">
+        <h3>Alertas do motor</h3>
         <div id="alertsList" class="analysis-list">
           <div class="footer-note">Aguardando análise.</div>
         </div>
@@ -919,6 +996,8 @@
     const estrofesPorPagina = document.getElementById("estrofesPorPagina");
     const limitHint = document.getElementById("limitHint");
     const fileInput = document.getElementById("fileInput");
+    const recommendBox = document.getElementById("recommendBox");
+    const applyRecommendBtn = document.getElementById("applyRecommendBtn");
 
     const clearBtn = document.getElementById("clearBtn");
     const printBtn = document.getElementById("printBtn");
@@ -947,12 +1026,25 @@
     let paginatedPages = [];
     let currentSpreadIndex = 0;
     let currentUnits = [];
+    let currentRecommendation = null;
 
     function escapeHtml(text) {
       return String(text)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
+    }
+
+    function normalizeUploadText(text) {
+      return String(text || "")
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n")
+        .replace(/\t/g, " ")
+        .replace(/\u00A0/g, " ")
+        .replace(/[ ]{2,}/g, " ")
+        .replace(/\n[ \t]+\n/g, "\n\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .replace(/^\s+|\s+$/g, "");
     }
 
     function applyFormatSize() {
@@ -985,27 +1077,73 @@
       document.documentElement.style.setProperty("--preview-line-height", lineHeight.value);
     }
 
-    function computeAllowedEstrofes() {
+    function getRecommendation() {
       const versos = Number(versosPorEstrofe.value);
-      let max = 6;
+      const formato = cordelFormat.value;
 
-      if (versos >= 10) max = 4;
-      else if (versos === 9) max = 4;
-      else if (versos === 8) max = 4;
-      else if (versos === 7) max = 5;
-      else max = 6;
+      let maxEstrofes = 6;
+      let fonte = "11";
+      let entrelinha = "1.25";
 
-      if (cordelFormat.value === "10.5x15.5" && max > 5) max = 5;
-      if (cordelFormat.value === "11x16" && max > 5) max = 5;
-      if (cordelFormat.value === "13.5x19" && max < 4) max = 4;
+      if (versos === 6) {
+        maxEstrofes = (formato === "13.5x19") ? 6 : 5;
+        fonte = "11";
+        entrelinha = "1.25";
+      } else if (versos === 7) {
+        maxEstrofes = 5;
+        fonte = "11";
+        entrelinha = "1.25";
+      } else if (versos === 8) {
+        maxEstrofes = 4;
+        fonte = "10";
+        entrelinha = "1.15";
+      } else if (versos === 9) {
+        maxEstrofes = 4;
+        fonte = "10";
+        entrelinha = "1.15";
+      } else if (versos === 10) {
+        maxEstrofes = 4;
+        fonte = "10";
+        entrelinha = "1.15";
+      }
 
+      if (formato === "10.5x15.5" && maxEstrofes > 5) maxEstrofes = 5;
+      if (formato === "11x16" && maxEstrofes > 5) maxEstrofes = 5;
+
+      return {
+        versos,
+        formato,
+        maxEstrofes,
+        fonte,
+        entrelinha
+      };
+    }
+
+    function applyRecommendationBox() {
+      currentRecommendation = getRecommendation();
+      recommendBox.innerHTML = `
+        Para <strong>${currentRecommendation.versos} versos por estrofe</strong>
+        no formato <strong>${cordelFormat.options[cordelFormat.selectedIndex].text}</strong>,
+        a configuração recomendada é:
+        <br><br>
+        • até <strong>${currentRecommendation.maxEstrofes} estrofes por página</strong><br>
+        • fonte <strong>${currentRecommendation.fonte} pt</strong><br>
+        • entrelinha <strong>${currentRecommendation.entrelinha}</strong>
+      `;
+    }
+
+    function computeAllowedEstrofes() {
+      applyRecommendationBox();
+
+      const max = currentRecommendation.maxEstrofes;
       let requested = Number(estrofesPorPagina.value);
+
       if (requested > max) {
         estrofesPorPagina.value = String(max);
         requested = max;
       }
 
-      limitHint.textContent = `Com ${versos} versos por estrofe, o máximo recomendado aqui é ${max} estrofes por página.`;
+      limitHint.textContent = `Com ${currentRecommendation.versos} versos por estrofe, o máximo recomendado aqui é ${max} estrofes por página.`;
       return requested;
     }
 
@@ -1322,14 +1460,14 @@
 
       try {
         if (name.endsWith(".txt")) {
-          sourceText.value = await file.text();
+          sourceText.value = normalizeUploadText(await file.text());
         } else if (name.endsWith(".docx")) {
           const arrayBuffer = await file.arrayBuffer();
           const result = await mammoth.extractRawText({ arrayBuffer });
-          sourceText.value = result.value || "";
+          sourceText.value = normalizeUploadText(result.value || "");
         } else if (name.endsWith(".doc")) {
           const text = await readLegacyDocAsText(file);
-          sourceText.value = text;
+          sourceText.value = normalizeUploadText(text);
         } else {
           statusBox.textContent = "Formato não suportado. Use TXT, DOC ou DOCX.";
           return;
@@ -1422,6 +1560,17 @@
       return mini;
     }
 
+    function applyRecommendedSettings() {
+      const rec = getRecommendation();
+      fontSize.value = rec.fonte;
+      lineHeight.value = rec.entrelinha;
+      if (Number(estrofesPorPagina.value) > rec.maxEstrofes) {
+        estrofesPorPagina.value = String(rec.maxEstrofes);
+      }
+      renderAll();
+      statusBox.textContent = "Configuração recomendada aplicada.";
+    }
+
     function renderAll() {
       applyFormatSize();
 
@@ -1454,6 +1603,7 @@
       renderImposition(totalFolheto);
       renderAlerts(result.alerts || []);
       buildPrintSheets();
+      applyRecommendationBox();
 
       if (contentPages.length > totalFolheto) {
         statusBox.textContent = `Texto excedeu o folheto: usa ${contentPages.length} páginas, mas o folheto está em ${totalFolheto}.`;
@@ -1487,6 +1637,7 @@
       window.print();
     });
 
+    applyRecommendBtn.addEventListener("click", applyRecommendedSettings);
     fileInput.addEventListener("change", handleFileUpload);
 
     [
