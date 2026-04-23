@@ -1,14 +1,931 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Faça Kapa — Cordel</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Faça Kapa — Cordel</title>
+  <style>
+    :root{
+      --bg:#efe6d6;
+      --paper:#f8f1e4;
+      --panel:#fffaf2;
+      --ink:#1f1a17;
+      --muted:#6f6255;
+      --line:#d7c7af;
+      --wood:#8d6748;
+      --accent:#5a3d2b;
+      --accent-2:#a37a54;
+      --ok:#2d6a4f;
+      --warn:#d9a441;
+      --danger:#a63d40;
+      --shadow:0 10px 30px rgba(60,40,20,.12);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.35), rgba(0,0,0,.03)),
+        repeating-linear-gradient(90deg, rgba(90,61,43,.03) 0 2px, transparent 2px 12px),
+        var(--bg);
+      color:var(--ink);
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      backdrop-filter: blur(8px);
+      background:rgba(248,241,228,.88);
+      border-bottom:1px solid rgba(90,61,43,.12);
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .seal{
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      border:2px solid var(--accent);
+      display:grid;
+      place-items:center;
+      background:radial-gradient(circle at 35% 35%, #fff, #eadcc8 65%, #dac1a0 100%);
+      box-shadow:var(--shadow);
+      font-weight:700;
+      color:var(--accent);
+      flex:0 0 auto;
+    }
+
+    .titles{min-width:0}
+    .titles h1{
+      margin:0;
+      font-size:1.18rem;
+      letter-spacing:.3px;
+    }
+    .titles p{
+      margin:3px 0 0;
+      color:var(--muted);
+      font-size:.92rem;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      border:none;
+      border-radius:12px;
+      padding:11px 14px;
+      font-size:.95rem;
+      font-weight:700;
+      cursor:pointer;
+      transition:.18s ease;
+      box-shadow:var(--shadow);
+      font-family:inherit;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn:active{transform:translateY(1px)}
+    .btn-green{background:var(--ok); color:#fff}
+    .btn-yellow{background:var(--warn); color:#2b1c0d}
+    .btn-red{background:var(--danger); color:#fff}
+    .btn-brown{background:var(--accent); color:#fff}
+
+    .wrap{
+      max-width:1450px;
+      margin:0 auto;
+      padding:18px;
+      display:grid;
+      grid-template-columns:380px minmax(320px,1fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .panel-head{
+      padding:14px 16px;
+      background:linear-gradient(180deg, rgba(163,122,84,.15), rgba(163,122,84,.06));
+      border-bottom:1px solid var(--line);
+    }
+
+    .panel-head h2{
+      margin:0;
+      font-size:1.02rem;
+    }
+
+    .panel-head p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.4;
+    }
+
+    .panel-body{padding:16px}
+
+    .field{margin-bottom:14px}
+    .field label{
+      display:block;
+      font-weight:700;
+      margin-bottom:6px;
+      font-size:.95rem;
+    }
+    .field small{
+      display:block;
+      color:var(--muted);
+      margin-top:5px;
+      line-height:1.35;
+    }
+
+    input[type="text"], textarea, select, input[type="number"]{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:#fffdf8;
+      color:var(--ink);
+      padding:11px 12px;
+      font:inherit;
+      outline:none;
+    }
+
+    textarea{
+      min-height:92px;
+      resize:vertical;
+    }
+
+    input:focus, textarea:focus, select:focus{
+      border-color:var(--accent-2);
+      box-shadow:0 0 0 3px rgba(163,122,84,.12);
+    }
+
+    .row-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .checks{
+      display:grid;
+      gap:8px;
+    }
+
+    .check{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:10px 12px;
+      background:#fffdf8;
+      border:1px solid var(--line);
+      border-radius:12px;
+    }
+
+    .check input{margin-top:3px}
+    .check span{font-size:.95rem; line-height:1.35}
+
+    .stage{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:16px;
+    }
+
+    .stage-top{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:14px;
+    }
+
+    .stage-top h2{
+      margin:0;
+      font-size:1.08rem;
+    }
+
+    .stage-top p{
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#f4eadb;
+      border:1px solid var(--line);
+      color:var(--accent);
+      font-weight:700;
+      font-size:.9rem;
+    }
+
+    .status::before{
+      content:"";
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--ok);
+      box-shadow:0 0 0 4px rgba(45,106,79,.12);
+    }
+
+    .preview-shell{
+      background:linear-gradient(180deg, #eadfcf, #d9c1a1);
+      border:1px solid #c9b091;
+      border-radius:22px;
+      padding:22px;
+      overflow:auto;
+    }
+
+    .cover-page{
+      width:min(100%, 470px);
+      aspect-ratio:2 / 3;
+      margin:0 auto;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.55), transparent 30%),
+        linear-gradient(180deg, #f7f0e2 0%, #f0e4d0 100%);
+      color:#16110e;
+      border:12px solid #111;
+      position:relative;
+      box-shadow:0 18px 40px rgba(0,0,0,.2);
+      overflow:hidden;
+    }
+
+    .cover-page::before,
+    .cover-page::after{
+      content:"";
+      position:absolute;
+      inset:14px;
+      border:2px solid rgba(17,17,17,.16);
+      pointer-events:none;
+    }
+
+    .cover-page::after{
+      inset:28px;
+      border-style:dashed;
+      opacity:.45;
+    }
+
+    .woodcut{
+      position:absolute;
+      inset:0;
+      background:
+        repeating-linear-gradient(90deg, rgba(0,0,0,.045) 0 2px, transparent 2px 8px),
+        repeating-linear-gradient(0deg, rgba(0,0,0,.02) 0 2px, transparent 2px 9px);
+      mix-blend-mode:multiply;
+      pointer-events:none;
+    }
+
+    .cover-inner{
+      position:relative;
+      z-index:2;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      padding:34px 28px 26px;
+      text-align:center;
+    }
+
+    .cover-topline{
+      font-size:.86rem;
+      letter-spacing:1.6px;
+      text-transform:uppercase;
+      font-weight:700;
+    }
+
+    .cover-title{
+      font-size:clamp(1.9rem, 4vw, 2.9rem);
+      line-height:1.02;
+      margin:12px 0 8px;
+      text-transform:uppercase;
+      letter-spacing:.8px;
+      font-weight:700;
+      white-space:pre-line;
+    }
+
+    .cover-subtitle{
+      font-size:1rem;
+      line-height:1.3;
+      min-height:2.6em;
+      color:#2a231d;
+      padding:0 8px;
+      white-space:pre-line;
+    }
+
+    .art-box{
+      flex:1;
+      display:grid;
+      place-items:center;
+      padding:18px 0;
+    }
+
+    .woodcut-art{
+      width:100%;
+      max-width:310px;
+      aspect-ratio:1 / 1.08;
+      border:4px solid #111;
+      background:#f6efe4;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .sun{
+      position:absolute;
+      width:76px;
+      height:76px;
+      border:5px solid #111;
+      border-radius:50%;
+      top:24px;
+      right:28px;
+      background:transparent;
+    }
+
+    .ground{
+      position:absolute;
+      left:-8%;
+      right:-8%;
+      bottom:18%;
+      height:28%;
+      border-top:5px solid #111;
+      border-radius:50% 50% 0 0;
+      transform:rotate(-4deg);
+    }
+
+    .cactus,
+    .cactus::before,
+    .cactus::after{
+      position:absolute;
+      background:#111;
+      content:"";
+      border-radius:18px;
+    }
+
+    .cactus{
+      width:14px;
+      height:110px;
+      left:18%;
+      bottom:20%;
+    }
+
+    .cactus::before{
+      width:12px;
+      height:44px;
+      left:-17px;
+      top:26px;
+      transform:rotate(-28deg);
+      transform-origin:bottom right;
+    }
+
+    .cactus::after{
+      width:12px;
+      height:40px;
+      right:-17px;
+      top:14px;
+      transform:rotate(26deg);
+      transform-origin:bottom left;
+    }
+
+    .hat{
+      position:absolute;
+      width:112px;
+      height:18px;
+      background:#111;
+      left:50%;
+      bottom:38%;
+      transform:translateX(-50%);
+      border-radius:40px;
+    }
+
+    .hat::before{
+      content:"";
+      position:absolute;
+      width:60px;
+      height:42px;
+      background:#111;
+      left:50%;
+      top:-26px;
+      transform:translateX(-50%);
+      border-radius:12px 12px 5px 5px;
+    }
+
+    .poet-body{
+      position:absolute;
+      width:74px;
+      height:112px;
+      left:50%;
+      bottom:16%;
+      transform:translateX(-50%);
+      border:5px solid #111;
+      border-top:none;
+      border-radius:12px 12px 16px 16px;
+      background:transparent;
+    }
+
+    .poet-body::before{
+      content:"";
+      position:absolute;
+      width:78px;
+      height:5px;
+      background:#111;
+      bottom:-8px;
+      left:50%;
+      transform:translateX(-50%) rotate(10deg);
+      transform-origin:center;
+    }
+
+    .poet-body::after{
+      content:"";
+      position:absolute;
+      width:66px;
+      height:5px;
+      background:#111;
+      top:42px;
+      left:100%;
+      transform:rotate(-18deg);
+      transform-origin:left center;
+    }
+
+    .title-band,
+    .author-band{
+      border-top:3px solid #111;
+      border-bottom:3px solid #111;
+      padding:10px 8px;
+      background:rgba(255,255,255,.2);
+    }
+
+    .author{
+      font-size:1rem;
+      font-weight:700;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      line-height:1.3;
+      white-space:pre-line;
+    }
+
+    .org{
+      margin-top:6px;
+      font-size:.9rem;
+      line-height:1.3;
+    }
+
+    .tips{
+      margin-top:14px;
+      display:grid;
+      gap:10px;
+      grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
+    }
+
+    .tip{
+      background:#fffaf2;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      font-size:.92rem;
+      color:var(--muted);
+    }
+
+    .hidden-input{display:none}
+
+    .stamp-options{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+    }
+
+    .stamp-btn{
+      border:1px solid var(--line);
+      background:#fffdf8;
+      border-radius:12px;
+      padding:10px;
+      font:inherit;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .stamp-btn.active{
+      border-color:var(--accent);
+      background:#f5eadb;
+      color:var(--accent);
+    }
+
+    .cover-page.mode-classico .art-box{filter:none}
+    .cover-page.mode-sertao .art-box{filter:contrast(1.05)}
+    .cover-page.mode-noite{
+      background:linear-gradient(180deg, #e8e0d5 0%, #d6cab8 100%);
+    }
+    .cover-page.mode-noite .sun{border-style:dashed}
+    .cover-page.mode-romance .cover-subtitle{font-style:italic}
+
+    .uploaded-art{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:none;
+      filter:grayscale(1) contrast(1.2) brightness(1.02);
+    }
+
+    .woodcut-art.has-image .uploaded-art{display:block}
+    .woodcut-art.has-image .built-art{display:none}
+
+    .foot-actions{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width: 1080px){
+      .wrap{grid-template-columns:1fr}
+    }
+
+    @media (max-width: 640px){
+      .topbar{padding:12px}
+      .wrap{padding:12px}
+      .row-2,.stamp-options{grid-template-columns:1fr}
+      .cover-page{width:100%}
+      .cover-inner{padding:26px 18px 20px}
+      .cover-title{font-size:1.9rem}
+      .titles p{white-space:normal}
+    }
+
+    @media print{
+      .topbar,
+      .panel,
+      .tips,
+      .foot-actions,
+      .stage-top{
+        display:none !important;
+      }
+      body{
+        background:#fff;
+      }
+      .wrap{
+        display:block;
+        max-width:none;
+        margin:0;
+        padding:0;
+      }
+      .stage{
+        border:none;
+        box-shadow:none;
+        padding:0;
+      }
+      .preview-shell{
+        border:none;
+        background:#fff;
+        padding:0;
+        border-radius:0;
+      }
+      .cover-page{
+        width:100%;
+        max-width:none;
+        margin:0 auto;
+        box-shadow:none;
+      }
+    }
+  </style>
 </head>
 <body>
-<h1>Faça Kapa — Cordel (versão inicial funcional)</h1>
-<p>Arquivo-base do módulo de capas para cordel dentro do Celeiro Literário.</p>
-<p>Substitua este conteúdo pela versão completa enviada anteriormente no canvas.</p>
-<p>Este arquivo serve como ponte inicial segura para upload no seu repositório.</p>
+  <header class="topbar">
+    <div class="brand">
+      <div class="seal">FK</div>
+      <div class="titles">
+        <h1>Faça Kapa — Cordel</h1>
+        <p>Base inicial para capas de folhetos, antologias e coleções de cordel dentro do Celeiro Literário.</p>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button class="btn btn-green" id="btnAtualizar">Atualizar prévia</button>
+      <button class="btn btn-yellow" onclick="window.scrollTo({top:0,behavior:'smooth'})">Retornar</button>
+      <button class="btn btn-red" onclick="alert('Saída simbólica do módulo. Depois ligamos este botão ao fluxo real do seu sistema.')">Sair do sistema</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Estrutura da capa</h2>
+        <p>Preencha o essencial. A prévia ao lado reage ao título, subtítulo, autor, faixa de topo e estilo visual do cordel.</p>
+      </div>
+
+      <div class="panel-body">
+        <div class="field">
+          <label for="topline">Faixa superior</label>
+          <input id="topline" type="text" value="Literatura de Cordel" />
+          <small>Exemplo: Literatura de Cordel, Antologia Popular, Coleção Nordestina.</small>
+        </div>
+
+        <div class="field">
+          <label for="titulo">Título</label>
+          <textarea id="titulo">A Antologia da Quimera</textarea>
+        </div>
+
+        <div class="field">
+          <label for="subtitulo">Subtítulo</label>
+          <textarea id="subtitulo">Cordéis, causos e vozes do sertão</textarea>
+        </div>
+
+        <div class="field">
+          <label for="autor">Autor / Organização</label>
+          <input id="autor" type="text" value="Organização de Wagner Planas" />
+        </div>
+
+        <div class="row-2">
+          <div class="field">
+            <label for="modo">Estilo base</label>
+            <select id="modo">
+              <option value="classico">Clássico</option>
+              <option value="sertao" selected>Sertão</option>
+              <option value="noite">Noite gravada</option>
+              <option value="romance">Romance de cordel</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="tamanho">Formato do folheto</label>
+            <select id="tamanho">
+              <option value="14x21">14 x 21 cm</option>
+              <option value="13.5x19">13,5 x 19 cm</option>
+              <option value="16x23">16 x 23 cm</option>
+              <option value="a5">A5</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Elementos visuais</label>
+          <div class="checks">
+            <label class="check"><input type="checkbox" id="mostrarSubtitulo" checked><span>Mostrar subtítulo na capa</span></label>
+            <label class="check"><input type="checkbox" id="mostrarTopo" checked><span>Mostrar faixa superior</span></label>
+            <label class="check"><input type="checkbox" id="mostrarOrg" checked><span>Mostrar campo de autor/organização</span></label>
+            <label class="check"><input type="checkbox" id="usarMoldura" checked><span>Usar moldura forte estilo folheto tradicional</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Carimbo visual</label>
+          <div class="stamp-options" id="stampOptions">
+            <button type="button" class="stamp-btn active" data-stamp="xilo">Xilogravura</button>
+            <button type="button" class="stamp-btn" data-stamp="folheto">Folheto popular</button>
+            <button type="button" class="stamp-btn" data-stamp="feira">Feira nordestina</button>
+            <button type="button" class="stamp-btn" data-stamp="cantoria">Cantoria</button>
+          </div>
+          <small>Por enquanto o carimbo muda a assinatura visual da prévia. Depois podemos ligar isso a presets mais completos.</small>
+        </div>
+
+        <div class="field">
+          <label for="imagemInput">Imagem do autor ou arte-base</label>
+          <input class="hidden-input" id="imagemInput" type="file" accept="image/*" />
+          <button class="btn btn-brown" type="button" id="btnImagem">Escolher imagem</button>
+          <small>Se enviar imagem, ela entra na arte central em preto e branco para uma simulação inicial.</small>
+        </div>
+
+        <div class="field">
+          <label for="observacao">Observações do projeto</label>
+          <textarea id="observacao" placeholder="Ex.: capa mais seca, mais popular, mais forte, com cara de feira, xilogravura bruta, sertão duro..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="stage">
+      <div class="stage-top">
+        <div>
+          <h2>Prévia do folheto</h2>
+          <p>Prévia focada em cordel. Já serve como base para testar identidade visual, distribuição do texto e impacto frontal.</p>
+        </div>
+        <div class="status" id="statusLabel">Prévia pronta</div>
+      </div>
+
+      <div class="preview-shell">
+        <div class="cover-page mode-sertao" id="coverPage">
+          <div class="woodcut"></div>
+
+          <div class="cover-inner">
+            <div class="title-band" id="topBand">
+              <div class="cover-topline" id="previewTopline">Literatura de Cordel</div>
+              <div class="cover-title" id="previewTitulo">A Antologia da Quimera</div>
+              <div class="cover-subtitle" id="previewSubtitulo">Cordéis, causos e vozes do sertão</div>
+            </div>
+
+            <div class="art-box">
+              <div class="woodcut-art" id="artBox">
+                <img id="uploadedArt" class="uploaded-art" alt="Arte enviada pelo usuário" />
+                <div class="built-art">
+                  <div class="sun"></div>
+                  <div class="ground"></div>
+                  <div class="cactus"></div>
+                  <div class="hat"></div>
+                  <div class="poet-body"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="author-band" id="authorBand">
+              <div class="author" id="previewAutor">Organização de Wagner Planas</div>
+              <div class="org" id="previewOrg">Cordel brasileiro • edição popular</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tips">
+        <div class="tip"><strong>Base pronta:</strong> frontal de cordel com cara de folheto popular.</div>
+        <div class="tip"><strong>Imagem opcional:</strong> pode usar arte enviada ou manter desenho interno.</div>
+        <div class="tip"><strong>Próximo passo:</strong> depois ligamos isso à contracapa, lombada e exportação.</div>
+        <div class="tip"><strong>Foco atual:</strong> impacto visual rápido, simples e leve.</div>
+      </div>
+
+      <div class="foot-actions">
+        <button class="btn btn-green" onclick="window.print()">Imprimir / Salvar em PDF</button>
+        <button class="btn btn-brown" id="btnLimparImagem">Remover imagem</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const ids = {
+      topline: document.getElementById('topline'),
+      titulo: document.getElementById('titulo'),
+      subtitulo: document.getElementById('subtitulo'),
+      autor: document.getElementById('autor'),
+      modo: document.getElementById('modo'),
+      tamanho: document.getElementById('tamanho'),
+      mostrarSubtitulo: document.getElementById('mostrarSubtitulo'),
+      mostrarTopo: document.getElementById('mostrarTopo'),
+      mostrarOrg: document.getElementById('mostrarOrg'),
+      usarMoldura: document.getElementById('usarMoldura'),
+      observacao: document.getElementById('observacao'),
+      imagemInput: document.getElementById('imagemInput'),
+      btnImagem: document.getElementById('btnImagem'),
+      btnLimparImagem: document.getElementById('btnLimparImagem'),
+      btnAtualizar: document.getElementById('btnAtualizar'),
+      coverPage: document.getElementById('coverPage'),
+      previewTopline: document.getElementById('previewTopline'),
+      previewTitulo: document.getElementById('previewTitulo'),
+      previewSubtitulo: document.getElementById('previewSubtitulo'),
+      previewAutor: document.getElementById('previewAutor'),
+      previewOrg: document.getElementById('previewOrg'),
+      topBand: document.getElementById('topBand'),
+      authorBand: document.getElementById('authorBand'),
+      artBox: document.getElementById('artBox'),
+      uploadedArt: document.getElementById('uploadedArt'),
+      statusLabel: document.getElementById('statusLabel'),
+      stampOptions: document.getElementById('stampOptions')
+    };
+
+    let currentStamp = 'xilo';
+
+    function safeText(value, fallback){
+      const text = String(value || '').trim();
+      return text || fallback;
+    }
+
+    function orgByStamp(stamp){
+      if(stamp === 'folheto') return 'Folheto popular • tradição oral';
+      if(stamp === 'feira') return 'Feira nordestina • voz do povo';
+      if(stamp === 'cantoria') return 'Cantoria • repente • poesia';
+      return 'Cordel brasileiro • edição popular';
+    }
+
+    function applyStampVisual(stamp){
+      const map = {
+        xilo: 'Xilogravura',
+        folheto: 'Folheto Popular',
+        feira: 'Feira Nordestina',
+        cantoria: 'Cantoria'
+      };
+
+      ids.statusLabel.textContent = 'Prévia pronta • ' + (map[stamp] || 'Xilogravura');
+
+      if(stamp === 'feira'){
+        ids.coverPage.style.letterSpacing = '.02em';
+      } else if(stamp === 'cantoria'){
+        ids.coverPage.style.letterSpacing = '.03em';
+      } else {
+        ids.coverPage.style.letterSpacing = 'normal';
+      }
+
+      ids.previewOrg.textContent = orgByStamp(stamp);
+    }
+
+    function applySize(){
+      const format = ids.tamanho.value;
+
+      if(format === '13.5x19'){
+        ids.coverPage.style.maxWidth = '420px';
+      } else if(format === '16x23'){
+        ids.coverPage.style.maxWidth = '510px';
+      } else if(format === 'a5'){
+        ids.coverPage.style.maxWidth = '455px';
+      } else {
+        ids.coverPage.style.maxWidth = '470px';
+      }
+    }
+
+    function updatePreview(){
+      ids.previewTopline.textContent = safeText(ids.topline.value, 'Literatura de Cordel');
+      ids.previewTitulo.textContent = safeText(ids.titulo.value, 'Sem título');
+      ids.previewSubtitulo.textContent = safeText(ids.subtitulo.value, '');
+      ids.previewAutor.textContent = safeText(ids.autor.value, 'Autor não informado');
+
+      ids.coverPage.classList.remove('mode-classico','mode-sertao','mode-noite','mode-romance');
+      ids.coverPage.classList.add('mode-' + ids.modo.value);
+
+      ids.previewSubtitulo.style.display = ids.mostrarSubtitulo.checked ? 'block' : 'none';
+      ids.previewTopline.style.display = ids.mostrarTopo.checked ? 'block' : 'none';
+      ids.authorBand.style.display = ids.mostrarOrg.checked ? 'block' : 'none';
+
+      ids.coverPage.style.borderWidth = ids.usarMoldura.checked ? '12px' : '6px';
+      ids.topBand.style.borderTopWidth = ids.usarMoldura.checked ? '3px' : '1px';
+      ids.topBand.style.borderBottomWidth = ids.usarMoldura.checked ? '3px' : '1px';
+      ids.authorBand.style.borderTopWidth = ids.usarMoldura.checked ? '3px' : '1px';
+      ids.authorBand.style.borderBottomWidth = ids.usarMoldura.checked ? '3px' : '1px';
+
+      applySize();
+      applyStampVisual(currentStamp);
+    }
+
+    ids.btnAtualizar.addEventListener('click', updatePreview);
+
+    ['input','change'].forEach(evt => {
+      [
+        ids.topline,
+        ids.titulo,
+        ids.subtitulo,
+        ids.autor,
+        ids.modo,
+        ids.tamanho,
+        ids.mostrarSubtitulo,
+        ids.mostrarTopo,
+        ids.mostrarOrg,
+        ids.usarMoldura
+      ].forEach(el => el.addEventListener(evt, updatePreview));
+    });
+
+    ids.stampOptions.addEventListener('click', (e) => {
+      const btn = e.target.closest('.stamp-btn');
+      if(!btn) return;
+
+      currentStamp = btn.dataset.stamp || 'xilo';
+
+      [...ids.stampOptions.querySelectorAll('.stamp-btn')].forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      updatePreview();
+    });
+
+    ids.btnImagem.addEventListener('click', () => ids.imagemInput.click());
+
+    ids.imagemInput.addEventListener('change', (event) => {
+      const file = event.target.files && event.target.files[0];
+      if(!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        ids.uploadedArt.src = reader.result;
+        ids.artBox.classList.add('has-image');
+        ids.statusLabel.textContent = 'Prévia pronta • imagem aplicada';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    ids.btnLimparImagem.addEventListener('click', () => {
+      ids.imagemInput.value = '';
+      ids.uploadedArt.src = '';
+      ids.artBox.classList.remove('has-image');
+      updatePreview();
+    });
+
+    updatePreview();
+  </script>
 </body>
 </html>
