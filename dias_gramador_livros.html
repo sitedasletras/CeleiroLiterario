@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dias Gramador de Livros</title>
+  <style>
+    :root{
+      --bg:#f4efe7;
+      --paper:#f7f4ee;
+      --ink:#1f1f1b;
+      --muted:#6f6a62;
+      --line:#ddd6c9;
+      --green:#3f7a5a;
+      --green-soft:#e4f0e8;
+      --blue:#4f7fb1;
+      --blue-soft:#e8f0f9;
+      --beige:#b89c72;
+      --beige-soft:#f2eadf;
+      --earth:#9a6a3f;
+      --earth-soft:#f2e7dd;
+      --shadow:0 14px 28px rgba(0,0,0,.08);
+      --radius:24px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Georgia,"Times New Roman",serif;
+      background:var(--bg);
+      color:var(--ink);
+      padding:16px;
+    }
+
+    .wrap{
+      max-width:1080px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .hero,
+    .shell{
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .hero{
+      padding:28px 24px;
+    }
+
+    .hero small{
+      display:block;
+      font-size:.95rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#7f6d5d;
+      margin-bottom:10px;
+    }
+
+    .hero h1{
+      margin:0 0 12px 0;
+      font-size:clamp(2.2rem,5vw,3.5rem);
+      line-height:1.02;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      font-size:1.08rem;
+      line-height:1.45;
+      max-width:760px;
+    }
+
+    .actions{
+      margin-top:20px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:none;
+      border-radius:16px;
+      padding:12px 18px;
+      font:inherit;
+      font-weight:700;
+      cursor:pointer;
+      transition:.18s ease;
+      box-shadow:0 8px 18px rgba(0,0,0,.08);
+    }
+
+    .btn:hover{transform:translateY(-1px)}
+    .btn-back{background:#d9a441;color:#2a1d0d}
+    .btn-exit{background:#a63d40;color:#fff}
+
+    .shell{
+      padding:22px;
+    }
+
+    .shell h2{
+      margin:0 0 8px 0;
+      font-size:clamp(2rem,4vw,3rem);
+      line-height:1.05;
+    }
+
+    .shell > p{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      font-size:1.05rem;
+      line-height:1.45;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:22px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      box-shadow:0 8px 20px rgba(0,0,0,.05);
+    }
+
+    .card-green{background:linear-gradient(180deg,#f7fcf8 0%, var(--green-soft) 100%); border-color:#cfe2d7}
+    .card-blue{background:linear-gradient(180deg,#f8fbff 0%, var(--blue-soft) 100%); border-color:#d1dceb}
+    .card-beige{background:linear-gradient(180deg,#fffdf9 0%, var(--beige-soft) 100%); border-color:#e4d6c1}
+    .card-earth{background:linear-gradient(180deg,#fffdfb 0%, var(--earth-soft) 100%); border-color:#e6d1bf}
+
+    .tag{
+      display:inline-block;
+      width:max-content;
+      border-radius:999px;
+      padding:6px 12px;
+      font-size:.88rem;
+      font-weight:700;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      border:1px solid transparent;
+    }
+
+    .tag-green{background:#eaf4ee;color:#2f694e;border-color:#cfe2d7}
+    .tag-blue{background:#edf3fb;color:#496f9d;border-color:#d1dceb}
+    .tag-beige{background:#f4ede3;color:#7e6746;border-color:#e4d6c1}
+    .tag-earth{background:#f4e9df;color:#7a4a2f;border-color:#e6d1bf}
+
+    .card h3{
+      margin:0;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .card p{
+      margin:0;
+      color:#5b5b5b;
+      line-height:1.45;
+      font-size:1rem;
+    }
+
+    .features{
+      margin:0;
+      padding-left:20px;
+      color:#4a4a4a;
+      line-height:1.5;
+    }
+
+    .features li{margin-bottom:4px}
+
+    .open{
+      margin-top:auto;
+      border:none;
+      border-radius:16px;
+      padding:14px 18px;
+      color:#fff;
+      font:inherit;
+      font-weight:700;
+      cursor:pointer;
+      transition:.18s ease;
+    }
+
+    .open:hover{transform:translateY(-1px)}
+    .open-green{background:var(--green)}
+    .open-blue{background:var(--blue)}
+    .open-beige{background:#bda173}
+    .open-earth{background:#9b6a3f}
+
+    .note{
+      margin-top:16px;
+      padding-top:14px;
+      border-top:1px dashed #d4c8b6;
+      color:#6e675e;
+      line-height:1.45;
+      font-size:.97rem;
+    }
+
+    @media (max-width: 760px){
+      body{padding:10px}
+      .grid{grid-template-columns:1fr}
+      .hero,.shell{border-radius:20px}
+      .hero{padding:22px 18px}
+      .shell{padding:18px}
+      .card{padding:18px}
+      .actions{flex-direction:column}
+      .btn{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <section class="hero">
+      <small>Lapidar</small>
+      <h1>Dias Gramador de Livros</h1>
+      <p>Setor editorial de diagramação do Lapidar. Escolha abaixo o gramador correto da obra.</p>
+
+      <div class="actions">
+        <button class="btn btn-back" onclick="window.location.href='lapidar.html'">Retornar ao Lapidar</button>
+        <button class="btn btn-exit" onclick="alert('Saída simbólica do sistema. Depois ligamos este botão ao fluxo real.')">Sair do sistema</button>
+      </div>
+    </section>
+
+    <section class="shell">
+      <h2>Escolha o gramador</h2>
+      <p>Abra manualmente o setor desejado.</p>
+
+      <div class="grid">
+
+        <article class="card card-green">
+          <span class="tag tag-green">Prosa</span>
+          <h3>Pólux</h3>
+          <p>Diagramador de prosa e narrativa contínua.</p>
+          <ul class="features">
+            <li>Capítulos</li>
+            <li>Fluxo contínuo</li>
+            <li>Prévia editorial</li>
+            <li>Miolo narrativo</li>
+          </ul>
+          <button class="open open-green" onclick="window.location.href='polux.html'">Abrir Pólux</button>
+        </article>
+
+        <article class="card card-blue">
+          <span class="tag tag-blue">Poesia</span>
+          <h3>Castor</h3>
+          <p>Diagramador de poesia e formas poéticas.</p>
+          <ul class="features">
+            <li>Versos</li>
+            <li>Estrofes</li>
+            <li>Preservação visual</li>
+            <li>Preview poético</li>
+          </ul>
+          <button class="open open-blue" onclick="window.location.href='castor.html'">Abrir Castor</button>
+        </article>
+
+        <article class="card card-beige">
+          <span class="tag tag-beige">Híbrido</span>
+          <h3>Centauro</h3>
+          <p>Diagramador híbrido para obras mistas.</p>
+          <ul class="features">
+            <li>Prosa + poesia</li>
+            <li>Blocos mistos</li>
+            <li>Transições visuais</li>
+            <li>Layout combinado</li>
+          </ul>
+          <button class="open open-beige" onclick="window.location.href='centauro.html'">Abrir Centauro</button>
+        </article>
+
+        <article class="card card-earth">
+          <span class="tag tag-earth">Cordel</span>
+          <h3>Qui(RON)xadá</h3>
+          <p>Diagramador de cordel e estrutura popular.</p>
+          <ul class="features">
+            <li>Sextilhas</li>
+            <li>Cordel</li>
+            <li>Formato popular</li>
+            <li>Leitura simples</li>
+          </ul>
+          <button class="open open-earth" onclick="window.location.href='modulo_quironxada.html'">Abrir Qui(RON)xadá</button>
+        </article>
+
+      </div>
+
+      <div class="note">
+        O Celeiro entra no Lapidar primeiro. Depois você escolhe Dias Gramador de Livros ou OKapista.
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
