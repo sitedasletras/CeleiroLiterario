@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mesa de Capa Editorial — Celeiro Literário</title>
+  <style>
+    :root{
+      --bg:#f4efe7;
+      --paper:#fffdf8;
+      --ink:#20242b;
+      --muted:#66717e;
+      --line:#d8dee8;
+      --accent:#284f75;
+      --accent-soft:#e8f0f7;
+      --earth:#8f5d34;
+      --earth-soft:#f2e7dd;
+      --beige:#b89c72;
+      --beige-soft:#f2eadf;
+      --ok:#2f7a59;
+      --warn:#d9a441;
+      --danger:#a63d40;
+      --shadow:0 12px 30px rgba(38,52,70,.09);
+      --radius:20px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      min-height:100vh;
+      background:linear-gradient(180deg,#f8f4ee 0%, var(--bg) 100%);
+      color:var(--ink);
+      font-family:Georgia,"Times New Roman",serif;
+      padding:14px;
+    }
+
+    .wrap{
+      width:min(1480px,100%);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:380px minmax(0,1fr) 340px;
+      gap:14px;
+      align-items:start;
+    }
+
+    .panel,.main-card{
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .panel{padding:16px;display:flex;flex-direction:column;gap:12px}
+    .main{display:flex;flex-direction:column;gap:14px;min-width:0}
+    .main-card{padding:18px}
+
+    h1,h2,h3,p{margin:0}
+    h1{font-size:clamp(2rem,4vw,3.1rem);line-height:1.02}
+    h2{font-size:1.35rem;line-height:1.15}
+    h3{font-size:1.05rem;line-height:1.2}
+    p,small,label,li{line-height:1.4}
+    p,small{color:var(--muted)}
+
+    .hero{
+      background:linear-gradient(180deg,#ffffff 0%, var(--accent-soft) 100%);
+      border-color:#cbd9e7;
+    }
+
+    .hero small{
+      display:block;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-weight:700;
+      color:var(--accent);
+      margin-bottom:8px;
+    }
+
+    .section{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}
+    .section + .section{margin-top:10px}
+
+    .field{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+    .field:first-child{margin-top:0}
+    label{font-weight:700;color:#2c3542}
+
+    select,input,textarea{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:#fff;
+      color:var(--ink);
+      padding:11px 12px;
+      font:inherit;
+      outline:none;
+    }
+
+    textarea{min-height:80px;resize:vertical}
+    input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(40,79,117,.10)}
+
+    .choices{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
+    .choice{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      background:#fff;
+      cursor:pointer;
+    }
+    .choice input{width:auto;margin-top:3px}
+    .choice strong{display:block;color:#26313d}
+    .choice span{display:block;color:var(--muted);font-size:.92rem;margin-top:2px}
+
+    .btn{
+      border:none;
+      border-radius:14px;
+      padding:12px 14px;
+      font:inherit;
+      font-weight:700;
+      cursor:pointer;
+      transition:.15s ease;
+      width:100%;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-ok{background:var(--ok);color:#fff}
+    .btn-warn{background:var(--warn);color:#2a1d0d}
+    .btn-danger{background:var(--danger);color:#fff}
+    .btn-accent{background:var(--accent);color:#fff}
+    .btn-soft{background:var(--accent-soft);color:var(--accent);border:1px solid #cbd9e7}
+
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+
+    .result{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .metric{
+      background:#f8fafc;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      min-height:86px;
+    }
+    .metric span{display:block;color:var(--muted);font-size:.9rem;font-weight:700;margin-bottom:6px}
+    .metric strong{display:block;font-size:1.05rem;line-height:1.25;color:#1e2a38;word-break:break-word}
+
+    .stage{
+      min-height:560px;
+      background:linear-gradient(180deg,#edf2f7 0%,#e4ebf3 100%);
+      border:1px solid #cfd9e5;
+      border-radius:18px;
+      padding:16px;
+      overflow:auto;
+    }
+
+    .cover-open{
+      margin:0 auto;
+      min-width:620px;
+      width:max-content;
+      display:flex;
+      align-items:stretch;
+      box-shadow:0 18px 34px rgba(30,42,56,.14);
+      background:#fff;
+      border:1px solid #ccd5df;
+    }
+
+    .flap,.back,.front,.spine{
+      min-height:390px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:14px;
+      border-right:1px dashed #b8c4d0;
+      color:#2a3542;
+      background:#fffdf8;
+    }
+    .flap{width:80px;background:#f8f2e8;color:#766450;font-size:.86rem}
+    .back,.front{width:220px}
+    .spine{width:30px;background:#e9eef5;writing-mode:vertical-rl;font-size:.88rem;font-weight:700;color:var(--accent)}
+    .front{border-right:none;background:linear-gradient(180deg,#fff 0%,var(--accent-soft) 100%)}
+
+    .epub-preview{
+      width:260px;
+      aspect-ratio:1/1.6;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      border:10px solid #1f2a35;
+      background:linear-gradient(180deg,#fff 0%,var(--accent-soft) 100%);
+      box-shadow:0 18px 34px rgba(30,42,56,.14);
+      padding:22px;
+    }
+
+    .notice{
+      border-radius:14px;
+      border:1px solid #ead8a6;
+      background:#fff8df;
+      color:#5d4916;
+      padding:12px;
+      font-size:.95rem;
+      line-height:1.42;
+    }
+    .notice strong{color:#3b2b0b}
+
+    .mesario{
+      background:linear-gradient(180deg,#fff 0%,#f8fafc 100%);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+    }
+    .mesario-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed #d5dde6;padding:8px 0;color:#3a4654}
+    .mesario-row:last-child{border-bottom:none;font-weight:700;color:#18212d;font-size:1.08rem}
+
+    .hidden{display:none !important}
+
+    @media(max-width:1180px){.wrap{grid-template-columns:1fr}.result{grid-template-columns:1fr 1fr}.cover-open{min-width:720px}}
+    @media(max-width:720px){body{padding:8px}.grid2,.grid3,.result{grid-template-columns:1fr}.panel,.main-card{border-radius:16px;padding:14px}.stage{min-height:440px}.cover-open{min-width:680px}.epub-preview{width:220px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <aside class="panel">
+      <h2>Mesa de Capa</h2>
+      <p>Núcleo leve para capas físicas e digitais. Os capistas chamam esta mesa sem carregar motor pesado dentro deles.</p>
+
+      <div class="section">
+        <h3>Origem do módulo</h3>
+        <div class="field">
+          <label for="origemModulo">Capista de origem</label>
+          <select id="origemModulo">
+            <option value="literario">Faça Kapa Literário</option>
+            <option value="cordel">Faça Kapa Cordel</option>
+            <option value="polimata">Faça Kapa Polímata</option>
+          </select>
+          <small>O Cordel bloqueia ePub automaticamente.</small>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Tipo de saída</h3>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="tipoSaida" value="fisica" checked><div><strong>Capa física</strong><span>Frente + lombada + contracapa.</span></div></label>
+          <label class="choice" id="choiceEpub"><input type="radio" name="tipoSaida" value="epub"><div><strong>Capa ePub</strong><span>Frente digital sem lombada.</span></div></label>
+          <label class="choice" id="choiceAmbas"><input type="radio" name="tipoSaida" value="ambas"><div><strong>Física + ePub</strong><span>Duas entregas, dois valores somados.</span></div></label>
+        </div>
+      </div>
+
+      <div class="section" id="boxPlataforma">
+        <h3>Destino físico</h3>
+        <div class="field">
+          <label for="plataforma">Plataforma / gráfica</label>
+          <select id="plataforma">
+            <option value="uiclap">UICLAP</option>
+            <option value="clube">Clube de Autores</option>
+            <option value="kdp">Amazon KDP</option>
+            <option value="local">Gráfica local</option>
+            <option value="manual">Personalizado/manual</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="formatoLivro">Formato do livro</label>
+          <select id="formatoLivro">
+            <option value="a5">A5 — 14,8 x 21 cm</option>
+            <option value="16x23">16 x 23 cm</option>
+            <option value="6x9">6 x 9 pol</option>
+            <option value="14x21">14 x 21 cm</option>
+            <option value="personalizado">Personalizado</option>
+          </select>
+        </div>
+        <div class="grid2" id="boxPersonalizado">
+          <div class="field"><label for="larguraManual">Largura cm</label><input id="larguraManual" type="number" step="0.1" value="14.8"></div>
+          <div class="field"><label for="alturaManual">Altura cm</label><input id="alturaManual" type="number" step="0.1" value="21"></div>
+        </div>
+      </div>
+
+      <div class="section" id="boxMiolo">
+        <h3>Miolo e responsabilidade</h3>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="mioloModo" value="upload" checked><div><strong>Enviar miolo</strong><span>Cálculo técnico assumido pelo Celeiro.</span></div></label>
+          <label class="choice"><input type="radio" name="mioloModo" value="manual"><div><strong>Informar páginas</strong><span>Cálculo estimado com responsabilidade do autor.</span></div></label>
+        </div>
+        <div class="field" id="boxUpload"><label for="arquivoMiolo">Arquivo do miolo</label><input id="arquivoMiolo" type="file" accept=".pdf,.doc,.docx,.txt"><small>Nesta primeira versão, informe também o total de páginas abaixo para validar.</small></div>
+        <div class="field"><label for="paginas">Número de páginas</label><input id="paginas" type="number" min="1" value="180"></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="main-card hero">
+        <small>Celeiro Literário</small>
+        <h1>Mesa de Capa Editorial</h1>
+        <p>Cálculo físico, ePub, plataforma de destino, papel obrigatório e valor fechado para o Mesário da seção.</p>
+      </section>
+
+      <section class="main-card" id="boxPapel">
+        <h2>Papel, gramatura e lombada</h2>
+        <div class="notice"><strong>Atenção:</strong> a gramatura do papel altera a lombada. Uma diferença aparentemente pequena pode gerar diferença real na capa física.</div>
+        <div class="grid3">
+          <div class="field">
+            <label for="papel">Papel</label>
+            <select id="papel">
+              <option value="offset75">Offset 75 g</option>
+              <option value="offset90">Offset 90 g</option>
+              <option value="polen80">Pólen 80 g</option>
+              <option value="polen90">Pólen 90 g</option>
+              <option value="couche115">Couchê 115 g</option>
+              <option value="couche150">Couchê 150 g</option>
+              <option value="manual">Personalizado</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fatorPapel">Fator cm/página</label>
+            <input id="fatorPapel" type="number" step="0.0001" value="0.0021">
+            <small>Editável para regras específicas da gráfica.</small>
+          </div>
+          <div class="field">
+            <label for="orelhas">Orelhas</label>
+            <select id="orelhas">
+              <option value="0">Sem orelhas</option>
+              <option value="7">Orelhas 7 cm</option>
+              <option value="8">Orelhas 8 cm</option>
+              <option value="10">Orelhas 10 cm</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="field"><label for="sangria">Sangria cm</label><input id="sangria" type="number" step="0.05" value="0.3"></div>
+          <div class="field"><label for="valorFisico">Valor capa física</label><input id="valorFisico" type="number" step="0.01" value="0"></div>
+          <div class="field"><label for="moeda">Moeda</label><select id="moeda"><option value="BRL">Brasil — R$</option><option value="USD">Exterior — US$</option></select></div>
+        </div>
+
+        <button class="btn btn-accent" id="calcularBtn">Calcular capa</button>
+
+        <div class="result">
+          <div class="metric"><span>Lombada</span><strong id="outLombada">—</strong></div>
+          <div class="metric"><span>Largura aberta</span><strong id="outLargura">—</strong></div>
+          <div class="metric"><span>Altura aberta</span><strong id="outAltura">—</strong></div>
+          <div class="metric"><span>Responsabilidade</span><strong id="outResp">—</strong></div>
+        </div>
+      </section>
+
+      <section class="main-card">
+        <h2>Prévia técnica</h2>
+        <p>Aqui fica a mesa visual leve. A criação detalhada virá por camadas, sem pesar o capista.</p>
+        <div class="stage" id="previewStage"></div>
+      </section>
+    </main>
+
+    <aside class="panel">
+      <h2>Mesário da seção</h2>
+      <div class="mesario">
+        <div class="mesario-row"><span>Capa física</span><strong id="mesFisica">R$ 0,00</strong></div>
+        <div class="mesario-row"><span>Capa ePub</span><strong id="mesEpub">R$ 0,00</strong></div>
+        <div class="mesario-row"><span>Total fechado</span><strong id="mesTotal">R$ 0,00</strong></div>
+      </div>
+
+      <div class="notice" id="avisoResp">Para cálculo exato da lombada, envie o miolo final do livro e informe o papel correto.</div>
+
+      <div class="section">
+        <h3>Dados da capa</h3>
+        <div class="field"><label for="titulo">Título</label><input id="titulo" value="Título da obra"></div>
+        <div class="field"><label for="autor">Autor</label><input id="autor" value="Nome do autor"></div>
+        <div class="field"><label for="subtitulo">Subtítulo</label><textarea id="subtitulo" placeholder="Opcional"></textarea></div>
+      </div>
+
+      <button class="btn btn-ok" id="confirmarBtn">Confirmar para o Mesário</button>
+      <button class="btn btn-warn" onclick="history.back()">Retornar</button>
+      <button class="btn btn-danger" onclick="alert('Saída simbólica. Depois ligamos ao fluxo real.')">Sair do sistema</button>
+    </aside>
+  </div>
+
+<script>
+const $ = (id)=>document.getElementById(id);
+const fatores = {offset75:0.0021,offset90:0.0025,polen80:0.0023,polen90:0.0027,couche115:0.0030,couche150:0.0038,manual:0.0021};
+const formatos = {a5:[14.8,21],"16x23":[16,23],"6x9":[15.24,22.86],"14x21":[14,21]};
+
+function moedaPrefix(){ return $('moeda').value === 'USD' ? 'US$' : 'R$'; }
+function fmt(valor){ return moedaPrefix() + ' ' + Number(valor||0).toFixed(2).replace('.',','); }
+function tipoSaida(){ return document.querySelector('input[name="tipoSaida"]:checked').value; }
+function mioloModo(){ return document.querySelector('input[name="mioloModo"]:checked').value; }
+function getDimensoes(){
+  if($('formatoLivro').value === 'personalizado') return [Number($('larguraManual').value||0), Number($('alturaManual').value||0)];
+  return formatos[$('formatoLivro').value] || formatos.a5;
+}
+function setCordelRules(){
+  const cordel = $('origemModulo').value === 'cordel';
+  $('choiceEpub').classList.toggle('hidden', cordel);
+  $('choiceAmbas').classList.toggle('hidden', cordel);
+  if(cordel && tipoSaida() !== 'fisica') document.querySelector('input[name="tipoSaida"][value="fisica"]').checked = true;
+  atualizarVisibilidade();
+}
+function atualizarFator(){
+  if($('papel').value !== 'manual') $('fatorPapel').value = fatores[$('papel').value];
+}
+function atualizarVisibilidade(){
+  const tipo = tipoSaida();
+  const fisica = tipo === 'fisica' || tipo === 'ambas';
+  $('boxPlataforma').classList.toggle('hidden', !fisica);
+  $('boxMiolo').classList.toggle('hidden', !fisica);
+  $('boxPapel').classList.toggle('hidden', !fisica);
+  $('boxUpload').classList.toggle('hidden', mioloModo() !== 'upload');
+  $('boxPersonalizado').classList.toggle('hidden', $('formatoLivro').value !== 'personalizado');
+  calcular();
+}
+function calcular(){
+  const tipo = tipoSaida();
+  const fisica = tipo === 'fisica' || tipo === 'ambas';
+  const epub = tipo === 'epub' || tipo === 'ambas';
+  const [largura, altura] = getDimensoes();
+  const paginas = Math.max(0, Number($('paginas').value || 0));
+  const fator = Number($('fatorPapel').value || 0);
+  const lombada = fisica ? paginas * fator : 0;
+  const sangria = Number($('sangria').value || 0);
+  const orelha = Number($('orelhas').value || 0);
+  const larguraAberta = fisica ? (largura*2 + lombada + sangria*2 + orelha*2) : 0;
+  const alturaAberta = fisica ? (altura + sangria*2) : 0;
+  const resp = mioloModo() === 'upload' ? 'Celeiro, com miolo enviado' : 'Autor, por estimativa manual';
+
+  $('outLombada').textContent = fisica ? lombada.toFixed(2).replace('.',',') + ' cm' : 'não se aplica';
+  $('outLargura').textContent = fisica ? larguraAberta.toFixed(2).replace('.',',') + ' cm' : 'não se aplica';
+  $('outAltura').textContent = fisica ? alturaAberta.toFixed(2).replace('.',',') + ' cm' : 'não se aplica';
+  $('outResp').textContent = fisica ? resp : 'capa digital';
+
+  const valorFisico = fisica ? Number($('valorFisico').value||0) : 0;
+  const valorEpub = epub ? 2 : 0;
+  $('mesFisica').textContent = fmt(valorFisico);
+  $('mesEpub').textContent = fmt(valorEpub);
+  $('mesTotal').textContent = fmt(valorFisico + valorEpub);
+
+  $('avisoResp').innerHTML = fisica && mioloModo()==='manual'
+    ? '<strong>Aviso:</strong> lombada calculada por estimativa informada pelo autor. Para cálculo exato, envie o miolo final e informe o papel correto.'
+    : fisica
+      ? '<strong>Cálculo técnico:</strong> confira se o miolo enviado é a versão final e se o papel corresponde à plataforma escolhida.'
+      : '<strong>ePub:</strong> capa digital sem lombada, sem contracapa física e sem orelhas.';
+
+  renderPreview({tipo,fisica,epub,largura,altura,lombada,orelha});
+}
+function renderPreview(data){
+  const titulo = $('titulo').value || 'Título da obra';
+  const autor = $('autor').value || 'Nome do autor';
+  if(data.fisica){
+    $('previewStage').innerHTML = `
+      <div class="cover-open">
+        ${data.orelha ? '<div class="flap">Orelha esquerda</div>' : ''}
+        <div class="back"><div><strong>Contracapa</strong><br><small>${$('plataforma').value}</small></div></div>
+        <div class="spine">${data.lombada.toFixed(2)} cm</div>
+        <div class="front"><div><strong>${titulo}</strong><br><small>${autor}</small></div></div>
+        ${data.orelha ? '<div class="flap">Orelha direita</div>' : ''}
+      </div>`;
+  } else {
+    $('previewStage').innerHTML = `<div class="epub-preview"><div><strong>${titulo}</strong><br><small>${autor}</small><br><br><small>Capa ePub</small></div></div>`;
+  }
+}
+
+['origemModulo','plataforma','formatoLivro','papel','fatorPapel','orelhas','sangria','valorFisico','moeda','paginas','titulo','autor','subtitulo','larguraManual','alturaManual'].forEach(id=>$(id).addEventListener('input',()=>{ if(id==='papel') atualizarFator(); if(id==='origemModulo') setCordelRules(); else atualizarVisibilidade(); }));
+document.querySelectorAll('input[name="tipoSaida"],input[name="mioloModo"]').forEach(el=>el.addEventListener('change',atualizarVisibilidade));
+$('calcularBtn').addEventListener('click',calcular);
+$('confirmarBtn').addEventListener('click',()=>alert('Valor fechado da seção preparado para envio ao Mesário.'));
+atualizarFator();
+setCordelRules();
+</script>
+</body>
+</html>
