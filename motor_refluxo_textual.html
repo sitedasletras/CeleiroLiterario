@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motor de Refluxo Textual — Lapidar</title>
+
+<style>
+body{
+margin:0;
+font-family:Georgia, serif;
+background:linear-gradient(135deg,#efe0c8,#fff8ed);
+color:#2b1b10;
+}
+
+header{
+text-align:center;
+padding:30px;
+}
+
+textarea{
+width:90%;
+height:260px;
+margin:auto;
+display:block;
+padding:12px;
+border-radius:12px;
+border:1px solid #d2bfa4;
+font-size:16px;
+}
+
+button{
+display:block;
+margin:20px auto;
+padding:12px 22px;
+background:#4d2f18;
+color:white;
+border:0;
+border-radius:999px;
+cursor:pointer;
+}
+
+.resultado{
+width:90%;
+margin:20px auto;
+background:white;
+padding:15px;
+border-radius:12px;
+border:1px solid #d2bfa4;
+white-space:pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>Motor de Refluxo Textual</h1>
+
+<p>
+Reconstrói frases quebradas por herança de A4, PDF, Word ou cópia colada.
+</p>
+
+</header>
+
+<textarea id="entrada" placeholder="Cole aqui o texto..."></textarea>
+
+<button onclick="refluxo()">Processar</button>
+
+<div class="resultado" id="saida"></div>
+
+<script>
+
+function refluxo(){
+
+let texto = document.getElementById("entrada").value;
+
+texto = texto.replace(/\r/g,'');
+
+let linhas = texto.split("\n");
+
+let resultado = "";
+let buffer = "";
+
+for(let i=0;i<linhas.length;i++){
+
+let linha = linhas[i].trim();
+
+if(linha === ""){
+
+resultado += buffer + "\n\n";
+
+buffer = "";
+
+continue;
+
+}
+
+let terminaPontuado = /[.!?…:;"»”)]$/.test(buffer);
+
+let comecaMinuscula = /^[a-záéíóúâêôãõç]/.test(linha);
+
+let tituloProvavel = linha.length < 60 && linha === linha.toUpperCase();
+
+if(tituloProvavel){
+
+resultado += buffer + "\n";
+
+resultado += linha + "\n";
+
+buffer = "";
+
+continue;
+
+}
+
+if(buffer === ""){
+
+buffer = linha;
+
+}
+
+else if(!terminaPontuado || comecaMinuscula){
+
+buffer += " " + linha;
+
+}
+
+else{
+
+resultado += buffer + "\n";
+
+buffer = linha;
+
+}
+
+}
+
+resultado += buffer;
+
+document.getElementById("saida").innerText = resultado;
+
+}
+
+</script>
+
+</body>
+</html>
