@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadastro Autoral — Celeiro Literário</title>
+<style>
+:root{--bg:#ece8de;--card:#fffaf0;--ink:#1c1c1c;--muted:#756d61;--line:#ded4c4;--green:#2f6b58;--gold:#d9a33a;--red:#a43a3f;}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--bg);font-family:Georgia,"Times New Roman",serif;color:var(--ink);padding:22px 12px;display:flex;justify-content:center;align-items:flex-start}.wrap{width:min(94vw,760px);background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:0 16px 34px rgba(0,0,0,.10);padding:24px 18px}h1{margin:0 0 8px;font-size:clamp(2rem,7vw,3.4rem);line-height:.98}p{color:var(--muted);font-size:clamp(1rem,3vw,1.25rem);line-height:1.45}.tag{display:inline-block;background:#edf4ea;color:#3e604f;border-radius:999px;padding:8px 18px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}.full{grid-column:1/-1}label{display:block;font-weight:800;margin:8px 0 6px}.campo{width:100%;padding:14px 13px;border-radius:13px;border:1px solid var(--line);font-family:inherit;font-size:1rem;background:white}.box{border:1px dashed #cfc5b5;border-radius:18px;padding:14px;margin-top:16px;background:#fffdf8}.btn{width:100%;border:none;border-radius:16px;padding:15px 18px;font-family:inherit;font-size:1.1rem;font-weight:900;cursor:pointer;margin-top:14px}.go{background:var(--green);color:white}.back{background:var(--gold);color:#21170a}.exit{background:var(--red);color:white}.hide{display:none}@media(max-width:620px){.grid{grid-template-columns:1fr}.wrap{border-radius:22px;padding:20px 14px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <span class="tag">Celeiro Literário — Cadastro</span>
+  <h1>Cadastro Autoral</h1>
+  <p>Este cadastro ativa o perfil institucional do Celeiro. CPF usa valor normal; CNPJ usa regra institucional automática.</p>
+
+  <div class="grid">
+    <div class="full">
+      <label>Tipo de cadastro</label>
+      <select class="campo" id="tipo" onchange="trocarTipo()">
+        <option value="CPF">Autor independente — CPF</option>
+        <option value="CNPJ">Instituição / Empresa — CNPJ</option>
+        <option value="HETERONIMO">Heterônimo autorizado</option>
+      </select>
+    </div>
+
+    <div id="cpfBox" class="full grid">
+      <div><label>Nome completo</label><input class="campo" id="nome" placeholder="Nome do autor"></div>
+      <div><label>CPF</label><input class="campo" id="cpf" placeholder="000.000.000-00"></div>
+      <div><label>Cidade</label><input class="campo" id="cidadeCpf" placeholder="Cidade"></div>
+      <div><label>Estado</label><input class="campo" id="estadoCpf" placeholder="UF / Estado"></div>
+    </div>
+
+    <div id="cnpjBox" class="full grid hide">
+      <div><label>Razão social</label><input class="campo" id="razao" placeholder="Razão social"></div>
+      <div><label>Nome fantasia</label><input class="campo" id="fantasia" placeholder="Nome fantasia"></div>
+      <div><label>CNPJ</label><input class="campo" id="cnpj" placeholder="00.000.000/0000-00"></div>
+      <div><label>Responsável legal</label><input class="campo" id="responsavel" placeholder="Responsável"></div>
+      <div><label>Cidade</label><input class="campo" id="cidadeCnpj" placeholder="Cidade"></div>
+      <div><label>Estado</label><input class="campo" id="estadoCnpj" placeholder="UF / Estado"></div>
+      <div class="full"><label>Atuação cultural</label><select class="campo" id="atuacao"><option>Editora</option><option>Escola / Universidade</option><option>Associação cultural</option><option>Organizadora de concursos</option><option>Organizadora de antologias</option><option>Produtora audiovisual</option><option>Empresa promotora / patrocinadora</option></select></div>
+    </div>
+
+    <div><label>E-mail</label><input class="campo" id="email" placeholder="email@exemplo.com"></div>
+    <div><label>Perfil inicial</label><select class="campo" id="perfil"><option value="usuario">Usuário</option><option value="heteronimo">Heterônimo</option><option value="cortesia">Cortesia</option><option value="admin">Admin</option></select></div>
+  </div>
+
+  <div class="box" id="info">Cadastro CPF: licença individual, 1 dispositivo ativo por vez.</div>
+
+  <button class="btn go" onclick="salvarCadastro()">Salvar cadastro e continuar</button>
+  <button class="btn back" onclick="location.href='index.html'">Retornar</button>
+</main>
+<script>
+function trocarTipo(){
+ const tipo=document.getElementById('tipo').value;
+ document.getElementById('cpfBox').classList.toggle('hide',tipo!=='CPF'&&tipo!=='HETERONIMO');
+ document.getElementById('cnpjBox').classList.toggle('hide',tipo!=='CNPJ');
+ const info=document.getElementById('info');
+ if(tipo==='CNPJ') info.textContent='Cadastro CNPJ: valores institucionais aplicam multiplicador ×3 e podem usar licenças por máquina.';
+ else if(tipo==='HETERONIMO') info.textContent='Heterônimo autorizado: acesso editorial estratégico, cortesias e Joia Rara editorial.';
+ else info.textContent='Cadastro CPF: licença individual, 1 dispositivo ativo por vez.';
+}
+function salvarCadastro(){
+ const tipo=document.getElementById('tipo').value;
+ const perfil=document.getElementById('perfil').value;
+ const dados={tipo,perfil,email:document.getElementById('email').value,em:new Date().toISOString()};
+ if(tipo==='CNPJ'){
+  dados.razao=document.getElementById('razao').value;dados.fantasia=document.getElementById('fantasia').value;dados.cnpj=document.getElementById('cnpj').value;dados.responsavel=document.getElementById('responsavel').value;dados.cidade=document.getElementById('cidadeCnpj').value;dados.estado=document.getElementById('estadoCnpj').value;dados.atuacao=document.getElementById('atuacao').value;
+ }else{
+  dados.nome=document.getElementById('nome').value;dados.cpf=document.getElementById('cpf').value;dados.cidade=document.getElementById('cidadeCpf').value;dados.estado=document.getElementById('estadoCpf').value;
+ }
+ localStorage.setItem('celeiro_cadastro',JSON.stringify(dados));
+ localStorage.setItem('celeiro_cadastro_concluido','sim');
+ localStorage.setItem('celeiro_tipo_licenca',tipo==='CNPJ'?'CNPJ':'CPF');
+ localStorage.setItem('celeiro_perfil_usuario',perfil);
+ location.href='pagina_respiro.html';
+}
+trocarTipo();
+</script>
+</body>
+</html>
