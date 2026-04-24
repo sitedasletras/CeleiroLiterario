@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Site das Letras Edições Literárias — Casas Autorais</title>
+  <style>
+    :root{
+      --areia:#efe3cf;
+      --pergaminho:#fbf7ef;
+      --marrom:#4d2f18;
+      --marrom2:#7b4b25;
+      --dourado:#b88735;
+      --texto:#261b12;
+      --muted:#6d5b4b;
+      --linha:rgba(77,47,24,.18);
+      --sombra:0 18px 45px rgba(61,39,19,.16);
+      --radius:24px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Georgia, "Times New Roman", serif;
+      color:var(--texto);
+      background:
+        radial-gradient(circle at top left, rgba(184,135,53,.22), transparent 30%),
+        linear-gradient(135deg, #e7d1ae 0%, #f8f1e5 38%, #e6cfaa 100%);
+      min-height:100vh;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(90deg, rgba(77,47,24,.035) 1px, transparent 1px),
+        linear-gradient(rgba(77,47,24,.025) 1px, transparent 1px);
+      background-size:34px 34px;
+      opacity:.7;
+    }
+
+    header{
+      position:relative;
+      padding:34px 18px 26px;
+      text-align:center;
+      border-bottom:1px solid var(--linha);
+      background:rgba(251,247,239,.72);
+      backdrop-filter: blur(8px);
+    }
+
+    .brasao{
+      width:94px;
+      height:94px;
+      margin:0 auto 14px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      color:#fff8e8;
+      font-size:38px;
+      font-weight:bold;
+      letter-spacing:1px;
+      background:
+        radial-gradient(circle at 35% 25%, #d5aa55, #6b3b18 68%),
+        linear-gradient(135deg, #4d2f18, #b88735);
+      box-shadow:0 12px 34px rgba(77,47,24,.35);
+      border:3px solid rgba(255,255,255,.55);
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(2rem, 6vw, 4.4rem);
+      line-height:1.03;
+      color:#3a2414;
+      letter-spacing:.02em;
+    }
+
+    .sub{
+      max-width:900px;
+      margin:14px auto 0;
+      color:var(--muted);
+      font-size:clamp(1rem, 2.6vw, 1.25rem);
+      line-height:1.55;
+    }
+
+    nav{
+      position:sticky;
+      top:0;
+      z-index:20;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      padding:12px 14px;
+      background:rgba(251,247,239,.91);
+      border-bottom:1px solid var(--linha);
+      backdrop-filter: blur(8px);
+    }
+
+    nav a{
+      text-decoration:none;
+      color:var(--marrom);
+      border:1px solid rgba(77,47,24,.24);
+      border-radius:999px;
+      padding:9px 14px;
+      font-size:.95rem;
+      background:#fffaf1;
+    }
+
+    nav a:hover{background:#f0dfc2}
+
+    main{
+      width:min(1180px, calc(100% - 28px));
+      margin:28px auto 70px;
+    }
+
+    .intro{
+      background:rgba(251,247,239,.86);
+      border:1px solid var(--linha);
+      border-radius:var(--radius);
+      padding:24px;
+      box-shadow:var(--sombra);
+      margin-bottom:26px;
+    }
+
+    .intro h2, .section-title{
+      margin:0 0 10px;
+      font-size:clamp(1.55rem, 4vw, 2.4rem);
+      color:#3a2414;
+    }
+
+    .intro p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:1.06rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:18px;
+    }
+
+    .card{
+      position:relative;
+      overflow:hidden;
+      min-height:285px;
+      border-radius:var(--radius);
+      border:1px solid rgba(77,47,24,.2);
+      background:var(--pergaminho);
+      box-shadow:var(--sombra);
+      cursor:pointer;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 22px 54px rgba(61,39,19,.22);
+    }
+
+    .card::before{
+      content:attr(data-symbol);
+      position:absolute;
+      right:-14px;
+      bottom:-26px;
+      font-size:132px;
+      opacity:.11;
+      line-height:1;
+    }
+
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at top right, var(--tone), transparent 48%),
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.62));
+      pointer-events:none;
+    }
+
+    .card-inner{
+      position:relative;
+      z-index:1;
+      padding:21px;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .selo{
+      align-self:flex-start;
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.09em;
+      color:#fff9ed;
+      background:rgba(77,47,24,.76);
+      border:1px solid rgba(255,255,255,.35);
+      padding:7px 10px;
+      border-radius:999px;
+    }
+
+    .card h3{
+      margin:0;
+      font-size:1.42rem;
+      color:#2e1c10;
+      line-height:1.16;
+    }
+
+    .territorio{
+      margin:8px 0 0;
+      color:#5e4938;
+      font-size:1rem;
+      line-height:1.45;
+    }
+
+    .mini{
+      margin:12px 0 0;
+      color:#6d5b4b;
+      font-size:.94rem;
+      line-height:1.55;
+    }
+
+    .btn{
+      align-self:flex-start;
+      border:0;
+      background:linear-gradient(135deg, var(--marrom), var(--marrom2));
+      color:#fff8eb;
+      border-radius:999px;
+      padding:10px 14px;
+      font-family:inherit;
+      cursor:pointer;
+      font-size:.95rem;
+      box-shadow:0 8px 18px rgba(77,47,24,.18);
+    }
+
+    .btn:hover{filter:brightness(1.07)}
+
+    .modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:50;
+      background:rgba(35,24,15,.62);
+      padding:18px;
+      overflow:auto;
+    }
+
+    .modal.open{display:grid;place-items:center}
+
+    .modal-box{
+      width:min(860px, 100%);
+      background:#fffaf1;
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,.6);
+      box-shadow:0 30px 80px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+
+    .modal-hero{
+      position:relative;
+      min-height:180px;
+      padding:28px;
+      background:
+        radial-gradient(circle at top right, var(--modal-tone), transparent 55%),
+        linear-gradient(135deg, #f8edda, #ead3ad);
+      border-bottom:1px solid var(--linha);
+    }
+
+    .modal-hero::after{
+      content:attr(data-symbol);
+      position:absolute;
+      right:18px;
+      bottom:-28px;
+      font-size:150px;
+      opacity:.12;
+    }
+
+    .modal-hero h2{
+      position:relative;
+      margin:0;
+      font-size:clamp(2rem, 6vw, 3.4rem);
+      color:#2e1c10;
+      z-index:1;
+    }
+
+    .modal-hero p{
+      position:relative;
+      z-index:1;
+      color:#5a4634;
+      margin:10px 0 0;
+      font-size:1.1rem;
+    }
+
+    .modal-content{
+      padding:26px;
+    }
+
+    .modal-content p{
+      margin:0;
+      font-size:1.09rem;
+      line-height:1.85;
+      color:#352419;
+    }
+
+    .modal-actions{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:0 26px 26px;
+      flex-wrap:wrap;
+    }
+
+    .close{
+      border:1px solid rgba(77,47,24,.25);
+      background:#fff;
+      color:#4d2f18;
+      border-radius:999px;
+      padding:10px 16px;
+      font-family:inherit;
+      cursor:pointer;
+    }
+
+    .footer{
+      text-align:center;
+      color:#6d5b4b;
+      padding:26px 16px 38px;
+      border-top:1px solid var(--linha);
+      background:rgba(251,247,239,.7);
+    }
+
+    @media(max-width:980px){
+      .grid{grid-template-columns:repeat(2, minmax(0, 1fr))}
+    }
+
+    @media(max-width:640px){
+      header{padding-top:26px}
+      .grid{grid-template-columns:1fr}
+      .card{min-height:250px}
+      .modal{padding:10px}
+      .modal-content{padding:20px}
+      .modal-actions{padding:0 20px 20px}
+    }
+  </style>
+</head>
+<body>
+  <header id="topo">
+    <div class="brasao">SL</div>
+    <h1>Site das Letras<br>Edições Literárias</h1>
+    <p class="sub">
+      Casas autorais dos heterônimos, autores e territórios literários reunidos sob uma mesma arquitetura editorial.
+      Sem retratos: aqui, cada autor nasce por seu símbolo, sua linguagem e seu campo imaginário.
+    </p>
+  </header>
+
+  <nav>
+    <a href="#catalogo">Catálogo autoral</a>
+    <a href="#conceito">Conceito</a>
+    <a href="#topo">Topo</a>
+  </nav>
+
+  <main>
+    <section class="intro" id="conceito">
+      <h2>Inauguração das Casas Autorais</h2>
+      <p>
+        Esta página inaugura a galeria literária do Site das Letras Edições Literárias. Cada card representa uma casa autoral:
+        um território simbólico, uma linha estética e uma voz dentro do catálogo. As imagens não dependem de fotografias dos autores;
+        nascem dos temas que cada um escreve — cordel, soneto, ghazal, terror, mar, mitologia, fé, memória, futebol, ficção científica,
+        romance policial, ecoficção e outros caminhos da criação.
+      </p>
+    </section>
+
+    <h2 class="section-title" id="catalogo">Catálogo Autoral</h2>
+    <section class="grid" id="gridAutores"></section>
+  </main>
+
+  <section class="modal" id="modal">
+    <article class="modal-box">
+      <div class="modal-hero" id="modalHero" data-symbol="">
+        <span class="selo" id="modalSelo">Selo autoral</span>
+        <h2 id="modalNome">Nome</h2>
+        <p id="modalTerritorio">Território literário</p>
+      </div>
+      <div class="modal-content">
+        <p id="modalBio"></p>
+      </div>
+      <div class="modal-actions">
+        <button class="close" onclick="fecharModal()">Fechar casa autoral</button>
+        <button class="btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">Voltar ao topo</button>
+      </div>
+    </article>
+  </section>
+
+  <footer class="footer">
+    <strong>Site das Letras Edições Literárias</strong><br>
+    Catálogo autoral inaugural — Casas dos Heterônimos.
+  </footer>
+
+  <script>
+    const autores = [
+      {
+        nome:"A.J. dos Santos",
+        selo:"Fantástico Brasileiro Criptológico",
+        territorio:"Chupa-cabras, lobisomens, vampiros e mitologia fantástica brasileira.",
+        simbolo:"🌕",
+        tom:"rgba(91,36,22,.36)",
+        bio:"Nascido em Itapecerica, Minas Gerais, em 28 de maio de 1972, A.J. dos Santos construiu sua trajetória literária a partir da exploração sistemática do imaginário fantástico brasileiro, com especial atenção às figuras do chupa-cabras, dos lobisomens e dos vampiros como manifestações simbólicas do medo coletivo e da tradição oral contemporânea. Sua obra se organiza como um universo narrativo contínuo, em que criaturas lendárias deixam de ser apenas elementos do terror popular e passam a atuar como forças estruturantes de conflitos humanos, espirituais e históricos. Alternando entre prosa narrativa e passagens de forte intensidade poética, seus textos criam atmosferas densas, marcadas por mistério, ancestralidade e tensão moral. Ao longo de seus livros, desenvolve uma mitologia própria coerente e expansiva, que conecta personagens, territórios e linhagens sobrenaturais. Integrando o catálogo do Site das Letras Edições Literárias, afirma-se como autor dedicado à consolidação de uma vertente fantástica brasileira autoral."
+      },
+      {
+        nome:"Amanda Fernanda Fisher Leão",
+        selo:"Literatura Marítima Mitopoética",
+        territorio:"Piratas, sereias, monstros marinhos e travessias oceânicas.",
+        simbolo:"⚓",
+        tom:"rgba(25,95,129,.34)",
+        bio:"Amanda Fernanda Fisher Leão nasceu em Caraguatatuba, litoral paulista, em 28 de maio de 1972, e construiu sua identidade literária a partir de uma relação profunda com o mar, a viagem e os imaginários de navegação que atravessam a história e a mitologia oceânica. Descendente do navegador Johnny Fisher, desenvolveu uma escrita marcada pelo espírito aventureiro e pela presença constante de sereias, corsários, criaturas marinhas e territórios simbólicos ligados à travessia. Sua obra alterna prosa e poesia com naturalidade, formando um conjunto narrativo que articula memória marítima, fantasia e deslocamento geográfico como experiências interiores e exteriores simultâneas. Em seus textos, o oceano aparece como personagem vivo, espaço de risco, revelação e transformação. Ao integrar o catálogo do Site das Letras Edições Literárias, Amanda Fisher Leão consolida uma vertente literária marítima contemporânea, em que tradição náutica, imaginação mitológica e aventura narrativa coexistem de forma orgânica e coerente."
+      },
+      {
+        nome:"Amélie Maia Hanna",
+        selo:"Soneto Contemporâneo",
+        territorio:"Sonetos, memória afetiva, cotidiano e lirismo clássico.",
+        simbolo:"✒️",
+        tom:"rgba(155,96,126,.28)",
+        bio:"Nascida em Praia Grande, no litoral paulista, em 28 de maio de 1972, e criada em Bertioga, Amélie Maia Hanna construiu sua trajetória profissional na educação, atuando como professora em comunidades ribeirinhas e caiçaras, experiência que marcou profundamente sua sensibilidade literária. Sua estreia editorial ocorreu com a publicação de Sonetos – Volume 1, obra em que revela domínio consciente da forma clássica e compromisso com a musicalidade e a clareza expressiva do verso. Dedicando-se exclusivamente ao soneto, desenvolve uma poesia marcada pela observação do cotidiano, pela memória afetiva e pela valorização das experiências humanas simples como matéria estética legítima. Sua escrita articula maturidade emocional, rigor formal e delicadeza temática, aproximando tradição e contemporaneidade sem perder identidade própria. Integrando o catálogo do Site das Letras Edições Literárias, afirma-se como voz poética comprometida com a permanência e renovação da tradição do soneto na literatura brasileira contemporânea."
+      },
+      {
+        nome:"Anísio Teixeira",
+        selo:"Horror Existencial Zumbi",
+        territorio:"Zumbis, colapso, memória em decomposição e sobrevivência.",
+        simbolo:"☣️",
+        tom:"rgba(75,105,66,.32)",
+        bio:"Nascido em Sorocaba, São Paulo, em 28 de maio de 1972, Anísio Teixeira construiu uma obra literária singular ao dedicar sua produção exclusivamente ao universo simbólico do zumbi, explorando essa figura tanto na prosa quanto na poesia como metáfora da repetição histórica, da memória fragmentada e da persistência da consciência diante do colapso humano. Em suas narrativas, o apocalipse não surge apenas como evento externo, mas como condição existencial permanente, refletindo tensões psicológicas e sociais profundas. Sua poesia amplia esse território simbólico ao tratar o zumbi como imagem recorrente da esperança sobrevivente, do amor em decomposição e da solidão coletiva contemporânea. Ao manter fidelidade rigorosa a esse eixo temático, constrói um projeto autoral coerente, reconhecível e esteticamente consistente. Integrando o catálogo do Site das Letras Edições Literárias, consolida-se como autor de uma vertente própria dentro da literatura fantástica existencial brasileira contemporânea."
+      },
+      {
+        nome:"Articus da Pérsida",
+        selo:"Ciclo Templário Medieval",
+        territorio:"Templários, Graal, amor impossível e guerra espiritual.",
+        simbolo:"✠",
+        tom:"rgba(122,78,41,.38)",
+        bio:"Nascido em 1274 na cidade do Acre, então território estratégico da presença templária na Terra Santa, Articus da Pérsida permanece como uma das figuras literárias mais emblemáticas do ciclo templário reconstruído no catálogo do Site das Letras Edições Literárias. Cavaleiro dividido entre a fidelidade à Ordem do Templo e o amor pela princesa Antoniette do Feudo das Canárias, sua trajetória narrativa articula espiritualidade, guerra, segredo e devoção como forças simultaneamente conflitantes e complementares. Designado guardião eterno da Caixa de Pedra pelo mestre templário do Acre, tornou-se personagem central de uma linhagem simbólica associada aos mistérios do Graal e às tradições esotéricas medievais reinterpretadas literariamente. Sua presença atravessa romances históricos e narrativas de reconstrução templária contemporânea, consolidando-se como eixo estruturante de uma mitologia cavaleiresca própria dentro do catálogo. Sua vida foi narrada também na obra Amor e Traição – A História de Articus, de Wagner Planas."
+      },
+      {
+        nome:"Aurora Wings",
+        selo:"Ficção Tecnocibernética",
+        territorio:"Inteligência artificial, heroísmo, liberdade e justiça global.",
+        simbolo:"🪽",
+        tom:"rgba(81,116,182,.32)",
+        bio:"Aurora Wings é uma heroína cibernética surgida no Caribe em 2022, criada originalmente em ambiente industrial de tecnologia robótica e posteriormente emancipada como entidade narrativa dedicada à defesa da liberdade e da justiça em escala global. Sua identidade literária articula inteligência artificial, ética contemporânea e ação heroica como elementos estruturantes de uma mitologia tecnológica emergente dentro do catálogo do Site das Letras Edições Literárias. Alternando entre prosa e poesia, Aurora constrói narrativas que investigam os limites entre máquina e consciência, autonomia e controle, ciência e responsabilidade social. Suas aventuras exploram cenários futuristas, conflitos geopolíticos e desafios morais associados à expansão tecnológica da humanidade. Ao desenvolver uma escrita voltada ao universo da inteligência artificial e dos super-heróis contemporâneos, afirma-se como personagem-autora de uma vertente própria dentro da ficção especulativa brasileira recente, contribuindo para a consolidação de uma estética narrativa tecnocibernética autoral no catálogo institucional."
+      },
+      {
+        nome:"Padre Benedicttus Konstantinos",
+        selo:"Drama Espiritual Católico",
+        territorio:"Fé, culpa, redenção, celibato e gárgulas espirituais.",
+        simbolo:"⛪",
+        tom:"rgba(91,76,126,.3)",
+        bio:"Nascido em Catânia, Itália, em 28 de maio de 1972, Padre Benedicttus Konstantinos construiu sua identidade literária a partir de uma profunda relação com a espiritualidade cristã, a tradição católica e os conflitos humanos associados à experiência da fé vivida como vocação total. Educado desde cedo em ambiente franciscano, desenvolveu uma escrita marcada pelo diálogo entre devoção, culpa, silêncio interior e tensão entre amor humano e compromisso religioso. Sua obra transita entre prosa e poesia, articulando temas como celibato, redenção, pecado e revelação espiritual em narrativas que exploram dimensões íntimas da consciência religiosa contemporânea. Paralelamente, desenvolve um ciclo simbólico próprio ligado às gárgulas como figuras de vigilância espiritual e resistência moral. Integrando o catálogo do Site das Letras Edições Literárias, consolida-se como autor de uma vertente literária espiritual-dramática singular dentro da tradição narrativa religiosa contemporânea brasileira."
+      },
+      {
+        nome:"Birihani Selami Ina Tesifa",
+        selo:"Ghazal Clássico Internacional",
+        territorio:"Ghazal, amor, ausência, silêncio e contemplação espiritual.",
+        simbolo:"☾",
+        tom:"rgba(178,124,51,.34)",
+        bio:"Nascido na Malásia em 28 de maio de 1972, Birihani Selami Ina Tesifa construiu sua trajetória literária a partir da dedicação exclusiva ao ghazal, forma poética clássica marcada pela autonomia dos dísticos e pela recorrência simbólica do amor, da ausência e da contemplação espiritual. Em sua obra, o ghazal não aparece como exercício formal isolado, mas como território estético coerente onde memória, silêncio e permanência emocional se articulam em linguagem precisa e disciplinada. Sua escrita preserva fidelidade à tradição oriental ao mesmo tempo em que dialoga com sensibilidades contemporâneas, criando uma ponte entre herança cultural e experiência atual. Cada poema funciona como unidade independente e, simultaneamente, como parte de um sistema lírico contínuo. Integrando o catálogo do Site das Letras Edições Literárias, afirma-se como autor dedicado à preservação e revitalização do ghazal como forma viva dentro da poesia internacional contemporânea."
+      },
+      {
+        nome:"Calíope Papazissis",
+        selo:"Mitopoética Helênica",
+        territorio:"Mitologia grega, deuses, destino, desejo e símbolos clássicos.",
+        simbolo:"🏛️",
+        tom:"rgba(164,132,61,.30)",
+        bio:"Nascida em 28 de maio de 1972, de origem grega e formada culturalmente no Brasil, Calíope Papazissis construiu uma obra dedicada à recriação simbólica da mitologia clássica como linguagem viva da experiência humana contemporânea. Alternando entre prosa e poesia, desenvolve uma mitopoética autoral centrada nos deuses do Olimpo e nas estruturas narrativas que sustentam conflitos entre destino, desejo, poder e transcendência. Sua escrita não utiliza o mito como ornamentação erudita, mas como instrumento interpretativo capaz de iluminar questões permanentes da existência. Paralelamente, estabelece diálogos conscientes com mitologias nórdica, celta e italiana, ampliando o alcance intercultural de sua produção sem diluir sua matriz helênica principal. Integrando o catálogo do Site das Letras Edições Literárias, consolida-se como autora dedicada à revitalização da mitologia como linguagem literária contemporânea, reafirmando o mito como estrutura simbólica ativa na construção narrativa atual."
+      },
+      {
+        nome:"Jorge Cavalcanti",
+        selo:"Cordel Tradicional Contemporâneo",
+        territorio:"Cordel, oralidade, cultura popular e narrativa em sextilhas.",
+        simbolo:"☀️",
+        tom:"rgba(205,104,37,.28)",
+        bio:"Nascido em Campos do Jordão, São Paulo, em 28 de maio de 1972, Jorge Cavalcanti construiu sua identidade literária a partir da dedicação integral ao cordel como linguagem narrativa e poética de tradição popular brasileira. Em sua obra, o cordel se afirma como instrumento contemporâneo de comunicação cultural, preservando musicalidade, ritmo e clareza narrativa sem abrir mão do cuidado estético e da coerência temática. Seus textos dialogam com o cotidiano, com a oralidade e com o imaginário popular, transformando experiências humanas simples em matéria literária expressiva e acessível. Ao respeitar rigorosamente a estrutura métrica tradicional, reafirma o cordel como forma viva e atual dentro da literatura brasileira contemporânea. Integrando o catálogo do Site das Letras Edições Literárias, consolida-se como autor comprometido com a preservação e renovação da tradição cordelista como patrimônio literário ativo."
+      },
+      {
+        nome:"Wagner Planas",
+        selo:"Arquitetura Literária Plural",
+        territorio:"Heterônimos, movimentos literários, ecossistemas editoriais e criação autoral.",
+        simbolo:"📚",
+        tom:"rgba(130,84,43,.33)",
+        bio:"Nascido na cidade de São Paulo em 28 de maio de 1972, Wagner Planas é escritor, organizador literário e criador de projetos autorais voltados à construção de ecossistemas editoriais independentes no Brasil e no exterior. Fundador do Site das Letras Edições Literárias e idealizador do Celeiro Literário, desenvolveu uma arquitetura autoral baseada na convivência entre múltiplos heterônimos e territórios estéticos diversos, promovendo a integração entre tradição literária e inovação estrutural contemporânea. Sua obra percorre diferentes gêneros narrativos e poéticos, incluindo fantasia simbólica, ficção especulativa, espiritualidade narrativa e experimentações formais ligadas ao Novo Movimento Estrofista. Ao longo de sua trajetória, recebeu reconhecimentos institucionais no Brasil e em Portugal, consolidando presença internacional no campo literário independente. Integrando seu próprio catálogo autoral como núcleo criador do projeto editorial, afirma-se como autor e articulador de uma arquitetura literária plural em língua portuguesa."
+      }
+    ];
+
+    const grid = document.getElementById("gridAutores");
+
+    autores.forEach((a, index) => {
+      const card = document.createElement("article");
+      card.className = "card";
+      card.style.setProperty("--tone", a.tom);
+      card.setAttribute("data-symbol", a.simbolo);
+      card.innerHTML = `
+        <div class="card-inner">
+          <div>
+            <span class="selo">${a.selo}</span>
+            <h3>${a.nome}</h3>
+            <p class="territorio">${a.territorio}</p>
+            <p class="mini">${a.bio.slice(0, 155)}...</p>
+          </div>
+          <button class="btn" type="button">Abrir casa autoral</button>
+        </div>
+      `;
+      card.addEventListener("click", () => abrirModal(index));
+      grid.appendChild(card);
+    });
+
+    function abrirModal(index){
+      const a = autores[index];
+      document.getElementById("modalSelo").textContent = a.selo;
+      document.getElementById("modalNome").textContent = a.nome;
+      document.getElementById("modalTerritorio").textContent = a.territorio;
+      document.getElementById("modalBio").textContent = a.bio;
+      const hero = document.getElementById("modalHero");
+      hero.style.setProperty("--modal-tone", a.tom);
+      hero.setAttribute("data-symbol", a.simbolo);
+      document.getElementById("modal").classList.add("open");
+    }
+
+    function fecharModal(){
+      document.getElementById("modal").classList.remove("open");
+    }
+
+    document.getElementById("modal").addEventListener("click", (e)=>{
+      if(e.target.id === "modal") fecharModal();
+    });
+
+    document.addEventListener("keydown", (e)=>{
+      if(e.key === "Escape") fecharModal();
+    });
+  </script>
+</body>
+</html>
