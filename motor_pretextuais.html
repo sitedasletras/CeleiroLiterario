@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motor de Pré-textuais — Lapidar</title>
+
+<style>
+body{
+margin:0;
+font-family:Georgia, serif;
+background:linear-gradient(135deg,#efe0c8,#fff8ed);
+color:#2b1b10;
+}
+
+header{
+text-align:center;
+padding:30px;
+}
+
+textarea{
+width:90%;
+height:260px;
+margin:auto;
+display:block;
+padding:12px;
+border-radius:12px;
+border:1px solid #d2bfa4;
+font-size:16px;
+}
+
+button{
+display:block;
+margin:20px auto;
+padding:12px 22px;
+background:#4d2f18;
+color:white;
+border:0;
+border-radius:999px;
+cursor:pointer;
+}
+
+.resultado{
+width:90%;
+margin:20px auto;
+background:white;
+padding:15px;
+border-radius:12px;
+border:1px solid #d2bfa4;
+white-space:pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Motor de Pré-textuais</h1>
+<p>Detecta dedicatória, epígrafe, prefácio, apresentação, agradecimentos e biografia.</p>
+</header>
+
+<textarea id="entrada" placeholder="Cole aqui o texto da obra..."></textarea>
+
+<button onclick="detectar()">Processar</button>
+
+<div class="resultado" id="saida"></div>
+
+<script>
+
+function detectar(){
+
+let texto = document.getElementById("entrada").value;
+
+let linhas = texto
+.replace(/\r/g,'')
+.split("\n");
+
+let termos = [
+"dedicatória",
+"dedicatoria",
+"epígrafe",
+"epigrafe",
+"prefácio",
+"prefacio",
+"apresentação",
+"apresentacao",
+"agradecimentos",
+"biografia",
+"sobre o autor",
+"sobre a autora",
+"nota do autor",
+"nota da autora"
+];
+
+let achados = [];
+
+for(let i=0;i<linhas.length;i++){
+
+let linhaOriginal = linhas[i].trim();
+let linha = linhaOriginal.toLowerCase();
+
+for(let j=0;j<termos.length;j++){
+
+if(linha.includes(termos[j])){
+
+achados.push("Linha " + (i+1) + ": " + linhaOriginal);
+break;
+
+}
+
+}
+
+}
+
+if(achados.length === 0){
+
+document.getElementById("saida").innerText =
+"Nenhum pré-textual evidente detectado.";
+
+}else{
+
+document.getElementById("saida").innerText =
+"Pré-textuais encontrados:\n\n" + achados.join("\n");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
