@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motor de Limpeza Base — Lapidar</title>
+
+<style>
+body{
+margin:0;
+font-family:Georgia, serif;
+background:linear-gradient(135deg,#efe0c8,#fff8ed);
+color:#2b1b10;
+}
+
+header{
+text-align:center;
+padding:30px;
+}
+
+textarea{
+width:90%;
+height:260px;
+margin:auto;
+display:block;
+padding:12px;
+border-radius:12px;
+border:1px solid #d2bfa4;
+font-size:16px;
+}
+
+button{
+display:block;
+margin:20px auto;
+padding:12px 22px;
+background:#4d2f18;
+color:white;
+border:0;
+border-radius:999px;
+cursor:pointer;
+}
+
+.resultado{
+width:90%;
+margin:20px auto;
+background:white;
+padding:15px;
+border-radius:12px;
+border:1px solid #d2bfa4;
+white-space:pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Motor de Limpeza Base</h1>
+<p>Remove resíduos técnicos sem alterar o estilo do autor.</p>
+</header>
+
+<textarea id="entrada" placeholder="Cole aqui o texto..."></textarea>
+
+<button onclick="limpar()">Processar</button>
+
+<div class="resultado" id="saida"></div>
+
+<script>
+
+function limpar(){
+
+let texto = document.getElementById("entrada").value;
+
+texto = texto
+.replace(/\r/g,'')
+.replace(/\t/g,' ')
+.replace(/ +/g,' ')
+.replace(/ +\n/g,'\n')
+.replace(/\n +/g,'\n')
+.replace(/\n{3,}/g,'\n\n')
+.replace(/[“”]/g,'"')
+.replace(/[‘’]/g,"'");
+
+document.getElementById("saida").innerText = texto;
+
+}
+
+</script>
+
+</body>
+</html>
