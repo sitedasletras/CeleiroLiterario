@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motor de Detecção do Tipo de Obra — Lapidar</title>
+
+<style>
+body{
+margin:0;
+font-family:Georgia, serif;
+background:linear-gradient(135deg,#efe0c8,#fff8ed);
+color:#2b1b10;
+}
+
+header{
+text-align:center;
+padding:30px;
+}
+
+textarea{
+width:90%;
+height:260px;
+margin:auto;
+display:block;
+padding:12px;
+border-radius:12px;
+border:1px solid #d2bfa4;
+font-size:16px;
+}
+
+button{
+display:block;
+margin:20px auto;
+padding:12px 22px;
+background:#4d2f18;
+color:white;
+border:0;
+border-radius:999px;
+cursor:pointer;
+}
+
+.resultado{
+width:90%;
+margin:20px auto;
+background:white;
+padding:15px;
+border-radius:12px;
+border:1px solid #d2bfa4;
+white-space:pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Motor de Detecção do Tipo de Obra</h1>
+<p>Classifica a obra como prosa, poesia ou híbrida para orientar Pólux, Castor ou Centauro.</p>
+</header>
+
+<textarea id="entrada" placeholder="Cole aqui o texto da obra..."></textarea>
+
+<button onclick="detectar()">Processar</button>
+
+<div class="resultado" id="saida"></div>
+
+<script>
+
+function detectar(){
+
+let texto = document.getElementById("entrada").value;
+
+let linhas = texto
+.replace(/\r/g,'')
+.split("\n")
+.map(l => l.trim())
+.filter(l => l.length > 0);
+
+if(linhas.length === 0){
+
+document.getElementById("saida").innerText = "Texto vazio.";
+return;
+
+}
+
+let linhasCurtas = 0;
+let paragrafosLongos = 0;
+let dialogos = 0;
+let possiveisEstrofes = 0;
+
+for(let i=0;i<linhas.length;i++){
+
+let linha = linhas[i];
+
+if(linha.length <= 55){
+linhasCurtas++;
+}
+
+if(linha.length >= 140){
+paragrafosLongos++;
+}
+
+if(/^[-—–]/.test(linha)){
+dialogos++;
+}
+
+}
+
+let blocos = texto.split(/\n\s*\n/);
+
+for(let i=0;i<blocos.length;i++){
+
+let versos = blocos[i]
+.split("\n")
+.map(l => l.trim())
+.filter(l => l.length > 0);
+
+if(versos.length >= 2 && versos.length <= 10){
+possiveisEstrofes++;
+}
+
+}
+
+let proporcaoCurtas = linhasCurtas / linhas.length;
+
+let tipo = "Prosa";
+let destino = "Pólux";
+
+if(proporcaoCurtas > 0.68 && paragrafosLongos < linhas.length * 0.12){
+
+tipo = "Poesia";
+destino = "Castor";
+
+}else if(proporcaoCurtas > 0.35 && paragrafosLongos > 2){
+
+tipo = "Híbrido";
+destino = "Centauro";
+
+}
+
+let resultado =
+"Tipo provável da obra: " + tipo + "\n" +
+"Diagramador sugerido: " + destino + "\n\n" +
+"Linhas analisadas: " + linhas.length + "\n" +
+"Linhas curtas: " + linhasCurtas + "\n" +
+"Parágrafos longos: " + paragrafosLongos + "\n" +
+"Diálogos detectados: " + dialogos + "\n" +
+"Possíveis estrofes: " + possiveisEstrofes + "\n\n" +
+"Observação técnica:\n" +
+"Este motor atende Pólux, Castor e Centauro.\n" +
+"Qui(RON)xadá mantém motor próprio, pois cordel exige lógica independente.";
+
+document.getElementById("saida").innerText = resultado;
+
+}
+
+</script>
+
+</body>
+</html>
