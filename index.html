@@ -3,88 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Celeiro Literário</title>
-
+<title>Celeiro Literário — Portal</title>
 <style>
-
-body{
-margin:0;
-font-family:Georgia, "Times New Roman", serif;
-background:#ece8de;
-display:flex;
-align-items:center;
-justify-content:center;
-height:100vh;
-}
-
-.box{
-background:#f7f4ee;
-width:min(92vw,720px);
-border-radius:28px;
-box-shadow:0 14px 30px rgba(0,0,0,.10);
-text-align:center;
-padding:48px 24px;
-}
-
-h1{
-margin:0 0 18px 0;
-font-size:clamp(2.1rem,5vw,3.4rem);
-color:#000;
-line-height:1.05;
-}
-
-p{
-margin:0 0 34px 0;
-color:#7a7a7a;
-font-size:clamp(1rem,2.4vw,1.4rem);
-line-height:1.4;
-}
-
-button{
-border:none;
-background:#4d956f;
-color:#fff;
-font-size:clamp(1rem,2.6vw,1.5rem);
-padding:18px 42px;
-border-radius:20px;
-cursor:pointer;
-transition:.15s ease;
-font-family:inherit;
-}
-
-button:hover{
-transform:translateY(-1px);
-opacity:.95;
-}
-
-button:active{
-transform:translateY(1px);
-}
-
+:root{--azul:#071522;--azul2:#0b1f33;--ouro:#d9a33a;--ouro2:#f0c76a;--off:#fffaf0;--texto:#1b1b1b;--verde:#2f6b58;}
+*{box-sizing:border-box}html,body{margin:0;padding:0;min-height:100%}body{font-family:Georgia,"Times New Roman",serif;background:radial-gradient(circle at top,rgba(240,199,106,.22),transparent 34%),linear-gradient(180deg,var(--azul),#06111d);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px 10px;color:var(--off)}.portal{width:min(96vw,840px);border:2px solid rgba(217,163,58,.7);border-radius:30px;background:linear-gradient(180deg,var(--azul2),#06111d);box-shadow:0 22px 60px rgba(0,0,0,.42);padding:18px 12px 24px;text-align:center}.selo{width:min(92vw,680px);margin:0 auto 16px;border-radius:28px;border:1px solid rgba(217,163,58,.8);padding:30px 14px 24px;background:radial-gradient(circle at top,rgba(240,199,106,.32),transparent 38%),linear-gradient(180deg,#102a43,#061522);filter:drop-shadow(0 24px 26px rgba(0,0,0,.55));box-shadow:inset 0 0 22px rgba(240,199,106,.12)}.marca{font-size:clamp(2.4rem,8vw,5rem);font-weight:900;line-height:.95;color:var(--ouro2);text-shadow:0 3px 0 #563b10,0 0 24px rgba(240,199,106,.35)}.sub{font-size:clamp(.82rem,2.5vw,1.1rem);margin-top:12px;color:#f8e7b7;letter-spacing:.08em;text-transform:uppercase}.trinca{display:grid;gap:8px;margin-top:20px;color:#f2ddb0;font-size:clamp(.78rem,2.3vw,1rem)}.trinca div{border:1px solid rgba(217,163,58,.38);border-radius:16px;padding:8px;background:rgba(255,255,255,.04)}.login{width:min(92vw,500px);margin:0 auto;background:linear-gradient(180deg,#fffdfa,#f6efe3);color:var(--texto);border:2px solid rgba(217,163,58,.8);border-radius:22px;box-shadow:0 18px 30px rgba(0,0,0,.28);padding:18px 14px}.login h1{margin:0 0 8px;font-size:clamp(1.4rem,5vw,2rem)}.login p{margin:0 0 12px;color:#766d61}.campo{display:block;width:100%;margin:9px 0;padding:13px;border-radius:12px;border:1px solid #d6cdbf;background:white;font-family:inherit;font-size:1rem}.linha{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{width:100%;border:none;border-radius:14px;padding:14px 18px;font-family:inherit;font-weight:900;font-size:1.05rem;cursor:pointer;margin-top:10px}.entrar{background:linear-gradient(180deg,#12314e,#071a2d);color:var(--ouro2);border:1px solid var(--ouro)}.direto{background:var(--verde);color:white}.rec{background:transparent;color:#1b4f83;margin-top:3px}.aviso{font-size:.86rem;color:#806f56;margin-top:10px}@media(max-width:520px){body{align-items:flex-start}.portal{border-radius:24px}.linha{grid-template-columns:1fr}.login{padding:16px 12px}}
 </style>
 </head>
-
 <body>
-
-<div class="box">
-
-<h1>Celeiro Literário</h1>
-
-<p>Entrada do ambiente editorial</p>
-
-<button onclick="entrar()">Entrar</button>
-
+<main class="portal">
+<section class="selo">
+<div class="marca">CELEIRO<br>LITERÁRIO</div>
+<div class="sub">O lugar onde histórias ganham vida</div>
+<div class="trinca">
+<div>Site das Letras — Edições Literárias</div>
+<div>SIGMAL — São Roque International Global Music, Arts &amp; Letters Academy</div>
+<div>Literatura • Educação • Música • Arte • Cultura</div>
 </div>
-
+</section>
+<section class="login">
+<h1>Entrada Institucional</h1>
+<p>Portal oficial do ambiente editorial.</p>
+<input class="campo" id="login" placeholder="Login">
+<input class="campo" id="senha" type="password" placeholder="Senha">
+<div class="linha">
+<select class="campo" id="tipoLicenca"><option value="CPF">CPF — Autor</option><option value="CNPJ">CNPJ — Instituição</option></select>
+<select class="campo" id="perfilUsuario"><option value="usuario">Usuário</option><option value="heteronimo">Heterônimo</option><option value="cortesia">Cortesia</option><option value="admin">Admin</option></select>
+</div>
+<button class="btn entrar" onclick="entrar()">ENTRAR</button>
+<button class="btn rec" onclick="alert('Recuperação será ligada ao Joia Rara / Administração.')">🔑 Recuperar senha</button>
+<button class="btn direto" onclick="entrarDireto()">Entrar direto no Lapidar</button>
+<div class="aviso" id="regional">Região padrão: Português do Brasil • R$</div>
+</section>
+</main>
 <script>
-
-function entrar(){
-
-window.location.href="lapidar.html";
-
-}
-
+function salvar(){const tipo=document.getElementById('tipoLicenca').value;const perfil=document.getElementById('perfilUsuario').value;const login=document.getElementById('login').value.trim();localStorage.setItem('celeiro_tipo_licenca',tipo);localStorage.setItem('celeiro_perfil_usuario',perfil);if(login)localStorage.setItem('celeiro_login_usuario',login);localStorage.setItem('celeiro_sessao_iniciada_em',new Date().toISOString());}
+function entrar(){salvar();const ok=localStorage.getItem('celeiro_cadastro_concluido');location.href=ok==='sim'?'pagina_respiro.html':'cadastro_autoral.html';}
+function entrarDireto(){salvar();location.href='lapidar.html';}
+(function(){const lang=(navigator.language||'pt-BR');let texto='Região detectada: '+lang+' • ';if(lang.startsWith('pt-PT'))texto+='€';else if(lang.startsWith('pt-BR'))texto+='R$';else texto+='US$';document.getElementById('regional').textContent=texto;})();
 </script>
-
 </body>
 </html>
