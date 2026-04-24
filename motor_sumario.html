@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motor de Sumário e Capítulos — Lapidar</title>
+
+<style>
+body{
+margin:0;
+font-family:Georgia, serif;
+background:linear-gradient(135deg,#efe0c8,#fff8ed);
+color:#2b1b10;
+}
+
+header{
+text-align:center;
+padding:30px;
+}
+
+textarea{
+width:90%;
+height:260px;
+margin:auto;
+display:block;
+padding:12px;
+border-radius:12px;
+border:1px solid #d2bfa4;
+font-size:16px;
+}
+
+button{
+display:block;
+margin:20px auto;
+padding:12px 22px;
+background:#4d2f18;
+color:white;
+border:0;
+border-radius:999px;
+cursor:pointer;
+}
+
+.resultado{
+width:90%;
+margin:20px auto;
+background:white;
+padding:15px;
+border-radius:12px;
+border:1px solid #d2bfa4;
+white-space:pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Motor de Sumário e Capítulos</h1>
+<p>Detecta capítulos, partes, seções e divisões estruturais da obra.</p>
+</header>
+
+<textarea id="entrada" placeholder="Cole aqui o texto da obra..."></textarea>
+
+<button onclick="detectar()">Processar</button>
+
+<div class="resultado" id="saida"></div>
+
+<script>
+
+function detectar(){
+
+let texto = document.getElementById("entrada").value;
+
+let linhas = texto
+.replace(/\r/g,'')
+.split("\n");
+
+let padroes = [
+/^cap[ií]tulo\s+/i,
+/^parte\s+/i,
+/^livro\s+/i,
+/^ato\s+/i,
+/^\d+\s*[-–.]?\s+/,
+/^[IVXLCDM]+\.\s+/i
+];
+
+let encontrados = [];
+
+for(let i=0;i<linhas.length;i++){
+
+let linha = linhas[i].trim();
+
+for(let j=0;j<padroes.length;j++){
+
+if(padroes[j].test(linha)){
+
+encontrados.push("Linha " + (i+1) + ": " + linha);
+break;
+
+}
+
+}
+
+}
+
+if(encontrados.length === 0){
+
+document.getElementById("saida").innerText =
+"Nenhuma estrutura de capítulo evidente detectada.";
+
+}else{
+
+document.getElementById("saida").innerText =
+"Estruturas detectadas:\n\n" + encontrados.join("\n");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
