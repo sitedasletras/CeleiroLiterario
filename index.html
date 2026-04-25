@@ -5,14 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Celeiro Literário — Portal</title>
 <style>
-:root{--azul:#071522;--azul2:#0b1f33;--ouro:#d9a33a;--ouro2:#f0c76a;--off:#fffaf0;--texto:#1b1b1b;--verde:#2f6b58;}
-*{box-sizing:border-box}html,body{margin:0;padding:0;min-height:100%}body{font-family:Georgia,"Times New Roman",serif;background:radial-gradient(circle at top,rgba(240,199,106,.22),transparent 34%),linear-gradient(180deg,var(--azul),#06111d);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px 10px;color:var(--off)}.portal{width:min(96vw,840px);border:2px solid rgba(217,163,58,.7);border-radius:30px;background:linear-gradient(180deg,var(--azul2),#06111d);box-shadow:0 22px 60px rgba(0,0,0,.42);padding:18px 12px 24px;text-align:center}.selo{width:min(92vw,680px);margin:0 auto 16px;border-radius:28px;border:1px solid rgba(217,163,58,.8);padding:30px 14px 24px;background:radial-gradient(circle at top,rgba(240,199,106,.32),transparent 38%),linear-gradient(180deg,#102a43,#061522);filter:drop-shadow(0 24px 26px rgba(0,0,0,.55));box-shadow:inset 0 0 22px rgba(240,199,106,.12)}.marca{font-size:clamp(2.4rem,8vw,5rem);font-weight:900;line-height:.95;color:var(--ouro2);text-shadow:0 3px 0 #563b10,0 0 24px rgba(240,199,106,.35)}.sub{font-size:clamp(.82rem,2.5vw,1.1rem);margin-top:12px;color:#f8e7b7;letter-spacing:.08em;text-transform:uppercase}.trinca{display:grid;gap:8px;margin-top:20px;color:#f2ddb0;font-size:clamp(.78rem,2.3vw,1rem)}.trinca div{border:1px solid rgba(217,163,58,.38);border-radius:16px;padding:8px;background:rgba(255,255,255,.04)}.login{width:min(92vw,500px);margin:0 auto;background:linear-gradient(180deg,#fffdfa,#f6efe3);color:var(--texto);border:2px solid rgba(217,163,58,.8);border-radius:22px;box-shadow:0 18px 30px rgba(0,0,0,.28);padding:18px 14px}.login h1{margin:0 0 8px;font-size:clamp(1.4rem,5vw,2rem)}.login p{margin:0 0 12px;color:#766d61}.campo{display:block;width:100%;margin:9px 0;padding:13px;border-radius:12px;border:1px solid #d6cdbf;background:white;font-family:inherit;font-size:1rem}.linha{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{width:100%;border:none;border-radius:14px;padding:14px 18px;font-family:inherit;font-weight:900;font-size:1.05rem;cursor:pointer;margin-top:10px}.entrar{background:linear-gradient(180deg,#12314e,#071a2d);color:var(--ouro2);border:1px solid var(--ouro)}.direto{background:var(--verde);color:white}.rec{background:transparent;color:#1b4f83;margin-top:3px}.aviso{font-size:.86rem;color:#806f56;margin-top:10px}@media(max-width:520px){body{align-items:flex-start}.portal{border-radius:24px}.linha{grid-template-columns:1fr}.login{padding:16px 12px}}
+:root{--azul:#071522;--azul2:#0b1f33;--ouro:#d9a33a;--ouro2:#f0c76a;--off:#fffaf0;--texto:#1b1b1b;--verde:#2f6b58;--link:#1b4f83;}
+*{box-sizing:border-box}html,body{margin:0;padding:0;min-height:100%}body{font-family:Georgia,"Times New Roman",serif;background:radial-gradient(circle at top,rgba(240,199,106,.22),transparent 34%),linear-gradient(180deg,var(--azul),#06111d);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px 10px;color:var(--off)}.portal{width:min(96vw,840px);border:2px solid rgba(217,163,58,.7);border-radius:30px;background:linear-gradient(180deg,var(--azul2),#06111d);box-shadow:0 22px 60px rgba(0,0,0,.42);padding:18px 12px 24px;text-align:center}.selo{width:min(92vw,680px);margin:0 auto 16px;border-radius:28px;border:1px solid rgba(217,163,58,.8);padding:18px 14px 20px;background:radial-gradient(circle at top,rgba(240,199,106,.32),transparent 38%),linear-gradient(180deg,#102a43,#061522);filter:drop-shadow(0 24px 26px rgba(0,0,0,.55));box-shadow:inset 0 0 22px rgba(240,199,106,.12)}.selo-img{display:block;width:min(92%,560px);max-height:300px;object-fit:contain;margin:0 auto 10px;filter:drop-shadow(0 14px 12px rgba(0,0,0,.46)) drop-shadow(0 0 18px rgba(240,199,106,.26));transform:perspective(900px) rotateX(2deg)}.marca-fallback{display:none;font-size:clamp(2.4rem,8vw,5rem);font-weight:900;line-height:.95;color:var(--ouro2);text-shadow:0 3px 0 #563b10,0 0 24px rgba(240,199,106,.35)}.sub{font-size:clamp(.82rem,2.5vw,1.1rem);margin-top:8px;color:#f8e7b7;letter-spacing:.08em;text-transform:uppercase}.trinca{display:grid;gap:8px;margin-top:16px;color:#f2ddb0;font-size:clamp(.78rem,2.3vw,1rem)}.trinca div{border:1px solid rgba(217,163,58,.38);border-radius:16px;padding:8px;background:rgba(255,255,255,.04)}.login{width:min(92vw,500px);margin:0 auto;background:linear-gradient(180deg,#fffdfa,#f6efe3);color:var(--texto);border:2px solid rgba(217,163,58,.8);border-radius:22px;box-shadow:0 18px 30px rgba(0,0,0,.28);padding:18px 14px}.login h1{margin:0 0 8px;font-size:clamp(1.4rem,5vw,2rem)}.login p{margin:0 0 12px;color:#766d61}.campo{display:block;width:100%;margin:9px 0;padding:13px;border-radius:12px;border:1px solid #d6cdbf;background:white;font-family:inherit;font-size:1rem}.btn{width:100%;border:none;border-radius:14px;padding:14px 18px;font-family:inherit;font-weight:900;font-size:1.05rem;cursor:pointer;margin-top:10px}.entrar{background:linear-gradient(180deg,#12314e,#071a2d);color:var(--ouro2);border:1px solid var(--ouro)}.rec{background:transparent;color:var(--link);margin-top:3px}.cadastro{background:var(--verde);color:white}.aviso{font-size:.86rem;color:#806f56;margin-top:10px}.nota-cadastro{margin-top:12px;font-size:.94rem;color:#5f5346}@media(max-width:520px){body{align-items:flex-start}.portal{border-radius:24px}.login{padding:16px 12px}.selo-img{max-height:230px}}
 </style>
 </head>
 <body>
 <main class="portal">
-<section class="selo">
-<div class="marca">CELEIRO<br>LITERÁRIO</div>
+<section class="selo" aria-label="Selo institucional do Celeiro Literário">
+<img class="selo-img" src="assets/img/celeiro_literario_selo.png" alt="Celeiro Literário" onerror="this.style.display='none';document.querySelector('.marca-fallback').style.display='block';">
+<div class="marca-fallback">CELEIRO<br>LITERÁRIO</div>
 <div class="sub">O lugar onde histórias ganham vida</div>
 <div class="trinca">
 <div>Site das Letras — Edições Literárias</div>
@@ -23,22 +24,19 @@
 <section class="login">
 <h1>Entrada Institucional</h1>
 <p>Portal oficial do ambiente editorial.</p>
-<input class="campo" id="login" placeholder="Login">
-<input class="campo" id="senha" type="password" placeholder="Senha">
-<div class="linha">
-<select class="campo" id="tipoLicenca"><option value="CPF">CPF — Autor</option><option value="CNPJ">CNPJ — Instituição</option></select>
-<select class="campo" id="perfilUsuario"><option value="usuario">Usuário</option><option value="heteronimo">Heterônimo</option><option value="cortesia">Cortesia</option><option value="admin">Admin</option></select>
-</div>
+<input class="campo" id="login" autocomplete="username" placeholder="Login ou e-mail">
+<input class="campo" id="senha" type="password" autocomplete="current-password" placeholder="Senha">
 <button class="btn entrar" onclick="entrar()">ENTRAR</button>
 <button class="btn rec" onclick="alert('Recuperação será ligada ao Joia Rara / Administração.')">🔑 Recuperar senha</button>
-<button class="btn direto" onclick="entrarDireto()">Entrar direto no Lapidar</button>
+<div class="nota-cadastro">Não tem cadastro?</div>
+<button class="btn cadastro" onclick="cadastreSe()">Cadastre-se aqui</button>
 <div class="aviso" id="regional">Região padrão: Português do Brasil • R$</div>
 </section>
 </main>
 <script>
-function salvar(){const tipo=document.getElementById('tipoLicenca').value;const perfil=document.getElementById('perfilUsuario').value;const login=document.getElementById('login').value.trim();localStorage.setItem('celeiro_tipo_licenca',tipo);localStorage.setItem('celeiro_perfil_usuario',perfil);if(login)localStorage.setItem('celeiro_login_usuario',login);localStorage.setItem('celeiro_sessao_iniciada_em',new Date().toISOString());}
-function entrar(){salvar();const ok=localStorage.getItem('celeiro_cadastro_concluido');location.href=ok==='sim'?'pagina_respiro.html':'cadastro_autoral.html';}
-function entrarDireto(){salvar();location.href='lapidar.html';}
+function salvarLoginBasico(){const login=document.getElementById('login').value.trim();if(login)localStorage.setItem('celeiro_login_usuario',login);localStorage.setItem('celeiro_sessao_iniciada_em',new Date().toISOString());}
+function entrar(){salvarLoginBasico();location.href='pagina_respiro.html';}
+function cadastreSe(){location.href='cadastro_autoral.html';}
 (function(){const lang=(navigator.language||'pt-BR');let texto='Região detectada: '+lang+' • ';if(lang.startsWith('pt-PT'))texto+='€';else if(lang.startsWith('pt-BR'))texto+='R$';else texto+='US$';document.getElementById('regional').textContent=texto;})();
 </script>
 </body>
