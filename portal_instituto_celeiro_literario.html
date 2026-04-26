@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instituto Cultural Celeiro Literário</title>
+<style>
+:root{
+  --azul:#0f1c2e;
+  --azul2:#07101d;
+  --dourado:#c9a646;
+  --dourado2:#f4dc88;
+  --papel:#fffaf0;
+  --texto:#243043;
+  --radius:22px;
+  --sombra:0 18px 40px rgba(8,17,31,.16);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Georgia,'Times New Roman',serif;
+  background:linear-gradient(180deg,#fbf7ed,#efe2c7);
+  color:var(--texto);
+}
+header{
+  background:linear-gradient(135deg,var(--azul2),var(--azul));
+  color:white;
+  padding:70px 20px;
+  border-bottom:8px solid var(--dourado);
+  text-align:center;
+}
+h1{
+  font-size:clamp(34px,6vw,64px);
+  margin:0;
+  color:var(--dourado2);
+}
+.subtitle{
+  font-size:22px;
+  margin-top:12px;
+  color:#fff5cf;
+}
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:40px 20px 80px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:22px;
+}
+.card{
+  background:var(--papel);
+  border:1px solid rgba(201,166,70,.4);
+  border-radius:var(--radius);
+  padding:28px;
+  box-shadow:var(--sombra);
+  text-align:center;
+}
+.card h2{
+  margin-top:0;
+  color:var(--azul);
+}
+.btn{
+  display:inline-block;
+  margin-top:14px;
+  padding:12px 18px;
+  border-radius:999px;
+  font-weight:bold;
+  text-decoration:none;
+  background:var(--dourado);
+  color:#111;
+}
+footer{
+  background:var(--azul2);
+  color:white;
+  text-align:center;
+  padding:30px 18px;
+  border-top:6px solid var(--dourado);
+}
+footer strong{
+  color:var(--dourado2);
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Instituto Cultural Celeiro Literário</h1>
+<p class="subtitle">Portal internacional de oportunidades, produção e circulação artística autoral</p>
+</header>
+
+<main>
+
+<div class="grid">
+
+<div class="card">
+<h2>Rede Mundial de Oportunidades Artísticas</h2>
+<p>Portal público internacional de oportunidades para artistas autorais.</p>
+<a class="btn" href="rede_mundial_oportunidades_artisticas.html">Entrar</a>
+</div>
+
+<div class="card">
+<h2>Site das Letras</h2>
+<p>Catálogo editorial e identidade literária institucional.</p>
+<a class="btn" href="#">Entrar</a>
+</div>
+
+<div class="card">
+<h2>SIGMAL</h2>
+<p>Academia internacional de artes, letras e música.</p>
+<a class="btn" href="#">Entrar</a>
+</div>
+
+<div class="card">
+<h2>Web Rádio</h2>
+<p>Programação cultural e circulação sonora do Celeiro.</p>
+<a class="btn" href="#">Entrar</a>
+</div>
+
+<div class="card">
+<h2>Web TV</h2>
+<p>Produções audiovisuais culturais do Celeiro Literário.</p>
+<a class="btn" href="https://youtube.com/@celeiroliterario" target="_blank">Assistir</a>
+</div>
+
+<div class="card">
+<h2>Entrar no Celeiro Literário</h2>
+<p>Acesso ao ambiente interno de criação e acompanhamento artístico.</p>
+<a class="btn" href="acompanhamento_evolucao_trajetoria.html">Entrar</a>
+</div>
+
+</div>
+
+</main>
+
+<footer>
+<p><strong>Instituto Cultural Celeiro Literário</strong></p>
+<p>Portal institucional de integração artística internacional</p>
+</footer>
+
+</body>
+</html>
