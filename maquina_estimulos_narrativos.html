@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Máquina de Estímulos Narrativos</title>
+<style>
+:root{--azul:#0f1c2e;--azul2:#07101d;--dourado:#c9a646;--dourado2:#f4dc88;--papel:#fffaf0;--texto:#243043;--verde:#2f7d4a;--radius:22px;--sombra:0 18px 40px rgba(8,17,31,.16)}*{box-sizing:border-box}body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#fbf7ed,#efe2c7);color:var(--texto)}header{background:linear-gradient(135deg,var(--azul2),var(--azul));color:white;padding:70px 20px;border-bottom:8px solid var(--dourado);text-align:center}h1{font-size:clamp(34px,6vw,64px);margin:0;color:var(--dourado2)}.subtitle{font-size:22px;margin-top:12px;color:#fff5cf}main{max-width:1100px;margin:auto;padding:40px 20px 80px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}.card{background:var(--papel);border:1px solid rgba(201,166,70,.4);border-radius:var(--radius);padding:28px;box-shadow:var(--sombra)}.card h2{margin-top:0;color:var(--azul)}.btn{display:inline-block;margin-top:14px;padding:12px 18px;border-radius:999px;font-weight:bold;text-decoration:none;background:var(--dourado);color:#111;border:0;cursor:pointer}.highlight{background:linear-gradient(135deg,#fff4cf,#ead481);border:1px solid #d6bf70}.resultado{margin-top:24px;background:white;border:1px solid rgba(201,166,70,.55);border-radius:22px;padding:24px;box-shadow:var(--sombra)}.linha{padding:10px 0;border-bottom:1px solid #eadcae}.linha:last-child{border-bottom:0}.rotulo{font-weight:bold;color:var(--azul)}footer{background:var(--azul2);color:white;text-align:center;padding:30px 18px;border-top:6px solid var(--dourado)}footer strong{color:var(--dourado2)}</style>
+</head>
+<body>
+<header>
+<h1>Máquina de Estímulos Narrativos</h1>
+<p class="subtitle">Ideias rápidas para destravar histórias, personagens, épocas e conflitos</p>
+</header>
+<main>
+<div class="grid">
+<div class="card highlight"><h2>Como funciona</h2><p>A máquina não escreve pelo autor. Ela apresenta estímulos narrativos para que a pessoa use como ponto de partida e escreva por conta própria.</p><button class="btn" onclick="gerar()">Gerar estímulo narrativo</button></div>
+<div class="card"><h2>O que ela sugere</h2><p>Época, local, protagonista, antagonista, personagens secundários, conflito, tom narrativo e ideia-base.</p></div>
+<div class="card"><h2>Uso independente</h2><p>O autor pode usar este módulo sozinho, sem precisar entrar no Conta Comigo ou em outros módulos.</p></div>
+<div class="card"><h2>Conta Comigo</h2><p>Se precisar de apoio para organizar a ideia em estrutura narrativa, o autor pode seguir para a Mentoria Cibernética Literária.</p><a class="btn" href="conta_comigo.html">Ir para Conta Comigo</a></div>
+<div class="card"><h2>Caminho das Pedras</h2><p>Os estímulos podem ser usados como exercícios de formação em prosa, poesia, conto, cordel ou narrativa híbrida.</p><a class="btn" href="caminho_das_pedras.html">Ver formação</a></div>
+<div class="card"><h2>Lapidar</h2><p>Depois que a ideia virar texto, a obra pode seguir para lapidação, revisão, diagramação, capa e publicação.</p><a class="btn" href="lapidar_sistema_editorial_modular.html">Conhecer Lapidar</a></div>
+</div>
+<div id="resultado" class="resultado" style="display:none"></div>
+</main>
+<footer><p><strong>Máquina de Estímulos Narrativos</strong></p><p>Módulo simples e leve do Instituto Cultural Celeiro Literário</p></footer>
+<script>
+const epocas=['passado medieval','presente urbano','futuro distante','Brasil colonial','sertão contemporâneo','cidade cyberpunk','reino em decadência','vila litorânea antiga','metrópole internacional','interior fantástico'];
+const locais=['biblioteca abandonada','mercado popular','castelo em ruínas','estação de trem','festival de música','praça de cidade pequena','ilha isolada','teatro antigo','atelier de artista','cozinha de família'];
+const protagonistas=['jovem escritor sem reconhecimento','poetisa exilada','músico que perdeu a voz','artista plástica acusada injustamente','ator em fim de carreira','dançarina que esconde uma promessa','fotógrafo que registra algo impossível','artesã guardiã de uma tradição','compositor em busca de uma canção perdida','criador independente sem apoio'];
+const antagonistas=['empresário oportunista','crítico invejoso','família que não acredita no sonho','governo autoritário','antigo mestre ressentido','rival carismático','tempo contra o protagonista','cidade que sufoca a arte','segredo do passado','medo interior'];
+const secundarios=['amigo engraçado','mentora severa','criança observadora','idoso contador de causos','atriz misteriosa','poeta silencioso','vizinha fofoqueira','produtor cultural falido','professora aposentada','músico de rua'];
+const conflitos=['precisa participar de um edital antes do prazo acabar','descobre uma obra roubada','tem que provar autoria','recebe convite que pode mudar sua vida','perde o único material que tinha','precisa escolher entre fama e lealdade','encontra uma carta antiga','é desafiado publicamente','precisa reconstruir sua carreira','tem que apresentar uma obra inacabada'];
+const tons=['dramático','cômico','lírico','épico','melancólico','satírico','misterioso','romântico','fantástico','realista'];
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function gerar(){
+ const e=pick(epocas), l=pick(locais), p=pick(protagonistas), a=pick(antagonistas), s=pick(secundarios), c=pick(conflitos), t=pick(tons);
+ const ideia='Em um cenário de '+e+', no(a) '+l+', um(a) '+p+' enfrenta '+a+' quando '+c+'. Com a ajuda de um(a) '+s+', a história pode seguir em tom '+t+'.';
+ document.getElementById('resultado').style.display='block';
+ document.getElementById('resultado').innerHTML='<h2>Estímulo narrativo gerado</h2><div class="linha"><span class="rotulo">Época:</span> '+e+'</div><div class="linha"><span class="rotulo">Local:</span> '+l+'</div><div class="linha"><span class="rotulo">Protagonista:</span> '+p+'</div><div class="linha"><span class="rotulo">Antagonista:</span> '+a+'</div><div class="linha"><span class="rotulo">Personagem secundário:</span> '+s+'</div><div class="linha"><span class="rotulo">Conflito:</span> '+c+'</div><div class="linha"><span class="rotulo">Tom:</span> '+t+'</div><div class="linha"><span class="rotulo">Ideia-base:</span> '+ideia+'</div><button class="btn" onclick="gerar()">Gerar outro estímulo</button>';
+}
+</script>
+</body>
+</html>
