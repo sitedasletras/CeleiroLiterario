@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadastro — Instituto Cultural Celeiro Literário</title>
+<style>
+:root{--azul:#0f1c2e;--azul2:#07101d;--dourado:#c9a646;--dourado2:#f4dc88;--papel:#fffaf0;--texto:#243043;--verde:#2f7d4a;--radius:22px;--sombra:0 18px 40px rgba(8,17,31,.16)}*{box-sizing:border-box}body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#fbf7ed,#efe2c7);color:var(--texto)}header{background:linear-gradient(135deg,var(--azul2),var(--azul));color:white;padding:62px 20px;border-bottom:8px solid var(--dourado);text-align:center}h1{font-size:clamp(32px,5vw,58px);margin:0;color:var(--dourado2)}.subtitle{font-size:21px;margin-top:12px;color:#fff5cf}main{max-width:980px;margin:auto;padding:40px 20px 80px}.box{background:var(--papel);border:1px solid rgba(201,166,70,.45);border-radius:var(--radius);padding:28px;box-shadow:var(--sombra)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}label{font-family:Arial,sans-serif;font-size:14px;font-weight:800;display:block;margin-bottom:7px;color:#344054}input,select,textarea{width:100%;padding:13px;border-radius:14px;border:1px solid #ccb981;background:#fffdf7;font-size:15px;color:#1f2b3f}textarea{min-height:110px;resize:vertical}.wide{grid-column:1/-1}.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.btn{display:inline-block;border:0;border-radius:999px;padding:13px 18px;font-weight:900;text-decoration:none;cursor:pointer;font-family:Arial,sans-serif;background:var(--dourado);color:#111}.green{background:var(--verde);color:white}.notice{margin:22px 0 0;background:#fff3c4;border-left:6px solid var(--dourado);padding:16px;border-radius:16px;color:#3c300a}footer{background:var(--azul2);color:white;text-align:center;padding:30px 18px;border-top:6px solid var(--dourado)}footer strong{color:var(--dourado2)}@media(max-width:720px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}}</style>
+</head>
+<body>
+<header>
+<h1>Cadastro do Celeiro Literário</h1>
+<p class="subtitle">Entrada institucional para criação, formação, publicação e circulação artística</p>
+</header>
+<main>
+<div class="box">
+<h2>Ficha inicial do participante</h2>
+<p>Preencha os dados básicos para orientar sua entrada no ecossistema do Instituto Cultural Celeiro Literário.</p>
+<form>
+<div class="grid">
+<div><label>Nome civil ou artístico</label><input type="text" placeholder="Digite seu nome"></div>
+<div><label>E-mail</label><input type="email" placeholder="seuemail@exemplo.com"></div>
+<div><label>País</label><input type="text" placeholder="Brasil, Portugal, EUA..."></div>
+<div><label>Tipo de acesso</label><select><option>Autor / artista individual</option><option>Participante SIGMAL</option><option>Aluno Caminho das Pedras</option><option>Usuário Lapidar</option><option>Visitante da Rede Mundial</option><option>Instituição / coletivo</option></select></div>
+<div><label>Área principal</label><select><option>Escritor(a)</option><option>Poeta / poetisa</option><option>Músico(a)</option><option>Compositor(a)</option><option>Ator / atriz</option><option>Dançarino(a)</option><option>Artista visual</option><option>Artista plástico(a)</option><option>Fotógrafo(a)</option><option>Artesão(ã)</option><option>Criador(a) independente</option></select></div>
+<div><label>Objetivo inicial</label><select><option>Criar uma ideia</option><option>Escrever uma obra</option><option>Preparar um livro</option><option>Publicar</option><option>Entrar na SIGMAL</option><option>Receber oportunidades</option><option>Divulgar material artístico</option></select></div>
+<div class="wide"><label>Conte rapidamente o que você deseja fazer</label><textarea placeholder="Ex.: quero publicar meu primeiro livro, participar de editais, organizar meus poemas, criar vídeos para minha obra..."></textarea></div>
+</div>
+<div class="notice"><strong>Próxima etapa técnica:</strong> conectar este cadastro ao login, pagamento, Hotmart, painel interno e módulos do Celeiro.</div>
+<div class="btns"><a class="btn green" href="pagina_respiro_celeiro.html">Continuar para o Celeiro</a><a class="btn" href="portal_instituto_celeiro_literario.html">Voltar ao portal</a></div>
+</form>
+</div>
+</main>
+<footer><p><strong>Instituto Cultural Celeiro Literário</strong></p><p>Cadastro institucional de entrada</p></footer>
+</body>
+</html>
