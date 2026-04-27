@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OHE-Peçanha — Oficina Heteronímica da Escrita</title>
+<style>
+:root{
+  --bg:#f6f1e6;
+  --paper:#fffaf0;
+  --ink:#24190d;
+  --muted:#6f5d43;
+  --line:#d9c7a5;
+  --gold:#b8862f;
+  --gold2:#e4c36f;
+  --brown:#4b2f18;
+  --blue:#263b55;
+  --green:#1f6b3a;
+  --red:#7b1e1e;
+  --shadow:0 18px 50px rgba(55,35,15,.16);
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif}
+body{min-height:100vh;background:radial-gradient(circle at top,#fff9e8 0,#f4ead6 42%,#e8d7b8 100%)}
+header{padding:28px 18px 20px;text-align:center;background:linear-gradient(135deg,#2a1609,#5a3518 54%,#2b170b);color:#fff;border-bottom:5px solid var(--gold)}
+header h1{margin:0;font-size:clamp(28px,6vw,48px);letter-spacing:.8px}
+header p{margin:8px auto 0;max-width:920px;color:#f7e7bd;font-size:17px;line-height:1.45}
+.wrap{max-width:1280px;margin:0 auto;padding:18px}
+.nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0}
+.nav button,.btn{border:0;border-radius:999px;padding:12px 14px;font-weight:bold;cursor:pointer;background:#fff6df;color:var(--brown);box-shadow:0 5px 14px rgba(60,35,10,.12);border:1px solid var(--line);font-family:Georgia,"Times New Roman",serif}
+.nav button.active,.btn.primary{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1d1207}
+.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:start}
+.card{background:rgba(255,250,240,.96);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:18px}
+.card h2{margin:0 0 10px;color:#3a2411;font-size:26px}.card h3{margin:16px 0 8px;color:#3a2411}.muted{color:var(--muted)}
+.panel{display:none}.panel.active{display:block}.mode-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}.mode{padding:18px;border:2px solid var(--line);border-radius:18px;background:#fffdf7;cursor:pointer;min-height:140px}.mode:hover{border-color:var(--gold);transform:translateY(-1px)}.mode h3{margin:0 0 8px;font-size:22px}.mode.auto{border-left:8px solid #8a5b20}.mode.manual{border-left:8px solid #263b55}.mode.obs{border-left:8px solid #5b2a65}.mode.active{outline:3px solid rgba(184,134,47,.35);background:#fff6df}
+label{display:block;margin:10px 0 6px;font-weight:bold;color:#3c2815}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px;background:#fffdf8;color:var(--ink);font-family:Georgia,"Times New Roman",serif;font-size:15px}textarea{min-height:130px;resize:vertical}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.btn.warn{background:#fff3c4}.btn.danger{background:#f2d4cf;color:#631b13}.btn.safe{background:#dcefdc;color:#155421}
+.output{white-space:pre-wrap;background:#1f160d;color:#fff3d1;border-radius:16px;padding:16px;min-height:120px;font-family:"Courier New",monospace;line-height:1.45;overflow:auto}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#f2e3c4;border:1px solid var(--line);margin:3px;font-size:13px}.status{padding:10px 12px;border-radius:12px;background:#eef6eb;border:1px solid #b8d5ae;color:#245b22;margin:10px 0}
+table{width:100%;border-collapse:collapse;background:#fffdf7;border-radius:14px;overflow:hidden}th,td{border-bottom:1px solid #eadbbc;padding:10px;text-align:left;vertical-align:top}th{background:#5a3518;color:white;position:sticky;top:0}tr:hover td{background:#fff5dc}.searchbar{display:grid;grid-template-columns:1fr 220px;gap:10px;margin-bottom:12px}
+.badge-prosa{color:#103c63;font-weight:bold}.badge-poesia{color:#5b285f;font-weight:bold}.badge-inst{color:#6d3a00;font-weight:bold}.footer{padding:20px;text-align:center;color:#6b5a40}.small{font-size:13px}.route{font-family:"Courier New",monospace;background:#fff5d9;border-left:5px solid var(--gold);padding:12px;border-radius:12px;line-height:1.6}.hidden{display:none!important}
+@media(max-width:820px){.grid,.two,.three,.searchbar{grid-template-columns:1fr}.card{padding:14px}header{padding:22px 12px}.nav{grid-template-columns:1fr 1fr}.output{font-size:13px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>OHE-Peçanha</h1>
+  <p>Oficina Heteronímica da Escrita — núcleo independente para criação, direção narrativa, escrita heteronímica, humanização, Calabouço, Catapulta e Confraria dos Heterônimos.</p>
+</header>
+<div class="wrap">
+  <div class="nav" id="nav">
+    <button class="active" data-panel="direcao">Caixa de Direção</button>
+    <button data-panel="mpal">MPAL</button>
+    <button data-panel="arauto">Arauto</button>
+    <button data-panel="observatorio">Observatório</button>
+    <button data-panel="confraria">Confraria</button>
+    <button data-panel="hospitalar">Centro Hospitalar</button>
+    <button data-panel="calabouco">Calabouço</button>
+    <button data-panel="pipeline">Pipeline</button>
+  </div>
+
+  <section id="direcao" class="panel active">
+    <div class="card">
+      <h2>Caixa de Direção</h2>
+      <p class="muted">Primeira porta da OHE. Escolha de onde nasce a obra: dados automáticos, edital/antologia ou vídeo/imagem.</p>
+      <div class="mode-grid">
+        <div class="mode auto" data-mode="automatico"><h3>Automático — MPAL</h3><p>Gera dados de combate ao bloqueio criativo: lugar, fato, tempo, clima, personagem, jornada e direção por capítulo.</p></div>
+        <div class="mode manual" data-mode="manual"><h3>Manual — Arauto</h3><p>Lê edital, concurso, antologia ou miscelânea e extrai regras, limites, tema, formato e destino.</p></div>
+        <div class="mode obs" data-mode="observatorio"><h3>Observatório — Vídeo/Imagem</h3><p>Interpreta atmosfera audiovisual: música, paisagem, sentimento, arquétipos, ritmo e jornada.</p></div>
+      </div>
+      <div id="modoStatus" class="status">Modo atual: Automático — MPAL</div>
+    </div>
+    <div class="grid">
+      <div class="card"><h2>Regra de entrada</h2><div class="route">Modo Automático → MPAL → Motor de Fatos → Direção Narrativa por Capítulo<br>Modo Manual → Arauto → Caixa de Direção → Direção Narrativa por Capítulo<br>Modo Observatório → Leitura audiovisual → Caixa de Direção → Direção Narrativa por Capítulo</div></div>
+      <div class="card"><h2>Saída padrão</h2><p>Todos os modos devem produzir um <b>Dossiê de Escrita</b> para o Motor Escritor Heteronímico.</p><span class="pill">autor sugerido</span><span class="pill">prefaciador</span><span class="pill">jornada</span><span class="pill">capítulos</span><span class="pill">fatos</span><span class="pill">limites</span></div>
+    </div>
+  </section>
+
+  <section id="mpal" class="panel">
+    <div class="grid">
+      <div class="card">
+        <h2>MPAL — Máquina de Produção Ativa Literária</h2>
+        <p class="muted">Motor gerador de dados de combate a bloqueio criativo e ativamento orientado.</p>
+        <div class="two"><div><label>Forma</label><select id="mpalForma"><option>Prosa</option><option>Poesia</option><option>Híbrido</option><option>Roteiro</option></select></div><div><label>Destino</label><select id="mpalDestino"><option>Antologia / Edital</option><option>Conto</option><option>Novela</option><option>Romance</option><option>Roteiro de filme</option><option>Roteiro curto audiovisual</option></select></div></div>
+        <div class="three"><div><label>Continente</label><select id="mpalContinente"><option>América do Sul</option><option>Europa</option><option>Ásia</option><option>África</option><option>Oceania</option><option>Antártida</option></select></div><div><label>País</label><input id="mpalPais" value="Brasil" /></div><div><label>Estado / Região</label><input id="mpalEstado" value="São Paulo" /></div></div>
+        <div class="three"><div><label>Cidade</label><input id="mpalCidade" value="Campos do Jordão" /></div><div><label>Bairro / Vila</label><input id="mpalBairro" value="Capivari" /></div><div><label>Local exato</label><input id="mpalLocal" value="diante da igreja" /></div></div>
+        <div class="three"><div><label>Tempo narrativo</label><select id="mpalTempo"><option>Presente</option><option>Passado</option><option>Futuro</option></select></div><div><label>Clima</label><input id="mpalClima" value="serração" /></div><div><label>Horário</label><input id="mpalHora" value="22:15:09" /></div></div>
+        <label>Origem da marcação do tempo</label><input id="mpalOrigem" value="relógio da igreja" />
+        <div class="actions"><button class="btn primary" onclick="gerarMPAL()">Gerar dossiê MPAL</button><button class="btn safe" onclick="salvarNoCalabouco('Dossiê MPAL',document.getElementById('mpalOut').innerText)">Salvar no Calabouço</button></div>
+      </div>
+      <div class="card"><h2>Saída MPAL</h2><div class="output" id="mpalOut">Clique em “Gerar dossiê MPAL”.</div></div>
+    </div>
+  </section>
+
+  <section id="arauto" class="panel">
+    <div class="grid"><div class="card"><h2>Arauto — Leitor de Editais</h2><p class="muted">Cole aqui o edital, chamada, antologia ou regras do concurso. O Arauto extrai limites e joga na Caixa de Direção.</p><textarea id="editalTexto" placeholder="Cole aqui o texto do edital..."></textarea><div class="actions"><button class="btn primary" onclick="interpretarEdital()">Interpretar edital</button><button class="btn safe" onclick="salvarNoCalabouco('Dossiê Arauto',document.getElementById('arautoOut').innerText)">Salvar no Calabouço</button></div></div><div class="card"><h2>Saída Arauto</h2><div id="arautoOut" class="output">Aguardando edital.</div></div></div>
+  </section>
+
+  <section id="observatorio" class="panel">
+    <div class="grid"><div class="card"><h2>Observatório — MPAL Audiovisual</h2><p class="muted">Recebe link de vídeo, imagens ou descrição. Interpreta clima, música, paisagem, narração, sentimento e arquétipos.</p><label>Link do vídeo</label><input id="videoLink" placeholder="https://youtu.be/..." /><label>Observações visuais/musicais</label><textarea id="videoDesc" placeholder="Ex.: baile mascarado, música lenta, desejo, distância, destino, atmosfera fantástica..."></textarea><div class="actions"><button class="btn primary" onclick="analisarObservatorio()">Gerar leitura audiovisual</button><button class="btn safe" onclick="salvarNoCalabouco('Dossiê Observatório',document.getElementById('obsOut').innerText)">Salvar no Calabouço</button></div></div><div class="card"><h2>Saída Observatório</h2><div id="obsOut" class="output">Aguardando vídeo/imagem.</div></div></div>
+  </section>
+
+  <section id="confraria" class="panel">
+    <div class="card"><h2>Confraria dos Heterônimos</h2><p class="muted">Mapa operacional: nome, forma e campo onde cada heterônimo atua. A Confraria alimenta seleção de autor e prefaciador.</p><div class="searchbar"><input id="buscaConfraria" oninput="renderConfraria()" placeholder="Buscar heterônimo ou campo..." /><select id="filtroForma" onchange="renderConfraria()"><option value="">Todas as formas</option><option>Prosa</option><option>Poesia</option><option>Institucional</option></select></div><div style="overflow:auto;max-height:620px"><table><thead><tr><th>Heterônimo</th><th>Forma</th><th>Campo de atuação</th></tr></thead><tbody id="confrariaRows"></tbody></table></div></div>
+  </section>
+
+  <section id="hospitalar" class="panel">
+    <div class="grid"><div class="card"><h2>Centro Emergencial Hospitalar</h2><p class="muted">Cria heterônimos quando há lacuna autoral. Modo rápido: nasce, recebe campo e vai para a Confraria.</p><label>Nome do novo heterônimo</label><input id="novoNome" placeholder="Ex.: nome autoral" /><div class="two"><div><label>Forma</label><select id="novoForma"><option>Prosa</option><option>Poesia</option></select></div><div><label>Campo de atuação</label><input id="novoCampo" placeholder="Ex.: MitoPunkLogia" /></div></div><label>Biografia base</label><textarea id="novoBio" placeholder="Biografia inicial de 90 palavras até 2 páginas A5..."></textarea><button class="btn primary" onclick="adicionarHeteronimo()">Enviar para Confraria</button></div><div class="card"><h2>Vagas abertas</h2><div class="route">Lobisomens<br>Vampiros<br>MitoPunkLogia<br>Fantasia feérica cortesã<br>Terror psicológico<br>Romance romântico clássico<br>Cyberpunk mitológico especializado</div></div></div>
+  </section>
+
+  <section id="calabouco" class="panel">
+    <div class="card"><h2>Calabouço</h2><p class="muted">Área segura da OHE. Aqui ficam dossiês, rascunhos limpos e materiais prontos para eventual Catapulta.</p><div class="actions"><button class="btn" onclick="renderCalabouco()">Atualizar</button><button class="btn danger" onclick="limparCalabouco()">Limpar Calabouço local</button></div><div id="calaboucoLista"></div></div>
+  </section>
+
+  <section id="pipeline" class="panel">
+    <div class="card"><h2>Pipeline oficial da OHE</h2><div class="route">Caixa de Direção<br>↓<br>MPAL / Arauto / Observatório<br>↓<br>Motor de Fatos<br>↓<br>Direção Narrativa por Capítulo<br>↓<br>Consulta à Confraria dos Heterônimos<br>↓<br>Centro Emergencial Hospitalar, se faltar autor<br>↓<br>Motor Escritor Heteronímico<br>↓<br>Motor das 6 Camadas<br>↓<br>Humanização interna da OHE<br>↓<br>Calabouço<br>↓<br>Catapulta manual para Lapidar</div></div>
+    <div class="card"><h2>Regras invioláveis</h2><span class="pill">Catapulta manual</span><span class="pill">Humanização preserva voz</span><span class="pill">Snake As = advogado da prosa</span><span class="pill">Lonely Eagle = advogado da poesia</span><span class="pill">OI/OHE independentes do Celeiro</span><span class="pill">Confraria evita duplicidade</span></div>
+  </section>
+</div>
+<div class="footer">OHE-Peçanha — primeira base funcional em HTML. Versão 0.1.</div>
+<script>
+const heteronimosBase=[
+ ['A.J. dos Santos','Prosa','Chupa-cabras'],
+ ['Amanda Fernanda Fisher Leão','Prosa','Aventura marítima mitológica'],
+ ['Amélie Maia Hanna','Poesia','Soneto'],
+ ['Anísio Teixeira','Prosa','Zumbis existenciais / pós-apocalipse'],
+ ['Articus da Pérsida','Prosa','Medieval templário'],
+ ['Aurora Wings','Prosa','Ficção científica: IA / cibermundo'],
+ ['Padre Benedicttus Konstantinos','Prosa','Drama religioso católico apocalíptico'],
+ ['Birihani Selami Ina Tesifa','Poesia','Ghazal'],
+ ['Calíope Papazissis','Prosa','Mitologia grega narrativa'],
+ ['Chesco Irlanda','Prosa','Literatura infantil fabulística'],
+ ['Claudiney Aristides Diaz','Prosa','Experimental / território aberto'],
+ ['Creone Porfírio','Prosa','Militarismo histórico brasileiro'],
+ ['Cristóvão Duarte','Prosa','Terror aracnídeo subterrâneo'],
+ ['Daniel Fernandes','Poesia','Erotismo lírico'],
+ ['Dárius Ninus Vamus','Prosa','Humor'],
+ ['Demetrius Varas','Prosa','Erotismo urbano adulto'],
+ ['Din Kin Lin','Poesia','Haicai oriental'],
+ ['Diógenes Bueno de Alencar','Prosa','Geografia simbólica: arquipélagos e penínsulas'],
+ ['Hama Amarin','Poesia','Pantum'],
+ ['Hernesto Bevilácqua','Poesia','Ode'],
+ ['Horando Almeida Prado','Poesia','Mar e cultura caiçara'],
+ ['Icabode Kahpote','Poesia','Sextina póstuma existencial'],
+ ['Imediato Thompson','Prosa','Constelação de Ophiuchus / Atlantis cósmica'],
+ ['J. L. Gomes','Prosa','Literatura espírita reflexiva'],
+ ['Jorge Cavalcanti','Poesia','Cordel'],
+ ['Juka Pituskaq','Poesia','Novo Movimento Estrofista'],
+ ['Julia Abdalla','Prosa','Literatura culinária narrativa'],
+ ['Mário Célio Sabino','Prosa','Terror espiritual / fantasmas'],
+ ['Michelangelo Miguel','Poesia','Poema narrativo'],
+ ['Pyetra Luyza','Prosa','Entrevistas; especialidade autoral: ecologia'],
+ ['Raimundo José da Silva Nonato','Prosa','Memória da seca nordestina'],
+ ['Renat Kolotov','Prosa','Ficção histórica russa revolucionária'],
+ ['Rovonilson Reigns Bautista','Prosa','Vida urbana sob marquises / rap narrativo social'],
+ ['Henrich Jones','Prosa','Arqueologia e civilizações antigas'],
+ ['Sebastião Ferreira dos Anjos','Poesia','Poema dissertativo reflexivo'],
+ ['Valter Marques','Poesia','Arrependimento existencial'],
+ ['Victor A. Pereira','Prosa','Romance policial investigativo'],
+ ['Wilson Silva','Poesia','Cotidiano afetivo urbano'],
+ ['Yago Mattos','Prosa','Lendas caiçaras / bruxaria regional'],
+ ['Wagner Planas','Prosa','Literatura afetiva filial'],
+ ['Snake As','Institucional','Advogado da prosa: defesa estrutural dos escritores'],
+ ['Lonely Eagle','Institucional','Advogado da poesia: defesa estrutural dos poetas'],
+ ['Fernando Peçanha','Institucional','Curador e cuidador das obras'],
+ ['Trajano Estrada','Institucional','Trajetória autoral, concursos e editais'],
+ ['Cecília','Institucional','Comunicação editorial de acontecimentos relevantes'],
+ ['MitoPunkLogia','Prosa','Campo aberto: cyberpunk mitológico / vaga para heterônimo especialista']
+];
+function getHeteronimos(){return JSON.parse(localStorage.getItem('ohe_confraria')||'null')||heteronimosBase}
+function setHeteronimos(v){localStorage.setItem('ohe_confraria',JSON.stringify(v))}
+function esc(s){return String(s||'').replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
+function showPanel(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.panel===id)); if(id==='confraria')renderConfraria(); if(id==='calabouco')renderCalabouco();}
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>showPanel(b.dataset.panel));
+document.querySelectorAll('.mode').forEach(m=>m.onclick=()=>{document.querySelectorAll('.mode').forEach(x=>x.classList.remove('active'));m.classList.add('active');const names={automatico:'Automático — MPAL',manual:'Manual — Arauto',observatorio:'Observatório — vídeo/imagens'};document.getElementById('modoStatus').innerText='Modo atual: '+names[m.dataset.mode]; if(m.dataset.mode==='automatico')showPanel('mpal'); if(m.dataset.mode==='manual')showPanel('arauto'); if(m.dataset.mode==='observatorio')showPanel('observatorio');});
+function sugerirAutor(forma,campo){const h=getHeteronimos(); const busca=(campo||'').toLowerCase(); let cand=h.find(x=>x[1]===forma && x[2].toLowerCase().includes(busca.split(' ')[0]||busca)); if(!cand){cand=h.find(x=>x[1]===forma && x[1]!=='Institucional')} return cand?cand[0]:'Centro Emergencial Hospitalar deve criar novo heterônimo'}
+function gerarMPAL(){const forma=document.getElementById('mpalForma').value;const destino=document.getElementById('mpalDestino').value;const continente=document.getElementById('mpalContinente').value;const pais=document.getElementById('mpalPais').value;const estado=document.getElementById('mpalEstado').value;const cidade=document.getElementById('mpalCidade').value;const bairro=document.getElementById('mpalBairro').value;const local=document.getElementById('mpalLocal').value;const tempo=document.getElementById('mpalTempo').value;const clima=document.getElementById('mpalClima').value;const hora=document.getElementById('mpalHora').value;const origem=document.getElementById('mpalOrigem').value;const campo = destino.includes('Roteiro')?'roteiro audiovisual':(forma==='Poesia'?'poesia':'prosa');const autor=sugerirAutor(forma==='Poesia'?'Poesia':'Prosa',campo);const fatos=['início da história','revelação importante','encontro decisivo','traição','descoberta','destino','queda do antagonista','sacrifício do protagonista','encontro amoroso'];const fato=fatos[Math.floor(Math.random()*fatos.length)];const out=`Dossiê MPAL\n\nForma: ${forma}\nDestino: ${destino}\nTempo narrativo: ${tempo}\nLocalização: ${continente} > ${pais} > ${estado} > ${cidade} > ${bairro} > ${local}\nClima: ${clima}\nMarcador temporal: ${hora}, indicado por ${origem}\nFato literário sugerido: ${fato}\nAutor sugerido pela Confraria: ${autor}\nPrefaciador: buscar par estético; se não houver, Wagner Planas\n\nDireção Narrativa por Capítulo:\n1. Abertura — apresentar o local, o clima e o primeiro sinal do conflito.\n2. Movimento — aprofundar o fato literário sem entregar tudo cedo demais.\n3. Virada — deslocar o personagem para uma escolha sem volta.\n4. Fechamento — cumprir o destino emocional da obra.\n\nPróximo estágio: Motor Escritor Heteronímico.`;document.getElementById('mpalOut').innerText=out;}
+function interpretarEdital(){const t=document.getElementById('editalTexto').value;const palavras=(t.match(/(\d+)\s*(palavras|palavra)/i)||[])[1]||'não identificado';const linhas=(t.match(/(\d+)\s*(linhas|linha)/i)||[])[1]||'não identificado';const pags=(t.match(/(\d+)\s*(páginas|paginas|página|pagina)/i)||[])[1]||'não identificado';let tema=(t.match(/tema[:\- ]+([^\.\n]+)/i)||[])[1]||'extrair por leitura humana/IA';const out=`Dossiê Arauto\n\nTipo: edital / antologia / concurso\nTema detectado: ${tema}\nLimite de palavras: ${palavras}\nLimite de linhas: ${linhas}\nLimite de páginas: ${pags}\nModo recomendado: Manual com Compressão Narrativa\n\nDireção para o escritor:\n- Obedecer aos limites antes da estética.\n- Compactar cenas sem perder conflito central.\n- Evitar arco longo se o limite for curto.\n- Gerar texto dimensionado para submissão.\n\nPróximo estágio: Caixa de Direção → Direção Narrativa por Capítulo.`;document.getElementById('arautoOut').innerText=out;}
+function analisarObservatorio(){const link=document.getElementById('videoLink').value||'sem link';const desc=(document.getElementById('videoDesc').value||'').toLowerCase();let modo='romance simbólico fantástico';let estrutura='jornada do encantamento';let ritmo='lento musical';let clima='desejo + destino + distância';if(desc.includes('terror')){modo='terror psicológico';estrutura='jornada do abismo';ritmo='lento e opressivo';clima='medo + dúvida + deformação da realidade'}if(desc.includes('guerra')){modo='drama épico militar';estrutura='jornada da honra e perda';ritmo='grave e progressivo';clima='sacrifício + dever + memória'}if(desc.includes('rap')){modo='prosa urbana social';estrutura='jornada da rua e redenção';ritmo='cortante e sincopado';clima='sobrevivência + verdade + ferida social'}const autor=modo.includes('urbana')?'Rovonilson Reigns Bautista':(modo.includes('terror')?'Mário Célio Sabino':'Centro Emergencial Hospitalar pode avaliar autor compatível');const out=`Dossiê Observatório\n\nLink: ${link}\nModo narrativo: ${modo}\nEstrutura: ${estrutura}\nAmbiente: extraído de vídeo/imagem/descrição\nRitmo: ${ritmo}\nClima emocional: ${clima}\nArquétipos: protagonista em travessia + figura de limiar/oposição\nAutor sugerido: ${autor}\n\nDireção Narrativa por Capítulo:\nParte I — Chamado e atmosfera\nParte II — Refúgio, caos ou confronto\nParte III — consequência emocional e destino\n\nPróximo estágio: Motor Escritor Heteronímico.`;document.getElementById('obsOut').innerText=out;}
+function renderConfraria(){const q=(document.getElementById('buscaConfraria')?.value||'').toLowerCase();const f=document.getElementById('filtroForma')?.value||'';const rows=getHeteronimos().filter(x=>(!f||x[1]===f)&&(`${x[0]} ${x[1]} ${x[2]}`.toLowerCase().includes(q))).map(x=>`<tr><td>${esc(x[0])}</td><td class="${x[1]==='Prosa'?'badge-prosa':x[1]==='Poesia'?'badge-poesia':'badge-inst'}">${esc(x[1])}</td><td>${esc(x[2])}</td></tr>`).join('');document.getElementById('confrariaRows').innerHTML=rows;}
+function adicionarHeteronimo(){const nome=document.getElementById('novoNome').value.trim();const forma=document.getElementById('novoForma').value;const campo=document.getElementById('novoCampo').value.trim();if(!nome||!campo){alert('Preencha nome e campo.');return}const h=getHeteronimos();h.push([nome,forma,campo]);setHeteronimos(h);document.getElementById('novoNome').value='';document.getElementById('novoCampo').value='';document.getElementById('novoBio').value='';alert('Heterônimo enviado para a Confraria.');renderConfraria();}
+function salvarNoCalabouco(titulo,conteudo){if(!conteudo||conteudo.includes('Clique em')||conteudo.includes('Aguardando')){alert('Gere um dossiê antes de salvar.');return}const arr=JSON.parse(localStorage.getItem('ohe_calabouco')||'[]');arr.unshift({titulo,conteudo,data:new Date().toLocaleString('pt-BR')});localStorage.setItem('ohe_calabouco',JSON.stringify(arr));alert('Salvo no Calabouço.');}
+function renderCalabouco(){const arr=JSON.parse(localStorage.getItem('ohe_calabouco')||'[]');document.getElementById('calaboucoLista').innerHTML=arr.length?arr.map((x,i)=>`<div class="card"><h3>${esc(x.titulo)}</h3><p class="muted">${esc(x.data)}</p><div class="output">${esc(x.conteudo)}</div><button class="btn danger" onclick="removerCalabouco(${i})">Remover</button></div>`).join(''):'<p class="muted">Nenhum material salvo ainda.</p>';}
+function removerCalabouco(i){const arr=JSON.parse(localStorage.getItem('ohe_calabouco')||'[]');arr.splice(i,1);localStorage.setItem('ohe_calabouco',JSON.stringify(arr));renderCalabouco();}
+function limparCalabouco(){if(confirm('Limpar materiais salvos localmente neste navegador?')){localStorage.removeItem('ohe_calabouco');renderCalabouco();}}
+renderConfraria();
+</script>
+</body>
+</html>
