@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BPL — Banco de Personagens Literários</title>
+<style>
+:root{--azul:#071a3d;--azul2:#020817;--ouro:#c9a646;--ouro2:#f3dc8c;--papel:#fffaf0;--texto:#243043;--verde:#2f6f4e;--vermelho:#8b1e1e;--sombra:0 18px 42px rgba(0,0,0,.22)}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,var(--azul2),var(--azul) 48%,#030f2c);color:#fff7d6}header{padding:24px 18px 16px;text-align:center;border-bottom:1px solid rgba(201,166,70,.38)}h1{margin:0;font-family:Georgia,'Times New Roman',serif;font-size:clamp(30px,5vw,54px);color:var(--ouro2)}.sub{margin:8px auto 0;max-width:900px;color:#f8e8ad;line-height:1.45}.aviso{max-width:1100px;margin:18px auto 0;padding:12px 16px;border:1px solid rgba(244,220,136,.55);border-radius:14px;background:rgba(0,0,0,.22);font-size:14px;color:#fff1ba}main{max-width:1220px;margin:0 auto;padding:22px 16px 42px}.card{background:var(--papel);color:var(--texto);border:2px solid var(--ouro);border-radius:22px;box-shadow:var(--sombra);padding:20px;margin-bottom:18px}.card h2,.card h3{font-family:Georgia,'Times New Roman',serif;color:#102142;margin:0 0 12px}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.col-3{grid-column:span 3}.col-4{grid-column:span 4}.col-6{grid-column:span 6}.col-8{grid-column:span 8}.col-12{grid-column:span 12}label{display:block;font-weight:bold;margin-bottom:6px;color:#2b261a}input,select,textarea{width:100%;padding:11px 12px;border-radius:12px;border:1px solid #cfc2a3;background:#fff;color:#1e2633;font-size:15px}textarea{min-height:90px;resize:vertical}button,.btn{border:0;border-radius:999px;padding:12px 18px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(180deg,#f5df94,#c9a646);color:#111;box-shadow:0 10px 20px rgba(0,0,0,.14)}button.sec{background:#e8dcc5;color:#18233a}.danger{background:#8b1e1e!important;color:white!important}.ok{background:#2f6f4e!important;color:white!important}.acoes{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.lock{max-width:780px;margin:40px auto}.hidden{display:none!important}.reservatorios{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}.tag{border:1px solid #d8c796;background:#fff8df;border-radius:999px;padding:8px 11px;font-size:13px;color:#2b261a;font-weight:bold}.listagem{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:14px;margin-top:16px}.personagem{border:1px solid #d7c58e;background:#fff;border-radius:18px;padding:14px;box-shadow:0 8px 20px rgba(0,0,0,.07)}.personagem h3{margin:0 0 6px;color:#102142;font-size:22px}.meta{font-size:13px;line-height:1.45;color:#534833}.meta b{color:#111}.badge{display:inline-block;margin:4px 4px 0 0;border-radius:999px;background:#edf2ff;border:1px solid #cbd7ff;padding:4px 8px;font-size:12px;color:#1b2f62}.empty{text-align:center;color:#6c5b37;padding:22px;border:1px dashed #c9a646;border-radius:16px;background:#fff9e7}.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.small{font-size:13px;color:#6b5a35;line-height:1.35}.total{font-weight:bold;color:#102142}hr{border:0;border-top:1px solid #e3d7bd;margin:18px 0}.galeria{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.foto{width:54px;height:54px;border-radius:12px;background:#f2ead7;border:1px solid #d7c58e;display:flex;align-items:center;justify-content:center;font-size:20px}.menu-interno{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.menu-interno button{box-shadow:none;padding:10px 14px}.painel{display:none}.painel.ativo{display:block}@media(max-width:840px){.col-3,.col-4,.col-6,.col-8{grid-column:span 12}.topbar{align-items:flex-start}}@media print{body{background:white;color:#111}header,.no-print,.acoes,.menu-interno{display:none}.card{box-shadow:none;border:1px solid #bbb}.personagem{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header>
+  <h1>BPL — Banco de Personagens Literários</h1>
+  <p class="sub">Motor interno do Celeiro para guardar personagens das histórias, imagens do Barracão e acervos visuais ligados às obras.</p>
+  <div class="aviso">Uso exclusivo: <b>Admin</b>, <b>Wagner Planas</b> e <b>Heterônimo</b>. Não é público. Não é para terceiros.</div>
+</header>
+<main>
+  <section id="bloqueio" class="card lock">
+    <h2>Acesso interno</h2>
+    <p>Escolha o perfil para abrir o BPL.</p>
+    <div class="grid">
+      <div class="col-8"><label>Perfil</label><select id="perfilAcesso"><option value="">Selecione...</option><option>Admin</option><option>Wagner Planas</option><option>Heterônimo</option><option>Usuário externo</option></select></div>
+      <div class="col-4" style="display:flex;align-items:end"><button onclick="entrarBPL()">Entrar no BPL</button></div>
+    </div>
+    <p id="erroAcesso" class="small" style="color:#8b1e1e;font-weight:bold"></p>
+  </section>
+
+  <section id="app" class="hidden">
+    <div class="card">
+      <div class="topbar">
+        <div><h2>BPL interno</h2><p class="small">Aqui ficam personagens literários, não avatares administrativos do Celeiro.</p></div>
+        <div class="total" id="totalPersonagens">0 personagens</div>
+      </div>
+      <div class="menu-interno no-print">
+        <button onclick="abrirPainel('cadastro')">Cadastrar personagem</button>
+        <button onclick="abrirPainel('acervo')">Acervo visual</button>
+        <button onclick="abrirPainel('lista')">Ver banco</button>
+        <button onclick="exportarJSON()" class="sec">Exportar backup</button>
+        <button onclick="window.print()" class="sec">Imprimir relatório</button>
+      </div>
+      <div class="reservatorios"><span class="tag">Prosa</span><span class="tag">Poesia</span><span class="tag">Infantil</span><span class="tag">Infantojuvenil</span><span class="tag">Cordel</span><span class="tag">Híbrido</span><span class="tag">Terror / Gótico</span><span class="tag">Fantasia / Mitologia</span><span class="tag">MitoPunkLogia</span><span class="tag">Outros</span></div>
+    </div>
+
+    <section id="painel-cadastro" class="card painel ativo">
+      <h2>Cadastrar personagem literário</h2>
+      <div class="grid">
+        <div class="col-4"><label>Nome do personagem</label><input id="nome" placeholder="Ex.: Helena Duarte"></div>
+        <div class="col-4"><label>Autor / heterônimo</label><input id="autor" placeholder="Ex.: Snake As"></div>
+        <div class="col-4"><label>Livro / obra</label><input id="obra" placeholder="Ex.: O casarão da noite"></div>
+        <div class="col-4"><label>Reservatório</label><select id="reservatorio"><option>Prosa</option><option>Poesia</option><option>Infantil</option><option>Infantojuvenil</option><option>Cordel</option><option>Híbrido</option><option>Terror / Gótico</option><option>Fantasia / Mitologia</option><option>MitoPunkLogia</option><option>Outros</option></select></div>
+        <div class="col-4"><label>Função na história</label><select id="funcao"><option>Protagonista</option><option>Antagonista</option><option>Secundário</option><option>Narrador</option><option>Figura simbólica</option><option>Participação breve</option></select></div>
+        <div class="col-4"><label>Pode ir para Silos?</label><select id="silos"><option>Sim</option><option>Não</option><option>Avaliar depois</option></select></div>
+        <div class="col-6"><label>Descrição física</label><textarea id="fisico" placeholder="Aparência, idade, roupa, marcas etc."></textarea></div>
+        <div class="col-6"><label>Personalidade</label><textarea id="psico" placeholder="Temperamento, desejo, medo, modo de falar etc."></textarea></div>
+        <div class="col-12"><label>Relações importantes</label><textarea id="relacoes" placeholder="Com quem se relaciona, rivalidades, família, pares românticos etc."></textarea></div>
+        <div class="col-12"><label>Observações para vídeo / HQ / capa</label><textarea id="obs" placeholder="Como deve aparecer em trailer, HQ, imagem interna, capa etc."></textarea></div>
+      </div>
+      <div class="acoes"><button onclick="salvarPersonagem()" class="ok">Salvar personagem</button><button onclick="limparFormulario()" class="sec">Limpar</button></div>
+    </section>
+
+    <section id="painel-acervo" class="card painel">
+      <h2>Acervo visual do Barracão</h2>
+      <p class="small">Guarde aqui o caminho, link ou nome das imagens criadas no Barracão de Polimento, imagens usadas em capa, imagens internas e referências para Silos.</p>
+      <div class="grid">
+        <div class="col-4"><label>Personagem relacionado</label><input id="imgPersonagem" placeholder="Nome do personagem"></div>
+        <div class="col-4"><label>Obra relacionada</label><input id="imgObra" placeholder="Nome da obra"></div>
+        <div class="col-4"><label>Tipo de imagem</label><select id="imgTipo"><option>Barracão de Polimento</option><option>Capa</option><option>Contracapa</option><option>Imagem interna</option><option>Trailer / vídeo</option><option>HQ</option><option>Referência visual</option></select></div>
+        <div class="col-8"><label>Link, caminho ou nome do arquivo</label><input id="imgLink" placeholder="Ex.: barracao/helena_retrato_01.png"></div>
+        <div class="col-4"><label>Uso permitido</label><select id="imgUso"><option>Uso interno</option><option>Capa</option><option>Miolo</option><option>Silos</option><option>WebTV</option><option>Todos os usos institucionais</option></select></div>
+        <div class="col-12"><label>Observações</label><textarea id="imgObs" placeholder="Ex.: imagem aprovada para capa do volume 1; não alterar olhos; pode usar em trailer."></textarea></div>
+      </div>
+      <div class="acoes"><button onclick="salvarImagem()" class="ok">Salvar imagem no acervo</button></div>
+      <hr>
+      <div id="listaImagens" class="listagem"></div>
+    </section>
+
+    <section id="painel-lista" class="card painel">
+      <div class="topbar"><h2>Banco salvo</h2><input id="busca" oninput="renderizar()" placeholder="Pesquisar por personagem, autor, obra ou reservatório" style="max-width:420px"></div>
+      <div id="lista" class="listagem"></div>
+    </section>
+  </section>
+</main>
+<script>
+const chave='BPL_CELEIRO_PERSONAGENS_V1';
+const chaveImg='BPL_CELEIRO_IMAGENS_V1';
+let personagens=JSON.parse(localStorage.getItem(chave)||'[]');
+let imagens=JSON.parse(localStorage.getItem(chaveImg)||'[]');
+function entrarBPL(){const perfil=document.getElementById('perfilAcesso').value;const ok=['Admin','Wagner Planas','Heterônimo'].includes(perfil);if(!ok){document.getElementById('erroAcesso').textContent='Acesso bloqueado. O BPL é exclusivo para Admin, Wagner Planas e Heterônimo.';return}document.getElementById('bloqueio').classList.add('hidden');document.getElementById('app').classList.remove('hidden');renderizar();renderizarImagens()}
+function abrirPainel(nome){document.querySelectorAll('.painel').forEach(p=>p.classList.remove('ativo'));document.getElementById('painel-'+nome).classList.add('ativo');if(nome==='lista')renderizar();if(nome==='acervo')renderizarImagens()}
+function salvarPersonagem(){const p={id:Date.now(),nome:v('nome'),autor:v('autor'),obra:v('obra'),reservatorio:v('reservatorio'),funcao:v('funcao'),silos:v('silos'),fisico:v('fisico'),psico:v('psico'),relacoes:v('relacoes'),obs:v('obs'),data:new Date().toLocaleString('pt-BR')};if(!p.nome||!p.autor||!p.obra){alert('Preencha pelo menos nome do personagem, autor/heterônimo e obra.');return}personagens.push(p);localStorage.setItem(chave,JSON.stringify(personagens));limparFormulario();renderizar();alert('Personagem salvo no BPL.')}
+function salvarImagem(){const img={id:Date.now(),personagem:v('imgPersonagem'),obra:v('imgObra'),tipo:v('imgTipo'),link:v('imgLink'),uso:v('imgUso'),obs:v('imgObs'),data:new Date().toLocaleString('pt-BR')};if(!img.link||!img.obra){alert('Informe pelo menos a obra e o link/caminho/nome da imagem.');return}imagens.push(img);localStorage.setItem(chaveImg,JSON.stringify(imagens));['imgPersonagem','imgObra','imgLink','imgObs'].forEach(id=>document.getElementById(id).value='');renderizarImagens();alert('Imagem salva no acervo visual.')}
+function renderizar(){document.getElementById('totalPersonagens').textContent=personagens.length+' personagens';const q=(document.getElementById('busca')?.value||'').toLowerCase();const filtrados=personagens.filter(p=>[p.nome,p.autor,p.obra,p.reservatorio,p.funcao].join(' ').toLowerCase().includes(q));const lista=document.getElementById('lista');if(!lista)return;if(!filtrados.length){lista.innerHTML='<div class="empty">Nenhum personagem encontrado.</div>';return}lista.innerHTML=filtrados.map(p=>{const imgs=imagens.filter(i=>(i.personagem||'').toLowerCase()===p.nome.toLowerCase()||(i.obra||'').toLowerCase()===p.obra.toLowerCase());return `<article class="personagem"><h3>${esc(p.nome)}</h3><div class="meta"><b>Autor:</b> ${esc(p.autor)}<br><b>Obra:</b> ${esc(p.obra)}<br><b>Reservatório:</b> ${esc(p.reservatorio)}<br><b>Função:</b> ${esc(p.funcao)}<br><b>Silos:</b> ${esc(p.silos)}<br><b>Salvo:</b> ${esc(p.data)}</div><p class="meta"><b>Físico:</b> ${esc(p.fisico||'-')}</p><p class="meta"><b>Personalidade:</b> ${esc(p.psico||'-')}</p><p class="meta"><b>Relações:</b> ${esc(p.relacoes||'-')}</p><p class="meta"><b>Obs.:</b> ${esc(p.obs||'-')}</p><span class="badge">${imgs.length} imagens ligadas</span><div class="acoes no-print"><button class="danger" onclick="excluirPersonagem(${p.id})">Excluir</button></div></article>`}).join('')}
+function renderizarImagens(){const lista=document.getElementById('listaImagens');if(!lista)return;if(!imagens.length){lista.innerHTML='<div class="empty">Nenhuma imagem cadastrada ainda.</div>';return}lista.innerHTML=imagens.map(i=>`<article class="personagem"><h3>${esc(i.tipo)}</h3><div class="meta"><b>Personagem:</b> ${esc(i.personagem||'-')}<br><b>Obra:</b> ${esc(i.obra)}<br><b>Arquivo/link:</b> ${esc(i.link)}<br><b>Uso:</b> ${esc(i.uso)}<br><b>Salvo:</b> ${esc(i.data)}</div><p class="meta"><b>Obs.:</b> ${esc(i.obs||'-')}</p><div class="galeria"><div class="foto">🖼️</div></div><div class="acoes no-print"><button class="danger" onclick="excluirImagem(${i.id})">Excluir</button></div></article>`).join('')}
+function excluirPersonagem(id){if(confirm('Excluir personagem do BPL?')){personagens=personagens.filter(p=>p.id!==id);localStorage.setItem(chave,JSON.stringify(personagens));renderizar()}}
+function excluirImagem(id){if(confirm('Excluir imagem do acervo?')){imagens=imagens.filter(i=>i.id!==id);localStorage.setItem(chaveImg,JSON.stringify(imagens));renderizarImagens();renderizar()}}
+function limparFormulario(){['nome','autor','obra','fisico','psico','relacoes','obs'].forEach(id=>document.getElementById(id).value='')}
+function exportarJSON(){const data={personagens,imagens,exportadoEm:new Date().toISOString()};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bpl_banco_personagens_literarios.json';a.click()}
+function v(id){return document.getElementById(id).value.trim()}
+function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+renderizar();renderizarImagens();
+</script>
+</body>
+</html>
