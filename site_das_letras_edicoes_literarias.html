@@ -5,30 +5,52 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Site das Letras Edições Literárias</title>
 <style>
-:root{--azul:#0f1c2e;--azul2:#07101d;--dourado:#c9a646;--dourado2:#f4dc88;--papel:#fffaf0;--texto:#243043;--verde:#2f7d4a;--vermelho:#9b2c2c;--radius:22px;--sombra:0 18px 40px rgba(8,17,31,.16)}*{box-sizing:border-box}body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#fbf7ed,#efe2c7);color:var(--texto)}header{background:linear-gradient(135deg,var(--azul2),var(--azul));color:white;padding:70px 20px;border-bottom:8px solid var(--dourado);text-align:center}h1{font-size:clamp(34px,6vw,64px);margin:0;color:var(--dourado2)}.subtitle{font-size:22px;margin-top:12px;color:#fff5cf}main{max-width:1100px;margin:auto;padding:40px 20px 80px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}.card{background:var(--papel);border:1px solid rgba(201,166,70,.4);border-radius:var(--radius);padding:28px;box-shadow:var(--sombra)}.card h2{margin-top:0;color:var(--azul)}.highlight{background:linear-gradient(135deg,#fff4cf,#ead481);border:1px solid #d6bf70}.nav-final{margin-top:28px;background:#fffaf0;border:1px solid rgba(201,166,70,.5);border-radius:24px;padding:18px;box-shadow:var(--sombra);display:flex;gap:12px;flex-wrap:wrap;justify-content:center}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:12px 18px;border-radius:999px;font-weight:bold;text-decoration:none;border:0;cursor:pointer;font-family:Arial,sans-serif}.cicile{background:var(--dourado);color:#111}.ral{background:var(--verde);color:white}.sair{background:var(--vermelho);color:white}footer{background:var(--azul2);color:white;text-align:center;padding:30px 18px;border-top:6px solid var(--dourado)}footer strong{color:var(--dourado2)}</style>
+:root{--azul:#0f1c2e;--azul2:#07101d;--dourado:#c9a646;--dourado2:#f4dc88;--papel:#fffaf0;--texto:#243043;--verde:#2f7d4a;--vermelho:#9b2c2c;--vinho:#6b1f37;--mar:#1d6f8f;--radius:22px;--sombra:0 18px 40px rgba(8,17,31,.16)}*{box-sizing:border-box}body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#fbf7ed,#efe2c7);color:var(--texto)}header{background:linear-gradient(135deg,var(--azul2),var(--azul));color:white;padding:70px 20px;border-bottom:8px solid var(--dourado);text-align:center}h1{font-size:clamp(34px,6vw,64px);margin:0;color:var(--dourado2)}.subtitle{font-size:22px;margin-top:12px;color:#fff5cf}main{max-width:1180px;margin:auto;padding:40px 20px 80px}.secao{margin:0 0 34px}.secao h2{font-size:clamp(28px,4vw,44px);margin:0 0 10px;color:var(--azul)}.nota{font-family:Arial,sans-serif;line-height:1.55;color:#49566a;margin:0 0 18px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}.card{background:var(--papel);border:1px solid rgba(201,166,70,.4);border-radius:var(--radius);padding:24px;box-shadow:var(--sombra)}.card h3{margin:0 0 8px;color:var(--azul);font-size:23px}.card p{font-family:Arial,sans-serif;line-height:1.5}.highlight{background:linear-gradient(135deg,#fff4cf,#ead481);border:1px solid #d6bf70}.livro{display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:start}.capa{width:110px;height:150px;border-radius:12px;background:linear-gradient(135deg,#1d2b48,#c9a646);display:flex;align-items:center;justify-content:center;text-align:center;color:#fff5cf;font-weight:bold;padding:10px;box-shadow:0 12px 22px rgba(0,0,0,.18)}.btn-compra{display:inline-flex;align-items:center;justify-content:center;margin-top:10px;min-height:42px;padding:10px 15px;border-radius:999px;background:var(--dourado);color:#111;text-decoration:none;font-family:Arial,sans-serif;font-weight:800}.bio-tag,.selo-tag{display:inline-block;border-radius:999px;background:#efe4c6;color:#513f14;padding:6px 10px;font-family:Arial,sans-serif;font-size:12px;margin:4px 4px 0 0}.sala-rui{background:radial-gradient(circle at 20% 0%,rgba(244,220,136,.28),transparent 32%),linear-gradient(135deg,#121a33,#34204f);color:#fff5cf}.sala-rui h3{color:#f4dc88}.sala-rui p{color:#fff2cb}.player-falso{border:1px solid rgba(244,220,136,.45);border-radius:18px;padding:16px;margin-top:12px;background:rgba(255,255,255,.08);font-family:Arial,sans-serif}.selos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}.selo{min-height:160px;border-radius:22px;border:2px solid rgba(201,166,70,.55);background:radial-gradient(circle,#fff7d7,#d9bd65);display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;color:#2d220b;font-weight:bold;box-shadow:var(--sombra)}.mar{background:radial-gradient(circle,#d8fbff,#2c8ca6);color:#062936}.placeholder{opacity:.88}.nav-final{margin-top:28px;background:#fffaf0;border:1px solid rgba(201,166,70,.5);border-radius:24px;padding:18px;box-shadow:var(--sombra);display:flex;gap:12px;flex-wrap:wrap;justify-content:center}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:12px 18px;border-radius:999px;font-weight:bold;text-decoration:none;border:0;cursor:pointer;font-family:Arial,sans-serif}.cicile{background:var(--dourado);color:#111}.ral{background:var(--verde);color:white}.sair{background:var(--vermelho);color:white}footer{background:var(--azul2);color:white;text-align:center;padding:30px 18px;border-top:6px solid var(--dourado)}footer strong{color:var(--dourado2)}@media(max-width:620px){.livro{grid-template-columns:1fr}.capa{width:100%;height:170px}}
+</style>
 </head>
 <body>
 <header>
 <h1>Site das Letras Edições Literárias</h1>
-<p class="subtitle">Porta editorial externa do Instituto Cultural Celeiro Literário</p>
+<p class="subtitle">Catálogo editorial, biografias, selos e sala audiovisual própria</p>
 </header>
 <main>
+<section class="secao" id="catalogo-livros">
+<h2>Catálogo de livros</h2>
+<p class="nota">A CICILE publica aqui a vitrine dos livros depois da postagem externa. Cada item pode receber capa, sinopse e link direto de compra na plataforma onde o livro estiver disponível, como UICLAP/Weclap ou equivalente.</p>
 <div class="grid">
-<div class="card highlight"><h2>Catálogo de obras</h2><p>Vitrine pública para livros, coleções, lançamentos e projetos editoriais ligados ao ecossistema do Celeiro Literário.</p></div>
-<div class="card"><h2>Autores e autoras</h2><p>Espaço para apresentar autores, heterônimos, biografias, obras publicadas e trajetórias editoriais.</p></div>
-<div class="card"><h2>Selos editoriais</h2><p>Galeria institucional dos selos do Site das Letras Edições Literárias, incluindo selos temáticos, temporais e autorais.</p></div>
-<div class="card"><h2>Lapidar</h2><p>Preparação de obra para revisão, lapidação, tradução, diagramação, capa e publicação.</p></div>
-<div class="card"><h2>Rede Mundial de Oportunidades</h2><p>Concursos, editais, antologias, plataformas e oportunidades artísticas para autores e criadores.</p></div>
-<div class="card"><h2>Acompanhamento da trajetória</h2><p>Evolução autoral com orientação pública do Senhor Trajano Estrada dentro do Celeiro Literário.</p></div>
-<div class="card"><h2>SIGMAL</h2><p>Academia artística internacional integrada ao Instituto Cultural Celeiro Literário.</p></div>
-<div class="card"><h2>Instituto Cultural Celeiro Literário</h2><p>Ambiente público de entrada, circulação cultural e integração institucional.</p></div>
+<article class="card highlight livro"><div class="capa placeholder">CAPA<br>DO LIVRO</div><div><h3>Livro em catalogação</h3><p>Espaço reservado para obra publicada. Ao subir o livro na plataforma externa, a CICILE insere imagem da capa, sinopse e link direto de compra.</p><a class="btn-compra" href="#" aria-disabled="true">Link de compra externo</a></div></article>
+<article class="card livro"><div class="capa placeholder">NOVA<br>OBRA</div><div><h3>Próxima obra do catálogo</h3><p>Entrada preparada para coleções, antologias, séries e obras independentes do Site das Letras Edições Literárias & Multimídia.</p><a class="btn-compra" href="#" aria-disabled="true">Aguardando publicação</a></div></article>
 </div>
+</section>
+<section class="secao" id="biografias">
+<h2>Sala de biografias</h2>
+<p class="nota">As biografias nascem e são atualizadas na OHE/OI. Esta sala é o espelhamento público controlado dentro do Site das Letras, incluindo biografias geradas nos testes e biografias futuras de autores, heterônimos e perfis institucionais.</p>
+<div class="grid">
+<article class="card"><h3>Biografia — entrada 01</h3><p>Espaço preparado para a primeira biografia já gerada no teste anterior. A versão-mestra permanece registrada e atualizável na OHE/OI.</p><span class="bio-tag">espelho da OHE/OI</span><span class="bio-tag">público controlado</span></article>
+<article class="card"><h3>Biografia — entrada 02</h3><p>Espaço preparado para a segunda biografia já gerada no teste anterior, com atualização silenciosa pela curadoria interna quando necessário.</p><span class="bio-tag">espelho da OHE/OI</span><span class="bio-tag">catálogo autoral</span></article>
+<article class="card"><h3>Biografia — entrada 03</h3><p>Espaço preparado para a terceira biografia já gerada no teste anterior, vinculada ao acervo de identidades e publicações do Site das Letras.</p><span class="bio-tag">espelho da OHE/OI</span><span class="bio-tag">memória autoral</span></article>
+</div>
+</section>
+<section class="secao" id="sala-rui">
+<h2>Sala Rui Caetano de Mattos</h2>
+<div class="card sala-rui"><h3>Exibição musical e audiovisual do Site das Letras</h3><p>Espaço para tocar músicas, exibir clipes e apresentar materiais próprios, produzidos pelo Site das Letras Edições Literárias & Multimídia e por suas integrações institucionais autorizadas.</p><div class="player-falso"><strong>Área de exibição:</strong><br>players de música, clipes, videopoemas, trailers literários e materiais próprios serão conectados aqui conforme forem produzidos.</div></div>
+</section>
+<section class="secao" id="selos">
+<h2>Departamento dos Selos</h2>
+<p class="nota">Galeria dos selos editoriais e autorais. Cada autor poderá ter selo próprio ligado à sua categoria estética, sempre sob a referência maior do Site das Letras Edições Literárias & Multimídia.</p>
+<div class="selos-grid">
+<div class="selo">Site das Letras<br>Edições Literárias<br>& Multimídia</div>
+<div class="selo mar">Amanda Fernanda<br>Fischer Leão<br><small>Prosa • Mar e Oceanos</small></div>
+<div class="selo placeholder">Selo autoral<br>em criação</div>
+<div class="selo placeholder">Selo de coleção<br>em criação</div>
+</div>
+</section>
 <nav class="nav-final" aria-label="Navegação principal do departamento">
 <a class="btn cicile" href="mailto:celeiroliterariositedasletras@gmail.com?subject=Fale%20com%20a%20CICILE%20%E2%80%94%20Site%20das%20Letras">Fale com a CICILE</a>
 <a class="btn ral" href="pagina_respiro_celeiro.html">RAL das Funções</a>
 <a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair do sistema</a>
 </nav>
 </main>
-<footer><p><strong>Site das Letras Edições Literárias</strong></p><p>Identidade editorial pública do Instituto Cultural Celeiro Literário</p></footer>
+<footer><p><strong>Site das Letras Edições Literárias</strong></p><p>Catálogo editorial público espelhado da OHE/OI e do Celeiro Literário</p></footer>
 </body>
 </html>
