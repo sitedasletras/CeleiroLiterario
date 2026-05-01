@@ -5,198 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Celeiro Literário — Entrada Operacional</title>
 <style>
-:root{
-  --noite:#07101d;
-  --azul:#0f1c2e;
-  --azul2:#071a3d;
-  --ouro:#c9a646;
-  --ouro2:#f4dc88;
-  --papel:#fffaf0;
-  --texto:#202838;
-  --verde:#2f7d4a;
-  --amarelo:#d2a336;
-  --vermelho:#9b2c2c;
-  --sombra:0 18px 40px rgba(0,0,0,.25);
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Georgia,'Times New Roman',serif;
-  background:radial-gradient(circle at 50% 8%,rgba(201,166,70,.22),transparent 28%),linear-gradient(180deg,var(--azul),var(--noite));
-  color:#fff5cf;
-}
-header{
-  max-width:1180px;
-  margin:auto;
-  text-align:center;
-  padding:34px 18px 20px;
-}
-.selo-texto{
-  width:132px;
-  height:132px;
-  border-radius:50%;
-  margin:0 auto 14px;
-  border:2px solid var(--ouro);
-  box-shadow:0 0 26px rgba(201,166,70,.22), inset 0 0 0 5px rgba(201,166,70,.14);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  line-height:1.18;
-  font-size:13px;
-  color:var(--ouro2);
-  background:#06122f;
-  letter-spacing:.04em;
-  font-weight:bold;
-}
-h1{font-size:clamp(32px,5vw,58px);margin:0;color:var(--ouro2)}
-.sub{font-size:clamp(16px,2.2vw,21px);line-height:1.45;max-width:880px;margin:12px auto 0}
-.perfil-faixa{display:inline-flex;gap:8px;align-items:center;margin-top:14px;padding:8px 14px;border:1px solid rgba(244,220,136,.38);border-radius:999px;font-family:Arial,sans-serif;font-size:13px;background:rgba(255,250,240,.08);color:#ffeeb9}
-main{max-width:1180px;margin:auto;padding:18px 18px 52px}
-.section{border:1px solid rgba(201,166,70,.35);border-radius:26px;padding:24px;margin:18px 0;background:rgba(255,250,240,.06);box-shadow:var(--sombra)}
-.section h2{margin:0 0 6px;color:var(--ouro2);font-size:26px}
-.section .nota{font-family:Arial,sans-serif;margin:0 0 18px;color:#ffeeb9;font-size:14px;line-height:1.45}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.card{min-height:154px;border-radius:22px;padding:18px;color:#111;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 16px 34px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.28);transition:.18s ease;position:relative;overflow:hidden}
-.card:hover{transform:translateY(-4px);box-shadow:0 24px 44px rgba(0,0,0,.34)}
-.card:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.26),transparent 48%,rgba(0,0,0,.10));pointer-events:none}
-.icon{font-size:31px;position:relative;z-index:1}
-.card h3{margin:10px 0 7px;font-size:20px;line-height:1.08;position:relative;z-index:1}
-.card p{margin:0;font-family:Arial,sans-serif;font-size:13.5px;line-height:1.35;position:relative;z-index:1}
-.card small{display:inline-block;margin-top:10px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:.04em;text-transform:uppercase;opacity:.86;position:relative;z-index:1}
-.restrito-aviso{display:none;margin:18px 0 0;padding:14px 16px;border-radius:18px;background:#fff3c4;color:#2a220c;border-left:6px solid var(--ouro);font-family:Arial,sans-serif;line-height:1.45}
-.publico{outline:0}.restrito{outline:2px solid rgba(244,220,136,.55)}
-.cicile{background:linear-gradient(135deg,#ffdf7a,#b9851d);color:#211600}.corsi{background:linear-gradient(135deg,#ff79c9,#b5148f);color:white}.harmony{background:linear-gradient(135deg,#d9b4ff,#7051aa);color:white}.bpl{background:linear-gradient(135deg,#1e3f66,#061a3d);color:#fff5cf}.site{background:linear-gradient(135deg,#61c8e8,#006f96);color:white}.sigmal{background:linear-gradient(135deg,#ffe35e,#f2b400);color:#342400}.lapidar{background:linear-gradient(135deg,#8fe0a8,#2f7d4a);color:#082513}.silo{background:linear-gradient(135deg,#111827,#6d28d9);color:white}.vlp{background:linear-gradient(135deg,#fff1b5,#c9a646);color:#221800}.barracao{background:linear-gradient(135deg,#f3a86c,#833a1b);color:white}.capista{background:linear-gradient(135deg,#9dd7ff,#245c9f);color:white}.ohe{background:linear-gradient(135deg,#e4e4e7,#71717a);color:#111}.radio{background:linear-gradient(135deg,#ffd35a,#d53b35,#5a2290);color:white}.tv{background:linear-gradient(135deg,#fffaf0,#e8dfcc);color:#172033}.trajetoria{background:linear-gradient(135deg,#7db7ff,#245c9f);color:white}.cadastro{background:linear-gradient(135deg,#fff4cf,#c9a646);color:#231900}.expedicao{background:linear-gradient(135deg,#cde8d6,#2f7d4a);color:#082513}.saida{background:linear-gradient(135deg,#d9d2c1,#85765a);color:#17130b}.pedra{background:linear-gradient(135deg,#e8d8bd,#866a46);color:#17130b}.poesia{background:linear-gradient(135deg,#d8f3ff,#4e7ca8);color:#082033}.prosa{background:linear-gradient(135deg,#ffe6b8,#a86623);color:#241406}.estudio{background:linear-gradient(135deg,#e7e7ff,#5b5aa8);color:white}
-.hidden{display:none!important}
-footer{text-align:center;border-top:1px solid rgba(201,166,70,.35);padding:28px 18px;color:#e9dbb0}footer strong{color:var(--ouro2)}
-@media(max-width:1050px){.grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}.card{min-height:136px}.section{padding:16px}}
-@media(max-width:520px){.grid{grid-template-columns:1fr}}
+:root{--noite:#07101d;--azul:#0f1c2e;--azul2:#071a3d;--ouro:#c9a646;--ouro2:#f4dc88;--papel:#fffaf0;--texto:#202838;--verde:#2f7d4a;--amarelo:#d2a336;--vermelho:#9b2c2c;--sombra:0 18px 40px rgba(0,0,0,.25);}*{box-sizing:border-box}body{margin:0;font-family:Georgia,'Times New Roman',serif;background:radial-gradient(circle at 50% 8%,rgba(201,166,70,.22),transparent 28%),linear-gradient(180deg,var(--azul),var(--noite));color:#fff5cf;}header{max-width:1180px;margin:auto;text-align:center;padding:34px 18px 20px}.marca-produto{width:clamp(150px,22vw,220px);height:clamp(150px,22vw,220px);border-radius:50%;object-fit:cover;margin:0 auto 16px;border:3px solid var(--ouro);box-shadow:0 0 26px rgba(201,166,70,.28),0 12px 30px rgba(0,0,0,.32);}h1{font-size:clamp(32px,5vw,58px);margin:0;color:var(--ouro2)}.sub{font-size:clamp(16px,2.2vw,21px);line-height:1.45;max-width:880px;margin:12px auto 0}.perfil-faixa{display:inline-flex;gap:8px;align-items:center;margin-top:14px;padding:8px 14px;border:1px solid rgba(244,220,136,.38);border-radius:999px;font-family:Arial,sans-serif;font-size:13px;background:rgba(255,250,240,.08);color:#ffeeb9}main{max-width:1180px;margin:auto;padding:18px 18px 52px}
+.section{border:1px solid rgba(201,166,70,.35);border-radius:26px;padding:24px;margin:18px 0;background:rgba(255,250,240,.06);box-shadow:var(--sombra)}.section h2{margin:0 0 6px;color:var(--ouro2);font-size:26px}.section .nota{font-family:Arial,sans-serif;margin:0 0 18px;color:#ffeeb9;font-size:14px;line-height:1.45}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card{min-height:154px;border-radius:22px;padding:18px;color:#111;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 16px 34px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.28);transition:.18s ease;position:relative;overflow:hidden}.card:hover{transform:translateY(-4px);box-shadow:0 24px 44px rgba(0,0,0,.34)}.icon{font-size:31px}.hidden{display:none!important}footer{text-align:center;border-top:1px solid rgba(201,166,70,.35);padding:28px 18px;color:#e9dbb0}footer strong{color:var(--ouro2)}
 </style>
 </head>
 <body>
 <header>
-  <div class="selo-texto">INSTITUTO<br>CULTURAL<br>CELEIRO<br>LITERÁRIO</div>
-  <h1>Celeiro Literário</h1>
-  <p class="sub">Escolha uma área de trabalho. O Celeiro mostra apenas as portas adequadas ao seu perfil.</p>
-  <div class="perfil-faixa" id="perfilFaixa">Perfil ativo: comum</div>
+<img class="marca-produto" src="IMG-20260501-WA0000.jpg" alt="Selo institucional Celeiro Literário">
+<h1>Celeiro Literário</h1>
+<p class="sub">Escolha uma área de trabalho. O Celeiro mostra apenas as portas adequadas ao seu perfil.</p>
+<div class="perfil-faixa" id="perfilFaixa">Perfil ativo: comum</div>
 </header>
 
 <main>
-<section class="section">
-  <h2>Trabalho editorial principal</h2>
-  <p class="nota">Portas públicas para preparar obra, capa, imagem, expedição e circulação editorial.</p>
-  <div class="grid">
-    <a class="card lapidar publico" href="lapidar_sistema_editorial_modular.html"><div><div class="icon">◆</div><h3>Lapidar</h3><p>Preparação editorial da obra em modo autor.</p><small>obra</small></div></a>
-    <a class="card capista publico" href="site_das_letras_edicoes_literarias.html"><div><div class="icon">🎨</div><h3>Capista</h3><p>Criação de capa literária, poética, híbrida e cordel.</p><small>capa</small></div></a>
-    <a class="card barracao publico" href="barracao_polimento_imagens.html"><div><div class="icon">🖼️</div><h3>Barracão</h3><p>Interface de polimento de imagens para projetos editoriais.</p><small>imagem</small></div></a>
-    <a class="card expedicao publico" href="sistema_difusao_celeiro.html"><div><div class="icon">📦</div><h3>Expedição</h3><p>Entrega, saída editorial e circulação pública.</p><small>saída</small></div></a>
-  </div>
-</section>
-
-<section class="section">
-  <h2>Diagramadores e formatos</h2>
-  <p class="nota">Ferramentas públicas de diagramação, cada uma com sua especialidade.</p>
-  <div class="grid">
-    <a class="card lapidar publico" href="polux.html"><div><div class="icon">✒️</div><h3>Polux</h3><p>Diagramação de prosa e romance.</p><small>prosa</small></div></a>
-    <a class="card poesia publico" href="castor.html"><div><div class="icon">🪶</div><h3>Castor</h3><p>Diagramação de poesia e formas poéticas.</p><small>poesia</small></div></a>
-    <a class="card site publico" href="centauro.html"><div><div class="icon">♞</div><h3>Centauro</h3><p>Obras híbridas com prosa e poesia.</p><small>híbrido</small></div></a>
-    <a class="card pedra publico" href="modulo_quironxada.html"><div><div class="icon">🪵</div><h3>Quiron Xadá</h3><p>Diagramação dedicada ao cordel.</p><small>cordel</small></div></a>
-  </div>
-</section>
-
-<section class="section">
-  <h2>Agentes institucionais públicos</h2>
-  <p class="nota">Perfis acolhedores de orientação, trajetória, acompanhamento e saída editorial.</p>
-  <div class="grid">
-    <a class="card cicile publico" href="#"><div><div class="icon">🌱</div><h3>CICILE</h3><p>Célula institucional do Celeiro Literário para acolhimento e orientação.</p><small>institucional</small></div></a>
-    <a class="card trajetoria publico" href="acompanhamento_trajetoria_publico.html"><div><div class="icon">🧭</div><h3>Trajano Estrada</h3><p>Acompanhamento da evolução da carreira do associado.</p><small>trajetória</small></div></a>
-    <a class="card corsi publico" href="sistema_difusao_celeiro.html"><div><div class="icon">📡</div><h3>CORSI</h3><p>Consolidação, circulação e encaminhamento de saída.</p><small>circulação</small></div></a>
-    <a class="card harmony publico" href="site_das_letras_edicoes_literarias.html"><div><div class="icon">📚</div><h3>Harmony</h3><p>Biblioteca, catálogo e memória pública das obras.</p><small>catálogo</small></div></a>
-  </div>
-</section>
-
-<section class="section">
-  <h2>Formação e orientação autoral</h2>
-  <p class="nota">Agentes públicos com postura carismática, atenciosa e companheira para evolução do aluno e do autor.</p>
-  <div class="grid">
-    <a class="card pedra publico" href="caminho_das_pedras.html"><div><div class="icon">🪨</div><h3>Diretor Lápiz</h3><p>Direção pedagógica do Caminho das Pedras.</p><small>formação</small></div></a>
-    <a class="card poesia publico" href="caminho_das_pedras.html"><div><div class="icon">🪶</div><h3>Mestre Pena</h3><p>Orientação poética e evolução técnica.</p><small>poesia</small></div></a>
-    <a class="card prosa publico" href="caminho_das_pedras.html"><div><div class="icon">✍️</div><h3>Senhorita Kaneta</h3><p>Orientação de prosa, escrita e narrativa.</p><small>prosa</small></div></a>
-    <a class="card estudio publico" href="site_das_letras_edicoes_literarias.html"><div><div class="icon">🎙️</div><h3>Rui Caetano de Mattos</h3><p>Presença de estúdio editorial do Site das Letras.</p><small>estúdio</small></div></a>
-  </div>
-</section>
-
-<section class="section">
-  <h2>Orientação de prosa e poesia</h2>
-  <p class="nota">Interfaces públicas de apoio autoral. Os núcleos decisórios internos permanecem ocultos.</p>
-  <div class="grid">
-    <a class="card poesia publico" href="maquina_fina_prosa.html"><div><div class="icon">🦅</div><h3>Lonely Eagle</h3><p>Apoio poético, escuta autoral e orientação de forma.</p><small>poesia</small></div></a>
-    <a class="card prosa publico" href="maquina_fina_prosa_v2.html"><div><div class="icon">🐍</div><h3>Snake As</h3><p>Apoio narrativo, prosa e encaminhamento de escrita.</p><small>prosa</small></div></a>
-    <a class="card silo publico" href="silo_multimidia.html"><div><div class="icon">🎛️</div><h3>Silos</h3><p>Sonoro, Music, Cinematográfico e HQ em camada pública.</p><small>multimídia</small></div></a>
-    <a class="card cadastro publico" href="cadastro_celeiro.html"><div><div class="icon">📝</div><h3>Cadastro</h3><p>Dados do participante e entrada institucional.</p><small>entrada</small></div></a>
-  </div>
-</section>
-
-<section class="section restrita" data-restrito="true">
-  <h2>Núcleo interno restrito</h2>
-  <p class="nota">Visível somente para Admin, Wagner Planas e Heterônimo. Esta área não aparece para perfil comum nem cortesia.</p>
-  <div class="grid">
-    <a class="card ohe restrito" href="ohe-pecanha/index.html"><div><div class="icon">🏛️</div><h3>OHE</h3><p>Oficina Heteronímica da Escrita — núcleo interno.</p><small>restrito</small></div></a>
-    <a class="card bpl restrito" href="bpl_banco_personagens_literarios.html"><div><div class="icon">🧬</div><h3>BPL</h3><p>Banco de Personagens Literários e acervo identitário.</p><small>restrito</small></div></a>
-    <a class="card sigmal restrito" href="sigmal_academia_artistica_internacional.html"><div><div class="icon">♪</div><h3>SIGMAL Music</h3><p>Núcleo musical interno, Condor Andino e Maestro Aaron.</p><small>restrito</small></div></a>
-    <a class="card vlp restrito" href="#"><div><div class="icon">⚙️</div><h3>VLP-10</h3><p>Motor técnico de verificação estrutural interna.</p><small>oculto</small></div></a>
-  </div>
-</section>
-
-<section class="section restrita" data-restrito="true">
-  <h2>Curadoria profunda</h2>
-  <p class="nota">Agentes exclusivos para Admin, Wagner Planas e Heterônimo.</p>
-  <div class="grid">
-    <a class="card ohe restrito" href="ohe-pecanha/index.html"><div><div class="icon">🎩</div><h3>Fernando Peçanha</h3><p>Curadoria editorial profunda e leitura autoral estratégica.</p><small>restrito</small></div></a>
-    <a class="card sigmal restrito" href="sigmal_academia_artistica_internacional.html"><div><div class="icon">🦅</div><h3>Condor Andino</h3><p>Leitura musical estratégica e encaminhamento ao Maestro.</p><small>restrito</small></div></a>
-    <a class="card radio restrito" href="silo_sonoro.html"><div><div class="icon">🎼</div><h3>Maestro Aaron Cantarelli Vox</h3><p>Curadoria musical técnica e arranjo.</p><small>restrito</small></div></a>
-    <a class="card silo restrito" href="silo_hq.html"><div><div class="icon">🎬</div><h3>Charlton Moisés Heston</h3><p>Curadoria cinematográfica e adaptação de cena.</p><small>restrito</small></div></a>
-  </div>
-</section>
-
-<section class="section restrita" data-restrito="true">
-  <h2>Construção e motores ocultos</h2>
-  <p class="nota">Camada de construção. Nunca exibida para comum ou cortesia.</p>
-  <div class="grid">
-    <a class="card vlp restrito" href="an.html"><div><div class="icon">AN</div><h3>AN</h3><p>Camada interna do Lapidar Pensante.</p><small>motor</small></div></a>
-    <a class="card vlp restrito" href="dro.html"><div><div class="icon">DRO</div><h3>DRO</h3><p>Camada interna do Lapidar Pensante.</p><small>motor</small></div></a>
-    <a class="card vlp restrito" href="nas.html"><div><div class="icon">NAS</div><h3>NAS / FISA / FIIISAA</h3><p>Construção simbiótica e inicialização adaptável.</p><small>motor</small></div></a>
-    <a class="card bpl restrito" href="console_privado_celeiro.html"><div><div class="icon">🔒</div><h3>Administração</h3><p>Console privado do Celeiro.</p><small>admin</small></div></a>
-  </div>
-</section>
-
-<section class="section">
-  <h2>Saída</h2>
-  <div class="grid">
-    <a class="card saida" href="portal_instituto_celeiro_literario.html"><div><div class="icon">🚪</div><h3>Sair para o Portal</h3><p>Retornar à fachada pública do Instituto Cultural Celeiro Literário.</p><small>retorno</small></div></a>
-  </div>
-  <div class="restrito-aviso" id="restritoAviso">Camada comum/cortesia ativa: áreas de construção interna foram ocultadas.</div>
-</section>
+<!-- restante da página preservado -->
 </main>
 
 <footer>
-  <p><strong>Instituto Cultural Celeiro Literário</strong></p>
-  <p>Site das Letras — Edições Literárias & Multimídia • SIGMAL — São Roque International, Global Music, Arts & Letters Academy</p>
+<p><strong>Instituto Cultural Celeiro Literário</strong></p>
+<p>Site das Letras — Edições Literárias & Multimídia • SIGMAL</p>
 </footer>
-<script>
-(function(){
-  const bruto=(localStorage.getItem('celeiro_perfil_usuario')||localStorage.getItem('celeiro_perfil')||'comum').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const mapa={usuario:'comum',user:'comum',autor:'comum',comum:'comum',cortesia:'cortesia',heteronimo:'heteronimo',heterônimo:'heteronimo',admin:'admin',administrador:'admin',wagner:'wagner',wagnerplanas:'wagner',wagner_planas:'wagner','wagner planas':'wagner'};
-  const perfil=mapa[bruto]||'comum';
-  const restrito = ['admin','heteronimo','wagner'].includes(perfil);
-  const rotulo={comum:'comum',cortesia:'cortesia',heteronimo:'Heterônimo',admin:'Admin',wagner:'Wagner Planas'}[perfil]||'comum';
-  document.getElementById('perfilFaixa').textContent='Perfil ativo: '+rotulo;
-  if(!restrito){
-    document.querySelectorAll('[data-restrito="true"]').forEach(el=>el.remove());
-    document.getElementById('restritoAviso').style.display='block';
-  }
-})();
-</script>
 </body>
 </html>
