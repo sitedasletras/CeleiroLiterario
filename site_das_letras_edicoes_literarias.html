@@ -5,50 +5,83 @@
 <title>Site das Letras — Edições Literárias e Multimídia</title>
 
 <style>
+
 body{
-font-family:Georgia, serif;
-background:#faf9f4;
+font-family: Georgia, serif;
 margin:0;
-padding:0;
-text-align:center;
+background:#eef4fb;
 }
 
 .container{
-max-width:900px;
+max-width:1000px;
 margin:auto;
 padding:30px;
 }
 
-h1{
-margin-top:10px;
+.avatar{
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:10px;
+}
+
+.avatar img{
+width:80px;
+height:80px;
+border-radius:50%;
+border:6px solid;
+}
+
+.balao{
+background:white;
+padding:12px;
+border-radius:10px;
+box-shadow:0 2px 6px rgba(0,0,0,0.1);
+display:inline-block;
 }
 
 .bloco{
-background:white;
-border-radius:12px;
-padding:20px;
-margin:25px 0;
-box-shadow:0 2px 6px rgba(0,0,0,0.08);
-}
-
-.avatar{
-font-weight:bold;
-margin-bottom:10px;
+padding:25px;
+margin:30px 0;
+border-radius:14px;
 }
 
 .botao{
 display:inline-block;
-margin:10px;
+margin:8px;
 padding:10px 18px;
-background:#2e5e4e;
+background:#2d5f9c;
 color:white;
 text-decoration:none;
 border-radius:6px;
 }
 
 .botao:hover{
-background:#21473a;
+background:#1d3f6b;
 }
+
+/* cores institucionais */
+
+.cicile{
+background:#ffe6f0;
+}
+
+.harmony{
+background:#dfefff;
+}
+
+.editorial{
+background:#cfe3ff;
+}
+
+.musical{
+background:#9fc5ff;
+}
+
+.visual{
+background:#6ea3ff;
+}
+
 </style>
 </head>
 
@@ -56,91 +89,123 @@ background:#21473a;
 
 <div class="container">
 
-<h1>Site das Letras — Edições Literárias e Multimídia</h1>
+<!-- CICILE ENTRADA -->
 
-<div class="bloco">
-<div class="avatar">Harmony</div>
-<p>
-Você está entrando no ambiente editorial do Site das Letras.
-Harmony acompanha sua visita por este espaço.
-</p>
+<div class="bloco cicile">
+
+<div class="avatar">
+<img src="assets/cicile.png" style="border-color:#ff69b4;">
+<div class="balao">
+Eu sou CICILE.<br>
+Estamos entrando no Site das Letras.
 </div>
-
-<div class="bloco">
-
-<h2>Sala Editorial</h2>
-
-<div class="avatar">Fernando Peçanha</div>
-
-<p>
-Aqui apresentamos livros, biografias e amostras de leitura dos autores vinculados ao Site das Letras.
-</p>
-
-<a class="botao">Biografias</a>
-<a class="botao">Livros</a>
-<a class="botao">Amostras de leitura</a>
-<a class="botao">Selos autorais</a>
+</div>
 
 </div>
 
 
-<div class="bloco">
+<!-- HARMONY -->
 
-<h2>Sala Musical</h2>
+<div class="bloco harmony">
 
-<div class="avatar">Maestro Aaron Cantarelli Vox</div>
-
-<p>
-Aqui apresentamos obras musicais, artistas e produções vinculadas ao ambiente musical do sistema.
-</p>
-
-<a class="botao">Músicas</a>
-<a class="botao">Biografias musicais</a>
-<a class="botao">Contato artístico</a>
-<a class="botao">Selos musicais</a>
+<div class="avatar">
+<img src="assets/harmony.png" style="border-color:#7fbfff;">
+<div class="balao">
+Eu sou Harmony.<br>
+Estou acompanhando sua visita.
+</div>
+</div>
 
 </div>
 
 
-<div class="bloco">
+<!-- SALA EDITORIAL -->
 
-<h2>Sala Visual</h2>
+<div class="bloco editorial">
 
-<div class="avatar">Rui Caetano de Mattos</div>
+<div class="avatar">
+<img src="assets/pecanha.png" style="border-color:#2d5f9c;">
+<div class="balao">
+Eu sou Fernando Peçanha.<br>
+Estou guiando você na parte editorial.
+</div>
+</div>
 
-<p>
-Aqui apresentamos produções audiovisuais institucionais, videoclipes e projetos visuais vinculados ao Site das Letras.
-</p>
-
-<a class="botao">Videoclipes</a>
-<a class="botao">Produções visuais</a>
-<a class="botao">Projetos audiovisuais</a>
+<a class="botao" href="biografias.html">Biografias</a>
+<a class="botao" href="livros.html">Livros</a>
+<a class="botao" href="amostras.html">Amostras</a>
+<a class="botao" href="selos.html">Selos</a>
 
 </div>
 
 
-<div class="bloco">
+<!-- SALA MUSICAL -->
 
-<div class="avatar">Harmony</div>
+<div class="bloco musical">
 
-<p>
-Harmony acompanha você novamente até a saída deste ambiente editorial.
-</p>
+<div class="avatar">
+<img src="assets/aaron.png" style="border-color:#4b2fa3;">
+<div class="balao">
+Eu sou Maestro Aaron Cantarelli Vox.<br>
+Estou guiando você na parte musical.
+</div>
+</div>
+
+<a class="botao" href="musicas.html">Músicas</a>
+<a class="botao" href="biografias_musicais.html">Biografias</a>
 
 </div>
 
 
-<div class="bloco">
+<!-- SALA VISUAL -->
 
-<div class="avatar">CICILE</div>
+<div class="bloco visual">
 
-<p>
-Você está retornando ao ambiente principal do Celeiro Literário.
-</p>
+<div class="avatar">
+<img src="assets/rui.png" style="border-color:#c2188b;">
+<div class="balao">
+Eu sou Rui Caetano de Mattos.<br>
+Estou guiando você na parte visual.
+</div>
+</div>
 
-<a class="botao" href="pagina_respiro_celeiro.html">Retornar ao Hall do Celeiro</a>
+<a class="botao" href="videoclipes.html">Videoclipes</a>
+<a class="botao" href="producoes_visuais.html">Produções</a>
 
 </div>
+
+
+<!-- HARMONY SAÍDA -->
+
+<div class="bloco harmony">
+
+<div class="avatar">
+<img src="assets/harmony.png" style="border-color:#7fbfff;">
+<div class="balao">
+Estou acompanhando você até a saída.
+</div>
+</div>
+
+</div>
+
+
+<!-- CICILE RETORNO -->
+
+<div class="bloco cicile">
+
+<div class="avatar">
+<img src="assets/cicile.png" style="border-color:#ff69b4;">
+<div class="balao">
+Estamos retornando ao Celeiro Literário.
+</div>
+</div>
+
+<a class="botao" href="pagina_respiro_celeiro.html">
+Voltar ao Hall
+</a>
+
+</div>
+
 
 </div>
 
