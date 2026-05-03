@@ -3,22 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Silos Multimídia — Celeiro Literário</title>
+<title>Silos Multimídia</title>
+
 <style>
-:root{--fundo:#07101d;--fundo2:#10294a;--ouro:#d6b354;--papel:#fffaf0;--texto:#111827;--verde:#1f7a42;--vermelho:#8b1e1e}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,var(--fundo),var(--fundo2) 55%,#efe2c7);color:var(--texto)}header{padding:34px 18px;text-align:center;color:#fff5cf;border-bottom:7px solid var(--ouro)}header h1{margin:0;color:#f5df8f;font-family:Georgia,serif;font-size:42px}.wrap{max-width:1100px;margin:auto;padding:24px 18px 60px}.aviso,.card{background:var(--papel);border:2px solid var(--ouro);border-radius:24px;padding:22px;margin:16px 0;box-shadow:0 14px 36px rgba(0,0,0,.25)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.card h2{font-family:Georgia,serif;font-size:28px;margin:0 0 8px}.btn{display:inline-block;margin:7px;padding:13px 18px;border-radius:999px;background:var(--ouro);color:#111;text-decoration:none;font-weight:800}.entrar{background:var(--verde);color:white}.sair{background:var(--vermelho);color:white}.linha{margin-top:18px;text-align:center}@media(max-width:780px){.grid{grid-template-columns:1fr}header h1{font-size:34px}}
+body{
+margin:0;
+font-family:Arial;
+background:#05070c;
+color:white;
+text-align:center;
+}
+
+h1{
+margin-top:30px;
+color:#f5d87a;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:30px;
+}
+
+.card{
+background:#111;
+padding:25px;
+border-radius:15px;
+cursor:pointer;
+transition:0.2s;
+border:2px solid #d6b354;
+}
+
+.card:hover{
+transform:scale(1.05);
+background:#1a1a1a;
+}
+
+.titulo{
+font-size:22px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.desc{
+font-size:14px;
+color:#ccc;
+}
 </style>
 </head>
+
 <body>
-<header><h1>Silos Multimídia</h1><p>Área externa ao Lapidar para produção sonora, musical, audiovisual e sequencial.</p></header>
-<main class="wrap">
-<section class="aviso"><h2>Regra estrutural</h2><p>Os Silos ficam fora do Lapidar. O Lapidar entrega materiais editoriais. Os Silos produzem áudio, vídeo, música, HQ, mangá, webtoon e materiais multimídia. Visitantes podem ver a vitrine; o uso acontece dentro do ambiente interno.</p><p><strong>Materiais do Lapidar saem pela expedição editorial. Materiais dos Silos saem pela expedição multimídia.</strong></p></section>
-<section class="grid">
-<div class="card"><h2>Silo Sonoro</h2><p>Audiobook, narração editorial, voz de personagem, locução institucional e leitura dramática.</p><a class="btn entrar" href="silo_sonoro.html?modo=interno">Entrar no Silo Sonoro</a></div>
-<div class="card"><h2>Silo Cinematográfico</h2><p>Trailer, vídeo literário, reels, shorts, cenas narrativas e materiais audiovisuais.</p><a class="btn entrar" href="silo_cinematografico.html?modo=interno">Entrar no Silo Cinematográfico</a></div>
-<div class="card"><h2>Silo Music</h2><p>Trilhas, temas musicais, vinhetas, canções, programas e identidade sonora.</p><a class="btn entrar" href="silo_music.html?modo=interno">Entrar no Silo Music</a></div>
-<div class="card"><h2>Silo HQ</h2><p>Motor do Gibi para HQ, mangá, livro HQ, graphic novel e webtoon.</p><a class="btn entrar" href="silo_hq.html?modo=interno">Entrar no Silo HQ</a></div>
-</section>
-<div class="linha"><a class="btn" href="expedicao_multimidia.html">Expedição Multimídia</a><a class="btn" href="portal_instituto_celeiro_literario.html">Voltar ao Celeiro</a><a class="btn" href="cicile_reclamacao.html?departamento=Silos%20Multimidia">Reclamar com a CICILE</a><a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a></div>
-</main>
+
+<h1>Silos Multimídia</h1>
+<p>Escolha onde deseja transformar sua obra</p>
+
+<div class="grid">
+
+<div class="card" onclick="location.href='silo_hq.html'">
+<div class="titulo">Silo HQ</div>
+<div class="desc">Gibi, Mangá, Quadrinhos</div>
+</div>
+
+<div class="card" onclick="location.href='silo_sonoro.html'">
+<div class="titulo">Silo Sonoro</div>
+<div class="desc">Audiobook e narração</div>
+</div>
+
+<div class="card" onclick="location.href='silo_music.html'">
+<div class="titulo">Silo Music</div>
+<div class="desc">Trilhas e ambientação</div>
+</div>
+
+<div class="card" onclick="location.href='silo_cinematografico.html'">
+<div class="titulo">Silo Cinematográfico</div>
+<div class="desc">Vídeos e trailers</div>
+</div>
+
+</div>
+
+<br><br>
+
+<a href="portal_instituto_celeiro_literario.html">
+<button style="padding:15px;border-radius:10px;border:none;background:#8b1e1e;color:white;">
+Sair
+</button>
+</a>
+
 </body>
 </html>
