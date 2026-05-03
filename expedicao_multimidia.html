@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expedição Multimídia</title>
+<style>
+body{margin:0;font-family:Arial;background:#05070c;color:white;text-align:center;padding:40px}h1{color:#f5d87a}input{padding:10px;margin:10px;width:80%}button{padding:12px 20px;border:none;border-radius:8px;background:#1f7a42;color:white;font-weight:bold;cursor:pointer}.saida{margin-top:20px;font-size:14px;background:#111;padding:15px;border-radius:10px}
+</style>
+</head>
+<body>
+<h1>Expedição Multimídia</h1>
+<p>Envie seu arquivo final e escolha o destino</p>
+<input type="file" id="arquivo"><br>
+<button onclick="gerar()">Gerar Material</button>
+<div class="saida" id="saida"></div>
+<script>
+function gerar(){
+document.getElementById('saida').innerHTML = "Seu material foi preparado para:\n- YouTube\n- Instagram\n- TikTok\n- Download PDF\n(Link simbólico gerado)";
+}
+</script>
+</body>
+</html>
