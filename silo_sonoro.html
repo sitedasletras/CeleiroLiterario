@@ -3,21 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Silo Sonoro</title>
-<style>body{font-family:Arial;background:#0b1a2d;color:white;text-align:center;padding:20px}select,input{padding:10px;margin:10px;border-radius:10px;border:none}button{padding:12px 18px;border-radius:12px;background:#1f7a42;color:white;border:none;font-weight:bold}table{margin:auto;background:white;color:black;border-radius:12px;padding:10px}</style>
-<script>function calcular(){let t=document.getElementById('tempo').value;let v=0;if(t==10)v=35;if(t==20)v=60;if(t==30)v=80;if(t==60)v=100;document.getElementById('valor').innerText='Valor: '+v;}</script>
+<title>Silo Sonoro — Joseph Hanan</title>
+<style>
+:root{--fundo:#07101d;--ouro:#d6b354;--papel:#fff8df;--verde:#1f7a42;--vermelho:#8b1e1e}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#07101d,#10294a,#efe2c7);color:white}.wrap{max-width:1080px;margin:auto;padding:24px 18px 60px}.hero{text-align:center;border-bottom:6px solid var(--ouro);padding:28px 18px;background:#05070c}.hero h1{margin:0;color:#f5d87a;font-family:Georgia,serif;font-size:40px}.card{background:var(--papel);color:#111;border:2px solid var(--ouro);border-radius:22px;padding:20px;margin:18px 0;box-shadow:0 12px 32px rgba(0,0,0,.25)}.duas{display:grid;grid-template-columns:1fr 1fr;gap:18px}label{display:block;font-weight:900;margin:12px 0 6px}select,input,textarea{width:100%;padding:12px;border:2px solid #111;border-radius:12px;font-size:16px}textarea{min-height:110px}table{width:100%;border-collapse:collapse;background:white}td,th{border:1px solid #c9a646;padding:10px}.fala{background:#111;color:#fff;border-radius:18px;padding:18px;line-height:1.45}.btn{display:inline-block;margin:7px;padding:13px 18px;border-radius:999px;background:var(--ouro);color:#111;text-decoration:none;font-weight:900;border:0;cursor:pointer}.verde{background:var(--verde);color:#fff}.sair{background:var(--vermelho);color:#fff}.botoes{text-align:center}.resultado{font-weight:900;color:#1f7a42;font-size:20px}@media(max-width:760px){.duas{grid-template-columns:1fr}.hero h1{font-size:32px}}
+</style>
+<script>
+function calcular(){let t=Number(document.getElementById('tempo').value||0);let v={10:35,20:60,30:80,60:100}[t]||0;document.getElementById('valor').innerText=v?'Valor: '+v+' reais/dólares':'Escolha a duração';}
+function gerar(){let nome=document.getElementById('projeto').value||'Projeto sonoro';alert('Joseph Hanan recebeu o material: '+nome+'\nA produção sonora foi encaminhada para a Expedição Multimídia.');location.href='expedicao_multimidia.html'}
+</script>
 </head>
 <body>
-<h1>Silo Sonoro</h1>
-<p>Geração real de narração e audiobook</p>
-<table><tr><th>Tempo</th><th>Valor</th></tr><tr><td>10 min</td><td>35</td></tr><tr><td>20 min</td><td>60</td></tr><tr><td>30 min</td><td>80</td></tr><tr><td>60 min</td><td>100</td></tr></table>
-<br>
-<select id="tempo" onchange="calcular()"><option value="">Selecione</option><option value="10">10 minutos</option><option value="20">20 minutos</option><option value="30">30 minutos</option><option value="60">60 minutos</option></select>
-<p id="valor"></p>
-<input placeholder="Nome do projeto">
-<br>
-<button onclick="alert('Produção sonora iniciada')">Gerar áudio</button>
-<br><br>
-<a href="expedicao_multimidia.html"><button>Ir para Expedição</button></a>
+<header class="hero"><h1>Silo Sonoro</h1><p>Guia: Joseph Hanan — Voz do Celeiro</p></header>
+<main class="wrap">
+<section class="card fala"><strong>Joseph Hanan diz:</strong><br>Bem-vindo ao Silo Sonoro. Aqui sua obra ganha voz. Escolha o tempo, diga o tipo de narração e envie. Eu cuido do caminho técnico para transformar texto em presença sonora.</section>
+<section class="card"><h2>Tabela do Silo Sonoro</h2><table><tr><th>Duração</th><th>Valor</th></tr><tr><td>10 minutos</td><td>35 reais/dólares</td></tr><tr><td>20 minutos</td><td>60 reais/dólares</td></tr><tr><td>30 minutos</td><td>80 reais/dólares</td></tr><tr><td>60 minutos</td><td>100 reais/dólares</td></tr></table></section>
+<section class="card"><h2>Preparar produção sonora</h2><div class="duas"><div><label>Nome do projeto</label><input id="projeto" placeholder="Ex.: Audiobook de estreia"><label>Duração desejada</label><select id="tempo" onchange="calcular()"><option value="">Selecione</option><option value="10">10 minutos</option><option value="20">20 minutos</option><option value="30">30 minutos</option><option value="60">60 minutos</option></select><p id="valor" class="resultado">Escolha a duração</p></div><div><label>Tipo de voz</label><select><option>Narração institucional</option><option>Audiobook literário</option><option>Leitura dramática</option><option>Voz de personagem</option><option>Locução para Web Rádio / Web TV</option></select><label>Observações</label><textarea placeholder="Tom desejado, personagem, clima, intenção..."></textarea></div></div></section>
+<div class="botoes"><button class="btn verde" onclick="gerar()">Gerar / enviar produção sonora</button><a class="btn" href="silo_multimidia.html">Voltar aos Silos</a><a class="btn" href="cicile_reclamacao.html?departamento=Silo%20Sonoro">Reclamar com a CICILE</a><a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a></div>
+</main>
 </body>
 </html>
