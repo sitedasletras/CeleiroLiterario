@@ -2,96 +2,61 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Silo Cinematográfico</title>
-
 <style>
-body{
-margin:0;
-font-family:Arial;
-background:#05070c;
-color:white;
-text-align:center;
-padding:30px;
-}
-
-h1{
-color:#f5d87a;
-}
-
-select,input,textarea{
-padding:10px;
-margin:10px;
-border-radius:10px;
-border:none;
-width:80%;
-}
-
-button{
-padding:12px 18px;
-border-radius:12px;
-background:#1f7a42;
-color:white;
-border:none;
-font-weight:bold;
-cursor:pointer;
-}
-
-.box{
-background:#111;
-padding:20px;
-border-radius:12px;
-margin-top:20px;
-}
+body{font-family:Arial;background:#05070c;color:white;text-align:center;margin:0;padding:20px}
+.box{background:#111;padding:20px;border-radius:15px;margin:15px auto;max-width:700px}
+input,select,textarea{padding:10px;margin:5px;width:90%;border-radius:10px;border:none}
+button{padding:12px;border-radius:10px;background:#1f7a42;color:white;border:none;font-weight:bold;cursor:pointer}
+.status{margin-top:10px;color:#f0c96a}
 </style>
-
-<script>
-function gerar(){
-alert("Stan Barbera iniciou a produção do vídeo e enviou para Expedição Multimídia");
-location.href="expedicao_multimidia.html";
-}
-</script>
-
 </head>
 
 <body>
 
 <h1>Silo Cinematográfico</h1>
-<p>Guia: Stan Barbera</p>
+<p><b>Stan Barbera</b></p>
 
 <div class="box">
-<p>Transforme sua obra em vídeo</p>
-
-<input placeholder="Nome do projeto">
-
-<select>
-<option>Tipo de vídeo</option>
-<option>Trailer literário</option>
-<option>Reels / Shorts</option>
-<option>Apresentação cinematográfica</option>
-</select>
-
-<select>
-<option>Duração</option>
-<option>10 min</option>
-<option>20 min</option>
-<option>30 min</option>
-<option>60 min</option>
-</select>
-
-<textarea placeholder="Descrição da cena / clima"></textarea>
-
-<br>
-
-<button onclick="gerar()">Gerar vídeo</button>
-
+<h3>Material</h3>
+<p id="arquivoNome"></p>
 </div>
 
-<br>
+<div class="box">
+<select id="tempo">
+<option value="">Tempo</option>
+<option value="10">10 min</option>
+<option value="20">20 min</option>
+<option value="30">30 min</option>
+<option value="60">60 min</option>
+</select>
 
-<a href="silo_multimidia.html">
-<button>Voltar aos Silos</button>
-</a>
+<button onclick="enviar()">Gerar Vídeo</button>
+<p id="status" class="status"></p>
+</div>
+
+<script>
+document.getElementById("arquivoNome").innerText =
+localStorage.getItem("arquivoNome") || "Nenhum arquivo";
+
+function enviar(){
+ let tempo = document.getElementById("tempo").value;
+ let tempoComprado = localStorage.getItem("tempo") || 0;
+
+ if(!localStorage.getItem("pagamento")){
+   document.getElementById("status").innerText = "❌ Pagamento necessário";
+   return;
+ }
+
+ if(tempo > tempoComprado){
+   document.getElementById("status").innerText = "❌ Tempo insuficiente";
+   return;
+ }
+
+ document.getElementById("status").innerText = "✔ Produção iniciada";
+ setTimeout(()=>location.href="expedicao_multimidia.html",1500);
+}
+</script>
 
 </body>
 </html>
