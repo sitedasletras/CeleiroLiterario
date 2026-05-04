@@ -2,71 +2,38 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Silo Sonoro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silo Cinematográfico</title>
 <style>
-body{font-family:Arial;background:#0b1a2d;color:white;text-align:center;margin:0;padding:20px}
-.box{background:#111;padding:20px;border-radius:15px;margin:15px auto;max-width:700px}
-input,select{padding:10px;margin:5px;width:90%;border-radius:10px;border:none}
-button{padding:12px;border-radius:10px;background:#1f7a42;color:white;border:none;font-weight:bold;cursor:pointer}
-.status{margin-top:10px;color:#f0c96a}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#05070c,#10294a,#efe2c7);color:white}.wrap{max-width:1100px;margin:auto;padding:22px}h1{font-family:Georgia,serif;color:#f5d87a;font-size:40px}.card{background:#fff8df;color:#111;border:2px solid #d6b354;border-radius:22px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}input,select,textarea{width:100%;padding:12px;border-radius:12px;border:2px solid #222;margin:6px 0 12px}textarea{min-height:170px}.saida{white-space:pre-wrap;text-align:left;background:white;color:#111;border-radius:14px;padding:14px;min-height:260px}.btn{display:inline-block;border:0;border-radius:999px;padding:13px 18px;margin:6px;background:#d6b354;color:#111;font-weight:900;text-decoration:none;cursor:pointer}.verde{background:#1f7a42;color:white}.sair{background:#8b1e1e;color:white}@media(max-width:800px){.grid{grid-template-columns:1fr}h1{font-size:32px}}
 </style>
 </head>
-
 <body>
-
-<h1>Silo Sonoro</h1>
-<p><b>Joseph Hanna</b> — Voz do Celeiro</p>
-
-<div class="box">
-<h3>Upload Universal</h3>
-<input type="file" id="arquivo">
-<p id="arquivoNome">Nenhum arquivo</p>
+<div class="wrap">
+<h1>🎬 Silo Cinematográfico</h1>
+<p>Gerador estrutural audiovisual do Celeiro Multimídia: roteiro, cenas, storyboard textual e pacote para expedição.</p>
+<div class="grid">
+<section class="card">
+<h2>Entrada</h2>
+<input id="tema" placeholder="Título ou tema">
+<select id="base"><option>Ideia original</option><option>Livro completo</option><option>Capítulo</option><option>Poema</option><option>Conto</option><option>Programa</option></select>
+<select id="formato"><option>Trailer literário</option><option>Reels / Shorts</option><option>Curta-metragem</option><option>Web TV Celeiro</option><option>Roteiro cinematográfico</option><option>Storyboard</option></select>
+<select id="duracao"><option>30 segundos</option><option>1 minuto</option><option>3 minutos</option><option>5 minutos</option><option>10 minutos</option><option>20 minutos</option><option>30 minutos</option><option>60 minutos</option></select>
+<select id="estilo"><option>Cinematográfico realista</option><option>Documental</option><option>Épico literário</option><option>Fantasia sombria</option><option>Cyberpunk medieval</option><option>MitoPunkLogia</option><option>Infantojuvenil</option><option>Rural brasileiro</option></select>
+<textarea id="texto" placeholder="Cole sinopse, trecho, capítulo, personagens ou instruções."></textarea>
+<button class="btn verde" onclick="gerar()">Gerar pacote cinematográfico</button><button class="btn" onclick="salvar()">Salvar</button>
+</section>
+<section class="card">
+<h2>Prévia</h2>
+<div id="saida" class="saida">Aguardando criação.</div>
+<button class="btn verde" onclick="expedir()">Enviar para Expedição Multimídia</button><a class="btn" href="silo_multimidia.html">Voltar</a><a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
+</section>
 </div>
-
-<div class="box">
-<h3>Tempo</h3>
-<select id="tempo">
-<option value="">Escolha</option>
-<option value="10">10 min</option>
-<option value="20">20 min</option>
-<option value="30">30 min</option>
-<option value="60">60 min</option>
-</select>
-<button onclick="enviar()">Enviar</button>
-<p class="status" id="status"></p>
 </div>
-
 <script>
-let tempoComprado = localStorage.getItem("tempo") || 0;
-
-document.getElementById("arquivo").addEventListener("change", function(){
- let f = this.files[0];
- if(f){
-   localStorage.setItem("arquivoNome", f.name);
-   document.getElementById("arquivoNome").innerText = f.name;
- }
-});
-
-document.getElementById("arquivoNome").innerText =
-localStorage.getItem("arquivoNome") || "Nenhum arquivo";
-
-function enviar(){
- let tempo = document.getElementById("tempo").value;
-
- if(!localStorage.getItem("pagamento")){
-   document.getElementById("status").innerText = "❌ Pagamento não identificado";
-   return;
- }
-
- if(tempo > tempoComprado){
-   document.getElementById("status").innerText = "❌ Tempo excede o contratado";
-   return;
- }
-
- document.getElementById("status").innerText = "✔ Enviado para Expedição";
- setTimeout(()=>location.href="expedicao_multimidia.html",1500);
-}
+function val(id){return document.getElementById(id).value.trim()}
+function gerar(){var tema=val('tema')||'Projeto sem título';var base=val('base');var formato=val('formato');var duracao=val('duracao');var estilo=val('estilo');var texto=val('texto')||'Sem texto-base colado.';var cenas=[];var total=formato.includes('Reels')?5:formato.includes('Trailer')?7:formato.includes('Curta')?12:9;var fun=['abertura de atmosfera','apresentação do conflito','imagem-símbolo','movimento do protagonista','pressão dramática','virada emocional','cena de impacto','respiro poético','gancho final'];for(var i=1;i<=total;i++){cenas.push('Cena '+i+' — '+fun[i%fun.length]+'\nImagem: '+estilo+'.\nSom: preparar ponte com Silo Sonoro/SIGMAL.\nNarração: frase curta, literária e objetiva.')}var pacote='PACOTE CINEMATOGRÁFICO\n\nTema: '+tema+'\nBase: '+base+'\nFormato: '+formato+'\nDuração: '+duracao+'\nEstilo: '+estilo+'\n\nLEITURA INICIAL\n'+texto.slice(0,900)+'\n\nROTEIRO-MÃE\nAbrir com imagem forte, revelar o centro dramático, transformar a obra em experiência visual e terminar com convite para leitura, escuta ou exibição.\n\nCENAS\n\n'+cenas.join('\n\n')+'\n\nSAÍDAS\nRoteiro textual; storyboard textual; plano de narração; indicação de trilha; pacote para Expedição Multimídia.';document.getElementById('saida').innerText=pacote;localStorage.setItem('celeiro_multimidia_material',JSON.stringify({silo:'Cinematográfico',titulo:tema,formato:formato,duracao:duracao,conteudo:pacote,data:new Date().toLocaleString('pt-BR')}));}
+function salvar(){if(document.getElementById('saida').innerText==='Aguardando criação.')gerar();localStorage.setItem('celeiro_bunker_cinematografico',document.getElementById('saida').innerText);alert('Salvo no bunker local.')}function expedir(){if(document.getElementById('saida').innerText==='Aguardando criação.')gerar();location.href='expedicao_multimidia.html?origem=silo_cinematografico'}
 </script>
-
 </body>
 </html>
