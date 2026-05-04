@@ -7,7 +7,6 @@
 <style>
 :root{
   --azul:#07182b;
-  --azul2:#10294a;
   --ouro:#d6b354;
   --papel:#fff8df;
   --verde:#1f7a42;
@@ -23,7 +22,7 @@ body{
   min-height:100vh;
 }
 .wrap{
-  max-width:920px;
+  max-width:960px;
   margin:0 auto;
   padding:34px 16px 28px;
 }
@@ -49,57 +48,35 @@ h1{
   border:2px solid rgba(201,166,70,.55);
   box-shadow:0 12px 30px rgba(0,0,0,.25);
 }
-.painel.topo{
-  text-align:center;
-}
-.painel.topo h2{
-  margin:0 0 8px;
-  font-family:Georgia,serif;
-  color:#263a5f;
-}
 .apresentacao{
   display:grid;
-  grid-template-columns:120px 1fr;
-  gap:18px;
+  grid-template-columns:170px 1fr;
+  gap:22px;
   align-items:center;
-  text-align:left;
 }
-.avatar-cicile{
-  width:115px;
-  height:115px;
+.cicile-img{
+  width:160px;
+  max-width:100%;
   border-radius:24px;
-  border:3px solid var(--ouro);
-  background:
-    radial-gradient(circle at 50% 33%,#f1c7a8 0 24%,transparent 25%),
-    radial-gradient(circle at 43% 30%,#111 0 3%,transparent 4%),
-    radial-gradient(circle at 57% 30%,#111 0 3%,transparent 4%),
-    linear-gradient(135deg,#f5d87a,#b44b71);
-  position:relative;
-  box-shadow:0 8px 18px rgba(0,0,0,.22);
-}
-.avatar-cicile:before{
-  content:"CICILE";
-  position:absolute;
-  bottom:10px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#07101d;
-  color:#f5d87a;
-  font-size:12px;
-  font-weight:900;
-  border-radius:999px;
-  padding:4px 9px;
+  border:4px solid var(--ouro);
+  background:#fff;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
 }
 .fala h2{
-  margin:0 0 6px;
+  margin:0 0 8px;
   color:#263a5f;
   font-family:Georgia,serif;
+  font-size:30px;
 }
 .fala p{
-  margin:0;
-  line-height:1.45;
+  margin:0 0 10px;
+  line-height:1.48;
   color:#333;
   font-weight:700;
+}
+.fala .assinatura{
+  color:#b44b71;
+  font-weight:900;
 }
 .grid{
   display:grid;
@@ -162,7 +139,7 @@ h1{
   .grid{grid-template-columns:1fr}
   .painel{padding:18px}
   .apresentacao{grid-template-columns:1fr;text-align:center}
-  .avatar-cicile{margin:auto}
+  .cicile-img{margin:auto}
 }
 </style>
 </head>
@@ -173,12 +150,15 @@ h1{
   <h1>Silos Multimídia</h1>
   <div class="sub">Criação audiovisual, sonora, musical e HQ do Celeiro Literário</div>
 
-  <section class="painel topo">
+  <section class="painel">
     <div class="apresentacao">
-      <div class="avatar-cicile"></div>
+      <img class="cicile-img" src="file_00000000bc3071fb999124a47a93c7dd~2.png" alt="CICILE — Portal de Entrada">
       <div class="fala">
         <h2>Acesso liberado</h2>
-        <p>Eu sou a CICILE. Esta é a entrada dos Silos Multimídia: aqui você escolhe se vai criar vídeo, som, música ou HQ. Cada Silo prepara o material e depois encaminha para o Motor Vercel, CORSI, Expedição e canais do Celeiro.</p>
+        <p>Olá. Eu sou a <strong>CICILE</strong>, o portal de entrada do Celeiro Multimídia.</p>
+        <p>Aqui sua obra deixa de ser apenas texto e começa a ganhar forma, voz, imagem, trilha, cena e presença.</p>
+        <p>Escolha abaixo o Silo que deseja acionar. Eu encaminharei sua criação para o caminho certo: Motor Vercel, CORSI, Expedição Multimídia e canais do Celeiro.</p>
+        <p class="assinatura">Entre com calma. A criação agora tem destino.</p>
       </div>
     </div>
   </section>
