@@ -4,77 +4,307 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Silo HQ — Entrada</title>
-
 <style>
+:root{
+  --azul:#07182b;
+  --ouro:#d6b354;
+  --papel:#fff8df;
+  --verde:#1f7a42;
+  --vermelho:#8b1e1e;
+  --roxo:#42246b;
+  --turquesa:#197d7a;
+}
+*{box-sizing:border-box}
 body{
-margin:0;
-font-family:Arial;
-background:linear-gradient(180deg,#07101d,#10294a,#efe2c7);
-color:white;
-text-align:center;
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:radial-gradient(circle at center,#466d99 0%,#132d4e 45%,#06111f 100%);
+  color:#fff;
+  min-height:100vh;
 }
-
-.container{
-max-width:900px;
-margin:auto;
-padding:30px;
+.wrap{
+  max-width:1080px;
+  margin:0 auto;
+  padding:34px 16px 28px;
 }
-
-.avatar{
-width:260px;
-border-radius:20px;
-box-shadow:0 15px 40px rgba(0,0,0,0.6);
-}
-
 h1{
-color:#f5d87a;
+  margin:0;
+  text-align:center;
+  color:#f5d87a;
+  font-family:Georgia,serif;
+  font-size:42px;
 }
-
-.box{
-background:#fff8df;
-color:#111;
-padding:20px;
-border-radius:20px;
-margin-top:20px;
+.sub{
+  text-align:center;
+  margin:10px 0 24px;
+  color:#e8eef8;
+  font-weight:700;
 }
-
+.painel{
+  background:var(--papel);
+  color:#111;
+  border-radius:22px;
+  padding:24px;
+  margin:18px auto;
+  border:2px solid rgba(201,166,70,.55);
+  box-shadow:0 12px 30px rgba(0,0,0,.25);
+}
+.apresentacao{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:24px;
+  align-items:center;
+}
+.charles-img{
+  width:250px;
+  max-width:100%;
+  border-radius:22px;
+  border:4px solid var(--ouro);
+  background:#fff;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
+}
+.charles-fallback{
+  width:250px;
+  min-height:250px;
+  border-radius:22px;
+  border:4px solid var(--ouro);
+  background:linear-gradient(135deg,#111,#2b1d0a,#d6b354);
+  color:#fff8df;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:22px;
+  font-family:Georgia,serif;
+  font-size:26px;
+  font-weight:900;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
+}
+.fala h2{
+  margin:0 0 8px;
+  color:#263a5f;
+  font-family:Georgia,serif;
+  font-size:30px;
+}
+.fala p{
+  margin:0 0 10px;
+  line-height:1.48;
+  color:#333;
+  font-weight:700;
+}
+.fala .assinatura{
+  color:#8b5a12;
+  font-weight:900;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(235px,1fr));
+  gap:14px;
+}
+.formato{
+  background:#080d18;
+  color:#fff;
+  border-radius:16px;
+  min-height:235px;
+  padding:20px 16px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.12);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.formato h3{
+  margin:0 0 8px;
+  color:#f5d87a;
+  font-family:Georgia,serif;
+  font-size:23px;
+}
+.formato p{
+  margin:0 0 8px;
+  color:#e9edf6;
+  font-weight:700;
+  line-height:1.35;
+}
+.tag{
+  display:inline-block;
+  margin:0 auto 10px;
+  padding:5px 10px;
+  border-radius:999px;
+  background:#fff8df;
+  color:#111;
+  font-size:12px;
+  font-weight:900;
+}
 .btn{
-margin-top:25px;
-padding:15px 25px;
-border-radius:999px;
-background:#c9a646;
-color:#111;
-font-weight:bold;
-text-decoration:none;
-display:inline-block;
+  display:inline-block;
+  padding:11px 18px;
+  border-radius:999px;
+  border:0;
+  text-decoration:none;
+  font-weight:900;
+  cursor:pointer;
+  background:var(--ouro);
+  color:#111;
+  font-size:14px;
 }
-
+.btn.verde{background:var(--verde);color:#fff}
+.btn.azul{background:#244d86;color:#fff}
+.btn.roxo{background:var(--roxo);color:#fff}
+.btn.turquesa{background:var(--turquesa);color:#fff}
+.btn.vermelho{background:var(--vermelho);color:#fff}
+.fluxo{
+  text-align:center;
+  color:#334;
+  font-size:14px;
+}
+.nav{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+@media(max-width:760px){
+  h1{font-size:32px}
+  .painel{padding:18px}
+  .apresentacao{grid-template-columns:1fr;text-align:center}
+  .charles-img,.charles-fallback{margin:auto}
+}
 </style>
 </head>
 
 <body>
+<main class="wrap">
 
-<div class="container">
+  <h1>Silo HQ</h1>
+  <div class="sub">Quadrinhos, mangá, webtoon, graphic novel, gibi europeu e HQ brasileira</div>
 
-<h1>SILO HQ</h1>
+  <section class="painel">
+    <div class="apresentacao">
+      <div>
+        <img
+          id="charlesLeeImg"
+          class="charles-img"
+          src="file_00000000fc3071f5972fc0fe7d2ff93e.png"
+          alt="Charles Lee — Guia do Gibi"
+          onerror="trocarImagemCharles()"
+        >
+        <div id="charlesFallback" class="charles-fallback">
+          CHARLES LEE<br><span style="font-size:16px">Guia do Gibi</span>
+        </div>
+      </div>
 
-<img src="charles_lii.png" class="avatar">
+      <div class="fala">
+        <h2>Charles Lee — Guia do Gibi</h2>
+        <p>Bem-vindo ao Silo HQ. Aqui sua história ganha forma em imagens, páginas, balões, ritmo e montagem.</p>
+        <p>Você não precisa começar escolhendo medida técnica. Escolha primeiro o <strong>destino editorial</strong>: HQ brasileira, mangá japonês, webtoon coreano, gibi europeu, HQ americana ou graphic novel.</p>
+        <p>O sistema aplica tamanho, fluxo, leitura, balões e estrutura automaticamente.</p>
+        <p class="assinatura">Você escolhe o caminho. Eu cuido da estrutura.</p>
+      </div>
+    </div>
+  </section>
 
-<div class="box">
-<p><strong>Charles Lii</strong> — Guia do Gibi</p>
+  <section class="painel">
+    <div class="grid">
 
-<p>
-Bem-vindo ao Silo HQ.<br><br>
-Aqui sua história ganha forma em imagens.<br><br>
-Você não precisa se preocupar com tamanho, impressão ou encaixe de páginas.<br><br>
-<strong>Eu cuido disso.</strong><br><br>
-Você só precisa escolher o tipo de história… e começar.
-</p>
-</div>
+      <div class="formato">
+        <div>
+          <span class="tag">Brasil</span>
+          <h3>HQ brasileira</h3>
+          <p>Para gibi, aventura, humor, infantil, história seriada e páginas tradicionais.</p>
+          <p><strong>Aplica:</strong> página de gibi, leitura ocidental, cor e montagem editorial.</p>
+        </div>
+        <a class="btn verde" href="hq_editor.html?modo=interno&tipo=hq-brasileira&preset=hq-brasileira">Abrir HQ brasileira</a>
+      </div>
 
-<a href="hq_editor.html" class="btn">Entrar no Silo HQ</a>
+      <div class="formato">
+        <div>
+          <span class="tag">Japão</span>
+          <h3>Mangá japonês</h3>
+          <p>Para leitura seriada, preto e branco, impacto emocional, ação e expressão dramática.</p>
+          <p><strong>Aplica:</strong> P&B, ritmo de mangá e leitura orientada ao estilo japonês.</p>
+        </div>
+        <a class="btn" href="hq_editor.html?modo=interno&tipo=manga-japones&preset=manga-japones">Abrir mangá</a>
+      </div>
 
-</div>
+      <div class="formato">
+        <div>
+          <span class="tag">Coreia</span>
+          <h3>Webtoon coreano</h3>
+          <p>Para celular, rolagem vertical, cenas com respiro e publicação digital.</p>
+          <p><strong>Aplica:</strong> vertical contínuo, quadros espaçados e leitura mobile.</p>
+        </div>
+        <a class="btn turquesa" href="hq_editor.html?modo=interno&tipo=webtoon-coreano&preset=webtoon-coreano">Abrir webtoon</a>
+      </div>
+
+      <div class="formato">
+        <div>
+          <span class="tag">Europa</span>
+          <h3>Gibi europeu / BD</h3>
+          <p>Para álbum europeu, visual elegante, composição literária e páginas amplas.</p>
+          <p><strong>Aplica:</strong> quadros maiores, composição de álbum e ritmo contemplativo.</p>
+        </div>
+        <a class="btn azul" href="hq_editor.html?modo=interno&tipo=gibi-europeu&preset=gibi-europeu">Abrir gibi europeu</a>
+      </div>
+
+      <div class="formato">
+        <div>
+          <span class="tag">EUA</span>
+          <h3>HQ americana</h3>
+          <p>Para superaventura, ação, suspense, terror, fantasia urbana e narrativa dinâmica.</p>
+          <p><strong>Aplica:</strong> comic book, ritmo rápido e composição de ação.</p>
+        </div>
+        <a class="btn roxo" href="hq_editor.html?modo=interno&tipo=hq-americana&preset=hq-americana">Abrir HQ americana</a>
+      </div>
+
+      <div class="formato">
+        <div>
+          <span class="tag">Literário</span>
+          <h3>Graphic novel</h3>
+          <p>Para narrativa adulta, psicológica, dramática, experimental ou cinematográfica.</p>
+          <p><strong>Aplica:</strong> composição sóbria, quadros narrativos e capa literária.</p>
+        </div>
+        <a class="btn roxo" href="hq_editor.html?modo=interno&tipo=graphic-novel&preset=graphic-novel">Abrir graphic novel</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="painel fluxo">
+    <strong>Fluxo:</strong>
+    Escolha do formato → Editor HQ Inteligente → Motor Vercel → CORSI → Expedição Multimídia.
+    <br><br>
+    <strong>Observação:</strong> Cordel visual sai daqui e fica no motor próprio de cordel/Qui(RON)xadá.
+  </section>
+
+  <section class="painel">
+    <div class="nav">
+      <a class="btn azul" href="silo_multimidia.html?modo=interno">Retornar aos Silos</a>
+      <a class="btn" href="pagina_respiro.html">Retornar à página de respiro</a>
+      <a class="btn vermelho" href="portal_instituto_celeiro_literario.html">Sair</a>
+    </div>
+  </section>
+
+</main>
+
+<script>
+const tentativasCharles = [
+  "file_00000000fc3071f5972fc0fe7d2ff93e.png",
+  "./file_00000000fc3071f5972fc0fe7d2ff93e.png",
+  "/CeleiroLiterario/file_00000000fc3071f5972fc0fe7d2ff93e.png"
+];
+let tentativaAtualCharles = 0;
+
+function trocarImagemCharles(){
+  const img = document.getElementById("charlesLeeImg");
+  tentativaAtualCharles++;
+  if(tentativaAtualCharles < tentativasCharles.length){
+    img.src = tentativasCharles[tentativaAtualCharles];
+  }else{
+    img.style.display = "none";
+    document.getElementById("charlesFallback").style.display = "flex";
+  }
+}
+</script>
 
 </body>
 </html>
