@@ -1,3 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silos Multimídia</title>
+<style>
+body{margin:0;font-family:Arial;background:#05070c;color:white;text-align:center;padding:20px}
+.card{background:#111;padding:20px;border-radius:15px;margin:15px auto;max-width:700px}
+input,button{padding:10px;border-radius:10px;border:none;margin:5px}
+button{background:#1f7a42;color:white;font-weight:bold}
+</style>
+</head>
+<body>
+
+<h1>Silos Multimídia</h1>
+
+<div class="card">
+<h3>Ativar pagamento</h3>
+<input id="codigo" placeholder="Digite seu código">
+<button onclick="validarCodigo()">Ativar</button>
+<p id="status"></p>
+</div>
+
+<script>
 function validarCodigo(){
  let codigo = document.getElementById("codigo").value;
 
@@ -14,9 +39,14 @@ function validarCodigo(){
    localStorage.setItem("tempo",60);
  }
  else{
-   alert("Código inválido");
+   document.getElementById("status").innerText = "Código inválido";
    return;
  }
 
  localStorage.setItem("pagamento",true);
+ document.getElementById("status").innerText = "Pagamento ativado";
 }
+</script>
+
+</body>
+</html>
