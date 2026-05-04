@@ -4,82 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Silo Music</title>
-
 <style>
-body{
-margin:0;
-font-family:Arial;
-background:#0b1a2d;
-color:white;
-text-align:center;
-padding:30px;
-}
-
-h1{
-color:#f5d87a;
-}
-
-input,select{
-padding:10px;
-margin:10px;
-border-radius:10px;
-border:none;
-width:80%;
-}
-
-button{
-padding:12px 18px;
-border-radius:12px;
-background:#1f7a42;
-color:white;
-border:none;
-font-weight:bold;
-cursor:pointer;
-}
-
-.box{
-background:#111;
-padding:20px;
-border-radius:12px;
-margin-top:20px;
-}
+body{margin:0;font-family:Arial,sans-serif;background:#0b1a2d;color:white;text-align:center;padding:24px}h1{color:#f5d87a}.box,.upload-universal{background:#111;padding:20px;border-radius:16px;margin:18px auto;max-width:760px;border:2px solid #d6b354}.upload-universal{background:#fff8df;color:#111}input,select{padding:12px;margin:8px;border-radius:10px;border:none;width:90%;max-width:620px}button,.btn{display:inline-block;padding:12px 18px;border-radius:999px;background:#1f7a42;color:white;border:none;font-weight:bold;cursor:pointer;text-decoration:none;margin:6px}.voltar{background:#d6b354;color:#111}.sair{background:#8b1e1e}.upload-topo{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.upload-info{margin-top:12px;line-height:1.4}.upload-acoes button{background:#8b1e1e}
 </style>
-
+<script src="js/celeiro_upload_universal.js"></script>
 <script>
-function gerar(){
-alert("Joseph Hanna criou a trilha sonora e enviou para Expedição Multimídia");
-location.href="expedicao_multimidia.html";
+function enviar(){
+ const mat=window.celeiroUploadCarregar?window.celeiroUploadCarregar():null;
+ const nome=document.getElementById('projeto').value||'Projeto do Silo Music';
+ alert('Projeto recebido: '+nome+(mat?'\nMaterial atual: '+mat.nome:'\nSem arquivo carregado.')+'\nIndo para a Expedição Multimídia.');
+ location.href='expedicao_multimidia.html';
 }
+window.addEventListener('load',function(){if(window.celeiroUploadMontar){window.celeiroUploadMontar('uploadUniversal','Silo Music')}});
 </script>
-
 </head>
-
 <body>
-
 <h1>Silo Music</h1>
-<p>Guia: Joseph Hanna</p>
-
+<p><strong>William Chapen</strong> — Maestro do Silo</p>
+<div class="box"><p>Use este silo para preparar trilhas, vinhetas, temas de personagem e atmosfera sonora.</p></div>
+<div id="uploadUniversal"></div>
 <div class="box">
-
-<input placeholder="Nome do projeto">
-
-<select>
-<option>Tipo de trilha</option>
-<option>Épica</option>
-<option>Romântica</option>
-<option>Suspense</option>
-<option>Ambiente</option>
-</select>
-
-<button onclick="gerar()">Gerar trilha</button>
-
+<input id="projeto" placeholder="Nome do projeto">
+<select><option>Tipo de produção</option><option>Tema musical</option><option>Trilha ambiente</option><option>Vinheta</option><option>Tema de personagem</option></select>
+<select><option>Clima desejado</option><option>Épico</option><option>Romântico</option><option>Suspense</option><option>Regional</option><option>Infantil</option><option>Dramático</option></select>
+<br><button onclick="enviar()">Enviar ao Silo Music</button>
 </div>
-
-<br>
-
-<a href="silo_multimidia.html">
-<button>Voltar aos Silos</button>
-</a>
-
+<a class="btn voltar" href="silo_multimidia.html">Voltar aos Silos</a>
+<a class="btn voltar" href="cicile_reclamacao.html?departamento=Silo%20Music">Reclamar com a CICILE</a>
+<a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
 </body>
 </html>
