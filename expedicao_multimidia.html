@@ -5,19 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Expedição Multimídia</title>
 <style>
-body{margin:0;font-family:Arial;background:#05070c;color:white;text-align:center;padding:40px}h1{color:#f5d87a}input{padding:10px;margin:10px;width:80%}button{padding:12px 20px;border:none;border-radius:8px;background:#1f7a42;color:white;font-weight:bold;cursor:pointer}.saida{margin-top:20px;font-size:14px;background:#111;padding:15px;border-radius:10px}
+:root{--fundo:#05070c;--ouro:#d6b354;--papel:#fff8df;--verde:#1f7a42;--vermelho:#8b1e1e}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#05070c,#10294a,#efe2c7);color:white;text-align:center;padding:24px}.wrap{max-width:900px;margin:auto}.card{background:#fff8df;color:#111;border:2px solid var(--ouro);border-radius:22px;padding:20px;margin:18px 0;box-shadow:0 12px 30px rgba(0,0,0,.25)}h1{color:#f5d87a;font-family:Georgia,serif}.status{font-weight:900;font-size:18px}.ok{color:var(--verde)}.erro{color:var(--vermelho)}input,select{padding:12px;border-radius:12px;border:2px solid #111;width:90%;max-width:620px;margin:8px}.btn{display:inline-block;padding:13px 18px;border-radius:999px;background:var(--ouro);color:#111;text-decoration:none;font-weight:900;border:0;cursor:pointer;margin:6px}.verde{background:var(--verde);color:white}.sair{background:var(--vermelho);color:white}.lista{text-align:left;background:white;color:#111;border-radius:14px;padding:14px;white-space:pre-line}.bloqueado{opacity:.55;filter:grayscale(.4)}
 </style>
+<script>
+function dados(){return {arquivo:localStorage.getItem('arquivoNome')||'',pagamento:localStorage.getItem('pagamento')||'',tempo:Number(localStorage.getItem('tempo')||0),historico:JSON.parse(localStorage.getItem('historicoExpedicao')||'[]')}}
+function salvarHistorico(item){const d=dados();d.historico.unshift(item);localStorage.setItem('historicoExpedicao',JSON.stringify(d.historico.slice(0,10)))}
+function render(){const d=dados();document.getElementById('arquivoAtual').innerText=d.arquivo||'Nenhum material recebido dos Silos';document.getElementById('tempoAtual').innerText=d.pagamento?'Tempo liberado: '+d.tempo+' minutos':'Pagamento ainda não identificado';document.getElementById('tempoAtual').className=d.pagamento?'status ok':'status erro';document.getElementById('historico').innerText=d.historico.length?d.historico.map((h,i)=>(i+1)+'. '+h).join('\n'):'Nenhuma expedição registrada ainda.'}
+function validarCodigo(){const codigo=document.getElementById('codigo').value.trim().toUpperCase();const mapa={'CELEIRO-10':10,'CELEIRO-20':20,'CELEIRO-30':30,'CELEIRO-60':60};if(!mapa[codigo]){document.getElementById('retorno').innerHTML='<span class="erro">Código inválido. Compra Hotmart não confirmada.</span>';return}localStorage.setItem('pagamento','true');localStorage.setItem('tempo',String(mapa[codigo]));document.getElementById('retorno').innerHTML='<span class="ok">Pagamento confirmado. Tempo ativado: '+mapa[codigo]+' minutos.</span>';render()}
+function gerar(){const d=dados();if(!d.pagamento){document.getElementById('saida').innerHTML='<span class="erro">Material bloqueado. É necessário pagamento confirmado pela Hotmart ou código de liberação.</span>';return}if(!d.arquivo){document.getElementById('saida').innerHTML='<span class="erro">Nenhum material recebido dos Silos.</span>';return}document.getElementById('saida').innerHTML='Processando material...';setTimeout(function(){const item=d.arquivo+' liberado com '+d.tempo+' minutos — '+new Date().toLocaleString('pt-BR');salvarHistorico(item);document.getElementById('saida').innerHTML='<span class="ok">Material liberado.</span><br><br>Arquivo: <b>'+d.arquivo+'</b><br>Tempo contratado: '+d.tempo+' minutos<br><br>Saídas preparadas:<br>Download interno<br>YouTube<br>Instagram<br>TikTok<br>Web Rádio / Web TV quando aplicável';render()},900)}
+function limpar(){localStorage.removeItem('pagamento');localStorage.removeItem('tempo');document.getElementById('retorno').innerHTML='<span class="erro">Liberação removida desta sessão.</span>';render()}
+window.addEventListener('load',render);
+</script>
 </head>
 <body>
+<div class="wrap">
 <h1>Expedição Multimídia</h1>
-<p>Envie seu arquivo final e escolha o destino</p>
-<input type="file" id="arquivo"><br>
-<button onclick="gerar()">Gerar Material</button>
-<div class="saida" id="saida"></div>
-<script>
-function gerar(){
-document.getElementById('saida').innerHTML = "Seu material foi preparado para:\n- YouTube\n- Instagram\n- TikTok\n- Download PDF\n(Link simbólico gerado)";
-}
-</script>
+<p>Porta final dos Silos. Sem pagamento confirmado, nada é liberado.</p>
+<section class="card"><h2>Material recebido</h2><p id="arquivoAtual" class="status"></p><p id="tempoAtual" class="status"></p></section>
+<section class="card"><h2>Confirmação Hotmart / Código de liberação</h2><p>Enquanto a integração automática com a Hotmart não estiver conectada, use o código de liberação correspondente ao tempo comprado.</p><input id="codigo" placeholder="Ex.: CELEIRO-20"><br><button class="btn verde" onclick="validarCodigo()">Ativar pagamento</button><button class="btn sair" onclick="limpar()">Limpar liberação</button><p id="retorno"></p></section>
+<section class="card"><h2>Gerar saída</h2><button class="btn verde" onclick="gerar()">Liberar material</button><div id="saida" class="lista" style="margin-top:14px"></div></section>
+<section class="card"><h2>Histórico desta sessão</h2><div id="historico" class="lista"></div></section>
+<a class="btn" href="silo_multimidia.html">Voltar aos Silos</a><a class="btn" href="cicile_reclamacao.html?departamento=Expedicao%20Multimidia">Reclamar com a CICILE</a><a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
+</div>
 </body>
 </html>
