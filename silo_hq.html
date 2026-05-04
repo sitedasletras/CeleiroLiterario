@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Editor HQ Inteligente — Celeiro Multimídia</title>
+<title>Silo HQ — Editor Inteligente Integrado</title>
 <style>
 :root{
   --azul:#0f1c2e;
@@ -80,6 +80,16 @@ textarea{min-height:190px;resize:vertical}
   padding:10px;
   line-height:1.45;
 }
+.status-engine{
+  margin-top:10px;
+  padding:10px;
+  border-radius:12px;
+  background:#07101d;
+  color:#f5d87a;
+  font-size:14px;
+  font-weight:900;
+  text-align:center;
+}
 .contador{
   display:flex;
   gap:10px;
@@ -140,6 +150,8 @@ textarea{min-height:190px;resize:vertical}
   justify-content:center;
   overflow:hidden;
   background:#ddd;
+  text-align:center;
+  padding:5px;
 }
 .imgHQ svg{width:100%;height:145px;display:block}
 .balao{
@@ -222,8 +234,8 @@ textarea{min-height:190px;resize:vertical}
 
 <body>
 <header class="topo">
-<h1>Editor HQ Inteligente</h1>
-<p>Suba ou cole uma história. O sistema cria cenas, imagens simbólicas, diálogos, balões, capa e montagem de impressão.</p>
+<h1>Silo HQ — Editor Inteligente</h1>
+<p>Entrada do Silo HQ integrada ao Celeiro Multimídia Engine.</p>
 </header>
 
 <main class="wrap">
@@ -261,7 +273,7 @@ textarea{min-height:190px;resize:vertical}
 <div class="aviso-upload">
 📌 Recomendação do sistema:<br><br>
 Se o seu arquivo não for <strong>.TXT</strong> — por exemplo DOC, DOCX ou PDF — copie o texto do documento e cole no campo abaixo, onde está a História.<br><br>
-Em breve, o sistema fará a leitura automática desses formatos.
+Em breve, o motor fará a leitura automática desses formatos.
 </div>
 
 <label>Fonte dos balões</label>
@@ -275,24 +287,26 @@ Em breve, o sistema fará a leitura automática desses formatos.
 </div>
 
 <label>Cole a história, sinopse ou capítulo</label>
-<textarea id="historia" placeholder="Cole aqui a história inteira. O sistema cria quantas páginas forem necessárias até terminar a narrativa."></textarea>
+<textarea id="historia" placeholder="Cole aqui a história inteira. O sistema envia ao Celeiro Multimídia Engine e cria quantas páginas forem necessárias."></textarea>
 
 <div class="botoes">
-<button class="btn verde" onclick="gerarHQ()">Gerar HQ completa</button>
+<button class="btn verde" onclick="gerarHQ()">Gerar HQ com Motor Vercel</button>
 <button class="btn azul" onclick="gerarMontagem()">Ver montagem grampeada/colada</button>
 <button class="btn" onclick="salvarProjeto()">Salvar projeto</button>
 </div>
 
+<div id="statusEngine" class="status-engine">Motor pronto: aguardando envio ao Celeiro Multimídia Engine.</div>
+
 <div class="contador">
 <span class="chip" id="chipCenas">0 quadros</span>
 <span class="chip" id="chipPaginas">0 páginas</span>
-<span class="chip" id="chipFolhas">0 folhas</span>
+<span class="chip" id="chipFolhas">0 folhas grampeadas</span>
 </div>
 </section>
 
 <section class="painel">
 <h2>2. Prévia visual da HQ</h2>
-<p>Agora cada quadro recebe uma imagem simbólica gerada no navegador. Ela não substitui IA de imagem profissional, mas já mostra composição, ambiente, personagem e clima visual.</p>
+<p>O Silo HQ chama o motor do Vercel para estruturar os quadros. Enquanto a geração real de imagem não é conectada à API visual, a prévia mostra composição simbólica melhorada e prompts prontos.</p>
 <div id="preview" class="paginasWrap">
 <div class="pagina">
 <h3>Página 1</h3>
@@ -312,7 +326,7 @@ Em breve, o sistema fará a leitura automática desses formatos.
 
 <section class="painel">
 <h2>4. Capas geradas</h2>
-<p>Escolha uma base. Depois a arte pode ser refinada no OKapista, mas aqui o sistema já monta uma capa visual inicial.</p>
+<p>Escolha uma base. Depois a arte pode ser refinada no OKapista/Faça Kapa.</p>
 <div id="capas" class="capas"></div>
 </section>
 
@@ -327,19 +341,28 @@ Em breve, o sistema fará a leitura automática desses formatos.
 <div class="botoes">
 <button class="btn verde" onclick="enviar()">Enviar para Expedição Multimídia</button>
 <a class="btn" href="motor_do_gibi.html">Voltar ao Motor do Gibi</a>
-<a class="btn" href="silo_hq.html">Voltar ao Silo HQ</a>
+<a class="btn" href="silo_multimidia.html">Voltar aos Silos</a>
 <a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
 </div>
 
 </main>
 
 <script>
+const ENGINE_URL = "https://celeiro-multimidia-engine.vercel.app";
 let cenasGeradas=[];
 let totalPaginas=0;
 let totalPaginasImpressao=0;
 
 function escapeHTML(s){
   return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function escapeSVG(s){
+  return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function statusMsg(txt){
+  document.getElementById('statusEngine').innerText = txt;
 }
 
 function atualizarCapas(){
@@ -386,6 +409,87 @@ function lerArquivo(ev){
   }
 }
 
+function detectarAmbiente(t){
+  const s=String(t||'').toLowerCase();
+  if(/floresta|mata|árvore|rio|bosque|roça|campo|jardim/.test(s))return 'floresta';
+  if(/cidade|rua|prédio|avenida|ônibus|carro|praça/.test(s))return 'cidade';
+  if(/casa|quarto|sala|cozinha|porta|janela/.test(s))return 'casa';
+  if(/escola|professor|aluno|classe/.test(s))return 'escola';
+  if(/castelo|rei|rainha|cavaleiro|dragão/.test(s))return 'fantasia';
+  if(/nave|robô|máquina|futuro|computador|neon/.test(s))return 'futuro';
+  return 'neutro';
+}
+
+function detectarAcao(t){
+  const s=String(t||'').toLowerCase();
+  if(/correu|fugiu|saltou|gritou|lutou|atacou|explodiu/.test(s))return 'ação';
+  if(/chorou|sentiu|lembrou|saudade|medo|triste|alegre/.test(s))return 'emoção';
+  if(/olhou|viu|percebeu|encontrou|descobriu|revelou/.test(s))return 'descoberta';
+  if(/falou|disse|perguntou|respondeu/.test(s))return 'diálogo';
+  return 'narrativa';
+}
+
+async function gerarHQ(){
+  const titulo=document.getElementById('titulo').value||'HQ sem título';
+  const estilo=document.getElementById('estilo').value;
+  const historia=document.getElementById('historia').value.trim();
+
+  if(!historia){
+    alert('Cole a história primeiro.');
+    return;
+  }
+
+  statusMsg('Enviando história para o Celeiro Multimídia Engine...');
+  document.getElementById('preview').innerHTML='<div class="lista">Gerando HQ no motor Vercel... aguarde.</div>';
+
+  try{
+    const response = await fetch(ENGINE_URL + '/api/hq', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        titulo:titulo,
+        estilo:estilo,
+        historia:historia,
+        texto:historia,
+        encadernacao:document.getElementById('encadernacao').value
+      })
+    });
+
+    const data = await response.json();
+
+    if(!data.ok){
+      throw new Error(data.error || 'Resposta inválida do motor.');
+    }
+
+    cenasGeradas = (data.quadros || []).map((q,i)=>({
+      n:q.quadro || i+1,
+      cena:q.cena || '',
+      dialogo:q.dialogo || '',
+      prompt:q.promptImagem || q.prompt || '',
+      ambiente:detectarAmbiente(q.cena || q.promptImagem || ''),
+      acao:detectarAcao(q.cena || q.dialogo || ''),
+      estilo:estilo,
+      statusImagem:q.statusImagem || 'pendente_api_imagem'
+    }));
+
+    if(!cenasGeradas.length){
+      throw new Error('O motor não devolveu quadros.');
+    }
+
+    totalPaginas = data.paginas || Math.ceil(cenasGeradas.length/4);
+    statusMsg('Motor Vercel respondeu: '+cenasGeradas.length+' quadros gerados. Imagem real ainda aguardando API visual.');
+    renderPreview();
+    renderRoteiro(titulo,estilo,data.protocolo || 'sem protocolo');
+    atualizarCapas();
+    gerarMontagem();
+
+  }catch(e){
+    console.error(e);
+    statusMsg('Falha ao conectar com o Vercel. Usei o modo local de emergência.');
+    gerarHQLocal();
+  }
+}
+
 function cortarUnidades(txt){
   const limpo=txt.replace(/\s+/g,' ').trim();
   if(!limpo)return [];
@@ -396,24 +500,24 @@ function cortarUnidades(txt){
   return partes;
 }
 
-function detectarAmbiente(t){
-  const s=t.toLowerCase();
-  if(/floresta|mata|árvore|rio|bosque|roça|campo/.test(s))return 'floresta';
-  if(/cidade|rua|prédio|avenida|ônibus|carro/.test(s))return 'cidade';
-  if(/casa|quarto|sala|cozinha|porta|janela/.test(s))return 'casa';
-  if(/escola|professor|aluno|classe/.test(s))return 'escola';
-  if(/castelo|rei|rainha|cavaleiro|dragão/.test(s))return 'fantasia';
-  if(/nave|robô|máquina|futuro|computador/.test(s))return 'futuro';
-  return 'neutro';
-}
+function gerarHQLocal(){
+  const titulo=document.getElementById('titulo').value||'HQ sem título';
+  const estilo=document.getElementById('estilo').value;
+  const historia=document.getElementById('historia').value.trim()||'Um personagem encontra um mistério, segue sinais, enfrenta um obstáculo e termina diante de uma revelação.';
+  const unidades=cortarUnidades(historia);
 
-function detectarAcao(t){
-  const s=t.toLowerCase();
-  if(/correu|fugiu|saltou|gritou|lutou|atacou/.test(s))return 'ação';
-  if(/chorou|sentiu|lembrou|saudade|medo|triste/.test(s))return 'emoção';
-  if(/olhou|viu|percebeu|encontrou|descobriu/.test(s))return 'descoberta';
-  if(/falou|disse|perguntou|respondeu/.test(s))return 'diálogo';
-  return 'narrativa';
+  cenasGeradas=unidades.map((base,i)=>{
+    const ambiente=detectarAmbiente(base);
+    const acao=detectarAcao(base);
+    const plano=i===0?'plano aberto de apresentação':i===unidades.length-1?'plano de impacto final':i%3===0?'close expressivo':i%2?'plano médio com ação':'plano geral narrativo';
+    const prompt=estilo+', '+plano+', ambiente '+ambiente+', ação '+acao+', cena baseada em: '+base.slice(0,150)+', composição editorial para quadrinhos, sem texto na imagem, espaço para balões.';
+    return {n:i+1,cena:base,dialogo:falaDaCena(base,i),prompt,ambiente,acao,estilo,statusImagem:'local'};
+  });
+
+  renderPreview();
+  renderRoteiro(titulo,estilo,'modo local');
+  atualizarCapas();
+  gerarMontagem();
 }
 
 function falaDaCena(frase,i){
@@ -429,26 +533,6 @@ function falaDaCena(frase,i){
     'A história ainda não acabou.'
   ];
   return i%4===0?prefixos[i%prefixos.length]:limpa;
-}
-
-function gerarHQ(){
-  const titulo=document.getElementById('titulo').value||'HQ sem título';
-  const estilo=document.getElementById('estilo').value;
-  const historia=document.getElementById('historia').value.trim()||'Um personagem encontra um mistério, segue sinais, enfrenta um obstáculo e termina diante de uma revelação.';
-  const unidades=cortarUnidades(historia);
-
-  cenasGeradas=unidades.map((base,i)=>{
-    const ambiente=detectarAmbiente(base);
-    const acao=detectarAcao(base);
-    const plano=i===0?'plano aberto de apresentação':i===unidades.length-1?'plano de impacto final':i%3===0?'close expressivo':i%2?'plano médio com ação':'plano geral narrativo';
-    const prompt=estilo+', '+plano+', ambiente '+ambiente+', ação '+acao+', cena baseada em: '+base.slice(0,150)+', composição editorial para quadrinhos, sem texto na imagem, espaço para balões.';
-    return {n:i+1,cena:base,dialogo:falaDaCena(base,i),prompt,ambiente,acao,estilo};
-  });
-
-  renderPreview();
-  renderRoteiro(titulo,estilo);
-  atualizarCapas();
-  gerarMontagem();
 }
 
 function renderPreview(){
@@ -481,21 +565,21 @@ function renderPreview(){
   aplicarFonte();
 }
 
-function renderRoteiro(titulo,estilo){
-  let txt='ROTEIRO HQ — CELEIRO MULTIMÍDIA\n\nTítulo: '+titulo+'\nEstilo: '+estilo+'\nTotal de quadros: '+cenasGeradas.length+'\nPáginas estimadas: '+totalPaginas+'\n\n';
+function renderRoteiro(titulo,estilo,protocolo){
+  let txt='ROTEIRO HQ — CELEIRO MULTIMÍDIA\n\nProtocolo: '+protocolo+'\nTítulo: '+titulo+'\nEstilo: '+estilo+'\nTotal de quadros: '+cenasGeradas.length+'\nPáginas estimadas: '+totalPaginas+'\n\n';
 
   cenasGeradas.forEach(c=>{
-    txt+='QUADRO '+c.n+'\nCena: '+c.cena+'\nAmbiente: '+c.ambiente+'\nAção: '+c.acao+'\nDiálogo/Balão: '+c.dialogo+'\nPrompt de imagem: '+c.prompt+'\n\n';
+    txt+='QUADRO '+c.n+'\nCena: '+c.cena+'\nAmbiente: '+c.ambiente+'\nAção: '+c.acao+'\nDiálogo/Balão: '+c.dialogo+'\nPrompt de imagem: '+c.prompt+'\nStatus imagem: '+c.statusImagem+'\n\n';
   });
 
-  txt+='FLUXO\nEditor HQ → Silo HQ → Expedição Multimídia → WebTV / CORSI / Bunker da Obra.';
+  txt+='FLUXO\nSilo HQ → Celeiro Multimídia Engine → Expedição Multimídia → WebTV / CORSI / Bunker da Obra.';
 
   document.getElementById('roteiro').innerText=txt;
 
   localStorage.setItem('celeiro_multimidia_material',JSON.stringify({
     silo:'HQ',
     titulo:titulo,
-    formato:'HQ inteligente visual',
+    formato:'HQ integrada ao Vercel',
     conteudo:txt,
     data:new Date().toLocaleString('pt-BR')
   }));
@@ -510,6 +594,7 @@ function svgCena(c){
   const futuro=c.ambiente==='futuro';
   const energia=c.acao==='ação'?'<path d="M200 30 L225 65 L205 63 L230 108 L185 58 L207 59 Z" fill="#ffdf4d" stroke="#111" stroke-width="2"/>':'';
   const emo=c.acao==='emoção'?'<path d="M205 48 C215 28 245 45 225 72 C213 88 205 98 205 98 C205 98 197 88 185 72 C165 45 195 28 205 48Z" fill="#e85b71" stroke="#111" stroke-width="2"/>':'';
+
   return `<svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg">
   <rect width="300" height="160" fill="${pal.ceU}"/>
   <rect y="105" width="300" height="55" fill="${pal.chao}"/>
@@ -518,18 +603,15 @@ function svgCena(c){
   ${casa?'<rect x="55" y="58" width="190" height="72" fill="#ead7b7" stroke="#111" stroke-width="3"/><path d="M45 60 L150 20 L255 60 Z" fill="#9b3d2d" stroke="#111" stroke-width="3"/><rect x="132" y="88" width="35" height="42" fill="#6d4328" stroke="#111" stroke-width="2"/><rect x="75" y="78" width="32" height="24" fill="#9bd5ff" stroke="#111"/><rect x="195" y="78" width="32" height="24" fill="#9bd5ff" stroke="#111"/>':''}
   ${fantasia?'<path d="M70 118 L85 45 L105 118 Z" fill="#888" stroke="#111" stroke-width="2"/><path d="M180 118 L195 30 L218 118 Z" fill="#777" stroke="#111" stroke-width="2"/><path d="M95 118 L150 65 L205 118 Z" fill="#b9a26e" stroke="#111" stroke-width="3"/><circle cx="220" cy="42" r="18" fill="#9d2d2d" stroke="#111"/><path d="M220 60 C250 70 245 95 224 88" fill="none" stroke="#9d2d2d" stroke-width="8"/>':''}
   ${futuro?'<rect x="30" y="55" width="240" height="65" rx="10" fill="#24344f" stroke="#7df9ff" stroke-width="3"/><circle cx="85" cy="88" r="22" fill="#7df9ff" opacity=".55"/><rect x="140" y="70" width="82" height="35" fill="#111" stroke="#7df9ff"/><path d="M20 135 H280" stroke="#7df9ff" stroke-width="3" stroke-dasharray="8 8"/>':''}
-  <circle cx="135" cy="76" r="18" fill="${pal.personagem}" stroke="#111" stroke-width="3"/>
-  <rect x="120" y="94" width="30" height="42" rx="8" fill="${pal.roupa}" stroke="#111" stroke-width="3"/>
-  <path d="M120 108 L92 126" stroke="#111" stroke-width="4"/><path d="M150 108 L178 126" stroke="#111" stroke-width="4"/>
-  <path d="M126 80 Q135 88 144 80" fill="none" stroke="#111" stroke-width="2"/>
+  <ellipse cx="135" cy="137" rx="34" ry="10" fill="rgba(0,0,0,.18)"/>
+  <circle cx="135" cy="74" r="20" fill="${pal.personagem}" stroke="#111" stroke-width="3"/>
+  <rect x="119" y="94" width="33" height="43" rx="8" fill="${pal.roupa}" stroke="#111" stroke-width="3"/>
+  <path d="M119 108 L91 126" stroke="#111" stroke-width="5"/><path d="M152 108 L180 126" stroke="#111" stroke-width="5"/>
+  <path d="M128 80 Q135 89 144 80" fill="none" stroke="#111" stroke-width="2"/>
   ${energia}${emo}
   <rect x="8" y="8" width="104" height="24" rx="12" fill="rgba(255,255,255,.82)" stroke="#111"/>
   <text x="60" y="25" font-size="12" text-anchor="middle" font-family="Arial" fill="#111">${escapeSVG(c.acao)}</text>
   </svg>`;
-}
-
-function escapeSVG(s){
-  return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 
 function paleta(estilo,ambiente){
@@ -548,6 +630,7 @@ function svgCapa(titulo,estilo,n){
     ['#f3efe1','#244d86','#111111'],
     ['#7b1e1e','#f5d87a','#ffffff']
   ][n-1];
+
   return `<svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
   <defs><linearGradient id="g${n}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${cores[0]}"/><stop offset="1" stop-color="${cores[1]}"/></linearGradient></defs>
   <rect width="360" height="260" fill="url(#g${n})"/>
@@ -563,7 +646,8 @@ function svgCapa(titulo,estilo,n){
 }
 
 function gerarMontagem(){
-  if(!cenasGeradas.length)gerarHQ();
+  if(!cenasGeradas.length)gerarHQLocal();
+
   const enc=document.getElementById('encadernacao').value;
   const montagem=document.getElementById('montagem');
   montagem.innerHTML='';
@@ -607,13 +691,13 @@ function nomePagina(n){
 }
 
 function salvarProjeto(){
-  if(!cenasGeradas.length)gerarHQ();
+  if(!cenasGeradas.length)gerarHQLocal();
   localStorage.setItem('celeiro_bunker_hq',document.getElementById('roteiro').innerText);
   alert('Projeto HQ salvo no bunker local.');
 }
 
 function enviar(){
-  if(!cenasGeradas.length)gerarHQ();
+  if(!cenasGeradas.length)gerarHQLocal();
   location.href='expedicao_multimidia.html?origem=silo_hq';
 }
 
