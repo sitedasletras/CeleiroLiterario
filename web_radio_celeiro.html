@@ -4,27 +4,84 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Web Rádio Celeiro Literário</title>
+
 <style>
-body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#07101d,#17365d 55%,#eef6ff);color:#0b1d33}.hero{text-align:center;color:#fff5cf;padding:42px 18px;border-bottom:8px solid #d6b354}.hero h1{font-size:clamp(40px,8vw,76px);margin:0}.container{max-width:980px;margin:auto;padding:34px 18px}.card{background:white;border-radius:28px;padding:28px;margin-top:28px;box-shadow:0 18px 45px rgba(0,0,0,.22);border:1px solid #d6b354}.tag{display:inline-block;background:#17365d;color:white;border-radius:999px;padding:8px 16px;font-family:Arial,sans-serif;font-weight:bold}.aviso{margin-top:18px;padding:16px 18px;border-radius:18px;background:#fff8dc;border:1px solid #d6b354;font-family:Arial,sans-serif;text-align:center;color:#17365d}.player{margin-top:24px}.lista{font-family:Arial,sans-serif;line-height:1.55}.btn{display:none;margin-top:24px;padding:12px 22px;border-radius:999px;background:#17365d;color:white;text-decoration:none;font-weight:bold;font-family:Arial,sans-serif}.interno .btn{display:inline-block}</style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(180deg,#07101d,#17365d,#efe2c7);
+    color:white;
+    text-align:center;
+}
+
+h1{
+    color:#f5d87a;
+    margin-top:20px;
+}
+
+.player{
+    margin:20px auto;
+    max-width:900px;
+    border:2px solid gold;
+    border-radius:12px;
+    overflow:hidden;
+}
+
+iframe{
+    width:100%;
+    height:220px;
+    border:0;
+}
+
+.box{
+    background:#111;
+    margin:20px;
+    padding:20px;
+    border-radius:12px;
+    border:1px solid gold;
+}
+
+.btn{
+    display:inline-block;
+    margin:10px;
+    padding:12px 20px;
+    border-radius:999px;
+    background:#d6b354;
+    color:#111;
+    font-weight:bold;
+    text-decoration:none;
+}
+</style>
 </head>
+
 <body>
-<section class="hero"><h1>Web Rádio Celeiro</h1><p>Vitrine sonora institucional</p></section>
-<main class="container">
-<section class="card">
-<span class="tag">Modo Vitrine</span>
-<h2>Programação sonora do Celeiro Literário</h2>
-<p class="lista">Esta vitrine apresenta música ambiente institucional com faixas autorais, SIGMAL Music e seleções livres para uso institucional.</p>
-<div class="aviso">Você está ouvindo a vitrine sonora do Celeiro Literário. A interação completa acontece apenas dentro do Celeiro.</div>
+
+<h1>🎧 Web Rádio Celeiro</h1>
+
 <div class="player">
-<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1cBj8eSxL0gjkHTWmP1WHc?utm_source=generator" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+<iframe src="https://www.youtube.com/embed/videoseries?list=PLsiyqrERtxPJn10VxhIIUM_urU6Ajdomk&autoplay=1&loop=1"></iframe>
 </div>
-<h3>Banco livre provisório</h3>
-<p class="lista">Clássico, atmosférico, cinematográfico leve, piano literário, jazz instrumental, medieval leve, celta leve, documental e trilha narrativa leve — sempre com uso livre ou licença institucional permitida.</p>
-<a class="btn" href="pagina_respiro_celeiro.html">Voltar ao Celeiro</a>
-</section>
-</main>
-<script>
-(function(){const p=new URLSearchParams(location.search);const interno=p.get('modo')==='interno'||localStorage.getItem('celeiro_modo_interno')==='sim';document.body.classList.toggle('interno',interno);})();
-</script>
+
+<div class="box">
+<h2>📢 Chamada Cultural</h2>
+<p>
+Você está ouvindo a Web Rádio Celeiro Literário — música, literatura, arte e criação.<br><br>
+Conheça o Instituto Cultural Celeiro Literário, o Site das Letras Edições Literárias, a SIGMAL e os projetos autorais que transformam histórias em presença no mundo.
+</p>
+</div>
+
+<div class="box">
+<h3>📜 Regras do Celeiro</h3>
+<p>
+✔ Apenas conteúdo livre<br>
+✔ Nada de apostas ou jogos<br>
+✔ Nada que desrespeite ou deprecie a mulher<br>
+✔ Conteúdo cultural e institucional
+</p>
+</div>
+
+<a class="btn" href="web_tv_celeiro.html?modo=interno">Ir para WebTV</a>
+<a class="btn" href="pagina_respiro_celeiro.html?modo=interno">Voltar ao Celeiro</a>
+
 </body>
 </html>
