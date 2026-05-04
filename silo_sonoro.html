@@ -3,37 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Silo Cinematográfico</title>
+<title>Silo Sonoro — Celeiro Multimídia</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#05070c,#10294a,#efe2c7);color:white}.wrap{max-width:1100px;margin:auto;padding:22px}h1{font-family:Georgia,serif;color:#f5d87a;font-size:40px}.card{background:#fff8df;color:#111;border:2px solid #d6b354;border-radius:22px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}input,select,textarea{width:100%;padding:12px;border-radius:12px;border:2px solid #222;margin:6px 0 12px}textarea{min-height:170px}.saida{white-space:pre-wrap;text-align:left;background:white;color:#111;border-radius:14px;padding:14px;min-height:260px}.btn{display:inline-block;border:0;border-radius:999px;padding:13px 18px;margin:6px;background:#d6b354;color:#111;font-weight:900;text-decoration:none;cursor:pointer}.verde{background:#1f7a42;color:white}.sair{background:#8b1e1e;color:white}@media(max-width:800px){.grid{grid-template-columns:1fr}h1{font-size:32px}}
+:root{--fundo:#05070c;--azul:#10294a;--ouro:#d6b354;--papel:#fff8df;--verde:#1f7a42;--vermelho:#8b1e1e}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#05070c,#10294a,#efe2c7);color:white}
+.wrap{max-width:1100px;margin:auto;padding:22px}
+h1{font-family:Georgia,serif;color:#f5d87a;font-size:40px;margin:0 0 8px}
+.card{background:#fff8df;color:#111;border:2px solid var(--ouro);border-radius:22px;padding:18px;margin:16px 0;box-shadow:0 12px 28px rgba(0,0,0,.22)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+input,select,textarea{width:100%;padding:12px;border-radius:12px;border:2px solid #222;margin:6px 0 12px;font-size:15px}
+textarea{min-height:170px;resize:vertical}
+.saida{white-space:pre-wrap;text-align:left;background:white;color:#111;border-radius:14px;padding:14px;min-height:260px;line-height:1.45}
+.btn{display:inline-block;border:0;border-radius:999px;padding:13px 18px;margin:6px;background:var(--ouro);color:#111;font-weight:900;text-decoration:none;cursor:pointer}
+.verde{background:var(--verde);color:white}.sair{background:var(--vermelho);color:white}
+.tag{display:inline-block;background:#111;color:#f5d87a;border-radius:999px;padding:7px 10px;margin:4px;font-size:13px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}h1{font-size:32px}.wrap{padding:14px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<h1>🎬 Silo Cinematográfico</h1>
-<p>Gerador estrutural audiovisual do Celeiro Multimídia: roteiro, cenas, storyboard textual e pacote para expedição.</p>
+<header>
+<h1>🎧 Silo Sonoro</h1>
+<p>Gerador estrutural de narração, audiobook, locução, vinheta, chamada e base para Web Rádio Celeiro.</p>
+<div><span class="tag">Sem trava de entrada</span><span class="tag">Narração</span><span class="tag">Audiobook</span><span class="tag">Web Rádio</span></div>
+</header>
+
 <div class="grid">
 <section class="card">
-<h2>Entrada</h2>
-<input id="tema" placeholder="Título ou tema">
-<select id="base"><option>Ideia original</option><option>Livro completo</option><option>Capítulo</option><option>Poema</option><option>Conto</option><option>Programa</option></select>
-<select id="formato"><option>Trailer literário</option><option>Reels / Shorts</option><option>Curta-metragem</option><option>Web TV Celeiro</option><option>Roteiro cinematográfico</option><option>Storyboard</option></select>
-<select id="duracao"><option>30 segundos</option><option>1 minuto</option><option>3 minutos</option><option>5 minutos</option><option>10 minutos</option><option>20 minutos</option><option>30 minutos</option><option>60 minutos</option></select>
-<select id="estilo"><option>Cinematográfico realista</option><option>Documental</option><option>Épico literário</option><option>Fantasia sombria</option><option>Cyberpunk medieval</option><option>MitoPunkLogia</option><option>Infantojuvenil</option><option>Rural brasileiro</option></select>
-<textarea id="texto" placeholder="Cole sinopse, trecho, capítulo, personagens ou instruções."></textarea>
-<button class="btn verde" onclick="gerar()">Gerar pacote cinematográfico</button><button class="btn" onclick="salvar()">Salvar</button>
+<h2>Entrada sonora</h2>
+<input id="tema" placeholder="Título do projeto, obra ou programa">
+<select id="tipo">
+<option>Audiobook literário</option>
+<option>Narração de capítulo</option>
+<option>Vinheta de abertura</option>
+<option>Chamada para Web Rádio</option>
+<option>Programa Cheiro da Terra</option>
+<option>Podcast literário</option>
+<option>Locução institucional</option>
+<option>Trilha falada para vídeo</option>
+</select>
+<select id="voz">
+<option>Voz grave e narrativa</option>
+<option>Voz suave e acolhedora</option>
+<option>Voz de apresentador</option>
+<option>Voz poética</option>
+<option>Voz documental</option>
+<option>Voz caipira/rural com elegância</option>
+<option>Voz infantil/infantojuvenil</option>
+</select>
+<select id="ritmo">
+<option>Ritmo natural</option>
+<option>Lento e contemplativo</option>
+<option>Rádio dinâmica</option>
+<option>Épico e pausado</option>
+<option>Conversado</option>
+<option>Dramático</option>
+</select>
+<select id="duracao">
+<option>30 segundos</option>
+<option>1 minuto</option>
+<option>3 minutos</option>
+<option>5 minutos</option>
+<option>10 minutos</option>
+<option>20 minutos</option>
+<option>30 minutos</option>
+<option>60 minutos</option>
+</select>
+<textarea id="texto" placeholder="Cole texto, sinopse, roteiro, trecho da obra ou instruções de locução."></textarea>
+<button class="btn verde" onclick="gerar()">Gerar pacote sonoro</button><button class="btn" onclick="salvar()">Salvar</button>
 </section>
+
 <section class="card">
-<h2>Prévia</h2>
+<h2>Prévia sonora</h2>
 <div id="saida" class="saida">Aguardando criação.</div>
-<button class="btn verde" onclick="expedir()">Enviar para Expedição Multimídia</button><a class="btn" href="silo_multimidia.html">Voltar</a><a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
+<button class="btn verde" onclick="expedir()">Enviar para Expedição Multimídia</button>
+<a class="btn" href="silo_multimidia.html">Voltar</a>
+<a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
 </section>
 </div>
 </div>
+
 <script>
 function val(id){return document.getElementById(id).value.trim()}
-function gerar(){var tema=val('tema')||'Projeto sem título';var base=val('base');var formato=val('formato');var duracao=val('duracao');var estilo=val('estilo');var texto=val('texto')||'Sem texto-base colado.';var cenas=[];var total=formato.includes('Reels')?5:formato.includes('Trailer')?7:formato.includes('Curta')?12:9;var fun=['abertura de atmosfera','apresentação do conflito','imagem-símbolo','movimento do protagonista','pressão dramática','virada emocional','cena de impacto','respiro poético','gancho final'];for(var i=1;i<=total;i++){cenas.push('Cena '+i+' — '+fun[i%fun.length]+'\nImagem: '+estilo+'.\nSom: preparar ponte com Silo Sonoro/SIGMAL.\nNarração: frase curta, literária e objetiva.')}var pacote='PACOTE CINEMATOGRÁFICO\n\nTema: '+tema+'\nBase: '+base+'\nFormato: '+formato+'\nDuração: '+duracao+'\nEstilo: '+estilo+'\n\nLEITURA INICIAL\n'+texto.slice(0,900)+'\n\nROTEIRO-MÃE\nAbrir com imagem forte, revelar o centro dramático, transformar a obra em experiência visual e terminar com convite para leitura, escuta ou exibição.\n\nCENAS\n\n'+cenas.join('\n\n')+'\n\nSAÍDAS\nRoteiro textual; storyboard textual; plano de narração; indicação de trilha; pacote para Expedição Multimídia.';document.getElementById('saida').innerText=pacote;localStorage.setItem('celeiro_multimidia_material',JSON.stringify({silo:'Cinematográfico',titulo:tema,formato:formato,duracao:duracao,conteudo:pacote,data:new Date().toLocaleString('pt-BR')}));}
-function salvar(){if(document.getElementById('saida').innerText==='Aguardando criação.')gerar();localStorage.setItem('celeiro_bunker_cinematografico',document.getElementById('saida').innerText);alert('Salvo no bunker local.')}function expedir(){if(document.getElementById('saida').innerText==='Aguardando criação.')gerar();location.href='expedicao_multimidia.html?origem=silo_cinematografico'}
+function gerar(){
+ var tema=val('tema')||'Projeto sonoro sem título';
+ var tipo=val('tipo'), voz=val('voz'), ritmo=val('ritmo'), duracao=val('duracao');
+ var texto=val('texto')||'Sem texto-base colado. Preparar leitura posterior pelo fluxo editorial.';
+ var blocos=[
+  'Abertura: saudação breve, identificação do projeto e atmosfera sonora.',
+  'Corpo: leitura clara, com pausas naturais e respeito ao gênero literário.',
+  'Respiração: marcar pausas entre blocos, poemas, cenas ou capítulos.',
+  'Intenção: manter coerência entre voz, emoção e destino do material.',
+  'Fechamento: convite para leitura, escuta, Web Rádio, Web TV ou Site das Letras.'
+ ];
+ var pacote='PACOTE SONORO — CELEIRO MULTIMÍDIA\n\nProjeto: '+tema+
+ '\nTipo: '+tipo+
+ '\nVoz desejada: '+voz+
+ '\nRitmo: '+ritmo+
+ '\nDuração alvo: '+duracao+
+ '\n\nTEXTO / BASE\n'+texto.slice(0,1200)+
+ '\n\nDIREÇÃO DE NARRAÇÃO\n'+blocos.join('\n')+
+ '\n\nMAPA DE EXECUÇÃO\n1. Preparar texto limpo.\n2. Definir voz e ritmo.\n3. Separar blocos de respiração.\n4. Gerar locução ou roteiro sonoro.\n5. Encaminhar para Expedição Multimídia.\n\nSAÍDAS\nAudiobook; narração; vinheta; chamada de rádio; trilha falada para vídeo; pacote para Web Rádio Celeiro.';
+ document.getElementById('saida').innerText=pacote;
+ localStorage.setItem('celeiro_multimidia_material',JSON.stringify({silo:'Sonoro',titulo:tema,formato:tipo,duracao:duracao,conteudo:pacote,data:new Date().toLocaleString('pt-BR')}));
+}
+function salvar(){
+ if(document.getElementById('saida').innerText==='Aguardando criação.')gerar();
+ localStorage.setItem('celeiro_bunker_sonoro',document.getElementById('saida').innerText);
+ alert('Salvo no bunker local.');
+}
+function expedir(){
+ if(document.getElementById('saida').innerText==='Aguardando criação.')gerar();
+ location.href='expedicao_multimidia.html?origem=silo_sonoro';
+}
 </script>
 </body>
 </html>
