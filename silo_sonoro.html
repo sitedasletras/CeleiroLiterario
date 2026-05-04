@@ -2,23 +2,71 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Silo Sonoro — Joseph Hanan</title>
+<title>Silo Sonoro</title>
 <style>
-:root{--fundo:#07101d;--ouro:#d6b354;--papel:#fff8df;--verde:#1f7a42;--vermelho:#8b1e1e}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#07101d,#10294a,#efe2c7);color:white}.wrap{max-width:1080px;margin:auto;padding:24px 18px 60px}.hero{text-align:center;border-bottom:6px solid var(--ouro);padding:28px 18px;background:#05070c}.hero h1{margin:0;color:#f5d87a;font-family:Georgia,serif;font-size:40px}.card{background:var(--papel);color:#111;border:2px solid var(--ouro);border-radius:22px;padding:20px;margin:18px 0;box-shadow:0 12px 32px rgba(0,0,0,.25)}.duas{display:grid;grid-template-columns:1fr 1fr;gap:18px}label{display:block;font-weight:900;margin:12px 0 6px}select,input,textarea{width:100%;padding:12px;border:2px solid #111;border-radius:12px;font-size:16px}textarea{min-height:110px}table{width:100%;border-collapse:collapse;background:white}td,th{border:1px solid #c9a646;padding:10px}.fala{background:#111;color:#fff;border-radius:18px;padding:18px;line-height:1.45}.btn{display:inline-block;margin:7px;padding:13px 18px;border-radius:999px;background:var(--ouro);color:#111;text-decoration:none;font-weight:900;border:0;cursor:pointer}.verde{background:var(--verde);color:#fff}.sair{background:var(--vermelho);color:#fff}.botoes{text-align:center}.resultado{font-weight:900;color:#1f7a42;font-size:20px}@media(max-width:760px){.duas{grid-template-columns:1fr}.hero h1{font-size:32px}}
+body{font-family:Arial;background:#0b1a2d;color:white;text-align:center;margin:0;padding:20px}
+.box{background:#111;padding:20px;border-radius:15px;margin:15px auto;max-width:700px}
+input,select{padding:10px;margin:5px;width:90%;border-radius:10px;border:none}
+button{padding:12px;border-radius:10px;background:#1f7a42;color:white;border:none;font-weight:bold;cursor:pointer}
+.status{margin-top:10px;color:#f0c96a}
 </style>
-<script>
-function calcular(){let t=Number(document.getElementById('tempo').value||0);let v={10:35,20:60,30:80,60:100}[t]||0;document.getElementById('valor').innerText=v?'Valor: '+v+' reais/dólares':'Escolha a duração';}
-function gerar(){let nome=document.getElementById('projeto').value||'Projeto sonoro';alert('Joseph Hanan recebeu o material: '+nome+'\nA produção sonora foi encaminhada para a Expedição Multimídia.');location.href='expedicao_multimidia.html'}
-</script>
 </head>
+
 <body>
-<header class="hero"><h1>Silo Sonoro</h1><p>Guia: Joseph Hanan — Voz do Celeiro</p></header>
-<main class="wrap">
-<section class="card fala"><strong>Joseph Hanan diz:</strong><br>Bem-vindo ao Silo Sonoro. Aqui sua obra ganha voz. Escolha o tempo, diga o tipo de narração e envie. Eu cuido do caminho técnico para transformar texto em presença sonora.</section>
-<section class="card"><h2>Tabela do Silo Sonoro</h2><table><tr><th>Duração</th><th>Valor</th></tr><tr><td>10 minutos</td><td>35 reais/dólares</td></tr><tr><td>20 minutos</td><td>60 reais/dólares</td></tr><tr><td>30 minutos</td><td>80 reais/dólares</td></tr><tr><td>60 minutos</td><td>100 reais/dólares</td></tr></table></section>
-<section class="card"><h2>Preparar produção sonora</h2><div class="duas"><div><label>Nome do projeto</label><input id="projeto" placeholder="Ex.: Audiobook de estreia"><label>Duração desejada</label><select id="tempo" onchange="calcular()"><option value="">Selecione</option><option value="10">10 minutos</option><option value="20">20 minutos</option><option value="30">30 minutos</option><option value="60">60 minutos</option></select><p id="valor" class="resultado">Escolha a duração</p></div><div><label>Tipo de voz</label><select><option>Narração institucional</option><option>Audiobook literário</option><option>Leitura dramática</option><option>Voz de personagem</option><option>Locução para Web Rádio / Web TV</option></select><label>Observações</label><textarea placeholder="Tom desejado, personagem, clima, intenção..."></textarea></div></div></section>
-<div class="botoes"><button class="btn verde" onclick="gerar()">Gerar / enviar produção sonora</button><a class="btn" href="silo_multimidia.html">Voltar aos Silos</a><a class="btn" href="cicile_reclamacao.html?departamento=Silo%20Sonoro">Reclamar com a CICILE</a><a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a></div>
-</main>
+
+<h1>Silo Sonoro</h1>
+<p><b>Joseph Hanna</b> — Voz do Celeiro</p>
+
+<div class="box">
+<h3>Upload Universal</h3>
+<input type="file" id="arquivo">
+<p id="arquivoNome">Nenhum arquivo</p>
+</div>
+
+<div class="box">
+<h3>Tempo</h3>
+<select id="tempo">
+<option value="">Escolha</option>
+<option value="10">10 min</option>
+<option value="20">20 min</option>
+<option value="30">30 min</option>
+<option value="60">60 min</option>
+</select>
+<button onclick="enviar()">Enviar</button>
+<p class="status" id="status"></p>
+</div>
+
+<script>
+let tempoComprado = localStorage.getItem("tempo") || 0;
+
+document.getElementById("arquivo").addEventListener("change", function(){
+ let f = this.files[0];
+ if(f){
+   localStorage.setItem("arquivoNome", f.name);
+   document.getElementById("arquivoNome").innerText = f.name;
+ }
+});
+
+document.getElementById("arquivoNome").innerText =
+localStorage.getItem("arquivoNome") || "Nenhum arquivo";
+
+function enviar(){
+ let tempo = document.getElementById("tempo").value;
+
+ if(!localStorage.getItem("pagamento")){
+   document.getElementById("status").innerText = "❌ Pagamento não identificado";
+   return;
+ }
+
+ if(tempo > tempoComprado){
+   document.getElementById("status").innerText = "❌ Tempo excede o contratado";
+   return;
+ }
+
+ document.getElementById("status").innerText = "✔ Enviado para Expedição";
+ setTimeout(()=>location.href="expedicao_multimidia.html",1500);
+}
+</script>
+
 </body>
 </html>
