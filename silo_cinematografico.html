@@ -1,25 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Silo Cinematográfico</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#05070c,#10294a,#efe2c7);color:white}.wrap{max-width:1100px;margin:auto;padding:22px}h1{font-family:Georgia,serif;color:#f5d87a;font-size:40px}.card{background:#fff8df;color:#111;border:2px solid #d6b354;border-radius:22px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}input,select,textarea{width:100%;padding:12px;border-radius:12px;border:2px solid #222;margin:6px 0 12px}textarea{min-height:170px}.saida{white-space:pre-wrap;text-align:left;background:white;color:#111;border-radius:14px;padding:14px;min-height:260px}.btn{display:inline-block;border:0;border-radius:999px;padding:13px 18px;margin:6px;background:#d6b354;color:#111;font-weight:900;text-decoration:none;cursor:pointer}.verde{background:#1f7a42;color:white}.sair{background:#8b1e1e;color:white}@media(max-width:800px){.grid{grid-template-columns:1fr}h1{font-size:32px}}
+</style>
 </head>
-<body style="background:#0b1a2f;color:white;text-align:center;font-family:Arial">
-
+<body>
+<div class="wrap">
 <h1>🎬 Silo Cinematográfico</h1>
-
-<input id="tema" placeholder="Tema do vídeo"><br><br>
-
-<textarea id="roteiro" style="width:80%;height:200px"></textarea><br><br>
-
-<button onclick="gerar()">Gerar</button>
-
+<p>Gerador estrutural audiovisual do Celeiro Multimídia: roteiro, cenas, storyboard textual e pacote para expedição.</p>
+<div class="grid">
+<section class="card">
+<h2>Entrada</h2>
+<input id="tema" placeholder="Título ou tema">
+<select id="base"><option>Ideia original</option><option>Livro completo</option><option>Capítulo</option><option>Poema</option><option>Conto</option><option>Programa</option></select>
+<select id="formato"><option>Trailer literário</option><option>Reels / Shorts</option><option>Curta-metragem</option><option>Web TV Celeiro</option><option>Roteiro cinematográfico</option><option>Storyboard</option></select>
+<select id="duracao"><option>30 segundos</option><option>1 minuto</option><option>3 minutos</option><option>5 minutos</option><option>10 minutos</option><option>20 minutos</option><option>30 minutos</option><option>60 minutos</option></select>
+<select id="estilo"><option>Cinematográfico realista</option><option>Documental</option><option>Épico literário</option><option>Fantasia sombria</option><option>Cyberpunk medieval</option><option>MitoPunkLogia</option><option>Infantojuvenil</option><option>Rural brasileiro</option></select>
+<textarea id="texto" placeholder="Cole sinopse, trecho, capítulo, personagens ou instruções."></textarea>
+<button class="btn verde" onclick="gerar()">Gerar pacote cinematográfico</button><button class="btn" onclick="salvar()">Salvar</button>
+</section>
+<section class="card">
+<h2>Prévia</h2>
+<div id="saida" class="saida">Aguardando criação.</div>
+<button class="btn verde" onclick="expedir()">Enviar para Expedição Multimídia</button><a class="btn" href="silo_multimidia.html">Voltar</a><a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
+</section>
+</div>
+</div>
 <script>
-function gerar(){
-let tema = document.getElementById('tema').value;
-document.getElementById('roteiro').value =
-"Tema: "+tema+"\nCena 1\nCena 2\nCena 3";
-}
+function val(id){return document.getElementById(id).value.trim()}
+function gerar(){var tema=val('tema')||'Projeto sem título';var base=val('base');var formato=val('formato');var duracao=val('duracao');var estilo=val('estilo');var texto=val('texto')||'Sem texto-base colado.';var cenas=[];var total=formato.includes('Reels')?5:formato.includes('Trailer')?7:formato.includes('Curta')?12:9;var fun=['abertura de atmosfera','apresentação do conflito','imagem-símbolo','movimento do protagonista','pressão dramática','virada emocional','cena de impacto','respiro poético','gancho final'];for(var i=1;i<=total;i++){cenas.push('Cena '+i+' — '+fun[i%fun.length]+'\nImagem: '+estilo+'.\nSom: preparar ponte com Silo Sonoro/SIGMAL.\nNarração: frase curta, literária e objetiva.')}var pacote='PACOTE CINEMATOGRÁFICO\n\nTema: '+tema+'\nBase: '+base+'\nFormato: '+formato+'\nDuração: '+duracao+'\nEstilo: '+estilo+'\n\nLEITURA INICIAL\n'+texto.slice(0,900)+'\n\nROTEIRO-MÃE\nAbrir com imagem forte, revelar o centro dramático, transformar a obra em experiência visual e terminar com convite para leitura, escuta ou exibição.\n\nCENAS\n\n'+cenas.join('\n\n')+'\n\nSAÍDAS\nRoteiro textual; storyboard textual; plano de narração; indicação de trilha; pacote para Expedição Multimídia.';document.getElementById('saida').innerText=pacote;localStorage.setItem('celeiro_multimidia_material',JSON.stringify({silo:'Cinematográfico',titulo:tema,formato:formato,duracao:duracao,conteudo:pacote,data:new Date().toLocaleString('pt-BR')}));}
+function salvar(){if(document.getElementById('saida').innerText==='Aguardando criação.')gerar();localStorage.setItem('celeiro_bunker_cinematografico',document.getElementById('saida').innerText);alert('Salvo no bunker local.')}function expedir(){if(document.getElementById('saida').innerText==='Aguardando criação.')gerar();location.href='expedicao_multimidia.html?origem=silo_cinematografico'}
 </script>
-
 </body>
 </html>
