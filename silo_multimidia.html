@@ -3,25 +3,290 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Silos Multimídia</title>
+<title>Silos Multimídia — Celeiro Literário</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#05070c,#10294a,#efe2c7);color:white;text-align:center;padding:22px}h1{font-family:Georgia,serif;color:#f5d87a;font-size:44px}.card{background:#fff8df;color:#111;border:2px solid #d6b354;border-radius:22px;padding:20px;margin:16px auto;max-width:900px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.silo{background:#111;color:white;border:1px solid #d6b354;border-radius:18px;padding:18px}.silo h2{color:#f5d87a}.btn{display:inline-block;padding:12px 18px;border-radius:999px;background:#d6b354;color:#111;text-decoration:none;font-weight:900;margin:6px}.verde{background:#1f7a42;color:white}.sair{background:#8b1e1e;color:white}@media(max-width:760px){.grid{grid-template-columns:1fr}}
+:root{
+  --azul:#07182b;
+  --azul2:#0f2a47;
+  --ouro:#d6b354;
+  --papel:#fff8df;
+  --verde:#1f7a42;
+  --vermelho:#8b1e1e;
+  --turquesa:#197d7a;
+  --roxo:#41246b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:linear-gradient(180deg,#06111f,#102b49,#efe2c7);
+  color:#fff;
+}
+header{
+  text-align:center;
+  padding:28px 16px;
+  background:#07101d;
+  border-bottom:6px solid var(--ouro);
+}
+header h1{
+  margin:0;
+  color:#f5d87a;
+  font-family:Georgia,serif;
+  font-size:42px;
+}
+header p{
+  max-width:850px;
+  margin:12px auto 0;
+  line-height:1.5;
+}
+.wrap{
+  max-width:1180px;
+  margin:auto;
+  padding:22px;
+}
+.painel{
+  background:var(--papel);
+  color:#111;
+  border:2px solid var(--ouro);
+  border-radius:22px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 14px 34px rgba(0,0,0,.28);
+}
+.painel h2{
+  margin-top:0;
+  font-family:Georgia,serif;
+  color:#07182b;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:16px;
+}
+.card{
+  border:2px solid #111;
+  border-radius:18px;
+  background:#fff;
+  color:#111;
+  padding:18px;
+  min-height:235px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  box-shadow:0 8px 18px rgba(0,0,0,.12);
+}
+.card h3{
+  margin:0 0 8px;
+  font-family:Georgia,serif;
+  font-size:24px;
+}
+.card p{
+  line-height:1.45;
+  margin:0 0 12px;
+}
+.selo{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#111;
+  color:#f5d87a;
+  font-weight:900;
+  font-size:12px;
+  margin-bottom:10px;
+}
+.btn{
+  display:inline-block;
+  text-align:center;
+  text-decoration:none;
+  border:0;
+  border-radius:999px;
+  padding:12px 15px;
+  font-weight:900;
+  cursor:pointer;
+  background:var(--ouro);
+  color:#111;
+}
+.btn.verde{background:var(--verde);color:#fff}
+.btn.azul{background:#244d86;color:#fff}
+.btn.roxo{background:var(--roxo);color:#fff}
+.btn.vermelho{background:var(--vermelho);color:#fff}
+.btn.turquesa{background:var(--turquesa);color:#fff}
+.linha{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.aviso{
+  background:#07101d;
+  color:#f5d87a;
+  padding:14px;
+  border-radius:14px;
+  font-weight:900;
+  text-align:center;
+}
+.tipo-hq{border-top:10px solid #1f7a42}
+.tipo-manga{border-top:10px solid #111}
+.tipo-webtoon{border-top:10px solid #197d7a}
+.tipo-europeu{border-top:10px solid #244d86}
+.tipo-graphic{border-top:10px solid #41246b}
+.tipo-cordel{border-top:10px solid #8b1e1e}
+.tipo-cinema{border-top:10px solid #b36b00}
+.tipo-sonoro{border-top:10px solid #2a66d6}
+.tipo-music{border-top:10px solid #7b1e7b}
+footer{
+  text-align:center;
+  padding:24px;
+  color:#fff8df;
+}
+@media(max-width:700px){
+  header h1{font-size:32px}
+  .wrap{padding:14px}
+}
 </style>
 </head>
+
 <body>
-<h1>Silos Multimídia</h1>
-<p>Criação audiovisual, sonora, musical e HQ do Celeiro Literário</p>
-<section class="card"><h2>Acesso liberado</h2><p>Escolha um Silo para trabalhar.</p></section>
-<section class="card"><div class="grid">
-<div class="silo"><h2>🎬 Silo Cinematográfico</h2><p>Roteiros, cenas e material audiovisual.</p><a class="btn verde" href="silo_cinematografico.html?modo=interno">Abrir</a></div>
-<div class="silo"><h2>🎧 Silo Sonoro</h2><p>Narrações, vinhetas e chamadas.</p><a class="btn verde" href="silo_sonoro.html?modo=interno">Abrir</a></div>
-<div class="silo"><h2>🎵 Silo Music</h2><p>Músicas, trilhas e bases SIGMAL.</p><a class="btn verde" href="silo_music.html?modo=interno">Abrir</a></div>
-<div class="silo"><h2>📖 Silo HQ</h2><p>HQ, quadros, páginas e cenas.</p><a class="btn verde" href="silo_hq.html?modo=interno">Abrir</a></div>
-</div></section>
-<section class="card"><p><strong>Fluxo:</strong> Silo → Expedição Multimídia → CORSI → WebTV / WebRádio / Redes.</p></section>
-<a class="btn" href="web_tv_celeiro.html?modo=interno">WebTV</a>
-<a class="btn" href="web_radio_celeiro.html?modo=interno">Web Rádio</a>
-<a class="btn" href="departamento_corsi_circulacao_redes.html?modo=interno">CORSI</a>
-<a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
+
+<header>
+  <h1>🎬 Silos Multimídia</h1>
+  <p>Centro de entrada dos Silos do Celeiro Literário. Aqui o autor escolhe o tipo de produção e o sistema encaminha para o motor correto: HQ, mangá, webtoon, cinema, som, música e expedição multimídia.</p>
+</header>
+
+<main class="wrap">
+
+<section class="painel">
+  <h2>1. Silo HQ — escolha o formato visual narrativo</h2>
+  <p>Essas são as portas corretas do Silo HQ. Todas entram no mesmo editor inteligente, mas cada botão leva o estilo inicial já marcado para orientar o motor.</p>
+
+  <div class="grid">
+
+    <div class="card tipo-hq">
+      <div>
+        <span class="selo">Brasil</span>
+        <h3>HQ brasileira</h3>
+        <p>Formato de quadrinhos brasileiros, páginas tradicionais, colorido ou editorial, bom para gibi, infantil, aventura, humor e narrativa seriada.</p>
+      </div>
+      <a class="btn verde" href="silo_hq.html?modo=interno&tipo=hq-brasileira&estilo=HQ%20brasileira%20colorida">Entrar em HQ brasileira</a>
+    </div>
+
+    <div class="card tipo-manga">
+      <div>
+        <span class="selo">Japão</span>
+        <h3>Mangá japonês</h3>
+        <p>Formato inspirado no mangá: preto e branco, impacto emocional, leitura seriada, foco em expressão, ritmo de cena e dramaticidade visual.</p>
+      </div>
+      <a class="btn" href="silo_hq.html?modo=interno&tipo=manga-japones&estilo=Mang%C3%A1%20preto%20e%20branco">Entrar em mangá</a>
+    </div>
+
+    <div class="card tipo-webtoon">
+      <div>
+        <span class="selo">Coreia</span>
+        <h3>Webtoon coreano</h3>
+        <p>Formato vertical para celular, rolagem contínua, colorido, com respiro entre cenas e ritmo ideal para publicação digital.</p>
+      </div>
+      <a class="btn turquesa" href="silo_hq.html?modo=interno&tipo=webtoon-coreano&estilo=Webtoon%20vertical">Entrar em webtoon</a>
+    </div>
+
+    <div class="card tipo-europeu">
+      <div>
+        <span class="selo">Europa</span>
+        <h3>Gibi europeu / BD</h3>
+        <p>Bande dessinée / álbum europeu: páginas mais elegantes, ritmo visual de álbum, quadros amplos e composição mais literária.</p>
+      </div>
+      <a class="btn azul" href="silo_hq.html?modo=interno&tipo=gibi-europeu&estilo=Graphic%20novel%20europeia">Entrar em gibi europeu</a>
+    </div>
+
+    <div class="card tipo-graphic">
+      <div>
+        <span class="selo">Literário</span>
+        <h3>Graphic novel</h3>
+        <p>Formato mais adulto, artístico e narrativo, indicado para histórias densas, dramáticas, psicológicas ou cinematográficas.</p>
+      </div>
+      <a class="btn roxo" href="silo_hq.html?modo=interno&tipo=graphic-novel&estilo=Graphic%20novel%20sombria">Entrar em graphic novel</a>
+    </div>
+
+    <div class="card tipo-cordel">
+      <div>
+        <span class="selo">Popular</span>
+        <h3>Cordel visual</h3>
+        <p>Entrada para HQ em estética de cordel, xilogravura, carimbo e narrativa popular brasileira com força visual própria.</p>
+      </div>
+      <a class="btn vermelho" href="silo_hq.html?modo=interno&tipo=cordel-visual&estilo=Cordel%20em%20xilogravura">Entrar em cordel visual</a>
+    </div>
+
+  </div>
+</section>
+
+<section class="painel">
+  <h2>2. Outros Silos Multimídia</h2>
+  <p>Depois do Silo HQ, estes são os demais motores do Celeiro Multimídia. Eles ficam separados para não pesar a HTML e serão conectados ao Engine central.</p>
+
+  <div class="grid">
+
+    <div class="card tipo-cinema">
+      <div>
+        <span class="selo">Vídeo</span>
+        <h3>Silo Cinematográfico</h3>
+        <p>Criação de roteiro audiovisual, cenas, planos, chamadas, vídeos curtos e futuros materiais para WebTV, Reels, Shorts e TikTok.</p>
+      </div>
+      <a class="btn" href="silo_cinematografico.html?modo=interno">Entrar no Silo Cinematográfico</a>
+    </div>
+
+    <div class="card tipo-sonoro">
+      <div>
+        <span class="selo">Voz</span>
+        <h3>Silo Sonoro</h3>
+        <p>Narração, audiobook, chamada cultural, vinhetas, material para Web Rádio Celeiro e futuras vozes institucionais.</p>
+      </div>
+      <a class="btn azul" href="silo_sonoro.html?modo=interno">Entrar no Silo Sonoro</a>
+    </div>
+
+    <div class="card tipo-music">
+      <div>
+        <span class="selo">Música</span>
+        <h3>Silo Music</h3>
+        <p>Criação musical, letras, estilos, programação musical, SIGMAL Music e futuros conteúdos da Web Rádio e WebTV.</p>
+      </div>
+      <a class="btn roxo" href="silo_music.html?modo=interno">Entrar no Silo Music</a>
+    </div>
+
+  </div>
+</section>
+
+<section class="painel">
+  <h2>3. Fluxo oficial</h2>
+  <div class="aviso">
+    Silo escolhido → Motor Vercel → CORSI seleção → Expedição Multimídia → WebTV / Web Rádio / Bunker da Obra
+  </div>
+</section>
+
+<section class="painel">
+  <h2>4. Navegação</h2>
+  <div class="linha">
+    <a class="btn azul" href="expedicao_multimidia.html">Ir para Expedição Multimídia</a>
+    <a class="btn" href="corsi.html">Ir para CORSI</a>
+    <a class="btn verde" href="web_tv_celeiro.html">WebTV Celeiro</a>
+    <a class="btn turquesa" href="web_radio_celeiro.html">Web Rádio Celeiro</a>
+    <a class="btn vermelho" href="portal_instituto_celeiro_literario.html">Sair</a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Celeiro Literário — Site das Letras Edições Literárias — SIGMAL
+</footer>
+
+<script>
+(function aplicarParametros(){
+  const params = new URLSearchParams(location.search);
+  const origem = params.get("origem");
+  if(origem){
+    console.log("Entrada nos Silos Multimídia a partir de:", origem);
+  }
+})();
+</script>
+
 </body>
 </html>
