@@ -1,60 +1,23 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-<meta charset="UTF-8">
 <title>Silo Cinematográfico</title>
-<style>
-body{font-family:Arial;background:#05070c;color:white;text-align:center;margin:0;padding:20px}
-.box{background:#111;padding:20px;border-radius:15px;margin:15px auto;max-width:700px}
-input,select,textarea{padding:10px;margin:5px;width:90%;border-radius:10px;border:none}
-button{padding:12px;border-radius:10px;background:#1f7a42;color:white;border:none;font-weight:bold;cursor:pointer}
-.status{margin-top:10px;color:#f0c96a}
-</style>
 </head>
+<body style="background:#0b1a2f;color:white;text-align:center;font-family:Arial">
 
-<body>
+<h1>🎬 Silo Cinematográfico</h1>
 
-<h1>Silo Cinematográfico</h1>
-<p><b>Stan Barbera</b></p>
+<input id="tema" placeholder="Tema do vídeo"><br><br>
 
-<div class="box">
-<h3>Material</h3>
-<p id="arquivoNome"></p>
-</div>
+<textarea id="roteiro" style="width:80%;height:200px"></textarea><br><br>
 
-<div class="box">
-<select id="tempo">
-<option value="">Tempo</option>
-<option value="10">10 min</option>
-<option value="20">20 min</option>
-<option value="30">30 min</option>
-<option value="60">60 min</option>
-</select>
-
-<button onclick="enviar()">Gerar Vídeo</button>
-<p id="status" class="status"></p>
-</div>
+<button onclick="gerar()">Gerar</button>
 
 <script>
-document.getElementById("arquivoNome").innerText =
-localStorage.getItem("arquivoNome") || "Nenhum arquivo";
-
-function enviar(){
- let tempo = document.getElementById("tempo").value;
- let tempoComprado = localStorage.getItem("tempo") || 0;
-
- if(!localStorage.getItem("pagamento")){
-   document.getElementById("status").innerText = "❌ Pagamento necessário";
-   return;
- }
-
- if(tempo > tempoComprado){
-   document.getElementById("status").innerText = "❌ Tempo insuficiente";
-   return;
- }
-
- document.getElementById("status").innerText = "✔ Produção iniciada";
- setTimeout(()=>location.href="expedicao_multimidia.html",1500);
+function gerar(){
+let tema = document.getElementById('tema').value;
+document.getElementById('roteiro').value =
+"Tema: "+tema+"\nCena 1\nCena 2\nCena 3";
 }
 </script>
 
