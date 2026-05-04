@@ -1,0 +1,1 @@
+{"name":"celeiro-literario-hotmart-bridge","version":"1.0.0","private":true,"type":"module","dependencies":{"@vercel/kv":"latest"},"scripts":{"dev":"vercel dev"}}
