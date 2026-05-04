@@ -12,6 +12,7 @@
   --papel:#fff8df;
   --vermelho:#8b1e1e;
   --verde:#1f7a42;
+  --turquesa:#197d7a;
 }
 *{box-sizing:border-box}
 body{
@@ -32,7 +33,7 @@ body{
   font-family:Georgia,serif;
   font-size:40px;
 }
-.wrap{max-width:1220px;margin:auto;padding:20px}
+.wrap{max-width:1240px;margin:auto;padding:20px}
 .painel{
   background:var(--papel);
   color:#111;
@@ -50,7 +51,7 @@ select,input,textarea{
   border-radius:12px;
   font-size:15px;
 }
-textarea{min-height:180px;resize:vertical}
+textarea{min-height:190px;resize:vertical}
 .duas{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .tres{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .btn{
@@ -66,6 +67,7 @@ textarea{min-height:180px;resize:vertical}
   cursor:pointer;
 }
 .verde{background:var(--verde);color:#fff}
+.azul{background:#244d86;color:#fff}
 .sair{background:var(--vermelho);color:#fff}
 .botoes{text-align:center}
 .aviso-upload{
@@ -78,43 +80,68 @@ textarea{min-height:180px;resize:vertical}
   padding:10px;
   line-height:1.45;
 }
+.contador{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px;
+  justify-content:center;
+}
+.chip{
+  background:#111;
+  color:#f5d87a;
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:13px;
+  font-weight:900;
+}
+.paginasWrap{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+  gap:18px;
+}
 .pagina{
-  width:100%;
-  max-width:640px;
   background:#fff;
-  margin:18px auto;
   border:4px solid #111;
-  box-shadow:0 12px 35px rgba(0,0,0,.45);
+  box-shadow:0 12px 35px rgba(0,0,0,.32);
   padding:12px;
+  min-height:620px;
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
+  align-content:start;
+}
+.pagina h3{
+  grid-column:1/3;
+  margin:0 0 4px;
+  font-family:Georgia,serif;
+  color:#111;
+  text-align:center;
 }
 .quadro{
   border:3px solid #111;
   background:#f2f2f2;
-  min-height:180px;
+  min-height:230px;
   color:#111;
   padding:8px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
+  overflow:hidden;
 }
-.quadro.grande{grid-column:1/3;min-height:230px}
-.cenaTitulo{font-weight:900;font-size:14px}
-.desenho{
-  background:linear-gradient(135deg,#ddd,#fff);
-  border:1px dashed #555;
+.quadro.grande{grid-column:1/3;min-height:260px}
+.cenaTitulo{font-weight:900;font-size:13px;margin-bottom:6px}
+.imgHQ{
+  border:2px solid #111;
   border-radius:10px;
-  min-height:82px;
+  min-height:126px;
   display:flex;
   align-items:center;
   justify-content:center;
-  text-align:center;
-  font-size:12px;
-  color:#333;
-  padding:6px;
+  overflow:hidden;
+  background:#ddd;
 }
+.imgHQ svg{width:100%;height:145px;display:block}
 .balao{
   background:white;
   border:2px solid #111;
@@ -124,12 +151,13 @@ textarea{min-height:180px;resize:vertical}
   font-size:13px;
 }
 .prompt{
-  font-size:12px;
+  font-size:11px;
   background:#fff8df;
   border:1px solid #c9a646;
   border-radius:10px;
-  padding:8px;
+  padding:7px;
   margin-top:8px;
+  line-height:1.25;
 }
 .lista{
   white-space:pre-wrap;
@@ -139,30 +167,55 @@ textarea{min-height:180px;resize:vertical}
   border:1px solid #c9a646;
   padding:14px;
   line-height:1.45;
+  max-height:520px;
+  overflow:auto;
 }
 .capas{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .capa{
-  min-height:230px;
+  min-height:260px;
   border:4px solid #111;
   border-radius:16px;
+  overflow:hidden;
+  cursor:pointer;
+  position:relative;
+  background:#111;
+}
+.capa svg{width:100%;height:260px;display:block}
+.capa.escolhida{outline:6px solid var(--verde)}
+.montagemGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;
+}
+.folha{
+  background:white;
+  border:3px solid #111;
+  border-radius:14px;
+  color:#111;
+  padding:10px;
+}
+.folha h4{text-align:center;margin:0 0 8px}
+.abertura{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border:2px solid #111;
+  min-height:130px;
+}
+.pagImp{
+  border:1px dashed #555;
   display:flex;
   align-items:center;
   justify-content:center;
-  text-align:center;
-  padding:14px;
-  font-size:24px;
   font-weight:900;
-  cursor:pointer;
+  background:#f4f4f4;
+  padding:8px;
+  text-align:center;
 }
-.capa.um{background:linear-gradient(135deg,#ffd34d,#111);color:white}
-.capa.dois{background:linear-gradient(135deg,#222,#eee);color:#111}
-.capa.tres{background:linear-gradient(135deg,#7b1e1e,#f5d87a);color:white}
-.capa.escolhida{outline:6px solid var(--verde)}
 @media(max-width:850px){
   .duas,.tres,.capas{grid-template-columns:1fr}
   .topo h1{font-size:32px}
   .pagina{grid-template-columns:1fr}
-  .quadro.grande{grid-column:1}
+  .pagina h3,.quadro.grande{grid-column:1}
 }
 </style>
 </head>
@@ -170,7 +223,7 @@ textarea{min-height:180px;resize:vertical}
 <body>
 <header class="topo">
 <h1>Editor HQ Inteligente</h1>
-<p>Suba ou cole uma história. O sistema cria cenas, diálogos, balões e prompts de imagem.</p>
+<p>Suba ou cole uma história. O sistema cria cenas, imagens simbólicas, diálogos, balões, capa e montagem de impressão.</p>
 </header>
 
 <main class="wrap">
@@ -181,10 +234,10 @@ textarea{min-height:180px;resize:vertical}
 <div class="duas">
 <div>
 <label>Título da HQ</label>
-<input id="titulo" oninput="atualizarTitulo()" placeholder="Digite o título">
+<input id="titulo" oninput="atualizarCapas()" placeholder="Digite o título">
 
 <label>Tipo visual</label>
-<select id="estilo">
+<select id="estilo" onchange="atualizarCapas()">
 <option>HQ brasileira colorida</option>
 <option>Graphic novel sombria</option>
 <option>Mangá preto e branco</option>
@@ -194,12 +247,10 @@ textarea{min-height:180px;resize:vertical}
 <option>Cyberpunk medieval</option>
 </select>
 
-<label>Quantidade de quadros</label>
-<select id="qtd">
-<option value="6">6 quadros</option>
-<option value="8">8 quadros</option>
-<option value="10">10 quadros</option>
-<option value="12">12 quadros</option>
+<label>Tipo de encadernação</label>
+<select id="encadernacao">
+<option value="grampeado">Grampeado / canoa</option>
+<option value="colado">Colado / lombada simples</option>
 </select>
 </div>
 
@@ -224,33 +275,32 @@ Em breve, o sistema fará a leitura automática desses formatos.
 </div>
 
 <label>Cole a história, sinopse ou capítulo</label>
-<textarea id="historia" placeholder="Cole aqui a história. Ex.: João entrou na mata, ouviu um assobio, encontrou uma menina com uma lamparina..."></textarea>
+<textarea id="historia" placeholder="Cole aqui a história inteira. O sistema cria quantas páginas forem necessárias até terminar a narrativa."></textarea>
 
 <div class="botoes">
-<button class="btn verde" onclick="gerarHQ()">Gerar cenas, diálogos e prompts</button>
+<button class="btn verde" onclick="gerarHQ()">Gerar HQ completa</button>
+<button class="btn azul" onclick="gerarMontagem()">Ver montagem grampeada/colada</button>
 <button class="btn" onclick="salvarProjeto()">Salvar projeto</button>
+</div>
+
+<div class="contador">
+<span class="chip" id="chipCenas">0 quadros</span>
+<span class="chip" id="chipPaginas">0 páginas</span>
+<span class="chip" id="chipFolhas">0 folhas</span>
 </div>
 </section>
 
 <section class="painel">
-<h2>2. Prévia de páginas</h2>
-<p>O autor não precisa desenhar: cada quadro já sai com direção de imagem, diálogo e prompt para gerar imagem em ferramenta visual.</p>
-
-<div id="preview" class="pagina">
+<h2>2. Prévia visual da HQ</h2>
+<p>Agora cada quadro recebe uma imagem simbólica gerada no navegador. Ela não substitui IA de imagem profissional, mas já mostra composição, ambiente, personagem e clima visual.</p>
+<div id="preview" class="paginasWrap">
+<div class="pagina">
+<h3>Página 1</h3>
 <div class="quadro grande">
 <div class="cenaTitulo">Cena principal</div>
-<div class="desenho">Aguardando história</div>
+<div class="imgHQ">Aguardando história</div>
 <div class="balao">Balão será criado automaticamente.</div>
 </div>
-<div class="quadro">
-<div class="cenaTitulo">Quadro 2</div>
-<div class="desenho">Imagem</div>
-<div class="balao">Diálogo</div>
-</div>
-<div class="quadro">
-<div class="cenaTitulo">Quadro 3</div>
-<div class="desenho">Imagem</div>
-<div class="balao">Diálogo</div>
 </div>
 </div>
 </section>
@@ -261,11 +311,16 @@ Em breve, o sistema fará a leitura automática desses formatos.
 </section>
 
 <section class="painel">
-<h2>4. Sugestões de capa</h2>
-<div class="capas">
-<div id="capa1" class="capa um" onclick="escolherCapa(1)"><span class="tituloCapa">TÍTULO DA HQ</span></div>
-<div id="capa2" class="capa dois" onclick="escolherCapa(2)"><span class="tituloCapa">TÍTULO DA HQ</span></div>
-<div id="capa3" class="capa tres" onclick="escolherCapa(3)"><span class="tituloCapa">TÍTULO DA HQ</span></div>
+<h2>4. Capas geradas</h2>
+<p>Escolha uma base. Depois a arte pode ser refinada no OKapista, mas aqui o sistema já monta uma capa visual inicial.</p>
+<div id="capas" class="capas"></div>
+</section>
+
+<section class="painel">
+<h2>5. Montagem de impressão</h2>
+<p>Para gibi grampeado/canoa, as páginas precisam fechar em múltiplos de 4. O sistema adiciona páginas em branco quando necessário e mostra a ordem de montagem.</p>
+<div id="montagem" class="montagemGrid">
+<div class="lista">Gere a HQ e clique em “Ver montagem grampeada/colada”.</div>
 </div>
 </section>
 
@@ -280,10 +335,26 @@ Em breve, o sistema fará a leitura automática desses formatos.
 
 <script>
 let cenasGeradas=[];
+let totalPaginas=0;
+let totalPaginasImpressao=0;
 
-function atualizarTitulo(){
-  const t=document.getElementById('titulo').value||'TÍTULO DA HQ';
-  document.querySelectorAll('.tituloCapa').forEach(e=>e.innerText=t);
+function escapeHTML(s){
+  return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function atualizarCapas(){
+  const titulo=document.getElementById('titulo').value||'TÍTULO DA HQ';
+  const estilo=document.getElementById('estilo').value;
+  const capas=document.getElementById('capas');
+  capas.innerHTML='';
+  [1,2,3].forEach(n=>{
+    const div=document.createElement('div');
+    div.className='capa';
+    div.id='capa'+n;
+    div.onclick=()=>escolherCapa(n);
+    div.innerHTML=svgCapa(titulo,estilo,n);
+    capas.appendChild(div);
+  });
 }
 
 function aplicarFonte(){
@@ -293,7 +364,8 @@ function aplicarFonte(){
 
 function escolherCapa(n){
   document.querySelectorAll('.capa').forEach(c=>c.classList.remove('escolhida'));
-  document.getElementById('capa'+n).classList.add('escolhida');
+  const el=document.getElementById('capa'+n);
+  if(el)el.classList.add('escolhida');
 }
 
 function lerArquivo(ev){
@@ -314,15 +386,38 @@ function lerArquivo(ev){
   }
 }
 
-function cortarFrases(txt){
-  return txt.replace(/\s+/g,' ')
-    .split(/(?<=[.!?])\s+/)
-    .map(s=>s.trim())
-    .filter(Boolean);
+function cortarUnidades(txt){
+  const limpo=txt.replace(/\s+/g,' ').trim();
+  if(!limpo)return [];
+  let partes=limpo.split(/(?<=[.!?])\s+/).map(s=>s.trim()).filter(Boolean);
+  if(partes.length<4){
+    partes=limpo.match(/.{1,180}(\s|$)/g)?.map(s=>s.trim()).filter(Boolean)||[limpo];
+  }
+  return partes;
+}
+
+function detectarAmbiente(t){
+  const s=t.toLowerCase();
+  if(/floresta|mata|árvore|rio|bosque|roça|campo/.test(s))return 'floresta';
+  if(/cidade|rua|prédio|avenida|ônibus|carro/.test(s))return 'cidade';
+  if(/casa|quarto|sala|cozinha|porta|janela/.test(s))return 'casa';
+  if(/escola|professor|aluno|classe/.test(s))return 'escola';
+  if(/castelo|rei|rainha|cavaleiro|dragão/.test(s))return 'fantasia';
+  if(/nave|robô|máquina|futuro|computador/.test(s))return 'futuro';
+  return 'neutro';
+}
+
+function detectarAcao(t){
+  const s=t.toLowerCase();
+  if(/correu|fugiu|saltou|gritou|lutou|atacou/.test(s))return 'ação';
+  if(/chorou|sentiu|lembrou|saudade|medo|triste/.test(s))return 'emoção';
+  if(/olhou|viu|percebeu|encontrou|descobriu/.test(s))return 'descoberta';
+  if(/falou|disse|perguntou|respondeu/.test(s))return 'diálogo';
+  return 'narrativa';
 }
 
 function falaDaCena(frase,i){
-  let limpa=frase.replace(/["“”]/g,'').slice(0,95);
+  let limpa=frase.replace(/["“”]/g,'').slice(0,90);
   if(limpa.length<18)limpa='Algo importante acontece neste momento.';
   const prefixos=[
     'Eu preciso entender isso.',
@@ -330,59 +425,67 @@ function falaDaCena(frase,i){
     'Não era para ser assim.',
     'Vamos continuar.',
     'Espere... ouvi alguma coisa.',
-    'Isso muda tudo.'
+    'Isso muda tudo.',
+    'A história ainda não acabou.'
   ];
-  return i%3===0?prefixos[i%prefixos.length]:limpa;
+  return i%4===0?prefixos[i%prefixos.length]:limpa;
 }
 
 function gerarHQ(){
   const titulo=document.getElementById('titulo').value||'HQ sem título';
   const estilo=document.getElementById('estilo').value;
-  const qtd=parseInt(document.getElementById('qtd').value,10);
   const historia=document.getElementById('historia').value.trim()||'Um personagem encontra um mistério, segue sinais, enfrenta um obstáculo e termina diante de uma revelação.';
-  const frases=cortarFrases(historia);
+  const unidades=cortarUnidades(historia);
 
-  cenasGeradas=[];
-
-  for(let i=0;i<qtd;i++){
-    const base=frases[i%frases.length]||historia;
-    const plano=i===0?'plano aberto de apresentação':i===qtd-1?'plano de impacto final':i%2?'plano médio com ação':'close expressivo';
-    const prompt=estilo+', '+plano+', cena baseada em: '+base.slice(0,140)+', composição editorial para quadrinhos, sem texto na imagem, espaço para balões.';
-    cenasGeradas.push({
-      n:i+1,
-      cena:base,
-      dialogo:falaDaCena(base,i),
-      prompt:prompt
-    });
-  }
+  cenasGeradas=unidades.map((base,i)=>{
+    const ambiente=detectarAmbiente(base);
+    const acao=detectarAcao(base);
+    const plano=i===0?'plano aberto de apresentação':i===unidades.length-1?'plano de impacto final':i%3===0?'close expressivo':i%2?'plano médio com ação':'plano geral narrativo';
+    const prompt=estilo+', '+plano+', ambiente '+ambiente+', ação '+acao+', cena baseada em: '+base.slice(0,150)+', composição editorial para quadrinhos, sem texto na imagem, espaço para balões.';
+    return {n:i+1,cena:base,dialogo:falaDaCena(base,i),prompt,ambiente,acao,estilo};
+  });
 
   renderPreview();
   renderRoteiro(titulo,estilo);
+  atualizarCapas();
+  gerarMontagem();
 }
 
 function renderPreview(){
   const cont=document.getElementById('preview');
   cont.innerHTML='';
+  const porPagina=4;
+  totalPaginas=Math.ceil(cenasGeradas.length/porPagina);
 
-  cenasGeradas.slice(0,6).forEach((c,i)=>{
-    const q=document.createElement('div');
-    q.className='quadro'+(i===0?' grande':'');
-    q.innerHTML=
-      '<div class="cenaTitulo">Quadro '+c.n+'</div>'+
-      '<div class="desenho">'+c.prompt+'</div>'+
-      '<div class="balao">'+c.dialogo+'</div>'+
-      '<div class="prompt">Prompt: '+c.prompt+'</div>';
-    cont.appendChild(q);
-  });
+  for(let p=0;p<totalPaginas;p++){
+    const pag=document.createElement('div');
+    pag.className='pagina';
+    pag.innerHTML='<h3>Página '+(p+1)+'</h3>';
+    const fatia=cenasGeradas.slice(p*porPagina,p*porPagina+porPagina);
+    fatia.forEach((c,i)=>{
+      const q=document.createElement('div');
+      q.className='quadro'+(i===0?' grande':'');
+      q.innerHTML=
+        '<div class="cenaTitulo">Quadro '+c.n+' — '+escapeHTML(c.acao)+'</div>'+
+        '<div class="imgHQ">'+svgCena(c)+'</div>'+
+        '<div class="balao">'+escapeHTML(c.dialogo)+'</div>'+
+        '<div class="prompt">Prompt: '+escapeHTML(c.prompt)+'</div>';
+      pag.appendChild(q);
+    });
+    cont.appendChild(pag);
+  }
 
+  document.getElementById('chipCenas').innerText=cenasGeradas.length+' quadros';
+  document.getElementById('chipPaginas').innerText=totalPaginas+' páginas';
+  document.getElementById('chipFolhas').innerText=Math.ceil(totalPaginas/4)+' folhas grampeadas';
   aplicarFonte();
 }
 
 function renderRoteiro(titulo,estilo){
-  let txt='ROTEIRO HQ — CELEIRO MULTIMÍDIA\n\nTítulo: '+titulo+'\nEstilo: '+estilo+'\n\n';
+  let txt='ROTEIRO HQ — CELEIRO MULTIMÍDIA\n\nTítulo: '+titulo+'\nEstilo: '+estilo+'\nTotal de quadros: '+cenasGeradas.length+'\nPáginas estimadas: '+totalPaginas+'\n\n';
 
   cenasGeradas.forEach(c=>{
-    txt+='QUADRO '+c.n+'\nCena: '+c.cena+'\nDiálogo/Balão: '+c.dialogo+'\nPrompt de imagem: '+c.prompt+'\n\n';
+    txt+='QUADRO '+c.n+'\nCena: '+c.cena+'\nAmbiente: '+c.ambiente+'\nAção: '+c.acao+'\nDiálogo/Balão: '+c.dialogo+'\nPrompt de imagem: '+c.prompt+'\n\n';
   });
 
   txt+='FLUXO\nEditor HQ → Silo HQ → Expedição Multimídia → WebTV / CORSI / Bunker da Obra.';
@@ -392,10 +495,115 @@ function renderRoteiro(titulo,estilo){
   localStorage.setItem('celeiro_multimidia_material',JSON.stringify({
     silo:'HQ',
     titulo:titulo,
-    formato:'HQ inteligente',
+    formato:'HQ inteligente visual',
     conteudo:txt,
     data:new Date().toLocaleString('pt-BR')
   }));
+}
+
+function svgCena(c){
+  const pal=paleta(c.estilo,c.ambiente);
+  const sol=c.ambiente==='floresta'||c.ambiente==='campo';
+  const cidade=c.ambiente==='cidade';
+  const casa=c.ambiente==='casa'||c.ambiente==='escola';
+  const fantasia=c.ambiente==='fantasia';
+  const futuro=c.ambiente==='futuro';
+  const energia=c.acao==='ação'?'<path d="M200 30 L225 65 L205 63 L230 108 L185 58 L207 59 Z" fill="#ffdf4d" stroke="#111" stroke-width="2"/>':'';
+  const emo=c.acao==='emoção'?'<path d="M205 48 C215 28 245 45 225 72 C213 88 205 98 205 98 C205 98 197 88 185 72 C165 45 195 28 205 48Z" fill="#e85b71" stroke="#111" stroke-width="2"/>':'';
+  return `<svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="160" fill="${pal.ceU}"/>
+  <rect y="105" width="300" height="55" fill="${pal.chao}"/>
+  ${sol?'<circle cx="245" cy="34" r="20" fill="#ffd95a"/><path d="M20 110 C60 55 95 55 130 110" fill="#2c7c45"/><path d="M95 110 C140 45 190 54 230 110" fill="#256b3d"/><rect x="42" y="70" width="12" height="50" fill="#6e4b2a"/><circle cx="48" cy="63" r="28" fill="#2f8f4d"/><rect x="224" y="75" width="11" height="45" fill="#6e4b2a"/><circle cx="230" cy="69" r="25" fill="#2f8f4d"/>':''}
+  ${cidade?'<rect x="20" y="48" width="45" height="72" fill="#56657d" stroke="#111"/><rect x="82" y="25" width="55" height="95" fill="#6e7f9b" stroke="#111"/><rect x="160" y="55" width="42" height="65" fill="#47576d" stroke="#111"/><rect x="220" y="35" width="52" height="85" fill="#6d7890" stroke="#111"/><path d="M0 130 H300" stroke="#111" stroke-width="5"/>':''}
+  ${casa?'<rect x="55" y="58" width="190" height="72" fill="#ead7b7" stroke="#111" stroke-width="3"/><path d="M45 60 L150 20 L255 60 Z" fill="#9b3d2d" stroke="#111" stroke-width="3"/><rect x="132" y="88" width="35" height="42" fill="#6d4328" stroke="#111" stroke-width="2"/><rect x="75" y="78" width="32" height="24" fill="#9bd5ff" stroke="#111"/><rect x="195" y="78" width="32" height="24" fill="#9bd5ff" stroke="#111"/>':''}
+  ${fantasia?'<path d="M70 118 L85 45 L105 118 Z" fill="#888" stroke="#111" stroke-width="2"/><path d="M180 118 L195 30 L218 118 Z" fill="#777" stroke="#111" stroke-width="2"/><path d="M95 118 L150 65 L205 118 Z" fill="#b9a26e" stroke="#111" stroke-width="3"/><circle cx="220" cy="42" r="18" fill="#9d2d2d" stroke="#111"/><path d="M220 60 C250 70 245 95 224 88" fill="none" stroke="#9d2d2d" stroke-width="8"/>':''}
+  ${futuro?'<rect x="30" y="55" width="240" height="65" rx="10" fill="#24344f" stroke="#7df9ff" stroke-width="3"/><circle cx="85" cy="88" r="22" fill="#7df9ff" opacity=".55"/><rect x="140" y="70" width="82" height="35" fill="#111" stroke="#7df9ff"/><path d="M20 135 H280" stroke="#7df9ff" stroke-width="3" stroke-dasharray="8 8"/>':''}
+  <circle cx="135" cy="76" r="18" fill="${pal.personagem}" stroke="#111" stroke-width="3"/>
+  <rect x="120" y="94" width="30" height="42" rx="8" fill="${pal.roupa}" stroke="#111" stroke-width="3"/>
+  <path d="M120 108 L92 126" stroke="#111" stroke-width="4"/><path d="M150 108 L178 126" stroke="#111" stroke-width="4"/>
+  <path d="M126 80 Q135 88 144 80" fill="none" stroke="#111" stroke-width="2"/>
+  ${energia}${emo}
+  <rect x="8" y="8" width="104" height="24" rx="12" fill="rgba(255,255,255,.82)" stroke="#111"/>
+  <text x="60" y="25" font-size="12" text-anchor="middle" font-family="Arial" fill="#111">${escapeSVG(c.acao)}</text>
+  </svg>`;
+}
+
+function escapeSVG(s){
+  return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function paleta(estilo,ambiente){
+  if(estilo.includes('Mangá'))return {ceU:'#e8e8e8',chao:'#c9c9c9',personagem:'#f5f5f5',roupa:'#111'};
+  if(estilo.includes('sombria'))return {ceU:'#1d2430',chao:'#303030',personagem:'#c9b18c',roupa:'#3a2636'};
+  if(estilo.includes('Infantil'))return {ceU:'#9ee7ff',chao:'#8de070',personagem:'#ffd0a8',roupa:'#ff8f3d'};
+  if(estilo.includes('Cordel'))return {ceU:'#f4e1b0',chao:'#d0a24d',personagem:'#f0d5a1',roupa:'#111'};
+  if(estilo.includes('Cyberpunk'))return {ceU:'#27143d',chao:'#122c44',personagem:'#caa27c',roupa:'#00d1ff'};
+  if(ambiente==='floresta')return {ceU:'#a8e6ff',chao:'#4a9b55',personagem:'#d2a075',roupa:'#2d5d34'};
+  return {ceU:'#b8dcff',chao:'#cbb58a',personagem:'#d2a075',roupa:'#244d86'};
+}
+
+function svgCapa(titulo,estilo,n){
+  const cores=[
+    ['#101827','#d6b354','#ffffff'],
+    ['#f3efe1','#244d86','#111111'],
+    ['#7b1e1e','#f5d87a','#ffffff']
+  ][n-1];
+  return `<svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="g${n}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${cores[0]}"/><stop offset="1" stop-color="${cores[1]}"/></linearGradient></defs>
+  <rect width="360" height="260" fill="url(#g${n})"/>
+  <circle cx="280" cy="65" r="45" fill="rgba(255,255,255,.18)"/>
+  <rect x="28" y="38" width="120" height="150" rx="14" fill="rgba(255,255,255,.18)" stroke="${cores[2]}" stroke-width="4"/>
+  <path d="M45 170 C85 80 120 90 135 170" fill="none" stroke="${cores[2]}" stroke-width="8"/>
+  <circle cx="91" cy="93" r="24" fill="${cores[2]}" opacity=".82"/>
+  <text x="190" y="112" font-family="Georgia" font-size="31" font-weight="900" fill="${cores[2]}" text-anchor="middle">${escapeSVG(titulo.slice(0,18))}</text>
+  <text x="190" y="146" font-family="Arial" font-size="14" fill="${cores[2]}" text-anchor="middle">${escapeSVG(estilo)}</text>
+  <rect x="95" y="210" width="170" height="24" rx="12" fill="rgba(0,0,0,.45)"/>
+  <text x="180" y="227" font-family="Arial" font-size="13" font-weight="900" fill="#fff" text-anchor="middle">CELEIRO LITERÁRIO — SILO HQ</text>
+  </svg>`;
+}
+
+function gerarMontagem(){
+  if(!cenasGeradas.length)gerarHQ();
+  const enc=document.getElementById('encadernacao').value;
+  const montagem=document.getElementById('montagem');
+  montagem.innerHTML='';
+
+  totalPaginas=cenasGeradas.length?Math.ceil(cenasGeradas.length/4):1;
+
+  if(enc==='grampeado'){
+    totalPaginasImpressao=Math.ceil(totalPaginas/4)*4;
+    const folhas=totalPaginasImpressao/4;
+    document.getElementById('chipFolhas').innerText=folhas+' folhas grampeadas';
+
+    for(let f=0;f<folhas;f++){
+      const frenteE=totalPaginasImpressao-(2*f);
+      const frenteD=1+(2*f);
+      const versoE=2+(2*f);
+      const versoD=totalPaginasImpressao-(2*f+1);
+
+      const div=document.createElement('div');
+      div.className='folha';
+      div.innerHTML=
+        '<h4>Folha '+(f+1)+' — frente</h4>'+
+        '<div class="abertura"><div class="pagImp">'+nomePagina(frenteE)+'</div><div class="pagImp">'+nomePagina(frenteD)+'</div></div>'+
+        '<h4 style="margin-top:12px">Folha '+(f+1)+' — verso</h4>'+
+        '<div class="abertura"><div class="pagImp">'+nomePagina(versoE)+'</div><div class="pagImp">'+nomePagina(versoD)+'</div></div>';
+      montagem.appendChild(div);
+    }
+  }else{
+    totalPaginasImpressao=totalPaginas;
+    for(let p=1;p<=totalPaginas;p++){
+      const div=document.createElement('div');
+      div.className='folha';
+      div.innerHTML='<h4>Página colada '+p+'</h4><div class="abertura"><div class="pagImp" style="grid-column:1/3">'+nomePagina(p)+'</div></div>';
+      montagem.appendChild(div);
+    }
+  }
+}
+
+function nomePagina(n){
+  if(n>totalPaginas)return 'Página em branco';
+  return 'Página '+n;
 }
 
 function salvarProjeto(){
@@ -408,6 +616,8 @@ function enviar(){
   if(!cenasGeradas.length)gerarHQ();
   location.href='expedicao_multimidia.html?origem=silo_hq';
 }
+
+atualizarCapas();
 </script>
 
 </body>
