@@ -3,213 +3,257 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Silo HQ — Motor Integrado</title>
-
+<title>Silo HQ — Entrada</title>
 <style>
+:root{
+  --azul:#07182b;
+  --azul2:#10294a;
+  --ouro:#d6b354;
+  --papel:#fff8df;
+  --verde:#1f7a42;
+  --vermelho:#8b1e1e;
+  --roxo:#42246b;
+  --turquesa:#197d7a;
+}
+*{box-sizing:border-box}
 body{
   margin:0;
-  font-family:Arial;
-  background:#0f1c2e;
+  font-family:Arial, sans-serif;
+  background:radial-gradient(circle at center,#466d99 0%,#132d4e 45%,#06111f 100%);
   color:#fff;
+  min-height:100vh;
 }
-
-.topo{
-  text-align:center;
-  padding:20px;
-  background:#07101d;
-  border-bottom:4px solid gold;
-}
-
 .wrap{
-  max-width:1000px;
-  margin:auto;
-  padding:20px;
+  max-width:1080px;
+  margin:0 auto;
+  padding:34px 16px 28px;
 }
-
+h1{
+  margin:0;
+  text-align:center;
+  color:#f5d87a;
+  font-family:Georgia,serif;
+  font-size:42px;
+}
+.sub{
+  text-align:center;
+  margin:10px 0 24px;
+  color:#e8eef8;
+  font-weight:700;
+}
 .painel{
-  background:#fff;
+  background:var(--papel);
   color:#111;
-  border-radius:12px;
-  padding:15px;
-  margin-bottom:20px;
+  border-radius:22px;
+  padding:24px;
+  margin:18px auto;
+  border:2px solid rgba(201,166,70,.55);
+  box-shadow:0 12px 30px rgba(0,0,0,.25);
 }
-
-input,select,textarea{
-  width:100%;
-  padding:10px;
-  margin-top:5px;
-  margin-bottom:10px;
+.apresentacao{
+  display:grid;
+  grid-template-columns:230px 1fr;
+  gap:22px;
+  align-items:center;
 }
-
-textarea{
-  min-height:150px;
+.charles-img{
+  width:220px;
+  max-width:100%;
+  border-radius:22px;
+  border:4px solid var(--ouro);
+  background:#fff;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
 }
-
-.btn{
-  padding:12px 20px;
-  border:none;
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
+.fala h2{
+  margin:0 0 8px;
+  color:#263a5f;
+  font-family:Georgia,serif;
+  font-size:30px;
 }
-
-.verde{background:#1f7a42;color:#fff;}
-.azul{background:#2a66d6;color:#fff;}
-
-.status{
-  margin-top:10px;
-  padding:10px;
-  background:#07101d;
+.fala p{
+  margin:0 0 10px;
+  line-height:1.48;
+  color:#333;
+  font-weight:700;
+}
+.fala .assinatura{
+  color:#8b5a12;
+  font-weight:900;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:14px;
+}
+.formato{
+  background:#080d18;
   color:#fff;
-  border-radius:8px;
+  border-radius:16px;
+  min-height:235px;
+  padding:20px 16px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.12);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
 }
-
-.pagina{
-  background:#fff;
+.formato h3{
+  margin:0 0 8px;
+  color:#f5d87a;
+  font-family:Georgia,serif;
+  font-size:23px;
+}
+.formato p{
+  margin:0 0 8px;
+  color:#e9edf6;
+  font-weight:700;
+  line-height:1.35;
+}
+.tag{
+  display:inline-block;
+  margin:0 auto 10px;
+  padding:5px 10px;
+  border-radius:999px;
+  background:#fff8df;
   color:#111;
-  border:3px solid #111;
-  margin-top:20px;
-  padding:10px;
+  font-size:12px;
+  font-weight:900;
 }
-
-.quadro{
-  border:2px solid #111;
-  margin:10px 0;
-  padding:10px;
+.btn{
+  display:inline-block;
+  padding:11px 18px;
+  border-radius:999px;
+  border:0;
+  text-decoration:none;
+  font-weight:900;
+  cursor:pointer;
+  background:var(--ouro);
+  color:#111;
+  font-size:14px;
+}
+.btn.verde{background:var(--verde);color:#fff}
+.btn.azul{background:#244d86;color:#fff}
+.btn.roxo{background:var(--roxo);color:#fff}
+.btn.turquesa{background:var(--turquesa);color:#fff}
+.btn.vermelho{background:var(--vermelho);color:#fff}
+.fluxo{
+  text-align:center;
+  color:#334;
+  font-size:14px;
+}
+.nav{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+@media(max-width:760px){
+  h1{font-size:32px}
+  .painel{padding:18px}
+  .apresentacao{grid-template-columns:1fr;text-align:center}
+  .charles-img{margin:auto}
 }
 </style>
 </head>
 
 <body>
-
-<header class="topo">
-<h1>Silo HQ — Motor Inteligente</h1>
-<p>Integrado ao Celeiro Multimídia Engine</p>
-</header>
-
 <main class="wrap">
 
-<section class="painel">
+  <h1>Silo HQ</h1>
+  <div class="sub">Quadrinhos, mangá, webtoon, graphic novel, gibi europeu e HQ brasileira</div>
 
-<label>Título</label>
-<input id="titulo">
+  <section class="painel">
+    <div class="apresentacao">
+      <img class="charles-img" src="file_00000000fc3071f5972fc0fe7d2ff93e.png" alt="Charles Lee — Guia do Gibi">
+      <div class="fala">
+        <h2>Charles Lee — Guia do Gibi</h2>
+        <p>Bem-vindo ao Silo HQ. Aqui sua história ganha forma em imagens, páginas, balões, ritmo e montagem.</p>
+        <p>Você não precisa começar escolhendo medida técnica. Escolha primeiro o <strong>destino editorial</strong>: HQ brasileira, mangá japonês, webtoon coreano, gibi europeu, HQ americana ou graphic novel.</p>
+        <p>O sistema aplica as configurações certas automaticamente.</p>
+        <p class="assinatura">Você escolhe o caminho. Eu cuido da estrutura.</p>
+      </div>
+    </div>
+  </section>
 
-<label>Estilo</label>
-<select id="estilo">
-<option>HQ brasileira colorida</option>
-<option>Mangá preto e branco</option>
-<option>Webtoon vertical</option>
-<option>Infantil colorido</option>
-</select>
+  <section class="painel">
+    <div class="grid">
 
-<label>História</label>
-<textarea id="historia"></textarea>
+      <div class="formato">
+        <div>
+          <span class="tag">Brasil</span>
+          <h3>HQ brasileira</h3>
+          <p>Para gibi, aventura, humor, infantil, história seriada e páginas tradicionais.</p>
+          <p><strong>Configuração automática:</strong> página editorial, quadros balanceados e impressão comum.</p>
+        </div>
+        <a class="btn verde" href="hq_editor.html?modo=interno&tipo=hq-brasileira&estilo=HQ%20brasileira%20colorida&preset=hq-brasileira">Abrir HQ brasileira</a>
+      </div>
 
-<button class="btn verde" onclick="gerarHQ()">Gerar HQ</button>
+      <div class="formato">
+        <div>
+          <span class="tag">Japão</span>
+          <h3>Mangá japonês</h3>
+          <p>Para leitura seriada, preto e branco, impacto emocional, ação e expressão dramática.</p>
+          <p><strong>Configuração automática:</strong> P&B, ritmo de mangá e leitura orientada ao estilo japonês.</p>
+        </div>
+        <a class="btn" href="hq_editor.html?modo=interno&tipo=manga-japones&estilo=Mang%C3%A1%20preto%20e%20branco&preset=manga-japones">Abrir mangá</a>
+      </div>
 
-<div id="status" class="status">Aguardando...</div>
+      <div class="formato">
+        <div>
+          <span class="tag">Coreia</span>
+          <h3>Webtoon coreano</h3>
+          <p>Para celular, rolagem vertical, cenas com respiro e publicação digital.</p>
+          <p><strong>Configuração automática:</strong> vertical contínuo, quadros espaçados e leitura mobile.</p>
+        </div>
+        <a class="btn turquesa" href="hq_editor.html?modo=interno&tipo=webtoon-coreano&estilo=Webtoon%20vertical&preset=webtoon-coreano">Abrir webtoon</a>
+      </div>
 
-</section>
+      <div class="formato">
+        <div>
+          <span class="tag">Europa</span>
+          <h3>Gibi europeu / BD</h3>
+          <p>Para álbum europeu, visual elegante, composição literária e páginas amplas.</p>
+          <p><strong>Configuração automática:</strong> quadros maiores, composição de álbum e ritmo contemplativo.</p>
+        </div>
+        <a class="btn azul" href="hq_editor.html?modo=interno&tipo=gibi-europeu&estilo=Graphic%20novel%20europeia&preset=gibi-europeu">Abrir gibi europeu</a>
+      </div>
 
-<section class="painel">
-<h2>Prévia</h2>
-<div id="preview"></div>
-</section>
+      <div class="formato">
+        <div>
+          <span class="tag">EUA</span>
+          <h3>HQ americana</h3>
+          <p>Para superaventura, ação, suspense, terror, fantasia urbana e narrativa dinâmica.</p>
+          <p><strong>Configuração automática:</strong> página estilo comic book, ritmo rápido e composição de ação.</p>
+        </div>
+        <a class="btn roxo" href="hq_editor.html?modo=interno&tipo=hq-americana&estilo=HQ%20americana%20colorida&preset=hq-americana">Abrir HQ americana</a>
+      </div>
+
+      <div class="formato">
+        <div>
+          <span class="tag">Literário</span>
+          <h3>Graphic novel</h3>
+          <p>Para narrativa adulta, psicológica, dramática, experimental ou cinematográfica.</p>
+          <p><strong>Configuração automática:</strong> composição sóbria, quadros narrativos e capa literária.</p>
+        </div>
+        <a class="btn roxo" href="hq_editor.html?modo=interno&tipo=graphic-novel&estilo=Graphic%20novel%20sombria&preset=graphic-novel">Abrir graphic novel</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="painel fluxo">
+    <strong>Fluxo:</strong>
+    Escolha do formato → Editor HQ Inteligente → Motor Vercel → CORSI → Expedição Multimídia.
+  </section>
+
+  <section class="painel">
+    <div class="nav">
+      <a class="btn azul" href="silo_multimidia.html?modo=interno">Retornar aos Silos</a>
+      <a class="btn" href="pagina_respiro.html">Retornar à página de respiro</a>
+      <a class="btn vermelho" href="portal_instituto_celeiro_literario.html">Sair</a>
+    </div>
+  </section>
 
 </main>
-
-<script>
-
-const ENGINE_URL = "https://celeiro-multimidia-engine.vercel.app";
-
-async function gerarHQ(){
-
-  const titulo = document.getElementById("titulo").value;
-  const estilo = document.getElementById("estilo").value;
-  const texto = document.getElementById("historia").value;
-
-  statusMsg("Enviando para o motor...");
-
-  try{
-
-    const res = await fetch(ENGINE_URL + "/api/hq",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      mode:"cors",
-      body:JSON.stringify({
-        titulo,
-        estilo,
-        texto
-      })
-    });
-
-    const data = await res.json();
-
-    if(!data.ok){
-      throw new Error("Erro do motor");
-    }
-
-    render(data.quadros);
-
-    statusMsg("Motor Vercel respondeu: " + data.quadros.length + " quadros");
-
-  }catch(e){
-
-    console.log(e);
-
-    statusMsg("Modo local ativado (fallback)");
-
-    gerarLocal(texto, estilo);
-
-  }
-
-}
-
-function gerarLocal(texto, estilo){
-
-  const partes = texto.split(".").filter(x=>x.trim());
-
-  const quadros = partes.map((p,i)=>({
-    quadro:i+1,
-    cena:p,
-    dialogo:"Algo estranho..."
-  }));
-
-  render(quadros);
-
-}
-
-function render(quadros){
-
-  const preview = document.getElementById("preview");
-  preview.innerHTML = "";
-
-  quadros.forEach(q=>{
-
-    const div = document.createElement("div");
-    div.className = "pagina";
-
-    div.innerHTML = `
-      <div class="quadro">
-        <strong>Quadro ${q.quadro}</strong><br><br>
-        ${q.cena}<br><br>
-        <i>${q.dialogo}</i>
-      </div>
-    `;
-
-    preview.appendChild(div);
-
-  });
-
-}
-
-function statusMsg(msg){
-  document.getElementById("status").innerText = msg;
-}
-
-</script>
-
 </body>
 </html>
