@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Departamento de Auxílio à Carreira</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#05070c,#10294a,#efe2c7);color:white;text-align:center;padding:24px}h1{color:#f5d87a;font-family:Georgia,serif}.card{background:#fff8df;color:#111;border:2px solid #d6b354;border-radius:22px;padding:22px;margin:18px auto;max-width:820px;box-shadow:0 12px 30px rgba(0,0,0,.25)}.dark{background:#111;color:white}.btn{display:inline-block;padding:13px 18px;border-radius:999px;background:#d6b354;color:#111;text-decoration:none;font-weight:900;border:0;cursor:pointer;margin:6px}.verde{background:#1f7a42;color:white}.sair{background:#8b1e1e;color:white}input,select,textarea{width:90%;max-width:650px;padding:12px;border-radius:12px;border:2px solid #111;margin:8px}textarea{min-height:120px}.status{font-weight:900;color:#1f7a42}.aviso{color:#8b1e1e;font-weight:900}
+</style>
+<script>
+function verificarSigmal(){const sigmal=localStorage.getItem('sigmal');const trajano=localStorage.getItem('trajano');const tempo=localStorage.getItem('trajano_expira');const ativo=sigmal==='true'||trajano==='true';document.getElementById('acesso').innerHTML=ativo?'<span class="status">Acesso liberado nesta sessão.</span>':'<span class="aviso">Acesso ainda não confirmado. O bônus Trajano será liberado após pagamento SIGMAL confirmado.</span>';}
+function salvarPlano(){const nome=document.getElementById('nome').value||'Autor/Artista';const area=document.getElementById('area').value;const objetivo=document.getElementById('objetivo').value;const plano='Plano inicial de carreira — '+nome+'\nÁrea: '+area+'\nObjetivo: '+objetivo+'\n\nTrajano Estrada recomenda organizar presença, portfólio, calendário de oportunidades e próximos passos de publicação/divulgação.';localStorage.setItem('trajano_plano',plano);document.getElementById('resultado').innerText=plano;}
+window.addEventListener('load',verificarSigmal);
+</script>
+</head>
+<body>
+<h1>Departamento de Auxílio à Carreira</h1>
+<p>Orientação estratégica com Trajano Estrada</p>
+<section class="card dark"><h2>Trajano Estrada diz:</h2><p>Este departamento ajuda o autor, artista ou participante da SIGMAL a organizar caminho, presença, oportunidades, portfólio e próximos passos de carreira.</p></section>
+<section class="card"><h2>Status de acesso</h2><p id="acesso"></p><p>Regra: membros SIGMAL recebem 1 mês gratuito neste departamento após confirmação de pagamento.</p></section>
+<section class="card"><h2>Plano inicial de carreira</h2><input id="nome" placeholder="Nome artístico ou autoral"><br><select id="area"><option>Área principal</option><option>Literatura</option><option>Música</option><option>Artes visuais</option><option>Audiovisual</option><option>HQ / Mangá / Gibi</option><option>Multiplataforma</option></select><br><textarea id="objetivo" placeholder="Conte em poucas palavras o objetivo de carreira"></textarea><br><button class="btn verde" onclick="salvarPlano()">Gerar plano inicial</button><pre id="resultado" style="white-space:pre-wrap;text-align:left;background:white;color:#111;padding:14px;border-radius:14px"></pre></section>
+<a class="btn" href="index.html">Voltar ao início</a><a class="btn" href="cicile_reclamacao.html?departamento=Auxilio%20a%20Carreira">Reclamar com a CICILE</a><a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
+</body>
+</html>
