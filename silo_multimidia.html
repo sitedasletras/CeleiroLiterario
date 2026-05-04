@@ -5,48 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Silos Multimídia</title>
 <style>
-body{margin:0;font-family:Arial;background:#05070c;color:white;text-align:center;padding:20px}
-.card{background:#111;padding:20px;border-radius:15px;margin:15px auto;max-width:700px}
-input,button{padding:10px;border-radius:10px;border:none;margin:5px}
-button{background:#1f7a42;color:white;font-weight:bold}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#05070c,#10294a,#efe2c7);color:white;text-align:center;padding:22px}h1{font-family:Georgia,serif;color:#f5d87a;font-size:44px}.card{background:#fff8df;color:#111;border:2px solid #d6b354;border-radius:22px;padding:20px;margin:16px auto;max-width:900px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.silo{background:#111;color:white;border:1px solid #d6b354;border-radius:18px;padding:18px}.silo h2{color:#f5d87a}.btn{display:inline-block;padding:12px 18px;border-radius:999px;background:#d6b354;color:#111;text-decoration:none;font-weight:900;margin:6px}.verde{background:#1f7a42;color:white}.sair{background:#8b1e1e;color:white}@media(max-width:760px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
 <h1>Silos Multimídia</h1>
-
-<div class="card">
-<h3>Ativar pagamento</h3>
-<input id="codigo" placeholder="Digite seu código">
-<button onclick="validarCodigo()">Ativar</button>
-<p id="status"></p>
-</div>
-
-<script>
-function validarCodigo(){
- let codigo = document.getElementById("codigo").value;
-
- if(codigo === "CELEIRO-10"){
-   localStorage.setItem("tempo",10);
- }
- else if(codigo === "CELEIRO-20"){
-   localStorage.setItem("tempo",20);
- }
- else if(codigo === "CELEIRO-30"){
-   localStorage.setItem("tempo",30);
- }
- else if(codigo === "CELEIRO-60"){
-   localStorage.setItem("tempo",60);
- }
- else{
-   document.getElementById("status").innerText = "Código inválido";
-   return;
- }
-
- localStorage.setItem("pagamento",true);
- document.getElementById("status").innerText = "Pagamento ativado";
-}
-</script>
-
+<p>Criação audiovisual, sonora, musical e HQ do Celeiro Literário</p>
+<section class="card"><h2>Acesso liberado</h2><p>Escolha um Silo para trabalhar.</p></section>
+<section class="card"><div class="grid">
+<div class="silo"><h2>🎬 Silo Cinematográfico</h2><p>Roteiros, cenas e material audiovisual.</p><a class="btn verde" href="silo_cinematografico.html?modo=interno">Abrir</a></div>
+<div class="silo"><h2>🎧 Silo Sonoro</h2><p>Narrações, vinhetas e chamadas.</p><a class="btn verde" href="silo_sonoro.html?modo=interno">Abrir</a></div>
+<div class="silo"><h2>🎵 Silo Music</h2><p>Músicas, trilhas e bases SIGMAL.</p><a class="btn verde" href="silo_music.html?modo=interno">Abrir</a></div>
+<div class="silo"><h2>📖 Silo HQ</h2><p>HQ, quadros, páginas e cenas.</p><a class="btn verde" href="silo_hq.html?modo=interno">Abrir</a></div>
+</div></section>
+<section class="card"><p><strong>Fluxo:</strong> Silo → Expedição Multimídia → CORSI → WebTV / WebRádio / Redes.</p></section>
+<a class="btn" href="web_tv_celeiro.html?modo=interno">WebTV</a>
+<a class="btn" href="web_radio_celeiro.html?modo=interno">Web Rádio</a>
+<a class="btn" href="departamento_corsi_circulacao_redes.html?modo=interno">CORSI</a>
+<a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
 </body>
 </html>
