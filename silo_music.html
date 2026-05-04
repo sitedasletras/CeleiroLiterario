@@ -3,34 +3,233 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Silo Music</title>
+<title>Silo Music — Celeiro Multimídia</title>
+
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#0b1a2d;color:white;text-align:center;padding:24px}h1{color:#f5d87a}.box,.upload-universal{background:#111;padding:20px;border-radius:16px;margin:18px auto;max-width:760px;border:2px solid #d6b354}.upload-universal{background:#fff8df;color:#111}input,select{padding:12px;margin:8px;border-radius:10px;border:none;width:90%;max-width:620px}button,.btn{display:inline-block;padding:12px 18px;border-radius:999px;background:#1f7a42;color:white;border:none;font-weight:bold;cursor:pointer;text-decoration:none;margin:6px}.voltar{background:#d6b354;color:#111}.sair{background:#8b1e1e}.upload-topo{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.upload-info{margin-top:12px;line-height:1.4}.upload-acoes button{background:#8b1e1e}
-</style>
-<script src="js/celeiro_upload_universal.js"></script>
-<script>
-function enviar(){
- const mat=window.celeiroUploadCarregar?window.celeiroUploadCarregar():null;
- const nome=document.getElementById('projeto').value||'Projeto do Silo Music';
- alert('Projeto recebido: '+nome+(mat?'\nMaterial atual: '+mat.nome:'\nSem arquivo carregado.')+'\nIndo para a Expedição Multimídia.');
- location.href='expedicao_multimidia.html';
+:root{
+--fundo:#05070c;
+--azul:#0b1a2f;
+--ouro:#d6b354;
+--papel:#fff8df;
+--verde:#1f7a42;
+--vermelho:#8b1e1e;
 }
-window.addEventListener('load',function(){if(window.celeiroUploadMontar){window.celeiroUploadMontar('uploadUniversal','Silo Music')}});
-</script>
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:linear-gradient(180deg,#05070c,#10294a,#efe2c7);
+color:white;
+}
+
+.wrap{
+max-width:1100px;
+margin:auto;
+padding:22px;
+}
+
+h1{
+font-family:Georgia,serif;
+color:#f5d87a;
+font-size:38px;
+}
+
+.card{
+background:var(--papel);
+color:#111;
+border:2px solid var(--ouro);
+border-radius:22px;
+padding:18px;
+margin:16px 0;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px;
+}
+
+input,select,textarea{
+width:100%;
+padding:12px;
+border-radius:12px;
+border:2px solid #222;
+margin:6px 0 12px;
+}
+
+textarea{
+min-height:160px;
+}
+
+.saida{
+white-space:pre-wrap;
+background:white;
+color:#111;
+border-radius:14px;
+padding:14px;
+min-height:260px;
+}
+
+.btn{
+display:inline-block;
+padding:12px 18px;
+border-radius:999px;
+background:var(--ouro);
+color:#111;
+font-weight:bold;
+cursor:pointer;
+margin:6px;
+border:none;
+}
+
+.verde{background:var(--verde);color:white}
+.sair{background:var(--vermelho);color:white}
+
+@media(max-width:800px){
+.grid{grid-template-columns:1fr}
+}
+</style>
 </head>
+
 <body>
-<h1>Silo Music</h1>
-<p><strong>William Chapen</strong> — Maestro do Silo</p>
-<div class="box"><p>Use este silo para preparar trilhas, vinhetas, temas de personagem e atmosfera sonora.</p></div>
-<div id="uploadUniversal"></div>
-<div class="box">
+
+<div class="wrap">
+
+<h1>🎵 Silo Music</h1>
+<p>Gerador estrutural musical integrado ao SIGMAL e aos Silos do Celeiro</p>
+
+<div class="grid">
+
+<div class="card">
+<h2>Entrada musical</h2>
+
 <input id="projeto" placeholder="Nome do projeto">
-<select><option>Tipo de produção</option><option>Tema musical</option><option>Trilha ambiente</option><option>Vinheta</option><option>Tema de personagem</option></select>
-<select><option>Clima desejado</option><option>Épico</option><option>Romântico</option><option>Suspense</option><option>Regional</option><option>Infantil</option><option>Dramático</option></select>
-<br><button onclick="enviar()">Enviar ao Silo Music</button>
+
+<select id="tipo">
+<option>Tema musical</option>
+<option>Trilha sonora</option>
+<option>Vinheta</option>
+<option>Abertura de programa</option>
+<option>Tema de personagem</option>
+</select>
+
+<select id="estilo">
+<option>MPB</option>
+<option>Regional brasileiro</option>
+<option>Clássico instrumental</option>
+<option>Eletrônico</option>
+<option>Épico cinematográfico</option>
+<option>Infantil</option>
+</select>
+
+<select id="clima">
+<option>Emocional</option>
+<option>Feliz</option>
+<option>Melancólico</option>
+<option>Épico</option>
+<option>Suspense</option>
+<option>Calmo</option>
+</select>
+
+<textarea id="descricao" placeholder="Descreva a ideia, contexto ou uso da música"></textarea>
+
+<button class="btn verde" onclick="gerar()">Gerar estrutura musical</button>
+<button class="btn" onclick="salvar()">Salvar</button>
+
 </div>
-<a class="btn voltar" href="silo_multimidia.html">Voltar aos Silos</a>
-<a class="btn voltar" href="cicile_reclamacao.html?departamento=Silo%20Music">Reclamar com a CICILE</a>
+
+<div class="card">
+<h2>Saída musical</h2>
+
+<div id="saida" class="saida">
+Aguardando geração...
+</div>
+
+<button class="btn verde" onclick="expedir()">Enviar para Expedição</button>
+
+<a class="btn" href="silo_multimidia.html">Voltar</a>
 <a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+function val(id){
+return document.getElementById(id).value.trim();
+}
+
+function gerar(){
+
+let projeto = val('projeto') || 'Projeto sem nome';
+let tipo = val('tipo');
+let estilo = val('estilo');
+let clima = val('clima');
+let descricao = val('descricao') || 'Sem descrição fornecida';
+
+let estrutura = `
+🎼 TEMA MUSICAL — CELEIRO MULTIMÍDIA
+
+Projeto: ${projeto}
+Tipo: ${tipo}
+Estilo: ${estilo}
+Clima: ${clima}
+
+CONCEITO:
+${descricao}
+
+ESTRUTURA MUSICAL:
+
+1. Introdução (ambientação sonora)
+2. Verso 1 (apresentação temática)
+3. Refrão (identidade forte)
+4. Verso 2 (variação)
+5. Ponte (quebra emocional)
+6. Refrão final (reforço)
+7. Encerramento (fade ou conclusão)
+
+APLICAÇÃO:
+
+• Web Rádio Celeiro
+• WebTV Celeiro
+• SIGMAL Music
+• Vinhetas e programas
+• Trilha para vídeos e HQ
+
+INTEGRAÇÃO:
+
+Silo Music → Silo Sonoro → Expedição → Web Rádio / WebTV
+`;
+
+document.getElementById('saida').innerText = estrutura;
+
+localStorage.setItem('celeiro_multimidia_material', JSON.stringify({
+silo:'Music',
+titulo:projeto,
+tipo:tipo,
+conteudo:estrutura,
+data:new Date().toLocaleString('pt-BR')
+}));
+
+}
+
+function salvar(){
+let conteudo = document.getElementById('saida').innerText;
+if(conteudo.includes("Aguardando")) gerar();
+
+localStorage.setItem('bunker_music', conteudo);
+alert("Salvo no bunker local.");
+}
+
+function expedir(){
+if(document.getElementById('saida').innerText.includes("Aguardando")) gerar();
+location.href = "expedicao_multimidia.html";
+}
+</script>
+
 </body>
 </html>
