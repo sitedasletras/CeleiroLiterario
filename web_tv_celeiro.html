@@ -5,24 +5,118 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WebTV Celeiro Literário</title>
 <style>
-body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#0b1a2f,#244d86 55%,#eef6ff);color:#0b1d33}.hero{text-align:center;color:#fff5cf;padding:42px 18px;border-bottom:8px solid #d6b354}.hero h1{font-size:clamp(40px,8vw,76px);margin:0}.container{max-width:980px;margin:auto;padding:34px 18px}.card{background:white;border-radius:28px;padding:28px;margin-top:28px;box-shadow:0 18px 45px rgba(0,0,0,.22);border:1px solid #d6b354}.tag{display:inline-block;background:#244d86;color:white;border-radius:999px;padding:8px 16px;font-family:Arial,sans-serif;font-weight:bold}.aviso{margin-top:18px;padding:16px 18px;border-radius:18px;background:#fff8dc;border:1px solid #d6b354;font-family:Arial,sans-serif;text-align:center;color:#244d86}.video{margin-top:24px}.btn{display:none;margin-top:24px;padding:12px 22px;border-radius:999px;background:#244d86;color:white;text-decoration:none;font-weight:bold;font-family:Arial,sans-serif}.interno .btn{display:inline-block}</style>
+:root{--azul:#0b1a2f;--azul2:#244d86;--ouro:#d6b354;--papel:#fff8df;--verde:#1f7a42;--vermelho:#8b1e1e}
+*{box-sizing:border-box}
+body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#0b1a2f,#244d86 55%,#eef6ff);color:#0b1d33}
+.hero{text-align:center;color:#fff5cf;padding:38px 18px;border-bottom:8px solid var(--ouro)}
+.hero h1{font-size:clamp(38px,8vw,72px);margin:0}
+.hero p{font-family:Arial,sans-serif;font-size:18px;margin:10px 0 0}
+.container{max-width:980px;margin:auto;padding:28px 18px}
+.card{background:white;border-radius:28px;padding:26px;margin-top:24px;box-shadow:0 18px 45px rgba(0,0,0,.22);border:1px solid var(--ouro)}
+.tag{display:inline-block;background:var(--azul2);color:white;border-radius:999px;padding:8px 16px;font-family:Arial,sans-serif;font-weight:bold;margin:4px}
+.tag.ouro{background:var(--ouro);color:#111}
+.aviso{margin-top:18px;padding:16px 18px;border-radius:18px;background:#fff8dc;border:1px solid var(--ouro);font-family:Arial,sans-serif;text-align:center;color:#244d86;font-size:18px;line-height:1.45}
+.video{margin-top:24px;border:4px solid var(--ouro);border-radius:22px;overflow:hidden;background:#111}
+iframe{display:block;width:100%;height:min(58vw,480px);min-height:280px}
+.grade{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;font-family:Arial,sans-serif}
+.grade div{background:#f7efd3;border:1px solid var(--ouro);border-radius:16px;padding:12px;text-align:center}
+.grade strong{display:block;color:#0b1a2f}
+.btn{display:inline-block;margin:8px 5px 0;padding:12px 22px;border-radius:999px;background:var(--azul2);color:white;text-decoration:none;font-weight:bold;font-family:Arial,sans-serif}
+.btn.verde{background:var(--verde)}.btn.sair{background:var(--vermelho)}
+.interno-only{display:none}.interno .interno-only{display:inline-block}
+.bloco-corsi{font-family:Arial,sans-serif;background:#0b1a2f;color:white;border-radius:18px;padding:16px;margin-top:18px}
+.bloco-corsi h3{color:#f5d87a;margin:0 0 10px}
+@media(max-width:760px){.grade{grid-template-columns:1fr 1fr}.card{padding:20px}iframe{min-height:230px}}
+</style>
 </head>
 <body>
-<section class="hero"><h1>WebTV Celeiro</h1><p>Vitrine audiovisual institucional</p></section>
+<section class="hero">
+<h1>WebTV Celeiro</h1>
+<p>Vitrine audiovisual institucional com programação automática por horário</p>
+</section>
+
 <main class="container">
 <section class="card">
 <span class="tag">Modo Vitrine</span>
+<span class="tag ouro" id="faixaAtual">Carregando programação...</span>
 <h2>Programação audiovisual cultural</h2>
-<div class="aviso">Você está na vitrine audiovisual do Celeiro Literário. Para acessar as salas internas, entre pelo Celeiro.</div>
-<div class="video">
-<iframe width="100%" height="360" src="https://www.youtube.com/embed/aqz-KE-bpKQ" title="Conteúdo domínio público" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<div class="aviso">
+Você está na vitrine audiovisual do Celeiro Literário. Para acessar as salas internas, entre pelo Celeiro.
+<br><br>
+Quando não houver programação própria aprovada pela CORSI, a WebTV usa conteúdo cultural seguro, público, livre ou autorizado.
 </div>
-<p>Programação provisória com conteúdo cultural e audiovisual de domínio público ou uso institucional livre.</p>
-<a class="btn" href="pagina_respiro_celeiro.html">Voltar ao Celeiro</a>
+
+<div class="bloco-corsi">
+<h3>Curadoria CORSI</h3>
+<div id="corsiStatus">Regra ativa: 50% núcleo interno, 30% SIGMAL + Trajano, 15% SIGMAL direto, 5% usuários externos autorizados.</div>
+</div>
+
+<div class="video">
+<iframe id="player" src="" title="WebTV Celeiro" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+<div class="grade">
+<div><strong>Manhã</strong>05h às 12h</div>
+<div><strong>Tarde</strong>12h às 18h</div>
+<div><strong>Noite</strong>18h às 00h</div>
+<div><strong>Madrugada</strong>00h às 05h</div>
+</div>
+
+<p id="descricao">Programação provisória com conteúdo cultural e audiovisual de domínio público, uso livre ou autorização segura.</p>
+
+<a class="btn interno-only" href="silo_cinematografico.html?modo=interno">Silo Cinematográfico</a>
+<a class="btn interno-only" href="silo_hq.html?modo=interno">Silo HQ</a>
+<a class="btn interno-only" href="departamento_corsi_circulacao_redes.html?modo=interno">CORSI</a>
+<a class="btn" href="silo_multimidia.html?modo=interno">Voltar aos Silos</a>
+<a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
 </section>
 </main>
+
 <script>
-(function(){const p=new URLSearchParams(location.search);const interno=p.get('modo')==='interno'||localStorage.getItem('celeiro_modo_interno')==='sim';document.body.classList.toggle('interno',interno);})();
+const PLAYLISTS={
+ manha:'PLjK2QIxk-IEDM5qXMXiwAz3cUblAOmYod',
+ tarde:'PLjK2QIxk-IECrCHax1JeCgCjVU5V2kKCl',
+ noite:'PLjK2QIxk-IEBzQre-_l7H5YDwkVm1TzAN',
+ madrugada:'PLj6-YMjfP0vZ4KifYVD3ANPVHVrdNaHKi'
+};
+
+function faixaPorHora(h){
+ if(h>=5 && h<12)return {id:'manha',nome:'Web TV — Manhã',desc:'Faixa leve, infantil, cultural e acolhedora.'};
+ if(h>=12 && h<18)return {id:'tarde',nome:'Web TV — Tarde',desc:'Faixa dinâmica, entretenimento, cultura e programação familiar.'};
+ if(h>=18 && h<24)return {id:'noite',nome:'Web TV — Noite',desc:'Faixa contemplativa, literária, musical e de descanso visual.'};
+ return {id:'madrugada',nome:'Web TV — Madrugada',desc:'Faixa calma, longa e contínua para permanência cultural noturna.'};
+}
+
+function materialCorsiDisponivel(){
+ try{
+  const mat=JSON.parse(localStorage.getItem('celeiro_multimidia_material')||'null');
+  if(!mat || !mat.silo)return null;
+  if(mat.silo==='Cinematográfico' || mat.silo==='HQ')return mat;
+ }catch(e){}
+ return null;
+}
+
+function carregar(){
+ const p=new URLSearchParams(location.search);
+ const interno=p.get('modo')==='interno'||localStorage.getItem('celeiro_modo_interno')==='sim';
+ document.body.classList.toggle('interno',interno);
+
+ const mat=materialCorsiDisponivel();
+ const faixa=faixaPorHora(new Date().getHours());
+ const lista=PLAYLISTS[faixa.id];
+
+ document.getElementById('faixaAtual').innerText=faixa.nome;
+ document.getElementById('descricao').innerText=faixa.desc+' A grade fixa entra como vitrine segura enquanto a CORSI não aprova programação própria suficiente.';
+ document.getElementById('player').src='https://www.youtube.com/embed/videoseries?list='+lista+'&autoplay=0&rel=0';
+
+ if(mat){
+  document.getElementById('corsiStatus').innerText='Material interno detectado: '+mat.titulo+' — vindo do Silo '+mat.silo+'. A CORSI pode enviar este conteúdo para a fila audiovisual seguindo a proporção 50/30/15/5.';
+ }else{
+  document.getElementById('corsiStatus').innerText='Sem material próprio aprovado nesta sessão. A WebTV está usando a vitrine segura automática por horário.';
+ }
+}
+carregar();
 </script>
 </body>
 </html>
