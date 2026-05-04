@@ -3,849 +3,307 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Editor HQ Inteligente — Celeiro Multimídia</title>
+<title>Silo HQ — Entrada</title>
 <style>
 :root{
   --azul:#07182b;
-  --azul2:#10294a;
   --ouro:#d6b354;
   --papel:#fff8df;
   --verde:#1f7a42;
   --vermelho:#8b1e1e;
-  --turquesa:#197d7a;
   --roxo:#42246b;
-  --cinza:#eef2f7;
+  --turquesa:#197d7a;
 }
 *{box-sizing:border-box}
 body{
   margin:0;
   font-family:Arial, sans-serif;
-  background:linear-gradient(180deg,#07182b,#10294a,#efe2c7);
+  background:radial-gradient(circle at center,#466d99 0%,#132d4e 45%,#06111f 100%);
   color:#fff;
-}
-header{
-  text-align:center;
-  padding:24px 16px;
-  background:#07101d;
-  border-bottom:6px solid var(--ouro);
-}
-header h1{
-  margin:0;
-  color:#f5d87a;
-  font-family:Georgia,serif;
-  font-size:40px;
-}
-header p{
-  margin:8px auto 0;
-  max-width:900px;
-  line-height:1.45;
+  min-height:100vh;
 }
 .wrap{
-  max-width:1240px;
-  margin:auto;
-  padding:20px;
+  max-width:1080px;
+  margin:0 auto;
+  padding:34px 16px 28px;
+}
+h1{
+  margin:0;
+  text-align:center;
+  color:#f5d87a;
+  font-family:Georgia,serif;
+  font-size:42px;
+}
+.sub{
+  text-align:center;
+  margin:10px 0 24px;
+  color:#e8eef8;
+  font-weight:700;
 }
 .painel{
   background:var(--papel);
   color:#111;
-  border:2px solid var(--ouro);
   border-radius:22px;
-  padding:20px;
-  margin-bottom:20px;
-  box-shadow:0 14px 34px rgba(0,0,0,.24);
+  padding:24px;
+  margin:18px auto;
+  border:2px solid rgba(201,166,70,.55);
+  box-shadow:0 12px 30px rgba(0,0,0,.25);
 }
-.painel h2{
-  margin-top:0;
-  font-family:Georgia,serif;
-  color:#07182b;
-}
-.duas{
+.apresentacao{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
+  grid-template-columns:260px 1fr;
+  gap:24px;
+  align-items:center;
 }
-label{
-  display:block;
-  font-weight:900;
-  margin:10px 0 6px;
-}
-input,select,textarea{
-  width:100%;
-  border:2px solid #253858;
-  border-radius:12px;
-  padding:11px;
-  font-size:15px;
-}
-textarea{
-  min-height:170px;
-  resize:vertical;
-}
-.aviso{
+.charles-img{
+  width:250px;
+  max-width:100%;
+  border-radius:22px;
+  border:4px solid var(--ouro);
   background:#fff;
-  border:1px solid #d7c28a;
-  border-radius:14px;
-  padding:12px;
-  color:#334;
-  line-height:1.45;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
 }
-.config{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:10px;
-  margin-top:12px;
-}
-.badge{
-  background:#07101d;
-  color:#f5d87a;
-  border-radius:999px;
-  padding:8px 10px;
-  text-align:center;
-  font-size:13px;
-  font-weight:900;
-}
-.botoes{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+.charles-fallback{
+  width:250px;
+  min-height:250px;
+  border-radius:22px;
+  border:4px solid var(--ouro);
+  background:linear-gradient(135deg,#111,#2b1d0a,#d6b354);
+  color:#fff8df;
+  display:none;
+  align-items:center;
   justify-content:center;
-  margin-top:14px;
-}
-.btn{
-  border:0;
-  border-radius:999px;
-  padding:12px 18px;
-  font-weight:900;
-  text-decoration:none;
-  cursor:pointer;
-  color:#111;
-  background:var(--ouro);
-  display:inline-block;
-}
-.btn.verde{background:var(--verde);color:#fff}
-.btn.azul{background:#244d86;color:#fff}
-.btn.vermelho{background:var(--vermelho);color:#fff}
-.btn.roxo{background:var(--roxo);color:#fff}
-.status{
-  margin-top:12px;
-  background:#07101d;
-  color:#f5d87a;
-  border-radius:12px;
-  padding:12px;
-  font-weight:900;
   text-align:center;
-}
-.contador{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  justify-content:center;
-  margin-top:12px;
-}
-.chip{
-  background:#111;
-  color:#f5d87a;
-  border-radius:999px;
-  padding:8px 12px;
-  font-weight:900;
-  font-size:13px;
-}
-.paginasWrap{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
-  gap:18px;
-}
-.pagina{
-  background:#fff;
-  border:4px solid #111;
-  color:#111;
-  min-height:620px;
-  padding:12px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  align-content:start;
-  box-shadow:0 12px 35px rgba(0,0,0,.22);
-}
-.pagina.webtoon{
-  min-height:auto;
-  display:block;
-  max-width:520px;
-  margin:auto;
-}
-.pagina h3{
-  grid-column:1/3;
-  text-align:center;
-  margin:0 0 6px;
+  padding:22px;
   font-family:Georgia,serif;
+  font-size:26px;
+  font-weight:900;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
 }
-.quadro{
-  border:3px solid #111;
-  background:#f2f2f2;
+.fala h2{
+  margin:0 0 8px;
+  color:#263a5f;
+  font-family:Georgia,serif;
+  font-size:30px;
+}
+.fala p{
+  margin:0 0 10px;
+  line-height:1.48;
+  color:#333;
+  font-weight:700;
+}
+.fala .assinatura{
+  color:#8b5a12;
+  font-weight:900;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(235px,1fr));
+  gap:14px;
+}
+.formato{
+  background:#080d18;
+  color:#fff;
+  border-radius:16px;
   min-height:235px;
-  color:#111;
-  padding:8px;
+  padding:20px 16px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.12);
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  overflow:hidden;
 }
-.quadro.grande{grid-column:1/3;min-height:270px}
-.webtoon .quadro{
-  min-height:360px;
-  margin-bottom:28px;
+.formato h3{
+  margin:0 0 8px;
+  color:#f5d87a;
+  font-family:Georgia,serif;
+  font-size:23px;
 }
-.cenaTitulo{
-  font-weight:900;
-  font-size:13px;
-  margin-bottom:6px;
+.formato p{
+  margin:0 0 8px;
+  color:#e9edf6;
+  font-weight:700;
+  line-height:1.35;
 }
-.imgHQ{
-  border:2px solid #111;
-  border-radius:10px;
-  min-height:130px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  background:#ddd;
-}
-.imgHQ svg{width:100%;height:150px;display:block}
-.webtoon .imgHQ svg{height:260px}
-.balao{
-  background:white;
-  border:2px solid #111;
-  border-radius:18px;
-  padding:8px;
-  margin-top:8px;
-  font-size:13px;
-}
-.lista{
-  white-space:pre-wrap;
-  background:white;
+.tag{
+  display:inline-block;
+  margin:0 auto 10px;
+  padding:5px 10px;
+  border-radius:999px;
+  background:#fff8df;
   color:#111;
-  border:1px solid #c9a646;
-  border-radius:14px;
-  padding:14px;
-  line-height:1.45;
-  max-height:380px;
-  overflow:auto;
+  font-size:12px;
+  font-weight:900;
 }
-.capas{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-.capa{
-  min-height:260px;
-  border:4px solid #111;
-  border-radius:16px;
-  overflow:hidden;
+.btn{
+  display:inline-block;
+  padding:11px 18px;
+  border-radius:999px;
+  border:0;
+  text-decoration:none;
+  font-weight:900;
   cursor:pointer;
-  position:relative;
-  background:#111;
-}
-.capa.escolhida{outline:6px solid var(--verde)}
-.capa svg{width:100%;height:260px;display:block}
-.montagemGrid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:14px;
-}
-.folha{
-  background:white;
-  border:3px solid #111;
-  border-radius:14px;
+  background:var(--ouro);
   color:#111;
-  padding:10px;
+  font-size:14px;
 }
-.folha h4{text-align:center;margin:0 0 8px}
-.abertura{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  border:2px solid #111;
-  min-height:130px;
-}
-.pagImp{
-  border:1px dashed #555;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  background:#f4f4f4;
-  padding:8px;
+.btn.verde{background:var(--verde);color:#fff}
+.btn.azul{background:#244d86;color:#fff}
+.btn.roxo{background:var(--roxo);color:#fff}
+.btn.turquesa{background:var(--turquesa);color:#fff}
+.btn.vermelho{background:var(--vermelho);color:#fff}
+.fluxo{
   text-align:center;
+  color:#334;
+  font-size:14px;
 }
-@media(max-width:850px){
-  .duas{grid-template-columns:1fr}
-  .capas{grid-template-columns:1fr}
-  header h1{font-size:32px}
-  .wrap{padding:14px}
-  .pagina{grid-template-columns:1fr}
-  .pagina h3,.quadro.grande{grid-column:1}
+.nav{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+@media(max-width:760px){
+  h1{font-size:32px}
+  .painel{padding:18px}
+  .apresentacao{grid-template-columns:1fr;text-align:center}
+  .charles-img,.charles-fallback{margin:auto}
 }
 </style>
 </head>
 
 <body>
-<header>
-  <h1>Editor HQ Inteligente</h1>
-  <p>Suba ou cole uma história. O sistema escolhe tamanho, fluxo, leitura, balões, estrutura e montagem conforme o formato escolhido.</p>
-</header>
-
 <main class="wrap">
 
-<section class="painel">
-  <h2>1. História de entrada</h2>
+  <h1>Silo HQ</h1>
+  <div class="sub">Quadrinhos, mangá, webtoon, graphic novel, gibi europeu e HQ brasileira</div>
 
-  <div class="duas">
-    <div>
-      <label>Título da obra</label>
-      <input id="titulo" placeholder="Digite o título">
-
-      <label>Formato editorial</label>
-      <select id="tipo" onchange="aplicarPreset()">
-        <option value="hq-brasileira">HQ brasileira / gibi nacional</option>
-        <option value="manga-japones">Mangá japonês</option>
-        <option value="webtoon-coreano">Webtoon coreano</option>
-        <option value="gibi-europeu">Gibi europeu / BD</option>
-        <option value="hq-americana">HQ americana / comic book</option>
-        <option value="graphic-novel">Graphic novel literária</option>
-        <option value="cordel-visual">Cordel visual / xilogravura</option>
-      </select>
-
-      <div class="config" id="configResumo"></div>
-    </div>
-
-    <div>
-      <label>Upload de texto</label>
-      <input type="file" id="arquivo" accept=".txt,.doc,.docx,.pdf" onchange="lerArquivo(event)">
-
-      <div class="aviso">
-        📌 Se o arquivo não abrir automaticamente, copie o texto do documento e cole abaixo. O motor está preparado para receber texto limpo e estruturar a HQ sem mostrar prompt técnico para o autor.
+  <section class="painel">
+    <div class="apresentacao">
+      <div>
+        <img
+          id="charlesLeeImg"
+          class="charles-img"
+          src="file_00000000fc3071f5972fc0fe7d2ff93e.png"
+          alt="Charles Lee — Guia do Gibi"
+          onerror="trocarImagemCharles()"
+        >
+        <div id="charlesFallback" class="charles-fallback">
+          CHARLES LEE<br><span style="font-size:16px">Guia do Gibi</span>
+        </div>
       </div>
 
-      <label>Fonte dos balões</label>
-      <select id="fonte" onchange="aplicarFonte()">
-        <option value="Arial, sans-serif">Letra clara</option>
-        <option value="Georgia, serif">Letra literária</option>
-        <option value="'Trebuchet MS', sans-serif">Letra moderna</option>
-        <option value="Impact, sans-serif">Letra forte</option>
-      </select>
-    </div>
-  </div>
-
-  <label>Cole a história, sinopse ou capítulo</label>
-  <textarea id="historia" placeholder="Cole aqui a história inteira. O sistema cria as páginas até terminar a narrativa."></textarea>
-
-  <div class="botoes">
-    <button class="btn verde" onclick="gerarHQ()">Gerar obra visual</button>
-    <button class="btn azul" onclick="gerarMontagem()">Ver montagem grampeada/colada</button>
-    <button class="btn" onclick="salvarProjeto()">Salvar projeto</button>
-  </div>
-
-  <div id="statusEngine" class="status">Motor pronto: escolha o formato e envie a história.</div>
-
-  <div class="contador">
-    <span class="chip" id="chipCenas">0 quadros</span>
-    <span class="chip" id="chipPaginas">0 páginas</span>
-    <span class="chip" id="chipFolhas">0 folhas</span>
-  </div>
-</section>
-
-<section class="painel">
-  <h2>2. Prévia visual da obra</h2>
-  <p>O autor vê a obra montada. Prompt técnico fica oculto no motor.</p>
-  <div id="preview" class="paginasWrap">
-    <div class="pagina">
-      <h3>Página 1</h3>
-      <div class="quadro grande">
-        <div class="cenaTitulo">Cena principal</div>
-        <div class="imgHQ">Aguardando história</div>
-        <div class="balao">O balão será criado automaticamente.</div>
+      <div class="fala">
+        <h2>Charles Lee — Guia do Gibi</h2>
+        <p>Bem-vindo ao Silo HQ. Aqui sua história ganha forma em imagens, páginas, balões, ritmo e montagem.</p>
+        <p>Você não precisa começar escolhendo medida técnica. Escolha primeiro o <strong>destino editorial</strong>: HQ brasileira, mangá japonês, webtoon coreano, gibi europeu, HQ americana ou graphic novel.</p>
+        <p>O sistema aplica tamanho, fluxo, leitura, balões e estrutura automaticamente.</p>
+        <p class="assinatura">Você escolhe o caminho. Eu cuido da estrutura.</p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="painel">
-  <h2>3. Roteiro técnico interno</h2>
-  <p>Resumo editorial limpo para conferência. Sem prompt de imagem visível para o autor.</p>
-  <div id="roteiro" class="lista">Aguardando geração.</div>
-</section>
+  <section class="painel">
+    <div class="grid">
 
-<section class="painel">
-  <h2>4. Capas geradas</h2>
-  <p>Escolha uma base. Depois a arte pode ser refinada no Faça Kapa, mas aqui o sistema já monta uma capa visual inicial.</p>
-  <div id="capas" class="capas"></div>
-</section>
+      <div class="formato">
+        <div>
+          <span class="tag">Brasil</span>
+          <h3>HQ brasileira</h3>
+          <p>Para gibi, aventura, humor, infantil, história seriada e páginas tradicionais.</p>
+          <p><strong>Aplica:</strong> página de gibi, leitura ocidental, cor e montagem editorial.</p>
+        </div>
+        <a class="btn verde" href="hq_editor.html?modo=interno&tipo=hq-brasileira&preset=hq-brasileira">Abrir HQ brasileira</a>
+      </div>
 
-<section class="painel">
-  <h2>5. Montagem de impressão</h2>
-  <p id="textoMontagem">A montagem será calculada conforme o formato escolhido.</p>
-  <div id="montagem" class="montagemGrid">
-    <div class="lista">Gere a obra e clique em “Ver montagem grampeada/colada”.</div>
-  </div>
-</section>
+      <div class="formato">
+        <div>
+          <span class="tag">Japão</span>
+          <h3>Mangá japonês</h3>
+          <p>Para leitura seriada, preto e branco, impacto emocional, ação e expressão dramática.</p>
+          <p><strong>Aplica:</strong> P&B, ritmo de mangá e leitura orientada ao estilo japonês.</p>
+        </div>
+        <a class="btn" href="hq_editor.html?modo=interno&tipo=manga-japones&preset=manga-japones">Abrir mangá</a>
+      </div>
 
-<section class="painel">
-  <div class="botoes">
-    <button class="btn verde" onclick="enviar()">Enviar para Expedição Multimídia</button>
-    <a class="btn" href="silo_hq_entrada.html?modo=interno">Voltar ao Silo HQ</a>
-    <a class="btn" href="silo_multimidia.html?modo=interno">Voltar aos Silos</a>
-    <a class="btn vermelho" href="portal_instituto_celeiro_literario.html">Sair</a>
-  </div>
-</section>
+      <div class="formato">
+        <div>
+          <span class="tag">Coreia</span>
+          <h3>Webtoon coreano</h3>
+          <p>Para celular, rolagem vertical, cenas com respiro e publicação digital.</p>
+          <p><strong>Aplica:</strong> vertical contínuo, quadros espaçados e leitura mobile.</p>
+        </div>
+        <a class="btn turquesa" href="hq_editor.html?modo=interno&tipo=webtoon-coreano&preset=webtoon-coreano">Abrir webtoon</a>
+      </div>
+
+      <div class="formato">
+        <div>
+          <span class="tag">Europa</span>
+          <h3>Gibi europeu / BD</h3>
+          <p>Para álbum europeu, visual elegante, composição literária e páginas amplas.</p>
+          <p><strong>Aplica:</strong> quadros maiores, composição de álbum e ritmo contemplativo.</p>
+        </div>
+        <a class="btn azul" href="hq_editor.html?modo=interno&tipo=gibi-europeu&preset=gibi-europeu">Abrir gibi europeu</a>
+      </div>
+
+      <div class="formato">
+        <div>
+          <span class="tag">EUA</span>
+          <h3>HQ americana</h3>
+          <p>Para superaventura, ação, suspense, terror, fantasia urbana e narrativa dinâmica.</p>
+          <p><strong>Aplica:</strong> comic book, ritmo rápido e composição de ação.</p>
+        </div>
+        <a class="btn roxo" href="hq_editor.html?modo=interno&tipo=hq-americana&preset=hq-americana">Abrir HQ americana</a>
+      </div>
+
+      <div class="formato">
+        <div>
+          <span class="tag">Literário</span>
+          <h3>Graphic novel</h3>
+          <p>Para narrativa adulta, psicológica, dramática, experimental ou cinematográfica.</p>
+          <p><strong>Aplica:</strong> composição sóbria, quadros narrativos e capa literária.</p>
+        </div>
+        <a class="btn roxo" href="hq_editor.html?modo=interno&tipo=graphic-novel&preset=graphic-novel">Abrir graphic novel</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="painel fluxo">
+    <strong>Fluxo:</strong>
+    Escolha do formato → Editor HQ Inteligente → Motor Vercel → CORSI → Expedição Multimídia.
+    <br><br>
+    <strong>Observação:</strong> Cordel visual sai daqui e fica no motor próprio de cordel/Qui(RON)xadá.
+  </section>
+
+  <section class="painel">
+    <div class="nav">
+      <a class="btn azul" href="silo_multimidia.html?modo=interno">Retornar aos Silos</a>
+      <a class="btn" href="pagina_respiro.html">Retornar à página de respiro</a>
+      <a class="btn vermelho" href="portal_instituto_celeiro_literario.html">Sair</a>
+    </div>
+  </section>
 
 </main>
 
 <script>
-const ENGINE_URL='https://celeiro-multimidia-engine.vercel.app';
+const tentativasCharles = [
+  "file_00000000fc3071f5972fc0fe7d2ff93e.png",
+  "./file_00000000fc3071f5972fc0fe7d2ff93e.png",
+  "/CeleiroLiterario/file_00000000fc3071f5972fc0fe7d2ff93e.png"
+];
+let tentativaAtualCharles = 0;
 
-const PRESETS={
-  'hq-brasileira':{
-    nome:'HQ brasileira',
-    estilo:'HQ brasileira colorida',
-    tamanho:'Página editorial de gibi',
-    fluxo:'páginas tradicionais',
-    leitura:'esquerda para direita',
-    balao:'balões claros e simples',
-    estrutura:'4 quadros por página',
-    cor:true,
-    porPagina:4,
-    montagem:'grampeado/canoa'
-  },
-  'manga-japones':{
-    nome:'Mangá japonês',
-    estilo:'Mangá preto e branco',
-    tamanho:'página mangá vertical',
-    fluxo:'capítulos seriados',
-    leitura:'direita para esquerda',
-    balao:'balões expressivos',
-    estrutura:'3 a 5 quadros dramáticos por página',
-    cor:false,
-    porPagina:4,
-    montagem:'encadernação editorial'
-  },
-  'webtoon-coreano':{
-    nome:'Webtoon coreano',
-    estilo:'Webtoon vertical colorido',
-    tamanho:'rolagem vertical para celular',
-    fluxo:'scroll contínuo',
-    leitura:'de cima para baixo',
-    balao:'balões espaçados',
-    estrutura:'1 quadro largo por bloco',
-    cor:true,
-    porPagina:1,
-    montagem:'digital vertical'
-  },
-  'gibi-europeu':{
-    nome:'Gibi europeu / BD',
-    estilo:'Graphic novel europeia',
-    tamanho:'álbum europeu',
-    fluxo:'páginas amplas',
-    leitura:'esquerda para direita',
-    balao:'balões editoriais elegantes',
-    estrutura:'quadros maiores e contemplativos',
-    cor:true,
-    porPagina:4,
-    montagem:'álbum colado'
-  },
-  'hq-americana':{
-    nome:'HQ americana',
-    estilo:'HQ americana colorida',
-    tamanho:'comic book',
-    fluxo:'ação rápida',
-    leitura:'esquerda para direita',
-    balao:'balões de impacto',
-    estrutura:'4 a 6 quadros dinâmicos por página',
-    cor:true,
-    porPagina:4,
-    montagem:'grampeado/canoa'
-  },
-  'graphic-novel':{
-    nome:'Graphic novel',
-    estilo:'Graphic novel sombria',
-    tamanho:'livro gráfico literário',
-    fluxo:'narrativa longa',
-    leitura:'esquerda para direita',
-    balao:'balões sóbrios',
-    estrutura:'quadros narrativos e cinematográficos',
-    cor:true,
-    porPagina:4,
-    montagem:'lombada colada'
-  },
-  'cordel-visual':{
-    nome:'Cordel visual',
-    estilo:'Cordel em xilogravura',
-    tamanho:'folheto popular',
-    fluxo:'páginas de cordel',
-    leitura:'sequencial brasileira',
-    balao:'texto limpo e popular',
-    estrutura:'quadros de xilogravura narrativa',
-    cor:false,
-    porPagina:4,
-    montagem:'folheto/grampeado'
-  }
-};
-
-let cenasGeradas=[];
-let totalPaginas=0;
-let totalPaginasImpressao=0;
-let capaEscolhida=1;
-
-function escapeHTML(s){
-  return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-}
-function escapeSVG(s){return escapeHTML(s);}
-
-function statusMsg(txt){document.getElementById('statusEngine').innerText=txt;}
-
-function presetAtual(){return PRESETS[document.getElementById('tipo').value] || PRESETS['hq-brasileira'];}
-
-function aplicarPreset(){
-  const p=presetAtual();
-  const box=document.getElementById('configResumo');
-  box.innerHTML=
-    '<div class="badge">Formato: '+p.nome+'</div>'+
-    '<div class="badge">Tamanho: '+p.tamanho+'</div>'+
-    '<div class="badge">Fluxo: '+p.fluxo+'</div>'+
-    '<div class="badge">Leitura: '+p.leitura+'</div>'+
-    '<div class="badge">Balão: '+p.balao+'</div>'+
-    '<div class="badge">Estrutura: '+p.estrutura+'</div>';
-  document.getElementById('textoMontagem').innerText='Montagem aplicada: '+p.montagem+' — '+p.tamanho+' — '+p.fluxo+'.';
-  atualizarCapas();
-}
-
-function aplicarFonte(){
-  const f=document.getElementById('fonte').value;
-  document.querySelectorAll('.pagina,.balao,.capa').forEach(e=>e.style.fontFamily=f);
-}
-
-function lerArquivo(ev){
-  const file=ev.target.files[0];
-  if(!file)return;
-  const nome=file.name.toLowerCase();
-  if(nome.endsWith('.txt')){
-    const reader=new FileReader();
-    reader.onload=()=>document.getElementById('historia').value=reader.result;
-    reader.readAsText(file,'UTF-8');
+function trocarImagemCharles(){
+  const img = document.getElementById("charlesLeeImg");
+  tentativaAtualCharles++;
+  if(tentativaAtualCharles < tentativasCharles.length){
+    img.src = tentativasCharles[tentativaAtualCharles];
   }else{
-    alert('Arquivo recebido: '+file.name+'\n\nSe o texto não entrar automaticamente, copie o conteúdo e cole no campo História.');
+    img.style.display = "none";
+    document.getElementById("charlesFallback").style.display = "flex";
   }
 }
-
-async function gerarHQ(){
-  const titulo=document.getElementById('titulo').value || 'HQ sem título';
-  const historia=document.getElementById('historia').value.trim();
-  const p=presetAtual();
-  if(!historia){
-    alert('Cole a história primeiro.');
-    return;
-  }
-
-  statusMsg('Enviando para o Celeiro Multimídia Engine...');
-  document.getElementById('preview').innerHTML='<div class="lista">Gerando obra visual... aguarde.</div>';
-
-  try{
-    const response=await fetch(ENGINE_URL+'/api/hq',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      mode:'cors',
-      body:JSON.stringify({
-        titulo,
-        estilo:p.estilo,
-        texto:historia,
-        tipo:document.getElementById('tipo').value,
-        preset:p
-      })
-    });
-
-    const data=await response.json();
-    if(!data.ok)throw new Error(data.error || 'Resposta inválida do motor.');
-
-    cenasGeradas=(data.quadros || []).map((q,i)=>normalizarQuadro(q,i,p));
-    if(!cenasGeradas.length)throw new Error('O motor não devolveu quadros.');
-
-    totalPaginas=Math.ceil(cenasGeradas.length/p.porPagina);
-    statusMsg('Motor Vercel respondeu: '+cenasGeradas.length+' quadros gerados em '+p.nome+'.');
-  }catch(e){
-    console.error(e);
-    statusMsg('Modo local ativado. O sistema estruturou a obra sem expor prompt técnico.');
-    gerarHQLocal(historia,p);
-    return;
-  }
-
-  renderPreview();
-  renderRoteiro(titulo,p);
-  atualizarCapas();
-  gerarMontagem();
-}
-
-function normalizarQuadro(q,i,p){
-  return {
-    n:q.quadro || q.n || i+1,
-    cena:q.cena || '',
-    dialogo:q.dialogo || falaCena(q.cena || '',i),
-    ambiente:q.ambiente || detectarAmbiente(q.cena || ''),
-    acao:q.acao || detectarAcao(q.cena || ''),
-    estilo:p.estilo,
-    prompt:q.promptImagem || q.prompt || '',
-    statusImagem:q.statusImagem || 'estrutura'
-  };
-}
-
-function gerarHQLocal(historia,p){
-  const partes=cortarUnidades(historia);
-  cenasGeradas=partes.map((base,i)=>({
-    n:i+1,
-    cena:base,
-    dialogo:falaCena(base,i),
-    ambiente:detectarAmbiente(base),
-    acao:detectarAcao(base),
-    estilo:p.estilo,
-    prompt:'',
-    statusImagem:'local'
-  }));
-  totalPaginas=Math.ceil(cenasGeradas.length/p.porPagina);
-  renderPreview();
-  renderRoteiro(document.getElementById('titulo').value || 'HQ sem título',p);
-  atualizarCapas();
-  gerarMontagem();
-}
-
-function cortarUnidades(txt){
-  const limpo=txt.replace(/\s+/g,' ').trim();
-  if(!limpo)return [];
-  let partes=limpo.split(/(?<=[.!?])\s+/).map(s=>s.trim()).filter(Boolean);
-  if(partes.length<2){
-    partes=limpo.match(/.{1,180}(\s|$)/g)?.map(s=>s.trim()).filter(Boolean) || [limpo];
-  }
-  return partes;
-}
-
-function detectarAmbiente(t){
-  const s=String(t||'').toLowerCase();
-  if(/floresta|mata|árvore|rio|bosque|roça|campo|jardim|portal/.test(s))return 'floresta';
-  if(/cidade|rua|prédio|avenida|ônibus|carro/.test(s))return 'cidade';
-  if(/casa|quarto|sala|cozinha|porta|janela/.test(s))return 'casa';
-  if(/escola|professor|aluno|classe/.test(s))return 'escola';
-  if(/castelo|rei|rainha|cavaleiro|dragão|magia|mágico/.test(s))return 'fantasia';
-  if(/nave|robô|máquina|futuro|computador|neon|html/.test(s))return 'futuro';
-  return 'neutro';
-}
-
-function detectarAcao(t){
-  const s=String(t||'').toLowerCase();
-  if(/correu|fugiu|saltou|gritou|lutou|atacou|explodiu|atravessou/.test(s))return 'ação';
-  if(/chorou|sentiu|lembrou|saudade|medo|triste|alegre|chato|penteava/.test(s))return 'emoção';
-  if(/olhou|viu|percebeu|encontrou|descobriu|revelou|portal/.test(s))return 'descoberta';
-  if(/falou|disse|perguntou|respondeu|mandava|enviando/.test(s))return 'diálogo';
-  return 'narrativa';
-}
-
-function falaCena(frase,i){
-  const limpa=frase.replace(/[.!?]+$/g,'').slice(0,90);
-  const prefixos=[
-    'Eu preciso entender isso.',
-    'Isso não parece normal.',
-    'Tem alguma coisa errada aqui.',
-    'Agora ficou sério.',
-    'Vamos até o fim.',
-    'Não tem mais volta.'
-  ];
-  return i%2===0 ? prefixos[i%prefixos.length] : (limpa || prefixos[i%prefixos.length]);
-}
-
-function renderPreview(){
-  const cont=document.getElementById('preview');
-  const p=presetAtual();
-  cont.innerHTML='';
-  const porPagina=p.porPagina;
-
-  for(let pg=0;pg<Math.ceil(cenasGeradas.length/porPagina);pg++){
-    const pag=document.createElement('div');
-    pag.className='pagina '+(document.getElementById('tipo').value==='webtoon-coreano'?'webtoon':'');
-    pag.innerHTML='<h3>'+(document.getElementById('tipo').value==='webtoon-coreano'?'Bloco vertical ':'Página ')+(pg+1)+'</h3>';
-    const fatia=cenasGeradas.slice(pg*porPagina,pg*porPagina+porPagina);
-
-    fatia.forEach((c,i)=>{
-      const q=document.createElement('div');
-      q.className='quadro '+((i===0 && porPagina>1)?'grande':'');
-      q.innerHTML=
-        '<div class="cenaTitulo">Quadro '+c.n+' — '+escapeHTML(c.acao)+'</div>'+
-        '<div class="imgHQ">'+svgCena(c,p)+'</div>'+
-        '<div class="balao">'+escapeHTML(c.dialogo)+'</div>';
-      pag.appendChild(q);
-    });
-
-    cont.appendChild(pag);
-  }
-
-  document.getElementById('chipCenas').innerText=cenasGeradas.length+' quadros';
-  document.getElementById('chipPaginas').innerText=Math.ceil(cenasGeradas.length/porPagina)+' páginas';
-  const folhas=Math.ceil(Math.ceil(cenasGeradas.length/porPagina)/4);
-  document.getElementById('chipFolhas').innerText=folhas+' folhas';
-  aplicarFonte();
-}
-
-function renderRoteiro(titulo,p){
-  let txt='ROTEIRO LIMPO — CELEIRO MULTIMÍDIA\n\n';
-  txt+='Título: '+titulo+'\n';
-  txt+='Formato: '+p.nome+'\n';
-  txt+='Tamanho aplicado: '+p.tamanho+'\n';
-  txt+='Fluxo: '+p.fluxo+'\n';
-  txt+='Leitura: '+p.leitura+'\n\n';
-  cenasGeradas.forEach(c=>{
-    txt+='QUADRO '+c.n+'\n';
-    txt+='Cena: '+c.cena+'\n';
-    txt+='Diálogo/Balão: '+c.dialogo+'\n\n';
-  });
-  txt+='FLUXO\nEditor HQ → Motor Vercel → CORSI → Expedição Multimídia → WebTV / Bunker da Obra.';
-  document.getElementById('roteiro').innerText=txt;
-
-  localStorage.setItem('celeiro_multimidia_material',JSON.stringify({
-    silo:'HQ',
-    titulo,
-    formato:p.nome,
-    conteudo:txt,
-    data:new Date().toLocaleString('pt-BR')
-  }));
-}
-
-function svgCena(c,p){
-  const pal=paleta(p,c.ambiente);
-  const bw=!p.cor;
-  const ceu=bw?'#eeeeee':pal.ceu;
-  const chao=bw?'#cccccc':pal.chao;
-  const pessoa=bw?'#111':pal.personagem;
-  const roupa=bw?'#333':pal.roupa;
-  const detalhe=bw?'#777':'#f5d87a';
-  const texto=escapeSVG(c.acao);
-
-  return `<svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg">
-    <rect width="300" height="160" fill="${ceu}"/>
-    <rect y="105" width="300" height="55" fill="${chao}"/>
-    ${c.ambiente==='floresta'?'<circle cx="48" cy="55" r="26" fill="'+pessoa+'"/><rect x="42" y="75" width="12" height="48" fill="'+roupa+'"/><circle cx="235" cy="48" r="24" fill="'+pessoa+'"/><rect x="229" y="68" width="12" height="52" fill="'+roupa+'"/><circle cx="248" cy="28" r="16" fill="'+detalhe+'"/>':''}
-    ${c.ambiente==='cidade'?'<rect x="20" y="48" width="45" height="72" fill="'+pessoa+'"/><rect x="82" y="25" width="55" height="95" fill="'+roupa+'"/><rect x="190" y="38" width="60" height="82" fill="'+pessoa+'"/>':''}
-    ${c.ambiente==='casa'?'<rect x="55" y="58" width="190" height="72" fill="'+pessoa+'" opacity=".35"/><path d="M45 60 L150 18 L255 60" fill="none" stroke="#111" stroke-width="4"/>':''}
-    ${c.ambiente==='fantasia'?'<path d="M70 118 L85 45 L105 118 Z" fill="'+pessoa+'"/><path d="M180 118 L195 30 L210 118 Z" fill="'+roupa+'"/><circle cx="230" cy="55" r="10" fill="'+detalhe+'"/>':''}
-    ${c.ambiente==='futuro'?'<rect x="30" y="55" width="240" height="65" rx="10" fill="'+pessoa+'" opacity=".35"/><circle cx="90" cy="75" r="8" fill="'+detalhe+'"/><circle cx="135" cy="75" r="7" fill="'+detalhe+'"/><circle cx="180" cy="75" r="8" fill="'+detalhe+'"/>':''}
-    <circle cx="150" cy="72" r="22" fill="${pessoa}" stroke="#111" stroke-width="3"/>
-    <rect x="132" y="94" width="36" height="45" rx="8" fill="${roupa}" stroke="#111" stroke-width="3"/>
-    <path d="M128 108 Q100 125 86 140" fill="none" stroke="#111" stroke-width="4"/>
-    <path d="M172 108 Q200 125 214 140" fill="none" stroke="#111" stroke-width="4"/>
-    <path d="${c.acao==='emoção'?'M140 76 Q150 85 160 76':'M140 76 Q150 84 160 76'}" fill="none" stroke="#111" stroke-width="3"/>
-    <rect x="103" y="10" width="94" height="24" rx="12" fill="rgba(255,255,255,.82)" stroke="#111"/>
-    <text x="150" y="26" font-size="12" text-anchor="middle" font-family="Arial">${texto}</text>
-  </svg>`;
-}
-
-function paleta(p,ambiente){
-  if(p.nome.includes('Mangá') || p.nome.includes('Cordel'))return {ceu:'#e8e8e8',chao:'#c9c9c9',personagem:'#111',roupa:'#333'};
-  if(p.nome.includes('Webtoon'))return {ceu:'#9ee7ff',chao:'#98e070',personagem:'#ff8aa8',roupa:'#4b7bec'};
-  if(p.nome.includes('americana'))return {ceu:'#72b7ff',chao:'#ffcc5c',personagem:'#ff5b5b',roupa:'#2454d6'};
-  if(ambiente==='floresta')return {ceu:'#a8e6ff',chao:'#4a9b55',personagem:'#2da075',roupa:'#2d5d34'};
-  return {ceu:'#b8dcff',chao:'#cbb58a',personagem:'#d2a075',roupa:'#244d86'};
-}
-
-function svgCapa(titulo,p,n){
-  const cores=[
-    ['#101827','#d6b354','#ffffff'],
-    ['#3b3b3b','#eeeeee','#111111'],
-    ['#7f1d1d','#f5d87a','#ffffff']
-  ][n-1];
-  return `<svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
-    <defs><linearGradient id="g${n}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${cores[0]}"/><stop offset="1" stop-color="${cores[1]}"/></linearGradient></defs>
-    <rect width="360" height="260" fill="url(#g${n})"/>
-    <circle cx="286" cy="65" r="45" fill="rgba(255,255,255,.18)"/>
-    <rect x="30" y="70" width="110" height="120" rx="14" fill="rgba(255,255,255,.18)" stroke="${cores[2]}" stroke-width="6"/>
-    <text x="190" y="112" font-family="Georgia" font-size="30" font-weight="900" fill="${cores[2]}" text-anchor="middle">${escapeSVG(titulo)}</text>
-    <text x="190" y="146" font-family="Arial" font-size="14" fill="${cores[2]}" text-anchor="middle">${escapeSVG(p.nome)}</text>
-    <text x="180" y="222" font-family="Arial" font-size="13" font-weight="900" fill="${cores[2]}" text-anchor="middle">CELEIRO LITERÁRIO — SILO HQ</text>
-  </svg>`;
-}
-
-function atualizarCapas(){
-  const titulo=document.getElementById('titulo').value || 'TÍTULO DA HQ';
-  const p=presetAtual();
-  const capas=document.getElementById('capas');
-  capas.innerHTML='';
-  [1,2,3].forEach(n=>{
-    const div=document.createElement('div');
-    div.className='capa '+(capaEscolhida===n?'escolhida':'');
-    div.onclick=()=>{capaEscolhida=n;atualizarCapas();};
-    div.innerHTML=svgCapa(titulo,p,n);
-    capas.appendChild(div);
-  });
-}
-
-function gerarMontagem(){
-  if(!cenasGeradas.length)gerarHQLocal(document.getElementById('historia').value || 'Página inicial da HQ.', presetAtual());
-  const p=presetAtual();
-  const total=Math.ceil(cenasGeradas.length/p.porPagina);
-  const montagem=document.getElementById('montagem');
-  montagem.innerHTML='';
-
-  if(document.getElementById('tipo').value==='webtoon-coreano'){
-    montagem.innerHTML='<div class="lista">Webtoon coreano: saída vertical contínua para celular. Não exige imposição de folha grampeada.</div>';
-    return;
-  }
-
-  totalPaginasImpressao=Math.ceil(total/4)*4;
-  const folhas=totalPaginasImpressao/4;
-  document.getElementById('chipFolhas').innerText=folhas+' folhas';
-
-  for(let f=0;f<folhas;f++){
-    const frenteE=totalPaginasImpressao-(2*f);
-    const frenteD=1+(2*f);
-    const versoE=2+(2*f);
-    const versoD=totalPaginasImpressao-(2*f+1);
-
-    const div=document.createElement('div');
-    div.className='folha';
-    div.innerHTML=
-      '<h4>Folha '+(f+1)+' — frente</h4>'+
-      '<div class="abertura"><div class="pagImp">'+nomePagina(frenteE,total)+'</div><div class="pagImp">'+nomePagina(frenteD,total)+'</div></div>'+
-      '<h4 style="margin-top:12px">Folha '+(f+1)+' — verso</h4>'+
-      '<div class="abertura"><div class="pagImp">'+nomePagina(versoE,total)+'</div><div class="pagImp">'+nomePagina(versoD,total)+'</div></div>';
-    montagem.appendChild(div);
-  }
-}
-
-function nomePagina(n,total){
-  if(n>total)return 'Página em branco';
-  return 'Página '+n;
-}
-
-function salvarProjeto(){
-  if(!cenasGeradas.length)gerarHQLocal(document.getElementById('historia').value || 'História em branco.', presetAtual());
-  localStorage.setItem('celeiro_hq_projeto',JSON.stringify({
-    titulo:document.getElementById('titulo').value,
-    tipo:document.getElementById('tipo').value,
-    cenas:cenasGeradas,
-    data:new Date().toLocaleString('pt-BR')
-  }));
-  alert('Projeto HQ salvo no bunker local.');
-}
-
-function enviar(){
-  if(!cenasGeradas.length)gerarHQLocal(document.getElementById('historia').value || 'História em branco.', presetAtual());
-  location.href='expedicao_multimidia.html?origem=silo_hq';
-}
-
-function aplicarParametrosURL(){
-  const params=new URLSearchParams(location.search);
-  const tipo=params.get('tipo') || params.get('preset');
-  if(tipo && PRESETS[tipo]){
-    document.getElementById('tipo').value=tipo;
-  }
-  const titulo=params.get('titulo');
-  if(titulo)document.getElementById('titulo').value=titulo;
-  aplicarPreset();
-}
-
-aplicarParametrosURL();
-atualizarCapas();
 </script>
 
 </body>
