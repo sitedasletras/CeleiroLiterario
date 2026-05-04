@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORSI — Circulação e Redes</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#05070c,#10294a,#efe2c7);color:white;text-align:center;padding:24px}h1{color:#f5d87a;font-family:Georgia,serif}.card{background:#fff8df;color:#111;border:2px solid #d6b354;border-radius:22px;padding:22px;margin:18px auto;max-width:860px;box-shadow:0 12px 30px rgba(0,0,0,.25)}.dark{background:#111;color:white}.btn{display:inline-block;padding:13px 18px;border-radius:999px;background:#d6b354;color:#111;text-decoration:none;font-weight:900;border:0;cursor:pointer;margin:6px}.verde{background:#1f7a42;color:white}.sair{background:#8b1e1e;color:white}input,select,textarea{width:90%;max-width:650px;padding:12px;border-radius:12px;border:2px solid #111;margin:8px}textarea{min-height:110px}.lista{text-align:left;background:white;color:#111;padding:14px;border-radius:14px;white-space:pre-wrap}
+</style>
+<script>
+function perfilAtual(){return localStorage.getItem('perfil')||localStorage.getItem('celeiro_perfil')||'usuario'}
+function definirDestino(){const p=perfilAtual().toLowerCase();const institucional=['admin','heteronimo','heterônimo','wagner planas','wagner_planas'];const destino=institucional.includes(p)?'Redes institucionais do Instituto Cultural Celeiro Literário':'Redes sociais do autor/cliente';document.getElementById('perfil').innerText=p;document.getElementById('destino').innerText=destino;}
+function prepararPostagem(){const obra=document.getElementById('obra').value||localStorage.getItem('arquivoNome')||'Material pronto';const rede=document.getElementById('rede').value;const texto=document.getElementById('texto').value||'Material preparado pelo Celeiro Literário.';const plano='CORSI — Plano de circulação\nMaterial: '+obra+'\nDestino: '+document.getElementById('destino').innerText+'\nRede inicial: '+rede+'\nMensagem-base: '+texto+'\n\nStatus: pronto para encaminhar/publicar conforme autorização.';localStorage.setItem('corsi_plano',plano);document.getElementById('saida').innerText=plano;}
+window.addEventListener('load',definirDestino);
+</script>
+</head>
+<body>
+<h1>CORSI</h1>
+<p>Departamento de Circulação, Redes e Postagem</p>
+<section class="card dark"><h2>CORSI diz:</h2><p>Quando o material fica pronto, eu entro para oferecer circulação, postagem e divulgação. O autor escolhe se deseja postar nas próprias redes. Perfis Admin, Heterônimo e Wagner Planas podem encaminhar para as redes institucionais do Instituto Cultural Celeiro Literário.</p></section>
+<section class="card"><h2>Destino automático</h2><p>Perfil identificado: <strong id="perfil"></strong></p><p>Destino sugerido: <strong id="destino"></strong></p></section>
+<section class="card"><h2>Preparar circulação</h2><input id="obra" placeholder="Nome do material pronto"><br><select id="rede"><option>Todas as redes disponíveis</option><option>Instagram</option><option>TikTok</option><option>YouTube</option><option>Facebook</option><option>Web Rádio Celeiro</option><option>Web TV Celeiro</option></select><br><textarea id="texto" placeholder="Texto-base para postagem"></textarea><br><button class="btn verde" onclick="prepararPostagem()">Preparar postagem</button><div id="saida" class="lista"></div></section>
+<a class="btn" href="pagina_respiro_celeiro.html?modo=interno">Voltar ao Hall</a><a class="btn" href="expedicao_multimidia.html?modo=interno">Ir para Expedição Multimídia</a><a class="btn" href="cicile_reclamacao.html?departamento=CORSI">Reclamar com a CICILE</a><a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
+</body>
+</html>
