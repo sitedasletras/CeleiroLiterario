@@ -1,218 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Preparação da Obra</title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lapidar — Preparação da Obra</title>
 <style>
-:root{
---bg:#ece8de;
---card:#f7f4ee;
---ink:#1f1f1b;
---muted:#6f6a62;
---line:#ddd6c9;
---accent:#6a7f52;
---shadow:0 12px 28px rgba(0,0,0,.10);
---radius:24px;
-}
-
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-
-body{
-min-height:100vh;
-font-family:Georgia,"Times New Roman",serif;
-background:var(--bg);
-color:var(--ink);
-display:flex;
-align-items:center;
-justify-content:center;
-padding:16px;
-}
-
-.container{
-width:min(92vw,980px);
-background:var(--card);
-border-radius:var(--radius);
-box-shadow:var(--shadow);
-border:1px solid var(--line);
-padding:34px 26px;
-}
-
-.tag{
-display:inline-block;
-padding:6px 12px;
-border-radius:999px;
-background:#eef3e6;
-color:#4f613b;
-font-size:.88rem;
-font-weight:700;
-letter-spacing:.05em;
-text-transform:uppercase;
-margin-bottom:14px;
-}
-
-h1{
-margin:0 0 12px 0;
-font-size:clamp(2.2rem,5vw,3.4rem);
-line-height:1.05;
-}
-
-p{
-margin:0 0 18px 0;
-color:var(--muted);
-font-size:1.08rem;
-line-height:1.5;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:16px;
-margin-top:18px;
-}
-
-.card{
-background:#fff;
-border-radius:18px;
-border:1px solid var(--line);
-padding:20px;
-text-align:center;
-transition:.18s ease;
-cursor:pointer;
-}
-
-.card:hover{
-transform:translateY(-2px);
-box-shadow:0 8px 18px rgba(0,0,0,.08);
-}
-
-.card h2{
-margin:6px 0 10px 0;
-font-size:1.2rem;
-}
-
-.card p{
-font-size:.95rem;
-}
-
-.note{
-margin-top:18px;
-padding:14px 16px;
-border:1px dashed #cfc6b8;
-border-radius:16px;
-background:rgba(255,255,255,.45);
-color:#6a645d;
-}
-
-.actions{
-margin-top:24px;
-display:flex;
-gap:12px;
-justify-content:center;
-flex-wrap:wrap;
-}
-
-.btn{
-border:none;
-border-radius:16px;
-padding:14px 20px;
-font:inherit;
-font-weight:700;
-cursor:pointer;
-transition:.18s ease;
-box-shadow:0 8px 18px rgba(0,0,0,.08);
-}
-
-.btn:hover{
-transform:translateY(-1px);
-}
-
-.btn-back{
-background:#d9a441;
-color:#2a1d0d;
-}
-
-.btn-home{
-background:var(--accent);
-color:#fff;
-}
-
-@media (max-width:780px){
-
-.grid{
-grid-template-columns:1fr;
-}
-
-.container{
-padding:28px 18px;
-}
-
-.actions{
-flex-direction:column;
-}
-
-.btn{
-width:100%;
-}
-
-}
+:root{--fundo:#eee9dd;--papel:#fbf8ef;--card:#fff;--tinta:#222;--texto:#72706b;--verde:#6c8756;--verde-claro:#edf4e7;--ouro:#e2aa38;--linha:#d9d3c8;--sombra:0 18px 34px rgba(43,35,22,.14)}*{box-sizing:border-box}body{margin:0;background:var(--fundo);font-family:Georgia,'Times New Roman',serif;color:var(--tinta);padding:18px}.folha{max-width:690px;margin:0 auto;background:var(--papel);border-radius:0 0 42px 42px;padding:34px 34px 48px;box-shadow:0 20px 46px rgba(38,31,20,.15);border-left:1px solid #ddd6ca;border-right:1px solid #ddd6ca}.selo{display:inline-block;background:var(--verde-claro);color:#48663f;border-radius:999px;padding:8px 24px;font-weight:800;letter-spacing:.08em;font-size:1.05rem;text-transform:uppercase}.titulo{font-size:clamp(3rem,10vw,4.7rem);line-height:.92;margin:26px 0 22px;font-weight:900;letter-spacing:-.04em}.descricao{font-size:clamp(1.55rem,5.6vw,2.35rem);line-height:1.33;color:var(--texto);margin:0 0 28px}.uploadBox{background:#fff;border:2px dashed #cfc7b9;border-radius:28px;padding:22px;text-align:center;margin:26px 0 28px;box-shadow:var(--sombra)}.uploadBox h2{font-size:2rem;margin:0 0 10px}.uploadBox p{font-size:1.2rem;line-height:1.45;color:var(--texto);margin:0 0 18px}.uploadBtn{border:0;border-radius:999px;background:var(--verde);color:white;font-size:1.35rem;font-weight:900;padding:18px 30px;min-width:260px;box-shadow:0 12px 22px rgba(80,103,61,.22);cursor:pointer;font-family:Georgia,'Times New Roman',serif}.uploadBtn:active{transform:translateY(1px)}#arquivoObra{display:none}.arquivoInfo{display:none;margin-top:16px;background:#edf4e7;border:1px solid #b9c7ad;color:#405c38;border-radius:18px;padding:13px;font-size:1.08rem;line-height:1.35}.grade{display:grid;gap:28px;margin-top:20px}.card{background:var(--card);border:2px solid var(--linha);border-radius:28px;padding:32px 24px;text-align:center;box-shadow:var(--sombra);transition:.18s ease}.card.ativo{border-color:#a9bc9c;background:linear-gradient(180deg,#fff,#f4f8ef)}.card h2{font-size:clamp(1.8rem,6vw,2.55rem);line-height:1.05;margin:0 0 18px}.card p{font-size:clamp(1.2rem,4.8vw,1.85rem);line-height:1.28;color:var(--texto);margin:0}.acaoCard{display:none;margin-top:18px;border:0;border-radius:999px;background:#10233f;color:white;font-family:Georgia,'Times New Roman',serif;font-size:1.05rem;font-weight:900;padding:12px 18px;cursor:pointer}.card.ativo .acaoCard{display:inline-block}.painel{margin-top:34px;border:2px dashed #c8c0b3;border-radius:22px;padding:24px;background:#f9f4e8;color:#6f6b64;font-size:clamp(1.2rem,4.8vw,1.85rem);line-height:1.18}.botoes{display:grid;gap:24px;margin-top:34px}.btn{display:block;text-align:center;text-decoration:none;border-radius:24px;padding:22px 24px;font-size:clamp(1.35rem,5vw,2rem);font-weight:900;color:#1f1d19}.amarelo{background:var(--ouro)}.verde{background:var(--verde);color:white}.resultado{display:none;margin-top:20px;background:#fff;border:1px solid #d8d0c1;border-radius:22px;padding:18px;text-align:left;color:#5f5b54;font-size:1.05rem;line-height:1.45}.resultado strong{color:#222}@media(max-width:520px){body{padding:0}.folha{border-radius:0 0 34px 34px;padding:28px 34px 42px}.uploadBtn{width:100%;min-width:0}.card{padding:30px 18px}.painel{padding:20px}}
 </style>
 </head>
-
 <body>
+<main class="folha">
+<span class="selo">Lapidar — Entrada Editorial</span>
+<h1 class="titulo">Preparação da<br>Obra</h1>
+<p class="descricao">Este setor reúne as ferramentas responsáveis por preparar o material antes das etapas editoriais principais. Aqui o texto é limpo, organizado e estabilizado para seguir com segurança para os demais departamentos do Lapidar.</p>
 
-<main class="container">
+<section class="uploadBox" aria-label="Envio da obra">
+<h2>Enviar obra</h2>
+<p>Carregue o arquivo da obra para iniciar a preparação. Aceita TXT, DOC, DOCX e PDF. Nesta versão leve, o arquivo fica no navegador e serve como entrada visual do fluxo.</p>
+<input id="arquivoObra" type="file" accept=".txt,.doc,.docx,.pdf,text/plain,application/pdf">
+<button class="uploadBtn" onclick="document.getElementById('arquivoObra').click()">📄 Enviar obra</button>
+<div id="arquivoInfo" class="arquivoInfo"></div>
+</section>
 
-<div class="tag">Lapidar — Entrada Editorial</div>
+<section class="grade">
+<article class="card" id="limpezaCard"><h2>Limpeza do Material</h2><p>Remove elementos impuros e preserva o conteúdo essencial da obra.</p><button class="acaoCard" onclick="executarEtapa('limpeza')">Iniciar limpeza</button></article>
+<article class="card" id="desbasteCard"><h2>Desbaste Textual Leve</h2><p>Identificação estrutural inicial e organização narrativa básica.</p><button class="acaoCard" onclick="executarEtapa('desbaste')">Iniciar desbaste</button></article>
+<article class="card" id="polimentoCard"><h2>Polimento das Imagens</h2><p>Preparação visual das imagens internas e editoriais da obra.</p><button class="acaoCard" onclick="location.href='barracao_polimento_imagens.html'">Abrir Barracão</button></article>
+</section>
 
-<h1>Preparação da Obra</h1>
+<section class="painel" id="painelStatus">Aguardando envio da obra. Depois do upload, as etapas de preparação serão liberadas.</section>
+<section class="resultado" id="resultado"></section>
 
-<p>
-Este setor reúne as ferramentas responsáveis por preparar o material antes das etapas
-editoriais principais. Aqui o texto é limpo, organizado e estabilizado para seguir com segurança
-para os demais departamentos do Lapidar.
-</p>
-
-<div class="grid">
-
-<div class="card" onclick="window.location.href='limpeza_material.html'">
-<h2>Limpeza do Material</h2>
-<p>Remove elementos impuros e preserva o conteúdo essencial da obra.</p>
-</div>
-
-<div class="card" onclick="window.location.href='desbaste_leve.html'">
-<h2>Desbaste Textual Leve</h2>
-<p>Identificação estrutural inicial e organização narrativa básica.</p>
-</div>
-
-<div class="card" onclick="window.location.href='barracao_polimento_imagens.html'">
-<h2>Polimento das Imagens</h2>
-<p>Preparação visual das imagens internas e editoriais da obra.</p>
-</div>
-
-</div>
-
-<div class="note">
-Mesário da Preparação da Obra consolidará automaticamente as contribuições realizadas neste setor.
-</div>
-
-<div class="actions">
-
-<button class="btn btn-back"
-onclick="window.location.href='lapidar.html'">
-Retornar ao Lapidar
-</button>
-
-<button class="btn btn-home"
-onclick="window.location.href='index.html'">
-Ir ao Celeiro
-</button>
-
-</div>
-
+<nav class="botoes">
+<a class="btn amarelo" href="lapidar.html">Retornar ao Lapidar</a>
+<a class="btn verde" href="index.html">Ir ao Celeiro</a>
+</nav>
 </main>
-
+<script>
+const input=document.getElementById('arquivoObra'),info=document.getElementById('arquivoInfo'),painel=document.getElementById('painelStatus'),resultado=document.getElementById('resultado');let obra=null;
+input.addEventListener('change',()=>{const f=input.files[0];if(!f)return;obra=f;info.style.display='block';info.innerHTML='📂 <strong>Arquivo carregado:</strong> '+f.name+'<br>📏 <strong>Tamanho:</strong> '+formatarTamanho(f.size)+'<br>🕰️ <strong>Status:</strong> pronto para preparação.';['limpezaCard','desbasteCard','polimentoCard'].forEach(id=>document.getElementById(id).classList.add('ativo'));painel.textContent='Obra recebida. Agora você pode iniciar a limpeza, o desbaste textual leve ou enviar imagens para o Barracão de Polimento.';resultado.style.display='none'});
+function formatarTamanho(bytes){if(bytes<1024)return bytes+' bytes';if(bytes<1024*1024)return (bytes/1024).toFixed(1)+' KB';return (bytes/1024/1024).toFixed(2)+' MB'}
+function executarEtapa(tipo){if(!obra){painel.textContent='Envie a obra antes de iniciar esta etapa.';return}resultado.style.display='block';if(tipo==='limpeza'){resultado.innerHTML='<strong>Limpeza do Material iniciada.</strong><br>Arquivo-base: '+obra.name+'<br><br>Versão leve: o sistema registrou a entrada da obra e preparou o material para conferência textual. A limpeza profunda será evoluída dentro do motor do Lapidar.';painel.textContent='Limpeza registrada. Próximo passo recomendado: Desbaste Textual Leve.'}if(tipo==='desbaste'){resultado.innerHTML='<strong>Desbaste Textual Leve iniciado.</strong><br>Arquivo-base: '+obra.name+'<br><br>Versão leve: entrada estrutural reconhecida. A próxima evolução deve identificar capítulos, blocos, títulos e possíveis elementos pré-textuais.';painel.textContent='Desbaste registrado. O material já pode seguir para os departamentos editoriais.'}}
+</script>
 </body>
 </html>
