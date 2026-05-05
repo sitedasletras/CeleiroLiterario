@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Celeiro Literário — Status dos Módulos</title>
+  <style>
+    :root{
+      --azul:#10233f;
+      --azul2:#18375f;
+      --ouro:#d8b56d;
+      --pergaminho:#f7f1e3;
+      --papel:#fffaf0;
+      --texto:#243044;
+      --muted:#6c7280;
+      --aberto:#e8f4ef;
+      --aberto-borda:#83b9a0;
+      --lapidacao:#fff4db;
+      --lapidacao-borda:#d6ad55;
+      --breve:#eef1f6;
+      --breve-borda:#aab3c2;
+      --sombra:0 18px 45px rgba(0,0,0,.18);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: Georgia, 'Times New Roman', serif;
+      background:
+        radial-gradient(circle at top left, rgba(216,181,109,.24), transparent 34%),
+        linear-gradient(135deg, #09182b, #10233f 45%, #1b2d4b);
+      color:var(--texto);
+      padding:24px;
+    }
+
+    .wrap{
+      max-width:1120px;
+      margin:0 auto;
+    }
+
+    header{
+      background:rgba(255,250,240,.96);
+      border:1px solid rgba(216,181,109,.45);
+      border-radius:28px;
+      box-shadow:var(--sombra);
+      padding:26px 24px;
+      text-align:center;
+      margin-bottom:22px;
+    }
+
+    .marca{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:74px;
+      height:74px;
+      border-radius:50%;
+      background:linear-gradient(145deg, var(--azul), var(--azul2));
+      color:var(--ouro);
+      font-size:34px;
+      border:2px solid var(--ouro);
+      box-shadow:0 10px 24px rgba(16,35,63,.25);
+      margin-bottom:12px;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(1.8rem, 4vw, 3rem);
+      color:var(--azul);
+      letter-spacing:.02em;
+    }
+
+    .sub{
+      margin:10px auto 0;
+      max-width:780px;
+      font-size:1.05rem;
+      line-height:1.55;
+      color:#4a5261;
+    }
+
+    .aviso{
+      margin:18px auto 0;
+      max-width:840px;
+      background:#fdf7e8;
+      border:1px solid rgba(216,181,109,.65);
+      border-radius:18px;
+      padding:14px 16px;
+      color:#594420;
+      line-height:1.45;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+      gap:18px;
+    }
+
+    .card{
+      background:var(--papel);
+      border-radius:24px;
+      padding:20px;
+      box-shadow:var(--sombra);
+      border:1px solid rgba(255,255,255,.65);
+      min-height:260px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0 0 auto 0;
+      height:7px;
+      background:var(--breve-borda);
+    }
+
+    .card.aberto{background:linear-gradient(180deg,#ffffff,var(--aberto)); border-color:var(--aberto-borda)}
+    .card.aberto::before{background:var(--aberto-borda)}
+    .card.lapidacao{background:linear-gradient(180deg,#ffffff,var(--lapidacao)); border-color:var(--lapidacao-borda)}
+    .card.lapidacao::before{background:var(--lapidacao-borda)}
+    .card.breve{background:linear-gradient(180deg,#ffffff,var(--breve)); border-color:var(--breve-borda)}
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      gap:6px;
+      border-radius:999px;
+      padding:7px 11px;
+      font-size:.8rem;
+      font-family:Arial, sans-serif;
+      font-weight:700;
+      margin-bottom:12px;
+    }
+
+    .aberto .tag{background:#dff0e8;color:#1f6047}
+    .lapidacao .tag{background:#fff0c7;color:#77551a}
+    .breve .tag{background:#e6eaf1;color:#4c5668}
+
+    h2{
+      margin:0 0 8px;
+      color:var(--azul);
+      font-size:1.35rem;
+    }
+
+    p{
+      margin:0 0 12px;
+      line-height:1.48;
+      color:#4d5563;
+    }
+
+    .acoes{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    a.btn, button.btn{
+      appearance:none;
+      border:0;
+      text-decoration:none;
+      border-radius:999px;
+      padding:11px 15px;
+      font-family:Arial, sans-serif;
+      font-weight:800;
+      cursor:pointer;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+    }
+
+    a.btn:hover{transform:translateY(-1px)}
+
+    .btn.open{
+      background:var(--azul);
+      color:white;
+    }
+
+    .btn.soft{
+      background:#fff7e4;
+      color:#644818;
+      border:1px solid rgba(216,181,109,.65);
+    }
+
+    .btn.lock{
+      background:#dfe3eb;
+      color:#5c6472;
+      cursor:not-allowed;
+    }
+
+    .nota{
+      font-size:.92rem;
+      color:#697181;
+      margin-top:8px;
+    }
+
+    .rodape{
+      margin:22px 0 0;
+      background:rgba(255,250,240,.94);
+      border-radius:22px;
+      padding:18px;
+      text-align:center;
+      border:1px solid rgba(216,181,109,.35);
+      color:#4b5362;
+      line-height:1.5;
+    }
+
+    .rodape strong{color:var(--azul)}
+
+    @media(max-width:640px){
+      body{padding:14px}
+      header{padding:22px 16px;border-radius:22px}
+      .card{border-radius:20px;padding:18px}
+      .acoes{flex-direction:column}
+      a.btn, button.btn{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="marca">🌾</div>
+      <h1>Status dos Módulos do Celeiro</h1>
+      <p class="sub">Camada de proteção delicada: os módulos em bom funcionamento continuam abertos; os módulos em lapidação final ficam preservados até entregarem uma experiência segura, bonita e sem frustração para o autor.</p>
+      <div class="aviso"><strong>Critério atual:</strong> Web Rádio e Web TV seguem abertas. Diagramação, OKapista/Capa e Barracão de Polimento das Imagens ficam em lapidação final, pois são prioridade de correção e não devem prometer mais do que entregam neste momento.</div>
+    </header>
+
+    <section class="grid" aria-label="Módulos em funcionamento e em lapidação">
+      <article class="card aberto">
+        <div>
+          <span class="tag">✅ Aberto</span>
+          <h2>Web Rádio</h2>
+          <p>Área de difusão sonora do Celeiro. Como já está funcionando, permanece aberta para circulação e testes reais.</p>
+        </div>
+        <div class="acoes">
+          <a class="btn open" href="webradio.html">Entrar na Web Rádio</a>
+        </div>
+      </article>
+
+      <article class="card aberto">
+        <div>
+          <span class="tag">✅ Aberto</span>
+          <h2>Web TV</h2>
+          <p>Área de circulação audiovisual do Celeiro. Deve continuar disponível por já estar bem encaminhada e funcional.</p>
+        </div>
+        <div class="acoes">
+          <a class="btn open" href="webtv.html">Entrar na Web TV</a>
+        </div>
+      </article>
+
+      <article class="card lapidacao">
+        <div>
+          <span class="tag">🛠️ Em lapidação final</span>
+          <h2>Diagramação</h2>
+          <p>O motor será mantido protegido até a prévia editorial, paginação, margens, estilos e exportação ficarem estáveis para uso real.</p>
+          <p class="nota">Sem IA por enquanto: o caminho será HTML, CSS, JavaScript, prévia visual e regras editoriais.</p>
+        </div>
+        <div class="acoes">
+          <button class="btn lock" disabled>Em breve</button>
+        </div>
+      </article>
+
+      <article class="card lapidacao">
+        <div>
+          <span class="tag">🛠️ Em lapidação final</span>
+          <h2>OKapista / Capa</h2>
+          <p>O módulo de capa fica preservado enquanto a criação interna, o upload de imagem, a lombada, contracapa e ePub são organizados sem custo de IA.</p>
+          <p class="nota">Apoio externo gratuito previsto: Canva e GIMP, guiados pelo Celeiro.</p>
+        </div>
+        <div class="acoes">
+          <button class="btn lock" disabled>Em breve</button>
+          <a class="btn soft" href="https://www.canva.com/" target="_blank" rel="noopener">Abrir Canva</a>
+          <a class="btn soft" href="https://www.gimp.org/" target="_blank" rel="noopener">Baixar GIMP</a>
+        </div>
+      </article>
+
+      <article class="card lapidacao">
+        <div>
+          <span class="tag">🛠️ Em lapidação final</span>
+          <h2>Barracão de Polimento das Imagens</h2>
+          <p>Motor visual central do Lapidar. Vai atender capa, imagens internas, HQ e materiais audiovisuais, mas precisa ficar protegido até a operação estar limpa.</p>
+          <p class="nota">Regra: um Barracão só, funcionando como engrenagem chamada pelos demais módulos.</p>
+        </div>
+        <div class="acoes">
+          <button class="btn lock" disabled>Em breve</button>
+        </div>
+      </article>
+
+      <article class="card breve">
+        <div>
+          <span class="tag">🔒 Protegido</span>
+          <h2>Módulos com IA futura</h2>
+          <p>Lapidação inteligente, avaliação profunda, sinopse automática, voz, vídeo e recursos semelhantes ficam dormentes até haver condição técnica e financeira para ativação.</p>
+          <p class="nota">Nada de custo escondido agora. O Celeiro roda leve primeiro.</p>
+        </div>
+        <div class="acoes">
+          <button class="btn lock" disabled>Em breve</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="rodape">
+      <strong>Regra de proteção:</strong> módulo bom continua aberto; módulo instável não desaparece, apenas entra em repouso elegante. O autor não encontra erro: encontra promessa organizada.
+    </section>
+  </main>
+</body>
+</html>
