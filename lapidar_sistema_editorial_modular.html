@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lapidar Sistema Editorial Modular</title>
 <style>
-:root{--azul:#0f1c2e;--azul2:#07101d;--verde:#2f7d4a;--verde2:#dff3e7;--dourado:#c9a646;--papel:#fffaf0;--texto:#243043;--radius:22px;--sombra:0 18px 40px rgba(8,17,31,.16)}*{box-sizing:border-box}body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#fbf7ed,#e2f0e6);color:var(--texto)}header{background:linear-gradient(135deg,#12331f,var(--verde));color:white;padding:70px 20px;border-bottom:8px solid var(--dourado);text-align:center}h1{font-size:clamp(34px,6vw,64px);margin:0;color:#f4dc88}.subtitle{font-size:22px;margin-top:12px;color:#fff5cf}main{max-width:1100px;margin:auto;padding:40px 20px 80px}.receptor{background:#fffaf0;border:2px solid var(--dourado);border-radius:26px;padding:24px;margin-bottom:26px;box-shadow:var(--sombra)}.receptor h2{margin:0 0 10px;color:#12331f}.receptor textarea{width:100%;min-height:220px;border:1px solid rgba(47,125,74,.35);border-radius:16px;padding:16px;font-size:15px;font-family:Arial,sans-serif;background:#fffdf8;color:#17243a}.status{font-family:Arial,sans-serif;font-weight:bold;color:#12331f;margin:8px 0 14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}.card{background:var(--papel);border:1px solid rgba(47,125,74,.35);border-radius:var(--radius);padding:28px;box-shadow:var(--sombra)}.card h2{margin-top:0;color:#12331f}.btn{display:inline-block;margin-top:14px;padding:12px 18px;border-radius:999px;font-weight:bold;text-decoration:none;background:var(--verde);color:white;border:0;cursor:pointer;font-family:Georgia,'Times New Roman',serif}.gold{background:var(--dourado);color:#111}.highlight{background:linear-gradient(135deg,#f4fff7,#dff3e7);border:1px solid rgba(47,125,74,.5)}footer{background:var(--azul2);color:white;text-align:center;padding:30px 18px;border-top:6px solid var(--dourado)}footer strong{color:#f4dc88}</style>
+:root{--azul:#0f1c2e;--azul2:#07101d;--verde:#2f7d4a;--verde2:#dff3e7;--dourado:#c9a646;--papel:#fffaf0;--texto:#243043;--radius:22px;--sombra:0 18px 40px rgba(8,17,31,.16)}*{box-sizing:border-box}body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#fbf7ed,#e2f0e6);color:var(--texto)}header{background:linear-gradient(135deg,#12331f,var(--verde));color:white;padding:70px 20px;border-bottom:8px solid var(--dourado);text-align:center}h1{font-size:clamp(34px,6vw,64px);margin:0;color:#f4dc88}.subtitle{font-size:22px;margin-top:12px;color:#fff5cf}main{max-width:1100px;margin:auto;padding:40px 20px 80px}.receptor{background:#fffaf0;border:2px solid var(--dourado);border-radius:26px;padding:24px;margin-bottom:26px;box-shadow:var(--sombra)}.receptor h2{margin:0 0 10px;color:#12331f}.receptor textarea{width:100%;min-height:220px;border:1px solid rgba(47,125,74,.35);border-radius:16px;padding:16px;font-size:15px;font-family:Arial,sans-serif;background:#fffdf8;color:#17243a}.status{font-family:Arial,sans-serif;font-weight:bold;color:#12331f;margin:8px 0 14px}.trava{margin:14px 0;padding:14px 16px;border-radius:16px;background:#fff4cf;border:1px solid rgba(201,166,70,.55);font-family:Arial,sans-serif;color:#4a3510;line-height:1.45}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}.card{background:var(--papel);border:1px solid rgba(47,125,74,.35);border-radius:var(--radius);padding:28px;box-shadow:var(--sombra)}.card h2{margin-top:0;color:#12331f}.card.locked{opacity:.58;filter:grayscale(.35)}.card.locked .btn{background:#8b8b8b;color:white;pointer-events:none}.btn{display:inline-block;margin-top:14px;padding:12px 18px;border-radius:999px;font-weight:bold;text-decoration:none;background:var(--verde);color:white;border:0;cursor:pointer;font-family:Georgia,'Times New Roman',serif}.gold{background:var(--dourado);color:#111}.highlight{background:linear-gradient(135deg,#f4fff7,#dff3e7);border:1px solid rgba(47,125,74,.5)}footer{background:var(--azul2);color:white;text-align:center;padding:30px 18px;border-top:6px solid var(--dourado)}footer strong{color:#f4dc88}</style>
 </head>
 <body>
 <header>
@@ -17,19 +17,20 @@
 <h2>Recepção OHE → Lapidar</h2>
 <p>Área de entrada para rascunhos funcionais catapultados pela Mesa de Rascunho Vivo da OHE.</p>
 <div id="statusOhe" class="status">Nenhum pacote OHE carregado ainda.</div>
+<div id="travaFluxo" class="trava" style="display:none"><strong>Fluxo obrigatório:</strong> obra recebida do OHE deve entrar pela Preparação Editorial do Lapidar antes de qualquer outro módulo. Diagramação só depois das etapas editoriais anteriores.</div>
 <button class="btn" onclick="importarOHE()">Importar pacote OHE</button>
 <button class="btn gold" onclick="limparOHE()">Limpar recepção</button>
 <textarea id="pacoteOhe" placeholder="O rascunho funcional recebido da OHE aparecerá aqui para iniciar a preparação editorial."></textarea>
 </section>
 <div class="grid">
-<div class="card highlight"><h2>Preparação editorial</h2><p>Entrada da obra, organização técnica, leitura estrutural, limpeza inicial e preparação para os próximos módulos.</p><a class="btn" href="#">Iniciar preparação</a></div>
-<div class="card"><h2>Lapidação Literária</h2><p>Humanização, revisão de fluidez, ritmo textual, diálogos, coerência narrativa e preservação de estilo.</p><a class="btn" href="#">Conhecer lapidação</a></div>
-<div class="card"><h2>Segunda Língua(s)</h2><p>Tradução editorial para ampliar circulação nacional e internacional da obra.</p><a class="btn" href="#">Conhecer tradução</a></div>
-<div class="card"><h2>Diagramação</h2><p>Preparação visual do livro para formatos editoriais, com foco em leitura, margens, títulos e exportação.</p><a class="btn" href="#">Diagramar obra</a></div>
-<div class="card"><h2>OKapista</h2><p>Criação e preparação de capa física, e-book, lombada, contracapa e elementos visuais da obra.</p><a class="btn" href="#">Criar capa</a></div>
-<div class="card"><h2>Análise Literária</h2><p>Avaliação técnica da obra, pareceres, relatórios e orientação editorial conforme o estágio do projeto.</p><a class="btn" href="#">Avaliar obra</a></div>
-<div class="card"><h2>Silos multimídia</h2><p>Transformação da obra em áudio, vídeo, música, HQ, material audiovisual e circulação nas redes.</p><a class="btn" href="#">Conhecer Silos</a></div>
-<div class="card"><h2>Publicação</h2><p>Organização final do material e encaminhamento para publicação, distribuição e expedição.</p><a class="btn" href="#">Ver publicação</a></div>
+<div class="card highlight" id="cardPreparacao"><h2>Preparação editorial</h2><p>Entrada da obra, organização técnica, leitura estrutural, limpeza inicial e preparação para os próximos módulos.</p><button class="btn" onclick="iniciarPreparacao()">Iniciar preparação editorial</button></div>
+<div class="card" data-etapa="pos-preparacao"><h2>Lapidação Literária</h2><p>Humanização, revisão de fluidez, ritmo textual, diálogos, coerência narrativa e preservação de estilo.</p><a class="btn" href="#">Conhecer lapidação</a></div>
+<div class="card" data-etapa="pos-preparacao"><h2>Segunda Língua(s)</h2><p>Tradução editorial para ampliar circulação nacional e internacional da obra.</p><a class="btn" href="#">Conhecer tradução</a></div>
+<div class="card" data-etapa="pos-preparacao"><h2>Diagramação</h2><p>Preparação visual do livro para formatos editoriais, com foco em leitura, margens, títulos e exportação.</p><a class="btn" href="#">Diagramar obra</a></div>
+<div class="card" data-etapa="pos-preparacao"><h2>OKapista</h2><p>Criação e preparação de capa física, e-book, lombada, contracapa e elementos visuais da obra.</p><a class="btn" href="#">Criar capa</a></div>
+<div class="card" data-etapa="pos-preparacao"><h2>Análise Literária</h2><p>Avaliação técnica da obra, pareceres, relatórios e orientação editorial conforme o estágio do projeto.</p><a class="btn" href="#">Avaliar obra</a></div>
+<div class="card" data-etapa="pos-preparacao"><h2>Silos multimídia</h2><p>Transformação da obra em áudio, vídeo, música, HQ, material audiovisual e circulação nas redes.</p><a class="btn" href="#">Conhecer Silos</a></div>
+<div class="card" data-etapa="pos-preparacao"><h2>Publicação</h2><p>Organização final do material e encaminhamento para publicação, distribuição e expedição.</p><a class="btn" href="#">Ver publicação</a></div>
 <div class="card highlight"><h2>Acompanhamento da trajetória</h2><p>Depois de produzir a obra, continue sua evolução artística com o Senhor Trajano Estrada.</p><a class="btn gold" href="acompanhamento_evolucao_trajetoria.html">Ativar acompanhamento</a></div>
 <div class="card"><h2>Rede Mundial</h2><p>Encontre oportunidades, concursos, editais, antologias, plataformas e chamadas artísticas.</p><a class="btn gold" href="rede_mundial_oportunidades_artisticas.html">Acessar Rede Mundial</a></div>
 <div class="card"><h2>Portal do Instituto</h2><p>Voltar à porta institucional pública do Instituto Cultural Celeiro Literário.</p><a class="btn gold" href="portal_instituto_celeiro_literario.html">Voltar ao portal</a></div>
@@ -37,6 +38,8 @@
 </main>
 <footer><p><strong>Lapidar</strong></p><p>Sistema editorial modular integrado ao Instituto Cultural Celeiro Literário</p></footer>
 <script>
+function travarPosPreparacao(){document.querySelectorAll('[data-etapa="pos-preparacao"]').forEach(c=>c.classList.add('locked'));}
+function liberarPosPreparacao(){document.querySelectorAll('[data-etapa="pos-preparacao"]').forEach(c=>c.classList.remove('locked'));}
 function importarOHE(){
   const raw = localStorage.getItem('ohe_catapulta_lapidar');
   const status = document.getElementById('statusOhe');
@@ -45,10 +48,21 @@ function importarOHE(){
   try{
     const pacote = JSON.parse(raw);
     area.value = pacote.texto || JSON.stringify(pacote,null,2);
-    status.textContent = 'Obra recebida do OHE em '+(pacote.data || 'data não informada')+'. Status: pronta para preparação editorial.';
-  }catch(e){area.value=raw;status.textContent='Pacote OHE carregado em formato bruto.';}
+    status.textContent = 'Obra recebida do OHE em '+(pacote.data || 'data não informada')+'. Entrada obrigatória: Preparação Editorial do Lapidar.';
+    document.getElementById('travaFluxo').style.display='block';
+    localStorage.setItem('lapidar_etapa_atual','preparacao_editorial_obrigatoria');
+    travarPosPreparacao();
+  }catch(e){area.value=raw;status.textContent='Pacote OHE carregado em formato bruto. Entrada obrigatória: Preparação Editorial.';document.getElementById('travaFluxo').style.display='block';travarPosPreparacao();}
 }
-function limparOHE(){localStorage.removeItem('ohe_catapulta_lapidar');document.getElementById('pacoteOhe').value='';document.getElementById('statusOhe').textContent='Recepção limpa.';}
+function iniciarPreparacao(){
+  const area = document.getElementById('pacoteOhe');
+  if(!area.value.trim()){document.getElementById('statusOhe').textContent='Importe ou cole uma obra antes de iniciar a Preparação Editorial.';return;}
+  localStorage.setItem('lapidar_preparacao_editorial', area.value);
+  localStorage.setItem('lapidar_etapa_atual','preparacao_editorial_iniciada');
+  document.getElementById('statusOhe').textContent='Preparação Editorial iniciada. A obra entrou na primeira etapa obrigatória do Lapidar.';
+  document.getElementById('travaFluxo').style.display='block';
+}
+function limparOHE(){localStorage.removeItem('ohe_catapulta_lapidar');localStorage.removeItem('lapidar_preparacao_editorial');localStorage.removeItem('lapidar_etapa_atual');document.getElementById('pacoteOhe').value='';document.getElementById('statusOhe').textContent='Recepção limpa.';document.getElementById('travaFluxo').style.display='none';liberarPosPreparacao();}
 </script>
 </body>
 </html>
