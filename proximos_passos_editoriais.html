@@ -3,136 +3,114 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>Celeiro Literário — Próximos Passos</title>
+<title>Celeiro Literário — Próximos Passos Editoriais</title>
 
 <style>
+:root{
+  --azul:#10233f;
+  --ouro:#d8b56d;
+  --papel:#fffaf0;
+  --txt:#243044;
+  --claro:#eef4fb;
+}
+*{box-sizing:border-box}
 body{
   margin:0;
-  font-family:Georgia, serif;
+  font-family:Georgia,"Times New Roman",serif;
   background:linear-gradient(135deg,#10233f,#17365f);
-  color:#243044;
+  color:var(--txt);
   padding:20px;
 }
-
 .wrap{
-  max-width:900px;
+  max-width:980px;
   margin:auto;
-  background:#fffaf0;
-  border-radius:24px;
+  background:var(--papel);
+  border:1px solid rgba(216,181,109,.6);
+  border-radius:28px;
   padding:24px;
-  box-shadow:0 20px 50px rgba(0,0,0,.25);
+  box-shadow:0 20px 50px rgba(0,0,0,.28);
 }
-
-h1{
-  color:#10233f;
+header{
+  text-align:center;
+  border-bottom:1px solid rgba(216,181,109,.45);
+  padding-bottom:18px;
+  margin-bottom:18px;
 }
-
-h2{
-  margin-top:25px;
-  color:#10233f;
+.seal{
+  width:78px;
+  height:78px;
+  border-radius:50%;
+  margin:0 auto 12px;
+  background:var(--azul);
+  border:2px solid var(--ouro);
+  color:var(--ouro);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:36px;
 }
-
-a{
-  display:block;
-  background:#fff1c7;
-  border:1px solid #d8b56d;
-  color:#10233f;
-  text-decoration:none;
-  font-weight:800;
-  border-radius:16px;
-  padding:14px;
-  margin:10px 0;
-}
-
+h1,h2{color:var(--azul)}
+p{line-height:1.5}
 .note{
-  background:#eef4fb;
+  background:var(--claro);
   border:1px solid #b9cce3;
-  border-radius:16px;
+  border-radius:18px;
   padding:14px;
-  line-height:1.5;
-  margin-bottom:15px;
 }
-
-.back{
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:14px;
+}
+.card{
+  background:#fff7e4;
+  border:1px solid var(--ouro);
+  border-radius:18px;
+  padding:15px;
+}
+.card strong{
+  display:block;
+  color:var(--azul);
+  font-size:1.08rem;
+  margin-bottom:8px;
+}
+.card a{
+  display:block;
+  text-decoration:none;
+  color:#10233f;
+  font-weight:900;
+  background:#fffaf0;
+  border:1px solid rgba(216,181,109,.65);
+  border-radius:999px;
+  padding:11px 13px;
+  margin-top:10px;
+}
+.back a{
   background:#10233f;
   color:white;
+  border-radius:999px;
+  text-decoration:none;
+  padding:13px 15px;
+  font-weight:900;
+  display:block;
+  margin:10px 0;
+  text-align:center;
+}
+.small{
+  font-size:.92rem;
+  color:#647084;
+}
+@media(max-width:640px){
+  body{padding:12px}
+  .wrap{padding:18px;border-radius:22px}
 }
 </style>
 </head>
 
 <body>
+<main class="wrap">
 
-<div class="wrap">
-
-<h1>🌾 Próximos Passos Editoriais</h1>
-
-<p class="note">
-Você já criou, tratou ou diagramou sua obra. Agora é hora de dar o próximo passo.
-Aqui estão caminhos reais para evoluir ou publicar seu livro.
-</p>
-
-<h2>🎨 Melhorar capa e imagem</h2>
-
-<a href="https://www.canva.com/" target="_blank">
-🎨 Criar capa profissional no Canva
-</a>
-
-<a href="https://www.gimp.org/" target="_blank">
-🖌️ Editor gratuito profissional (GIMP)
-</a>
-
-<a href="https://www.shutterstock.com/" target="_blank">
-🖼️ Banco de imagens profissional
-</a>
-
-<h2>📚 Publicar seu livro</h2>
-
-<a href="https://kdp.amazon.com/" target="_blank">
-📚 Publicar na Amazon (KDP)
-</a>
-
-<a href="https://clubedeautores.com.br/" target="_blank">
-📘 Publicar no Clube de Autores
-</a>
-
-<a href="https://www.uiclap.com/" target="_blank">
-📗 Publicar na UICLAP
-</a>
-
-<a href="https://www.bibliomundi.com/" target="_blank">
-📖 Distribuir ebook (Bibliomundi)
-</a>
-
-<h2>🚀 Evolução futura</h2>
-
-<a href="#">
-🧠 Lapidação literária avançada (em breve no Celeiro)
-</a>
-
-<a href="#">
-🎙️ Audiobook (Silo Sonoro)
-</a>
-
-<a href="#">
-🎬 Adaptação audiovisual (Silo Cinematográfico)
-</a>
-
-<h2>🔙 Voltar às ferramentas</h2>
-
-<a class="back" href="dias_gramador_livros.html">
-📖 Voltar para Diagramação
-</a>
-
-<a class="back" href="faca_kapa_literario.html">
-📘 Voltar para OKapista
-</a>
-
-<a class="back" href="barracao_polimento_imagens.html">
-🧱 Voltar para Barracão
-</a>
-
-</div>
-
-</body>
-</html>
+<header>
+  <div class="seal">🌾</div>
+  <h1>Próximos Passos Editoriais</h1>
+  <p
