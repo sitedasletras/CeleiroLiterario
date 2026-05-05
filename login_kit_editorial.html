@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Celeiro Literário — Acesso ao Kit Editorial</title>
+<style>
+:root{--azul:#10233f;--ouro:#d8b56d;--papel:#fffaf0;--txt:#243044}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(135deg,#0c1d35,#17365f);font-family:Georgia,'Times New Roman',serif;color:var(--txt);display:flex;align-items:center;justify-content:center;padding:18px}.card{width:min(520px,100%);background:var(--papel);border:1px solid rgba(216,181,109,.6);border-radius:28px;box-shadow:0 22px 50px rgba(0,0,0,.28);padding:26px;text-align:center}.seal{width:78px;height:78px;border-radius:50%;margin:0 auto 12px;background:var(--azul);border:2px solid var(--ouro);display:flex;align-items:center;justify-content:center;color:var(--ouro);font-size:36px}h1{margin:0;color:var(--azul);font-size:2rem}p{line-height:1.45;color:#4f5868}.tabs{display:flex;gap:10px;margin:18px 0}.tabs button{flex:1;border:1px solid #d8b56d;background:#fff7e4;border-radius:999px;padding:11px;font-weight:800;cursor:pointer}.tabs button.active{background:var(--azul);color:white}label{display:block;text-align:left;font-weight:bold;color:var(--azul);margin:12px 0 6px}input{width:100%;padding:12px;border:1px solid #d6c69e;border-radius:14px;background:#fffdf7}.btn{width:100%;border:0;border-radius:999px;background:var(--azul);color:white;padding:13px;font-weight:900;cursor:pointer;margin-top:16px}.soft{background:#fff1c7;color:#674a15;border:1px solid var(--ouro)}.msg{margin-top:12px;padding:10px;border-radius:14px;background:#fff6dd;border:1px solid #d8b56d;color:#604914;display:none}.links{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px;display:none}.links a{text-decoration:none;border-radius:999px;background:var(--azul);color:white;padding:12px;font-weight:900}.mini{font-size:.9rem;color:#6a7280}.danger{font-size:.9rem;color:#79451f;margin-top:12px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:520px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="card">
+<div class="seal">🌾</div><h1>Kit Editorial Livre</h1><p>Entre para usar gratuitamente Diagramação, OKapista e Barracão. O login serve para identificar uso e acompanhar interesse real do Celeiro.</p>
+<div id="authBox">
+<div class="tabs"><button id="tabLogin" class="active" onclick="mode='login';paint()">Entrar</button><button id="tabRegister" onclick="mode='register';paint()">Cadastrar</button></div>
+<div id="nameBox" style="display:none"><label>Nome</label><input id="name" placeholder="Seu nome ou nome editorial"></div>
+<label>E-mail</label><input id="email" type="email" placeholder="seuemail@exemplo.com">
+<label>Senha</label><input id="pass" type="password" placeholder="mínimo 4 caracteres">
+<button class="btn" onclick="submitAuth()" id="mainBtn">Entrar</button>
+<button class="btn soft" onclick="recover()">Recuperar acesso local</button>
+<div class="msg" id="msg"></div>
+<p class="mini">Nesta versão leve, os dados ficam salvos no navegador do usuário. Para estatística centralizada, depois conectamos Firebase ou Supabase.</p>
+</div>
+<div id="userBox" style="display:none">
+<h2 id="hello"></h2><p class="mini" id="stats"></p><div class="links"><a href="dias_gramador_livros.html" onclick="count('diagramacao')">📖 Abrir Diagramação</a><a href="faca_kapa_literario.html" onclick="count('okapista')">📘 Abrir OKapista</a><a href="barracao_polimento_imagens.html" onclick="count('barracao')">🧱 Abrir Barracão</a></div><button class="btn soft" onclick="logout()">Sair</button><div class="danger">Uso livre: sem pagamento, mas com entrada identificada.</div></div>
+</main>
+<script>
+let mode='login';const $=id=>document.getElementById(id);function users(){return JSON.parse(localStorage.getItem('celeiro_users')||'{}')}function saveUsers(u){localStorage.setItem('celeiro_users',JSON.stringify(u))}function msg(t){$('msg').style.display='block';$('msg').textContent=t}function paint(){$('tabLogin').classList.toggle('active',mode==='login');$('tabRegister').classList.toggle('active',mode==='register');$('nameBox').style.display=mode==='register'?'block':'none';$('mainBtn').textContent=mode==='register'?'Cadastrar e entrar':'Entrar'}
+function submitAuth(){let email=$('email').value.trim().toLowerCase(),pass=$('pass').value,name=$('name').value.trim();if(!email||!pass)return msg('Informe e-mail e senha.');if(pass.length<4)return msg('Use uma senha com pelo menos 4 caracteres.');let u=users();if(mode==='register'){if(u[email])return msg('Este e-mail já está cadastrado neste navegador. Use Entrar.');u[email]={name:name||email.split('@')[0],pass,created:new Date().toISOString(),uses:{diagramacao:0,okapista:0,barracao:0,total:0}};saveUsers(u);localStorage.setItem('celeiro_user',email);show()}else{if(!u[email]||u[email].pass!==pass)return msg('Acesso não encontrado neste navegador. Cadastre primeiro.');localStorage.setItem('celeiro_user',email);show()}}
+function show(){let email=localStorage.getItem('celeiro_user'),u=users()[email];if(!u)return;$('authBox').style.display='none';$('userBox').style.display='block';document.querySelector('.links').style.display='grid';$('hello').textContent='Olá, '+u.name;$('stats').textContent='Usos registrados neste navegador: '+(u.uses.total||0)}function count(k){let email=localStorage.getItem('celeiro_user'),u=users();if(u[email]){u[email].uses[k]=(u[email].uses[k]||0)+1;u[email].uses.total=(u[email].uses.total||0)+1;u[email].last=new Date().toISOString();saveUsers(u)}}function logout(){localStorage.removeItem('celeiro_user');location.reload()}function recover(){msg('Recuperação local: se este navegador perdeu os dados, cadastre novamente. Recuperação por e-mail virá quando houver backend central.')}if(localStorage.getItem('celeiro_user'))show();paint();
+</script>
+</body>
+</html>
