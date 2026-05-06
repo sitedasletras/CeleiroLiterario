@@ -8,31 +8,35 @@
 </style>
 </head>
 <body>
-<header><h1>🌾 Lapidar — Diagramação Simples</h1><p>Versão mínima perfeita: texto, formato, fonte, margem, parágrafo, capitular, paginação visual e PDF pelo navegador.</p><a href="modulos_status_celeiro.html">Status</a><a href="faca_kapa_literario.html">OKapista</a><a href="barracao_polimento_imagens.html">Barracão</a></header>
+<header><h1>🌾 Lapidar — Diagramação Simples</h1><p>Versão mínima: recebe texto do OHE/Lapidar, ajusta formato, fonte, margem, parágrafo, capitular e PDF pelo navegador.</p><a href="modulos_status_celeiro.html">Status</a><a href="faca_kapa_literario.html">OKapista</a><a href="barracao_polimento_imagens.html">Barracão</a></header>
 <main class="wrap">
 <section class="box">
-<h2>Entrada e ajustes</h2><div class="hint">Sem IA e sem custo. O foco aqui é entregar uma prévia editorial limpa e imprimível.</div>
+<h2>Entrada e ajustes</h2><div class="hint" id="hint">Aguardando texto. Se vier do OHE/Lapidar, ele será carregado automaticamente aqui.</div>
 <label>Enviar arquivo TXT</label><input id="file" type="file" accept=".txt,text/plain">
-<label>Texto da obra</label><textarea id="text">Capítulo 1
-
-Cole aqui o texto da obra.
-
-Esta versão já funciona para visualizar formato, margens, fonte, parágrafos, capitular e número de página.</textarea>
-<div class="row"><div><label>Formato</label><select id="format"><option value="a5">A5</option><option value="1623">16 x 23 cm</option><option value="6x9">6 x 9 pol.</option><option value="a4">A4 técnico</option></select></div><div><label>Fonte</label><select id="font"><option>Georgia</option><option>Times New Roman</option><option>Arial</option></select></div></div>
+<label>Texto da obra</label><textarea id="text"></textarea>
+<div class="row"><div><label>Formato</label><select id="format"><option value="a5">A5</option><option value="1623" selected>16 x 23 cm</option><option value="6x9">6 x 9 pol.</option><option value="a4">A4 técnico</option></select></div><div><label>Fonte</label><select id="font"><option>Georgia</option><option>Times New Roman</option><option>Arial</option></select></div></div>
 <div class="row"><div><label>Tamanho</label><input id="size" type="number" value="16" min="10" max="26"></div><div><label>Entrelinha</label><input id="line" type="number" value="1.55" min="1" max="2.4" step="0.05"></div></div>
-<div class="row"><div><label>Margem</label><select id="margin"><option value="normal">Normal</option><option value="estreita">Estreita</option><option value="ampla">Ampla</option></select></div><div><label>Parágrafo</label><select id="para"><option value="recuo">Recuo tradicional</option><option value="espaco">Espaço entre parágrafos</option><option value="sem">Sem recuo</option></select></div></div>
-<div class="row"><div><label>Capitular</label><select id="drop"><option value="on">Ligada</option><option value="off">Desligada</option></select></div><div><label>Número</label><select id="numpos"><option value="center">Rodapé centro</option><option value="left">Rodapé esquerdo</option><option value="right">Rodapé direito</option></select></div></div>
-<div class="btns"><button class="btn main" onclick="render()">Atualizar prévia</button><button class="btn soft" onclick="window.print()">Imprimir / salvar PDF</button></div>
+<div class="row"><div><label>Margem</label><select id="margin"><option value="normal">Normal</option><option value="estreita">Estreita</option><option value="ampla" selected>Ampla</option></select></div><div><label>Parágrafo</label><select id="para"><option value="recuo" selected>Recuo tradicional</option><option value="espaco">Espaço entre parágrafos</option><option value="sem">Sem recuo</option></select></div></div>
+<div class="row"><div><label>Capitular</label><select id="drop"><option value="on" selected>Ligada</option><option value="off">Desligada</option></select></div><div><label>Número</label><select id="numpos"><option value="center" selected>Rodapé centro</option><option value="left">Rodapé esquerdo</option><option value="right">Rodapé direito</option></select></div></div>
+<div class="btns"><button class="btn main" onclick="render()">Atualizar prévia</button><button class="btn soft" onclick="window.print()">Imprimir / salvar PDF</button><button class="btn soft" onclick="limparTextoDemo()">Limpar campo</button></div>
 </section>
 <section class="box"><h2>Prévia editorial</h2><div class="stage"><article id="page" class="page"></article></div><div class="meta"><span id="info"></span><span>Página 1 — prévia visual</span></div></section>
 </main>
 <script>
 const $=id=>document.getElementById(id),dims={a5:[420,595],1623:[454,652],'6x9':[432,648],a4:[595,842]};
 ['text','format','font','size','line','margin','para','drop','numpos'].forEach(id=>$(id).addEventListener('input',render));
-$('file').addEventListener('change',e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{$('text').value=r.result;render()};r.readAsText(f)});
-function esc(s){return s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
-function render(){let raw=$('text').value.trim()||'Texto vazio.';let lines=raw.split(/\n+/);let first=lines[0]||'';let title=/^(cap[ií]tulo|parte|pr[oó]logo|ep[ií]logo)/i.test(first)?'<h2>'+esc(lines.shift())+'</h2>':'';let pars=lines.join('\n').split(/\n\s*\n|\n/).map(x=>x.trim()).filter(Boolean);let mode=$('para').value;let html=pars.map(p=>{let st=mode==='recuo'?'text-indent:2em;margin:0 0 .45em':mode==='espaco'?'text-indent:0;margin:0 0 1em':'text-indent:0;margin:0 0 .2em';return '<p style="'+st+'">'+esc(p)+'</p>'}).join('');let [w,h]=dims[$('format').value];let m={estreita:36,normal:52,ampla:70}[$('margin').value];let page=$('page');page.style.width=w+'px';page.style.minHeight=h+'px';page.style.padding=m+'px '+m+'px '+(m+35)+'px';page.style.fontFamily=$('font').value;page.style.fontSize=$('size').value+'px';page.style.lineHeight=$('line').value;page.innerHTML=title+html+'<div class="footer" style="text-align:'+$('numpos').value+'">1</div>';if($('drop').value==='on'){let p=page.querySelector('p');if(p)p.innerHTML=p.innerHTML.replace(/^([^<\s])/, '<span style="float:left;font-size:3.2em;line-height:.82;margin:.07em .12em 0 0">$1</span>')}$('info').textContent='Palavras: '+raw.split(/\s+/).filter(Boolean).length+' • Caracteres: '+raw.length}
-render();
+$('file').addEventListener('change',e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{$('text').value=r.result;localStorage.setItem('lapidar_obra_texto',r.result);render()};r.readAsText(f)});
+function carregarTextoRecebido(){
+  const chaves=['lapidar_entrada_silenciosa_texto','lapidar_obra_texto','obra_texto','ohe_texto_limpo_saida'];
+  let texto='';
+  for(const k of chaves){const v=localStorage.getItem(k);if(v&&v.trim()){texto=v;break}}
+  if(texto){$('text').value=texto;$('hint').textContent='Texto recebido do OHE/Lapidar e carregado automaticamente.';return}
+  $('text').value='Capítulo 1\n\nCole aqui o texto da obra.';$('hint').textContent='Nenhum texto recebido ainda. Cole ou envie um TXT.';
+}
+function limparTextoDemo(){$('text').value='';render()}
+function esc(s){return String(s||'').replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
+function render(){let raw=$('text').value.trim()||'Texto vazio.';let lines=raw.split(/\n+/);let first=lines[0]||'';let title=/^(cap[ií]tulo|parte|pr[oó]logo|ep[ií]logo|ode|canto)/i.test(first)?'<h2>'+esc(lines.shift())+'</h2>':'';let pars=lines.join('\n').split(/\n\s*\n|\n/).map(x=>x.trim()).filter(Boolean);let mode=$('para').value;let html=pars.map(p=>{let st=mode==='recuo'?'text-indent:2em;margin:0 0 .45em':mode==='espaco'?'text-indent:0;margin:0 0 1em':'text-indent:0;margin:0 0 .2em';return '<p style="'+st+'">'+esc(p)+'</p>'}).join('');let [w,h]=dims[$('format').value];let m={estreita:36,normal:52,ampla:70}[$('margin').value];let page=$('page');page.style.width=w+'px';page.style.minHeight=h+'px';page.style.padding=m+'px '+m+'px '+(m+35)+'px';page.style.fontFamily=$('font').value;page.style.fontSize=$('size').value+'px';page.style.lineHeight=$('line').value;page.innerHTML=title+html+'<div class="footer" style="text-align:'+$('numpos').value+'">1</div>';if($('drop').value==='on'){let p=page.querySelector('p');if(p)p.innerHTML=p.innerHTML.replace(/^([^<\s])/, '<span style="float:left;font-size:3.2em;line-height:.82;margin:.07em .12em 0 0">$1</span>')}$('info').textContent='Palavras: '+raw.split(/\s+/).filter(Boolean).length+' • Caracteres: '+raw.length}
+carregarTextoRecebido();render();
 </script>
 </body>
 </html>
