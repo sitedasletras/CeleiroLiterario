@@ -1,56 +1,45 @@
-function normalizarLinha(l){
-  return String(l || '')
-    .trim()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g,'')
-    .toLowerCase();
-}
-
-function limparSaida(t){
-  const original = String(t || '').replace(/\r/g,'');
-  const linhas = original.split('\n');
-
-  let inicio = 0;
-  let fim = linhas.length;
-
-  const idxSumario = linhas.findIndex(l =>
-    /^\s*sum[aá]rio\s*:?$/i.test(l.trim())
-  );
-
-  if(idxSumario >= 0){
-    inicio = idxSumario + 1;
-
-    while(inicio < linhas.length && !linhas[inicio].trim()){
-      inicio++;
-    }
-  }
-
-  const marcadoresFim = [
-    'biografia',
-    'sobre o autor',
-    'o autor',
-    'sobre a autora',
-    'a autora',
-    'dados do autor',
-    'dados da autora'
-  ];
-
-  for(let i = inicio; i < linhas.length; i++){
-    const n = normalizarLinha(linhas[i]);
-
-    if(marcadoresFim.includes(n)){
-      fim = i;
-      break;
-    }
-  }
-
-  let trecho = linhas
-    .slice(inicio, fim)
-    .join('\n');
-
-  trecho = trecho
-    .replace(/\n{4,}/g, '\n\n\n')
-    .trim();
-
-  return trecho || original;
-}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OHE — Máquina de Dados</title>
+<script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
+<style>
+:root{--azul:#10233f;--ouro:#d8b56d;--papel:#fffaf0;--texto:#243044;--verde:#6c8756;--linha:#d8d0c1}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#0c1d35,#17365f);font-family:Georgia,'Times New Roman',serif;color:var(--texto);padding:18px}.wrap{max-width:1220px;margin:0 auto}.hero,.box{background:var(--papel);border:1px solid rgba(216,181,109,.55);border-radius:26px;padding:22px;box-shadow:0 18px 42px rgba(0,0,0,.18)}.hero{margin-bottom:18px}.selo{display:inline-block;background:#edf4e7;color:#48663f;border-radius:999px;padding:8px 18px;font-weight:900;text-transform:uppercase}h1{font-size:clamp(2rem,6vw,4rem);line-height:.95;margin:18px 0;color:var(--azul)}h2{color:var(--azul);margin-top:0}.lead{font-size:1.15rem;line-height:1.45;color:#626b75}.grid{display:grid;grid-template-columns:380px 1fr;gap:18px}.stack{display:grid;gap:18px}label{display:block;font-weight:900;color:var(--azul);margin:12px 0 6px}textarea,input,select{width:100%;border:1px solid var(--linha);border-radius:14px;background:#fffdf7;padding:11px;font:15px Georgia,serif}textarea{min-height:155px;resize:vertical}.btn{border:0;border-radius:999px;background:var(--azul);color:white;padding:12px 16px;font-weight:900;cursor:pointer;font-family:Georgia,'Times New Roman',serif;display:inline-flex;justify-content:center;align-items:center;margin-top:10px}.btn.verde{background:var(--verde)}.btn.ouro{background:var(--ouro);color:#211a10}.btn.full{width:100%}.status{background:#fff7df;border:1px solid var(--ouro);border-radius:16px;padding:12px;margin-top:12px;color:#634a16}.a4wrap{background:#e8dfcd;border-radius:18px;padding:18px;overflow:auto}.a4{width:595px;min-height:842px;background:white;margin:auto;padding:70px 58px;box-shadow:0 16px 36px rgba(0,0,0,.24);font-size:16px;line-height:1.55;color:#111}.a4 h1{font-size:28px;line-height:1.15;text-align:center;margin:0 0 24px;color:#111}.a4 p{margin:0 0 .65em}.a4 .prosa{text-align:justify;text-indent:2em}.a4 .estrofe{margin:0 0 1.2em;text-align:left;text-indent:0;white-space:pre-wrap}.a4 .verso{display:block;text-indent:0;margin:0}.a4 img{max-width:100%;display:block;margin:18px auto;border-radius:8px}.previewImg{max-width:100%;border-radius:14px;margin-top:10px;display:none}.hiddenFile{display:none}.acoes{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}.relatorio{background:#fff;border:1px solid var(--linha);border-radius:14px;padding:12px;margin-top:12px;white-space:pre-wrap}.alerta{background:#e9f3e4;border:1px solid #b9cda9;border-radius:14px;padding:10px;margin-top:10px;color:#3e5b35}@media(max-width:900px){.grid{grid-template-columns:1fr}.a4{width:100%;min-height:720px;padding:48px 32px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section class="hero"><span class="selo">OHE — Máquina de Dados</span><h1>Texto, Ideia, Concurso e Imagem</h1><p class="lead">Entrada DOCX/DOC/TXT com saída A4, análise IA interna e envio silencioso ao Lapidar.</p></section>
+<section class="grid">
+<div class="stack">
+<section class="box"><h2>📄 Porta de Texto</h2><label>Título</label><input id="titulo" placeholder="Título do material"><input class="hiddenFile" id="uploadTexto" type="file" accept=".doc,.docx,.txt,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"><button class="btn ouro full" onclick="document.getElementById('uploadTexto').click()">Enviar DOCX / DOC / TXT</button><label>Texto bruto/editável</label><textarea id="texto" placeholder="Cole ou escreva o texto aqui..."></textarea><button class="btn full" onclick="salvarTudo();rodarMotores();gerarA4()">Salvar e processar</button><div class="alerta">A saída limpa começa depois do Sumário e termina antes da Biografia quando esses marcadores existirem.</div></section>
+<section class="box"><h2>💡 Ideia ou Concurso</h2><label>Tipo</label><select id="tipo"><option value="ideia">Ideia</option><option value="concurso">Concurso / edital / antologia</option><option value="poesia">Poesia / versos / estrofes</option></select><label>Dados</label><textarea id="dados" placeholder="Cole aqui regras, edital, tema, observações etc."></textarea></section>
+<section class="box"><h2>🖼️ Porta de Imagem</h2><input class="hiddenFile" id="uploadImagem" type="file" accept="image/*"><button class="btn ouro full" onclick="document.getElementById('uploadImagem').click()">Enviar imagem</button><img id="previewImagem" class="previewImg" alt="Prévia"></section>
+<section class="box"><h2>⚙️ Saídas</h2><div class="acoes"><button class="btn verde" onclick="salvarTudo();rodarMotores();gerarA4()">Gerar A4 limpo</button><button class="btn" onclick="analisarComIA()">Analisar com IA</button><button class="btn" onclick="catapultarLapidar()">Enviar ao Lapidar</button><button class="btn ouro" onclick="window.print()">Imprimir / PDF</button><button class="btn" onclick="exportarJSON()">Exportar JSON</button><button class="btn ouro" onclick="limparTudo()">Limpar</button></div><div class="status" id="status">Máquina aguardando entrada.</div><div class="relatorio" id="relatorio">Diretor Narrativo / Sencal / SAI aguardando texto.</div></section>
+</div>
+<section class="box"><h2>📄 Saída A4</h2><div class="a4wrap"><article class="a4" id="a4"><h1>Material OHE</h1><p>A saída A4 aparecerá aqui.</p></article></div></section>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);let imagemData='';
+$('uploadTexto').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;limparMemoriaDeObra();$('titulo').value=f.name.replace(/\.(docx|doc|txt)$/i,'');const ext=f.name.split('.').pop().toLowerCase();try{if(ext==='txt'){const r=new FileReader();r.onload=()=>{texto.value=r.result;salvarTudo();rodarMotores();gerarA4();status('TXT carregado. A limpeza será aplicada somente na saída.')};r.readAsText(f);return}if(ext==='docx'){const ab=await f.arrayBuffer();const res=await mammoth.extractRawText({arrayBuffer:ab});texto.value=res.value||'';salvarTudo();rodarMotores();gerarA4();status('DOCX convertido. Texto bruto preservado; saída limpa gerada.');return}if(ext==='doc'){status('DOC antigo recebido. Pode falhar. Recomenda-se DOCX.');try{const ab=await f.arrayBuffer();const res=await mammoth.extractRawText({arrayBuffer:ab});texto.value=res.value||'';salvarTudo();rodarMotores();gerarA4()}catch(err){status('Não foi possível converter DOC antigo.')}}}catch(err){status('Erro ao ler arquivo.')}});
+$('uploadImagem').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{imagemData=r.result;previewImagem.src=imagemData;previewImagem.style.display='block';salvarTudo();gerarA4();status('Imagem carregada.')};r.readAsDataURL(f)});
+function esc(s){return String(s||'').replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
+function status(t){$('status').textContent=t}
+function limparMemoriaDeObra(){['ohe_saida_titulo','ohe_saida_texto','ohe_texto_limpo_saida','ohe_tipo_entrada','ohe_dados_entrada','lapidar_entrada_silenciosa_texto','lapidar_entrada_silenciosa_titulo','ohe_analise_ia','lapidar_obra_texto','lapidar_obra_titulo','obra_texto','obra_titulo'].forEach(k=>localStorage.removeItem(k));texto.value='';dados.value='';relatorio.textContent='Diretor Narrativo / Sencal / SAI aguardando texto.';a4.innerHTML='<h1>Material OHE</h1><p>A saída A4 aparecerá aqui.</p>'}
+function normalizarLinha(l){return String(l||'').trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()}
+function limparSaida(t){const original=String(t||'').replace(/\r/g,'');const linhas=original.split('\n');let inicio=0;let fim=linhas.length;const idxSumario=linhas.findIndex(l=>/^\s*sum[aá]rio\s*:?\s*$/i.test(l.trim()));if(idxSumario>=0){inicio=idxSumario+1;while(inicio<linhas.length&&!linhas[inicio].trim())inicio++}const marcadoresFim=['biografia','sobre o autor','o autor','sobre a autora','a autora','dados do autor','dados da autora'];for(let i=inicio;i<linhas.length;i++){const n=normalizarLinha(linhas[i]);if(marcadoresFim.includes(n)){fim=i;break}}let trecho=linhas.slice(inicio,fim).join('\n');trecho=trecho.replace(/\n{4,}/g,'\n\n\n').trim();return trecho||original}
+function salvarTudo(){localStorage.setItem('ohe_saida_titulo',$('titulo').value||'');localStorage.setItem('ohe_saida_texto',$('texto').value||'');localStorage.setItem('ohe_tipo_entrada',$('tipo').value);localStorage.setItem('ohe_dados_entrada',$('dados').value||'');if(imagemData)localStorage.setItem('ohe_imagem_data',imagemData)}
+function rodarMotores(){const t=$('texto').value||'';const limpo=limparSaida(t);localStorage.setItem('ohe_texto_limpo_saida',limpo);const caps=(limpo.match(/(^|\n)\s*(cap[ií]tulo|parte|pr[oó]logo|ep[ií]logo)/gi)||[]).length;const linhas=limpo.split('\n').filter(x=>x.trim()).length;const brancos=limpo.split('\n').filter(x=>!x.trim()).length;const reps=(limpo.toLowerCase().match(/\b(então|assim|mas|porque|quando)\b/g)||[]).length;const modo=$('tipo').value;const diretor='Diretor Narrativo: '+(modo==='concurso'?'priorizar regras e limites.':modo==='poesia'?'preservar versos, estrofes e respiração textual.':'priorizar objetivo, conflito e saída emocional.');const sencal='Sencal: '+caps+' marca(s) estrutural(is); '+linhas+' linha(s); '+brancos+' separação(ões) vazia(s); repetidores: '+reps+'.';const sai='SAI: saída limpa inicia após o sumário e termina antes da biografia quando esses marcadores existirem.';$('relatorio').textContent=diretor+'\n'+sencal+'\n'+sai}
+async function analisarComIA(){salvarTudo();rodarMotores();const textoLimpo=localStorage.getItem('ohe_texto_limpo_saida')||limparSaida($('texto').value||'');if(!textoLimpo.trim()){status('Não há texto para analisar.');return}status('Enviando ao motor IA do OHE...');try{const resp=await fetch('/api/ohe-diretor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({titulo:$('titulo').value||'',texto:textoLimpo,tipo:$('tipo').value,dados:$('dados').value||''})});const data=await resp.json();if(!resp.ok)throw new Error(data.error||'Falha na API');const analise=data.analise||JSON.stringify(data,null,2);localStorage.setItem('ohe_analise_ia',analise);$('relatorio').textContent='ANÁLISE IA — DIRETOR / SENCAL / SAI\n\n'+analise;status('Análise IA concluída.')}catch(err){status('IA indisponível: '+err.message+'. Mantida análise local.');rodarMotores()}}
+function parecePoetico(t){const linhas=t.split('\n');const naoVazias=linhas.filter(l=>l.trim());const curtas=naoVazias.filter(l=>l.trim().length<75).length;const vazias=linhas.length-naoVazias.length;return $('tipo').value==='poesia'||(naoVazias.length>=6&&curtas/naoVazias.length>.55)||(vazias>=2&&naoVazias.length>4)}
+function textoParaHtml(t){if(parecePoetico(t)){return t.split(/\n\s*\n/).map(est=>est.split('\n').map(v=>v.trim()).filter(Boolean).map(v=>'<span class="verso">'+esc(v)+'</span>').join('')).filter(Boolean).map(est=>'<p class="estrofe">'+est+'</p>').join('')}return t.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean).map(p=>'<p class="prosa">'+esc(p).replace(/\n+/g,' ')+'</p>').join('')}
+function gerarA4(){salvarTudo();rodarMotores();const titulo=localStorage.getItem('ohe_saida_titulo')||'Material OHE';const texto=localStorage.getItem('ohe_texto_limpo_saida')||limparSaida(localStorage.getItem('ohe_saida_texto')||'');const tipo=localStorage.getItem('ohe_tipo_entrada')||'ideia';const dados=localStorage.getItem('ohe_dados_entrada')||'';const img=localStorage.getItem('ohe_imagem_data')||'';let html='<h1>'+esc(titulo)+'</h1>';if(dados.trim())html+='<p class="prosa"><strong>'+esc(tipo.toUpperCase())+':</strong> '+esc(dados)+'</p>';if(img)html+='<img src="'+img+'">';html+=texto.trim()?textoParaHtml(texto):'<p class="prosa">Sem texto carregado.</p>';$('a4').innerHTML=html;status('Saída A4 limpa gerada. Texto bruto preservado no campo editável.')}
+function catapultarLapidar(){salvarTudo();rodarMotores();const texto=localStorage.getItem('ohe_texto_limpo_saida')||limparSaida(localStorage.getItem('ohe_saida_texto')||'');if(!texto.trim()){status('Não há texto para enviar.');return}const titulo=localStorage.getItem('ohe_saida_titulo')||'';['lapidar_entrada_silenciosa_texto','lapidar_obra_texto','obra_texto'].forEach(k=>localStorage.setItem(k,texto));['lapidar_entrada_silenciosa_titulo','lapidar_obra_titulo','obra_titulo'].forEach(k=>localStorage.setItem(k,titulo));location.href='../preparacao_da_obra.html?auto=diagramacao&from=ohe'}
+function exportarJSON(){salvarTudo();rodarMotores();const pacote={titulo:localStorage.getItem('ohe_saida_titulo'),texto_bruto:localStorage.getItem('ohe_saida_texto'),texto_limpo_saida:localStorage.getItem('ohe_texto_limpo_saida'),analise_ia:localStorage.getItem('ohe_analise_ia'),tipo:localStorage.getItem('ohe_tipo_entrada'),dados:localStorage.getItem('ohe_dados_entrada')};const blob=new Blob([JSON.stringify(pacote,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ohe.json';a.click();URL.revokeObjectURL(a.href)}
+function limparTudo(){['ohe_saida_titulo','ohe_saida_texto','ohe_texto_limpo_saida','ohe_tipo_entrada','ohe_dados_entrada','ohe_imagem_data','lapidar_entrada_silenciosa_texto','lapidar_entrada_silenciosa_titulo','ohe_analise_ia','lapidar_obra_texto','lapidar_obra_titulo','obra_texto','obra_titulo'].forEach(k=>localStorage.removeItem(k));titulo.value='';texto.value='';dados.value='';imagemData='';previewImagem.style.display='none';a4.innerHTML='<h1>Material OHE</h1><p>A saída A4 aparecerá aqui.</p>';relatorio.textContent='Diretor Narrativo / Sencal / SAI aguardando texto.';status('Máquina limpa.')}
+</script>
+</body>
+</html>
