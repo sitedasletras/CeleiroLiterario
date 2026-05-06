@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Celeiro Literário — Login Administrativo</title>
+<style>
+:root{
+--bg:#071422;
+--card:#fffaf0;
+--ink:#10233f;
+--gold:#d8b56d;
+--green:#5f7f4f;
+--line:#d8d0c1;
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+min-height:100vh;
+background:radial-gradient(circle at top,#163455,#071422 65%);
+font-family:Georgia,'Times New Roman',serif;
+display:grid;
+place-items:center;
+color:var(--ink);
+padding:20px;
+}
+.box{
+width:min(460px,100%);
+background:var(--card);
+border:1px solid rgba(216,181,109,.65);
+border-radius:28px;
+padding:28px;
+box-shadow:0 24px 60px rgba(0,0,0,.35);
+}
+.seal{
+text-align:center;
+font-weight:900;
+color:#6b5527;
+background:#eef4e7;
+border-radius:999px;
+padding:8px 14px;
+margin:0 auto 16px;
+width:max-content;
+}
+h1{text-align:center;margin:0 0 8px;font-size:2rem}
+.sub{
+text-align:center;
+color:#61707d;
+margin-bottom:22px;
+line-height:1.4;
+}
+label{
+display:block;
+font-weight:900;
+margin:12px 0 6px;
+}
+input{
+width:100%;
+border:1px solid var(--line);
+border-radius:14px;
+padding:13px;
+background:#fff;
+font:16px Georgia,serif;
+}
+.btn{
+width:100%;
+border:0;
+border-radius:999px;
+background:var(--ink);
+color:white;
+padding:14px;
+font-weight:900;
+font-family:Georgia,serif;
+margin-top:18px;
+cursor:pointer;
+}
+.btn.back{
+background:var(--green);
+text-decoration:none;
+display:block;
+text-align:center;
+}
+.msg{
+margin-top:14px;
+padding:12px;
+border-radius:14px;
+background:#fff1d1;
+color:#654500;
+display:none;
+}
+</style>
+</head>
+<body>
+<main class="box">
+<div class="seal">Celeiro Literário — Área Interna</div>
+<h1>Login Administrativo</h1>
+<p class="sub">Entrada reservada para acessar OHE e ferramentas internas.</p>
+
+<label>Usuário</label>
+<input id="usuario" placeholder="admin">
+
+<label>Senha</label>
+<input id="senha" type="password" placeholder="senha administrativa">
+
+<button class="btn" onclick="entrar()">Entrar</button>
+<a class="btn back" href="index.html">Voltar ao Celeiro</a>
+
+<div id="msg" class="msg">Acesso negado.</div>
+</main>
+
+<script>
+function entrar(){
+const u=document.getElementById('usuario').value.trim().toLowerCase();
+const s=document.getElementById('senha').value.trim();
+
+if((u==='admin'||u==='wagner'||u==='heteronimo') && s==='celeiro2026'){
+localStorage.setItem('celeiro_admin_ok','sim');
+location.href='painel_admin.html';
+}else{
+const msg=document.getElementById('msg');
+msg.style.display='block';
+msg.textContent='Usuário ou senha incorretos.';
+}
+}
+</script>
+</body>
+</html>
