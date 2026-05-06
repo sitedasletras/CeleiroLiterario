@@ -312,13 +312,40 @@ function limparTudo(){
     'lapidar_entrada_silenciosa_titulo'
   ].forEach(k => localStorage.removeItem(k));
 
+  // limpa campos
   titulo.value='';
   texto.value='';
 
-  a4.innerHTML='<h1>Material OHE</h1><p>A saída A4 aparecerá aqui.</p>';
+  // limpa upload real
+  const up = document.getElementById('uploadTexto');
+  if(up){
+    up.value = '';
+  }
 
+  // limpa preview A4
+  a4.innerHTML='
+<h1>Material OHE</h1>
+<p>A saída A4 aparecerá aqui.</p>';
+
+  // limpa status
+  status.textContent='Máquina aguardando entrada.';
+
+  // limpa relatório
   relatorio.textContent='Diretor Narrativo / Sencal / SAI aguardando texto.';
+
+  // força limpeza de memória visual
+  setTimeout(()=>{
+    a4.scrollTop = 0;
+    window.scrollTo(0,0);
+  },50);
+
+  console.clear();
 }
+
+// limpeza automática antes de novo upload
+$('uploadTexto').addEventListener('click', () => {
+  limparTudo();
+});
 </script>
 </body>
 </html>
