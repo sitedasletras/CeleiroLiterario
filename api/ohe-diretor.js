@@ -7,8 +7,26 @@ export default async function handler(req, res) {
 
     const { titulo = '', texto = '', tipo = 'prosa', dados = '', imagem = '' } = req.body || {};
     const conteudo = String(texto).slice(0, 12000);
+    const dadosEntrada = String(dados || '').slice(0, 12000);
 
-    const prompt = `Escreva o miolo A4 em portugues, sem JSON e sem explicacoes. Use o titulo, o tipo, os dados e o texto base abaixo. Nao inclua capa, sumario, ficha ou biografia.\n\nTitulo: ${titulo}\nTipo: ${tipo}\nDados: ${dados}\nTexto base:\n${conteudo}`;
+    const prompt = `Voce e o nucleo escritor do OHE. Quando a entrada vier de imagem de chamada, antologia, concurso ou edital, trate como OPORTUNIDADE EDITORIAL COMPLETA, nao como tema solto.
+
+Gere material A4 pronto para submissao literaria.
+
+Regras:
+- entregar apenas o texto final, sem JSON e sem explicacoes;
+- nao incluir capa, ficha, sumario ou biografia;
+- se a imagem/edital pedir tema, transforme em obra completa;
+- se pedir 3 textos, gere 3 textos completos, com titulos individuais;
+- se for antologia culinaria, explorar memoria, comida, familia, afeto e impacto emocional;
+- escolher a forma mais adequada ao pedido, mesmo que o eixo manual esteja diferente;
+- preservar poesia em versos quando for poesia; usar paragrafos quando for prosa;
+- evitar texto demonstrativo, placeholder ou promessa de escrever depois.
+
+Titulo informado: ${titulo}
+Tipo informado: ${tipo}
+Dados/direcao: ${dadosEntrada}
+Texto base: ${conteudo}`;
 
     const content = [{ type: 'input_text', text: prompt }];
     if (imagem && typeof imagem === 'string' && imagem.startsWith('data:image/')) {
@@ -21,8 +39,8 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: 'gpt-4.1-mini',
         input: [{ role: 'user', content }],
-        temperature: 0.7,
-        max_output_tokens: 6000
+        temperature: 0.72,
+        max_output_tokens: 7000
       })
     });
 
