@@ -6,22 +6,25 @@ export default async function handler(req, res) {
     if (!apiKey) return res.status(500).json({ error: 'OPENAI_API_KEY ausente no servidor' });
 
     const { titulo = '', texto = '', tipo = 'prosa', dados = '', imagem = '' } = req.body || {};
-    const conteudo = String(texto).slice(0, 12000);
+    const conteudo = String(texto || '').slice(0, 12000);
     const dadosEntrada = String(dados || '').slice(0, 12000);
 
-    const prompt = `Voce e o nucleo escritor do OHE. Quando a entrada vier de imagem de chamada, antologia, concurso ou edital, trate como OPORTUNIDADE EDITORIAL COMPLETA, nao como tema solto.
+    const prompt = `Voce e o escritor literario do OHE. Escreva a OBRA FINAL diretamente.
 
-Gere material A4 pronto para submissao literaria.
+PROIBIDO:
+- explicar o que o texto fara;
+- escrever frases como "o primeiro texto acompanha", "o segundo texto assume", "este texto trata", "a narrativa deve";
+- entregar analise, plano, resumo, sinopse, comentario ou promessa;
+- usar JSON, markdown, listas tecnicas, ficha, biografia, capa ou sumario.
 
-Regras:
-- entregar apenas o texto final, sem JSON e sem explicacoes;
-- nao incluir capa, ficha, sumario ou biografia;
-- se a imagem/edital pedir tema, transforme em obra completa;
-- se pedir 3 textos, gere 3 textos completos, com titulos individuais;
-- se for antologia culinaria, explorar memoria, comida, familia, afeto e impacto emocional;
-- escolher a forma mais adequada ao pedido, mesmo que o eixo manual esteja diferente;
-- preservar poesia em versos quando for poesia; usar paragrafos quando for prosa;
-- evitar texto demonstrativo, placeholder ou promessa de escrever depois.
+OBRIGATORIO:
+- entregar somente literatura pronta;
+- se o pedido solicitar 3 textos, escreva 3 textos completos com titulos proprios;
+- se for prosa, escreva cenas, personagens, narracao e desenvolvimento emocional;
+- se for poesia ou cordel, escreva em versos e estrofes;
+- se for imagem de antologia/concurso/edital, trate como oportunidade editorial completa;
+- se o tema for culinaria, comida, faca, fogo, familia, memoria ou afeto, transforme isso em obra literaria, nao em explicacao;
+- comece diretamente pelo titulo do primeiro texto ou pelo corpo literario.
 
 Titulo informado: ${titulo}
 Tipo informado: ${tipo}
@@ -39,7 +42,7 @@ Texto base: ${conteudo}`;
       body: JSON.stringify({
         model: 'gpt-4.1-mini',
         input: [{ role: 'user', content }],
-        temperature: 0.72,
+        temperature: 0.78,
         max_output_tokens: 7000
       })
     });
@@ -47,7 +50,26 @@ Texto base: ${conteudo}`;
     const data = await resposta.json();
     if (!resposta.ok) return res.status(resposta.status).json({ error: data.error?.message || 'Erro OpenAI' });
 
-    return res.status(200).json({ ok: true, analise: data.output_text || '', miolo: data.output_text || '' });
+    let miolo = data.output_text || '';
+    const proibidos = [
+      'o primeiro texto acompanha',
+      'o segundo texto assume',
+      'o terceiro texto observa',
+      'este texto trata',
+      'a narrativa deve',
+      'base recebida'
+    ];
+    const baixo = miolo.toLowerCase();
+    if (proibidos.some(p => baixo.includes(p))) {
+      miolo = miolo
+        .replace(/O primeiro texto acompanha/gi, '')
+        .replace(/O segundo texto assume/gi, '')
+        .replace(/O terceiro texto observa/gi, '')
+        .replace(/Base recebida:[\s\S]*?(\n\n|$)/gi, '')
+        .trim();
+    }
+
+    return res.status(200).json({ ok: true, analise: miolo, miolo });
   } catch (err) {
     return res.status(500).json({ error: err.message || 'Erro interno' });
   }
