@@ -22,7 +22,29 @@ function escolherLinha({ tipo = '', forma = '', dados = '', memoria = '', indica
 }
 
 function promptHumanizacao(miolo, forma) {
-  return `Refine o texto abaixo sem mudar a forma ${forma}. Remova explicacoes, frases genericas e metatexto. Preserve a estrutura formal. Entregue somente o texto final.\n\n${miolo}`;
+  return `Refine o texto abaixo sem mudar a forma ${forma}.
+
+CAMADAS OBRIGATORIAS DE REFINAMENTO:
+- preservar a estrutura formal validada;
+- melhorar atmosfera: luz, ar, temperatura, espaço e peso emocional;
+- manter subtexto e silêncio; não explicar o que a cena já mostra;
+- preservar sinais de permanência, legado e continuidade sem discursar sobre isso;
+- remover metatexto, moralização, frases genéricas e conclusão artificial;
+- manter respiração humana, com variação natural de frase e pausa;
+- se for poesia, não transformar em prosa explicativa;
+- se for prosa, não quebrar artificialmente em versos.
+
+Entregue somente o texto final.
+
+${miolo}`;
+}
+
+function checarEstabilidadeA4(miolo = '') {
+  const texto = String(miolo || '').trim();
+  const paragrafos = texto.split(/\n\s*\n/).filter(Boolean).length;
+  const linhas = texto.split('\n').filter(l => l.trim()).length;
+  const caracteres = texto.length;
+  return { paragrafos, linhas, caracteres, prontoA4: caracteres > 20 && linhas > 0 };
 }
 
 export default async function handler(req, res) {
@@ -40,7 +62,7 @@ export default async function handler(req, res) {
     const qtdDetectada = Number(quantidade) || extrairQuantidade(`${dadosEntrada}\n${memoria}`) || null;
     const linha = escolherLinha({ tipo, forma, dados: dadosEntrada, memoria, indicado: heteronimo });
 
-    const prompt = montarPromptOHE({ titulo, tipo, forma, dados: `${dadosEntrada}\nLinha autoral: ${linha}`, texto: conteudo, memoria, temImagem });
+    const prompt = montarPromptOHE({ titulo, tipo, forma, dados: `${dadosEntrada}\nLinha autoral: ${linha}\nNucleo de permanencia: preservar continuidade humana, atmosfera, legado discreto e estabilidade A4.`, texto: conteudo, memoria, temImagem });
     const content = [{ type: 'input_text', text: prompt }];
     if (temImagem) content.push({ type: 'input_image', image_url: imagem });
 
@@ -49,7 +71,7 @@ export default async function handler(req, res) {
     let tentativas = 1;
 
     while (!validacao.ok && tentativas < 3) {
-      const reparo = `${prompt}\n\nA saida anterior falhou: ${validacao.motivo}. Reescreva obedecendo a forma ${forma}${qtdDetectada ? ` e quantidade ${qtdDetectada}` : ''}. Somente obra final.`;
+      const reparo = `${prompt}\n\nA saida anterior falhou: ${validacao.motivo}. Reescreva obedecendo a forma ${forma}${qtdDetectada ? ` e quantidade ${qtdDetectada}` : ''}. Preserve atmosfera, silencio, subtexto e estabilidade A4. Somente obra final.`;
       const repairContent = [{ type: 'input_text', text: reparo }];
       if (temImagem) repairContent.push({ type: 'input_image', image_url: imagem });
       miolo = limparMetatexto(await chamarOpenAI({ apiKey, content: repairContent, temperature: 0.55 }));
@@ -59,11 +81,12 @@ export default async function handler(req, res) {
 
     if (validacao.ok) {
       const humanContent = [{ type: 'input_text', text: promptHumanizacao(miolo, forma) }];
-      miolo = limparMetatexto(await chamarOpenAI({ apiKey, content: humanContent, temperature: 0.45 }));
+      miolo = limparMetatexto(await chamarOpenAI({ apiKey, content: humanContent, temperature: 0.42 }));
       validacao = validarForma(miolo, forma, qtdDetectada);
     }
 
-    return res.status(200).json({ ok: true, forma, quantidade: qtdDetectada, linha, validacao, tentativas, analise: miolo, miolo });
+    const estabilidadeA4 = checarEstabilidadeA4(miolo);
+    return res.status(200).json({ ok: true, forma, quantidade: qtdDetectada, linha, validacao, estabilidadeA4, tentativas, analise: miolo, miolo });
   } catch (err) {
     return res.status(500).json({ error: err.message || 'Erro interno' });
   }
