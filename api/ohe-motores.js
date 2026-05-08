@@ -114,6 +114,54 @@ export function motorAntiIA(forma) {
   return base;
 }
 
+export function motorIdentidadeProfunda({ dados = '', memoria = '' }) {
+  const t = `${dados}\n${memoria}`.toLowerCase();
+  const partes = [];
+  if (t.includes('pai')) partes.push('visao de mundo marcada por origem, legado, ausencia paterna e dignidade silenciosa');
+  if (t.includes('filha')) partes.push('relacao com futuro, cuidado, distancia viva e continuidade afetiva');
+  if (t.includes('saudade')) partes.push('tempo entendido como permanencia do que nao volta');
+  if (t.includes('morte') || t.includes('exumar')) partes.push('consciencia de finitude, materia, rito e despedida repetida');
+  if (t.includes('interior') || t.includes('são roque') || t.includes('sao roque')) partes.push('olhar de interior, concreto, familiar, sem grandiloquencia urbana');
+  return partes.length ? partes.join('; ') : 'visao de mundo discreta, humana, concreta e nao explicativa';
+}
+
+export function motorTransformacaoInterna({ dados = '', memoria = '' }) {
+  const t = `${dados}\n${memoria}`.toLowerCase();
+  if (t.includes('luto') || t.includes('morte') || t.includes('saudade')) return 'transformacao interna: da dor nomeada para gesto pequeno de permanencia; evitar cura facil';
+  if (t.includes('aventura') || t.includes('heroi') || t.includes('herói')) return 'transformacao interna: chamado, medo, travessia, perda e retorno transformado';
+  if (t.includes('vilania') || t.includes('vilao') || t.includes('vilão')) return 'transformacao interna: ferida, desejo, endurecimento, ruptura moral e consequencia';
+  return 'transformacao interna: uma percepcao se altera sem precisar ser explicada';
+}
+
+export function motorEcoHumano({ dados = '', memoria = '' }) {
+  const t = `${dados}\n${memoria}`.toLowerCase();
+  const ecos = [];
+  if (t.includes('cheiro')) ecos.push('cheiro retornando como memoria involuntaria');
+  if (t.includes('objeto')) ecos.push('objeto simples reaparecendo como testemunha');
+  if (t.includes('mesa') || t.includes('comida') || t.includes('receita')) ecos.push('mesa, alimento ou utensilio como heranca afetiva');
+  if (t.includes('outono') || t.includes('folha')) ecos.push('folha, vento e estacao como passagem do tempo');
+  if (t.includes('data') || t.includes('anivers')) ecos.push('calendario como ferida discreta');
+  return ecos.length ? ecos.join('; ') : 'usar um pequeno detalhe recorrente sem transformar em repeticao mecanica';
+}
+
+export function motorRespiracaoReal(forma) {
+  if (forma === 'haikai' || forma === 'senryu') return 'respiracao minima: tres linhas, pausa, corte, silencio final';
+  if (forma === 'elegia') return 'respiracao lenta: frases contidas, pausas, sem explosao melodramatica';
+  if (forma === 'conto' || forma === 'cronica' || forma === 'prosa') return 'respiracao narrativa: alternar frase curta e media; permitir um vazio entre gesto e sentido';
+  if (forma === 'sextilha') return 'respiracao oral: cadencia cantavel, clara e popular';
+  if (forma === 'novo_estrofista') return 'respiracao simetrica: crescer ate quatro versos e recolher ate um verso final';
+  return 'respiracao organica: pausas naturais e cortes discretos';
+}
+
+export function motorMemoriaGeracional({ dados = '', memoria = '' }) {
+  const t = `${dados}\n${memoria}`.toLowerCase();
+  const g = [];
+  if (t.includes('filho') || t.includes('filha') || t.includes('neto') || t.includes('neta')) g.push('escrever como algo que pode atravessar geracoes sem explicar essa intencao');
+  if (t.includes('pai') || t.includes('mae') || t.includes('mãe')) g.push('preservar linhagem afetiva por gesto, objeto ou frase lembrada');
+  if (t.includes('legado') || t.includes('familia') || t.includes('família')) g.push('dar ao texto sensacao de continuidade e heranca viva');
+  return g.length ? g.join('; ') : 'manter possibilidade de permanencia, sem discurso sobre legado';
+}
+
 export function regraDaForma(forma, quantidade = null) {
   const q = quantidade ? ` Quantidade obrigatoria: ${quantidade}.` : '';
   const regras = {
@@ -165,7 +213,12 @@ export function montarPromptOHE({ titulo = '', tipo = 'prosa', forma: formaEntra
   const jornada = motorJornada({ forma, dados: dadosCompletos });
   const cadencia = motorCadencia(forma);
   const antiIA = motorAntiIA(forma);
-  return `Use internamente a leitura abaixo, mas nao mostre ao usuario.\nVISUAL: ${visual}\nSIMBOLICO: ${simbolico}\nEMOCIONAL: ${emocional}\nFORMA: ${forma}\nREGRA: ${regra}\nCADENCIA: ${cadencia}\nANTI-IA: ${antiIA}\nJORNADA: ${jornada}\n\nEscreva somente a obra final. Nao explique. Nao use JSON. Nao faca plano. Respeite rigorosamente a forma e a cadencia. Se houver quantidade, cumpra exatamente. Evite frases genericas, moralizacao, conclusao artificial e metatexto.\n\nTitulo: ${titulo}\nTipo: ${tipo}\nForma exata: ${forma}\nDados: ${String(dadosCompletos).slice(0, 12000)}\nTexto base: ${String(texto).slice(0, 12000)}`;
+  const identidade = motorIdentidadeProfunda({ dados: dadosCompletos, memoria });
+  const transformacao = motorTransformacaoInterna({ dados: dadosCompletos, memoria });
+  const eco = motorEcoHumano({ dados: dadosCompletos, memoria });
+  const respiracao = motorRespiracaoReal(forma);
+  const geracional = motorMemoriaGeracional({ dados: dadosCompletos, memoria });
+  return `Use internamente a leitura abaixo, mas nao mostre ao usuario.\nVISUAL: ${visual}\nSIMBOLICO: ${simbolico}\nEMOCIONAL: ${emocional}\nFORMA: ${forma}\nREGRA: ${regra}\nCADENCIA: ${cadencia}\nANTI-IA: ${antiIA}\nIDENTIDADE PROFUNDA: ${identidade}\nTRANSFORMACAO INTERNA: ${transformacao}\nECO HUMANO: ${eco}\nRESPIRACAO REAL: ${respiracao}\nMEMORIA GERACIONAL: ${geracional}\nJORNADA: ${jornada}\n\nEscreva somente a obra final. Nao explique. Nao use JSON. Nao faca plano. Respeite rigorosamente a forma, a cadencia e a respiracao. Se houver quantidade, cumpra exatamente. Evite frases genericas, moralizacao, conclusao artificial e metatexto. Preserve subtexto, detalhe concreto, continuidade humana e silencio onde for necessario.\n\nTitulo: ${titulo}\nTipo: ${tipo}\nForma exata: ${forma}\nDados: ${String(dadosCompletos).slice(0, 12000)}\nTexto base: ${String(texto).slice(0, 12000)}`;
 }
 
 export function limparMetatexto(miolo = '') {
