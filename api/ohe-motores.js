@@ -78,6 +78,30 @@ export function leitorEmocional({ dados = '' }) {
   return e.length ? e.join('; ') : 'emocao dominante antes da forma';
 }
 
+export function motorHumanidadeLiteraria({ dados = '', memoria = '', tipo = '', forma = '' }) {
+  const t = `${dados}\n${memoria}\n${tipo}\n${forma}`.toLowerCase();
+  const sinais = [];
+  if (/terror|horror|medo|sombrio|monstro|fantasma|sangue|noite|escuro/.test(t)) {
+    sinais.push('terror humano: cotidiano contaminado, medo crescente, pessoa imperfeita diante do inexplicavel, sem susto gratuito');
+  }
+  if (/fantasia|mito|épico|epico|reino|dragão|dragao|deus|deuses|jornada/.test(t)) {
+    sinais.push('fantasia humana: nostalgia, amizade, perda do mundo antigo, legado e travessia moral');
+  }
+  if (/realismo|cotidiano|cidade|familia|família|casa|trabalho|interior/.test(t)) {
+    sinais.push('realismo humano: observacao de gesto comum, contradicao social, ironia discreta e vida pequena com peso grande');
+  }
+  if (/intimo|íntimo|consciência|consciencia|clarice|interioridade|sensacao|sensação/.test(t)) {
+    sinais.push('interioridade humana: percepcao fragmentada, sensacao corporal, pensamento em fluxo e estranhamento delicado');
+  }
+  if (/poesia|poema|haikai|tanka|elegia|saudade|luto|memoria|memória/.test(t)) {
+    sinais.push('lirismo humano: silencio, imagem concreta, perda contida, eco emocional e ausencia nao explicada');
+  }
+  if (/antologia|edital|comunidade|pertencimento|publicar|autor/.test(t)) {
+    sinais.push('comunidade literaria: desejo de pertencimento, voz reconhecida, proximidade humana e cuidado com clichês de chamada');
+  }
+  return sinais.length ? sinais.join('; ') : 'ler humanidade profunda do nicho: nao copiar autores; compreender respiracao, tensao, silencio e visao de mundo';
+}
+
 export function motorCadencia(forma) {
   const cad = {
     haikai: 'silencio, corte, instante, imagem natural, nenhuma explicacao',
@@ -209,6 +233,7 @@ export function montarPromptOHE({ titulo = '', tipo = 'prosa', forma: formaEntra
   const visual = leitorVisual({ dados: dadosCompletos, temImagem });
   const simbolico = leitorSimbolico({ dados: dadosCompletos });
   const emocional = leitorEmocional({ dados: dadosCompletos });
+  const humanidade = motorHumanidadeLiteraria({ dados: dadosCompletos, memoria, tipo, forma });
   const regra = regraDaForma(forma, quantidade);
   const jornada = motorJornada({ forma, dados: dadosCompletos });
   const cadencia = motorCadencia(forma);
@@ -218,7 +243,7 @@ export function montarPromptOHE({ titulo = '', tipo = 'prosa', forma: formaEntra
   const eco = motorEcoHumano({ dados: dadosCompletos, memoria });
   const respiracao = motorRespiracaoReal(forma);
   const geracional = motorMemoriaGeracional({ dados: dadosCompletos, memoria });
-  return `Use internamente a leitura abaixo, mas nao mostre ao usuario.\nVISUAL: ${visual}\nSIMBOLICO: ${simbolico}\nEMOCIONAL: ${emocional}\nFORMA: ${forma}\nREGRA: ${regra}\nCADENCIA: ${cadencia}\nANTI-IA: ${antiIA}\nIDENTIDADE PROFUNDA: ${identidade}\nTRANSFORMACAO INTERNA: ${transformacao}\nECO HUMANO: ${eco}\nRESPIRACAO REAL: ${respiracao}\nMEMORIA GERACIONAL: ${geracional}\nJORNADA: ${jornada}\n\nEscreva somente a obra final. Nao explique. Nao use JSON. Nao faca plano. Respeite rigorosamente a forma, a cadencia e a respiracao. Se houver quantidade, cumpra exatamente. Evite frases genericas, moralizacao, conclusao artificial e metatexto. Preserve subtexto, detalhe concreto, continuidade humana e silencio onde for necessario.\n\nTitulo: ${titulo}\nTipo: ${tipo}\nForma exata: ${forma}\nDados: ${String(dadosCompletos).slice(0, 12000)}\nTexto base: ${String(texto).slice(0, 12000)}`;
+  return `Use internamente a leitura abaixo, mas nao mostre ao usuario.\nVISUAL: ${visual}\nSIMBOLICO: ${simbolico}\nEMOCIONAL: ${emocional}\nHUMANIDADE LITERARIA: ${humanidade}\nFORMA: ${forma}\nREGRA: ${regra}\nCADENCIA: ${cadencia}\nANTI-IA: ${antiIA}\nIDENTIDADE PROFUNDA: ${identidade}\nTRANSFORMACAO INTERNA: ${transformacao}\nECO HUMANO: ${eco}\nRESPIRACAO REAL: ${respiracao}\nMEMORIA GERACIONAL: ${geracional}\nJORNADA: ${jornada}\n\nEscreva somente a obra final. Nao explique. Nao use JSON. Nao faca plano. Nao copie autores, obras, frases, vozes ou estilos identificaveis. Compreenda apenas a respiracao humana do nicho: tensao, silencio, visao de mundo, tempo e afeto. Respeite rigorosamente a forma, a cadencia e a respiracao. Se houver quantidade, cumpra exatamente. Evite frases genericas, moralizacao, conclusao artificial e metatexto. Preserve subtexto, detalhe concreto, continuidade humana e silencio onde for necessario.\n\nTitulo: ${titulo}\nTipo: ${tipo}\nForma exata: ${forma}\nDados: ${String(dadosCompletos).slice(0, 12000)}\nTexto base: ${String(texto).slice(0, 12000)}`;
 }
 
 export function limparMetatexto(miolo = '') {
