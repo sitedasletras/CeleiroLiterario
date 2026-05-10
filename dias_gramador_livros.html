@@ -1,40 +1,420 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Lapidar — Pólux Paginado</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pólux — Diagramador de Prosa Paginado</title>
 <style>
-:root{--azul:#10233f;--ouro:#d8b56d;--papel:#fffaf0;--txt:#243044;--linha:#d6c69e;--fundo:#0c1d35}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#0c1d35,#17365f);font-family:Georgia,'Times New Roman',serif;color:var(--txt)}
-header{position:sticky;top:0;z-index:20;background:rgba(12,29,53,.96);color:white;text-align:center;padding:12px 18px;border-bottom:1px solid rgba(216,181,109,.35)}header h1{margin:0;color:var(--ouro);font-size:1.35rem}header p{margin:4px 0 0;font-size:.95rem}
-.wrap{max-width:1360px;margin:auto;padding:18px;display:grid;grid-template-columns:370px 1fr;gap:18px;align-items:start}.box{background:var(--papel);border:1px solid rgba(216,181,109,.55);border-radius:22px;padding:18px;box-shadow:0 18px 42px rgba(0,0,0,.2)}.controls{position:sticky;top:86px;max-height:calc(100vh - 104px);overflow:auto}label{display:block;font-weight:bold;color:var(--azul);margin:12px 0 6px}textarea,input,select{width:100%;border:1px solid var(--linha);border-radius:12px;background:#fffdf7;padding:10px;font:15px Georgia,serif}textarea{height:245px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btns,.pager{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.btn{border:0;border-radius:999px;padding:11px 15px;font-weight:800;cursor:pointer;font-family:Georgia,'Times New Roman',serif}.main{background:var(--azul);color:white}.soft{background:#fff1c7;color:#674a15;border:1px solid var(--ouro)}.hint{background:#fff6dd;border:1px solid #d8b56d;border-radius:14px;padding:10px;line-height:1.45}.stage{background:#e8dfcd;border-radius:18px;padding:20px;overflow:auto;display:flex;justify-content:center;min-height:720px}.page{background:white;box-shadow:0 15px 35px rgba(0,0,0,.25);text-align:justify;white-space:normal;position:relative;overflow:hidden}.page h2{text-align:center;margin:0 0 20px;font-size:1.55em;color:#111;text-transform:uppercase;letter-spacing:.03em}.page p{margin:0 0 .45em}.footer{position:absolute;left:0;right:0;bottom:22px;color:#555;font-size:.85em}.meta{font-family:Arial,sans-serif;color:#636b78;font-size:13px;margin-top:10px;display:flex;justify-content:space-between;gap:8px}.dropcap{float:left;line-height:.82;margin:.07em .14em 0 0;font-weight:900}.drop-simples{font-size:3.2em;color:#111}.drop-classica{font-size:3.6em;color:#3b2614;border:1px solid #d8b56d;padding:.03em .12em;background:#fff8dc}.drop-medieval{font-size:3.8em;color:#6b1010;border:3px double #b58b2f;padding:.04em .14em;background:radial-gradient(circle,#fff8dc,#ecd9a6)}.drop-gotica{font-size:3.7em;color:#111;text-shadow:1px 1px 0 #d8b56d;font-family:'Times New Roman',serif}.drop-cordel{font-size:3.5em;color:#111;border:2px solid #111;padding:.02em .13em;background:repeating-linear-gradient(45deg,#fff,#fff 4px,#eee 5px,#eee 8px)}.drop-iluminura{font-size:3.8em;color:#7c1212;border:3px solid #d8b56d;outline:1px solid #7c1212;padding:.04em .16em;background:#fff3bd;box-shadow:inset 0 0 0 3px rgba(216,181,109,.35)}
-@media(max-width:900px){.wrap{grid-template-columns:1fr}.controls{position:sticky;top:62px;max-height:58vh}.stage{min-height:420px;padding:10px}.page{transform-origin:top center}}@media print{body{background:white}header,.controls,.meta,.pager{display:none}.wrap{display:block;padding:0}.box{box-shadow:none;border:0;padding:0}.stage{padding:0;background:white}.page{box-shadow:none;margin:0 auto;page-break-after:always}}
+:root{
+  --bg:#0e1c35;--papel:#fffaf0;--txt:#243044;--linha:#d6c69e;
+  --azul:#10233f;--ouro:#d8b56d;--ouro2:#f5e4b8;--muted:#8a9ab0;
+  --ok:#2f7a59;--danger:#b13a3a;--warn:#b7921e;
+  --shadow:0 18px 42px rgba(0,0,0,.25);--radius:22px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100vh;background:linear-gradient(135deg,#0c1d35,#17365f);font-family:Georgia,'Times New Roman',serif;color:var(--txt);}
+
+/* ── LAYOUT ── */
+.app{width:min(1360px,calc(100vw - 16px));margin:8px auto;display:grid;grid-template-columns:280px minmax(0,1fr);gap:14px;align-items:start;}
+.left-panel{background:linear-gradient(180deg,#10233f 0%,#1a3a6a 60%,#2d5a9a 100%);color:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 16px;position:sticky;top:8px;max-height:calc(100vh - 16px);overflow:auto;display:flex;flex-direction:column;gap:12px;}
+.main{display:flex;flex-direction:column;gap:14px;min-width:0;}
+.card{background:rgba(255,255,255,.10);border:1px solid rgba(216,181,109,.25);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px;}
+
+/* ── TIPOGRAFIA PAINEL ── */
+.left-panel h2{margin:0;font-size:1.9rem;color:var(--ouro);line-height:1;}
+.left-panel h3{margin:0;font-size:.98rem;color:#c8daf5;line-height:1.2;}
+.left-panel label{display:block;font-size:.86rem;font-weight:700;color:#b8ccec;letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px;}
+.left-panel p,.left-panel small{margin:0;color:#a8bcd8;font-size:.88rem;line-height:1.45;}
+.status{font-size:.9rem;border-radius:14px;padding:10px 12px;background:rgba(255,255,255,.10);border:1px solid rgba(216,181,109,.25);color:#f0f6ff;line-height:1.4;min-height:44px;}
+
+/* ── INPUTS ── */
+.input,.select{width:100%;font-family:inherit;font-size:.97rem;border-radius:12px;border:1px solid #d6c69e;background:#fffdf7;color:var(--txt);padding:9px 11px;outline:none;}
+.input:focus,.select:focus{border-color:var(--ouro);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
+/* ── BOTÕES ── */
+.btn{width:100%;border:none;border-radius:12px;padding:11px 12px;font:700 .97rem Georgia,serif;cursor:pointer;transition:.14s ease;text-decoration:none;display:flex;align-items:center;justify-content:center;min-height:46px;}
+.btn:hover{transform:translateY(-1px);opacity:.95;}
+.btn-ouro{background:var(--ouro);color:#231800;}
+.btn-soft{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);}
+.btn-warn{background:var(--warn);color:#231d16;}
+.btn-danger{background:var(--danger);color:#fff;}
+
+/* ── SEÇÕES CENTRAIS ── */
+.box{background:var(--papel);border:1px solid rgba(216,181,109,.45);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
+.box h2{margin:0 0 14px;font-size:1.25rem;color:var(--azul);}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+.stat{background:#fffdf5;border:1px solid #e8d8b4;border-radius:16px;padding:12px;min-height:90px;}
+.stat-label{font-size:.88rem;font-weight:700;color:#7a6a50;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;}
+.stat-value{font-size:1rem;font-weight:700;color:var(--azul);line-height:1.25;word-break:break-word;}
+
+/* EDITOR */
+.editor-box{width:100%;min-height:300px;border:1.5px solid var(--linha);border-radius:16px;padding:16px;resize:vertical;background:#fffdf7;color:var(--txt);font-family:Georgia,'Times New Roman',serif;font-size:1.04rem;line-height:1.55;outline:none;}
+.editor-box:focus{border-color:var(--ouro);}
+
+/* PAGINADOR */
+.pager{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.btn-pager{border:1.5px solid var(--ouro);background:transparent;color:var(--azul);border-radius:999px;padding:9px 18px;font:700 .95rem Georgia,serif;cursor:pointer;transition:.14s;}
+.btn-pager:hover{background:var(--ouro);color:#231800;}
+.btn-pager:disabled{opacity:.4;cursor:not-allowed;}
+.page-info{font-size:.95rem;color:var(--azul);font-weight:700;margin:0 auto;}
+
+/* PRÉVIA */
+.stage{background:linear-gradient(180deg,#e8dfcd,#ddd4bf);border-radius:20px;padding:22px 14px;min-height:700px;display:flex;align-items:flex-start;justify-content:center;overflow:auto;}
+.page{background:#fff;box-shadow:0 15px 35px rgba(0,0,0,.22);text-align:justify;white-space:normal;position:relative;overflow:hidden;font-family:Georgia,'Times New Roman',serif;}
+.page h2.cap{text-align:center;margin:0 0 .7em;font-size:1.55em;color:#111;text-transform:uppercase;letter-spacing:.03em;line-height:1.1;}
+.page p{margin:0 0 .45em;}
+.page-footer{position:absolute;left:0;right:0;bottom:18px;color:#666;font-size:.83em;}
+
+/* CAPITULARES */
+.dropcap{float:left;line-height:.82;margin:.07em .14em 0 0;font-weight:900;}
+.drop-simples{font-size:3.2em;color:#111;}
+.drop-classica{font-size:3.6em;color:#3b2614;border:1px solid #d8b56d;padding:.03em .12em;background:#fff8dc;}
+.drop-medieval{font-size:3.8em;color:#6b1010;border:3px double #b58b2f;padding:.04em .14em;background:radial-gradient(circle,#fff8dc,#ecd9a6);}
+.drop-gotica{font-size:3.7em;color:#111;text-shadow:1px 1px 0 #d8b56d;font-family:'Times New Roman',serif;}
+.drop-cordel{font-size:3.5em;color:#111;border:2px solid #111;padding:.02em .13em;background:repeating-linear-gradient(45deg,#fff,#fff 4px,#eee 5px,#eee 8px);}
+.drop-iluminura{font-size:3.8em;color:#7c1212;border:3px solid #d8b56d;outline:1px solid #7c1212;padding:.04em .16em;background:#fff3bd;box-shadow:inset 0 0 0 3px rgba(216,181,109,.35);}
+
+/* META */
+.meta-bar{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.9rem;color:#7a8a9a;margin-top:10px;}
+
+@media(max-width:900px){
+  .app{grid-template-columns:1fr;}
+  .left-panel{position:relative;top:auto;max-height:none;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+}
+@media print{
+  body{background:#fff;}
+  .left-panel,.meta-bar,.pager{display:none;}
+  .app{display:block;padding:0;}
+  .box{box-shadow:none;border:0;padding:0;}
+  .stage{padding:0;background:#fff;}
+  .page{box-shadow:none;margin:0 auto;page-break-after:always;}
+}
 </style>
 </head>
 <body>
-<header><h1>🌾 Lapidar — Pólux Paginado</h1><p>Painel fixo • prévia por página • capitular ornamental • texto vindo do OHE/Lapidar</p></header>
-<main class="wrap">
-<section class="box controls"><h2>Entrada e ajustes</h2><div class="hint" id="hint">Aguardando texto. Se vier do OHE/Lapidar, será carregado automaticamente.</div><label>Enviar arquivo TXT</label><input id="file" type="file" accept=".txt,text/plain"><label>Texto da obra</label><textarea id="text"></textarea><div class="row"><div><label>Formato</label><select id="format"><option value="a5">A5</option><option value="1623" selected>16 x 23 cm</option><option value="6x9">6 x 9 pol.</option><option value="a4">A4 técnico</option></select></div><div><label>Fonte</label><select id="font"><option>Georgia</option><option>Times New Roman</option><option>Arial</option></select></div></div><div class="row"><div><label>Tamanho</label><input id="size" type="number" value="16" min="10" max="26"></div><div><label>Entrelinha</label><input id="line" type="number" value="1.55" min="1" max="2.4" step="0.05"></div></div><div class="row"><div><label>Margem</label><select id="margin"><option value="normal">Normal</option><option value="estreita">Estreita</option><option value="ampla" selected>Ampla</option></select></div><div><label>Parágrafo</label><select id="para"><option value="recuo" selected>Recuo tradicional</option><option value="espaco">Espaço entre parágrafos</option><option value="sem">Sem recuo</option></select></div></div><div class="row"><div><label>Capitular</label><select id="drop"><option value="off">Desligada</option><option value="simples" selected>Simples</option><option value="classica">Clássica</option><option value="medieval">Medieval</option><option value="gotica">Gótica</option><option value="iluminura">Iluminura</option><option value="cordel">Cordel</option></select></div><div><label>Número</label><select id="numpos"><option value="center" selected>Rodapé centro</option><option value="left">Rodapé esquerdo</option><option value="right">Rodapé direito</option></select></div></div><div class="btns"><button class="btn main" onclick="render()">Atualizar prévia</button><button class="btn soft" onclick="window.print()">Imprimir / salvar PDF</button><button class="btn soft" onclick="limparCampo()">Limpar campo</button></div><div class="pager"><button class="btn soft" onclick="paginaAnterior()">← Página anterior</button><button class="btn soft" onclick="proximaPagina()">Próxima página →</button></div></section>
-<section class="box"><h2>Prévia editorial paginada</h2><div class="stage"><article id="page" class="page"></article></div><div class="meta"><span id="info"></span><span id="pageInfo">Página 1/1</span></div></section>
-</main>
+<div class="app">
+
+<!-- PAINEL ESQUERDO -->
+<aside class="left-panel">
+  <h2>🌾 Pólux</h2>
+  <div class="status" id="statusBox">Aguardando texto. Cole sua obra ou envie um .txt.</div>
+
+  <div class="card">
+    <label for="bookTitle">Título da obra</label>
+    <input class="input" id="bookTitle" type="text" placeholder="Título opcional" value="">
+    <label for="bookAuthor">Autor</label>
+    <input class="input" id="bookAuthor" type="text" placeholder="Autor opcional" value="">
+  </div>
+
+  <div class="card">
+    <label for="fileInput">Enviar arquivo .txt</label>
+    <input class="input" id="fileInput" type="file" accept=".txt,text/plain" style="padding:6px;">
+  </div>
+
+  <div class="card">
+    <div class="row2">
+      <div>
+        <label for="format">Formato</label>
+        <select class="select" id="format">
+          <option value="a5">A5</option>
+          <option value="1623" selected>16×23 cm</option>
+          <option value="6x9">6×9 pol.</option>
+          <option value="a4">A4 técnico</option>
+        </select>
+      </div>
+      <div>
+        <label for="font">Fonte</label>
+        <select class="select" id="font">
+          <option value="Georgia,'Times New Roman',serif" selected>Georgia</option>
+          <option value="'Times New Roman',serif">Times New Roman</option>
+          <option value="Arial,sans-serif">Arial</option>
+          <option value="Garamond,serif">Garamond</option>
+        </select>
+      </div>
+    </div>
+    <div class="row2">
+      <div>
+        <label for="size">Tamanho (pt)</label>
+        <input class="input" id="size" type="number" value="13" min="10" max="26">
+      </div>
+      <div>
+        <label for="lineh">Entrelinha</label>
+        <input class="input" id="lineh" type="number" value="1.55" min="1" max="2.5" step="0.05">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row2">
+      <div>
+        <label for="margin">Margem</label>
+        <select class="select" id="margin">
+          <option value="estreita">Estreita</option>
+          <option value="normal">Normal</option>
+          <option value="ampla" selected>Ampla</option>
+        </select>
+      </div>
+      <div>
+        <label for="para">Parágrafo</label>
+        <select class="select" id="para">
+          <option value="recuo" selected>Com recuo</option>
+          <option value="espaco">Espaçado</option>
+          <option value="sem">Sem recuo</option>
+        </select>
+      </div>
+    </div>
+    <div class="row2">
+      <div>
+        <label for="drop">Capitular</label>
+        <select class="select" id="drop">
+          <option value="off">Desligada</option>
+          <option value="simples" selected>Simples</option>
+          <option value="classica">Clássica</option>
+          <option value="medieval">Medieval</option>
+          <option value="gotica">Gótica</option>
+          <option value="iluminura">Iluminura</option>
+          <option value="cordel">Cordel</option>
+        </select>
+      </div>
+      <div>
+        <label for="numpos">Numeração</label>
+        <select class="select" id="numpos">
+          <option value="center" selected>Rodapé centro</option>
+          <option value="left">Rodapé esquerda</option>
+          <option value="right">Rodapé direita</option>
+          <option value="off">Sem numeração</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <button class="btn btn-ouro" onclick="render()">Atualizar prévia</button>
+    <button class="btn btn-soft" onclick="window.print()">Imprimir / salvar PDF</button>
+    <button class="btn btn-soft" onclick="limpar()">Limpar texto</button>
+    <a class="btn btn-warn" href="lapidar.html">Retornar ao Lapidar</a>
+    <a class="btn btn-danger" href="pagina_respiro_celeiro.html">Sair do sistema</a>
+  </div>
+
+  <div class="card">
+    <h3>Sobre o Pólux</h3>
+    <p>Diagramador de prosa paginado do Celeiro Literário. Recebe textos do OHE/Lapidar ou colados diretamente. Capitulares ornamentais e paginação automática.</p>
+  </div>
+</aside>
+
+<!-- ÁREA CENTRAL -->
+<div class="main">
+
+  <!-- STATS -->
+  <div class="box">
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-label">Formato</div><div class="stat-value" id="fmtStat">16×23 cm</div></div>
+      <div class="stat"><div class="stat-label">Fonte</div><div class="stat-value" id="fontStat">Georgia<br>13 pt</div></div>
+      <div class="stat"><div class="stat-label">Páginas</div><div class="stat-value" id="pagsStat">0</div></div>
+      <div class="stat"><div class="stat-label">Palavras</div><div class="stat-value" id="wordsStat">0</div></div>
+    </div>
+  </div>
+
+  <!-- EDITOR -->
+  <div class="box">
+    <h2>Texto da obra</h2>
+    <textarea id="texto" class="editor-box" placeholder="Cole aqui o texto da obra ou envie um arquivo .txt acima...">Capítulo 1
+
+Era uma manhã de outubro quando a carta chegou. Não havia remetente, apenas o carimbo de uma cidade que ela nunca havia visitado, mas cujo nome carregava como uma promessa.
+
+A letra era firme, inclinada para a direita, como quem escreve contra o vento. E o que dizia mudaria tudo.
+
+Capítulo 2
+
+O caminho até a estação era longo demais para ser percorrido em silêncio. Ela contou os passos, os paralelepípedos, as janelas abertas das casas que dormiam ainda.</textarea>
+  </div>
+
+  <!-- PRÉVIA -->
+  <div class="box">
+    <h2>Prévia editorial paginada</h2>
+    <div class="pager">
+      <button class="btn-pager" id="btnAnterior" onclick="paginaAnterior()" disabled>← Anterior</button>
+      <span class="page-info" id="pageInfo">Página 1 / 1</span>
+      <button class="btn-pager" id="btnProxima" onclick="proximaPagina()">Próxima →</button>
+    </div>
+    <div class="stage" style="margin-top:14px;">
+      <article id="page" class="page"></article>
+    </div>
+    <div class="meta-bar">
+      <span id="metaInfo">Aguardando renderização</span>
+      <span id="metaPagina">Página 1/1</span>
+    </div>
+  </div>
+
+</div>
+</div>
+
 <script>
-const $=id=>document.getElementById(id),dims={a5:[420,595],1623:[454,652],'6x9':[432,648],a4:[595,842]};let paginas=[],paginaAtual=0;
-['text','format','font','size','line','margin','para','drop','numpos'].forEach(id=>$(id).addEventListener('input',render));
-$('file').addEventListener('change',e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{$('text').value=r.result;localStorage.setItem('lapidar_obra_texto',r.result);render()};r.readAsText(f)});
-function carregarTextoRecebido(){const chaves=['lapidar_entrada_silenciosa_texto','lapidar_obra_texto','obra_texto','ohe_texto_limpo_saida'];let texto='';for(const k of chaves){const v=localStorage.getItem(k);if(v&&v.trim()){texto=v;break}}if(texto){$('text').value=texto;$('hint').textContent='Texto recebido do OHE/Lapidar e carregado automaticamente.';return}$('text').value='Capítulo 1\n\nCole aqui o texto da obra.';$('hint').textContent='Nenhum texto recebido ainda. Cole ou envie um TXT.'}
-function limparCampo(){$('text').value='';paginas=[];paginaAtual=0;render()}
-function esc(s){return String(s||'').replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
-function ehTituloEstrutural(l){return /^(cap[ií]tulo|parte|pr[oó]logo|ep[ií]logo|ode|canto|conto|poema)\b/i.test(String(l||'').trim())}
-function prepararBlocos(raw){let linhas=String(raw||'').replace(/\r/g,'').split('\n').map(x=>x.trim()).filter(Boolean);let blocos=[],atual=[];for(const l of linhas){if(ehTituloEstrutural(l)){if(atual.length){blocos.push({tipo:'p',txt:atual.join(' ')});atual=[]}blocos.push({tipo:'h',txt:l});continue}atual.push(l)}if(atual.length)blocos.push({tipo:'p',txt:atual.join(' ')});return blocos}
-function estiloParagrafo(){let mode=$('para').value;return mode==='recuo'?'text-indent:2em;margin:0 0 .45em':mode==='espaco'?'text-indent:0;margin:0 0 1em':'text-indent:0;margin:0 0 .2em'}
-function montarHtml(blocos){let html='';for(const b of blocos){if(b.tipo==='h')html+='<h2>'+esc(b.txt)+'</h2>';else html+='<p style="'+estiloParagrafo()+'">'+esc(b.txt)+'</p>'}return html}
-function aplicarCapitular(page){let tipo=$('drop').value;if(tipo==='off')return;let p=[...page.querySelectorAll('p')].find(el=>el.textContent.trim().length>0);if(!p)return;p.innerHTML=p.innerHTML.replace(/^([^<\s])/, '<span class="dropcap drop-'+tipo+'">$1</span>')}
-function calcularPaginas(blocos){let temp=document.createElement('article');temp.className='page';temp.style.position='absolute';temp.style.left='-9999px';document.body.appendChild(temp);aplicarDimensoes(temp);let pags=[],atual=[];for(const b of blocos){atual.push(b);temp.innerHTML=montarHtml(atual)+'<div class="footer">1</div>';if(temp.scrollHeight>temp.clientHeight&&atual.length>1){atual.pop();pags.push([...atual]);atual=[b]}}if(atual.length)pags.push([...atual]);document.body.removeChild(temp);return pags.length?pags:[[{tipo:'p',txt:'Texto vazio.'}]]}
-function aplicarDimensoes(page){let [w,h]=dims[$('format').value];let m={estreita:36,normal:52,ampla:70}[$('margin').value];page.style.width=w+'px';page.style.height=h+'px';page.style.minHeight=h+'px';page.style.padding=m+'px '+m+'px '+(m+35)+'px';page.style.fontFamily=$('font').value;page.style.fontSize=$('size').value+'px';page.style.lineHeight=$('line').value}
-function render(){let raw=$('text').value.trim()||'Texto vazio.';let blocos=prepararBlocos(raw);paginas=calcularPaginas(blocos);if(paginaAtual>=paginas.length)paginaAtual=paginas.length-1;if(paginaAtual<0)paginaAtual=0;let page=$('page');aplicarDimensoes(page);page.innerHTML=montarHtml(paginas[paginaAtual])+'<div class="footer" style="text-align:'+$('numpos').value+'">'+(paginaAtual+1)+'</div>';if(paginaAtual===0)aplicarCapitular(page);$('info').textContent='Palavras: '+raw.split(/\s+/).filter(Boolean).length+' • Caracteres: '+raw.length+' • Páginas estimadas: '+paginas.length;$('pageInfo').textContent='Página '+(paginaAtual+1)+'/'+paginas.length}
-function paginaAnterior(){if(paginaAtual>0){paginaAtual--;render()}}
-function proximaPagina(){if(paginaAtual<paginas.length-1){paginaAtual++;render()}}
-carregarTextoRecebido();render();
+const $ = id => document.getElementById(id);
+
+// ── DIMENSÕES ─────────────────────────────────────────────────────────────
+const DIMS = {
+  a5:   [420, 595],
+  1623: [454, 652],
+  '6x9':[432, 648],
+  a4:   [595, 842],
+};
+const MARGENS = { estreita: 38, normal: 52, ampla: 68 };
+
+let paginas = [], paginaAtual = 0;
+
+// ── HELPERS ──────────────────────────────────────────────────────────────
+function esc(s){ return String(s||'').replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+
+function ehTitulo(l){
+  return /^(cap[ií]tulo|parte|pr[oó]logo|ep[ií]logo|ode|canto|conto|poema|seção)\b/i.test(String(l||'').trim());
+}
+
+function prepararBlocos(raw){
+  const linhas = String(raw||'').replace(/\r/g,'').split('\n').map(x=>x.trim()).filter(Boolean);
+  const blocos = [];
+  let atual = [];
+  for(const l of linhas){
+    if(ehTitulo(l)){
+      if(atual.length){ blocos.push({tipo:'p', txt:atual.join(' ')}); atual=[]; }
+      blocos.push({tipo:'h', txt:l});
+    } else {
+      atual.push(l);
+    }
+  }
+  if(atual.length) blocos.push({tipo:'p', txt:atual.join(' ')});
+  return blocos;
+}
+
+function estiloP(){
+  const m = $('para').value;
+  if(m==='recuo')  return 'text-indent:2em;margin:0 0 .45em;text-align:justify;';
+  if(m==='espaco') return 'text-indent:0;margin:0 0 1em;text-align:justify;';
+  return 'text-indent:0;margin:0 0 .2em;text-align:justify;';
+}
+
+function montarHtml(blocos){
+  return blocos.map(b => b.tipo==='h'
+    ? `<h2 class="cap">${esc(b.txt)}</h2>`
+    : `<p style="${estiloP()}">${esc(b.txt)}</p>`
+  ).join('');
+}
+
+function aplicarCapitular(pageEl){
+  const tipo = $('drop').value;
+  if(tipo==='off') return;
+  const p = [...pageEl.querySelectorAll('p')].find(el=>el.textContent.trim().length>0);
+  if(!p) return;
+  p.innerHTML = p.innerHTML.replace(/^([^<\s&])/, `<span class="dropcap drop-${tipo}">$1</span>`);
+}
+
+function aplicarDim(el){
+  const [w,h] = DIMS[$('format').value] || DIMS['1623'];
+  const m = MARGENS[$('margin').value] || 52;
+  el.style.width    = w+'px';
+  el.style.height   = h+'px';
+  el.style.minHeight= h+'px';
+  el.style.padding  = `${m}px ${m}px ${m+30}px`;
+  el.style.fontFamily = $('font').value;
+  el.style.fontSize   = $('size').value+'px';
+  el.style.lineHeight = $('lineh').value;
+}
+
+// ── PAGINAÇÃO ─────────────────────────────────────────────────────────────
+function calcularPaginas(blocos){
+  const temp = document.createElement('article');
+  temp.className = 'page';
+  temp.style.cssText = 'position:absolute;left:-9999px;visibility:hidden;';
+  document.body.appendChild(temp);
+  aplicarDim(temp);
+
+  const pags = [];
+  let atual = [];
+  for(const b of blocos){
+    atual.push(b);
+    temp.innerHTML = montarHtml(atual) + '<div style="height:30px"></div>';
+    if(temp.scrollHeight > temp.clientHeight && atual.length > 1){
+      atual.pop();
+      pags.push([...atual]);
+      atual = [b];
+    }
+  }
+  if(atual.length) pags.push([...atual]);
+  document.body.removeChild(temp);
+  return pags.length ? pags : [[{tipo:'p', txt:'Texto vazio.'}]];
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────
+function render(){
+  const raw = $('texto').value.trim() || 'Cole o texto da obra.';
+  const blocos = prepararBlocos(raw);
+
+  paginas = calcularPaginas(blocos);
+  if(paginaAtual >= paginas.length) paginaAtual = paginas.length - 1;
+  if(paginaAtual < 0) paginaAtual = 0;
+
+  const page = $('page');
+  aplicarDim(page);
+
+  const numPos = $('numpos').value;
+  const rodape = numPos !== 'off'
+    ? `<div class="page-footer" style="text-align:${numPos}">${paginaAtual+1}</div>`
+    : '';
+
+  page.innerHTML = montarHtml(paginas[paginaAtual]) + rodape;
+  if(paginaAtual === 0) aplicarCapitular(page);
+
+  // stats
+  const palavras = raw.split(/\s+/).filter(Boolean).length;
+  $('fmtStat').textContent  = $('format').options[$('format').selectedIndex].text;
+  $('fontStat').innerHTML   = `${$('font').options[$('font').selectedIndex].text.split(',')[0]}<br>${$('size').value} pt`;
+  $('pagsStat').textContent = String(paginas.length);
+  $('wordsStat').textContent= String(palavras);
+
+  $('pageInfo').textContent  = `Página ${paginaAtual+1} / ${paginas.length}`;
+  $('metaInfo').textContent  = `Palavras: ${palavras} • Caracteres: ${raw.length} • Páginas: ${paginas.length}`;
+  $('metaPagina').textContent= `Página ${paginaAtual+1}/${paginas.length}`;
+
+  $('btnAnterior').disabled = paginaAtual === 0;
+  $('btnProxima').disabled  = paginaAtual === paginas.length - 1;
+  $('statusBox').textContent = `Prévia atualizada · ${paginas.length} página(s) · ${palavras} palavras`;
+}
+
+function paginaAnterior(){ if(paginaAtual > 0){ paginaAtual--; render(); } }
+function proximaPagina(){ if(paginaAtual < paginas.length-1){ paginaAtual++; render(); } }
+function limpar(){ $('texto').value=''; paginas=[]; paginaAtual=0; render(); }
+
+// ── ARQUIVO TXT ───────────────────────────────────────────────────────────
+$('fileInput').addEventListener('change', e => {
+  const f = e.target.files[0];
+  if(!f) return;
+  const r = new FileReader();
+  r.onload = () => { $('texto').value = r.result; render(); };
+  r.readAsText(f);
+});
+
+// ── AUTO-RENDER ───────────────────────────────────────────────────────────
+['format','font','size','lineh','margin','para','drop','numpos'].forEach(id => {
+  $(id).addEventListener('change', render);
+  $(id).addEventListener('input', render);
+});
+$('texto').addEventListener('input', render);
+
+// ── CARREGAR DO LOCALSTORAGE (integração OHE/Lapidar) ────────────────────
+function carregarOHE(){
+  const chaves = ['lapidar_entrada_silenciosa_texto','lapidar_obra_texto','obra_texto','ohe_texto_limpo_saida'];
+  for(const k of chaves){
+    const v = localStorage.getItem(k);
+    if(v && v.trim()){ $('texto').value = v; $('statusBox').textContent='Texto recebido do Lapidar/OHE.'; break; }
+  }
+  render();
+}
+
+carregarOHE();
 </script>
 </body>
 </html>
