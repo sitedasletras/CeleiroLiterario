@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hércules — Diagramador Especializado</title>
+<script src="diagramacao/motor/motor_diagramacao_base.js"></script>
+<style>
+:root{
+  --bg:#eef2f8;--paper:#ffffff;--ink:#1a2130;--muted:#5d6a7a;--line:#d0dae8;
+  --blue:#2f5a9b;--teal:#2f7a6a;--orange:#c96a20;--purple:#6a3a8a;--rose:#9a3a5a;--green:#3a7a3a;
+  --shadow:0 12px 28px rgba(30,50,90,.10);--radius:22px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:'Segoe UI',system-ui,sans-serif;}
+.app{width:min(1360px,calc(100vw - 16px));margin:8px auto;display:grid;grid-template-columns:260px minmax(0,1fr) 280px;gap:14px;align-items:start;}
+.panel{border-radius:var(--radius);box-shadow:var(--shadow);min-height:calc(100vh - 16px);position:sticky;top:8px;align-self:start;overflow:auto;}
+.left-panel{background:linear-gradient(180deg,#1e3a70 0%,#2f5a9b 58%,#6a90c8 100%);color:#fff;padding:16px 14px;display:flex;flex-direction:column;gap:12px;}
+.right-panel{background:linear-gradient(180deg,#f4f7fc 0%,#e8eef8 100%);border:1px solid var(--line);color:var(--ink);padding:16px 14px;display:flex;flex-direction:column;gap:12px;}
+.panel h2{margin:0;font-size:1.7rem;line-height:1;font-family:Georgia,serif;}
+.panel h3{margin:0;font-size:.98rem;line-height:1.2;font-weight:700;}
+.status{font-size:.92rem;line-height:1.35;border-radius:14px;padding:10px 12px;min-height:48px;}
+.left-panel .status{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);color:#f0f6ff;}
+.right-panel .status{background:#fff;border:1px solid var(--line);color:#5d6a7a;}
+.card{border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px;}
+.left-panel .card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);}
+.right-panel .card{background:#fff;border:1px solid #dde5f2;}
+label,p{margin:0;line-height:1.35;}
+.left-panel label,.left-panel p{color:#ddeeff;}
+.right-panel label,.right-panel p{color:#4a5768;}
+.input,.select,.btn{width:100%;font-family:inherit;font-size:.98rem;border-radius:12px;}
+.input,.select{border:1px solid #c8d5e8;background:#fff;color:var(--ink);padding:10px;outline:none;}
+.input:focus,.select:focus{border-color:var(--blue);}
+.btn{border:none;padding:11px 12px;font-weight:700;cursor:pointer;transition:.12s ease;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;}
+.btn:hover{transform:translateY(-1px);opacity:.97;}
+.btn-blue{background:var(--blue);color:#fff;}
+.btn-soft{background:#e0e8f5;color:#1e3a70;}
+.btn-warn{background:#b7921e;color:#231d16;}
+.btn-danger{background:#b13a3a;color:#fff;}
+
+/* MODO TABS */
+.modos-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.modo-btn{border:2px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;border-radius:14px;padding:10px 8px;cursor:pointer;font-family:Georgia,serif;font-size:.88rem;font-weight:600;text-align:center;transition:.15s ease;line-height:1.3;}
+.modo-btn:hover{background:rgba(255,255,255,.18);}
+.modo-btn.ativo{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.7);}
+.modo-emoji{display:block;font-size:1.5rem;margin-bottom:4px;}
+
+.main{display:flex;flex-direction:column;gap:14px;min-width:0;}
+.hero,.stats-shell,.editor-shell,.preview-shell{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
+.hero{background:linear-gradient(180deg,#eef3fb 0%,#e4ecf8 100%);padding:24px 22px;display:grid;gap:14px;}
+.hero-top{display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:center;}
+.badge{width:52px;height:84px;border-radius:18px;background:linear-gradient(180deg,#4a7ac8,#1e3a70);color:#f0f6ff;display:flex;align-items:center;justify-content:center;font-size:2.4rem;line-height:1;box-shadow:0 8px 18px rgba(47,90,155,.25);}
+.hero h1{margin:0 0 6px;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.05;color:#1a2a4a;font-family:Georgia,serif;}
+.hero p{color:#4a5a72;font-size:1.05rem;}
+.modo-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;font-size:.9rem;font-weight:700;margin-top:8px;}
+
+.stats-shell{padding:16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+.stat{background:#f4f7fc;border:1px solid #d8e2f0;border-radius:16px;padding:14px 12px;min-height:100px;}
+.stat-label{font-size:.9rem;font-weight:700;color:#5d6a7a;margin-bottom:8px;}
+.stat-value{font-size:1rem;font-weight:700;color:#1a2130;line-height:1.25;word-break:break-word;}
+
+.editor-shell,.preview-shell{padding:18px;display:flex;flex-direction:column;gap:12px;}
+.editor-shell h2,.preview-shell h2{margin:0;font-size:1.2rem;font-family:Georgia,serif;}
+.editor-box{width:100%;min-height:400px;border:1.5px solid #d0dae8;border-radius:18px;padding:18px;resize:vertical;background:#fff;color:var(--ink);font-family:Georgia,"Times New Roman",serif;font-size:1.04rem;line-height:1.6;outline:none;}
+.editor-box:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(47,90,155,.08);}
+
+.preview-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+.pill-row{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;background:#eef2f8;border:1px solid #d0dae8;color:#4a5768;font-size:.9rem;font-weight:700;}
+.preview-stage{background:linear-gradient(180deg,#e8eef8 0%,#dde5f3 100%);border-radius:20px;border:1px solid var(--line);min-height:700px;display:flex;align-items:flex-start;justify-content:center;padding:22px 12px;overflow:auto;}
+.page-host{display:flex;justify-content:center;width:100%;}
+
+.analysis-list{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:.92rem;}
+.footer-note{font-size:.86rem;color:#6a7a8a;line-height:1.45;}
+
+@media(max-width:1160px){.app{grid-template-columns:1fr}.panel{position:relative;top:auto;min-height:auto}}
+@media(max-width:760px){.stats-shell{grid-template-columns:1fr 1fr}.modos-grid{grid-template-columns:1fr 1fr}.preview-stage{min-height:auto;padding:12px 8px}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- PAINEL ESQUERDO -->
+<aside class="panel left-panel">
+  <h2 style="font-family:Georgia,serif">Hércules</h2>
+  <div class="status" id="statusBox">Selecione o tipo de livro para começar.</div>
+
+  <div class="card">
+    <label><strong>Tipo de livro</strong></label>
+    <div class="modos-grid">
+      <button class="modo-btn ativo" data-modo="infantil"   onclick="setModo('infantil')">  <span class="modo-emoji">🧸</span>Infantil</button>
+      <button class="modo-btn"       data-modo="infanto"    onclick="setModo('infanto')">   <span class="modo-emoji">📚</span>Infanto-Juvenil</button>
+      <button class="modo-btn"       data-modo="juvenil"    onclick="setModo('juvenil')">   <span class="modo-emoji">🌟</span>Juvenil</button>
+      <button class="modo-btn"       data-modo="tecnico"    onclick="setModo('tecnico')">   <span class="modo-emoji">🔧</span>Técnico</button>
+      <button class="modo-btn"       data-modo="fotografico" onclick="setModo('fotografico')"><span class="modo-emoji">📷</span>Fotográfico</button>
+      <button class="modo-btn"       data-modo="receitas"   onclick="setModo('receitas')">  <span class="modo-emoji">🍳</span>Receitas</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <label for="bookTitle"><strong>Título da obra</strong></label>
+    <input class="input" id="bookTitle" type="text" placeholder="Título do livro" value="Hércules — Livro Diagramado">
+    <label for="bookSubtitle"><strong>Subtítulo / Autor</strong></label>
+    <input class="input" id="bookSubtitle" type="text" placeholder="Subtítulo ou autor" value="Celeiro Literário">
+  </div>
+
+  <div class="card">
+    <label for="bookFormat"><strong>Formato</strong></label>
+    <select class="select" id="bookFormat">
+      <option value="a5" selected>A5 (148×210 mm)</option>
+      <option value="14x21">14×21 cm</option>
+      <option value="16x23">16×23 cm</option>
+      <option value="6x9">6×9 pol.</option>
+      <option value="a4">A4 (técnico/foto)</option>
+      <option value="carta">Carta (técnico)</option>
+    </select>
+    <label for="fontFamily"><strong>Fonte</strong></label>
+    <select class="select" id="fontFamily">
+      <option value="Georgia,'Times New Roman',serif">Georgia (recomendada)</option>
+      <option value="'Times New Roman',serif">Times New Roman</option>
+      <option value="Arial,Helvetica,sans-serif">Arial (técnico)</option>
+      <option value="Verdana,sans-serif">Verdana (infantil)</option>
+    </select>
+    <label for="fontSize"><strong>Tamanho</strong></label>
+    <select class="select" id="fontSize">
+      <option value="11">11 pt</option>
+      <option value="12" selected>12 pt</option>
+      <option value="13">13 pt</option>
+      <option value="14">14 pt</option>
+      <option value="16">16 pt (infantil)</option>
+      <option value="18">18 pt (infantil grande)</option>
+    </select>
+    <label for="lineHeight"><strong>Entrelinha</strong></label>
+    <select class="select" id="lineHeight">
+      <option value="1.35">1.35</option>
+      <option value="1.50" selected>1.50</option>
+      <option value="1.65">1.65</option>
+      <option value="1.80">1.80 (infantil)</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <label for="corRecuo"><strong>Recuo de parágrafo</strong></label>
+    <select class="select" id="corRecuo">
+      <option value="sim" selected>Com recuo tradicional</option>
+      <option value="nao">Sem recuo (espaçado)</option>
+    </select>
+    <label for="correcao"><strong>Correção</strong></label>
+    <select class="select" id="correcao">
+      <option value="light" selected>Leve</option>
+      <option value="medium">Média</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <button class="btn btn-blue" id="renderBtn">Atualizar prévia</button>
+    <button class="btn btn-soft" id="clearBtn">Limpar texto</button>
+    <a class="btn btn-warn" href="lapidar.html">Retornar ao Lapidar</a>
+    <a class="btn btn-danger" href="pagina_respiro_celeiro.html">Sair do sistema</a>
+  </div>
+</aside>
+
+<!-- ÁREA CENTRAL -->
+<main class="main">
+  <section class="hero">
+    <div class="hero-top">
+      <div class="badge" id="heroBadge">H</div>
+      <div>
+        <h1>Hércules — Diagramador Especializado</h1>
+        <p>Módulo do Celeiro Literário para livros infantis, infanto-juvenis, juvenis, técnicos, fotográficos e de receitas. Cada modo adapta a tipografia, margens, espaçamento e estrutura para o tipo de obra.</p>
+        <div class="modo-badge" id="modoBadge" style="background:#eef3fb;border:1.5px solid #2f5a9b;color:#2f5a9b;">🧸 Modo: Infantil</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-shell">
+    <div class="stat"><div class="stat-label">Tipo</div><div class="stat-value" id="tipoStat">Infantil</div></div>
+    <div class="stat"><div class="stat-label">Formato</div><div class="stat-value" id="formatStat">A5</div></div>
+    <div class="stat"><div class="stat-label">Blocos</div><div class="stat-value" id="blocosStat">0</div></div>
+    <div class="stat"><div class="stat-label">Palavras</div><div class="stat-value" id="palavrasStat">0</div></div>
+  </section>
+
+  <section class="editor-shell">
+    <h2 id="editorTitulo">✏️ Texto do livro infantil</h2>
+    <textarea id="sourceText" class="editor-box" placeholder="Cole aqui o texto da obra...">Era uma vez um leão chamado Léo
+que morava em uma floresta colorida.
+
+Léo adorava brincar com seus amigos:
+a tartaruga Tati, o coelho Coco
+e a joaninha Joana.
+
+Um dia, o céu ficou escuro
+e a chuva começou a cair.
+
+— Vamos nos proteger! — disse Léo.
+
+E todos correram para a casinha
+que estava embaixo da grande árvore.
+
+Lá dentro, contaram histórias
+e riram muito até o sol voltar.</textarea>
+  </section>
+
+  <section class="preview-shell">
+    <div class="preview-top">
+      <h2>Prévia do livro</h2>
+      <div class="pill-row">
+        <span class="pill" id="pillBlocos">Blocos: 0</span>
+        <span class="pill" id="pillPalavras">Palavras: 0</span>
+        <span class="pill" id="pillModo">Modo: infantil</span>
+      </div>
+    </div>
+    <div class="preview-stage">
+      <div id="pagePreview" class="page-host"></div>
+    </div>
+  </section>
+</main>
+
+<!-- PAINEL DIREITO -->
+<aside class="panel right-panel">
+  <h2 style="font-family:Georgia,serif">Motor Hércules</h2>
+  <div class="status" id="motorStatusBox">Motor especializado ativo.</div>
+
+  <div class="card">
+    <h3 id="motorTituloCard">📋 Modo Infantil</h3>
+    <p id="motorDescCard">Tipografia ampla, espaçamento generoso, frases curtas valorizadas. Ideal para leitores de 0 a 7 anos.</p>
+  </div>
+
+  <div class="card">
+    <h3>Estrutura detectada</h3>
+    <p id="estruturaInfo">Aguardando texto.</p>
+  </div>
+
+  <div class="card">
+    <h3>Alertas</h3>
+    <ul class="analysis-list" id="alertsList"><li>Aguardando análise.</li></ul>
+  </div>
+
+  <div class="card">
+    <h3>Dicas do modo</h3>
+    <p id="dicasModo">Use frases curtas e parágrafos de no máximo 3 linhas para o público infantil.</p>
+  </div>
+
+  <div class="footer-note">
+    Hércules — o mais versátil do sistema de diagramação do Celeiro Literário, ao lado de Pólux, Castor, Centauro e Qui(RON)xadá.
+  </div>
+</aside>
+
+</div>
+<script>
+const $ = id => document.getElementById(id);
+
+// ── CONFIGURAÇÕES POR MODO ────────────────────────────────────────────────
+const MODOS = {
+  infantil: {
+    label: 'Infantil', emoji: '🧸', cor: '#2f7a6a',
+    fonteDefault: "Verdana,sans-serif", tamanhoDefault: '16', lhDefault: '1.80',
+    formatoDefault: 'a5', corFundo: '#fff', corTexto: '#1a2130', corTitulo: '#2f7a6a',
+    corAccent: '#2f7a6a', margem: 'infantil', recuo: false,
+    descMotor: 'Tipografia ampla, espaçamento generoso, frases curtas valorizadas. Ideal para leitores de 0 a 7 anos.',
+    dicas: 'Use frases curtas e parágrafos de no máximo 3 linhas. Prefira vocabulário simples e diálogos expressivos.',
+    placeholder: `Era uma vez um leão chamado Léo\nque morava em uma floresta colorida.\n\nLéo adorava brincar com seus amigos:\na tartaruga Tati, o coelho Coco\ne a joaninha Joana.`,
+  },
+  infanto: {
+    label: 'Infanto-Juvenil', emoji: '📚', cor: '#6a3a8a',
+    fonteDefault: "Georgia,'Times New Roman',serif", tamanhoDefault: '13', lhDefault: '1.65',
+    formatoDefault: 'a5', corFundo: '#fff', corTexto: '#1a2130', corTitulo: '#4a2070',
+    corAccent: '#6a3a8a', margem: 'normal', recuo: true,
+    descMotor: 'Equilíbrio entre leitura fácil e narrativa mais complexa. Ideal para leitores de 7 a 12 anos.',
+    dicas: 'Capítulos curtos com títulos expressivos. Diálogos dinâmicos e ritmo ágil mantêm o leitor engajado.',
+    placeholder: `Capítulo 1 — O Mistério da Floresta\n\nA manhã estava estranha. Pedro acordou com a sensação de que algo havia mudado no mundo durante a noite.\n\nLá fora, a floresta estava completamente em silêncio — e isso nunca acontecia.`,
+  },
+  juvenil: {
+    label: 'Juvenil', emoji: '🌟', cor: '#9a3a5a',
+    fonteDefault: "Georgia,'Times New Roman',serif", tamanhoDefault: '12', lhDefault: '1.60',
+    formatoDefault: 'a5', corFundo: '#fff', corTexto: '#1a1a2a', corTitulo: '#6a1a3a',
+    corAccent: '#9a3a5a', margem: 'normal', recuo: true,
+    descMotor: 'Narrativa mais densa, temas complexos. Diagramação próxima ao livro adulto. Para leitores de 12 a 17 anos.',
+    dicas: 'Pode trabalhar com capítulos mais longos. Cuide com temas sensíveis — mantenha adequação à faixa etária.',
+    placeholder: `Capítulo 1\n\nEu sabia que aquele seria o último verão da minha infância antes mesmo de ele acabar.\n\nHavia algo no ar, uma espécie de peso invisível que só os que estão prestes a crescer conseguem sentir — pesado, inevitável, e ao mesmo tempo estranho.`,
+  },
+  tecnico: {
+    label: 'Técnico', emoji: '🔧', cor: '#1e3a70',
+    fonteDefault: "Arial,Helvetica,sans-serif", tamanhoDefault: '11', lhDefault: '1.50',
+    formatoDefault: 'a4', corFundo: '#fff', corTexto: '#1a1a1a', corTitulo: '#1e3a70',
+    corAccent: '#2f5a9b', margem: 'normal', recuo: false,
+    descMotor: 'Estrutura formal com seções numeradas, listas e referências. Fontes sem serifa para clareza técnica.',
+    dicas: 'Use seções numeradas (1. / 1.1 / 1.1.1), listas claras e notas de rodapé. Figuras e tabelas com legenda.',
+    placeholder: `1. Introdução\n\nEste documento descreve os procedimentos operacionais do sistema de gestão editorial do Celeiro Literário.\n\n1.1 Objetivo\n\nEstabelecer diretrizes claras para uso das ferramentas de diagramação disponíveis na plataforma.\n\n1. Acesse o módulo Lapidar\n2. Selecione o diagramador adequado\n3. Cole o texto e ajuste as configurações`,
+  },
+  fotografico: {
+    label: 'Fotográfico', emoji: '📷', cor: '#2a2a2a',
+    fonteDefault: "Arial,Helvetica,sans-serif", tamanhoDefault: '11', lhDefault: '1.50',
+    formatoDefault: 'a4', corFundo: '#fafafa', corTexto: '#1a1a1a', corTitulo: '#2a2a2a',
+    corAccent: '#555', margem: 'ampla', recuo: false,
+    descMotor: 'Margens amplas para valorizar imagens. Legendas e títulos minimalistas. Texto como suporte visual.',
+    dicas: 'Mantenha o texto reduzido — o protagonista é a imagem. Legendas devem ser concisas e descritivas.',
+    placeholder: `Rio de Janeiro, 2024\n\nA cidade acordou cedo naquele domingo.\n\n[Foto: Vista da Lapa ao amanhecer]\n\nAs ruas ainda guardavam o silêncio da madrugada quando o sol começou a pintar o céu de laranja.\n\n[Foto: Arcos da Lapa com reflexo na chuva]\n\nEra o Rio que poucos conhecem — quieto, reflexivo, íntimo.`,
+  },
+  receitas: {
+    label: 'Receitas', emoji: '🍳', cor: '#c96a20',
+    fonteDefault: "Georgia,'Times New Roman',serif", tamanhoDefault: '12', lhDefault: '1.55',
+    formatoDefault: 'a5', corFundo: '#fffdf7', corTexto: '#2b1e0f', corTitulo: '#7a3a10',
+    corAccent: '#c96a20', margem: 'normal', recuo: false,
+    descMotor: 'Estrutura de receita: título, rendimento, ingredientes e modo de preparo com formatação dedicada.',
+    dicas: 'Organize sempre: nome da receita → rendimento/tempo → ingredientes → modo de preparo → dica final.',
+    placeholder: `Bolo de Laranja da Vovó\n\nRendimento: 10 porções · Tempo: 50 min\n\nIngredientes\n3 ovos\n1 xícara de açúcar\n1 xícara de suco de laranja\n1/2 xícara de óleo\n2 xícaras de farinha de trigo\n1 colher de fermento em pó\n\nModo de preparo\nBata os ovos com o açúcar até dobrar de volume.\nAdicione o suco de laranja e o óleo aos poucos.\nMisture a farinha peneirada e o fermento.\nAsse em forno médio por 35 minutos.\n\nDica\nRegue com calda de laranja ainda quente para um bolo mais úmido.`,
+  },
+};
+
+const DIMS = {
+  a5:      { w: 420, h: 595 },
+  a4:      { w: 595, h: 842 },
+  "14x21": { w: 400, h: 595 },
+  "16x23": { w: 454, h: 652 },
+  "6x9":   { w: 432, h: 648 },
+  carta:   { w: 612, h: 792 },
+};
+
+let modoAtual = 'infantil';
+
+// ── SET MODO ──────────────────────────────────────────────────────────────
+function setModo(modo){
+  modoAtual = modo;
+  const cfg = MODOS[modo];
+  document.querySelectorAll('.modo-btn').forEach(b=>{
+    b.classList.toggle('ativo', b.dataset.modo === modo);
+  });
+  $('modoBadge').textContent = `${cfg.emoji} Modo: ${cfg.label}`;
+  $('modoBadge').style.cssText = `background:#eef3fb;border:1.5px solid ${cfg.cor};color:${cfg.cor};display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;font-size:.9rem;font-weight:700;margin-top:8px;`;
+  $('heroBadge').style.background = `linear-gradient(180deg,${cfg.cor}cc,${cfg.cor})`;
+  $('motorTituloCard').textContent = `${cfg.emoji} Modo ${cfg.label}`;
+  $('motorDescCard').textContent = cfg.descMotor;
+  $('dicasModo').textContent = cfg.dicas;
+  $('editorTitulo').textContent = `✏️ Texto do livro ${cfg.label.toLowerCase()}`;
+
+  // aplicar defaults do modo
+  $('fontFamily').value = cfg.fonteDefault;
+  $('fontSize').value   = cfg.tamanhoDefault;
+  $('lineHeight').value = cfg.lhDefault;
+  $('bookFormat').value = cfg.formatoDefault;
+  $('corRecuo').value   = cfg.recuo ? 'sim' : 'nao';
+  $('sourceText').value = cfg.placeholder;
+  $('statusBox').textContent = `Modo ${cfg.label} ativado.`;
+
+  render();
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────────────
+function normalizar(t){ return String(t||'').replace(/\r\n/g,'\n').replace(/\r/g,'\n').replace(/\t/g,' ').replace(/[ ]{2,}/g,' ').replace(/\n{3,}/g,'\n\n').trim(); }
+function escapar(t){ return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function contarPalavras(t){ return normalizar(t).replace(/\n/g,' ').split(/\s+/).filter(Boolean).length; }
+
+function quebrarBlocos(texto){
+  return normalizar(texto).split(/\n\s*\n/).map(bloco=>{
+    const linhas = bloco.split('\n').map(l=>l.trim()).filter(Boolean);
+    if(!linhas.length) return null;
+    const texto1 = linhas.join(' ');
+    const avg = linhas.reduce((s,l)=>s+l.length,0)/linhas.length;
+    let tipo = 'prosa';
+    if(/^(cap[ií]tulo|parte|cap\.|seção|\d+[\.\)])\b/i.test(linhas[0])) tipo = 'titulo';
+    else if(linhas.some(l=>/^\[.+\]$/.test(l))) tipo = 'foto';
+    else if(/^(ingredientes|modo de preparo|preparo|rendimento|tempo|porções|dica)/i.test(linhas[0])) tipo = 'receita-secao';
+    else if(linhas.length===1 && linhas[0].length < 60 && /^(ingredientes|modo|preparo)/i.test(linhas[0])) tipo = 'receita-label';
+    else if(linhas.some(l=>/^—/.test(l))) tipo = 'dialogo';
+    return { linhas, tipo, texto: texto1 };
+  }).filter(Boolean);
+}
+
+function renderizarBloco(bloco, cfg, isFirst){
+  const recuo = $('corRecuo').value === 'sim';
+  switch(bloco.tipo){
+    case 'titulo':
+      return `<h2 class="h-capitulo">${escapar(bloco.linhas.join(' '))}</h2>`;
+    case 'foto':
+      return bloco.linhas.map(l=>{
+        if(/^\[.+\]$/.test(l)) return `<div class="bloco-foto">${escapar(l.replace(/[\[\]]/g,''))}</div>`;
+        return `<p class="legenda-foto">${escapar(l)}</p>`;
+      }).join('');
+    case 'receita-secao':
+      return `<div class="receita-secao">${escapar(bloco.linhas[0])}</div>` +
+        bloco.linhas.slice(1).map(l=>`<div class="receita-item">${escapar(l)}</div>`).join('');
+    case 'dialogo':
+      return bloco.linhas.map(l=>`<p class="dialogo">${escapar(l)}</p>`).join('');
+    default: {
+      const dc = (isFirst && cfg.letraCapitular) ? ' drop-cap' : '';
+      const indent = recuo ? 'text-indent:2em;' : 'text-indent:0;margin-bottom:.8em;';
+      return `<p class="paragrafo${dc}" style="${indent}">${escapar(bloco.texto)}</p>`;
+    }
+  }
+}
+
+// ── RENDER PRINCIPAL ──────────────────────────────────────────────────────
+function render(){
+  const cfg      = MODOS[modoAtual];
+  const texto    = $('sourceText').value;
+  const titulo   = $('bookTitle').value.trim();
+  const subtit   = $('bookSubtitle').value.trim();
+  const fmt      = $('bookFormat').value;
+  const ff       = $('fontFamily').value;
+  const fs       = $('fontSize').value;
+  const lh       = $('lineHeight').value;
+  const corr     = $('correcao').value;
+  const dim      = DIMS[fmt] || DIMS.a5;
+
+  const motor = window.CeleiroMotorDiagramacaoBase;
+  let textoCorrido = motor
+    ? (corr==='medium' ? motor.correcaoMedia(texto) : motor.correcaoLeve(texto))
+    : normalizar(texto);
+
+  const blocos   = quebrarBlocos(textoCorrido);
+  const palavras = contarPalavras(textoCorrido);
+  const alertas  = [];
+  blocos.forEach((b,i)=>{
+    if(b.tipo==='prosa' && modoAtual==='infantil' && b.linhas.length>4)
+      alertas.push(`Bloco ${i+1}: parágrafo longo para livro infantil.`);
+    b.linhas.forEach((l,li)=>{
+      if(l.length>100) alertas.push(`Bloco ${i+1}, linha ${li+1}: linha muito longa.`);
+    });
+  });
+
+  // stats
+  $('tipoStat').textContent     = `${cfg.emoji} ${cfg.label}`;
+  $('formatStat').textContent   = $('bookFormat').options[$('bookFormat').selectedIndex].text;
+  $('blocosStat').textContent   = String(blocos.length);
+  $('palavrasStat').textContent = String(palavras);
+  $('pillBlocos').textContent   = `Blocos: ${blocos.length}`;
+  $('pillPalavras').textContent = `Palavras: ${palavras}`;
+  $('pillModo').textContent     = `Modo: ${cfg.label}`;
+  $('estruturaInfo').textContent = `${blocos.length} blocos · ${palavras} palavras · ${modoAtual==='receitas'?'receituário':modoAtual}`;
+  $('alertsList').innerHTML = alertas.length
+    ? alertas.map(a=>`<li>${escapar(a)}</li>`).join('')
+    : '<li>Nenhum alerta encontrado.</li>';
+  $('motorStatusBox').textContent = alertas.length
+    ? `Motor ativo · ${alertas.length} alerta(s)`
+    : `Motor ativo · ${cfg.label} · OK`;
+
+  // CSS da página
+  const css = `
+.pagina-herc {
+  width:${dim.w}px; min-height:${dim.h}px;
+  background:${cfg.corFundo}; color:${cfg.corTexto};
+  font-family:${ff}; font-size:${fs}pt; line-height:${lh};
+  padding:52px 48px 64px;
+  box-shadow:0 12px 32px rgba(0,0,0,.15);
+  box-sizing:border-box; position:relative;
+}
+.pagina-herc.modo-infantil { border-radius:14px; }
+.pagina-herc .h-capitulo {
+  font-size:1.6em; font-weight:700; color:${cfg.corTitulo};
+  text-align:center; margin:0 0 .6em; line-height:1.15;
+}
+.pagina-herc .subtit {
+  font-size:.98em; font-style:italic; color:${cfg.corTitulo}aa;
+  text-align:center; margin:-.3em 0 1.4em;
+}
+.pagina-herc .paragrafo { margin:0 0 .4em; text-align:justify; }
+.pagina-herc .paragrafo.drop-cap::first-letter {
+  float:left; font-size:3em; line-height:.82; margin:.07em .12em 0 0;
+  font-weight:900; color:${cfg.corAccent};
+}
+.pagina-herc .dialogo { margin:0 0 .4em; text-indent:0; }
+.pagina-herc .bloco-foto {
+  background:#f0f0f0; border-radius:10px; min-height:130px;
+  display:flex; align-items:center; justify-content:center;
+  color:#999; font-size:.9em; margin:.8em 0;
+  border:1px dashed #ccc; font-style:italic;
+}
+.pagina-herc .legenda-foto {
+  text-align:center; font-size:.85em; color:#666;
+  font-style:italic; margin:-.4em 0 .8em;
+}
+.pagina-herc .receita-secao {
+  font-size:.88em; font-weight:700; text-transform:uppercase;
+  letter-spacing:.08em; color:${cfg.corAccent}; margin:.9em 0 .4em;
+}
+.pagina-herc .receita-item {
+  margin:0 0 .3em; padding-left:1.2em; position:relative;
+}
+.pagina-herc .receita-item::before {
+  content:"·"; position:absolute; left:0; color:${cfg.corAccent};
+}
+.pagina-herc .secao-num {
+  font-weight:700; color:${cfg.corAccent};
+}
+`;
+
+  // HTML
+  let html = `<style>${css}</style>`;
+  html += `<div class="pagina-herc${modoAtual==='infantil'?' modo-infantil':''}">`;
+  if(titulo) html += `<h2 class="h-capitulo">${escapar(titulo)}</h2>`;
+  if(subtit) html += `<div class="subtit">${escapar(subtit)}</div>`;
+
+  let isFirst = true;
+  blocos.forEach(b=>{
+    html += renderizarBloco(b, cfg, isFirst);
+    if(b.tipo === 'prosa') isFirst = false;
+  });
+
+  if(!blocos.length) html += `<p style="color:#aaa;font-style:italic;text-align:center;">A prévia aparecerá aqui.</p>`;
+  html += `</div>`;
+
+  $('pagePreview').innerHTML = html;
+  $('statusBox').textContent = `Prévia ${cfg.label} atualizada.`;
+}
+
+// ── EVENTOS ───────────────────────────────────────────────────────────────
+$('renderBtn').addEventListener('click', render);
+$('clearBtn').addEventListener('click', ()=>{ $('sourceText').value=''; render(); });
+['bookTitle','bookSubtitle','bookFormat','fontFamily','fontSize','lineHeight','corRecuo','correcao','sourceText']
+  .forEach(id=>{ $(id).addEventListener('input', render); $(id).addEventListener('change', render); });
+
+// init
+render();
+</script>
+</body>
+</html>
