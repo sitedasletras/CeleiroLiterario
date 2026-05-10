@@ -1,586 +1,163 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Castor — Diagramador de Poesia</title>
-  <style>
-    :root{
-      --bg:#edf3fb;
-      --paper:#fffdfc;
-      --ink:#1f2430;
-      --muted:#5d6675;
-      --line:#d7dfeb;
-
-      --blue-1:#3f6fa6;
-      --blue-2:#5d89bc;
-      --blue-3:#7ea6d0;
-      --blue-4:#dce8f7;
-
-      --ok:#2f7a59;
-      --warn:#b7921e;
-      --danger:#b13a3a;
-
-      --shadow:0 12px 28px rgba(42,72,112,.10);
-      --radius:22px;
-
-      --page-w:430px;
-      --page-h:620px;
-      --page-padding:34px;
-    }
-
-    *{box-sizing:border-box}
-
-    html,body{
-      margin:0;
-      padding:0;
-      background:var(--bg);
-      color:var(--ink);
-      font-family:Georgia,"Times New Roman",serif;
-    }
-
-    body{min-height:100vh}
-
-    .app{
-      width:min(1360px, calc(100vw - 16px));
-      margin:8px auto;
-      display:grid;
-      grid-template-columns:240px minmax(0,1fr) 280px;
-      gap:14px;
-      align-items:start;
-    }
-
-    .panel{
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      min-height:calc(100vh - 16px);
-      position:sticky;
-      top:8px;
-      align-self:start;
-      overflow:auto;
-    }
-
-    .left-panel{
-      background:linear-gradient(180deg,#2d5f96 0%, #4c7eb0 58%, #89afd6 100%);
-      color:#fff;
-      padding:16px 14px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    .right-panel{
-      background:linear-gradient(180deg,#f3f7fd 0%, #e8f0fa 100%);
-      border:1px solid #d7dfeb;
-      color:#1f2430;
-      padding:16px 14px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    .panel h2{
-      margin:0;
-      font-size:1.7rem;
-      line-height:1;
-    }
-
-    .panel h3{
-      margin:0;
-      font-size:1rem;
-      line-height:1.2;
-    }
-
-    .status{
-      font-size:.92rem;
-      line-height:1.35;
-      border-radius:14px;
-      padding:10px 12px;
-      min-height:48px;
-    }
-
-    .left-panel .status{
-      background:rgba(255,255,255,.12);
-      border:1px solid rgba(255,255,255,.15);
-      color:#f7fbff;
-    }
-
-    .right-panel .status{
-      background:#fff;
-      border:1px solid #d7dfeb;
-      color:#5a6472;
-    }
-
-    .card{
-      border-radius:16px;
-      padding:10px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
-    .left-panel .card{
-      background:rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.14);
-    }
-
-    .right-panel .card{
-      background:#fcfdff;
-      border:1px solid #dbe4f0;
-    }
-
-    label, small, p{
-      margin:0;
-      line-height:1.35;
-    }
-
-    .left-panel label,
-    .left-panel small,
-    .left-panel p{
-      color:#f4f8ff;
-    }
-
-    .right-panel label,
-    .right-panel small,
-    .right-panel p{
-      color:#586170;
-    }
-
-    .input,.select,.btn{
-      width:100%;
-      font-family:inherit;
-      font-size:.98rem;
-      border-radius:12px;
-    }
-
-    .input,.select{
-      border:1px solid #d6deea;
-      background:#fff;
-      color:#1f2430;
-      padding:10px;
-      outline:none;
-    }
-
-    .btn{
-      border:none;
-      padding:11px 12px;
-      font-weight:700;
-      cursor:pointer;
-      transition:.12s ease;
-      text-decoration:none;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      min-height:48px;
-    }
-
-    .btn:hover{
-      transform:translateY(-1px);
-      opacity:.97;
-    }
-
-    .btn-blue{background:var(--blue-1);color:#fff}
-    .btn-soft{background:#e8f0fa;color:#23496d}
-    .btn-ok{background:var(--ok);color:#fff}
-    .btn-warn{background:var(--warn);color:#231d16}
-    .btn-danger{background:var(--danger);color:#fff}
-
-    .main{
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      min-width:0;
-    }
-
-    .hero,
-    .stats-shell,
-    .editor-shell,
-    .preview-shell{
-      background:var(--paper);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-    }
-
-    .hero{
-      background:linear-gradient(180deg,#eff4fb 0%, #e4edf8 100%);
-      padding:24px 22px;
-      display:grid;
-      grid-template-columns:minmax(0,1fr);
-      gap:14px;
-    }
-
-    .hero-top{
-      display:grid;
-      grid-template-columns:52px 1fr;
-      gap:16px;
-      align-items:center;
-    }
-
-    .c-badge{
-      width:52px;
-      height:84px;
-      border-radius:18px;
-      background:linear-gradient(180deg,var(--blue-2),var(--blue-1));
-      color:#f8fbff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:2.3rem;
-      line-height:1;
-      box-shadow:0 8px 18px rgba(63,111,166,.22);
-    }
-
-    .hero h1{
-      margin:0 0 8px 0;
-      font-size:clamp(2rem,4vw,2.8rem);
-      line-height:1;
-      color:#22364c;
-    }
-
-    .hero p{
-      color:#516173;
-      font-size:1.08rem;
-    }
-
-    .stats-shell{
-      padding:16px;
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:12px;
-    }
-
-    .stat{
-      background:#f6f9fe;
-      border:1px solid #dbe4f0;
-      border-radius:16px;
-      padding:14px 12px;
-      min-height:100px;
-    }
-
-    .stat-label{
-      font-size:.98rem;
-      font-weight:700;
-      color:#546272;
-      margin-bottom:8px;
-    }
-
-    .stat-value{
-      font-size:1.06rem;
-      font-weight:700;
-      color:#24364a;
-      line-height:1.25;
-      word-break:break-word;
-    }
-
-    .editor-shell,.preview-shell{
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    .editor-shell h2,.preview-shell h2{
-      margin:0;
-      font-size:1.2rem;
-    }
-
-    .toolbar{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:10px;
-    }
-
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-
-    .editor-box{
-      width:100%;
-      min-height:420px;
-      border:1px solid #d6deea;
-      border-radius:18px;
-      padding:18px;
-      resize:vertical;
-      background:#fff;
-      color:#1f2430;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:1.05rem;
-      line-height:1.45;
-      outline:none;
-    }
-
-    .editor-box:focus{
-      border-color:#7ea6d0;
-      box-shadow:0 0 0 3px rgba(126,166,208,.10);
-    }
-
-    .preview-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .pill-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
-      background:#eef4fb;
-      border:1px solid #d7e2ef;
-      color:#4d6074;
-      font-size:.94rem;
-      font-weight:700;
-    }
-
-    .preview-stage{
-      background:linear-gradient(180deg,#edf2f8 0%, #e3eaf4 100%);
-      border-radius:20px;
-      border:1px solid #d7dfeb;
-      min-height:720px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:center;
-      padding:22px 12px;
-      overflow:auto;
-    }
-
-    .page{
-      width:var(--page-w);
-      min-height:var(--page-h);
-      background:#fff;
-      border:1px solid #d9e1eb;
-      box-shadow:0 10px 24px rgba(43,72,112,.10);
-      padding:var(--page-padding);
-      position:relative;
-      color:#1f2430;
-    }
-
-    .page-title{
-      text-align:center;
-      margin:0 0 18px 0;
-      font-size:2rem;
-      line-height:1.05;
-      color:#22364c;
-    }
-
-    .page-subtitle{
-      text-align:center;
-      margin:-8px 0 22px 0;
-      font-size:1.08rem;
-      color:#667487;
-    }
-
-    .poem-block{
-      margin:0 0 18px 0;
-      white-space:pre-line;
-      line-height:1.45;
-      font-size:1.12rem;
-      text-align:left;
-    }
-
-    .poem-centered{
-      text-align:center;
-    }
-
-    .analysis-list{
-      margin:0;
-      padding-left:18px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-
-    .footer-note{
-      font-size:.9rem;
-      color:#6e7b8b;
-      line-height:1.45;
-    }
-
-    @media (max-width:1160px){
-      .app{
-        grid-template-columns:1fr;
-      }
-      .panel{
-        position:relative;
-        top:auto;
-        min-height:auto;
-      }
-    }
-
-    @media (max-width:760px){
-      .app{
-        width:min(100vw - 8px, 1360px);
-        gap:8px;
-        margin:4px auto;
-      }
-
-      .hero,.stats-shell,.editor-shell,.preview-shell,.panel{
-        border-radius:18px;
-      }
-
-      .hero{
-        padding:18px 14px;
-      }
-
-      .hero-top{
-        grid-template-columns:40px 1fr;
-        gap:12px;
-        align-items:start;
-      }
-
-      .c-badge{
-        width:40px;
-        height:70px;
-        font-size:1.9rem;
-      }
-
-      .stats-shell{
-        grid-template-columns:1fr 1fr;
-        padding:12px;
-      }
-
-      .toolbar{
-        grid-template-columns:1fr;
-      }
-
-      .preview-stage{
-        min-height:auto;
-        padding:12px 8px;
-      }
-
-      .page{
-        width:min(100%, 430px);
-        min-height:560px;
-        padding:22px;
-      }
-
-      .poem-block{
-        font-size:1.04rem;
-      }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Castor — Diagramador de Poesia</title>
+<style>
+:root{
+  --bg:#edf3fb;--paper:#fffdfc;--ink:#1f2430;--muted:#5d6675;--line:#d7dfeb;
+  --blue-1:#3f6fa6;--blue-2:#5d89bc;--blue-3:#7ea6d0;--blue-4:#dce8f7;
+  --ok:#2f7a59;--warn:#b7921e;--danger:#b13a3a;
+  --shadow:0 12px 28px rgba(42,72,112,.10);--radius:22px;
+  --page-w:430px;--page-h:620px;--page-padding:34px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;min-height:100vh;}
+.app{width:min(1360px,calc(100vw - 16px));margin:8px auto;display:grid;grid-template-columns:240px minmax(0,1fr) 280px;gap:14px;align-items:start;}
+.panel{border-radius:var(--radius);box-shadow:var(--shadow);min-height:calc(100vh - 16px);position:sticky;top:8px;align-self:start;overflow:auto;}
+.left-panel{background:linear-gradient(180deg,#2d5f96 0%,#4c7eb0 58%,#89afd6 100%);color:#fff;padding:16px 14px;display:flex;flex-direction:column;gap:12px;}
+.right-panel{background:linear-gradient(180deg,#f3f7fd 0%,#e8f0fa 100%);border:1px solid #d7dfeb;color:#1f2430;padding:16px 14px;display:flex;flex-direction:column;gap:12px;}
+.panel h2{margin:0;font-size:1.7rem;line-height:1;}
+.panel h3{margin:0;font-size:1rem;line-height:1.2;}
+.status{font-size:.92rem;line-height:1.35;border-radius:14px;padding:10px 12px;min-height:48px;}
+.left-panel .status{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);color:#f7fbff;}
+.right-panel .status{background:#fff;border:1px solid #d7dfeb;color:#5a6472;}
+.card{border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px;}
+.left-panel .card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);}
+.right-panel .card{background:#fcfdff;border:1px solid #dbe4f0;}
+label,small,p{margin:0;line-height:1.35;}
+.left-panel label,.left-panel small,.left-panel p{color:#f4f8ff;}
+.right-panel label,.right-panel small,.right-panel p{color:#586170;}
+.input,.select,.btn{width:100%;font-family:inherit;font-size:.98rem;border-radius:12px;}
+.input,.select{border:1px solid #d6deea;background:#fff;color:#1f2430;padding:10px;outline:none;}
+.input:focus,.select:focus{border-color:var(--blue-3);}
+.btn{border:none;padding:11px 12px;font-weight:700;cursor:pointer;transition:.12s ease;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;}
+.btn:hover{transform:translateY(-1px);opacity:.97;}
+.btn-blue{background:var(--blue-1);color:#fff;}
+.btn-soft{background:#e8f0fa;color:#23496d;}
+.btn-warn{background:var(--warn);color:#231d16;}
+.btn-danger{background:var(--danger);color:#fff;}
+.main{display:flex;flex-direction:column;gap:14px;min-width:0;}
+.hero,.stats-shell,.editor-shell,.preview-shell{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
+.hero{background:linear-gradient(180deg,#eff4fb 0%,#e4edf8 100%);padding:24px 22px;display:grid;gap:14px;}
+.hero-top{display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:center;}
+.c-badge{width:52px;height:84px;border-radius:18px;background:linear-gradient(180deg,var(--blue-2),var(--blue-1));color:#f8fbff;display:flex;align-items:center;justify-content:center;font-size:2.3rem;line-height:1;box-shadow:0 8px 18px rgba(63,111,166,.22);}
+.hero h1{margin:0 0 8px 0;font-size:clamp(2rem,4vw,2.8rem);line-height:1;color:#22364c;}
+.hero p{color:#516173;font-size:1.08rem;}
+.stats-shell{padding:16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+.stat{background:#f6f9fe;border:1px solid #dbe4f0;border-radius:16px;padding:14px 12px;min-height:100px;}
+.stat-label{font-size:.98rem;font-weight:700;color:#546272;margin-bottom:8px;}
+.stat-value{font-size:1.06rem;font-weight:700;color:#24364a;line-height:1.25;word-break:break-word;}
+.editor-shell,.preview-shell{padding:18px;display:flex;flex-direction:column;gap:12px;}
+.editor-shell h2,.preview-shell h2{margin:0;font-size:1.2rem;}
+.editor-box{width:100%;min-height:420px;border:1px solid #d6deea;border-radius:18px;padding:18px;resize:vertical;background:#fff;color:#1f2430;font-family:Georgia,"Times New Roman",serif;font-size:1.05rem;line-height:1.45;outline:none;}
+.editor-box:focus{border-color:#7ea6d0;box-shadow:0 0 0 3px rgba(126,166,208,.10);}
+.preview-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+.pill-row{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;background:#eef4fb;border:1px solid #d7e2ef;color:#4d6074;font-size:.94rem;font-weight:700;}
+.preview-stage{background:linear-gradient(180deg,#edf2f8 0%,#e3eaf4 100%);border-radius:20px;border:1px solid #d7dfeb;min-height:720px;display:flex;align-items:flex-start;justify-content:center;padding:22px 12px;overflow:auto;}
+.page{width:var(--page-w);min-height:var(--page-h);background:#fff;border:1px solid #d9e1eb;box-shadow:0 10px 24px rgba(43,72,112,.10);padding:var(--page-padding);position:relative;color:#1f2430;}
+.page-title{text-align:center;margin:0 0 18px 0;font-size:2rem;line-height:1.05;color:#22364c;}
+.page-subtitle{text-align:center;margin:-8px 0 22px 0;font-size:1.08rem;color:#667487;}
+.poem-block{margin:0 0 18px 0;white-space:pre-line;line-height:1.45;font-size:1.12rem;text-align:left;}
+.poem-centered{text-align:center;}
+.analysis-list{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;}
+.footer-note{font-size:.9rem;color:#6e7b8b;line-height:1.45;}
+@media(max-width:1160px){.app{grid-template-columns:1fr;}.panel{position:relative;top:auto;min-height:auto;}}
+@media(max-width:760px){.stats-shell{grid-template-columns:1fr 1fr;}.preview-stage{min-height:auto;padding:12px 8px;}.page{width:min(100%,430px);min-height:560px;padding:22px;}.poem-block{font-size:1.04rem;}}
+</style>
 </head>
 <body>
-  <div class="app">
-    <aside class="panel left-panel">
-      <h2>Castor</h2>
+<div class="app">
 
-      <div class="status" id="statusBox">Pronto para diagramar poesia.</div>
+<aside class="panel left-panel">
+  <h2>Castor</h2>
+  <div class="status" id="statusBox">Pronto para diagramar poesia.</div>
 
-      <div class="card">
-        <label for="bookTitle"><strong>Título da obra</strong></label>
-        <input class="input" id="bookTitle" type="text" placeholder="Opcional" value="Castor — Diagramador de Poesia" />
+  <div class="card">
+    <label for="bookTitle"><strong>Título da obra</strong></label>
+    <input class="input" id="bookTitle" type="text" placeholder="Opcional" value="Castor — Diagramador de Poesia"/>
+  </div>
+  <div class="card">
+    <label for="bookSubtitle"><strong>Subtítulo</strong></label>
+    <input class="input" id="bookSubtitle" type="text" placeholder="Opcional" value="Celeiro Literário / Lapidar"/>
+  </div>
+
+  <div class="card">
+    <label for="poetryFormat"><strong>Formato</strong></label>
+    <select class="select" id="poetryFormat">
+      <option value="a5" selected>A5</option>
+      <option value="14x21">14 x 21 cm</option>
+      <option value="16x23">16 x 23 cm</option>
+      <option value="6x9">6 x 9 pol.</option>
+    </select>
+    <label for="fontFamily"><strong>Fonte</strong></label>
+    <select class="select" id="fontFamily">
+      <option value="Georgia">Georgia</option>
+      <option value="'Times New Roman'">Times New Roman</option>
+      <option value="Garamond">Garamond</option>
+    </select>
+    <label for="fontSize"><strong>Tamanho</strong></label>
+    <select class="select" id="fontSize">
+      <option value="11">11 pt</option>
+      <option value="12" selected>12 pt</option>
+      <option value="13">13 pt</option>
+      <option value="14">14 pt</option>
+    </select>
+    <label for="lineHeight"><strong>Entrelinha</strong></label>
+    <select class="select" id="lineHeight">
+      <option value="1.25">1.25</option>
+      <option value="1.35" selected>1.35</option>
+      <option value="1.45">1.45</option>
+      <option value="1.55">1.55</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <label for="alignmentMode"><strong>Alinhamento</strong></label>
+    <select class="select" id="alignmentMode">
+      <option value="left" selected>À esquerda</option>
+      <option value="center">Centralizado</option>
+    </select>
+    <label for="stanzaSpace"><strong>Espaço entre estrofes</strong></label>
+    <select class="select" id="stanzaSpace">
+      <option value="12">12 px</option>
+      <option value="18" selected>18 px</option>
+      <option value="24">24 px</option>
+      <option value="30">30 px</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <button class="btn btn-blue" id="renderBtn" type="button">Atualizar prévia</button>
+    <button class="btn btn-soft" id="clearBtn" type="button">Limpar obra</button>
+    <a class="btn btn-warn" href="lapidar.html">Retornar ao Lapidar</a>
+    <a class="btn btn-danger" href="pagina_respiro_celeiro.html">Sair do sistema</a>
+  </div>
+</aside>
+
+<main class="main">
+  <section class="hero">
+    <div class="hero-top">
+      <div class="c-badge">C</div>
+      <div>
+        <h1>Castor — Diagramador de Poesia</h1>
+        <p>Módulo do Celeiro Literário para poemas, estrofes e estrutura poética com painel fixo próprio.</p>
       </div>
+    </div>
+  </section>
 
-      <div class="card">
-        <label for="bookSubtitle"><strong>Subtítulo</strong></label>
-        <input class="input" id="bookSubtitle" type="text" placeholder="Opcional" value="Celeiro Literário / Lapidar" />
-      </div>
+  <section class="stats-shell">
+    <div class="stat"><div class="stat-label">Formato</div><div class="stat-value" id="formatStat">A5</div></div>
+    <div class="stat"><div class="stat-label">Fonte</div><div class="stat-value" id="fontStat">Georgia<br>12 pt</div></div>
+    <div class="stat"><div class="stat-label">Estrofes</div><div class="stat-value" id="blocksStat">0</div></div>
+    <div class="stat"><div class="stat-label">Estrutura</div><div class="stat-value" id="structureStat">Aguardando texto</div></div>
+  </section>
 
-      <div class="card">
-        <label for="poetryFormat"><strong>Formato</strong></label>
-        <select class="select" id="poetryFormat">
-          <option value="a5" selected>A5</option>
-          <option value="14x21">14 x 21 cm</option>
-          <option value="16x23">16 x 23 cm</option>
-          <option value="6x9">6 x 9 pol.</option>
-        </select>
-
-        <label for="fontFamily"><strong>Fonte</strong></label>
-        <select class="select" id="fontFamily">
-          <option value="Georgia">Georgia</option>
-          <option value="'Times New Roman'">Times New Roman</option>
-          <option value="Garamond">Garamond</option>
-        </select>
-
-        <label for="fontSize"><strong>Tamanho</strong></label>
-        <select class="select" id="fontSize">
-          <option value="11">11 pt</option>
-          <option value="12" selected>12 pt</option>
-          <option value="13">13 pt</option>
-          <option value="14">14 pt</option>
-        </select>
-
-        <label for="lineHeight"><strong>Entrelinha</strong></label>
-        <select class="select" id="lineHeight">
-          <option value="1.25">1.25</option>
-          <option value="1.35" selected>1.35</option>
-          <option value="1.45">1.45</option>
-          <option value="1.55">1.55</option>
-        </select>
-      </div>
-
-      <div class="card">
-        <label for="alignmentMode"><strong>Alinhamento</strong></label>
-        <select class="select" id="alignmentMode">
-          <option value="left" selected>À esquerda</option>
-          <option value="center">Centralizado</option>
-        </select>
-
-        <label for="stanzaSpace"><strong>Espaço entre estrofes</strong></label>
-        <select class="select" id="stanzaSpace">
-          <option value="12">12 px</option>
-          <option value="18" selected>18 px</option>
-          <option value="24">24 px</option>
-          <option value="30">30 px</option>
-        </select>
-      </div>
-
-      <div class="card">
-        <button class="btn btn-blue" id="renderBtn" type="button">Atualizar prévia</button>
-        <button class="btn btn-soft" id="clearBtn" type="button">Limpar obra</button>
-        <a class="btn btn-warn" href="lapidar.html">Retornar</a>
-        <a class="btn btn-danger" href="index.html">Sair do sistema</a>
-      </div>
-    </aside>
-
-    <main class="main">
-      <section class="hero">
-        <div class="hero-top">
-          <div class="c-badge">C</div>
-          <div>
-            <h1>Castor — Diagramador de Poesia</h1>
-            <p>Módulo do Celeiro Literário / Lapidar para poemas, estrofes e estrutura poética com painel fixo próprio.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="stats-shell">
-        <div class="stat">
-          <div class="stat-label">Formato</div>
-          <div class="stat-value" id="formatStat">A5</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Fonte</div>
-          <div class="stat-value" id="fontStat">Georgia<br>12 pt</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Blocos</div>
-          <div class="stat-value" id="blocksStat">0</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Estrutura</div>
-          <div class="stat-value" id="structureStat">Aguardando texto</div>
-        </div>
-      </section>
-
-      <section class="editor-shell">
-        <h2>Texto-base da poesia</h2>
-
-        <textarea id="sourceText" class="editor-box" placeholder="Cole aqui o poema...">Poema de exemplo
+  <section class="editor-shell">
+    <h2>Texto-base da poesia</h2>
+    <textarea id="sourceText" class="editor-box" placeholder="Cole aqui o poema...">Poema de exemplo
 
 A tarde desce lenta
 sobre a memória antiga
@@ -591,307 +168,179 @@ No fundo do silêncio
 a palavra respira
 e o verso dobra
 a sombra que delira</textarea>
-      </section>
+  </section>
 
-      <section class="preview-shell">
-        <div class="preview-top">
-          <h2>Prévia da poesia</h2>
-          <div class="pill-row">
-            <span class="pill" id="pillBlocks">Blocos: 0</span>
-            <span class="pill" id="pillLines">Versos: 0</span>
-            <span class="pill" id="pillMode">Modo: poesia</span>
-          </div>
-        </div>
-
-        <div class="preview-stage">
-          <article class="page" id="pagePreview"></article>
-        </div>
-      </section>
-    </main>
-
-    <aside class="panel right-panel">
-      <h2>Motor Lapidar</h2>
-
-      <div class="status" id="motorStatusBox">Motor leve ativo no painel lateral do Castor.</div>
-
-      <div class="card">
-        <label for="correctionLevel"><strong>Correção</strong></label>
-        <select class="select" id="correctionLevel">
-          <option value="light" selected>Leve</option>
-          <option value="medium">Média</option>
-        </select>
+  <section class="preview-shell">
+    <div class="preview-top">
+      <h2>Prévia da poesia</h2>
+      <div class="pill-row">
+        <span class="pill" id="pillBlocks">Estrofes: 0</span>
+        <span class="pill" id="pillLines">Versos: 0</span>
+        <span class="pill" id="pillMode">Modo: poesia</span>
       </div>
+    </div>
+    <div class="preview-stage">
+      <article class="page" id="pagePreview"></article>
+    </div>
+  </section>
+</main>
 
-      <div class="card">
-        <h3>Leitura estrutural</h3>
-        <p>Reconhece blocos poéticos, versos, estrofes e sinais de texto livre sem pesar o sistema.</p>
-      </div>
+<aside class="panel right-panel">
+  <h2>Motor Lapidar</h2>
+  <div class="status" id="motorStatusBox">Motor leve ativo no painel lateral do Castor.</div>
 
-      <div class="card">
-        <h3>Alertas</h3>
-        <ul class="analysis-list" id="alertsList">
-          <li>Aguardando análise.</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h3>Observação</h3>
-        <p>O motor agora está realmente no painel lateral direito, como base replicável para os demais diagramadores.</p>
-      </div>
-
-      <div class="footer-note">
-        Estrutura fixa do Castor alinhada com Pólux e Qui(RON)xadá, mas adaptada à poesia.
-      </div>
-    </aside>
+  <div class="card">
+    <label for="correctionLevel"><strong>Correção</strong></label>
+    <select class="select" id="correctionLevel">
+      <option value="light" selected>Leve</option>
+      <option value="medium">Média</option>
+    </select>
   </div>
 
-  <script>
-    const MotorLapidar = {
-      normalizeText(text = "") {
-        return String(text)
-          .replace(/\r\n/g, "\n")
-          .replace(/\r/g, "\n")
-          .replace(/\u00A0/g, " ")
-          .replace(/\t/g, "    ")
-          .replace(/[ ]{2,}/g, " ")
-          .replace(/\n{3,}/g, "\n\n")
-          .trim();
-      },
+  <div class="card">
+    <h3>Leitura estrutural</h3>
+    <p>Reconhece blocos poéticos, versos, estrofes e sinais de texto livre sem pesar o sistema.</p>
+  </div>
 
-      splitBlocks(text = "") {
-        return this.normalizeText(text)
-          .split(/\n\s*\n/)
-          .map(block => block.split("\n").map(line => line.trim()).filter(Boolean))
-          .filter(block => block.length);
-      },
+  <div class="card">
+    <h3>Alertas</h3>
+    <ul class="analysis-list" id="alertsList">
+      <li>Aguardando análise.</li>
+    </ul>
+  </div>
 
-      countWords(text = "") {
-        const clean = this.normalizeText(text);
-        if (!clean) return 0;
-        return clean.replace(/\n/g, " ").split(/\s+/).filter(Boolean).length;
-      },
+  <div class="card">
+    <h3>Observação</h3>
+    <p>Motor embutido no painel lateral direito, base replicável para todos os diagramadores do Celeiro.</p>
+  </div>
 
-      applyLightCorrections(text = "") {
-        let out = this.normalizeText(text);
-        out = out.replace(/\s+,/g, ",");
-        out = out.replace(/\s+\./g, ".");
-        out = out.replace(/\s+!/g, "!");
-        out = out.replace(/\s+\?/g, "?");
-        out = out.replace(/\.{4,}/g, "...");
-        out = out.replace(/!!+/g, "!");
-        out = out.replace(/\?\?+/g, "?");
-        out = out.replace(/\bPra mim fazer\b/g, "Para eu fazer");
-        out = out.replace(/\bpra mim fazer\b/g, "para eu fazer");
-        return out;
-      },
+  <div class="footer-note">
+    Castor alinhado com Pólux, Centauro, Qui(RON)xadá e Hércules no sistema Lapidar.
+  </div>
+</aside>
 
-      applyMediumCorrections(text = "") {
-        let out = this.applyLightCorrections(text);
-        out = out.replace(/\bA gente fomos\b/g, "A gente foi");
-        out = out.replace(/\ba gente fomos\b/g, "a gente foi");
-        out = out.replace(/\bmais eu\b/g, "mas eu");
-        out = out.replace(/\bMais eu\b/g, "Mas eu");
-        return out;
-      },
-
-      classify(text = "") {
-        const blocks = this.splitBlocks(text);
-        let totalLines = 0;
-        let shortBlocks = 0;
-        let longBlocks = 0;
-
-        for (const block of blocks) {
-          totalLines += block.length;
-          const avgLen = block.reduce((sum, line) => sum + line.length, 0) / block.length;
-          if (avgLen <= 42) shortBlocks += 1;
-          else longBlocks += 1;
-        }
-
-        let primary = "poesia";
-        if (blocks.length === 0) primary = "vazio";
-        else if (shortBlocks === 0 && longBlocks > 0) primary = "texto livre";
-        else if (shortBlocks > 0 && longBlocks > 0) primary = "poesia mista";
-
-        return {
-          primary,
-          blocks: blocks.length,
-          totalLines
-        };
-      },
-
-      detectAlerts(text = "") {
-        const alerts = [];
-        const blocks = this.splitBlocks(text);
-
-        blocks.forEach((block, idx) => {
-          block.forEach((line, lineIdx) => {
-            if (line.length > 90) {
-              alerts.push(`Bloco ${idx + 1}, verso ${lineIdx + 1}: verso muito longo.`);
-            }
-          });
-
-          if (block.length === 1 && block[0].length > 90) {
-            alerts.push(`Bloco ${idx + 1}: bloco único muito longo para poesia visual.`);
-          }
-        });
-
-        return alerts;
-      },
-
-      process(text = "", options = {}) {
-        const correctionLevel = options.correctionLevel || "light";
-        const corrected = correctionLevel === "medium"
-          ? this.applyMediumCorrections(text)
-          : this.applyLightCorrections(text);
-
-        const classification = this.classify(corrected);
-        const alerts = this.detectAlerts(corrected);
-
-        return {
-          originalText: this.normalizeText(text),
-          processedText: corrected,
-          wordCount: this.countWords(corrected),
-          ...classification,
-          alerts
-        };
-      }
-    };
-
-    const bookTitle = document.getElementById("bookTitle");
-    const bookSubtitle = document.getElementById("bookSubtitle");
-    const poetryFormat = document.getElementById("poetryFormat");
-    const fontFamily = document.getElementById("fontFamily");
-    const fontSize = document.getElementById("fontSize");
-    const lineHeight = document.getElementById("lineHeight");
-    const alignmentMode = document.getElementById("alignmentMode");
-    const stanzaSpace = document.getElementById("stanzaSpace");
-    const correctionLevel = document.getElementById("correctionLevel");
-    const sourceText = document.getElementById("sourceText");
-
-    const renderBtn = document.getElementById("renderBtn");
-    const clearBtn = document.getElementById("clearBtn");
-
-    const pagePreview = document.getElementById("pagePreview");
-    const alertsList = document.getElementById("alertsList");
-
-    const formatStat = document.getElementById("formatStat");
-    const fontStat = document.getElementById("fontStat");
-    const blocksStat = document.getElementById("blocksStat");
-    const structureStat = document.getElementById("structureStat");
-
-    const pillBlocks = document.getElementById("pillBlocks");
-    const pillLines = document.getElementById("pillLines");
-    const pillMode = document.getElementById("pillMode");
-
-    const statusBox = document.getElementById("statusBox");
-    const motorStatusBox = document.getElementById("motorStatusBox");
-
-    function escapeHtml(text) {
-      return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+</div>
+<script>
+const MotorLapidar = {
+  normalize(text=""){
+    return String(text).replace(/\r\n/g,"\n").replace(/\r/g,"\n")
+      .replace(/\u00A0/g," ").replace(/\t/g," ")
+      .replace(/[ ]{2,}/g," ").replace(/\n{3,}/g,"\n\n").trim();
+  },
+  splitBlocks(text=""){
+    return this.normalize(text).split(/\n\s*\n/)
+      .map(b=>b.split("\n").map(l=>l.trim()).filter(Boolean))
+      .filter(b=>b.length);
+  },
+  countWords(text=""){
+    const c=this.normalize(text); if(!c)return 0;
+    return c.replace(/\n/g," ").split(/\s+/).filter(Boolean).length;
+  },
+  lightCorrect(text=""){
+    let o=this.normalize(text);
+    o=o.replace(/\s+([,\.!?;:])/g,"$1");
+    o=o.replace(/\.{4,}/g,"...");
+    o=o.replace(/!!+/g,"!").replace(/\?\?+/g,"?");
+    o=o.replace(/\bPra mim fazer\b/g,"Para eu fazer");
+    return o;
+  },
+  mediumCorrect(text=""){
+    let o=this.lightCorrect(text);
+    o=o.replace(/\bA gente fomos\b/g,"A gente foi");
+    o=o.replace(/\bmais eu\b/g,"mas eu").replace(/\bMais eu\b/g,"Mas eu");
+    return o;
+  },
+  classify(text=""){
+    const blocks=this.splitBlocks(text);
+    let total=0,curtos=0,longos=0;
+    for(const b of blocks){
+      total+=b.length;
+      const avg=b.reduce((s,l)=>s+l.length,0)/b.length;
+      if(avg<=42)curtos++;else longos++;
     }
-
-    function applyFormatSize() {
-      const format = poetryFormat.value;
-
-      if (format === "a5") {
-        document.documentElement.style.setProperty("--page-w", "430px");
-        document.documentElement.style.setProperty("--page-h", "620px");
-      } else if (format === "14x21") {
-        document.documentElement.style.setProperty("--page-w", "430px");
-        document.documentElement.style.setProperty("--page-h", "620px");
-      } else if (format === "16x23") {
-        document.documentElement.style.setProperty("--page-w", "470px");
-        document.documentElement.style.setProperty("--page-h", "680px");
-      } else {
-        document.documentElement.style.setProperty("--page-w", "470px");
-        document.documentElement.style.setProperty("--page-h", "680px");
-      }
-    }
-
-    function renderPoetryPage() {
-      applyFormatSize();
-
-      const result = MotorLapidar.process(sourceText.value, {
-        correctionLevel: correctionLevel.value
-      });
-
-      const blocks = MotorLapidar.splitBlocks(result.processedText);
-
-      formatStat.textContent = poetryFormat.options[poetryFormat.selectedIndex].text;
-      fontStat.innerHTML = `${fontFamily.options[fontFamily.selectedIndex].text}<br>${fontSize.value} pt`;
-      blocksStat.textContent = String(result.blocks);
-      structureStat.textContent =
-        result.primary === "poesia"
-          ? "Poesia"
-          : result.primary === "poesia mista"
-            ? "Poesia mista"
-            : result.primary === "texto livre"
-              ? "Texto livre"
-              : "Aguardando texto";
-
-      pillBlocks.textContent = `Blocos: ${result.blocks}`;
-      pillLines.textContent = `Versos: ${result.totalLines}`;
-      pillMode.textContent = `Modo: ${result.primary}`;
-
-      pagePreview.style.fontFamily = fontFamily.value;
-      pagePreview.style.fontSize = fontSize.value + "pt";
-      pagePreview.style.lineHeight = lineHeight.value;
-
-      let html = "";
-      const title = bookTitle.value.trim();
-      const subtitle = bookSubtitle.value.trim();
-
-      if (title) {
-        html += `<h1 class="page-title">${escapeHtml(title)}</h1>`;
-      }
-
-      if (subtitle) {
-        html += `<div class="page-subtitle">${escapeHtml(subtitle)}</div>`;
-      }
-
-      blocks.forEach((block) => {
-        const cls = alignmentMode.value === "center" ? "poem-block poem-centered" : "poem-block";
-        html += `<div class="${cls}" style="margin-bottom:${stanzaSpace.value}px">${escapeHtml(block.join("\n"))}</div>`;
-      });
-
-      if (!html.trim()) {
-        html = `<h1 class="page-title">Prévia aparecerá aqui</h1>`;
-      }
-
-      pagePreview.innerHTML = html;
-
-      if (result.alerts.length) {
-        alertsList.innerHTML = result.alerts.map(alert => `<li>${escapeHtml(alert)}</li>`).join("");
-        motorStatusBox.textContent = `Motor ativo • ${result.alerts.length} alerta(s) encontrado(s).`;
-      } else {
-        alertsList.innerHTML = `<li>Nenhum alerta crítico encontrado.</li>`;
-        motorStatusBox.textContent = "Motor ativo • Sem alertas críticos.";
-      }
-
-      statusBox.textContent = "Prévia da poesia atualizada com sucesso.";
-    }
-
-    renderBtn.addEventListener("click", renderPoetryPage);
-
-    clearBtn.addEventListener("click", () => {
-      sourceText.value = "";
-      renderPoetryPage();
+    let primary="poesia";
+    if(!blocks.length)primary="vazio";
+    else if(!curtos&&longos>0)primary="texto livre";
+    else if(curtos>0&&longos>0)primary="poesia mista";
+    return{primary,blocks:blocks.length,totalLines:total};
+  },
+  alerts(text=""){
+    const out=[];
+    this.splitBlocks(text).forEach((b,i)=>{
+      b.forEach((l,li)=>{ if(l.length>90) out.push(`Estrofe ${i+1}, verso ${li+1}: verso muito longo.`); });
+      if(b.length===1&&b[0].length>90) out.push(`Estrofe ${i+1}: bloco único muito longo.`);
     });
+    return out;
+  },
+  process(text="",opts={}){
+    const lvl=opts.correctionLevel||"light";
+    const corrected=lvl==="medium"?this.mediumCorrect(text):this.lightCorrect(text);
+    const cls=this.classify(corrected);
+    return{...cls,processedText:corrected,wordCount:this.countWords(corrected),alerts:this.alerts(corrected)};
+  }
+};
 
-    [
-      bookTitle, bookSubtitle, poetryFormat, fontFamily,
-      fontSize, lineHeight, alignmentMode, stanzaSpace, correctionLevel
-    ].forEach(el => {
-      el.addEventListener("change", renderPoetryPage);
-      el.addEventListener("input", renderPoetryPage);
-    });
+const $=id=>document.getElementById(id);
+function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 
-    sourceText.addEventListener("input", renderPoetryPage);
+function applyFmt(){
+  const f=$('poetryFormat').value;
+  const sizes={a5:[430,620],'14x21':[430,620],'16x23':[470,680],'6x9':[470,680]};
+  const[w,h]=sizes[f]||[430,620];
+  document.documentElement.style.setProperty('--page-w',w+'px');
+  document.documentElement.style.setProperty('--page-h',h+'px');
+}
 
-    renderPoetryPage();
-  </script>
+function renderPoetry(){
+  applyFmt();
+  const res=MotorLapidar.process($('sourceText').value,{correctionLevel:$('correctionLevel').value});
+  const blocks=MotorLapidar.splitBlocks(res.processedText);
+
+  $('formatStat').textContent=$('poetryFormat').options[$('poetryFormat').selectedIndex].text;
+  $('fontStat').innerHTML=`${$('fontFamily').options[$('fontFamily').selectedIndex].text}<br>${$('fontSize').value} pt`;
+  $('blocksStat').textContent=String(res.blocks);
+  $('structureStat').textContent=res.primary==='poesia'?'Poesia':res.primary==='poesia mista'?'Poesia mista':res.primary==='texto livre'?'Texto livre':'Aguardando';
+  $('pillBlocks').textContent=`Estrofes: ${res.blocks}`;
+  $('pillLines').textContent=`Versos: ${res.totalLines}`;
+  $('pillMode').textContent=`Modo: ${res.primary}`;
+
+  const page=$('pagePreview');
+  page.style.fontFamily=$('fontFamily').value;
+  page.style.fontSize=$('fontSize').value+'pt';
+  page.style.lineHeight=$('lineHeight').value;
+
+  let html='';
+  const t=$('bookTitle').value.trim();
+  const s=$('bookSubtitle').value.trim();
+  if(t) html+=`<h1 class="page-title">${esc(t)}</h1>`;
+  if(s) html+=`<div class="page-subtitle">${esc(s)}</div>`;
+
+  blocks.forEach(b=>{
+    const cls=$('alignmentMode').value==='center'?'poem-block poem-centered':'poem-block';
+    html+=`<div class="${cls}" style="margin-bottom:${$('stanzaSpace').value}px">${esc(b.join('\n'))}</div>`;
+  });
+  if(!html.trim()) html=`<h1 class="page-title">Prévia aparecerá aqui</h1>`;
+  page.innerHTML=html;
+
+  if(res.alerts.length){
+    $('alertsList').innerHTML=res.alerts.map(a=>`<li>${esc(a)}</li>`).join('');
+    $('motorStatusBox').textContent=`Motor ativo • ${res.alerts.length} alerta(s).`;
+  } else {
+    $('alertsList').innerHTML=`<li>Nenhum alerta encontrado.</li>`;
+    $('motorStatusBox').textContent='Motor ativo • Sem alertas.';
+  }
+  $('statusBox').textContent='Prévia atualizada com sucesso.';
+}
+
+$('renderBtn').addEventListener('click',renderPoetry);
+$('clearBtn').addEventListener('click',()=>{$('sourceText').value='';renderPoetry();});
+['bookTitle','bookSubtitle','poetryFormat','fontFamily','fontSize','lineHeight',
+ 'alignmentMode','stanzaSpace','correctionLevel'].forEach(id=>{
+  $(id).addEventListener('change',renderPoetry);
+  $(id).addEventListener('input',renderPoetry);
+});
+$('sourceText').addEventListener('input',renderPoetry);
+renderPoetry();
+</script>
 </body>
 </html>
