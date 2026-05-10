@@ -1,30 +1,165 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Centauro — Diagramador Híbrido</title>
-  <script src="diagramacao/motor/motor_diagramacao_base.js"></script>
-  <style>
-    :root{--bg:#f3eee6;--paper:#fffdf9;--ink:#2b241f;--muted:#6a625a;--line:#ddd2c4;--beige-1:#b39672;--beige-2:#c7b08e;--beige-3:#e7dccb;--beige-4:#f4ede3;--ok:#2f7a59;--warn:#b7921e;--danger:#b13a3a;--shadow:0 12px 28px rgba(93,73,49,.10);--radius:22px}
-    *{box-sizing:border-box}html,body{margin:0;padding:0}body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif}.app{width:min(1360px,calc(100vw - 16px));margin:8px auto;display:grid;grid-template-columns:240px minmax(0,1fr) 280px;gap:14px;align-items:start}.panel{border-radius:var(--radius);box-shadow:var(--shadow);min-height:calc(100vh - 16px);position:sticky;top:8px;align-self:start;overflow:auto}.left-panel{background:linear-gradient(180deg,#9f835f 0%,#b89b76 58%,#e4d6c3 100%);color:#fff;padding:16px 14px;display:flex;flex-direction:column;gap:12px}.right-panel{background:linear-gradient(180deg,#fbf7f1 0%,#f3ecdf 100%);border:1px solid #ddd2c4;color:#2b241f;padding:16px 14px;display:flex;flex-direction:column;gap:12px}.panel h2{margin:0;font-size:1.7rem;line-height:1}.panel h3{margin:0;font-size:1rem;line-height:1.2}.status{font-size:.92rem;line-height:1.35;border-radius:14px;padding:10px 12px;min-height:48px}.left-panel .status{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);color:#fffaf3}.right-panel .status{background:#fff;border:1px solid #e2d6c8;color:#665d54}.card{border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px}.left-panel .card{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16)}.right-panel .card{background:#fffdf9;border:1px solid #e5d9cb}label,small,p{margin:0;line-height:1.35}.left-panel label,.left-panel small,.left-panel p{color:#fff8f1}.right-panel label,.right-panel small,.right-panel p{color:#63594f}.input,.select,.btn{width:100%;font-family:inherit;font-size:.98rem;border-radius:12px}.input,.select{border:1px solid #d8cdbf;background:#fff;color:#2b241f;padding:10px;outline:none}.btn{border:none;padding:11px 12px;font-weight:700;cursor:pointer;transition:.12s ease;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px}.btn:hover{transform:translateY(-1px);opacity:.97}.btn-beige{background:#a48661;color:#fff}.btn-soft{background:#efe5d8;color:#5b4630}.btn-warn{background:var(--warn);color:#231d16}.btn-danger{background:var(--danger);color:#fff}.main{display:flex;flex-direction:column;gap:14px;min-width:0}.hero,.stats-shell,.editor-shell,.preview-shell{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.hero{background:linear-gradient(180deg,#f4ede3 0%,#ebe1d3 100%);padding:24px 22px;display:grid;gap:14px}.hero-top{display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:center}.badge{width:52px;height:84px;border-radius:18px;background:linear-gradient(180deg,var(--beige-2),var(--beige-1));color:#fffaf3;display:flex;align-items:center;justify-content:center;font-size:2.3rem;line-height:1;box-shadow:0 8px 18px rgba(163,134,97,.22)}.hero h1{margin:0 0 8px 0;font-size:clamp(2rem,4vw,2.8rem);line-height:1;color:#3d2f21}.hero p{color:#655b51;font-size:1.08rem}.stats-shell{padding:16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stat{background:#faf6f0;border:1px solid #e4d9cb;border-radius:16px;padding:14px 12px;min-height:100px}.stat-label{font-size:.98rem;font-weight:700;color:#5d5348;margin-bottom:8px}.stat-value{font-size:1.06rem;font-weight:700;color:#3e3023;line-height:1.25;word-break:break-word}.editor-shell,.preview-shell{padding:18px;display:flex;flex-direction:column;gap:12px}.editor-shell h2,.preview-shell h2{margin:0;font-size:1.2rem}.editor-box{width:100%;min-height:430px;border:1px solid #d8cdbf;border-radius:18px;padding:18px;resize:vertical;background:#fff;color:#2b241f;font-family:Georgia,"Times New Roman",serif;font-size:1.04rem;line-height:1.5;outline:none}.editor-box:focus{border-color:#c1a785;box-shadow:0 0 0 3px rgba(183,150,114,.10)}.preview-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.pill-row{display:flex;flex-wrap:wrap;gap:8px}.pill{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;background:#f3eadf;border:1px solid #e2d5c6;color:#5b5248;font-size:.94rem;font-weight:700}.preview-stage{background:linear-gradient(180deg,#efe7db 0%,#e7ddd0 100%);border-radius:20px;border:1px solid #ddd2c4;min-height:720px;display:flex;align-items:flex-start;justify-content:center;padding:22px 12px;overflow:auto}.page-host{display:flex;justify-content:center;width:100%}.analysis-list{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}.footer-note{font-size:.9rem;color:#6e6256;line-height:1.45}@media(max-width:1160px){.app{grid-template-columns:1fr}.panel{position:relative;top:auto;min-height:auto}}@media(max-width:760px){.app{width:min(100vw - 8px,1360px);gap:8px;margin:4px auto}.hero,.stats-shell,.editor-shell,.preview-shell,.panel{border-radius:18px}.hero{padding:18px 14px}.hero-top{grid-template-columns:40px 1fr;gap:12px;align-items:start}.badge{width:40px;height:70px;font-size:1.9rem}.stats-shell{grid-template-columns:1fr 1fr;padding:12px}.preview-stage{min-height:auto;padding:12px 8px}}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Centauro — Diagramador Híbrido</title>
+<script src="diagramacao/motor/motor_diagramacao_base.js"></script>
+<style>
+:root{
+  --bg:#f3eee6;--paper:#fffdf9;--ink:#2b241f;--muted:#6a625a;--line:#ddd2c4;
+  --beige1:#b39672;--beige2:#c7b08e;--beige3:#e7dccb;
+  --ok:#2f7a59;--warn:#b7921e;--danger:#b13a3a;
+  --shadow:0 12px 28px rgba(93,73,49,.10);--radius:22px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;}
+.app{width:min(1360px,calc(100vw - 16px));margin:8px auto;display:grid;grid-template-columns:240px minmax(0,1fr) 280px;gap:14px;align-items:start;}
+.panel{border-radius:var(--radius);box-shadow:var(--shadow);min-height:calc(100vh - 16px);position:sticky;top:8px;align-self:start;overflow:auto;}
+.left-panel{background:linear-gradient(180deg,#9f835f 0%,#b89b76 58%,#e4d6c3 100%);color:#fff;padding:16px 14px;display:flex;flex-direction:column;gap:12px;}
+.right-panel{background:linear-gradient(180deg,#fbf7f1 0%,#f3ecdf 100%);border:1px solid var(--line);color:var(--ink);padding:16px 14px;display:flex;flex-direction:column;gap:12px;}
+.panel h2{margin:0;font-size:1.7rem;line-height:1;}
+.panel h3{margin:0;font-size:1rem;line-height:1.2;}
+.status{font-size:.92rem;line-height:1.35;border-radius:14px;padding:10px 12px;min-height:48px;}
+.left-panel .status{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);color:#fffaf3;}
+.right-panel .status{background:#fff;border:1px solid #e2d6c8;color:#665d54;}
+.card{border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px;}
+.left-panel .card{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);}
+.right-panel .card{background:#fffdf9;border:1px solid #e5d9cb;}
+label,p{margin:0;line-height:1.35;}
+.left-panel label,.left-panel p{color:#fff8f1;}
+.right-panel label,.right-panel p{color:#63594f;}
+.input,.select,.btn{width:100%;font-family:inherit;font-size:.98rem;border-radius:12px;}
+.input,.select{border:1px solid #d8cdbf;background:#fff;color:var(--ink);padding:10px;outline:none;}
+.btn{border:none;padding:11px 12px;font-weight:700;cursor:pointer;transition:.12s ease;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;}
+.btn:hover{transform:translateY(-1px);}
+.btn-beige{background:#a48661;color:#fff;}
+.btn-soft{background:#efe5d8;color:#5b4630;}
+.btn-warn{background:var(--warn);color:#231d16;}
+.btn-danger{background:var(--danger);color:#fff;}
+.main{display:flex;flex-direction:column;gap:14px;min-width:0;}
+.hero,.stats-shell,.editor-shell,.preview-shell{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
+.hero{background:linear-gradient(180deg,#f4ede3 0%,#ebe1d3 100%);padding:24px 22px;display:grid;gap:14px;}
+.hero-top{display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:center;}
+.badge{width:52px;height:84px;border-radius:18px;background:linear-gradient(180deg,var(--beige2),var(--beige1));color:#fffaf3;display:flex;align-items:center;justify-content:center;font-size:2.3rem;line-height:1;box-shadow:0 8px 18px rgba(163,134,97,.22);}
+.hero h1{margin:0 0 8px 0;font-size:clamp(2rem,4vw,2.8rem);line-height:1;color:#3d2f21;}
+.hero p{color:#655b51;font-size:1.08rem;}
+.stats-shell{padding:16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+.stat{background:#faf6f0;border:1px solid #e4d9cb;border-radius:16px;padding:14px 12px;min-height:100px;}
+.stat-label{font-size:.98rem;font-weight:700;color:#5d5348;margin-bottom:8px;}
+.stat-value{font-size:1.06rem;font-weight:700;color:#3e3023;line-height:1.25;word-break:break-word;}
+.editor-shell,.preview-shell{padding:18px;display:flex;flex-direction:column;gap:12px;}
+.editor-shell h2,.preview-shell h2{margin:0;font-size:1.2rem;}
+.editor-box{width:100%;min-height:430px;border:1px solid #d8cdbf;border-radius:18px;padding:18px;resize:vertical;background:#fff;color:var(--ink);font-family:Georgia,"Times New Roman",serif;font-size:1.04rem;line-height:1.5;outline:none;}
+.editor-box:focus{border-color:#c1a785;box-shadow:0 0 0 3px rgba(183,150,114,.10);}
+.preview-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+.pill-row{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;background:#f3eadf;border:1px solid #e2d5c6;color:#5b5248;font-size:.94rem;font-weight:700;}
+.preview-stage{background:linear-gradient(180deg,#efe7db 0%,#e7ddd0 100%);border-radius:20px;border:1px solid var(--line);min-height:720px;display:flex;align-items:flex-start;justify-content:center;padding:22px 12px;overflow:auto;}
+.page-host{display:flex;justify-content:center;width:100%;}
+.analysis-list{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;}
+.footer-note{font-size:.9rem;color:#6e6256;line-height:1.45;}
+@media(max-width:1160px){.app{grid-template-columns:1fr}.panel{position:relative;top:auto;min-height:auto}}
+@media(max-width:760px){.stats-shell{grid-template-columns:1fr 1fr}.preview-stage{min-height:auto;padding:12px 8px}}
+</style>
 </head>
 <body>
-  <div class="app">
-    <aside class="panel left-panel">
-      <h2>Centauro</h2><div class="status" id="statusBox">Pronto para diagramar obra híbrida.</div>
-      <div class="card"><label for="bookTitle"><strong>Título da obra</strong></label><input class="input" id="bookTitle" type="text" placeholder="Opcional" value="Centauro — Diagramador Híbrido" /></div>
-      <div class="card"><label for="bookSubtitle"><strong>Subtítulo</strong></label><input class="input" id="bookSubtitle" type="text" placeholder="Opcional" value="Celeiro Literário / Lapidar" /></div>
-      <div class="card"><label for="hybridFormat"><strong>Formato</strong></label><select class="select" id="hybridFormat"><option value="a5" selected>A5</option><option value="14x21">14 x 21 cm</option><option value="16x23">16 x 23 cm</option><option value="6x9">6 x 9 pol.</option></select><label for="fontFamily"><strong>Fonte</strong></label><select class="select" id="fontFamily"><option value="Georgia, 'Times New Roman', serif">Georgia</option><option value="'Times New Roman', serif">Times New Roman</option><option value="Garamond, serif">Garamond</option></select><label for="fontSize"><strong>Tamanho</strong></label><select class="select" id="fontSize"><option value="11">11 pt</option><option value="12" selected>12 pt</option><option value="13">13 pt</option><option value="14">14 pt</option></select><label for="lineHeight"><strong>Entrelinha</strong></label><select class="select" id="lineHeight"><option value="1.30">1.30</option><option value="1.40" selected>1.40</option><option value="1.50">1.50</option><option value="1.60">1.60</option></select></div>
-      <div class="card"><label for="hybridMode"><strong>Modo híbrido</strong></label><select class="select" id="hybridMode"><option value="auto" selected>Automático</option><option value="prose-first">Prosa predominante</option><option value="poetry-first">Poesia predominante</option></select><label for="blockSpace"><strong>Espaço entre blocos</strong></label><select class="select" id="blockSpace"><option value="14">14 px</option><option value="20" selected>20 px</option><option value="26">26 px</option><option value="32">32 px</option></select></div>
-      <div class="card"><button class="btn btn-beige" id="renderBtn" type="button">Atualizar prévia</button><button class="btn btn-soft" id="clearBtn" type="button">Limpar obra</button><a class="btn btn-warn" href="lapidar.html">Retornar</a><a class="btn btn-danger" href="index.html">Sair do sistema</a></div>
-    </aside>
+<div class="app">
 
-    <main class="main">
-      <section class="hero"><div class="hero-top"><div class="badge">C</div><div><h1>Centauro — Diagramador Híbrido</h1><p>Módulo híbrido conectado ao motor central de diagramação do Celeiro.</p></div></div></section>
-      <section class="stats-shell"><div class="stat"><div class="stat-label">Formato</div><div class="stat-value" id="formatStat">A5</div></div><div class="stat"><div class="stat-label">Fonte</div><div class="stat-value" id="fontStat">Georgia<br>12 pt</div></div><div class="stat"><div class="stat-label">Blocos</div><div class="stat-value" id="blocksStat">0</div></div><div class="stat"><div class="stat-label">Estrutura</div><div class="stat-value" id="structureStat">Aguardando texto</div></div></section>
-      <section class="editor-shell"><h2>Texto-base híbrido</h2><textarea id="sourceText" class="editor-box" placeholder="Cole aqui a obra híbrida...">Exemplo de obra híbrida
+<aside class="panel left-panel">
+  <h2>Centauro</h2>
+  <div class="status" id="statusBox">Pronto para diagramar obra híbrida.</div>
+
+  <div class="card">
+    <label for="bookTitle"><strong>Título da obra</strong></label>
+    <input class="input" id="bookTitle" type="text" value="Centauro — Diagramador Híbrido">
+  </div>
+  <div class="card">
+    <label for="bookSubtitle"><strong>Subtítulo</strong></label>
+    <input class="input" id="bookSubtitle" type="text" value="Celeiro Literário / Lapidar">
+  </div>
+
+  <div class="card">
+    <label for="hybridFormat"><strong>Formato</strong></label>
+    <select class="select" id="hybridFormat">
+      <option value="a5" selected>A5</option>
+      <option value="14x21">14 x 21 cm</option>
+      <option value="16x23">16 x 23 cm</option>
+      <option value="6x9">6 x 9 pol.</option>
+    </select>
+    <label for="fontFamily"><strong>Fonte</strong></label>
+    <select class="select" id="fontFamily">
+      <option value="Georgia,'Times New Roman',serif">Georgia</option>
+      <option value="'Times New Roman',serif">Times New Roman</option>
+      <option value="Garamond,serif">Garamond</option>
+    </select>
+    <label for="fontSize"><strong>Tamanho</strong></label>
+    <select class="select" id="fontSize">
+      <option value="11">11 pt</option>
+      <option value="12" selected>12 pt</option>
+      <option value="13">13 pt</option>
+      <option value="14">14 pt</option>
+    </select>
+    <label for="lineHeight"><strong>Entrelinha</strong></label>
+    <select class="select" id="lineHeight">
+      <option value="1.30">1.30</option>
+      <option value="1.40" selected>1.40</option>
+      <option value="1.50">1.50</option>
+      <option value="1.60">1.60</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <label for="blockSpace"><strong>Espaço entre blocos</strong></label>
+    <select class="select" id="blockSpace">
+      <option value="14">14 px</option>
+      <option value="20" selected>20 px</option>
+      <option value="26">26 px</option>
+      <option value="32">32 px</option>
+    </select>
+    <label for="ornamento"><strong>Ornamento</strong></label>
+    <select class="select" id="ornamento">
+      <option value="✦">✦ Estrela</option>
+      <option value="❧">❧ Floral</option>
+      <option value="·">· Ponto</option>
+      <option value="—">— Traço</option>
+    </select>
+    <label for="correctionLevel"><strong>Correção</strong></label>
+    <select class="select" id="correctionLevel">
+      <option value="light" selected>Leve</option>
+      <option value="medium">Média</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <button class="btn btn-beige" id="renderBtn">Atualizar prévia</button>
+    <button class="btn btn-soft"  id="clearBtn">Limpar obra</button>
+    <a class="btn btn-warn"    href="lapidar.html">Retornar ao Lapidar</a>
+    <a class="btn btn-danger"  href="pagina_respiro_celeiro.html">Sair do sistema</a>
+  </div>
+</aside>
+
+<main class="main">
+  <section class="hero">
+    <div class="hero-top">
+      <div class="badge">C</div>
+      <div>
+        <h1>Centauro — Diagramador Híbrido</h1>
+        <p>Módulo do Celeiro Literário para obras que misturam prosa e poesia, diálogos, narrações e passagens líricas.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-shell">
+    <div class="stat"><div class="stat-label">Formato</div><div class="stat-value" id="formatStat">A5</div></div>
+    <div class="stat"><div class="stat-label">Fonte</div><div class="stat-value" id="fontStat">Georgia<br>12 pt</div></div>
+    <div class="stat"><div class="stat-label">Blocos</div><div class="stat-value" id="blocksStat">0</div></div>
+    <div class="stat"><div class="stat-label">Estrutura</div><div class="stat-value" id="structureStat">Aguardando texto</div></div>
+  </section>
+
+  <section class="editor-shell">
+    <h2>Texto-base híbrido</h2>
+    <textarea id="sourceText" class="editor-box" placeholder="Cole aqui a obra híbrida...">Exemplo de obra híbrida
 
 A estrada seguia quieta pela manhã, e o viajante pensava no peso do tempo sobre a matéria do mundo.
 
@@ -33,35 +168,158 @@ um sino breve respira
 e a tarde dobra lenta
 a sombra que delira
 
-Quando a noite caiu, o mesmo viajante percebeu que a memória também caminhava ao lado dele, em silêncio.</textarea></section>
-      <section class="preview-shell"><div class="preview-top"><h2>Prévia híbrida</h2><div class="pill-row"><span class="pill" id="pillBlocks">Blocos: 0</span><span class="pill" id="pillLines">Linhas: 0</span><span class="pill" id="pillMode">Modo: híbrido</span></div></div><div class="preview-stage"><div id="pagePreview" class="page-host"></div></div></section>
-    </main>
+Quando a noite caiu, o mesmo viajante percebeu que a memória também caminhava ao lado dele, em silêncio.
 
-    <aside class="panel right-panel"><h2>Motor Central</h2><div class="status" id="motorStatusBox">Motor de Diagramação Base ativo no Centauro.</div><div class="card"><label for="correctionLevel"><strong>Correção</strong></label><select class="select" id="correctionLevel"><option value="light" selected>Leve</option><option value="medium">Média</option></select></div><div class="card"><h3>Leitura estrutural</h3><p>Reconhece prosa, poesia, diálogos e mistura entre ambas usando o motor compartilhado do Celeiro.</p></div><div class="card"><h3>Alertas</h3><ul class="analysis-list" id="alertsList"><li>Aguardando análise.</li></ul></div><div class="footer-note">Centauro agora usa o mesmo núcleo técnico de Pólux, Castor, Qui(RON)xadá e Hércules.</div></aside>
+— Onde você vai? — perguntou a sombra.
+— Para onde o vento não chegou ainda — respondeu ele.</textarea>
+  </section>
+
+  <section class="preview-shell">
+    <div class="preview-top">
+      <h2>Prévia híbrida</h2>
+      <div class="pill-row">
+        <span class="pill" id="pillBlocks">Blocos: 0</span>
+        <span class="pill" id="pillLines">Linhas: 0</span>
+        <span class="pill" id="pillMode">Modo: híbrido</span>
+      </div>
+    </div>
+    <div class="preview-stage">
+      <div id="pagePreview" class="page-host"></div>
+    </div>
+  </section>
+</main>
+
+<aside class="panel right-panel">
+  <h2>Motor Central</h2>
+  <div class="status" id="motorStatusBox">Motor de Diagramação Base ativo.</div>
+  <div class="card">
+    <h3>Leitura estrutural</h3>
+    <p>Reconhece automaticamente blocos de prosa, poesia, diálogos e títulos na mesma obra, aplicando formatação específica a cada um.</p>
   </div>
+  <div class="card">
+    <h3>Estrutura detectada</h3>
+    <p id="estruturaInfo">Aguardando texto.</p>
+  </div>
+  <div class="card">
+    <h3>Alertas</h3>
+    <ul class="analysis-list" id="alertsList"><li>Aguardando análise.</li></ul>
+  </div>
+  <div class="footer-note">
+    Centauro usa o mesmo motor base de Pólux, Castor, Qui(RON)xadá e Hércules.
+  </div>
+</aside>
 
-  <script>
-    const $ = (id)=>document.getElementById(id);
-    const bookTitle=$('bookTitle'),bookSubtitle=$('bookSubtitle'),hybridFormat=$('hybridFormat'),fontFamily=$('fontFamily'),fontSize=$('fontSize'),lineHeight=$('lineHeight'),hybridMode=$('hybridMode'),blockSpace=$('blockSpace'),correctionLevel=$('correctionLevel'),sourceText=$('sourceText'),pagePreview=$('pagePreview'),alertsList=$('alertsList');
-    function formatMap(value){return value==='14x21'?'a5':value}
-    function countLines(text){return String(text||'').split('\n').map(l=>l.trim()).filter(Boolean).length}
-    function escapeHtml(text){return String(text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-    function renderHybridPage(){
-      if(!window.CeleiroMotorDiagramacaoBase){$('statusBox').textContent='Motor central não carregou.';return}
-      const motor=window.CeleiroMotorDiagramacaoBase;
-      const resultado=motor.montarPreview(sourceText.value,{preset:'centauro',formato:formatMap(hybridFormat.value),margem:'normal',fonteCorpo:fontFamily.value,tamanhoFonte:Number(fontSize.value),entrelinha:Number(lineHeight.value),letraCapitular:true,ornamentos:true,simboloOrnamento:'✦'});
-      const cssExtra=`.pagina-editorial{margin:0 auto;}.pagina-editorial .estrofe{margin-bottom:${blockSpace.value}px;}.pagina-editorial .paragrafo{margin-bottom:${blockSpace.value}px;}.pagina-editorial .dialogo{margin-bottom:${blockSpace.value}px;}`;
-      const title=bookTitle.value.trim();const subtitle=bookSubtitle.value.trim();let cabecalho='';
-      if(title)cabecalho+=`<h1 class="capitulo" style="break-before:auto;margin-top:.5em;">${escapeHtml(title)}</h1>`;
-      if(subtitle)cabecalho+=`<h2 class="subtitulo">${escapeHtml(subtitle)}</h2>`;
-      pagePreview.innerHTML=`<style>${resultado.css}${cssExtra}</style><article class="pagina-editorial">${cabecalho}${resultado.html}</article>`;
-      const blocos=motor.quebrarBlocos(sourceText.value);const tipo=resultado.tipoDetectado.tipo;
-      $('formatStat').textContent=hybridFormat.options[hybridFormat.selectedIndex].text;$('fontStat').innerHTML=`${fontFamily.options[fontFamily.selectedIndex].text}<br>${fontSize.value} pt`;$('blocksStat').textContent=String(blocos.length);$('structureStat').textContent=tipo==='hibrido'?'Híbrido':tipo==='prosa'?'Prosa':tipo==='poesia'?'Poesia':tipo;
-      $('pillBlocks').textContent=`Blocos: ${blocos.length}`;$('pillLines').textContent=`Linhas: ${countLines(sourceText.value)}`;$('pillMode').textContent=`Modo: ${tipo}`;$('statusBox').textContent='Prévia híbrida atualizada pelo motor central.';
-      const alertas=[];blocos.forEach((bloco,idx)=>{const avg=bloco.linhas.reduce((s,l)=>s+l.length,0)/Math.max(1,bloco.linhas.length);if(bloco.linhas.length>1&&avg>85)alertas.push(`Bloco ${idx+1}: parece prosa quebrada como poesia.`);if(bloco.linhas.length===1&&bloco.linhas[0].length<20)alertas.push(`Bloco ${idx+1}: linha curta isolada; revisar se é título ou verso.`)});
-      alertsList.innerHTML=alertas.length?alertas.map(a=>`<li>${escapeHtml(a)}</li>`).join(''):'<li>Nenhum alerta crítico encontrado.</li>';$('motorStatusBox').textContent=alertas.length?`Motor central ativo • ${alertas.length} alerta(s).`:'Motor central ativo • Sem alertas críticos.';
+</div>
+<script>
+const $ = id => document.getElementById(id);
+
+const DIMS = {
+  a5:{'w':420,'h':595},'14x21':{'w':400,'h':595},'16x23':{'w':454,'h':652},'6x9':{'w':432,'h':648}
+};
+
+function normalizar(t){return String(t||'').replace(/\r\n/g,'\n').replace(/\r/g,'\n').replace(/\t/g,' ').replace(/[ ]{2,}/g,' ').replace(/\n{3,}/g,'\n\n').trim();}
+function escapar(t){return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function countLines(t){return String(t||'').split('\n').map(l=>l.trim()).filter(Boolean).length;}
+
+function quebrarBlocos(texto){
+  return normalizar(texto).split(/\n\s*\n/).map(bloco=>{
+    const linhas=bloco.split('\n').map(l=>l.trim()).filter(Boolean);
+    if(!linhas.length)return null;
+    const avg=linhas.reduce((s,l)=>s+l.length,0)/linhas.length;
+    let tipo='prosa';
+    if(/^(cap[ií]tulo|parte|pr[oó]logo|ep[ií]logo)\b/i.test(linhas[0]))tipo='titulo';
+    else if(avg<=55&&linhas.length>=2)tipo='poesia';
+    else if(linhas.some(l=>/^[—–-]/.test(l)))tipo='dialogo';
+    return{linhas,tipo,texto:linhas.join(' ')};
+  }).filter(Boolean);
+}
+
+function render(){
+  const titulo  = $('bookTitle').value.trim();
+  const subtit  = $('bookSubtitle').value.trim();
+  const fmt     = $('hybridFormat').value;
+  const ff      = $('fontFamily').value;
+  const fs      = $('fontSize').value;
+  const lh      = $('lineHeight').value;
+  const espaco  = $('blockSpace').value;
+  const orn     = $('ornamento').value;
+  const corr    = $('correctionLevel').value;
+  const texto   = $('sourceText').value;
+  const dim     = DIMS[fmt]||DIMS.a5;
+
+  const motor = window.CeleiroMotorDiagramacaoBase;
+  let textoCorrido = motor
+    ? (corr==='medium'?motor.correcaoMedia(texto):motor.correcaoLeve(texto))
+    : normalizar(texto);
+
+  const blocos = quebrarBlocos(textoCorrido);
+  const tipos  = blocos.map(b=>b.tipo);
+  const temPoesia = tipos.includes('poesia');
+  const temProsa  = tipos.includes('prosa');
+  const tipoGlobal = (!temPoesia&&temProsa)?'prosa':(!temProsa&&temPoesia)?'poesia':'híbrido';
+
+  $('formatStat').textContent   = $('hybridFormat').options[$('hybridFormat').selectedIndex].text;
+  $('fontStat').innerHTML       = `${$('fontFamily').options[$('fontFamily').selectedIndex].text}<br>${fs} pt`;
+  $('blocksStat').textContent   = String(blocos.length);
+  $('structureStat').textContent= tipoGlobal.charAt(0).toUpperCase()+tipoGlobal.slice(1);
+  $('pillBlocks').textContent   = `Blocos: ${blocos.length}`;
+  $('pillLines').textContent    = `Linhas: ${countLines(textoCorrido)}`;
+  $('pillMode').textContent     = `Modo: ${tipoGlobal}`;
+  $('estruturaInfo').textContent= `${tipoGlobal} · ${blocos.length} blocos`;
+
+  const alertas=[];
+  blocos.forEach((b,i)=>{
+    const avg=b.linhas.reduce((s,l)=>s+l.length,0)/Math.max(1,b.linhas.length);
+    if(b.linhas.length>1&&avg>85)alertas.push(`Bloco ${i+1}: parece prosa quebrada como poesia.`);
+    if(b.linhas.length===1&&b.linhas[0].length<20)alertas.push(`Bloco ${i+1}: linha curta isolada; revisar.`);
+  });
+  $('alertsList').innerHTML=alertas.length?alertas.map(a=>`<li>${escapar(a)}</li>`).join(''):'<li>Nenhum alerta crítico.</li>';
+  $('motorStatusBox').textContent=alertas.length?`Motor ativo · ${alertas.length} alerta(s)`:'Motor ativo · Sem alertas';
+
+  const css=`
+.pagina-centauro{width:${dim.w}px;min-height:${dim.h}px;background:#fffdf9;color:#2b241f;
+font-family:${ff};font-size:${fs}pt;line-height:${lh};padding:52px 48px 64px;
+box-shadow:0 12px 32px rgba(0,0,0,.15);box-sizing:border-box;position:relative;}
+.pagina-centauro .h-capitulo{font-size:1.6em;font-weight:700;color:#3d2508;text-align:center;margin:0 0 .5em;line-height:1.1;}
+.pagina-centauro .subtit{font-size:.98em;font-style:italic;color:#8a7060;text-align:center;margin:-.3em 0 1.4em;}
+.pagina-centauro .paragrafo{margin:0 0 .5em;text-align:justify;}
+.pagina-centauro .paragrafo.dc::first-letter{float:left;font-size:3.2em;line-height:.82;margin:.07em .12em 0 0;font-weight:900;color:#9f835f;}
+.pagina-centauro .estrofe{margin:0 0 ${espaco}px;white-space:pre-line;text-align:left;}
+.pagina-centauro .dialogo{margin:0 0 .5em;}
+.pagina-centauro .ornamento{text-align:center;color:#b39672;margin:.8em 0;font-size:1.1em;letter-spacing:.3em;opacity:.6;}
+`;
+
+  let html=`<style>${css}</style><div class="pagina-centauro">`;
+  if(titulo) html+=`<h2 class="h-capitulo">${escapar(titulo)}</h2>`;
+  if(subtit) html+=`<div class="subtit">${escapar(subtit)}</div>`;
+
+  let isFirst=true;
+  blocos.forEach((b,idx)=>{
+    if(idx>0&&b.tipo==='titulo') html+=`<div class="ornamento">${escapar(orn)}</div>`;
+    switch(b.tipo){
+      case 'titulo':  html+=`<h2 class="h-capitulo">${escapar(b.texto)}</h2>`; break;
+      case 'poesia':  html+=`<div class="estrofe">${escapar(b.linhas.join('\n'))}</div>`; break;
+      case 'dialogo': html+=b.linhas.map(l=>`<p class="dialogo">${escapar(l)}</p>`).join(''); break;
+      default:{
+        const cl=isFirst?'paragrafo dc':'paragrafo';
+        html+=`<p class="${cl}">${escapar(b.texto)}</p>`;
+        isFirst=false;
+      }
     }
-    $('renderBtn').addEventListener('click',renderHybridPage);$('clearBtn').addEventListener('click',()=>{sourceText.value='';renderHybridPage()});[bookTitle,bookSubtitle,hybridFormat,fontFamily,fontSize,lineHeight,hybridMode,blockSpace,correctionLevel,sourceText].forEach(el=>{el.addEventListener('change',renderHybridPage);el.addEventListener('input',renderHybridPage)});renderHybridPage();
-  </script>
+  });
+
+  if(!blocos.length) html+=`<p style="color:#aaa;font-style:italic;text-align:center;">A prévia aparecerá aqui.</p>`;
+  html+=`</div>`;
+  $('pagePreview').innerHTML=html;
+  $('statusBox').textContent='Prévia híbrida atualizada.';
+}
+
+$('renderBtn').addEventListener('click',render);
+$('clearBtn').addEventListener('click',()=>{$('sourceText').value='';render();});
+['bookTitle','bookSubtitle','hybridFormat','fontFamily','fontSize','lineHeight','blockSpace','ornamento','correctionLevel','sourceText']
+  .forEach(id=>{$(id).addEventListener('input',render);$(id).addEventListener('change',render);});
+
+render();
+</script>
 </body>
 </html>
