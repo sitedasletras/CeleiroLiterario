@@ -1,156 +1,255 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OKapista — Criador de Capas</title>
-
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>OKapista — Criador de Capas Literárias</title>
 <style>
 :root{
-  --azul:#10233f;
-  --ouro:#d8b56d;
-  --papel:#fffaf0;
+  --bg:#f5f0e8;--paper:#fffdf7;--ink:#1f1a14;--muted:#6a6052;--line:#ddd0ba;
+  --ouro:#c9a84c;--ouro2:#e8d08a;--ouro3:#f5ead3;
+  --azul:#1e3a5f;--azul2:#2f5a9b;
+  --ok:#2f7a59;--warn:#b7921e;--danger:#b13a3a;--rosa:#8a3a5a;
+  --shadow:0 12px 32px rgba(60,40,15,.13);--radius:22px;
 }
-
-body{
-  margin:0;
-  background:linear-gradient(135deg,#0c1d35,#17365f);
-  font-family:Georgia;
-}
-
-header{
-  color:white;
-  text-align:center;
-  padding:20px;
-}
-
-header h1{
-  color:var(--ouro);
-}
-
-.wrap{
-  display:grid;
-  grid-template-columns:350px 1fr;
-  gap:20px;
-  padding:20px;
-}
-
-.box{
-  background:var(--papel);
-  border-radius:20px;
-  padding:15px;
-}
-
-input,select{
-  width:100%;
-  padding:10px;
-  margin:6px 0;
-}
-
-button{
-  padding:10px;
-  border-radius:20px;
-  border:0;
-  cursor:pointer;
-  margin-top:10px;
-}
-
-.main{
-  background:#10233f;
-  color:white;
-}
-
-.stage{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-canvas{
-  background:white;
-  box-shadow:0 10px 30px rgba(0,0,0,.3);
-}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100vh;background:linear-gradient(135deg,#1e2d4a,#2a4a6e,#1e2d4a);font-family:Georgia,'Times New Roman',serif;color:var(--ink);}
+.topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);background:rgba(30,29,20,.92);border-bottom:1px solid rgba(201,168,76,.2);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-badge{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--ouro),#a07828);color:#fff8e8;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;box-shadow:0 4px 12px rgba(201,168,76,.3);}
+.brand h1{margin:0;font-size:1.2rem;color:var(--ouro2);line-height:1.1;}
+.brand p{margin:2px 0 0;font-size:.88rem;color:#a0927a;}
+.top-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{border:none;border-radius:12px;padding:10px 16px;font:700 .93rem Georgia,serif;cursor:pointer;transition:.14s ease;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;}
+.btn:hover{transform:translateY(-1px);}
+.btn-ouro{background:var(--ouro);color:#1a1000;}
+.btn-soft{background:rgba(255,255,255,.12);color:#f0e8d8;border:1px solid rgba(255,255,255,.2);}
+.btn-warn{background:var(--warn);color:#1a1000;}
+.btn-danger{background:var(--danger);color:#fff;}
+.btn-azul{background:var(--azul2);color:#fff;}
+.btn-ok{background:var(--ok);color:#fff;}
+.btn-rosa{background:var(--rosa);color:#fff;}
+.wrap{max-width:1440px;margin:0 auto;padding:18px;display:grid;grid-template-columns:360px minmax(0,1fr);gap:18px;align-items:start;}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
+.panel-head{padding:16px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fffdf2,#f8f2e2);}
+.panel-head h2{margin:0;font-size:1.1rem;color:var(--azul);}
+.panel-head p{margin:5px 0 0;font-size:.9rem;color:var(--muted);line-height:1.4;}
+.panel-body{padding:18px;display:flex;flex-direction:column;gap:14px;}
+.field label{display:block;font-weight:700;font-size:.88rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.input,.select,.textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;background:#fffdf7;color:var(--ink);padding:10px 12px;font:inherit;font-size:.98rem;outline:none;transition:border-color .2s;}
+.textarea{min-height:80px;resize:vertical;}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--ouro);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cor-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.cor-btn{height:32px;border-radius:8px;border:2px solid transparent;cursor:pointer;transition:.14s;}
+.cor-btn:hover,.cor-btn.ativa{border-color:var(--ink);transform:scale(1.08);}
+.estilo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.estilo-btn{border:2px solid var(--line);background:var(--ouro3);border-radius:12px;padding:9px 8px;cursor:pointer;font:600 .88rem Georgia,serif;color:var(--ink);text-align:center;transition:.15s;}
+.estilo-btn:hover,.estilo-btn.ativo{border-color:var(--ouro);background:#f5ead3;color:var(--azul);}
+.main{display:flex;flex-direction:column;gap:14px;}
+.stage{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;}
+.stage-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
+.stage-top h2{margin:0;font-size:1.15rem;color:var(--azul);}
+.stage-top p{margin:4px 0 0;font-size:.9rem;color:var(--muted);}
+.status-pill{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;background:var(--ouro3);border:1px solid var(--line);color:var(--azul);font-weight:700;font-size:.88rem;}
+.status-dot{width:9px;height:9px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(47,122,89,.15);}
+.preview-shell{background:linear-gradient(180deg,#2a3a5a,#1e2d45);border-radius:20px;padding:24px;display:flex;justify-content:center;align-items:flex-start;min-height:640px;}
+#capaCanvas{display:block;box-shadow:0 20px 60px rgba(0,0,0,.5);max-width:100%;cursor:default;}
+.acoes-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;}
+.ia-box{background:linear-gradient(135deg,#1e2d4a,#2a3a5a);border:1px solid rgba(201,168,76,.3);border-radius:var(--radius);padding:18px;color:#e8e0d0;}
+.ia-box h3{margin:0 0 8px;font-size:1.05rem;color:var(--ouro2);}
+.ia-box p{margin:0 0 12px;font-size:.92rem;color:#b0a898;line-height:1.5;}
+#iaResposta{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px;font-size:.93rem;color:#e0d8c8;line-height:1.65;min-height:80px;white-space:pre-wrap;display:none;}
+.ia-spinner{display:none;text-align:center;color:var(--ouro2);font-style:italic;font-size:.93rem;padding:10px 0;}
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:4px;}
+.tip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px;font-size:.88rem;color:#c0b8a8;line-height:1.4;}
+.tip strong{color:var(--ouro2);display:block;margin-bottom:3px;}
+@media(max-width:1060px){.wrap{grid-template-columns:1fr;}}
+@media(max-width:640px){.row2,.cor-grid{grid-template-columns:1fr 1fr;}.estilo-grid{grid-template-columns:1fr;}.acoes-grid{grid-template-columns:1fr;}}
+@media print{.topbar,.panel,.ia-box,.tips,.acoes-grid,.stage-top,.status-pill{display:none!important;}body{background:#fff;}.wrap{display:block;padding:0;}.stage{border:0;box-shadow:none;padding:0;}.preview-shell{background:#fff;padding:0;border-radius:0;min-height:auto;}}
 </style>
 </head>
-
 <body>
-
-<header>
-<h1>📘 OKapista</h1>
-<p>Capa simples, funcional e pronta para uso</p>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-badge">📘</div>
+    <div>
+      <h1>OKapista — Criador de Capas Literárias</h1>
+      <p>Celeiro Literário · Módulo de capas para livros, antologias e coleções</p>
+    </div>
+  </div>
+  <div class="top-btns">
+    <button class="btn btn-ouro" onclick="render()">Atualizar prévia</button>
+    <button class="btn btn-ok"   onclick="baixarCapa()">Baixar capa</button>
+    <a class="btn btn-warn"      href="lapidar.html">← Lapidar</a>
+    <a class="btn btn-danger"    href="pagina_respiro_celeiro.html">Sair</a>
+  </div>
 </header>
-
 <div class="wrap">
-
-<div class="box">
-<h3>Configuração</h3>
-
-<input type="file" id="img">
-
-<input id="titulo" value="Título do Livro">
-<input id="autor" value="Nome do Autor">
-
-<select id="fonte">
-<option>Georgia</option>
-<option>Arial</option>
-</select>
-
-<input id="tamanho" type="number" value="50">
-
-<button class="main" onclick="render()">Atualizar</button>
-<button onclick="download()">Baixar</button>
-
+  <aside>
+    <div class="panel" style="margin-bottom:14px">
+      <div class="panel-head"><h2>Textos da capa</h2><p>Título, subtítulo, autor e editora alimentam a prévia em tempo real.</p></div>
+      <div class="panel-body">
+        <div class="field"><label>Título</label><input class="input" id="titulo" type="text" value="O Silêncio das Pedras"></div>
+        <div class="field"><label>Subtítulo</label><input class="input" id="subtitulo" type="text" value="Poemas do avesso do tempo"></div>
+        <div class="field"><label>Autor</label><input class="input" id="autor" type="text" value="Maria das Letras"></div>
+        <div class="row2">
+          <div class="field"><label>Editora</label><input class="input" id="editora" type="text" value="Celeiro Literário"></div>
+          <div class="field"><label>Ano</label><input class="input" id="ano" type="text" value="2026"></div>
+        </div>
+        <div class="field"><label>Sinopse curta (para IA)</label><textarea class="textarea" id="sinopse">Poesia que explora a memória, o silêncio e a natureza.</textarea></div>
+      </div>
+    </div>
+    <div class="panel" style="margin-bottom:14px">
+      <div class="panel-head"><h2>Design da capa</h2><p>Estilo, cores e tipografia.</p></div>
+      <div class="panel-body">
+        <div class="field"><label>Estilo visual</label>
+          <div class="estilo-grid" id="estiloGrid">
+            <button class="estilo-btn ativo" data-estilo="classico">📚 Clássico</button>
+            <button class="estilo-btn" data-estilo="contemporaneo">✦ Contemporâneo</button>
+            <button class="estilo-btn" data-estilo="minimalista">○ Minimalista</button>
+            <button class="estilo-btn" data-estilo="noturno">🌙 Noturno</button>
+            <button class="estilo-btn" data-estilo="terra">🌿 Terra</button>
+            <button class="estilo-btn" data-estilo="infantil">🎨 Infantil</button>
+          </div>
+        </div>
+        <div class="field"><label>Cor de fundo</label>
+          <div class="cor-grid" id="corGrid">
+            <div class="cor-btn ativa" data-cor="#f5ead3" style="background:#f5ead3"></div>
+            <div class="cor-btn" data-cor="#1a1a2e" style="background:#1a1a2e"></div>
+            <div class="cor-btn" data-cor="#2f4a2f" style="background:#2f4a2f"></div>
+            <div class="cor-btn" data-cor="#3a1a1a" style="background:#3a1a1a"></div>
+            <div class="cor-btn" data-cor="#ffffff" style="background:#fff;border:1px solid #ccc"></div>
+            <div class="cor-btn" data-cor="#e8f0f8" style="background:#e8f0f8"></div>
+            <div class="cor-btn" data-cor="#f0e8e0" style="background:#f0e8e0"></div>
+            <div class="cor-btn" data-cor="#1e3a1e" style="background:#1e3a1e"></div>
+            <div class="cor-btn" data-cor="#2a2a40" style="background:#2a2a40"></div>
+            <div class="cor-btn" data-cor="#4a3020" style="background:#4a3020"></div>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Cor do título</label><input class="input" id="corTitulo" type="color" value="#1a1000" style="height:42px;padding:4px;"></div>
+          <div class="field"><label>Cor do autor</label><input class="input" id="corAutor" type="color" value="#3a2a10" style="height:42px;padding:4px;"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Fonte</label>
+            <select class="select" id="fonteTitulo">
+              <option value="Georgia">Georgia</option>
+              <option value="'Times New Roman'">Times New Roman</option>
+              <option value="Garamond">Garamond</option>
+              <option value="Arial">Arial</option>
+              <option value="Verdana">Verdana</option>
+            </select>
+          </div>
+          <div class="field"><label>Formato</label>
+            <select class="select" id="formato">
+              <option value="a5">A5</option>
+              <option value="14x21" selected>14×21 cm</option>
+              <option value="16x23">16×23 cm</option>
+              <option value="6x9">6×9 pol.</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label>Imagem (opcional)</label><input class="input" id="imgInput" type="file" accept="image/*" style="padding:6px;"></div>
+      </div>
+    </div>
+  </aside>
+  <div class="main">
+    <div class="stage">
+      <div class="stage-top">
+        <div><h2>Prévia da capa</h2><p>Visualização em tempo real.</p></div>
+        <div class="status-pill"><div class="status-dot"></div><span id="statusTxt">Pronto</span></div>
+      </div>
+      <div class="preview-shell"><canvas id="capaCanvas"></canvas></div>
+      <div class="acoes-grid" style="margin-top:14px;">
+        <button class="btn btn-ouro" style="width:100%" onclick="render()">↺ Atualizar</button>
+        <button class="btn btn-ok"   style="width:100%" onclick="baixarCapa()">↓ Baixar JPG</button>
+        <button class="btn btn-azul" style="width:100%" onclick="window.print()">🖨 Imprimir</button>
+        <button class="btn btn-soft" style="width:100%;background:#e8f0fa;color:#1e3a5f;" onclick="limpar()">✕ Limpar imagem</button>
+      </div>
+    </div>
+    <div class="ia-box">
+      <h3>✦ Sugestão de Capa com IA</h3>
+      <p>Preencha a sinopse ao lado e clique abaixo para receber sugestão de paleta, tipografia e conceito visual.</p>
+      <button class="btn btn-rosa" style="width:100%;margin-bottom:12px;" onclick="sugerirIA()">✦ Gerar sugestão com IA</button>
+      <div class="ia-spinner" id="iaSpinner">A IA está pensando na sua capa...</div>
+      <div id="iaResposta"></div>
+    </div>
+    <div class="tips">
+      <div class="tip"><strong>Baixar em JPG</strong>Salva a capa pronta para uso editorial.</div>
+      <div class="tip"><strong>Imagem própria</strong>Envie arte para usar como fundo.</div>
+      <div class="tip"><strong>IA criativa</strong>Sugestão personalizada baseada na obra.</div>
+      <div class="tip"><strong>6 estilos</strong>Clássico, Contemporâneo, Minimalista, Noturno, Terra e Infantil.</div>
+    </div>
+  </div>
 </div>
-
-<div class="box stage">
-<canvas id="capa" width="900" height="1400"></canvas>
-</div>
-
-</div>
-
 <script>
-let img=null
-const cv=document.getElementById("capa")
-const ctx=cv.getContext("2d")
-
-document.getElementById("img").addEventListener("change",e=>{
-  let f=e.target.files[0]
-  let r=new FileReader()
-  r.onload=()=>{
-    img=new Image()
-    img.onload=render
-    img.src=r.result
-  }
-  r.readAsDataURL(f)
-})
-
+const $=id=>document.getElementById(id);
+let imagemUsuario=null,corFundo='#f5ead3',estiloAtual='classico';
+const FORMATOS={a5:{w:560,h:794},'14x21':{w:560,h:840},'16x23':{w:560,h:806},'6x9':{w:560,h:840}};
+const ESTILOS={
+  classico:{fundoPadrao:'#f5ead3',titulo:'#1a0f00',autor:'#3a2a10',ornamento:true,faixa:true,fonte:'Georgia'},
+  contemporaneo:{fundoPadrao:'#1a1a2e',titulo:'#ffffff',autor:'#c0b8d0',ornamento:false,faixa:false,fonte:'Arial'},
+  minimalista:{fundoPadrao:'#ffffff',titulo:'#111111',autor:'#555555',ornamento:false,faixa:false,fonte:'Georgia'},
+  noturno:{fundoPadrao:'#0d0d1a',titulo:'#e8d08a',autor:'#a0a8c0',ornamento:true,faixa:true,fonte:'Georgia'},
+  terra:{fundoPadrao:'#3a2010',titulo:'#f5e8c0',autor:'#d4c090',ornamento:true,faixa:false,fonte:'Georgia'},
+  infantil:{fundoPadrao:'#e8f8f0',titulo:'#1a4a2a',autor:'#2a7a4a',ornamento:false,faixa:false,fonte:'Arial'},
+};
 function render(){
-  ctx.fillStyle="#fffaf0"
-  ctx.fillRect(0,0,cv.width,cv.height)
-
-  if(img){
-    let s=Math.max(cv.width/img.width,cv.height/img.height)
-    ctx.drawImage(img,(cv.width-img.width*s)/2,(cv.height-img.height*s)/2,img.width*s,img.height*s)
-  }
-
-  ctx.fillStyle="black"
-  ctx.textAlign="center"
-  ctx.font=document.getElementById("tamanho").value+"px "+document.getElementById("fonte").value
-  ctx.fillText(document.getElementById("titulo").value,cv.width/2,150)
-
-  ctx.font="30px "+document.getElementById("fonte").value
-  ctx.fillText(document.getElementById("autor").value,cv.width/2,cv.height-120)
+  const fmt=FORMATOS[$('formato').value]||FORMATOS['14x21'];
+  const cv=$('capaCanvas');cv.width=fmt.w;cv.height=fmt.h;
+  const ctx=cv.getContext('2d'),est=ESTILOS[estiloAtual]||ESTILOS.classico;
+  const titulo=$('titulo').value.trim()||'Sem título';
+  const subtitulo=$('subtitulo').value.trim();
+  const autor=$('autor').value.trim()||'Autor';
+  const editora=$('editora').value.trim();
+  const ano=$('ano').value.trim();
+  const corT=$('corTitulo').value,corA=$('corAutor').value;
+  const fonte=$('fonteTitulo').value;
+  const W=fmt.w,H=fmt.h;
+  ctx.fillStyle=corFundo;ctx.fillRect(0,0,W,H);
+  if(imagemUsuario){ctx.save();ctx.globalAlpha=estiloAtual==='classico'?0.22:0.35;const s=Math.max(W/imagemUsuario.width,H/imagemUsuario.height);ctx.drawImage(imagemUsuario,(W-imagemUsuario.width*s)/2,(H-imagemUsuario.height*s)/2,imagemUsuario.width*s,imagemUsuario.height*s);ctx.restore();}
+  if(estiloAtual!=='minimalista'){const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(0,0,0,0.08)');g.addColorStop(0.5,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,0.22)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
+  if(est.ornamento){ctx.strokeStyle=estiloAtual==='noturno'?'rgba(232,208,138,0.5)':estiloAtual==='terra'?'rgba(245,232,192,0.4)':'rgba(100,70,20,0.3)';ctx.lineWidth=2;ctx.strokeRect(18,18,W-36,H-36);ctx.strokeRect(26,26,W-52,H-52);}
+  if(est.faixa&&editora){ctx.fillStyle=estiloAtual==='noturno'?'rgba(232,208,138,0.15)':estiloAtual==='terra'?'rgba(245,232,192,0.15)':'rgba(100,70,20,0.08)';ctx.fillRect(0,0,W,54);ctx.fillStyle=estiloAtual==='noturno'?'#e8d08a':estiloAtual==='terra'?'#f5e8c0':'#6a5030';ctx.font=`600 13px ${fonte}`;ctx.textAlign='center';ctx.fillText(editora.toUpperCase(),W/2,33);}
+  const zonaY=H*0.12;
+  if(est.ornamento){ctx.strokeStyle=corT+'80';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(48,zonaY+12);ctx.lineTo(W-48,zonaY+12);ctx.stroke();}
+  ctx.fillStyle=corT;ctx.textAlign='center';
+  const fsBase=titulo.length>20?(titulo.length>35?36:44):52;
+  ctx.font=`700 ${fsBase}px ${fonte}`;
+  const pals=titulo.split(' ');let ln='',lns=[],mW=W-100;
+  for(const p of pals){const t=ln?ln+' '+p:p;if(ctx.measureText(t).width>mW&&ln){lns.push(ln);ln=p;}else ln=t;}lns.push(ln);
+  const lh=fsBase*1.15;let ty=zonaY+48+(lns.length===1?lh/2:0);
+  for(const l of lns){ctx.fillText(l,W/2,ty);ty+=lh;}
+  if(est.ornamento){ctx.strokeStyle=corT+'60';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(48,ty+8);ctx.lineTo(W-48,ty+8);ctx.stroke();ctx.fillStyle=corT+'40';ctx.font=`22px Georgia`;ctx.fillText('✦  ✦  ✦',W/2,ty+34);}
+  if(subtitulo){ctx.fillStyle=corA+'cc';ctx.font=`italic ${fsBase*0.38}px ${fonte}`;ctx.textAlign='center';wrapText(ctx,subtitulo,W/2,ty+(est.ornamento?68:44),W-120,fsBase*0.5);}
+  if(!imagemUsuario&&estiloAtual!=='minimalista'&&estiloAtual!=='contemporaneo'){const iY=H*0.42,iH=H*0.30;ctx.fillStyle='rgba(100,70,20,0.07)';rRect(ctx,60,iY,W-120,iH,8);ctx.fill();ctx.fillStyle='rgba(100,70,20,0.2)';ctx.font=`14px Georgia`;ctx.textAlign='center';ctx.fillText('[ Área para imagem — envie no painel à esquerda ]',W/2,iY+iH/2+5);}
+  const aY=H-90;
+  if(est.faixa&&editora){ctx.fillStyle=estiloAtual==='noturno'?'rgba(232,208,138,0.12)':estiloAtual==='terra'?'rgba(245,232,192,0.12)':'rgba(100,70,20,0.06)';ctx.fillRect(0,H-64,W,64);}
+  ctx.fillStyle=corA;ctx.font=`600 ${fsBase*0.34}px ${fonte}`;ctx.textAlign='center';ctx.fillText(autor,W/2,aY);
+  if(ano){ctx.fillStyle=corA+'80';ctx.font=`${fsBase*0.26}px ${fonte}`;ctx.fillText(ano,W/2,aY+26);}
+  $('statusTxt').textContent='Prévia atualizada';
 }
-
-function download(){
-  let a=document.createElement("a")
-  a.href=cv.toDataURL("image/jpeg")
-  a.download="capa.jpg"
-  a.click()
+function wrapText(ctx,text,x,y,mW,lh){const ps=text.split(' ');let ln='';for(const p of ps){const t=ln?ln+' '+p:p;if(ctx.measureText(t).width>mW&&ln){ctx.fillText(ln,x,y);y+=lh;ln=p;}else ln=t;}ctx.fillText(ln,x,y);}
+function rRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+function baixarCapa(){render();const a=document.createElement('a');a.href=$('capaCanvas').toDataURL('image/jpeg',0.95);a.download=`capa-${($('titulo').value||'livro').replace(/\s+/g,'-').toLowerCase()}.jpg`;a.click();}
+function limpar(){imagemUsuario=null;$('imgInput').value='';render();}
+$('imgInput').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{imagemUsuario=i;render();};i.src=r.result;};r.readAsDataURL(f);});
+document.getElementById('corGrid').addEventListener('click',e=>{const b=e.target.closest('.cor-btn');if(!b)return;corFundo=b.dataset.cor;document.querySelectorAll('.cor-btn').forEach(x=>x.classList.remove('ativa'));b.classList.add('ativa');render();});
+document.getElementById('estiloGrid').addEventListener('click',e=>{const b=e.target.closest('.estilo-btn');if(!b)return;estiloAtual=b.dataset.estilo;document.querySelectorAll('.estilo-btn').forEach(x=>x.classList.remove('ativo'));b.classList.add('ativo');const est=ESTILOS[estiloAtual];corFundo=est.fundoPadrao;$('corTitulo').value=est.titulo;$('corAutor').value=est.autor;render();});
+['titulo','subtitulo','autor','editora','ano','fonteTitulo','formato','corTitulo','corAutor'].forEach(id=>{$(id).addEventListener('input',render);$(id).addEventListener('change',render);});
+async function sugerirIA(){
+  const titulo=$('titulo').value.trim()||'Sem título';
+  const subtit=$('subtitulo').value.trim();
+  const autor=$('autor').value.trim();
+  const sinopse=$('sinopse').value.trim();
+  $('iaSpinner').style.display='block';$('iaResposta').style.display='none';$('iaResposta').textContent='';
+  const prompt=`Você é um diretor de arte especializado em capas de livros literários brasileiros.\n\nCom base nas informações abaixo, crie uma sugestão detalhada e criativa para a capa:\n\nTÍTULO: ${titulo}\nSUBTÍTULO: ${subtit||'(não informado)'}\nAUTOR: ${autor||'(não informado)'}\nSINOPSE: ${sinopse||'(não informada)'}\n\nResponda em português com estas seções:\n**Conceito visual** — A ideia central em 2-3 frases\n**Paleta de cores** — 3 a 5 cores com hex e justificativa\n**Tipografia** — Fonte ideal para título, subtítulo e autor\n**Elemento central** — O que deve aparecer como imagem principal\n**Atmosfera** — A sensação que a capa deve transmitir\n**Dica editorial** — Orientação prática para buscar um designer\n\nMáximo 350 palavras.`;
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});const d=await r.json();const t=d.content.map(b=>b.text||'').join('');$('iaResposta').textContent=t;$('iaResposta').style.display='block';}
+  catch(e){$('iaResposta').textContent='Erro ao conectar com a IA.';$('iaResposta').style.display='block';}
+  finally{$('iaSpinner').style.display='none';}
 }
-
-render()
+render();
 </script>
-
 </body>
 </html>
