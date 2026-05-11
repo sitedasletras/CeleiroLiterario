@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Avaliação de Mercado — Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e14;--surface:#111620;--card:#161c2a;--line:#202840;
+  --txt:#f0eef8;--muted:#7a88a8;--soft:#b8c4d8;
+  --azul:#6aaaf5;--azul2:#4af5e0;--ouro:#f5d46a;--rosa:#f56a8a;
+  --shadow:0 16px 48px rgba(0,0,0,.5);--radius:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;background:var(--bg);color:var(--txt);font-family:'DM Sans',system-ui,sans-serif;}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(10,14,20,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#6aaaf5,#4af5e0);display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 16px rgba(106,170,245,.35);}
+.brand-text h1{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--txt);line-height:1;}
+.brand-text p{font-size:.8rem;color:var(--muted);margin-top:2px;}
+.top-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{border:none;border-radius:11px;padding:9px 15px;font:600 .86rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+.btn:hover{transform:translateY(-1px);}
+.btn-azul{background:linear-gradient(135deg,var(--azul),var(--azul2));color:#0a1828;}
+.btn-amber{background:#d4a44c;color:#1a1000;}
+.btn-red{background:#d44c4c;color:#fff;}
+.btn-ghost{background:rgba(255,255,255,.07);color:var(--soft);border:1px solid var(--line);}
+.wrap{max-width:1200px;margin:0 auto;padding:18px;display:flex;flex-direction:column;gap:16px;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,rgba(106,170,245,.1),rgba(74,245,224,.05));border:1px solid rgba(106,170,245,.18);border-radius:var(--radius);padding:28px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;}
+.hero h2{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.2rem);margin-bottom:8px;}
+.hero p{color:var(--muted);font-size:.95rem;line-height:1.55;}
+.mercado-score{text-align:center;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:18px;padding:16px 22px;min-width:120px;}
+.mercado-score .num{font-family:'Playfair Display',serif;font-size:2.8rem;color:var(--azul);line-height:1;transition:.4s;}
+.mercado-score .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;}
+
+/* FORM */
+.box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;}
+.box h3{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:14px;}
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;}
+.input,.select,.textarea{width:100%;border:1.5px solid var(--line);border-radius:11px;background:var(--surface);color:var(--txt);padding:10px 12px;font:inherit;font-size:.93rem;outline:none;transition:border-color .2s;}
+.textarea{min-height:160px;resize:vertical;line-height:1.55;}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--azul);}
+.select option{background:var(--surface);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+
+/* DIMENSÕES */
+.dims-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;}
+.dim-card{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:14px;transition:.2s;}
+.dim-card.ativa{border-color:var(--azul);background:rgba(106,170,245,.07);}
+.dim-header{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.dim-emoji{font-size:1.2rem;}
+.dim-nome{font-weight:700;font-size:.92rem;}
+.dim-desc{font-size:.8rem;color:var(--muted);line-height:1.4;margin-bottom:8px;}
+.dim-nota{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--ouro);}
+.dim-bar-bg{height:5px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden;margin-top:6px;}
+.dim-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--azul),var(--azul2));width:0%;transition:width .6s ease;}
+.dim-justif{font-size:.78rem;color:var(--soft);font-style:italic;margin-top:6px;min-height:30px;}
+
+/* RESULTADO */
+.resultado{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;display:none;}
+.resultado.vis{display:block;}
+
+/* SCORE CARDS */
+.score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.score-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center;}
+.score-card .val{font-family:'Playfair Display',serif;font-size:2.2rem;line-height:1;margin-bottom:4px;}
+.score-card .lbl{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+.score-card .sub{font-size:.82rem;color:var(--soft);margin-top:4px;}
+
+/* RADAR */
+.radar-wrap{display:flex;justify-content:center;margin:16px 0;}
+
+/* PARECER */
+.parecer{background:rgba(106,170,245,.06);border:1px solid rgba(106,170,245,.15);border-radius:14px;padding:16px;font-size:.92rem;color:var(--soft);line-height:1.7;white-space:pre-wrap;}
+.ia-spin{text-align:center;color:var(--azul);font-style:italic;font-size:.9rem;padding:14px;animation:pulse 1.5s infinite;display:none;}
+@keyframes pulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+
+/* LINKS */
+.links-aval{display:flex;gap:10px;flex-wrap:wrap;}
+.link-aval{display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);text-decoration:none;color:var(--txt);font-size:.88rem;font-weight:600;transition:.14s;}
+.link-aval:hover{transform:translateY(-1px);border-color:var(--azul);}
+
+/* TAGS */
+.tag-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.tag{padding:5px 12px;border-radius:999px;font-size:.8rem;font-weight:600;border:1px solid;}
+
+@media(max-width:760px){.hero{grid-template-columns:1fr;}.mercado-score{display:none;}.row2,.row3{grid-template-columns:1fr;}.dims-grid{grid-template-columns:1fr;}.score-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">📊</div>
+    <div class="brand-text">
+      <h1>Avaliação de Mercado</h1>
+      <p>Celeiro Literário · Viabilidade editorial e comercial</p>
+    </div>
+  </div>
+  <div class="top-btns">
+    <button class="btn btn-azul" onclick="avaliar()">✦ Avaliar mercado</button>
+    <a class="btn btn-amber" href="lapidar.html">← Lapidar</a>
+    <a class="btn btn-red"   href="pagina_respiro_celeiro.html">Sair</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <h2>Avaliação de Mercado Editorial</h2>
+      <p>Análise de viabilidade comercial, posicionamento de mercado, público-alvo, tendências editoriais brasileiras e potencial de vendas. IA interna Celeiro + API Anthropic integradas.</p>
+    </div>
+    <div class="mercado-score">
+      <div class="num" id="scoreTopo">—</div>
+      <div class="lbl">Score Mercado</div>
+    </div>
+  </div>
+
+  <!-- FORMULÁRIO -->
+  <div class="box">
+    <h3>Dados da obra e contexto</h3>
+    <div class="row2">
+      <div class="field"><label>Título</label><input class="input" id="titulo" type="text" placeholder="Título da obra"></div>
+      <div class="field"><label>Tipo</label>
+        <select class="select" id="tipo">
+          <option value="">Selecione...</option>
+          <option value="romance">Romance</option>
+          <option value="conto">Conto / Contos</option>
+          <option value="poesia">Poesia</option>
+          <option value="cronica">Crônica</option>
+          <option value="novela">Novela</option>
+          <option value="infantil">Infantil / Juvenil</option>
+          <option value="memorias">Memórias / Autobiografia</option>
+          <option value="autoajuda">Autoajuda / Desenvolvimento</option>
+          <option value="tecnico">Técnico / Manual</option>
+          <option value="cordel">Cordel / Popular</option>
+          <option value="receitas">Gastronomia / Receitas</option>
+        </select>
+      </div>
+    </div>
+    <div class="row3">
+      <div class="field"><label>Público-alvo estimado</label>
+        <select class="select" id="publico">
+          <option value="">Selecione...</option>
+          <option value="infantil">Infantil (0-7)</option>
+          <option value="infanto">Infanto-juvenil (7-12)</option>
+          <option value="juvenil">Juvenil (12-17)</option>
+          <option value="adulto_jovem">Adulto jovem (18-30)</option>
+          <option value="adulto">Adulto geral (30+)</option>
+          <option value="terceira_idade">Terceira idade (60+)</option>
+          <option value="academico">Acadêmico / Especializado</option>
+          <option value="todos">Todos os públicos</option>
+        </select>
+      </div>
+      <div class="field"><label>Modelo de publicação</label>
+        <select class="select" id="modelo">
+          <option value="">Selecione...</option>
+          <option value="tradicional">Editora tradicional</option>
+          <option value="independente">Publicação independente</option>
+          <option value="digital">Ebook / Digital</option>
+          <option value="hibrido">Híbrido (impresso + digital)</option>
+          <option value="sob_demanda">Impressão sob demanda</option>
+        </select>
+      </div>
+      <div class="field"><label>Tiragem pretendida</label>
+        <select class="select" id="tiragem">
+          <option value="">Selecione...</option>
+          <option value="ate500">Até 500 exemplares</option>
+          <option value="500a1000">500 a 1.000</option>
+          <option value="1000a3000">1.000 a 3.000</option>
+          <option value="3000a10000">3.000 a 10.000</option>
+          <option value="mais10000">Mais de 10.000</option>
+          <option value="digital">Somente digital</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>Sinopse / descrição da obra</label>
+      <textarea class="textarea" id="sinopse" placeholder="Descreva a obra, seu tema central, diferenciais e a história que conta..."></textarea>
+    </div>
+    <div class="field"><label>Trecho da obra (opcional mas recomendado)</label>
+      <textarea class="textarea" id="texto" placeholder="Cole um trecho representativo para análise mais precisa..." style="min-height:100px;"></textarea>
+    </div>
+    <button class="btn btn-azul" style="width:100%;padding:14px;margin-top:4px;" onclick="avaliar()">✦ Gerar Avaliação de Mercado</button>
+  </div>
+
+  <!-- DIMENSÕES -->
+  <div class="box">
+    <h3>9 Dimensões de Mercado</h3>
+    <div class="dims-grid" id="dimsGrid"></div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado" id="resultadoBox">
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:16px;">Resultado da Avaliação de Mercado</h3>
+
+    <div class="score-grid">
+      <div class="score-card">
+        <div class="val" id="scoreGeral" style="color:var(--azul)">—</div>
+        <div class="lbl">Score Geral</div>
+        <div class="sub" id="scoreClasse">Aguardando</div>
+      </div>
+      <div class="score-card">
+        <div class="val" id="scorePotencial" style="color:var(--ouro)">—</div>
+        <div class="lbl">Potencial de Vendas</div>
+        <div class="sub" id="scorePotencialSub"></div>
+      </div>
+      <div class="score-card">
+        <div class="val" id="scoreViabilidade" style="color:var(--azul2)">—</div>
+        <div class="lbl">Viabilidade Editorial</div>
+        <div class="sub" id="scoreViabilidadeSub"></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-size:.82rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;">Categorias de mercado identificadas</div>
+      <div class="tag-list" id="tagList"></div>
+    </div>
+
+    <div class="ia-spin" id="iaSpin">✦ Gerando análise de mercado completa...</div>
+    <div class="parecer" id="parecer" style="display:none"></div>
+  </div>
+
+  <!-- LINKS -->
+  <div class="box">
+    <h3>Outras avaliações</h3>
+    <div class="links-aval">
+      <a class="link-aval" href="avaliacao_literaria.html">📗 Avaliação Literária</a>
+      <a class="link-aval" href="avaliacao_emocional.html">💜 Avaliação Emocional</a>
+      <a class="link-aval" href="lapidar_pensante.html">✦ Lapidar Pensante</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+const DIMS=[
+  {id:'demanda',     emoji:'📈', nome:'Demanda de Mercado',    desc:'Existe público ativo buscando este tipo de obra no mercado editorial brasileiro?'},
+  {id:'diferencial', emoji:'💎', nome:'Diferencial da Obra',   desc:'O que torna esta obra única e distinta das concorrentes disponíveis?'},
+  {id:'timing',      emoji:'⏱️', nome:'Timing Editorial',      desc:'Este é o momento certo para lançar esta obra? A temática está em alta ou emergente?'},
+  {id:'publico_def', emoji:'🎯', nome:'Definição do Público',  desc:'O público-alvo está bem definido e é suficientemente amplo para viabilizar a obra?'},
+  {id:'canais',      emoji:'🛒', nome:'Canais de Distribuição',desc:'Há canais adequados para distribuição: livrarias, plataformas digitais, eventos?'},
+  {id:'precificacao',emoji:'💰', nome:'Viabilidade de Preço',  desc:'O preço de capa que a obra pode praticar é competitivo e sustentável?'},
+  {id:'visibilidade',emoji:'👁️', nome:'Visibilidade e Alcance',desc:'Potencial de divulgação e alcance orgânico nas mídias sociais e imprensa literária.'},
+  {id:'longevidade', emoji:'🌱', nome:'Longevidade',           desc:'Esta obra tem potencial de permanecer relevante por mais de 2 anos após o lançamento?'},
+  {id:'adaptacoes',  emoji:'🎬', nome:'Potencial de Adaptações',desc:'Existe potencial para adaptações audiovisuais, séries, cursos ou outros formatos derivados?'},
+];
+
+let notas={};
+
+function renderDims(){
+  $('dimsGrid').innerHTML=DIMS.map(d=>`
+    <div class="dim-card" id="dc-${d.id}">
+      <div class="dim-header"><span class="dim-emoji">${d.emoji}</span><span class="dim-nome">${d.nome}</span></div>
+      <div class="dim-desc">${d.desc}</div>
+      <div class="dim-nota" id="dn-${d.id}">—</div>
+      <div class="dim-bar-bg"><div class="dim-bar" id="db-${d.id}"></div></div>
+      <div class="dim-justif" id="dj-${d.id}"></div>
+    </div>`).join('');
+}
+
+async function chamarAPI(prompt){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+  const d=await r.json();return d.content.map(b=>b.text||'').join('');
+}
+
+async function avaliar(){
+  const titulo=$('titulo').value.trim()||'Obra sem título';
+  const tipo=$('tipo').value||'não informado';
+  const publico=$('publico').value||'não informado';
+  const modelo=$('modelo').value||'não informado';
+  const tiragem=$('tiragem').value||'não informado';
+  const sinopse=$('sinopse').value.trim();
+  const texto=$('texto').value.trim();
+  if(!sinopse&&!texto){alert('Descreva a obra ou cole um trecho.');return;}
+
+  notas={};
+  DIMS.forEach(d=>{$(`dn-${d.id}`).textContent='—';$(`db-${d.id}`).style.width='0%';$(`dj-${d.id}`).textContent='';$(`dc-${d.id}`).classList.remove('ativa');});
+  $('resultadoBox').classList.remove('vis');$('parecer').style.display='none';$('tagList').innerHTML='';
+  $('scoreTopo').textContent='—';
+
+  const prompt=`Você é especialista em mercado editorial brasileiro do sistema Celeiro Literário.
+
+Avalie a obra nas 9 dimensões de mercado. Nota de 0 a 10.0 (1 casa decimal) para cada dimensão.
+
+OBRA: "${titulo}"
+TIPO: ${tipo}
+PÚBLICO-ALVO: ${publico}
+MODELO: ${modelo}
+TIRAGEM: ${tiragem}
+SINOPSE: ${sinopse||'(não informada)'}
+TRECHO: ${texto?texto.substring(0,1500):'(não fornecido)'}
+
+Responda APENAS JSON sem markdown:
+{"demanda":{"nota":0.0,"justif":""},"diferencial":{"nota":0.0,"justif":""},"timing":{"nota":0.0,"justif":""},"publico_def":{"nota":0.0,"justif":""},"canais":{"nota":0.0,"justif":""},"precificacao":{"nota":0.0,"justif":""},"visibilidade":{"nota":0.0,"justif":""},"longevidade":{"nota":0.0,"justif":""},"adaptacoes":{"nota":0.0,"justif":""},"categorias":["cat1","cat2","cat3"],"potencial":"baixo|medio|alto|muito_alto","viabilidade":"baixa|media|alta|muito_alta"}`;
+
+  try{
+    const raw=await chamarAPI(prompt);
+    const json=JSON.parse(raw.replace(/```json|```/g,'').trim());
+
+    for(const d of DIMS){
+      await new Promise(r=>setTimeout(r,130));
+      const dado=json[d.id];if(!dado)continue;
+      const n=Math.max(0,Math.min(10,Math.round(Number(dado.nota)*10)/10));
+      notas[d.id]=n;
+      $(`dn-${d.id}`).textContent=n.toFixed(1);
+      $(`db-${d.id}`).style.width=(n/10*100)+'%';
+      $(`dj-${d.id}`).textContent=dado.justif||'';
+      $(`dc-${d.id}`).classList.add('ativa');
+    }
+
+    const vals=Object.values(notas);
+    const media=vals.reduce((s,v)=>s+v,0)/vals.length;
+    const nf=Math.round(media*10)/10;
+    const cls=nf>=9?'Mercado excepcional':nf>=8?'Alto potencial de mercado':nf>=7?'Bom potencial':nf>=6?'Potencial moderado':nf>=5?'Mercado em desenvolvimento':'Mercado restrito';
+
+    $('scoreGeral').textContent=nf.toFixed(1);
+    $('scoreClasse').textContent=cls;
+    $('scoreTopo').textContent=nf.toFixed(1);
+
+    const potMap={baixo:{txt:'Baixo',cor:'#f56a6a'},medio:{txt:'Médio',cor:'var(--ouro)'},alto:{txt:'Alto',cor:'var(--azul)'},muito_alto:{txt:'Muito Alto',cor:'var(--azul2)'}};
+    const viaMap={baixa:{txt:'Baixa',cor:'#f56a6a'},media:{txt:'Média',cor:'var(--ouro)'},alta:{txt:'Alta',cor:'var(--azul)'},muito_alta:{txt:'Muito Alta',cor:'var(--azul2)'}};
+    const pot=potMap[json.potencial]||potMap.medio;
+    const via=viaMap[json.viabilidade]||viaMap.media;
+    $('scorePotencial').textContent=pot.txt;$('scorePotencial').style.color=pot.cor;$('scorePotencialSub').textContent='Vendas estimadas';
+    $('scoreViabilidade').textContent=via.txt;$('scoreViabilidade').style.color=via.cor;$('scoreViabilidadeSub').textContent='Retorno editorial';
+
+    if(json.categorias&&Array.isArray(json.categorias)){
+      $('tagList').innerHTML=json.categorias.map((t,i)=>{
+        const cores=['rgba(106,170,245,.15)','rgba(74,245,224,.12)','rgba(245,212,106,.12)','rgba(245,106,138,.12)'];
+        const bordas=['rgba(106,170,245,.4)','rgba(74,245,224,.3)','rgba(245,212,106,.3)','rgba(245,106,138,.3)'];
+        return `<span class="tag" style="background:${cores[i%4]};border-color:${bordas[i%4]};color:var(--soft)">${t}</span>`;
+      }).join('');
+    }
+
+    $('resultadoBox').classList.add('vis');
+    $('iaSpin').style.display='block';
+
+    const parecer=await chamarAPI(`Você é o analista de mercado editorial do Celeiro Literário.\n\nA obra "${titulo}" (${tipo}) obteve score de mercado ${nf.toFixed(1)}/10.0.\n\nNotas por dimensão:\n${DIMS.map(d=>`${d.nome}: ${notas[d.id]?.toFixed(1)||'—'}`).join('\n')}\nPotencial de vendas: ${json.potencial}\nViabilidade editorial: ${json.viabilidade}\n\nGere um relatório de mercado editorial em português:\n**Diagnóstico de mercado** — posição atual da obra no mercado\n**Público e nicho** — quem vai comprar e por quê\n**Tendências favoráveis** — o que o mercado tem a favor desta obra\n**Riscos e desafios** — obstáculos reais de mercado a considerar\n**Estratégia recomendada** — modelo de publicação, precificação e canais\n**Projeção** — estimativa realista de alcance e vendas\n\nMáximo 420 palavras. Tom analítico e prático.`);
+
+    $('iaSpin').style.display='none';
+    $('parecer').textContent=parecer;$('parecer').style.display='block';
+    $('resultadoBox').scrollIntoView({behavior:'smooth'});
+
+  }catch(e){$('iaSpin').style.display='none';alert('Erro: '+e.message);}
+}
+
+renderDims();
+</script>
+</body>
+</html>
