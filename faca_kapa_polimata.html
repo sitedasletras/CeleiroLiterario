@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Polimata — Criador de Capas Especializadas</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f14;--surface:#18181f;--card:#1e1e28;--line:#2a2a38;
+  --txt:#f0ede8;--muted:#8a8a9a;--soft:#c8c4be;
+  --shadow:0 16px 48px rgba(0,0,0,.4);--radius:20px;
+  --infantil:#ff6b9d;--infantil2:#ffe0ee;
+  --infanto:#7c6af5;--infanto2:#e8e4ff;
+  --juvenil:#2fc998;--juvenil2:#d4f8ee;
+  --tecnico:#3a9bd5;--tecnico2:#d4eeff;
+  --fotografico:#c8a96e;--fotografico2:#f5ead3;
+  --receitas:#e8624a;--receitas2:#ffeae6;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;background:var(--bg);color:var(--txt);font-family:'DM Sans',system-ui,sans-serif;}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(15,15,20,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:14px;}
+.brand-icon{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#6a3af5,#c43af5);display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 4px 16px rgba(106,58,245,.4);}
+.brand-text h1{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--txt);line-height:1;}
+.brand-text p{font-size:.82rem;color:var(--muted);margin-top:3px;}
+.top-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{border:none;border-radius:11px;padding:10px 16px;font:600 .88rem 'DM Sans',sans-serif;cursor:pointer;transition:.15s ease;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;}
+.btn:hover{transform:translateY(-1px);}
+.btn-purple{background:linear-gradient(135deg,#6a3af5,#c43af5);color:#fff;box-shadow:0 4px 14px rgba(106,58,245,.35);}
+.btn-green{background:#2fc998;color:#0a2018;}
+.btn-amber{background:#d4a44c;color:#1a1000;}
+.btn-red{background:#d44c4c;color:#fff;}
+.btn-ghost{background:rgba(255,255,255,.08);color:var(--soft);border:1px solid var(--line);}
+.wrap{max-width:1480px;margin:0 auto;padding:18px;display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px;align-items:start;}
+.left{display:flex;flex-direction:column;gap:12px;}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+.panel-head{padding:14px 16px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.03);}
+.panel-head h2{font-family:'Playfair Display',serif;font-size:1rem;color:var(--txt);}
+.panel-head p{font-size:.82rem;color:var(--muted);margin-top:4px;line-height:1.4;}
+.panel-body{padding:14px;display:flex;flex-direction:column;gap:10px;}
+.modo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.modo-btn{border:2px solid var(--line);background:var(--surface);border-radius:14px;padding:10px 8px;cursor:pointer;font:600 .82rem 'DM Sans',sans-serif;color:var(--muted);text-align:center;transition:.16s ease;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.modo-btn .modo-emoji{font-size:1.4rem;}
+.modo-btn:hover{transform:translateY(-1px);}
+.modo-btn.ativo{color:#fff;}
+.field label{display:block;font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;}
+.input,.select,.textarea{width:100%;border:1.5px solid var(--line);border-radius:11px;background:var(--surface);color:var(--txt);padding:9px 11px;font:inherit;font-size:.92rem;outline:none;transition:border-color .2s;}
+.textarea{min-height:72px;resize:vertical;}
+.input:focus,.select:focus,.textarea:focus{border-color:#6a3af5;}
+.select option{background:var(--surface);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.cor-strip{display:flex;gap:5px;flex-wrap:wrap;}
+.cor-dot{width:28px;height:28px;border-radius:50%;border:2.5px solid transparent;cursor:pointer;transition:.15s;flex-shrink:0;}
+.cor-dot:hover,.cor-dot.ativa{border-color:#fff;transform:scale(1.15);}
+.main{display:flex;flex-direction:column;gap:14px;}
+.stats-bar{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.stat{text-align:center;}
+.stat-val{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--txt);line-height:1;}
+.stat-lbl{font-size:.75rem;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.05em;}
+.stage-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;}
+.stage-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+.stage-top h2{font-family:'Playfair Display',serif;font-size:1.1rem;}
+.mode-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font:700 .82rem 'DM Sans',sans-serif;}
+.stage-shell{background:radial-gradient(ellipse at 30% 20%,rgba(106,58,245,.15),transparent 60%),radial-gradient(ellipse at 70% 80%,rgba(196,58,245,.1),transparent 60%),#111118;border-radius:16px;padding:24px;display:flex;justify-content:center;align-items:flex-start;min-height:680px;}
+#capaCanvas{display:block;box-shadow:0 24px 64px rgba(0,0,0,.6);max-width:100%;}
+.acoes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+.ia-box{background:linear-gradient(135deg,rgba(106,58,245,.12),rgba(196,58,245,.08));border:1px solid rgba(106,58,245,.3);border-radius:var(--radius);padding:18px;}
+.ia-box h3{font-family:'Playfair Display',serif;font-size:1.05rem;color:#c8a8ff;margin-bottom:6px;}
+.ia-box p{font-size:.85rem;color:var(--muted);line-height:1.5;margin-bottom:12px;}
+#iaResposta{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;font-size:.88rem;color:var(--soft);line-height:1.7;white-space:pre-wrap;display:none;min-height:60px;}
+.ia-spin{display:none;text-align:center;color:#c8a8ff;font-style:italic;font-size:.88rem;padding:8px 0;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:.6;}50%{opacity:1;}}
+.tips{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.tip{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;font-size:.82rem;color:var(--muted);line-height:1.4;}
+.tip strong{color:var(--soft);display:block;margin-bottom:3px;}
+@media(max-width:1100px){.wrap{grid-template-columns:1fr;}}
+@media(max-width:680px){.stats-bar{grid-template-columns:1fr 1fr;}.acoes{grid-template-columns:1fr;}.tips{grid-template-columns:1fr;}.modo-grid{grid-template-columns:repeat(3,1fr);}}
+@media print{.topbar,.left,.ia-box,.tips,.stage-top,.acoes,.stats-bar{display:none!important;}body{background:#fff;}.wrap{display:block;padding:0;}.stage-box{border:0;box-shadow:none;padding:0;}.stage-shell{background:#fff;padding:0;border-radius:0;min-height:auto;}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">📗</div>
+    <div class="brand-text">
+      <h1>Polimata — Capas Especializadas</h1>
+      <p>Celeiro Literário · Para os livros do Hércules</p>
+    </div>
+  </div>
+  <div class="top-btns">
+    <button class="btn btn-purple" onclick="render()">↺ Atualizar</button>
+    <button class="btn btn-green"  onclick="baixar()">↓ Baixar JPG</button>
+    <button class="btn btn-ghost"  onclick="window.print()">🖨 Imprimir</button>
+    <a class="btn btn-amber" href="lapidar.html">← Lapidar</a>
+    <a class="btn btn-red"   href="pagina_respiro_celeiro.html">Sair</a>
+  </div>
+</header>
+<div class="wrap">
+  <aside class="left">
+    <div class="panel">
+      <div class="panel-head"><h2>Tipo de livro</h2><p>Cada tipo aplica paleta, tipografia e layout específicos.</p></div>
+      <div class="panel-body">
+        <div class="modo-grid" id="modoGrid">
+          <button class="modo-btn ativo" data-modo="infantil"    onclick="setModo('infantil')">   <span class="modo-emoji">🧸</span>Infantil</button>
+          <button class="modo-btn"       data-modo="infanto"     onclick="setModo('infanto')">    <span class="modo-emoji">📚</span>Infanto-Juvenil</button>
+          <button class="modo-btn"       data-modo="juvenil"     onclick="setModo('juvenil')">    <span class="modo-emoji">🌟</span>Juvenil</button>
+          <button class="modo-btn"       data-modo="tecnico"     onclick="setModo('tecnico')">    <span class="modo-emoji">🔧</span>Técnico</button>
+          <button class="modo-btn"       data-modo="fotografico" onclick="setModo('fotografico')"><span class="modo-emoji">📷</span>Fotográfico</button>
+          <button class="modo-btn"       data-modo="receitas"    onclick="setModo('receitas')">   <span class="modo-emoji">🍳</span>Receitas</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h2>Textos</h2></div>
+      <div class="panel-body">
+        <div class="field"><label>Título</label><input class="input" id="titulo" type="text" value="A Grande Aventura"></div>
+        <div class="field"><label>Subtítulo</label><input class="input" id="subtitulo" type="text" value="Uma história cheia de surpresas"></div>
+        <div class="field"><label>Autor</label><input class="input" id="autor" type="text" value="Ana Lima"></div>
+        <div class="row2">
+          <div class="field"><label>Editora</label><input class="input" id="editora" type="text" value="Celeiro Literário"></div>
+          <div class="field"><label>Ano</label><input class="input" id="ano" type="text" value="2026"></div>
+        </div>
+        <div class="field"><label>Sinopse (para IA)</label><textarea class="textarea" id="sinopse">Uma aventura colorida sobre amizade e coragem.</textarea></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h2>Design</h2></div>
+      <div class="panel-body">
+        <div class="field"><label>Cor de fundo</label>
+          <div class="cor-strip" id="corStrip">
+            <div class="cor-dot ativa" data-cor="#fff5f9" style="background:#fff5f9"></div>
+            <div class="cor-dot" data-cor="#1a0a2e" style="background:#1a0a2e"></div>
+            <div class="cor-dot" data-cor="#0a2818" style="background:#0a2818"></div>
+            <div class="cor-dot" data-cor="#ffffff" style="background:#fff;border:1px solid #ccc"></div>
+            <div class="cor-dot" data-cor="#fff8e8" style="background:#fff8e8"></div>
+            <div class="cor-dot" data-cor="#1a1a2e" style="background:#1a1a2e"></div>
+            <div class="cor-dot" data-cor="#2a1810" style="background:#2a1810"></div>
+            <div class="cor-dot" data-cor="#f0f8ff" style="background:#f0f8ff"></div>
+            <div class="cor-dot" data-cor="#1e2a1e" style="background:#1e2a1e"></div>
+            <div class="cor-dot" data-cor="#fef0ec" style="background:#fef0ec"></div>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Cor título</label><input class="input" id="corTitulo" type="color" value="#1a0a2e" style="height:40px;padding:3px;"></div>
+          <div class="field"><label>Cor autor</label><input class="input" id="corAutor" type="color" value="#3a2a5a" style="height:40px;padding:3px;"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Fonte</label>
+            <select class="select" id="fonte">
+              <option value="'Playfair Display',Georgia,serif">Playfair Display</option>
+              <option value="Georgia,serif">Georgia</option>
+              <option value="'Times New Roman',serif">Times New Roman</option>
+              <option value="Arial,sans-serif">Arial</option>
+              <option value="Verdana,sans-serif">Verdana</option>
+            </select>
+          </div>
+          <div class="field"><label>Formato</label>
+            <select class="select" id="formato">
+              <option value="a5">A5</option>
+              <option value="14x21" selected>14×21 cm</option>
+              <option value="16x23">16×23 cm</option>
+              <option value="a4">A4</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label>Imagem (opcional)</label><input class="input" id="imgInput" type="file" accept="image/*" style="padding:5px;font-size:.82rem;"></div>
+      </div>
+    </div>
+    <button class="btn btn-purple" style="width:100%;padding:13px;" onclick="render()">↺ Atualizar prévia</button>
+    <button class="btn btn-ghost"  style="width:100%;padding:13px;" onclick="limpar()">✕ Limpar imagem</button>
+  </aside>
+  <div class="main">
+    <div class="stats-bar">
+      <div class="stat"><div class="stat-val" id="sTipo">🧸 Infantil</div><div class="stat-lbl">Tipo</div></div>
+      <div class="stat"><div class="stat-val" id="sFmt">14×21</div><div class="stat-lbl">Formato</div></div>
+      <div class="stat"><div class="stat-val" id="sFonte">Playfair</div><div class="stat-lbl">Fonte</div></div>
+      <div class="stat"><div class="stat-val" id="sStatus">Pronto</div><div class="stat-lbl">Status</div></div>
+    </div>
+    <div class="stage-box">
+      <div class="stage-top">
+        <h2>Prévia da capa</h2>
+        <div class="mode-tag" id="modeTag" style="background:rgba(255,107,157,.15);color:#ff6b9d;border:1px solid rgba(255,107,157,.3);">🧸 Infantil</div>
+      </div>
+      <div class="stage-shell"><canvas id="capaCanvas"></canvas></div>
+      <div class="acoes">
+        <button class="btn btn-purple" onclick="render()">↺ Atualizar</button>
+        <button class="btn btn-green"  onclick="baixar()">↓ Baixar JPG</button>
+        <button class="btn btn-ghost"  onclick="window.print()">🖨 PDF</button>
+      </div>
+    </div>
+    <div class="ia-box">
+      <h3>✦ Sugestão de Capa com IA</h3>
+      <p>Preencha a sinopse e clique abaixo. A IA cria sugestão de conceito visual, paleta e tipografia para o tipo selecionado.</p>
+      <button class="btn btn-purple" style="width:100%;margin-bottom:12px;" onclick="sugerirIA()">✦ Gerar sugestão com IA</button>
+      <div class="ia-spin" id="iaSpin">✦ A IA está criando sua sugestão de capa...</div>
+      <div id="iaResposta"></div>
+    </div>
+    <div class="tips">
+      <div class="tip"><strong>6 tipos especializados</strong>Cada modo aplica paleta e layout ideal para aquele público.</div>
+      <div class="tip"><strong>Imagem de fundo</strong>Envie uma foto ou ilustração para usar como arte central.</div>
+      <div class="tip"><strong>IA criativa</strong>Sugestão de conceito visual personalizada para sua obra.</div>
+    </div>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let modoAtual='infantil',corFundo='#fff5f9',imgUsuario=null;
+const MODOS={
+  infantil:{emoji:'🧸',label:'Infantil',cor:'#ff6b9d',fundo:'#fff5f9',corT:'#3a0a28',corA:'#7a2a50',fonte:"'Playfair Display',Georgia,serif",tagBg:'rgba(255,107,157,.15)',tagBorder:'rgba(255,107,157,.3)',ornamento:'★ ☆ ★',rodapeLabel:'LITERATURA INFANTIL',descIA:'livro infantil (0-7 anos), com linguagem visual lúdica, cores vibrantes e tipografia alegre'},
+  infanto:{emoji:'📚',label:'Infanto-Juvenil',cor:'#7c6af5',fundo:'#f8f6ff',corT:'#1a0a3e',corA:'#3a2a6e',fonte:"'Playfair Display',Georgia,serif",tagBg:'rgba(124,106,245,.15)',tagBorder:'rgba(124,106,245,.3)',ornamento:'◆ ◇ ◆',rodapeLabel:'LITERATURA INFANTO-JUVENIL',descIA:'livro infanto-juvenil (7-12 anos), com identidade dinâmica e atmosfera de aventura'},
+  juvenil:{emoji:'🌟',label:'Juvenil',cor:'#2fc998',fundo:'#f0fdf8',corT:'#0a2818',corA:'#1a5838',fonte:"'Playfair Display',Georgia,serif",tagBg:'rgba(47,201,152,.15)',tagBorder:'rgba(47,201,152,.3)',ornamento:'— ✦ —',rodapeLabel:'LITERATURA JUVENIL',descIA:'livro juvenil (12-17 anos), com identidade sofisticada e apelo emocional forte'},
+  tecnico:{emoji:'🔧',label:'Técnico',cor:'#3a9bd5',fundo:'#f4f8fd',corT:'#0a1e3a',corA:'#1a3a5a',fonte:"Arial,Helvetica,sans-serif",tagBg:'rgba(58,155,213,.15)',tagBorder:'rgba(58,155,213,.3)',ornamento:'━━━━━',rodapeLabel:'OBRA TÉCNICA',descIA:'livro técnico ou manual, com identidade clean e profissional'},
+  fotografico:{emoji:'📷',label:'Fotográfico',cor:'#c8a96e',fundo:'#faf8f4',corT:'#1a150a',corA:'#3a3020',fonte:"Georgia,serif",tagBg:'rgba(200,169,110,.15)',tagBorder:'rgba(200,169,110,.3)',ornamento:'· · ·',rodapeLabel:'LIVRO FOTOGRÁFICO',descIA:'livro fotográfico, com identidade editorial minimalista e foco total na imagem'},
+  receitas:{emoji:'🍳',label:'Receitas',cor:'#e8624a',fundo:'#fff8f6',corT:'#2a0a08',corA:'#5a2018',fonte:"Georgia,serif",tagBg:'rgba(232,98,74,.15)',tagBorder:'rgba(232,98,74,.3)',ornamento:'~ ❧ ~',rodapeLabel:'LIVRO DE RECEITAS',descIA:'livro de receitas, com identidade calorosa e apetitosa'},
+};
+const DIMS={a5:{w:560,h:794},'14x21':{w:560,h:840},'16x23':{w:560,h:806},a4:{w:595,h:842}};
+function setModo(modo){
+  modoAtual=modo;const cfg=MODOS[modo];
+  document.querySelectorAll('.modo-btn').forEach(b=>{const a=b.dataset.modo===modo;b.classList.toggle('ativo',a);b.style.borderColor=a?cfg.cor:'';b.style.background=a?`${cfg.cor}22`:'';b.style.color=a?cfg.cor:'';});
+  $('modeTag').textContent=`${cfg.emoji} ${cfg.label}`;
+  $('modeTag').style.cssText=`background:${cfg.tagBg};color:${cfg.cor};border:1px solid ${cfg.tagBorder};display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font:700 .82rem 'DM Sans',sans-serif;`;
+  corFundo=cfg.fundo;$('corTitulo').value=cfg.corT;$('corAutor').value=cfg.corA;$('fonte').value=cfg.fonte;
+  document.querySelectorAll('.cor-dot').forEach(d=>d.classList.remove('ativa'));render();
+}
+function wrapText(ctx,text,x,y,maxW,lh){const words=text.split(' ');let line='',lines=[];for(const w of words){const t=line?line+' '+w:w;if(ctx.measureText(t).width>maxW&&line){lines.push(line);line=w;}else line=t;}lines.push(line);for(const l of lines){ctx.fillText(l,x,y);y+=lh;}return y;}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+function render(){
+  const cfg=MODOS[modoAtual],fmt=DIMS[$('formato').value]||DIMS['14x21'];
+  const cv=$('capaCanvas');cv.width=fmt.w;cv.height=fmt.h;
+  const ctx=cv.getContext('2d'),W=fmt.w,H=fmt.h;
+  const titulo=$('titulo').value.trim()||'Sem título';
+  const subtitulo=$('subtitulo').value.trim();
+  const autor=$('autor').value.trim()||'Autor';
+  const editora=$('editora').value.trim();
+  const ano=$('ano').value.trim();
+  const corT=$('corTitulo').value,corA=$('corAutor').value,fonte=$('fonte').value;
+  ctx.fillStyle=corFundo;ctx.fillRect(0,0,W,H);
+  if(imgUsuario){ctx.save();ctx.globalAlpha=modoAtual==='fotografico'?0.55:0.25;const s=Math.max(W/imgUsuario.width,H/imgUsuario.height);const iw=imgUsuario.width*s,ih=imgUsuario.height*s;ctx.drawImage(imgUsuario,(W-iw)/2,(H-ih)/2,iw,ih);ctx.restore();}
+  const grad=ctx.createLinearGradient(0,0,0,H);
+  if(modoAtual==='infantil'){grad.addColorStop(0,`${cfg.cor}22`);grad.addColorStop(.5,'transparent');grad.addColorStop(1,`${cfg.cor}33`);}
+  else if(modoAtual==='infanto'){grad.addColorStop(0,'rgba(124,106,245,.12)');grad.addColorStop(1,'rgba(124,106,245,.06)');}
+  else{grad.addColorStop(0,'rgba(0,0,0,.04)');grad.addColorStop(1,'rgba(0,0,0,.1)');}
+  ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+  const faixaH=56;
+  const fg=ctx.createLinearGradient(0,0,W,0);fg.addColorStop(0,`${cfg.cor}40`);fg.addColorStop(1,`${cfg.cor}18`);
+  ctx.fillStyle=fg;ctx.fillRect(0,0,W,faixaH);
+  ctx.strokeStyle=cfg.cor+'60';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(0,faixaH);ctx.lineTo(W,faixaH);ctx.stroke();
+  if(editora){ctx.fillStyle=corT+'cc';ctx.font=`600 11px Arial,sans-serif`;ctx.textAlign='center';ctx.fillText(editora.toUpperCase(),W/2,faixaH/2+4);}
+  const padH=60,padV=80,areaY=faixaH+padV;
+  if(modoAtual==='infantil'||modoAtual==='infanto'){ctx.fillStyle=cfg.cor+'18';rr(ctx,padH-20,areaY-20,W-2*(padH-20),H-areaY-80,16);ctx.fill();}
+  if(modoAtual==='tecnico'){ctx.strokeStyle=cfg.cor+'40';ctx.lineWidth=1;ctx.strokeRect(padH-10,areaY-10,W-2*(padH-10),H-areaY-70);}
+  ctx.fillStyle=cfg.cor+'55';ctx.font=`${modoAtual==='infantil'?20:14}px Georgia,serif`;ctx.textAlign='center';ctx.fillText(cfg.ornamento,W/2,areaY+14);
+  ctx.fillStyle=corT;ctx.textAlign='center';
+  const fsT=titulo.length>22?(titulo.length>35?32:40):48;
+  ctx.font=`700 ${fsT}px ${fonte}`;
+  let ty=areaY+50;ty=wrapText(ctx,titulo,W/2,ty,W-2*padH,fsT*1.2)+16;
+  ctx.strokeStyle=cfg.cor+'70';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(padH+20,ty);ctx.lineTo(W-padH-20,ty);ctx.stroke();ty+=20;
+  if(subtitulo){ctx.fillStyle=corA+'cc';ctx.font=`italic ${Math.round(fsT*.36)}px ${fonte}`;ctx.textAlign='center';ty=wrapText(ctx,subtitulo,W/2,ty,W-2*padH-20,fsT*.48)+12;}
+  const imgY=ty+16,imgH=H-imgY-100;
+  if(!imgUsuario){ctx.fillStyle=cfg.cor+'10';rr(ctx,padH,imgY,W-2*padH,imgH>60?imgH:60,12);ctx.fill();ctx.strokeStyle=cfg.cor+'30';ctx.lineWidth=1;rr(ctx,padH,imgY,W-2*padH,imgH>60?imgH:60,12);ctx.stroke();ctx.fillStyle=cfg.cor+'40';ctx.font=`13px Arial,sans-serif`;ctx.textAlign='center';ctx.fillText('[ Envie uma imagem no painel ]',W/2,imgY+(imgH>60?imgH:60)/2+5);}
+  const rodapeY=H-56;
+  const rg=ctx.createLinearGradient(0,rodapeY,W,rodapeY);rg.addColorStop(0,`${cfg.cor}35`);rg.addColorStop(1,`${cfg.cor}15`);
+  ctx.fillStyle=rg;ctx.fillRect(0,rodapeY,W,56);
+  ctx.strokeStyle=cfg.cor+'50';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,rodapeY);ctx.lineTo(W,rodapeY);ctx.stroke();
+  ctx.fillStyle=corA;ctx.font=`600 14px ${fonte}`;ctx.textAlign='center';ctx.fillText(autor,W/2,rodapeY+22);
+  ctx.fillStyle=corA+'80';ctx.font=`11px Arial,sans-serif`;ctx.fillText(`${cfg.rodapeLabel}${ano?' · '+ano:''}`,W/2,rodapeY+40);
+  $('sTipo').textContent=`${cfg.emoji} ${cfg.label}`;
+  $('sFmt').textContent=$('formato').options[$('formato').selectedIndex].text;
+  $('sFonte').textContent=$('fonte').options[$('fonte').selectedIndex].text.split(',')[0];
+  $('sStatus').textContent='✓ Atualizado';
+}
+function baixar(){render();const a=document.createElement('a');a.href=$('capaCanvas').toDataURL('image/jpeg',.95);a.download=`capa-${modoAtual}-${($('titulo').value||'livro').replace(/\s+/g,'-').toLowerCase()}.jpg`;a.click();}
+function limpar(){imgUsuario=null;$('imgInput').value='';render();}
+$('imgInput').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{imgUsuario=i;render();};i.src=r.result;};r.readAsDataURL(f);});
+$('corStrip').addEventListener('click',e=>{const d=e.target.closest('.cor-dot');if(!d)return;corFundo=d.dataset.cor;document.querySelectorAll('.cor-dot').forEach(x=>x.classList.remove('ativa'));d.classList.add('ativa');render();});
+['titulo','subtitulo','autor','editora','ano','fonte','formato','corTitulo','corAutor'].forEach(id=>{$(id).addEventListener('input',render);$(id).addEventListener('change',render);});
+async function sugerirIA(){
+  const cfg=MODOS[modoAtual];
+  const titulo=$('titulo').value.trim()||'Sem título';
+  const subtit=$('subtitulo').value.trim();
+  const autor=$('autor').value.trim();
+  const sinopse=$('sinopse').value.trim();
+  $('iaSpin').style.display='block';$('iaResposta').style.display='none';$('iaResposta').textContent='';
+  const prompt=`Você é um diretor de arte especializado em capas de livros brasileiros.\n\nCrie uma sugestão detalhada de capa para o seguinte ${cfg.descIA}:\n\nTÍTULO: ${titulo}\nSUBTÍTULO: ${subtit||'(não informado)'}\nAUTOR: ${autor||'(não informado)'}\nSINOPSE: ${sinopse||'(não informada)'}\n\nResponda em português com estas seções:\n**Conceito visual** — A ideia central em 2-3 frases\n**Paleta de cores** — 3 a 4 cores com hex e justificativa\n**Tipografia** — Fonte ideal com justificativa\n**Elemento central** — O que deve aparecer como arte principal\n**Atmosfera** — A sensação que a capa deve passar\n**Dica prática** — Conselho direto para contratar um designer\n\nSeja específico para o tipo "${cfg.label}". Máximo 320 palavras.`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    $('iaResposta').textContent=d.content.map(b=>b.text||'').join('');
+    $('iaResposta').style.display='block';
+  }catch(e){
+    $('iaResposta').textContent='Erro ao conectar com a IA.';
+    $('iaResposta').style.display='block';
+  }finally{$('iaSpin').style.display='none';}
+}
+setModo('infantil');
+</script>
+</body>
+</html>
