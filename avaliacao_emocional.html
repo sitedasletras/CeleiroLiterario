@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Avaliação Emocional — Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0e16;--surface:#13151f;--card:#181b27;--line:#252838;
+  --txt:#f0edf8;--muted:#8a8aaa;--soft:#c8c4e0;
+  --purple:#8a6af5;--purple2:#c46af5;--rose:#f56a8a;
+  --gold:#f5c46a;--teal:#6af5c4;--blue:#6aaaf5;
+  --ok:#4af58a;--shadow:0 16px 48px rgba(0,0,0,.5);--radius:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;background:var(--bg);color:var(--txt);font-family:'DM Sans',system-ui,sans-serif;}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:30;background:rgba(12,14,22,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--purple),var(--rose));display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 16px rgba(138,106,245,.4);}
+.brand-text h1{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--txt);line-height:1;}
+.brand-text p{font-size:.8rem;color:var(--muted);margin-top:2px;}
+.top-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{border:none;border-radius:11px;padding:9px 15px;font:600 .86rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+.btn:hover{transform:translateY(-1px);}
+.btn-purple{background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;box-shadow:0 4px 14px rgba(138,106,245,.35);}
+.btn-amber{background:#d4a44c;color:#1a1000;}
+.btn-red{background:#d44c4c;color:#fff;}
+.btn-ghost{background:rgba(255,255,255,.07);color:var(--soft);border:1px solid var(--line);}
+
+/* LAYOUT */
+.wrap{max-width:1320px;margin:0 auto;padding:18px;display:flex;flex-direction:column;gap:16px;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,rgba(138,106,245,.12),rgba(196,106,245,.06),rgba(245,106,138,.08));border:1px solid rgba(138,106,245,.2);border-radius:var(--radius);padding:28px 28px 24px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;}
+.hero h2{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.4rem);line-height:1.1;margin-bottom:8px;}
+.hero p{color:var(--muted);font-size:.95rem;line-height:1.55;max-width:680px;}
+.score-big{text-align:center;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:18px;padding:16px 24px;min-width:130px;}
+.score-big .num{font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold);line-height:1;transition:all .4s ease;}
+.score-big .lbl{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;}
+
+/* FORMULÁRIO */
+.form-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;}
+.form-box h3{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:14px;color:var(--txt);}
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;}
+.input,.select,.textarea{width:100%;border:1.5px solid var(--line);border-radius:11px;background:var(--surface);color:var(--txt);padding:10px 12px;font:inherit;font-size:.93rem;outline:none;transition:border-color .2s;}
+.textarea{min-height:160px;resize:vertical;line-height:1.55;}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--purple);}
+.select option{background:var(--surface);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* CATEGORIAS GRID */
+.cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:4px;}
+.cat-card{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;transition:.2s;}
+.cat-card.ativa{border-color:var(--purple);background:rgba(138,106,245,.07);}
+.cat-header{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.cat-emoji{font-size:1.3rem;}
+.cat-nome{font-weight:700;font-size:.95rem;color:var(--txt);}
+.cat-peso{font-size:.75rem;color:var(--muted);margin-left:auto;background:rgba(255,255,255,.07);padding:2px 8px;border-radius:999px;}
+.cat-desc{font-size:.82rem;color:var(--muted);line-height:1.4;margin-bottom:10px;}
+.cat-nota-wrap{display:flex;align-items:center;gap:10px;}
+.cat-nota{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);min-width:64px;text-align:center;background:rgba(245,196,106,.08);border:1px solid rgba(245,196,106,.2);border-radius:10px;padding:4px 8px;transition:.4s ease;}
+.cat-bar-bg{flex:1;height:6px;background:rgba(255,255,255,.07);border-radius:999px;overflow:hidden;}
+.cat-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--rose));width:0%;transition:width .6s ease;}
+.cat-justif{font-size:.78rem;color:var(--soft);line-height:1.45;margin-top:8px;font-style:italic;min-height:36px;}
+
+/* RESULTADO */
+.resultado-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;display:none;}
+.resultado-box.visivel{display:block;}
+.resultado-top{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;margin-bottom:20px;}
+.nota-final-display{text-align:center;}
+.nota-final-num{font-family:'Playfair Display',serif;font-size:5rem;line-height:1;color:var(--gold);text-shadow:0 0 40px rgba(245,196,106,.4);}
+.nota-final-lbl{font-size:.85rem;color:var(--muted);margin-top:4px;}
+.nota-final-classe{font-size:1.1rem;font-weight:700;margin-top:6px;}
+.resumo-ia{background:rgba(138,106,245,.07);border:1px solid rgba(138,106,245,.2);border-radius:16px;padding:16px;margin-top:16px;font-size:.92rem;color:var(--soft);line-height:1.7;white-space:pre-wrap;}
+.ia-spin{text-align:center;color:var(--purple);font-style:italic;font-size:.9rem;padding:14px 0;animation:pulse 1.5s infinite;display:none;}
+@keyframes pulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+
+/* PROGRESS */
+.progress-shell{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;}
+.progress-shell h3{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:14px;}
+.prog-item{display:grid;grid-template-columns:140px 1fr 80px;align-items:center;gap:10px;margin-bottom:10px;}
+.prog-nome{font-size:.82rem;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.prog-bar-bg{height:8px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden;}
+.prog-bar{height:100%;border-radius:999px;transition:width .7s ease;}
+.prog-nota{font-family:'Playfair Display',serif;font-size:.95rem;text-align:right;}
+
+/* TIPS */
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;}
+.tip{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;font-size:.82rem;color:var(--muted);line-height:1.4;}
+.tip strong{color:var(--soft);display:block;margin-bottom:3px;}
+
+@media(max-width:760px){
+  .hero{grid-template-columns:1fr;}.score-big{display:none;}
+  .row2{grid-template-columns:1fr;}.cats-grid{grid-template-columns:1fr;}
+  .resultado-top{grid-template-columns:1fr;}.prog-item{grid-template-columns:100px 1fr 60px;}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">💜</div>
+    <div class="brand-text">
+      <h1>Avaliação Emocional</h1>
+      <p>Celeiro Literário · Sistema de pontuação 0–10.000 / 0–10.0</p>
+    </div>
+  </div>
+  <div class="top-btns">
+    <button class="btn btn-purple" onclick="avaliar()">✦ Avaliar obra</button>
+    <a class="btn btn-amber" href="avaliacao_literaria.html">← Avaliações</a>
+    <a class="btn btn-amber" href="lapidar.html">← Lapidar</a>
+    <a class="btn btn-red"   href="pagina_respiro_celeiro.html">Sair</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <h2>Avaliação Emocional da Obra</h2>
+      <p>12 categorias emocionais, cada uma pontuada de 0 a 10.000. A nota final de 0 a 10.0 aplica arredondamento estatístico ponderado — o mesmo padrão usado em livros de estatística. Cada categoria tem peso diferente conforme seu impacto real no leitor.</p>
+    </div>
+    <div class="score-big">
+      <div class="num" id="scoreTopo">—</div>
+      <div class="lbl">Nota Final</div>
+    </div>
+  </div>
+
+  <!-- FORMULÁRIO -->
+  <div class="form-box">
+    <h3>Dados da obra</h3>
+    <div class="row2">
+      <div class="field"><label>Título</label><input class="input" id="titulo" type="text" placeholder="Título da obra"></div>
+      <div class="field"><label>Tipo de obra</label>
+        <select class="select" id="tipo">
+          <option value="">Selecione...</option>
+          <option value="romance">Romance</option>
+          <option value="conto">Conto</option>
+          <option value="poesia">Poesia / Poema</option>
+          <option value="cronica">Crônica</option>
+          <option value="novela">Novela</option>
+          <option value="infantil">Infantil / Juvenil</option>
+          <option value="memorias">Memórias / Autobiografia</option>
+          <option value="ensaio">Ensaio</option>
+          <option value="cordel">Cordel</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>Trecho ou texto completo da obra</label>
+      <textarea class="textarea" id="texto" placeholder="Cole aqui o texto da obra para avaliação emocional..."></textarea>
+    </div>
+    <button class="btn btn-purple" style="width:100%;padding:14px;margin-top:4px;font-size:.95rem;" onclick="avaliar()">✦ Iniciar Avaliação Emocional</button>
+  </div>
+
+  <!-- CATEGORIAS -->
+  <div class="form-box">
+    <h3>12 Categorias Emocionais — Pontuação 0 a 10.000 cada</h3>
+    <div class="cats-grid" id="catsGrid"></div>
+  </div>
+
+  <!-- PROGRESSO VISUAL -->
+  <div class="progress-shell" id="progressShell" style="display:none">
+    <h3>Painel de pontuação</h3>
+    <div id="progressBars"></div>
+  </div>
+
+  <!-- RESULTADO FINAL -->
+  <div class="resultado-box" id="resultadoBox">
+    <div class="resultado-top">
+      <div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:6px;">Resultado da Avaliação Emocional</h3>
+        <p style="color:var(--muted);font-size:.9rem;" id="resultadoSubtitulo"></p>
+      </div>
+      <div class="nota-final-display">
+        <div class="nota-final-num" id="notaFinalNum">—</div>
+        <div class="nota-final-lbl">Nota Final (0–10.0)</div>
+        <div class="nota-final-classe" id="notaFinalClasse"></div>
+      </div>
+    </div>
+    <div class="ia-spin" id="iaSpin">✦ Gerando síntese emocional da obra...</div>
+    <div class="resumo-ia" id="resumoIA" style="display:none"></div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="tips">
+    <div class="tip"><strong>Sistema ponderado</strong>Categorias com maior impacto emocional têm peso maior na nota final.</div>
+    <div class="tip"><strong>Escala 0–10.000</strong>Cada categoria é avaliada em escala ampla para máxima precisão estatística.</div>
+    <div class="tip"><strong>Nota final 0–10.0</strong>Arredondamento estatístico com 1 casa decimal, padrão de livros de estatística.</div>
+    <div class="tip"><strong>IA dupla</strong>Avaliação pelo motor interno Celeiro + síntese pela API Anthropic.</div>
+  </div>
+
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+// ── 12 CATEGORIAS COM PESOS ───────────────────────────────────────────────
+const CATEGORIAS = [
+  { id:'impacto',      emoji:'⚡', nome:'Impacto Emocional',     peso:12, cor:'#f56a8a',
+    desc:'Força com que a obra atinge o leitor emocionalmente. O quanto ela abala, comove ou transforma.' },
+  { id:'identificacao',emoji:'🪞', nome:'Identificação',          peso:11, cor:'#8a6af5',
+    desc:'Capacidade de o leitor se ver na obra — nos personagens, nas situações, nas emoções.' },
+  { id:'tensao',       emoji:'🌀', nome:'Tensão e Suspense',      peso:9,  cor:'#c46af5',
+    desc:'Capacidade da obra de criar expectativa, angústia, desejo de continuar a leitura.' },
+  { id:'emocao',       emoji:'💧', nome:'Profundidade Emocional',  peso:11, cor:'#6aaaf5',
+    desc:'Intensidade e autenticidade das emoções transmitidas — tristeza, alegria, medo, amor.' },
+  { id:'beleza',       emoji:'✨', nome:'Beleza da Linguagem',     peso:8,  cor:'#f5c46a',
+    desc:'Qualidade estética das palavras, imagens, metáforas e a musicalidade do texto.' },
+  { id:'originalidade',emoji:'🔮', nome:'Originalidade',          peso:8,  cor:'#6af5c4',
+    desc:'O quanto a obra traz uma visão, voz ou abordagem que não se viu antes.' },
+  { id:'memoria',      emoji:'🕯️', nome:'Memória Afetiva',        peso:9,  cor:'#f5a46a',
+    desc:'Capacidade de a obra ativar memórias, saudades, afetos guardados no leitor.' },
+  { id:'empatia',      emoji:'🤝', nome:'Empatia',                peso:9,  cor:'#6af58a',
+    desc:'Quanto a obra convida o leitor a sentir pelo outro, a sair de si mesmo.' },
+  { id:'urgencia',     emoji:'🔥', nome:'Urgência de Leitura',    peso:7,  cor:'#f5846a',
+    desc:'Sensação de que o livro não pode ser largado — o ritmo que puxa o leitor para frente.' },
+  { id:'pertencimento',emoji:'🌿', nome:'Pertencimento',          peso:6,  cor:'#8af56a',
+    desc:'Sensação de que a obra fala especificamente ao leitor, como se tivesse sido escrita para ele.' },
+  { id:'transcendencia',emoji:'🌌',nome:'Transcendência',         peso:5,  cor:'#6ae8f5',
+    desc:'Capacidade de elevar o leitor além do cotidiano, de tocá-lo no plano espiritual ou filosófico.' },
+  { id:'catarse',      emoji:'🌊', nome:'Catarse',                peso:5,  cor:'#f56af5',
+    desc:'Alívio emocional que a obra proporciona — a sensação de limpeza interior após a leitura.' },
+];
+
+const PESO_TOTAL = CATEGORIAS.reduce((s,c)=>s+c.peso,0);
+
+// ── ESTADO ────────────────────────────────────────────────────────────────
+let notas = {}; // id → nota 0-10000
+
+// ── RENDERIZAR CATEGORIAS ─────────────────────────────────────────────────
+function renderCats(){
+  const grid = $('catsGrid');
+  grid.innerHTML = CATEGORIAS.map(c=>`
+    <div class="cat-card" id="catcard-${c.id}">
+      <div class="cat-header">
+        <span class="cat-emoji">${c.emoji}</span>
+        <span class="cat-nome">${c.nome}</span>
+        <span class="cat-peso">Peso ${c.peso}</span>
+      </div>
+      <div class="cat-desc">${c.desc}</div>
+      <div class="cat-nota-wrap">
+        <div class="cat-nota" id="catnota-${c.id}">—</div>
+        <div class="cat-bar-bg"><div class="cat-bar" id="catbar-${c.id}"></div></div>
+      </div>
+      <div class="cat-justif" id="catjustif-${c.id}"></div>
+    </div>
+  `).join('');
+}
+
+// ── CALCULAR NOTA FINAL PONDERADA ─────────────────────────────────────────
+function calcularNotaFinal(){
+  let soma = 0;
+  for(const c of CATEGORIAS){
+    const n = notas[c.id] || 0;
+    soma += (n / 10000) * c.peso;
+  }
+  const media = soma / PESO_TOTAL; // 0 a 1
+  const nota10 = media * 10;
+  // arredondamento estatístico: 1 casa decimal, arredonda .5 para cima
+  return Math.round(nota10 * 10) / 10;
+}
+
+function classeNota(n){
+  if(n >= 9.5) return { txt:'Obra de impacto excepcional', cor:'#f5c46a' };
+  if(n >= 9.0) return { txt:'Obra de alto impacto emocional', cor:'#f5c46a' };
+  if(n >= 8.0) return { txt:'Obra de forte presença emocional', cor:'#6af5c4' };
+  if(n >= 7.0) return { txt:'Obra com bom potencial emocional', cor:'#6aaaf5' };
+  if(n >= 6.0) return { txt:'Obra com presença emocional moderada', cor:'#8a6af5' };
+  if(n >= 5.0) return { txt:'Obra em desenvolvimento emocional', cor:'#c4c46a' };
+  return { txt:'Obra com potencial a desenvolver', cor:'#8a8a8a' };
+}
+
+// ── ATUALIZAR UI DE CATEGORIA ─────────────────────────────────────────────
+function atualizarCategoria(id, nota, justif){
+  notas[id] = nota;
+  const pct = (nota/10000)*100;
+  $(`catnota-${id}`).textContent = nota.toLocaleString('pt-BR');
+  $(`catbar-${id}`).style.width = pct+'%';
+  $(`catjustif-${id}`).textContent = justif || '';
+  $(`catcard-${id}`).classList.add('ativa');
+
+  // atualizar nota topo
+  const nf = calcularNotaFinal();
+  $('scoreTopo').textContent = nf.toFixed(1);
+}
+
+// ── CHAMAR API ────────────────────────────────────────────────────────────
+async function chamarAPI(prompt){
+  const resp = await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1000,
+      messages:[{role:'user',content:prompt}]
+    })
+  });
+  if(!resp.ok) throw new Error('API error '+resp.status);
+  const d = await resp.json();
+  return d.content.map(b=>b.text||'').join('');
+}
+
+// ── AVALIAR ───────────────────────────────────────────────────────────────
+async function avaliar(){
+  const titulo = $('titulo').value.trim() || 'Obra sem título';
+  const tipo   = $('tipo').value || 'não informado';
+  const texto  = $('texto').value.trim();
+  if(texto.length < 30){ alert('Por favor cole o texto da obra para avaliação.'); return; }
+
+  // reset
+  notas = {};
+  CATEGORIAS.forEach(c=>{
+    $(`catnota-${c.id}`).textContent='—';
+    $(`catbar-${c.id}`).style.width='0%';
+    $(`catjustif-${c.id}`).textContent='';
+    $(`catcard-${c.id}`).classList.remove('ativa');
+  });
+  $('scoreTopo').textContent='—';
+  $('resultadoBox').classList.remove('visivel');
+  $('progressShell').style.display='none';
+  $('resumoIA').style.display='none';
+
+  // PROMPT para avaliação das 12 categorias em JSON
+  const prompt = `Você é um avaliador especializado em impacto emocional de obras literárias do sistema Celeiro Literário.
+
+Avalie a obra abaixo nas 12 categorias emocionais indicadas. Para cada categoria, atribua uma nota de 0 a 10000 (números inteiros) e uma justificativa curta (1 frase).
+
+OBRA: "${titulo}"
+TIPO: ${tipo}
+TEXTO:
+${texto.substring(0,3000)}
+
+Responda APENAS com JSON válido, sem nenhum texto antes ou depois, sem markdown:
+{
+  "impacto": {"nota": 0, "justif": ""},
+  "identificacao": {"nota": 0, "justif": ""},
+  "tensao": {"nota": 0, "justif": ""},
+  "emocao": {"nota": 0, "justif": ""},
+  "beleza": {"nota": 0, "justif": ""},
+  "originalidade": {"nota": 0, "justif": ""},
+  "memoria": {"nota": 0, "justif": ""},
+  "empatia": {"nota": 0, "justif": ""},
+  "urgencia": {"nota": 0, "justif": ""},
+  "pertencimento": {"nota": 0, "justif": ""},
+  "transcendencia": {"nota": 0, "justif": ""},
+  "catarse": {"nota": 0, "justif": ""}
+}
+
+Avalie com rigor técnico e sensibilidade literária. Notas altas (acima de 8000) devem ser raras e justificadas.`;
+
+  try{
+    const raw = await chamarAPI(prompt);
+    let json;
+    try{
+      const clean = raw.replace(/```json|```/g,'').trim();
+      json = JSON.parse(clean);
+    } catch(e){
+      throw new Error('Erro ao interpretar resposta da IA.');
+    }
+
+    // renderizar categorias com animação escalonada
+    $('progressShell').style.display='block';
+    const bars = $('progressBars');
+    bars.innerHTML = '';
+
+    for(let i=0;i<CATEGORIAS.length;i++){
+      const c = CATEGORIAS[i];
+      const dado = json[c.id];
+      if(!dado) continue;
+      const nota = Math.max(0,Math.min(10000, Math.round(Number(dado.nota)||0)));
+      await new Promise(r=>setTimeout(r,160));
+      atualizarCategoria(c.id, nota, dado.justif||'');
+
+      // barra de progresso painel
+      const pct=(nota/10000)*100;
+      bars.innerHTML += `
+        <div class="prog-item">
+          <div class="prog-nome">${c.emoji} ${c.nome}</div>
+          <div class="prog-bar-bg"><div class="prog-bar" style="width:${pct}%;background:${c.cor}" id="pb-${c.id}"></div></div>
+          <div class="prog-nota" style="color:${c.cor}">${nota.toLocaleString('pt-BR')}</div>
+        </div>`;
+    }
+
+    // nota final
+    const nf = calcularNotaFinal();
+    const cls = classeNota(nf);
+    $('notaFinalNum').textContent = nf.toFixed(1);
+    $('notaFinalNum').style.color = cls.cor;
+    $('notaFinalClasse').textContent = cls.txt;
+    $('notaFinalClasse').style.color = cls.cor;
+    $('resultadoSubtitulo').textContent = `"${titulo}" · ${tipo} · ${CATEGORIAS.length} categorias avaliadas`;
+    $('resultadoBox').classList.add('visivel');
+    $('scoreTopo').textContent = nf.toFixed(1);
+
+    // síntese emocional final
+    $('iaSpin').style.display='block';
+    const promptSintese = `Você é o sistema de Avaliação Emocional do Celeiro Literário.
+
+A obra "${titulo}" (${tipo}) recebeu nota final ${nf.toFixed(1)} de 10.0 na avaliação emocional ponderada.
+
+As notas por categoria foram:
+${CATEGORIAS.map(c=>`${c.nome}: ${notas[c.id]?.toLocaleString('pt-BR')||'—'}/10.000`).join('\n')}
+
+Escreva uma síntese emocional da obra em português, com:
+**Diagnóstico emocional** — O que a obra faz emocionalmente com o leitor
+**Pontos de maior força** — As 2-3 categorias onde a obra brilha e por quê
+**Pontos a desenvolver** — O que pode ser aprofundado para maior impacto
+**Nota e classificação** — Explique a nota ${nf.toFixed(1)} dentro do sistema 0-10.0
+**Mensagem ao autor** — Uma frase direta sobre o potencial emocional desta obra
+
+Seja preciso, humano e construtivo. Máximo 400 palavras.`;
+
+    const sintese = await chamarAPI(promptSintese);
+    $('iaSpin').style.display='none';
+    $('resumoIA').textContent = sintese;
+    $('resumoIA').style.display='block';
+
+    $('resultadoBox').scrollIntoView({behavior:'smooth'});
+
+  } catch(err){
+    $('iaSpin').style.display='none';
+    alert('Erro na avaliação: '+err.message);
+  }
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+renderCats();
+</script>
+</body>
+</html>
