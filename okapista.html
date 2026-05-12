@@ -1,272 +1,200 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>OKapista — Criador de Capas de Livros</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-
 :root{
---bg:#f4efe7;
---card:#ffffff;
---ink:#1e1e1e;
---muted:#6f6a62;
---line:#ddd6c9;
---literario:#4d956f;
---cordel:#5a3d2b;
---outros:#7b6a58;
---shadow:0 14px 28px rgba(0,0,0,.08);
---radius:26px;
+  --bg:#f4efe7;--card:#ffffff;--ink:#1e1e1e;--muted:#6f6a62;--line:#ddd6c9;
+  --literario:#2f6b4a;--literario2:#4d956f;
+  --cordel:#5a3d2b;--cordel2:#8d6748;
+  --polimata:#3a4a8a;--polimata2:#5a6aba;
+  --barracao:#6e4628;--barracao2:#a07840;
+  --shadow:0 14px 36px rgba(0,0,0,.10);--radius:26px;
 }
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;background:var(--bg);font-family:'DM Sans',Georgia,serif;color:var(--ink);}
 
-*{
-box-sizing:border-box;
-}
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:20;background:rgba(244,239,231,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--literario),var(--literario2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 4px 12px rgba(47,107,74,.25);}
+.brand-text h1{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--ink);line-height:1;}
+.brand-text p{font-size:.78rem;color:var(--muted);margin-top:2px;}
+.top-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{border:none;border-radius:11px;padding:9px 15px;font:600 .86rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+.btn:hover{transform:translateY(-1px);}
+.btn-amber{background:#d9a441;color:#2a1d0d;}
+.btn-red{background:#a63d40;color:#fff;}
+.btn-ghost{background:rgba(0,0,0,.06);color:var(--ink);border:1px solid var(--line);}
 
-html,body{
-margin:0;
-padding:0;
-}
+/* HERO */
+.hero{max-width:1100px;margin:0 auto;padding:40px 20px 0;text-align:center;}
+.hero h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);color:var(--ink);margin-bottom:10px;line-height:1.05;}
+.hero p{color:var(--muted);font-size:1.05rem;line-height:1.6;max-width:660px;margin:0 auto;}
 
-body{
-font-family:Georgia,"Times New Roman",serif;
-background:var(--bg);
-display:flex;
-align-items:center;
-justify-content:center;
-min-height:100vh;
-padding:16px;
-}
+/* GRID DOS CRIADORES */
+.grid-wrap{max-width:1100px;margin:0 auto;padding:32px 20px;}
+.section-title{font-family:'Playfair Display',serif;font-size:1rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;text-align:center;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:14px;}
 
-.box{
-background:var(--card);
-width:min(95vw,980px);
-padding:42px 28px 32px;
-border-radius:var(--radius);
-box-shadow:var(--shadow);
-text-align:center;
-}
+/* CARDS DOS CRIADORES */
+.capa-card{border:none;border-radius:22px;padding:26px 22px;font-family:inherit;color:#fff;cursor:pointer;text-align:left;transition:.22s;box-shadow:0 10px 28px rgba(0,0,0,.12);position:relative;overflow:hidden;display:flex;flex-direction:column;gap:10px;}
+.capa-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12),transparent 60%);pointer-events:none;}
+.capa-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,.18);}
+.capa-card .card-icon{font-size:2rem;line-height:1;}
+.capa-card h2{font-family:'Playfair Display',serif;font-size:1.45rem;line-height:1.1;margin:0;}
+.capa-card p{font-size:.9rem;line-height:1.5;opacity:.88;margin:0;flex:1;}
+.capa-card .card-arrow{align-self:flex-end;font-size:1.2rem;opacity:.7;margin-top:4px;}
+.card-literario{background:linear-gradient(135deg,var(--literario),var(--literario2));}
+.card-cordel{background:linear-gradient(135deg,var(--cordel),var(--cordel2));}
+.card-polimata{background:linear-gradient(135deg,var(--polimata),var(--polimata2));}
+.card-barracao{background:linear-gradient(135deg,var(--barracao),var(--barracao2));}
 
-h1{
-margin:0 0 10px;
-font-size:clamp(2.4rem,5vw,3.5rem);
-}
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:12px;max-width:1100px;margin:0 auto 20px;padding:0 20px;}
+.div-line{flex:1;height:1px;background:var(--line);}
+.div-label{font-size:.8rem;color:var(--muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;}
 
-.sub{
-color:var(--muted);
-margin-bottom:30px;
-font-size:1.1rem;
-}
+/* FLUXO */
+.fluxo-wrap{max-width:1100px;margin:0 auto;padding:0 20px 40px;}
+.fluxo-box{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px 24px;box-shadow:var(--shadow);}
+.fluxo-box h3{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:14px;color:var(--ink);}
+.fluxo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;}
+.fluxo-step{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px;}
+.fluxo-num{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--literario);line-height:1;}
+.fluxo-titulo{font-weight:700;font-size:.88rem;color:var(--ink);}
+.fluxo-desc{font-size:.8rem;color:var(--muted);line-height:1.4;}
+.fluxo-link{font-size:.8rem;color:var(--literario);font-weight:700;text-decoration:none;margin-top:2px;}
+.fluxo-link:hover{text-decoration:underline;}
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:18px;
-}
-
-.card{
-border:none;
-border-radius:22px;
-padding:26px;
-font-family:inherit;
-color:white;
-cursor:pointer;
-text-align:left;
-transition:.2s;
-box-shadow:0 10px 20px rgba(0,0,0,.08);
-}
-
-.card:hover{
-transform:translateY(-2px);
-opacity:.97;
-}
-
-.card h2{
-margin:0 0 10px;
-font-size:1.8rem;
-}
-
-.card p{
-margin:0;
-font-size:1.05rem;
-line-height:1.4;
-}
-
-.literario{
-background:var(--literario);
-}
-
-.cordel{
-background:var(--cordel);
-}
-
-.outros{
-background:var(--outros);
-}
-
-.footer{
-margin-top:26px;
-color:var(--muted);
-font-size:.95rem;
-}
-
-.actions{
-margin-top:24px;
-display:flex;
-gap:12px;
-justify-content:center;
-flex-wrap:wrap;
-}
-
-.btn{
-border:none;
-padding:12px 22px;
-border-radius:16px;
-font-family:inherit;
-font-weight:700;
-cursor:pointer;
-transition:.2s;
-box-shadow:0 8px 18px rgba(0,0,0,.08);
-}
-
-.btn:hover{
-transform:translateY(-1px);
-}
-
-.voltar{
-background:#d9a441;
-color:#2a1d0d;
-}
-
-.sair{
-background:#a63d40;
-color:white;
-}
+/* FOOTER NAV */
+.footer-nav{max-width:1100px;margin:0 auto;padding:0 20px 40px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
 
 @media(max-width:640px){
-
-.grid{
-grid-template-columns:1fr;
+  .grid{grid-template-columns:1fr 1fr;}
+  .capa-card h2{font-size:1.2rem;}
+  .fluxo-grid{grid-template-columns:1fr 1fr;}
 }
-
-.actions{
-flex-direction:column;
+@media(max-width:420px){
+  .grid{grid-template-columns:1fr;}
+  .fluxo-grid{grid-template-columns:1fr;}
 }
-
-.btn{
-width:100%;
-}
-
-.card{
-text-align:center;
-}
-
-}
-
 </style>
 </head>
-
 <body>
 
-<div class="box">
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">📘</div>
+    <div class="brand-text">
+      <h1>OKapista</h1>
+      <p>Celeiro Literário · Setor de criação de capas</p>
+    </div>
+  </div>
+  <div class="top-btns">
+    <a class="btn btn-amber" href="lapidar.html">← Lapidar</a>
+    <a class="btn btn-red"   href="pagina_respiro_celeiro.html">Sair do sistema</a>
+  </div>
+</header>
 
-<h1>OKapista</h1>
-
-<p class="sub">
-Criador de Capas de Livros do Lapidar
-</p>
-
-<div class="grid">
-
-<button class="card literario"
-onclick="abrir('faca_kapa_literario.html')">
-
-<h2>Faça Kapa Livros Literários</h2>
-
-<p>
-Gerador de capas para romances, contos, poesia e obras híbridas.
-Frente, lombada e contracapa editorial.
-</p>
-
-</button>
-
-
-<button class="card cordel"
-onclick="abrir('faca_kapa_cordel.html')">
-
-<h2>Faça Kapa Cordel</h2>
-
-<p>
-Gerador de capas estilo folheto popular com selo sertão,
-xilogravura e contracapa automática.
-</p>
-
-</button>
-
-
-<button class="card outros"
-onclick="abrir('faca_kapa_outros.html')">
-
-<h2>Faça Kapa Outros Livros</h2>
-
-<p>
-Capas para obras técnicas, infantis, acadêmicas,
-coleções especiais e formatos personalizados.
-</p>
-
-</button>
-
+<!-- HERO -->
+<div class="hero">
+  <h2>OKapista</h2>
+  <p>Central de criação de capas do Celeiro Literário. Escolha o criador adequado para sua obra — cada um especializado no seu tipo de livro — ou prepare suas imagens no Barracão antes de criar a capa.</p>
 </div>
 
+<!-- GRID PRINCIPAL -->
+<div class="grid-wrap">
+  <div class="section-title">✦ Escolha o criador de capa</div>
+  <div class="grid">
 
-<div class="actions">
+    <button class="capa-card card-literario" onclick="ir('faca_kapa_literario.html')">
+      <span class="card-icon">📚</span>
+      <h2>Faça Kapa Literário</h2>
+      <p>Romances, contos, poesia, crônicas e obras híbridas. Canvas editável com 6 estilos visuais, IA para sugestão de conceito e download em JPG.</p>
+      <span class="card-arrow">→</span>
+    </button>
 
-<button class="btn voltar"
-onclick="voltarLapidar()">
-Retornar ao Lapidar
-</button>
+    <button class="capa-card card-cordel" onclick="ir('faca_kapa_cordel.html')">
+      <span class="card-icon">📜</span>
+      <h2>Faça Kapa Cordel</h2>
+      <p>Folhetos populares, antologias de cordel e literatura nordestina. Estilo xilogravura com arte automática de cangaceiro e sertão.</p>
+      <span class="card-arrow">→</span>
+    </button>
 
-<button class="btn sair"
-onclick="sairSistema()">
-Sair do sistema
-</button>
+    <button class="capa-card card-polimata" onclick="ir('faca_kapa_polimata.html')">
+      <span class="card-icon">🎨</span>
+      <h2>Polimata</h2>
+      <p>Infantil, infanto-juvenil, juvenil, técnico, fotográfico e receitas. 6 modos especializados para os livros diagramados no Hércules.</p>
+      <span class="card-arrow">→</span>
+    </button>
 
+    <button class="capa-card card-barracao" onclick="ir('barracao_polimento_imagens.html')">
+      <span class="card-icon">🧱</span>
+      <h2>Barracão de Polimento</h2>
+      <p>Prepare sua imagem antes de criar a capa. Ajuste brilho, contraste, saturação, nitidez, temperatura e vinheta. Download em JPG profissional.</p>
+      <span class="card-arrow">→</span>
+    </button>
+
+  </div>
 </div>
 
-
-<div class="footer">
-
-OKapista organiza o setor editorial de criação de capas do Celeiro Literário.
-
+<!-- DIVIDER -->
+<div class="divider">
+  <div class="div-line"></div>
+  <span class="div-label">Fluxo recomendado</span>
+  <div class="div-line"></div>
 </div>
 
+<!-- FLUXO -->
+<div class="fluxo-wrap">
+  <div class="fluxo-box">
+    <h3>Como criar uma capa no OKapista</h3>
+    <div class="fluxo-grid">
+      <div class="fluxo-step">
+        <span class="fluxo-num">01</span>
+        <span class="fluxo-titulo">Prepare a imagem</span>
+        <span class="fluxo-desc">Se tiver uma foto ou ilustração, passe primeiro pelo Barracão para polir brilho, contraste e enquadramento.</span>
+        <a class="fluxo-link" href="barracao_polimento_imagens.html">→ Ir ao Barracão</a>
+      </div>
+      <div class="fluxo-step">
+        <span class="fluxo-num">02</span>
+        <span class="fluxo-titulo">Escolha o criador</span>
+        <span class="fluxo-desc">Literário para prosa e poesia, Cordel para literatura popular, Polimata para os demais tipos do Hércules.</span>
+      </div>
+      <div class="fluxo-step">
+        <span class="fluxo-num">03</span>
+        <span class="fluxo-titulo">Preencha os dados</span>
+        <span class="fluxo-desc">Título, autor, editora e ano. Escolha o estilo visual, a cor de fundo e a fonte do título.</span>
+      </div>
+      <div class="fluxo-step">
+        <span class="fluxo-num">04</span>
+        <span class="fluxo-titulo">Use a IA</span>
+        <span class="fluxo-desc">Preencha a sinopse e peça uma sugestão de conceito visual personalizada para a obra.</span>
+      </div>
+      <div class="fluxo-step">
+        <span class="fluxo-num">05</span>
+        <span class="fluxo-titulo">Baixe a capa</span>
+        <span class="fluxo-desc">Clique em Baixar JPG para salvar a capa em alta qualidade, pronta para o diagramador ou gráfica.</span>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- FOOTER NAV -->
+<div class="footer-nav">
+  <a class="btn btn-ghost" href="lapidar.html">← Retornar ao Lapidar</a>
+  <a class="btn btn-ghost" href="dias_gramador_livros.html">Diagramação</a>
+  <a class="btn btn-ghost" href="avaliacao_literaria.html">Avaliações</a>
+  <a class="btn btn-red"   href="pagina_respiro_celeiro.html">Sair do sistema</a>
+</div>
 
 <script>
-
-function abrir(pagina){
-
-window.location.href = pagina;
-
-}
-
-
-function voltarLapidar(){
-
-window.location.href = "lapidar.html";
-
-}
-
-
-function sairSistema(){
-
-alert("Saída simbólica do sistema. Depois conectaremos ao fluxo real.");
-
-}
-
+function ir(pagina){ window.location.href = pagina; }
 </script>
-
 </body>
 </html>
