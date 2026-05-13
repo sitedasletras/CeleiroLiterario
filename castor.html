@@ -3,161 +3,201 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Castor — Diagramador de Poesia</title>
+<title>Castor — Diagramador de Poesia · Celeiro Literário</title>
+<script src="motores_lapidar/motor_editorial_celeiro_v2.js"></script>
 <style>
 :root{
   --bg:#edf3fb;--paper:#fffdfc;--ink:#1f2430;--muted:#5d6675;--line:#d7dfeb;
-  --blue-1:#3f6fa6;--blue-2:#5d89bc;--blue-3:#7ea6d0;--blue-4:#dce8f7;
+  --blue1:#3f6fa6;--blue2:#5d89bc;--blue3:#7ea6d0;--blue4:#dce8f7;
   --ok:#2f7a59;--warn:#b7921e;--danger:#b13a3a;
   --shadow:0 12px 28px rgba(42,72,112,.10);--radius:22px;
-  --page-w:430px;--page-h:620px;--page-padding:34px;
 }
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;min-height:100vh;}
-.app{width:min(1360px,calc(100vw - 16px));margin:8px auto;display:grid;grid-template-columns:240px minmax(0,1fr) 280px;gap:14px;align-items:start;}
-.panel{border-radius:var(--radius);box-shadow:var(--shadow);min-height:calc(100vh - 16px);position:sticky;top:8px;align-self:start;overflow:auto;}
-.left-panel{background:linear-gradient(180deg,#2d5f96 0%,#4c7eb0 58%,#89afd6 100%);color:#fff;padding:16px 14px;display:flex;flex-direction:column;gap:12px;}
-.right-panel{background:linear-gradient(180deg,#f3f7fd 0%,#e8f0fa 100%);border:1px solid #d7dfeb;color:#1f2430;padding:16px 14px;display:flex;flex-direction:column;gap:12px;}
-.panel h2{margin:0;font-size:1.7rem;line-height:1;}
-.panel h3{margin:0;font-size:1rem;line-height:1.2;}
-.status{font-size:.92rem;line-height:1.35;border-radius:14px;padding:10px 12px;min-height:48px;}
-.left-panel .status{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);color:#f7fbff;}
-.right-panel .status{background:#fff;border:1px solid #d7dfeb;color:#5a6472;}
-.card{border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px;}
-.left-panel .card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);}
-.right-panel .card{background:#fcfdff;border:1px solid #dbe4f0;}
-label,small,p{margin:0;line-height:1.35;}
-.left-panel label,.left-panel small,.left-panel p{color:#f4f8ff;}
-.right-panel label,.right-panel small,.right-panel p{color:#586170;}
-.input,.select,.btn{width:100%;font-family:inherit;font-size:.98rem;border-radius:12px;}
-.input,.select{border:1px solid #d6deea;background:#fff;color:#1f2430;padding:10px;outline:none;}
-.input:focus,.select:focus{border-color:var(--blue-3);}
-.btn{border:none;padding:11px 12px;font-weight:700;cursor:pointer;transition:.12s ease;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;}
-.btn:hover{transform:translateY(-1px);opacity:.97;}
-.btn-blue{background:var(--blue-1);color:#fff;}
-.btn-soft{background:#e8f0fa;color:#23496d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Georgia,serif;}
+.app{width:min(1380px,calc(100vw - 16px));margin:8px auto;display:grid;grid-template-columns:280px minmax(0,1fr) 260px;gap:14px;align-items:start;}
+
+/* PAINEL ESQUERDO */
+.left-panel{background:linear-gradient(180deg,#2d5f96,#4c7eb0 58%,#89afd6);color:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 14px;position:sticky;top:8px;max-height:calc(100vh - 16px);overflow:auto;display:flex;flex-direction:column;gap:10px;}
+.left-panel h2{margin:0;font-size:1.6rem;font-family:Georgia,serif;}
+.status{font-size:.84rem;border-radius:11px;padding:8px 10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);color:#f4f8ff;line-height:1.4;min-height:38px;}
+.motor-badge{font-size:.7rem;color:#c8daf5;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:4px 8px;text-align:center;line-height:1.3;}
+.card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:13px;padding:10px;display:flex;flex-direction:column;gap:7px;}
+label{display:block;font-size:.74rem;font-weight:700;color:#c8daf5;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px;}
+.input,.select{width:100%;font-family:inherit;font-size:.9rem;border-radius:10px;border:1px solid #d6deea;background:#fff;color:var(--ink);padding:8px 10px;outline:none;}
+.input:focus,.select:focus{border-color:var(--blue3);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.btn{width:100%;border:none;border-radius:10px;padding:10px;font:700 .86rem 'Segoe UI',sans-serif;cursor:pointer;transition:.14s;text-decoration:none;display:flex;align-items:center;justify-content:center;min-height:42px;}
+.btn:hover{transform:translateY(-1px);}
+.btn-blue{background:var(--blue1);color:#fff;}
+.btn-soft{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.22);}
 .btn-warn{background:var(--warn);color:#231d16;}
 .btn-danger{background:var(--danger);color:#fff;}
-.main{display:flex;flex-direction:column;gap:14px;min-width:0;}
-.hero,.stats-shell,.editor-shell,.preview-shell{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
-.hero{background:linear-gradient(180deg,#eff4fb 0%,#e4edf8 100%);padding:24px 22px;display:grid;gap:14px;}
-.hero-top{display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:center;}
-.c-badge{width:52px;height:84px;border-radius:18px;background:linear-gradient(180deg,var(--blue-2),var(--blue-1));color:#f8fbff;display:flex;align-items:center;justify-content:center;font-size:2.3rem;line-height:1;box-shadow:0 8px 18px rgba(63,111,166,.22);}
-.hero h1{margin:0 0 8px 0;font-size:clamp(2rem,4vw,2.8rem);line-height:1;color:#22364c;}
-.hero p{color:#516173;font-size:1.08rem;}
-.stats-shell{padding:16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
-.stat{background:#f6f9fe;border:1px solid #dbe4f0;border-radius:16px;padding:14px 12px;min-height:100px;}
-.stat-label{font-size:.98rem;font-weight:700;color:#546272;margin-bottom:8px;}
-.stat-value{font-size:1.06rem;font-weight:700;color:#24364a;line-height:1.25;word-break:break-word;}
-.editor-shell,.preview-shell{padding:18px;display:flex;flex-direction:column;gap:12px;}
-.editor-shell h2,.preview-shell h2{margin:0;font-size:1.2rem;}
-.editor-box{width:100%;min-height:420px;border:1px solid #d6deea;border-radius:18px;padding:18px;resize:vertical;background:#fff;color:#1f2430;font-family:Georgia,"Times New Roman",serif;font-size:1.05rem;line-height:1.45;outline:none;}
-.editor-box:focus{border-color:#7ea6d0;box-shadow:0 0 0 3px rgba(126,166,208,.10);}
-.preview-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
-.pill-row{display:flex;flex-wrap:wrap;gap:8px;}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;background:#eef4fb;border:1px solid #d7e2ef;color:#4d6074;font-size:.94rem;font-weight:700;}
-.preview-stage{background:linear-gradient(180deg,#edf2f8 0%,#e3eaf4 100%);border-radius:20px;border:1px solid #d7dfeb;min-height:720px;display:flex;align-items:flex-start;justify-content:center;padding:22px 12px;overflow:auto;}
-.page{width:var(--page-w);min-height:var(--page-h);background:#fff;border:1px solid #d9e1eb;box-shadow:0 10px 24px rgba(43,72,112,.10);padding:var(--page-padding);position:relative;color:#1f2430;}
-.page-title{text-align:center;margin:0 0 18px 0;font-size:2rem;line-height:1.05;color:#22364c;}
-.page-subtitle{text-align:center;margin:-8px 0 22px 0;font-size:1.08rem;color:#667487;}
-.poem-block{margin:0 0 18px 0;white-space:pre-line;line-height:1.45;font-size:1.12rem;text-align:left;}
-.poem-centered{text-align:center;}
-.analysis-list{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;}
-.footer-note{font-size:.9rem;color:#6e7b8b;line-height:1.45;}
-@media(max-width:1160px){.app{grid-template-columns:1fr;}.panel{position:relative;top:auto;min-height:auto;}}
-@media(max-width:760px){.stats-shell{grid-template-columns:1fr 1fr;}.preview-stage{min-height:auto;padding:12px 8px;}.page{width:min(100%,430px);min-height:560px;padding:22px;}.poem-block{font-size:1.04rem;}}
+
+/* PAINEL DIREITO */
+.right-panel{background:linear-gradient(180deg,#f3f7fd,#e8f0fa);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;position:sticky;top:8px;max-height:calc(100vh - 16px);overflow:auto;display:flex;flex-direction:column;gap:10px;}
+.right-panel h3{font-size:.95rem;color:var(--ink);font-family:Georgia,serif;}
+.analysis-item{background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px;font-size:.82rem;color:var(--muted);line-height:1.4;}
+.analysis-item strong{display:block;color:var(--ink);font-size:.85rem;margin-bottom:3px;}
+.prog-wrap{display:flex;flex-direction:column;gap:6px;}
+.prog-item{display:flex;align-items:center;gap:8px;}
+.prog-nome{font-size:.75rem;color:var(--muted);width:90px;flex-shrink:0;}
+.prog-bar-bg{flex:1;height:5px;background:rgba(0,0,0,.06);border-radius:999px;overflow:hidden;}
+.prog-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--blue1),var(--blue3));transition:width .5s ease;}
+.prog-val{font-size:.75rem;color:var(--blue1);font-weight:700;width:28px;text-align:right;}
+.alertas{background:rgba(183,146,30,.1);border:1px solid rgba(183,146,30,.3);border-radius:11px;padding:9px;display:none;flex-direction:column;gap:4px;}
+.alertas.vis{display:flex;}
+.alerta{font-size:.75rem;color:var(--warn);line-height:1.3;}
+
+/* MAIN */
+.main{display:flex;flex-direction:column;gap:14px;}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);}
+.box h2{font-size:1.1rem;margin-bottom:12px;color:var(--blue1);font-family:Georgia,serif;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
+.stat{background:#f6f9fe;border:1px solid #dbe4f0;border-radius:13px;padding:10px;text-align:center;}
+.stat-val{font-size:1.05rem;font-weight:700;color:var(--blue1);line-height:1;}
+.stat-lbl{font-size:.68rem;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.04em;}
+.editor-box{width:100%;min-height:200px;border:1.5px solid var(--line);border-radius:13px;padding:13px;resize:vertical;background:#fff;color:var(--ink);font-family:Georgia,'Times New Roman',serif;font-size:1rem;line-height:1.5;outline:none;}
+.editor-box:focus{border-color:var(--blue3);}
+.pager{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.btn-pg{border:1.5px solid var(--blue1);background:transparent;color:var(--blue1);border-radius:999px;padding:8px 16px;font:700 .86rem Georgia,serif;cursor:pointer;transition:.14s;}
+.btn-pg:hover:not(:disabled){background:var(--blue1);color:#fff;}
+.btn-pg:disabled{opacity:.35;cursor:not-allowed;}
+.pg-info{font-size:.88rem;color:var(--blue1);font-weight:700;margin:0 auto;}
+.stage{background:linear-gradient(180deg,#edf2f8,#e3eaf4);border-radius:18px;padding:20px;min-height:660px;display:flex;align-items:flex-start;justify-content:center;overflow:auto;}
+.meta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.78rem;color:var(--muted);margin-top:8px;}
+
+@media(max-width:1060px){.app{grid-template-columns:1fr}.left-panel,.right-panel{position:relative;top:auto;max-height:none;}}
+@media print{body{background:#fff;}.left-panel,.right-panel,.pager,.meta,.alertas{display:none!important;}.app{display:block;}.box{box-shadow:none;border:0;padding:0;}.stage{padding:0;background:#fff;}}
 </style>
 </head>
 <body>
 <div class="app">
 
-<aside class="panel left-panel">
+<!-- PAINEL ESQUERDO -->
+<aside class="left-panel">
   <h2>Castor</h2>
-  <div class="status" id="statusBox">Pronto para diagramar poesia.</div>
+  <div class="status" id="status">Aguardando texto poético.</div>
+  <div class="motor-badge" id="motorBadge">Motor Editorial v2 · Verificando...</div>
 
   <div class="card">
-    <label for="bookTitle"><strong>Título da obra</strong></label>
-    <input class="input" id="bookTitle" type="text" placeholder="Opcional" value="Castor — Diagramador de Poesia"/>
-  </div>
-  <div class="card">
-    <label for="bookSubtitle"><strong>Subtítulo</strong></label>
-    <input class="input" id="bookSubtitle" type="text" placeholder="Opcional" value="Celeiro Literário / Lapidar"/>
+    <label>Título</label><input class="input" id="titulo" type="text" placeholder="Título da obra">
+    <label>Autor</label><input class="input" id="autor" type="text" placeholder="Autor">
   </div>
 
   <div class="card">
-    <label for="poetryFormat"><strong>Formato</strong></label>
-    <select class="select" id="poetryFormat">
-      <option value="a5" selected>A5</option>
-      <option value="14x21">14 x 21 cm</option>
-      <option value="16x23">16 x 23 cm</option>
-      <option value="6x9">6 x 9 pol.</option>
-    </select>
-    <label for="fontFamily"><strong>Fonte</strong></label>
-    <select class="select" id="fontFamily">
-      <option value="Georgia">Georgia</option>
-      <option value="'Times New Roman'">Times New Roman</option>
-      <option value="Garamond">Garamond</option>
-    </select>
-    <label for="fontSize"><strong>Tamanho</strong></label>
-    <select class="select" id="fontSize">
-      <option value="11">11 pt</option>
-      <option value="12" selected>12 pt</option>
-      <option value="13">13 pt</option>
-      <option value="14">14 pt</option>
-    </select>
-    <label for="lineHeight"><strong>Entrelinha</strong></label>
-    <select class="select" id="lineHeight">
-      <option value="1.25">1.25</option>
-      <option value="1.35" selected>1.35</option>
-      <option value="1.45">1.45</option>
-      <option value="1.55">1.55</option>
-    </select>
-  </div>
-
-  <div class="card">
-    <label for="alignmentMode"><strong>Alinhamento</strong></label>
-    <select class="select" id="alignmentMode">
-      <option value="left" selected>À esquerda</option>
-      <option value="center">Centralizado</option>
-    </select>
-    <label for="stanzaSpace"><strong>Espaço entre estrofes</strong></label>
-    <select class="select" id="stanzaSpace">
-      <option value="12">12 px</option>
-      <option value="18" selected>18 px</option>
-      <option value="24">24 px</option>
-      <option value="30">30 px</option>
-    </select>
-  </div>
-
-  <div class="card">
-    <button class="btn btn-blue" id="renderBtn" type="button">Atualizar prévia</button>
-    <button class="btn btn-soft" id="clearBtn" type="button">Limpar obra</button>
-    <a class="btn btn-warn" href="lapidar.html">Retornar ao Lapidar</a>
-    <a class="btn btn-danger" href="pagina_respiro_celeiro.html">Sair do sistema</a>
-  </div>
-</aside>
-
-<main class="main">
-  <section class="hero">
-    <div class="hero-top">
-      <div class="c-badge">C</div>
-      <div>
-        <h1>Castor — Diagramador de Poesia</h1>
-        <p>Módulo do Celeiro Literário para poemas, estrofes e estrutura poética com painel fixo próprio.</p>
+    <div class="row2">
+      <div><label>Formato</label>
+        <select class="select" id="formato">
+          <option value="A5" selected>A5</option>
+          <option value="14x21">14×21 cm</option>
+          <option value="16x23">16×23 cm</option>
+          <option value="6x9">6×9 pol.</option>
+        </select>
+      </div>
+      <div><label>Fonte (pt)</label>
+        <input class="input" id="fontSize" type="number" value="12" min="10" max="18">
       </div>
     </div>
-  </section>
+    <div class="row2">
+      <div><label>Entrelinha</label>
+        <input class="input" id="lineHeight" type="number" value="1.45" min="1.2" max="2.2" step="0.05">
+      </div>
+      <div><label>Margem</label>
+        <select class="select" id="margem">
+          <option value="normal" selected>Normal</option>
+          <option value="estreita">Estreita</option>
+          <option value="ampla">Ampla</option>
+        </select>
+      </div>
+    </div>
+    <label>Fonte corpo</label>
+    <select class="select" id="fontFamily">
+      <option value="Georgia,'Times New Roman',serif">Georgia</option>
+      <option value="'Times New Roman',serif">Times New Roman</option>
+      <option value="Garamond,serif">Garamond</option>
+    </select>
+  </div>
 
-  <section class="stats-shell">
-    <div class="stat"><div class="stat-label">Formato</div><div class="stat-value" id="formatStat">A5</div></div>
-    <div class="stat"><div class="stat-label">Fonte</div><div class="stat-value" id="fontStat">Georgia<br>12 pt</div></div>
-    <div class="stat"><div class="stat-label">Estrofes</div><div class="stat-value" id="blocksStat">0</div></div>
-    <div class="stat"><div class="stat-label">Estrutura</div><div class="stat-value" id="structureStat">Aguardando texto</div></div>
-  </section>
+  <div class="card">
+    <div class="row2">
+      <div><label>Alinhamento</label>
+        <select class="select" id="alinhPoesia">
+          <option value="left" selected>Esquerda</option>
+          <option value="center">Centro</option>
+        </select>
+      </div>
+      <div><label>Espaço estrofe</label>
+        <input class="input" id="estrofeGap" type="number" value="18" min="8" max="48" step="2">
+      </div>
+    </div>
+    <div class="row2">
+      <div><label>Numeração</label>
+        <select class="select" id="numeracao">
+          <option value="centro" selected>Centro</option>
+          <option value="dir">Direita</option>
+          <option value="off">Sem</option>
+        </select>
+      </div>
+      <div><label>Correção</label>
+        <select class="select" id="correcao">
+          <option value="light" selected>Leve</option>
+          <option value="medium">Média</option>
+        </select>
+      </div>
+    </div>
+  </div>
 
-  <section class="editor-shell">
-    <h2>Texto-base da poesia</h2>
-    <textarea id="sourceText" class="editor-box" placeholder="Cole aqui o poema...">Poema de exemplo
+  <!-- MOTORES TIPOGRÁFICOS -->
+  <div class="card">
+    <label>✦ Capitular (prosa mista)</label>
+    <select class="select" id="capitular">
+      <option value="none" selected>Desligada</option>
+      <option value="simple">Simples</option>
+      <option value="classic">Clássica</option>
+      <option value="ornamental">Ornamental</option>
+      <option value="medieval">Medieval</option>
+      <option value="iluminura">Iluminura</option>
+    </select>
+
+    <label>✦ Hifenização PT-BR</label>
+    <select class="select" id="hifenizacao">
+      <option value="light" selected>Leve (prefixos)</option>
+      <option value="full">Completa (silábica)</option>
+      <option value="off">Desligada</option>
+    </select>
+
+    <label>✦ Viúvas e Órfãs</label>
+    <select class="select" id="viuvasOrfas">
+      <option value="warn" selected>Corrigir automaticamente</option>
+      <option value="off">Desligada</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <button class="btn btn-blue" onclick="render()">↺ Atualizar prévia</button>
+    <button class="btn btn-soft" onclick="window.print()">🖨 Imprimir / PDF</button>
+    <button class="btn btn-soft" onclick="limpar()">✕ Limpar</button>
+    <a class="btn btn-warn"   href="lapidar.html">← Lapidar</a>
+    <a class="btn btn-danger" href="pagina_respiro_celeiro.html">Sair</a>
+  </div>
+
+  <div class="alertas" id="alertasBox"></div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="box">
+    <div class="stats">
+      <div class="stat"><div class="stat-val" id="sFmt">A5</div><div class="stat-lbl">Formato</div></div>
+      <div class="stat"><div class="stat-val" id="sPags">0</div><div class="stat-lbl">Páginas</div></div>
+      <div class="stat"><div class="stat-val" id="sEstrofes">0</div><div class="stat-lbl">Estrofes</div></div>
+      <div class="stat"><div class="stat-val" id="sVersos">0</div><div class="stat-lbl">Versos</div></div>
+    </div>
+  </div>
+
+  <div class="box">
+    <h2>Texto poético</h2>
+    <textarea id="texto" class="editor-box" placeholder="Cole o poema aqui...">Poema de exemplo
 
 A tarde desce lenta
 sobre a memória antiga
@@ -167,180 +207,261 @@ o nome da cantiga
 No fundo do silêncio
 a palavra respira
 e o verso dobra
-a sombra que delira</textarea>
-  </section>
+a sombra que delira
 
-  <section class="preview-shell">
-    <div class="preview-top">
-      <h2>Prévia da poesia</h2>
-      <div class="pill-row">
-        <span class="pill" id="pillBlocks">Estrofes: 0</span>
-        <span class="pill" id="pillLines">Versos: 0</span>
-        <span class="pill" id="pillMode">Modo: poesia</span>
-      </div>
+Entre a pedra e o rio
+há um nome esquecido
+que o tempo não apaga
+nem o mar tem ouvido</textarea>
+  </div>
+
+  <div class="box">
+    <div class="pager" style="margin-bottom:14px;">
+      <button class="btn-pg" id="btnAnt" onclick="paginaAnterior()" disabled>← Anterior</button>
+      <span class="pg-info" id="pgInfo">Página 1 / 1</span>
+      <button class="btn-pg" id="btnProx" onclick="proximaPagina()">Próxima →</button>
     </div>
-    <div class="preview-stage">
-      <article class="page" id="pagePreview"></article>
+    <div class="stage"><div id="preview"></div></div>
+    <div class="meta">
+      <span id="metaInfo">Aguardando renderização</span>
+      <span id="metaPag">Pág 1/1</span>
     </div>
-  </section>
-</main>
+  </div>
+</div>
 
-<aside class="panel right-panel">
-  <h2>Motor Lapidar</h2>
-  <div class="status" id="motorStatusBox">Motor leve ativo no painel lateral do Castor.</div>
+<!-- PAINEL DIREITO -->
+<aside class="right-panel">
+  <h3>Motor Castor</h3>
 
-  <div class="card">
-    <label for="correctionLevel"><strong>Correção</strong></label>
-    <select class="select" id="correctionLevel">
-      <option value="light" selected>Leve</option>
-      <option value="medium">Média</option>
-    </select>
+  <div class="analysis-item">
+    <strong>Estrutura detectada</strong>
+    <span id="tipoObra">Aguardando texto.</span>
   </div>
 
-  <div class="card">
-    <h3>Leitura estrutural</h3>
-    <p>Reconhece blocos poéticos, versos, estrofes e sinais de texto livre sem pesar o sistema.</p>
+  <div class="analysis-item">
+    <strong>Métricas</strong>
+    <div class="prog-wrap" id="progWrap">
+      <div class="prog-item"><span class="prog-nome">Estrofes</span><div class="prog-bar-bg"><div class="prog-bar" id="progEstrofes" style="width:0%"></div></div><span class="prog-val" id="valEstrofes">0</span></div>
+      <div class="prog-item"><span class="prog-nome">Versos</span><div class="prog-bar-bg"><div class="prog-bar" id="progVersos" style="width:0%"></div></div><span class="prog-val" id="valVersos">0</span></div>
+      <div class="prog-item"><span class="prog-nome">Páginas</span><div class="prog-bar-bg"><div class="prog-bar" id="progPags" style="width:0%"></div></div><span class="prog-val" id="valPags">0</span></div>
+      <div class="prog-item"><span class="prog-nome">V/O Corr.</span><div class="prog-bar-bg"><div class="prog-bar" id="progCorr" style="width:0%"></div></div><span class="prog-val" id="valCorr">0</span></div>
+    </div>
   </div>
 
-  <div class="card">
-    <h3>Alertas</h3>
-    <ul class="analysis-list" id="alertsList">
-      <li>Aguardando análise.</li>
-    </ul>
+  <div class="analysis-item">
+    <strong>Padrão detectado</strong>
+    <span id="padrao">—</span>
   </div>
 
-  <div class="card">
-    <h3>Observação</h3>
-    <p>Motor embutido no painel lateral direito, base replicável para todos os diagramadores do Celeiro.</p>
+  <div class="analysis-item" id="capsInfo" style="display:none">
+    <strong>Capitular ativa</strong>
+    <span id="capsDesc">—</span>
   </div>
 
-  <div class="footer-note">
-    Castor alinhado com Pólux, Centauro, Qui(RON)xadá e Hércules no sistema Lapidar.
+  <div class="analysis-item">
+    <strong>Motores ativos</strong>
+    <span id="motoresAtivos" style="font-size:.78rem;line-height:1.5;">Verificando...</span>
   </div>
 </aside>
 
 </div>
+
 <script>
-const MotorLapidar = {
-  normalize(text=""){
-    return String(text).replace(/\r\n/g,"\n").replace(/\r/g,"\n")
-      .replace(/\u00A0/g," ").replace(/\t/g," ")
-      .replace(/[ ]{2,}/g," ").replace(/\n{3,}/g,"\n\n").trim();
-  },
-  splitBlocks(text=""){
-    return this.normalize(text).split(/\n\s*\n/)
-      .map(b=>b.split("\n").map(l=>l.trim()).filter(Boolean))
-      .filter(b=>b.length);
-  },
-  countWords(text=""){
-    const c=this.normalize(text); if(!c)return 0;
-    return c.replace(/\n/g," ").split(/\s+/).filter(Boolean).length;
-  },
-  lightCorrect(text=""){
-    let o=this.normalize(text);
-    o=o.replace(/\s+([,\.!?;:])/g,"$1");
-    o=o.replace(/\.{4,}/g,"...");
-    o=o.replace(/!!+/g,"!").replace(/\?\?+/g,"?");
-    o=o.replace(/\bPra mim fazer\b/g,"Para eu fazer");
-    return o;
-  },
-  mediumCorrect(text=""){
-    let o=this.lightCorrect(text);
-    o=o.replace(/\bA gente fomos\b/g,"A gente foi");
-    o=o.replace(/\bmais eu\b/g,"mas eu").replace(/\bMais eu\b/g,"Mas eu");
-    return o;
-  },
-  classify(text=""){
-    const blocks=this.splitBlocks(text);
-    let total=0,curtos=0,longos=0;
-    for(const b of blocks){
-      total+=b.length;
-      const avg=b.reduce((s,l)=>s+l.length,0)/b.length;
-      if(avg<=42)curtos++;else longos++;
-    }
-    let primary="poesia";
-    if(!blocks.length)primary="vazio";
-    else if(!curtos&&longos>0)primary="texto livre";
-    else if(curtos>0&&longos>0)primary="poesia mista";
-    return{primary,blocks:blocks.length,totalLines:total};
-  },
-  alerts(text=""){
-    const out=[];
-    this.splitBlocks(text).forEach((b,i)=>{
-      b.forEach((l,li)=>{ if(l.length>90) out.push(`Estrofe ${i+1}, verso ${li+1}: verso muito longo.`); });
-      if(b.length===1&&b[0].length>90) out.push(`Estrofe ${i+1}: bloco único muito longo.`);
+// ── MOTOR: fallback embutido ──────────────────────────────────────────────
+const M = window.CeleiroMotorEditorial || (function(){
+  const ESC=s=>String(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+  const CAPS={none:'',simple:'float:left;font-size:3.2em;line-height:.82;margin:.04em .12em 0 0;font-weight:700;',classic:'float:left;font-size:3.9em;line-height:.82;margin:.02em .10em 0 0;font-weight:700;',ornamental:'float:left;font-size:4em;line-height:.82;margin:.02em .12em 0 0;font-weight:700;border:1px solid #b7c1b9;padding:.06em .14em .02em;background:#f6f4ef;',medieval:'float:left;font-size:4em;line-height:.82;margin:.02em .12em 0 0;font-weight:900;color:#3b1a08;border:2px double #d8a84c;padding:.04em .12em;background:#fffbe8;',iluminura:'float:left;font-size:4.2em;line-height:.82;margin:.02em .14em 0 0;font-weight:900;color:#7c1212;border:3px solid #d8b56d;padding:.04em .14em;background:#fff3bd;'};
+  const FMTS={A5:{w:420,h:595},'14x21':{w:397,h:595},'16x23':{w:454,h:652},'6x9':{w:432,h:648}};
+  const MARGS={estreita:{mT:36,mB:42,mI:40,mE:34},normal:{mT:48,mB:54,mI:50,mE:44},ampla:{mT:60,mB:66,mI:62,mE:54}};
+
+  function hifenizar(t,nivel){
+    if(nivel==='off') return t;
+    const prefs=['des','trans','sub','super','inter','semi','anti','auto','re','pre'];
+    return t.replace(/\b([a-záéíóúâêôãõàäëïöü]{6,})\b/gi,p=>{
+      for(const pf of prefs) if(p.toLowerCase().startsWith(pf)&&p.length>pf.length+3) return p.slice(0,pf.length)+'\u00AD'+p.slice(pf.length);
+      return p;
     });
-    return out;
-  },
-  process(text="",opts={}){
-    const lvl=opts.correctionLevel||"light";
-    const corrected=lvl==="medium"?this.mediumCorrect(text):this.lightCorrect(text);
-    const cls=this.classify(corrected);
-    return{...cls,processedText:corrected,wordCount:this.countWords(corrected),alerts:this.alerts(corrected)};
   }
-};
+  function corrigir(t,nivel){
+    let o=t.replace(/\r\n/g,'\n').replace(/\r/g,'\n').replace(/\t/g,' ').replace(/[ ]{2,}/g,' ').trim();
+    o=o.replace(/\s+([,\.!?;:])/g,'$1').replace(/\.{4,}/g,'...');
+    return o;
+  }
+  function ehCapitulo(l){return /^(cap[íi]tulo|parte\s+|pr[oó]logo|ep[íi]logo|poema\s+)\b/i.test(l.trim());}
+  function detectarPadrao(blocos){
+    const n=blocos.filter(b=>b.tipo==='poesia').length;
+    if(!n) return 'Prosa';
+    const lens=blocos.filter(b=>b.tipo==='poesia').map(b=>b.linhas.length);
+    const avg=lens.reduce((s,v)=>s+v,0)/lens.length;
+    if(Math.abs(avg-6)<1) return 'Sextilha (cordel)';
+    if(Math.abs(avg-4)<1) return 'Quadra';
+    if(Math.abs(avg-10)<1.5) return 'Décima';
+    if(Math.abs(avg-14)<2) return 'Soneto';
+    return 'Verso livre';
+  }
 
+  function preparar(rawText,cfg){
+    const mg=MARGS[cfg.margem||'normal']||MARGS.normal;
+    const mT=mg.mT,mB=mg.mB,mI=mg.mI,mE=mg.mE;
+    const fmt=FMTS[cfg.formato]||FMTS.A5;
+    const fs=cfg.fontSize||12,lh=cfg.lineHeight||1.45;
+    const altUtil=fmt.h-mT-mB;
+    const altLinha=Math.ceil(fs*lh*1.33);
+    const estrofeGap=+(cfg.estrofeGap||18);
+
+    const texto=hifenizar(corrigir(rawText||'',cfg.correcao),cfg.hifenizacao||'light');
+    const blocos=texto.split(/\n\s*\n/).map(b=>b.trim()).filter(Boolean).map((c,i)=>{
+      const ls=c.split('\n').map(l=>l.trim()).filter(Boolean);
+      const tipo=ehCapitulo(ls[0])?'capitulo':'poesia';
+      return {id:`B${String(i+1).padStart(4,'0')}`,tipo,conteudo:c,linhas:ls};
+    });
+
+    const padrao=detectarPadrao(blocos);
+    const totalVersos=blocos.filter(b=>b.tipo==='poesia').reduce((s,b)=>s+b.linhas.length,0);
+
+    // paginação
+    const paginas=[];
+    let pag={numero:1,lado:'recto',blocos:[],altUsada:0};
+    blocos.forEach(b=>{
+      const alt=Math.ceil(b.linhas.length*altLinha+estrofeGap);
+      if(pag.blocos.length&&pag.altUsada+alt>altUtil){
+        paginas.push(pag);pag={numero:paginas.length+1,lado:paginas.length%2===0?'recto':'verso',blocos:[],altUsada:0};
+      }
+      pag.blocos.push({...b,alt});pag.altUsada+=alt;
+    });
+    if(pag.blocos.length) paginas.push(pag);
+
+    // viúvas/órfãs para blocos de prosa mista
+    let corrigidos=0;
+    if(cfg.viuvasOrfas!=='off'){
+      for(let i=0;i<paginas.length-1;i++){
+        const p=paginas[i],q=paginas[i+1];
+        const ult=p.blocos[p.blocos.length-1];
+        if(ult&&ult.tipo==='poesia'&&ult.linhas.length<=2){
+          p.blocos.pop();q.blocos.unshift(ult);corrigidos++;
+        }
+      }
+    }
+
+    return {
+      stats:{palavras:(texto.match(/\S+/g)||[]).length,paginas:paginas.length,estrofes:blocos.filter(b=>b.tipo==='poesia').length,versos:totalVersos,corrigidos},
+      paginas,fmt,cfg:{...cfg,mT,mB,mI,mE},padrao,alertas:[]
+    };
+  }
+
+  function renderizarPagina(pag,cfg,fmt,numeracao){
+    const{mT,mB,mI,mE,fontSize:fs,lineHeight:lh,fontFamily:ff,capitular,alinhPoesia,estrofeGap}=cfg;
+    const W=fmt.w,H=fmt.h;
+    const margL=pag.lado==='recto'?mI:mE;
+    const margR=pag.lado==='recto'?mE:mI;
+    const capCSS=CAPS[capitular||'none']||'';
+    const alin=alinhPoesia||'left';
+    const gap=+(estrofeGap||18);
+    let isFirst=true;
+    const html=pag.blocos.map(b=>{
+      if(b.tipo==='capitulo') return `<h2 style="text-align:center;font-size:1.4em;font-weight:700;margin:0 0 .6em;line-height:1.1">${ESC(b.conteudo)}</h2>`;
+      let txt=ESC(b.conteudo);
+      if(isFirst&&capitular&&capitular!=='none'){
+        txt=txt.replace(/^(.)/,`<span style="${capCSS}">$1</span>`);
+      }
+      isFirst=false;
+      return `<div style="white-space:pre-line;text-align:${alin};margin-bottom:${gap}px;line-height:${lh}">${txt}</div>`;
+    }).join('');
+
+    let num='';
+    if(numeracao!=='off'){
+      const al=numeracao==='dir'?'right':pag.lado==='recto'?'right':'left';
+      num=`<div style="position:absolute;bottom:${Math.round(mB/2)}px;left:${margL}px;right:${margR}px;text-align:${al};font-size:.82em;color:#666">${pag.numero}</div>`;
+    }
+    return `<div style="width:${W}px;height:${H}px;background:#fff;position:relative;box-shadow:0 10px 28px rgba(0,0,0,.14);flex-shrink:0;overflow:hidden;border-radius:3px"><div style="position:absolute;left:${margL}px;top:${mT}px;right:${margR}px;bottom:${mB}px;font-family:${ff};font-size:${fs}pt;line-height:${lh};overflow:hidden">${html}</div>${num}</div>`;
+  }
+  return {preparar,renderizarPagina,FORMATOS:FMTS};
+})();
+
+// ── UI ────────────────────────────────────────────────────────────────────
 const $=id=>document.getElementById(id);
-function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+let resultado=null, pagAtual=0;
 
-function applyFmt(){
-  const f=$('poetryFormat').value;
-  const sizes={a5:[430,620],'14x21':[430,620],'16x23':[470,680],'6x9':[470,680]};
-  const[w,h]=sizes[f]||[430,620];
-  document.documentElement.style.setProperty('--page-w',w+'px');
-  document.documentElement.style.setProperty('--page-h',h+'px');
-}
-
-function renderPoetry(){
-  applyFmt();
-  const res=MotorLapidar.process($('sourceText').value,{correctionLevel:$('correctionLevel').value});
-  const blocks=MotorLapidar.splitBlocks(res.processedText);
-
-  $('formatStat').textContent=$('poetryFormat').options[$('poetryFormat').selectedIndex].text;
-  $('fontStat').innerHTML=`${$('fontFamily').options[$('fontFamily').selectedIndex].text}<br>${$('fontSize').value} pt`;
-  $('blocksStat').textContent=String(res.blocks);
-  $('structureStat').textContent=res.primary==='poesia'?'Poesia':res.primary==='poesia mista'?'Poesia mista':res.primary==='texto livre'?'Texto livre':'Aguardando';
-  $('pillBlocks').textContent=`Estrofes: ${res.blocks}`;
-  $('pillLines').textContent=`Versos: ${res.totalLines}`;
-  $('pillMode').textContent=`Modo: ${res.primary}`;
-
-  const page=$('pagePreview');
-  page.style.fontFamily=$('fontFamily').value;
-  page.style.fontSize=$('fontSize').value+'pt';
-  page.style.lineHeight=$('lineHeight').value;
-
-  let html='';
-  const t=$('bookTitle').value.trim();
-  const s=$('bookSubtitle').value.trim();
-  if(t) html+=`<h1 class="page-title">${esc(t)}</h1>`;
-  if(s) html+=`<div class="page-subtitle">${esc(s)}</div>`;
-
-  blocks.forEach(b=>{
-    const cls=$('alignmentMode').value==='center'?'poem-block poem-centered':'poem-block';
-    html+=`<div class="${cls}" style="margin-bottom:${$('stanzaSpace').value}px">${esc(b.join('\n'))}</div>`;
-  });
-  if(!html.trim()) html=`<h1 class="page-title">Prévia aparecerá aqui</h1>`;
-  page.innerHTML=html;
-
-  if(res.alerts.length){
-    $('alertsList').innerHTML=res.alerts.map(a=>`<li>${esc(a)}</li>`).join('');
-    $('motorStatusBox').textContent=`Motor ativo • ${res.alerts.length} alerta(s).`;
-  } else {
-    $('alertsList').innerHTML=`<li>Nenhum alerta encontrado.</li>`;
-    $('motorStatusBox').textContent='Motor ativo • Sem alertas.';
-  }
-  $('statusBox').textContent='Prévia atualizada com sucesso.';
-}
-
-$('renderBtn').addEventListener('click',renderPoetry);
-$('clearBtn').addEventListener('click',()=>{$('sourceText').value='';renderPoetry();});
-['bookTitle','bookSubtitle','poetryFormat','fontFamily','fontSize','lineHeight',
- 'alignmentMode','stanzaSpace','correctionLevel'].forEach(id=>{
-  $(id).addEventListener('change',renderPoetry);
-  $(id).addEventListener('input',renderPoetry);
+window.addEventListener('load',()=>{
+  const ext=!!window.CeleiroMotorEditorial;
+  $('motorBadge').textContent=ext?'✓ Motor Editorial v2 carregado':'⚠ Motor embutido ativo';
+  $('motorBadge').style.color=ext?'#a8f5b8':'#f5d48a';
+  $('motoresAtivos').innerHTML=`Hifenização PT-BR: ✓<br>Viúvas/Órfãs: ✓<br>Capitular: ✓<br>Motor ${ext?'externo':'embutido'}: ✓`;
 });
-$('sourceText').addEventListener('input',renderPoetry);
-renderPoetry();
+
+function getCfg(){
+  const mg={estreita:{mT:36,mB:42,mI:40,mE:34},normal:{mT:48,mB:54,mI:50,mE:44},ampla:{mT:60,mB:66,mI:62,mE:54}};
+  const m=mg[$('margem').value]||mg.normal;
+  return {
+    formato:$('formato').value, fontSize:+$('fontSize').value,
+    lineHeight:+$('lineHeight').value, fontFamily:$('fontFamily').value,
+    alinhPoesia:$('alinhPoesia').value, estrofeGap:+$('estrofeGap').value,
+    capitular:$('capitular').value, hifenizacao:$('hifenizacao').value,
+    viuvasOrfas:$('viuvasOrfas').value, correcao:$('correcao').value,
+    numeracao:$('numeracao').value, margem:$('margem').value, ...m,
+  };
+}
+
+function atualizarPainel(){
+  if(!resultado) return;
+  const s=resultado.stats;
+  $('sFmt').textContent=$('formato').options[$('formato').selectedIndex].text;
+  $('sPags').textContent=s.paginas;
+  $('sEstrofes').textContent=s.estrofes;
+  $('sVersos').textContent=s.versos;
+  $('tipoObra').textContent=resultado.padrao||'Poesia';
+  $('padrao').textContent=resultado.padrao||'—';
+  // barras
+  const maxV=Math.max(s.versos,1);
+  $('progEstrofes').style.width=Math.min(100,s.estrofes*5)+'%';$('valEstrofes').textContent=s.estrofes;
+  $('progVersos').style.width=Math.min(100,(s.versos/maxV)*100)+'%';$('valVersos').textContent=s.versos;
+  $('progPags').style.width=Math.min(100,s.paginas*10)+'%';$('valPags').textContent=s.paginas;
+  $('progCorr').style.width=Math.min(100,s.corrigidos*20)+'%';$('valCorr').textContent=s.corrigidos;
+  // capitular
+  const cap=$('capitular').value;
+  if(cap&&cap!=='none'){$('capsInfo').style.display='';$('capsDesc').textContent=cap;}
+  else $('capsInfo').style.display='none';
+}
+
+function render(){
+  const texto=$('texto').value.trim();
+  if(!texto){$('status').textContent='Cole o texto poético.';return;}
+  try{
+    resultado=M.preparar(texto,getCfg());
+    pagAtual=0;
+    atualizarPainel();
+    renderPag();
+    $('status').textContent=`✓ ${resultado.paginas.length} pág. · ${resultado.stats.estrofes} estrofes · ${resultado.stats.versos} versos`;
+    const alertas=resultado.alertas||[];
+    const box=$('alertasBox');
+    if(alertas.length){box.classList.add('vis');box.innerHTML=alertas.slice(0,5).map(a=>`<div class="alerta">⚠ ${a.msg||a}</div>`).join('');}
+    else box.classList.remove('vis');
+  }catch(e){$('status').textContent='Erro: '+e.message;console.error(e);}
+}
+
+function renderPag(){
+  if(!resultado) return;
+  const pag=resultado.paginas[pagAtual];
+  const fmt=resultado.fmt||{w:420,h:595};
+  const cfg=resultado.cfg||getCfg();
+  $('preview').innerHTML=M.renderizarPagina(pag,cfg,fmt,cfg.numeracao);
+  $('pgInfo').textContent=`Página ${pagAtual+1} / ${resultado.paginas.length}`;
+  $('metaPag').textContent=`Pág ${pagAtual+1}/${resultado.paginas.length}`;
+  $('metaInfo').textContent=`${resultado.stats.versos} versos · ${resultado.stats.estrofes} estrofes · V/O: ${resultado.stats.corrigidos}`;
+  $('btnAnt').disabled=pagAtual===0;
+  $('btnProx').disabled=pagAtual===resultado.paginas.length-1;
+}
+
+function paginaAnterior(){if(pagAtual>0){pagAtual--;renderPag();}}
+function proximaPagina(){if(resultado&&pagAtual<resultado.paginas.length-1){pagAtual++;renderPag();}}
+function limpar(){$('texto').value='';resultado=null;pagAtual=0;$('preview').innerHTML='';$('status').textContent='Texto limpo.';}
+
+['formato','fontSize','lineHeight','fontFamily','alinhPoesia','estrofeGap',
+ 'capitular','hifenizacao','viuvasOrfas','correcao','margem','numeracao']
+  .forEach(id=>{$(id).addEventListener('change',render);});
+
+let _t;$('texto').addEventListener('input',()=>{clearTimeout(_t);_t=setTimeout(render,600);});
+render();
 </script>
 </body>
 </html>
