@@ -3,322 +3,542 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Centauro — Diagramador Híbrido</title>
-<script src="diagramacao/motor/motor_diagramacao_base.js"></script>
+<title>Centauro — Diagramador Híbrido · Celeiro Literário</title>
+<script src="motores_lapidar/motor_editorial_celeiro_v2.js"></script>
 <style>
 :root{
   --bg:#f3eee6;--paper:#fffdf9;--ink:#2b241f;--muted:#6a625a;--line:#ddd2c4;
-  --beige1:#b39672;--beige2:#c7b08e;--beige3:#e7dccb;
+  --terra1:#b39672;--terra2:#c7b08e;--terra3:#e7dccb;
+  --acento:#7a5c3a;--acento2:#a37a54;
   --ok:#2f7a59;--warn:#b7921e;--danger:#b13a3a;
   --shadow:0 12px 28px rgba(93,73,49,.10);--radius:22px;
 }
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;}
-.app{width:min(1360px,calc(100vw - 16px));margin:8px auto;display:grid;grid-template-columns:240px minmax(0,1fr) 280px;gap:14px;align-items:start;}
-.panel{border-radius:var(--radius);box-shadow:var(--shadow);min-height:calc(100vh - 16px);position:sticky;top:8px;align-self:start;overflow:auto;}
-.left-panel{background:linear-gradient(180deg,#9f835f 0%,#b89b76 58%,#e4d6c3 100%);color:#fff;padding:16px 14px;display:flex;flex-direction:column;gap:12px;}
-.right-panel{background:linear-gradient(180deg,#fbf7f1 0%,#f3ecdf 100%);border:1px solid var(--line);color:var(--ink);padding:16px 14px;display:flex;flex-direction:column;gap:12px;}
-.panel h2{margin:0;font-size:1.7rem;line-height:1;}
-.panel h3{margin:0;font-size:1rem;line-height:1.2;}
-.status{font-size:.92rem;line-height:1.35;border-radius:14px;padding:10px 12px;min-height:48px;}
-.left-panel .status{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);color:#fffaf3;}
-.right-panel .status{background:#fff;border:1px solid #e2d6c8;color:#665d54;}
-.card{border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px;}
-.left-panel .card{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);}
-.right-panel .card{background:#fffdf9;border:1px solid #e5d9cb;}
-label,p{margin:0;line-height:1.35;}
-.left-panel label,.left-panel p{color:#fff8f1;}
-.right-panel label,.right-panel p{color:#63594f;}
-.input,.select,.btn{width:100%;font-family:inherit;font-size:.98rem;border-radius:12px;}
-.input,.select{border:1px solid #d8cdbf;background:#fff;color:var(--ink);padding:10px;outline:none;}
-.btn{border:none;padding:11px 12px;font-weight:700;cursor:pointer;transition:.12s ease;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif;}
+.app{width:min(1380px,calc(100vw - 16px));margin:8px auto;display:grid;grid-template-columns:280px minmax(0,1fr) 260px;gap:14px;align-items:start;}
+
+/* PAINEL ESQUERDO */
+.left-panel{background:linear-gradient(180deg,#9f835f,#b89b76 58%,#e4d6c3);color:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 14px;position:sticky;top:8px;max-height:calc(100vh - 16px);overflow:auto;display:flex;flex-direction:column;gap:10px;}
+.left-panel h2{margin:0;font-size:1.6rem;font-family:Georgia,serif;color:#fff8f1;}
+.status{font-size:.84rem;border-radius:11px;padding:8px 10px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);color:#fff8f1;line-height:1.4;min-height:38px;}
+.motor-badge{font-size:.7rem;color:#ffe8c8;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:4px 8px;text-align:center;line-height:1.3;}
+.card{background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.16);border-radius:13px;padding:10px;display:flex;flex-direction:column;gap:7px;}
+label{display:block;font-size:.74rem;font-weight:700;color:#ffe8c8;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px;}
+.input,.select{width:100%;font-family:inherit;font-size:.9rem;border-radius:10px;border:1px solid #d8cdbf;background:#fff;color:var(--ink);padding:8px 10px;outline:none;}
+.input:focus,.select:focus{border-color:var(--terra2);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.btn{width:100%;border:none;border-radius:10px;padding:10px;font:700 .86rem Georgia,serif;cursor:pointer;transition:.14s;text-decoration:none;display:flex;align-items:center;justify-content:center;min-height:42px;}
 .btn:hover{transform:translateY(-1px);}
-.btn-beige{background:#a48661;color:#fff;}
-.btn-soft{background:#efe5d8;color:#5b4630;}
+.btn-terra{background:var(--acento);color:#fff;}
+.btn-soft{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.22);}
 .btn-warn{background:var(--warn);color:#231d16;}
 .btn-danger{background:var(--danger);color:#fff;}
-.main{display:flex;flex-direction:column;gap:14px;min-width:0;}
-.hero,.stats-shell,.editor-shell,.preview-shell{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
-.hero{background:linear-gradient(180deg,#f4ede3 0%,#ebe1d3 100%);padding:24px 22px;display:grid;gap:14px;}
-.hero-top{display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:center;}
-.badge{width:52px;height:84px;border-radius:18px;background:linear-gradient(180deg,var(--beige2),var(--beige1));color:#fffaf3;display:flex;align-items:center;justify-content:center;font-size:2.3rem;line-height:1;box-shadow:0 8px 18px rgba(163,134,97,.22);}
-.hero h1{margin:0 0 8px 0;font-size:clamp(2rem,4vw,2.8rem);line-height:1;color:#3d2f21;}
-.hero p{color:#655b51;font-size:1.08rem;}
-.stats-shell{padding:16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
-.stat{background:#faf6f0;border:1px solid #e4d9cb;border-radius:16px;padding:14px 12px;min-height:100px;}
-.stat-label{font-size:.98rem;font-weight:700;color:#5d5348;margin-bottom:8px;}
-.stat-value{font-size:1.06rem;font-weight:700;color:#3e3023;line-height:1.25;word-break:break-word;}
-.editor-shell,.preview-shell{padding:18px;display:flex;flex-direction:column;gap:12px;}
-.editor-shell h2,.preview-shell h2{margin:0;font-size:1.2rem;}
-.editor-box{width:100%;min-height:430px;border:1px solid #d8cdbf;border-radius:18px;padding:18px;resize:vertical;background:#fff;color:var(--ink);font-family:Georgia,"Times New Roman",serif;font-size:1.04rem;line-height:1.5;outline:none;}
-.editor-box:focus{border-color:#c1a785;box-shadow:0 0 0 3px rgba(183,150,114,.10);}
-.preview-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
-.pill-row{display:flex;flex-wrap:wrap;gap:8px;}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;background:#f3eadf;border:1px solid #e2d5c6;color:#5b5248;font-size:.94rem;font-weight:700;}
-.preview-stage{background:linear-gradient(180deg,#efe7db 0%,#e7ddd0 100%);border-radius:20px;border:1px solid var(--line);min-height:720px;display:flex;align-items:flex-start;justify-content:center;padding:22px 12px;overflow:auto;}
-.page-host{display:flex;justify-content:center;width:100%;}
-.analysis-list{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;}
-.footer-note{font-size:.9rem;color:#6e6256;line-height:1.45;}
-@media(max-width:1160px){.app{grid-template-columns:1fr}.panel{position:relative;top:auto;min-height:auto}}
-@media(max-width:760px){.stats-shell{grid-template-columns:1fr 1fr}.preview-stage{min-height:auto;padding:12px 8px}}
+
+/* PAINEL DIREITO */
+.right-panel{background:linear-gradient(180deg,#faf6f0,#f0e6d2);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;position:sticky;top:8px;max-height:calc(100vh - 16px);overflow:auto;display:flex;flex-direction:column;gap:10px;}
+.right-panel h3{font-size:.95rem;color:var(--ink);font-family:Georgia,serif;}
+.analysis-item{background:#fffdf9;border:1px solid #e5d9cb;border-radius:11px;padding:10px;font-size:.82rem;color:var(--muted);line-height:1.4;}
+.analysis-item strong{display:block;color:var(--ink);font-size:.85rem;margin-bottom:3px;}
+
+/* BLOCOS TIPO */
+.blocos-lista{display:flex;flex-direction:column;gap:5px;max-height:200px;overflow:auto;}
+.bloco-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:999px;font-size:.73rem;font-weight:700;}
+.tag-prosa   {background:rgba(163,122,84,.12);color:#7a5c3a;border:1px solid rgba(163,122,84,.25);}
+.tag-poesia  {background:rgba(47,107,74,.10); color:#2f6b4a;border:1px solid rgba(47,107,74,.22);}
+.tag-capitulo{background:rgba(183,146,30,.12);color:#7a6a20;border:1px solid rgba(183,146,30,.25);}
+.tag-dialogo {background:rgba(90,60,155,.10); color:#4a3a8a;border:1px solid rgba(90,60,155,.22);}
+.tag-sextilha{background:rgba(155,60,60,.10); color:#8a3a3a;border:1px solid rgba(155,60,60,.22);}
+
+.prog-wrap{display:flex;flex-direction:column;gap:6px;}
+.prog-item{display:flex;align-items:center;gap:8px;}
+.prog-nome{font-size:.75rem;color:var(--muted);width:88px;flex-shrink:0;}
+.prog-bar-bg{flex:1;height:5px;background:rgba(0,0,0,.06);border-radius:999px;overflow:hidden;}
+.prog-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--acento),var(--terra1));transition:width .5s ease;}
+.prog-val{font-size:.75rem;color:var(--acento);font-weight:700;width:28px;text-align:right;}
+
+.alertas{background:rgba(183,146,30,.1);border:1px solid rgba(183,146,30,.3);border-radius:11px;padding:9px;display:none;flex-direction:column;gap:4px;}
+.alertas.vis{display:flex;}
+.alerta{font-size:.75rem;color:var(--warn);line-height:1.3;}
+
+/* MAIN */
+.main{display:flex;flex-direction:column;gap:14px;}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);}
+.box h2{font-size:1.1rem;margin-bottom:12px;color:var(--acento);font-family:Georgia,serif;}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;}
+.stat{background:#faf6f0;border:1px solid #e4d9cb;border-radius:13px;padding:10px;text-align:center;}
+.stat-val{font-size:1.05rem;font-weight:700;color:var(--acento);line-height:1;}
+.stat-lbl{font-size:.68rem;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.04em;}
+.editor-box{width:100%;min-height:200px;border:1.5px solid var(--line);border-radius:13px;padding:13px;resize:vertical;background:#fff;color:var(--ink);font-family:Georgia,'Times New Roman',serif;font-size:1rem;line-height:1.55;outline:none;}
+.editor-box:focus{border-color:var(--terra2);}
+.pager{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.btn-pg{border:1.5px solid var(--acento);background:transparent;color:var(--acento);border-radius:999px;padding:8px 16px;font:700 .86rem Georgia,serif;cursor:pointer;transition:.14s;}
+.btn-pg:hover:not(:disabled){background:var(--acento);color:#fff;}
+.btn-pg:disabled{opacity:.35;cursor:not-allowed;}
+.pg-info{font-size:.88rem;color:var(--acento);font-weight:700;margin:0 auto;}
+.stage{background:linear-gradient(180deg,#ece3d4,#e4d5bf);border-radius:18px;padding:20px;min-height:660px;display:flex;align-items:flex-start;justify-content:center;overflow:auto;}
+.meta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.78rem;color:var(--muted);margin-top:8px;}
+
+/* DETECTOR VISUAL */
+.tipo-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;font-size:.78rem;font-weight:700;margin-top:4px;}
+.pill-hibrido {background:rgba(163,122,84,.12);color:var(--acento);border:1px solid rgba(163,122,84,.3);}
+.pill-prosa   {background:rgba(47,107,74,.1);color:#2f6b4a;border:1px solid rgba(47,107,74,.25);}
+.pill-poesia  {background:rgba(90,60,155,.1);color:#4a3a8a;border:1px solid rgba(90,60,155,.25);}
+.pill-cordel  {background:rgba(155,60,60,.1);color:#8a3a3a;border:1px solid rgba(155,60,60,.25);}
+
+@media(max-width:1060px){.app{grid-template-columns:1fr}.left-panel,.right-panel{position:relative;top:auto;max-height:none;}.stats{grid-template-columns:1fr 1fr 1fr;}}
+@media print{body{background:#fff;}.left-panel,.right-panel,.pager,.meta,.alertas{display:none!important;}.app{display:block;}.box{box-shadow:none;border:0;padding:0;}.stage{padding:0;background:#fff;}}
 </style>
 </head>
 <body>
 <div class="app">
 
-<aside class="panel left-panel">
+<!-- PAINEL ESQUERDO -->
+<aside class="left-panel">
   <h2>Centauro</h2>
-  <div class="status" id="statusBox">Pronto para diagramar obra híbrida.</div>
+  <div class="status" id="status">Aguardando texto híbrido.</div>
+  <div class="motor-badge" id="motorBadge">Motor Editorial v2 · Verificando...</div>
 
   <div class="card">
-    <label for="bookTitle"><strong>Título da obra</strong></label>
-    <input class="input" id="bookTitle" type="text" value="Centauro — Diagramador Híbrido">
-  </div>
-  <div class="card">
-    <label for="bookSubtitle"><strong>Subtítulo</strong></label>
-    <input class="input" id="bookSubtitle" type="text" value="Celeiro Literário / Lapidar">
+    <label>Título</label><input class="input" id="titulo" type="text" placeholder="Título da obra">
+    <label>Autor</label><input class="input" id="autor" type="text" placeholder="Autor">
   </div>
 
   <div class="card">
-    <label for="hybridFormat"><strong>Formato</strong></label>
-    <select class="select" id="hybridFormat">
-      <option value="a5" selected>A5</option>
-      <option value="14x21">14 x 21 cm</option>
-      <option value="16x23">16 x 23 cm</option>
-      <option value="6x9">6 x 9 pol.</option>
-    </select>
-    <label for="fontFamily"><strong>Fonte</strong></label>
+    <div class="row2">
+      <div><label>Formato</label>
+        <select class="select" id="formato">
+          <option value="16x23" selected>16×23 cm</option>
+          <option value="14x21">14×21 cm</option>
+          <option value="A5">A5</option>
+          <option value="6x9">6×9 pol.</option>
+        </select>
+      </div>
+      <div><label>Fonte (pt)</label>
+        <input class="input" id="fontSize" type="number" value="12" min="10" max="18">
+      </div>
+    </div>
+    <div class="row2">
+      <div><label>Entrelinha</label>
+        <input class="input" id="lineHeight" type="number" value="1.50" min="1.2" max="2.2" step="0.05">
+      </div>
+      <div><label>Margem</label>
+        <select class="select" id="margem">
+          <option value="normal" selected>Normal</option>
+          <option value="estreita">Estreita</option>
+          <option value="ampla">Ampla</option>
+        </select>
+      </div>
+    </div>
+    <label>Fonte corpo</label>
     <select class="select" id="fontFamily">
       <option value="Georgia,'Times New Roman',serif">Georgia</option>
       <option value="'Times New Roman',serif">Times New Roman</option>
       <option value="Garamond,serif">Garamond</option>
     </select>
-    <label for="fontSize"><strong>Tamanho</strong></label>
-    <select class="select" id="fontSize">
-      <option value="11">11 pt</option>
-      <option value="12" selected>12 pt</option>
-      <option value="13">13 pt</option>
-      <option value="14">14 pt</option>
-    </select>
-    <label for="lineHeight"><strong>Entrelinha</strong></label>
-    <select class="select" id="lineHeight">
-      <option value="1.30">1.30</option>
-      <option value="1.40" selected>1.40</option>
-      <option value="1.50">1.50</option>
-      <option value="1.60">1.60</option>
-    </select>
   </div>
 
   <div class="card">
-    <label for="blockSpace"><strong>Espaço entre blocos</strong></label>
-    <select class="select" id="blockSpace">
-      <option value="14">14 px</option>
-      <option value="20" selected>20 px</option>
-      <option value="26">26 px</option>
-      <option value="32">32 px</option>
+    <div class="row2">
+      <div><label>Recuo §</label>
+        <select class="select" id="indent">
+          <option value="2" selected>2 em</option>
+          <option value="3">3 em</option>
+          <option value="0">Sem recuo</option>
+        </select>
+      </div>
+      <div><label>Espaço §</label>
+        <input class="input" id="paragraphGap" type="number" value="0.35" min="0" max="2" step="0.05">
+      </div>
+    </div>
+    <div class="row2">
+      <div><label>Alin. poesia</label>
+        <select class="select" id="alinhPoesia">
+          <option value="left" selected>Esquerda</option>
+          <option value="center">Centro</option>
+        </select>
+      </div>
+      <div><label>Gap estrofe</label>
+        <input class="input" id="estrofeGap" type="number" value="16" min="8" max="40" step="2">
+      </div>
+    </div>
+    <div class="row2">
+      <div><label>Ornamento</label>
+        <select class="select" id="ornamento">
+          <option value="✦">✦ Estrela</option>
+          <option value="❧">❧ Floral</option>
+          <option value="·">· Ponto</option>
+          <option value="—">— Traço</option>
+          <option value="">Sem ornamento</option>
+        </select>
+      </div>
+      <div><label>Numeração</label>
+        <select class="select" id="numeracao">
+          <option value="centro" selected>Centro</option>
+          <option value="dir">Direita</option>
+          <option value="off">Sem</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOTORES TIPOGRÁFICOS -->
+  <div class="card">
+    <label>✦ Capitular</label>
+    <select class="select" id="capitular">
+      <option value="none">Desligada</option>
+      <option value="simple">Simples</option>
+      <option value="classic" selected>Clássica</option>
+      <option value="ornamental">Ornamental</option>
+      <option value="medieval">Medieval</option>
+      <option value="iluminura">Iluminura</option>
     </select>
-    <label for="ornamento"><strong>Ornamento</strong></label>
-    <select class="select" id="ornamento">
-      <option value="✦">✦ Estrela</option>
-      <option value="❧">❧ Floral</option>
-      <option value="·">· Ponto</option>
-      <option value="—">— Traço</option>
+
+    <label>✦ Hifenização PT-BR</label>
+    <select class="select" id="hifenizacao">
+      <option value="light" selected>Leve (prefixos)</option>
+      <option value="full">Completa (silábica)</option>
+      <option value="off">Desligada</option>
     </select>
-    <label for="correctionLevel"><strong>Correção</strong></label>
-    <select class="select" id="correctionLevel">
+
+    <label>✦ Viúvas e Órfãs</label>
+    <select class="select" id="viuvasOrfas">
+      <option value="warn" selected>Corrigir automaticamente</option>
+      <option value="tight">Corrigir (rígido)</option>
+      <option value="off">Desligada</option>
+    </select>
+
+    <label>Correção</label>
+    <select class="select" id="correcao">
       <option value="light" selected>Leve</option>
       <option value="medium">Média</option>
     </select>
   </div>
 
   <div class="card">
-    <button class="btn btn-beige" id="renderBtn">Atualizar prévia</button>
-    <button class="btn btn-soft"  id="clearBtn">Limpar obra</button>
-    <a class="btn btn-warn"    href="lapidar.html">Retornar ao Lapidar</a>
-    <a class="btn btn-danger"  href="pagina_respiro_celeiro.html">Sair do sistema</a>
+    <button class="btn btn-terra" onclick="render()">↺ Atualizar prévia</button>
+    <button class="btn btn-soft"  onclick="window.print()">🖨 Imprimir / PDF</button>
+    <button class="btn btn-soft"  onclick="limpar()">✕ Limpar</button>
+    <a class="btn btn-warn"   href="lapidar.html">← Lapidar</a>
+    <a class="btn btn-danger" href="pagina_respiro_celeiro.html">Sair</a>
   </div>
+
+  <div class="alertas" id="alertasBox"></div>
 </aside>
 
-<main class="main">
-  <section class="hero">
-    <div class="hero-top">
-      <div class="badge">C</div>
-      <div>
-        <h1>Centauro — Diagramador Híbrido</h1>
-        <p>Módulo do Celeiro Literário para obras que misturam prosa e poesia, diálogos, narrações e passagens líricas.</p>
-      </div>
+<!-- MAIN -->
+<div class="main">
+
+  <div class="box">
+    <div class="stats">
+      <div class="stat"><div class="stat-val" id="sFmt">16×23</div><div class="stat-lbl">Formato</div></div>
+      <div class="stat"><div class="stat-val" id="sPags">0</div><div class="stat-lbl">Páginas</div></div>
+      <div class="stat"><div class="stat-val" id="sBlocos">0</div><div class="stat-lbl">Blocos</div></div>
+      <div class="stat"><div class="stat-val" id="sWords">0</div><div class="stat-lbl">Palavras</div></div>
+      <div class="stat"><div class="stat-val" id="sCorr">0</div><div class="stat-lbl">V/O Corr.</div></div>
     </div>
-  </section>
+  </div>
 
-  <section class="stats-shell">
-    <div class="stat"><div class="stat-label">Formato</div><div class="stat-value" id="formatStat">A5</div></div>
-    <div class="stat"><div class="stat-label">Fonte</div><div class="stat-value" id="fontStat">Georgia<br>12 pt</div></div>
-    <div class="stat"><div class="stat-label">Blocos</div><div class="stat-value" id="blocksStat">0</div></div>
-    <div class="stat"><div class="stat-label">Estrutura</div><div class="stat-value" id="structureStat">Aguardando texto</div></div>
-  </section>
+  <div class="box">
+    <h2>Texto híbrido (prosa + poesia)</h2>
+    <textarea id="texto" class="editor-box" placeholder="Cole aqui o texto híbrido — o Centauro detecta automaticamente blocos de prosa, poesia, diálogos e capítulos...">Capítulo 1 — O Retorno
 
-  <section class="editor-shell">
-    <h2>Texto-base híbrido</h2>
-    <textarea id="sourceText" class="editor-box" placeholder="Cole aqui a obra híbrida...">Exemplo de obra híbrida
-
-A estrada seguia quieta pela manhã, e o viajante pensava no peso do tempo sobre a matéria do mundo.
+A estrada seguia quieta pela manhã, e o viajante pensava no peso do tempo sobre a matéria do mundo. Havia algo diferente no ar daquele dia, algo que ele não sabia nomear ainda.
 
 No centro da paisagem
 um sino breve respira
 e a tarde dobra lenta
 a sombra que delira
 
-Quando a noite caiu, o mesmo viajante percebeu que a memória também caminhava ao lado dele, em silêncio.
+Quando a noite caiu, o mesmo viajante percebeu que a memória também caminhava ao lado dele, em silêncio, como quem conhece o caminho mas finge não saber.
 
 — Onde você vai? — perguntou a sombra.
 — Para onde o vento não chegou ainda — respondeu ele.</textarea>
-  </section>
+  </div>
 
-  <section class="preview-shell">
-    <div class="preview-top">
-      <h2>Prévia híbrida</h2>
-      <div class="pill-row">
-        <span class="pill" id="pillBlocks">Blocos: 0</span>
-        <span class="pill" id="pillLines">Linhas: 0</span>
-        <span class="pill" id="pillMode">Modo: híbrido</span>
-      </div>
+  <div class="box">
+    <div class="pager" style="margin-bottom:14px;">
+      <button class="btn-pg" id="btnAnt" onclick="paginaAnterior()" disabled>← Anterior</button>
+      <span class="pg-info" id="pgInfo">Página 1 / 1</span>
+      <button class="btn-pg" id="btnProx" onclick="proximaPagina()">Próxima →</button>
     </div>
-    <div class="preview-stage">
-      <div id="pagePreview" class="page-host"></div>
+    <div class="stage"><div id="preview"></div></div>
+    <div class="meta">
+      <span id="metaInfo">Aguardando renderização</span>
+      <span id="metaPag">Pág 1/1</span>
     </div>
-  </section>
-</main>
+  </div>
 
-<aside class="panel right-panel">
-  <h2>Motor Central</h2>
-  <div class="status" id="motorStatusBox">Motor de Diagramação Base ativo.</div>
-  <div class="card">
-    <h3>Leitura estrutural</h3>
-    <p>Reconhece automaticamente blocos de prosa, poesia, diálogos e títulos na mesma obra, aplicando formatação específica a cada um.</p>
+</div>
+
+<!-- PAINEL DIREITO -->
+<aside class="right-panel">
+  <h3>Motor Centauro</h3>
+
+  <div class="analysis-item">
+    <strong>Tipo da obra</strong>
+    <div id="tipoObra">Aguardando texto.</div>
+    <div id="tipoPill"></div>
   </div>
-  <div class="card">
-    <h3>Estrutura detectada</h3>
-    <p id="estruturaInfo">Aguardando texto.</p>
+
+  <div class="analysis-item">
+    <strong>Métricas</strong>
+    <div class="prog-wrap">
+      <div class="prog-item"><span class="prog-nome">Páginas</span><div class="prog-bar-bg"><div class="prog-bar" id="progPags" style="width:0%"></div></div><span class="prog-val" id="valPags">0</span></div>
+      <div class="prog-item"><span class="prog-nome">Palavras</span><div class="prog-bar-bg"><div class="prog-bar" id="progWords" style="width:0%"></div></div><span class="prog-val" id="valWords">0</span></div>
+      <div class="prog-item"><span class="prog-nome">Blocos</span><div class="prog-bar-bg"><div class="prog-bar" id="progBlocos" style="width:0%"></div></div><span class="prog-val" id="valBlocos">0</span></div>
+      <div class="prog-item"><span class="prog-nome">V/O Corr.</span><div class="prog-bar-bg"><div class="prog-bar" id="progCorr" style="width:0%"></div></div><span class="prog-val" id="valCorr">0</span></div>
+    </div>
   </div>
-  <div class="card">
-    <h3>Alertas</h3>
-    <ul class="analysis-list" id="alertsList"><li>Aguardando análise.</li></ul>
+
+  <div class="analysis-item">
+    <strong>Blocos detectados</strong>
+    <div class="blocos-lista" id="blocosLista">Aguardando análise.</div>
   </div>
-  <div class="footer-note">
-    Centauro usa o mesmo motor base de Pólux, Castor, Qui(RON)xadá e Hércules.
+
+  <div class="analysis-item">
+    <strong>Motores ativos</strong>
+    <span id="motoresAtivos" style="font-size:.78rem;line-height:1.6;">Verificando...</span>
   </div>
 </aside>
 
 </div>
+
 <script>
-const $ = id => document.getElementById(id);
+// ── MOTOR EMBUTIDO FALLBACK ───────────────────────────────────────────────
+const M = window.CeleiroMotorEditorial || (function(){
+  const ESC=s=>String(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+  const CAPS={none:'',simple:'float:left;font-size:3.2em;line-height:.82;margin:.04em .12em 0 0;font-weight:700;',classic:'float:left;font-size:3.9em;line-height:.82;margin:.02em .10em 0 0;font-weight:700;',ornamental:'float:left;font-size:4em;line-height:.82;margin:.02em .12em 0 0;font-weight:700;border:1px solid #b7c1b9;padding:.06em .14em .02em;background:#f6f4ef;',medieval:'float:left;font-size:4em;line-height:.82;margin:.02em .12em 0 0;font-weight:900;color:#3b1a08;border:2px double #d8a84c;padding:.04em .12em;background:#fffbe8;',iluminura:'float:left;font-size:4.2em;line-height:.82;margin:.02em .14em 0 0;font-weight:900;color:#7c1212;border:3px solid #d8b56d;padding:.04em .14em;background:#fff3bd;'};
+  const FMTS={A5:{w:420,h:595},'14x21':{w:397,h:595},'16x23':{w:454,h:652},'6x9':{w:432,h:648}};
+  const MARGS={estreita:{mT:36,mB:42,mI:40,mE:34},normal:{mT:52,mB:58,mI:54,mE:46},ampla:{mT:64,mB:70,mI:66,mE:56}};
 
-const DIMS = {
-  a5:{'w':420,'h':595},'14x21':{'w':400,'h':595},'16x23':{'w':454,'h':652},'6x9':{'w':432,'h':648}
-};
+  function hifenizar(t,nivel){
+    if(nivel==='off') return t;
+    const prefs=['des','trans','sub','super','inter','semi','anti','auto','re','pre','contra'];
+    return t.replace(/\b([a-záéíóúâêôãõàäëïöü]{6,})\b/gi,p=>{
+      for(const pf of prefs) if(p.toLowerCase().startsWith(pf)&&p.length>pf.length+3) return p.slice(0,pf.length)+'\u00AD'+p.slice(pf.length);
+      return p;
+    });
+  }
+  function corrigir(t,nivel){
+    let o=t.replace(/\r\n/g,'\n').replace(/\r/g,'\n').replace(/\t/g,' ').replace(/[ ]{2,}/g,' ').trim();
+    o=o.replace(/\s+([,\.!?;:])/g,'$1').replace(/\.{4,}/g,'...');
+    if(nivel==='medium') o=o.replace(/\bmais eu\b/g,'mas eu').replace(/\bMais eu\b/g,'Mas eu');
+    return o;
+  }
+  function tipoDobloco(c){
+    const ls=c.split('\n').map(l=>l.trim()).filter(Boolean);
+    if(!ls.length) return 'vazio';
+    if(/^(cap[íi]tulo|cap\.|parte\s+|pr[oó]logo|ep[íi]logo)\b/i.test(ls[0])) return 'capitulo';
+    if(ls.some(l=>/^[-–—]\s/.test(l))) return 'dialogo';
+    if(ls.length>=2){const avg=ls.reduce((s,l)=>s+l.length,0)/ls.length;if(avg<=68) return 'poesia';}
+    return 'prosa';
+  }
+  function classificar(blocos){
+    const t=blocos.length;if(!t) return 'vazio';
+    const np=blocos.filter(b=>b.tipo==='poesia').length;
+    const ns=blocos.filter(b=>b.tipo==='prosa').length;
+    if(np>0&&ns>0) return 'hibrido';
+    if(np/t>.7) return 'poesia';
+    return 'prosa';
+  }
 
-function normalizar(t){return String(t||'').replace(/\r\n/g,'\n').replace(/\r/g,'\n').replace(/\t/g,' ').replace(/[ ]{2,}/g,' ').replace(/\n{3,}/g,'\n\n').trim();}
-function escapar(t){return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function countLines(t){return String(t||'').split('\n').map(l=>l.trim()).filter(Boolean).length;}
+  function preparar(rawText,cfg){
+    const mg=MARGS[cfg.margem||'normal']||MARGS.normal;
+    const mT=mg.mT,mB=mg.mB,mI=mg.mI,mE=mg.mE;
+    const fmt=FMTS[cfg.formato]||FMTS['16x23'];
+    const fs=cfg.fontSize||12,lh=cfg.lineHeight||1.50;
+    const altUtil=fmt.h-mT-mB;
+    const largUtil=fmt.w-mI-mE;
+    const cpl=Math.max(24,Math.floor(largUtil/(fs*0.53)));
+    const altLinha=Math.ceil(fs*lh*1.33);
+    const eGap=+(cfg.estrofeGap||16);
 
-function quebrarBlocos(texto){
-  return normalizar(texto).split(/\n\s*\n/).map(bloco=>{
-    const linhas=bloco.split('\n').map(l=>l.trim()).filter(Boolean);
-    if(!linhas.length)return null;
-    const avg=linhas.reduce((s,l)=>s+l.length,0)/linhas.length;
-    let tipo='prosa';
-    if(/^(cap[ií]tulo|parte|pr[oó]logo|ep[ií]logo)\b/i.test(linhas[0]))tipo='titulo';
-    else if(avg<=55&&linhas.length>=2)tipo='poesia';
-    else if(linhas.some(l=>/^[—–-]/.test(l)))tipo='dialogo';
-    return{linhas,tipo,texto:linhas.join(' ')};
-  }).filter(Boolean);
+    const texto=hifenizar(corrigir(rawText||'',cfg.correcao),cfg.hifenizacao||'light');
+    const blocos=texto.split(/\n\s*\n/).map(b=>b.trim()).filter(Boolean).map((c,i)=>{
+      const ls=c.split('\n').map(l=>l.trim()).filter(Boolean);
+      return {id:`B${String(i+1).padStart(4,'0')}`,tipo:tipoDobloco(c),conteudo:c,linhas:ls};
+    });
+    const tipoObra=classificar(blocos);
+
+    // paginação
+    const paginas=[];
+    let pag={numero:1,lado:'recto',blocos:[],altUsada:0};
+    blocos.forEach(b=>{
+      const nL=b.linhas.reduce((s,l)=>s+Math.max(1,Math.ceil(l.length/cpl)),0);
+      const alt=Math.ceil(nL*altLinha+(b.tipo==='capitulo'?48:b.tipo==='poesia'?eGap:14));
+      if(b.tipo==='capitulo'&&pag.blocos.length){
+        paginas.push(pag);pag={numero:paginas.length+1,lado:paginas.length%2===0?'recto':'verso',blocos:[],altUsada:0};
+      }
+      if(pag.blocos.length&&pag.altUsada+alt>altUtil){
+        paginas.push(pag);pag={numero:paginas.length+1,lado:paginas.length%2===0?'recto':'verso',blocos:[],altUsada:0};
+      }
+      pag.blocos.push({...b,alt});pag.altUsada+=alt;
+    });
+    if(pag.blocos.length) paginas.push(pag);
+
+    // viúvas/órfãs
+    let corrigidos=0;
+    if(cfg.viuvasOrfas!=='off'){
+      for(let i=0;i<paginas.length-1;i++){
+        const p=paginas[i],q=paginas[i+1];
+        const ult=p.blocos[p.blocos.length-1];
+        if(ult&&(ult.tipo==='prosa'||ult.tipo==='poesia')){
+          const nl=ult.linhas.reduce((s,l)=>s+Math.max(1,Math.ceil(l.length/cpl)),0);
+          if(nl<=(cfg.viuvasOrfas==='tight'?3:2)){p.blocos.pop();q.blocos.unshift(ult);corrigidos++;}
+        }
+        const prim=q.blocos[0];
+        if(prim&&(prim.tipo==='prosa'||prim.tipo==='poesia')){
+          const nl=prim.linhas.reduce((s,l)=>s+Math.max(1,Math.ceil(l.length/cpl)),0);
+          if(nl<=(cfg.viuvasOrfas==='tight'?3:2)){q.blocos.shift();p.blocos.push(prim);corrigidos++;}
+        }
+      }
+    }
+
+    const palavras=(texto.match(/\b[\wÀ-ÿ'-]+\b/g)||[]).length;
+    return {stats:{palavras,paginas:paginas.length,blocos:blocos.length,corrigidos},paginas,blocos,tipoObra,fmt,cfg:{...cfg,mT,mB,mI,mE},alertas:[]};
+  }
+
+  function renderizarPagina(pag,cfg,fmt,numeracao){
+    const{mT,mB,mI,mE,fontSize:fs,lineHeight:lh,fontFamily:ff,capitular,indent,paragraphGap,alinhPoesia,estrofeGap,ornamento}=cfg;
+    const W=fmt.w,H=fmt.h;
+    const margL=pag.lado==='recto'?mI:mE;
+    const margR=pag.lado==='recto'?mE:mI;
+    const capCSS=CAPS[capitular||'classic']||CAPS.classic;
+    const alin=alinhPoesia||'left';
+    const eGap=+(estrofeGap||16);
+    const orn=ornamento||'✦';
+    let isFirst=true, prevTipo='';
+
+    const html=pag.blocos.map(b=>{
+      let out='';
+      // ornamento entre transições prosa↔poesia
+      if(prevTipo&&prevTipo!==b.tipo&&b.tipo!=='capitulo'&&prevTipo!=='capitulo'&&orn){
+        out+=`<div style="text-align:center;color:#b39672;margin:.6em 0;font-size:1em;letter-spacing:.3em;opacity:.65">${ESC(orn)}</div>`;
+      }
+      prevTipo=b.tipo;
+
+      if(b.tipo==='capitulo'){
+        isFirst=false;
+        return out+`<h2 style="text-align:center;font-size:1.45em;font-weight:700;margin:0 0 .6em;line-height:1.1">${ESC(b.conteudo)}</h2>`;
+      }
+      if(b.tipo==='poesia'){
+        return out+`<div style="white-space:pre-line;text-align:${alin};margin-bottom:${eGap}px;line-height:${lh}">${ESC(b.conteudo)}</div>`;
+      }
+      if(b.tipo==='dialogo'){
+        return out+b.linhas.map(l=>`<p style="margin:0 0 .35em;text-indent:0;text-align:justify">${ESC(l)}</p>`).join('');
+      }
+      // prosa
+      const ti=isFirst?0:+(indent||2);
+      const style=`margin:0 0 ${paragraphGap||.35}em;text-align:justify;text-indent:${ti}em;`;
+      let txt=ESC(b.conteudo);
+      if(isFirst&&capitular&&capitular!=='none') txt=txt.replace(/^(.)/,`<span style="${capCSS}">$1</span>`);
+      isFirst=false;
+      return out+`<p style="${style}">${txt}</p>`;
+    }).join('');
+
+    let num='';
+    if(numeracao!=='off'){
+      const al=numeracao==='dir'?'right':pag.lado==='recto'?'right':'left';
+      num=`<div style="position:absolute;bottom:${Math.round(mB/2)}px;left:${margL}px;right:${margR}px;text-align:${al};font-size:.82em;color:#666">${pag.numero}</div>`;
+    }
+    return `<div style="width:${W}px;height:${H}px;background:#fff;position:relative;box-shadow:0 10px 28px rgba(0,0,0,.14);flex-shrink:0;overflow:hidden;border-radius:3px"><div style="position:absolute;left:${margL}px;top:${mT}px;right:${margR}px;bottom:${mB}px;font-family:${ff};font-size:${fs}pt;line-height:${lh};overflow:hidden">${html}</div>${num}</div>`;
+  }
+
+  return {preparar,renderizarPagina,FORMATOS:FMTS};
+})();
+
+// ── UI ────────────────────────────────────────────────────────────────────
+const $=id=>document.getElementById(id);
+let resultado=null, pagAtual=0;
+
+window.addEventListener('load',()=>{
+  const ext=!!window.CeleiroMotorEditorial;
+  $('motorBadge').textContent=ext?'✓ Motor Editorial v2 carregado':'⚠ Motor embutido ativo';
+  $('motorBadge').style.color=ext?'#a8f5b8':'#f5d48a';
+  $('motoresAtivos').innerHTML=`Hifenização PT-BR: ✓<br>Viúvas/Órfãs: ✓<br>Capitular: ✓<br>Ornamento trans.: ✓<br>Motor ${ext?'externo':'embutido'}: ✓`;
+});
+
+function getCfg(){
+  const mg={estreita:{mT:36,mB:42,mI:40,mE:34},normal:{mT:52,mB:58,mI:54,mE:46},ampla:{mT:64,mB:70,mI:66,mE:56}};
+  const m=mg[$('margem').value]||mg.normal;
+  return {
+    formato:$('formato').value, fontSize:+$('fontSize').value,
+    lineHeight:+$('lineHeight').value, fontFamily:$('fontFamily').value,
+    indent:+$('indent').value, paragraphGap:+$('paragraphGap').value,
+    alinhPoesia:$('alinhPoesia').value, estrofeGap:+$('estrofeGap').value,
+    ornamento:$('ornamento').value, capitular:$('capitular').value,
+    hifenizacao:$('hifenizacao').value, viuvasOrfas:$('viuvasOrfas').value,
+    correcao:$('correcao').value, numeracao:$('numeracao').value,
+    margem:$('margem').value, ...m,
+  };
+}
+
+const TIPO_LABEL={hibrido:'Obra híbrida (prosa + poesia)',prosa:'Prosa narrativa',poesia:'Poesia',cordel:'Cordel / Poesia popular',vazio:'Sem conteúdo'};
+const TIPO_PILL= {hibrido:'pill-hibrido',prosa:'pill-prosa',poesia:'pill-poesia',cordel:'pill-cordel'};
+const BLOCO_TAG= {prosa:'tag-prosa',poesia:'tag-poesia',capitulo:'tag-capitulo',dialogo:'tag-dialogo',sextilha:'tag-sextilha'};
+
+function atualizarPainel(){
+  if(!resultado) return;
+  const s=resultado.stats;
+  const tipo=resultado.tipoObra||'hibrido';
+  $('sFmt').textContent=$('formato').options[$('formato').selectedIndex].text;
+  $('sPags').textContent=s.paginas;
+  $('sBlocos').textContent=s.blocos;
+  $('sWords').textContent=s.palavras;
+  $('sCorr').textContent=s.corrigidos;
+  $('tipoObra').textContent=TIPO_LABEL[tipo]||tipo;
+  $('tipoPill').innerHTML=`<span class="tipo-pill ${TIPO_PILL[tipo]||'pill-hibrido'}">${TIPO_LABEL[tipo]||tipo}</span>`;
+  // barras
+  $('progPags').style.width=Math.min(100,s.paginas*8)+'%';$('valPags').textContent=s.paginas;
+  $('progWords').style.width=Math.min(100,(s.palavras/500)*100)+'%';$('valWords').textContent=s.palavras;
+  $('progBlocos').style.width=Math.min(100,s.blocos*5)+'%';$('valBlocos').textContent=s.blocos;
+  $('progCorr').style.width=Math.min(100,s.corrigidos*20)+'%';$('valCorr').textContent=s.corrigidos;
+  // lista de blocos
+  const blocos=resultado.blocos||[];
+  $('blocosLista').innerHTML=blocos.slice(0,12).map(b=>`
+    <span class="bloco-tag ${BLOCO_TAG[b.tipo]||'tag-prosa'}">${b.tipo} · ${b.id}</span>`
+  ).join('')+(blocos.length>12?`<span style="font-size:.72rem;color:var(--muted)"> +${blocos.length-12} blocos</span>`:'');
 }
 
 function render(){
-  const titulo  = $('bookTitle').value.trim();
-  const subtit  = $('bookSubtitle').value.trim();
-  const fmt     = $('hybridFormat').value;
-  const ff      = $('fontFamily').value;
-  const fs      = $('fontSize').value;
-  const lh      = $('lineHeight').value;
-  const espaco  = $('blockSpace').value;
-  const orn     = $('ornamento').value;
-  const corr    = $('correctionLevel').value;
-  const texto   = $('sourceText').value;
-  const dim     = DIMS[fmt]||DIMS.a5;
-
-  const motor = window.CeleiroMotorDiagramacaoBase;
-  let textoCorrido = motor
-    ? (corr==='medium'?motor.correcaoMedia(texto):motor.correcaoLeve(texto))
-    : normalizar(texto);
-
-  const blocos = quebrarBlocos(textoCorrido);
-  const tipos  = blocos.map(b=>b.tipo);
-  const temPoesia = tipos.includes('poesia');
-  const temProsa  = tipos.includes('prosa');
-  const tipoGlobal = (!temPoesia&&temProsa)?'prosa':(!temProsa&&temPoesia)?'poesia':'híbrido';
-
-  $('formatStat').textContent   = $('hybridFormat').options[$('hybridFormat').selectedIndex].text;
-  $('fontStat').innerHTML       = `${$('fontFamily').options[$('fontFamily').selectedIndex].text}<br>${fs} pt`;
-  $('blocksStat').textContent   = String(blocos.length);
-  $('structureStat').textContent= tipoGlobal.charAt(0).toUpperCase()+tipoGlobal.slice(1);
-  $('pillBlocks').textContent   = `Blocos: ${blocos.length}`;
-  $('pillLines').textContent    = `Linhas: ${countLines(textoCorrido)}`;
-  $('pillMode').textContent     = `Modo: ${tipoGlobal}`;
-  $('estruturaInfo').textContent= `${tipoGlobal} · ${blocos.length} blocos`;
-
-  const alertas=[];
-  blocos.forEach((b,i)=>{
-    const avg=b.linhas.reduce((s,l)=>s+l.length,0)/Math.max(1,b.linhas.length);
-    if(b.linhas.length>1&&avg>85)alertas.push(`Bloco ${i+1}: parece prosa quebrada como poesia.`);
-    if(b.linhas.length===1&&b.linhas[0].length<20)alertas.push(`Bloco ${i+1}: linha curta isolada; revisar.`);
-  });
-  $('alertsList').innerHTML=alertas.length?alertas.map(a=>`<li>${escapar(a)}</li>`).join(''):'<li>Nenhum alerta crítico.</li>';
-  $('motorStatusBox').textContent=alertas.length?`Motor ativo · ${alertas.length} alerta(s)`:'Motor ativo · Sem alertas';
-
-  const css=`
-.pagina-centauro{width:${dim.w}px;min-height:${dim.h}px;background:#fffdf9;color:#2b241f;
-font-family:${ff};font-size:${fs}pt;line-height:${lh};padding:52px 48px 64px;
-box-shadow:0 12px 32px rgba(0,0,0,.15);box-sizing:border-box;position:relative;}
-.pagina-centauro .h-capitulo{font-size:1.6em;font-weight:700;color:#3d2508;text-align:center;margin:0 0 .5em;line-height:1.1;}
-.pagina-centauro .subtit{font-size:.98em;font-style:italic;color:#8a7060;text-align:center;margin:-.3em 0 1.4em;}
-.pagina-centauro .paragrafo{margin:0 0 .5em;text-align:justify;}
-.pagina-centauro .paragrafo.dc::first-letter{float:left;font-size:3.2em;line-height:.82;margin:.07em .12em 0 0;font-weight:900;color:#9f835f;}
-.pagina-centauro .estrofe{margin:0 0 ${espaco}px;white-space:pre-line;text-align:left;}
-.pagina-centauro .dialogo{margin:0 0 .5em;}
-.pagina-centauro .ornamento{text-align:center;color:#b39672;margin:.8em 0;font-size:1.1em;letter-spacing:.3em;opacity:.6;}
-`;
-
-  let html=`<style>${css}</style><div class="pagina-centauro">`;
-  if(titulo) html+=`<h2 class="h-capitulo">${escapar(titulo)}</h2>`;
-  if(subtit) html+=`<div class="subtit">${escapar(subtit)}</div>`;
-
-  let isFirst=true;
-  blocos.forEach((b,idx)=>{
-    if(idx>0&&b.tipo==='titulo') html+=`<div class="ornamento">${escapar(orn)}</div>`;
-    switch(b.tipo){
-      case 'titulo':  html+=`<h2 class="h-capitulo">${escapar(b.texto)}</h2>`; break;
-      case 'poesia':  html+=`<div class="estrofe">${escapar(b.linhas.join('\n'))}</div>`; break;
-      case 'dialogo': html+=b.linhas.map(l=>`<p class="dialogo">${escapar(l)}</p>`).join(''); break;
-      default:{
-        const cl=isFirst?'paragrafo dc':'paragrafo';
-        html+=`<p class="${cl}">${escapar(b.texto)}</p>`;
-        isFirst=false;
-      }
-    }
-  });
-
-  if(!blocos.length) html+=`<p style="color:#aaa;font-style:italic;text-align:center;">A prévia aparecerá aqui.</p>`;
-  html+=`</div>`;
-  $('pagePreview').innerHTML=html;
-  $('statusBox').textContent='Prévia híbrida atualizada.';
+  const texto=$('texto').value.trim();
+  if(!texto){$('status').textContent='Cole o texto híbrido.';return;}
+  try{
+    resultado=M.preparar(texto,getCfg());
+    pagAtual=0;
+    atualizarPainel();
+    renderPag();
+    $('status').textContent=`✓ ${resultado.paginas.length} pág. · ${resultado.stats.blocos} blocos · ${resultado.stats.corrigidos} V/O corrigidas`;
+    const alertas=resultado.alertas||[];
+    const box=$('alertasBox');
+    if(alertas.length){box.classList.add('vis');box.innerHTML=alertas.slice(0,5).map(a=>`<div class="alerta">⚠ ${a.msg||a}</div>`).join('');}
+    else box.classList.remove('vis');
+  }catch(e){$('status').textContent='Erro: '+e.message;console.error(e);}
 }
 
-$('renderBtn').addEventListener('click',render);
-$('clearBtn').addEventListener('click',()=>{$('sourceText').value='';render();});
-['bookTitle','bookSubtitle','hybridFormat','fontFamily','fontSize','lineHeight','blockSpace','ornamento','correctionLevel','sourceText']
-  .forEach(id=>{$(id).addEventListener('input',render);$(id).addEventListener('change',render);});
+function renderPag(){
+  if(!resultado) return;
+  const pag=resultado.paginas[pagAtual];
+  const fmt=resultado.fmt||{w:454,h:652};
+  const cfg=resultado.cfg||getCfg();
+  $('preview').innerHTML=M.renderizarPagina(pag,cfg,fmt,cfg.numeracao);
+  $('pgInfo').textContent=`Página ${pagAtual+1} / ${resultado.paginas.length}`;
+  $('metaPag').textContent=`Pág ${pagAtual+1}/${resultado.paginas.length}`;
+  $('metaInfo').textContent=`${resultado.tipoObra||'híbrido'} · ${resultado.stats.palavras} palavras · ${resultado.stats.blocos} blocos · V/O: ${resultado.stats.corrigidos}`;
+  $('btnAnt').disabled=pagAtual===0;
+  $('btnProx').disabled=pagAtual===resultado.paginas.length-1;
+}
 
+function paginaAnterior(){if(pagAtual>0){pagAtual--;renderPag();}}
+function proximaPagina(){if(resultado&&pagAtual<resultado.paginas.length-1){pagAtual++;renderPag();}}
+function limpar(){$('texto').value='';resultado=null;pagAtual=0;$('preview').innerHTML='';$('status').textContent='Texto limpo.';}
+
+['formato','fontSize','lineHeight','fontFamily','indent','paragraphGap',
+ 'alinhPoesia','estrofeGap','ornamento','capitular','hifenizacao',
+ 'viuvasOrfas','correcao','margem','numeracao']
+  .forEach(id=>{$(id).addEventListener('change',render);});
+
+let _t;$('texto').addEventListener('input',()=>{clearTimeout(_t);_t=setTimeout(render,600);});
 render();
 </script>
 </body>
