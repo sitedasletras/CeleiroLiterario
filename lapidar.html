@@ -7,67 +7,90 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#ece8de;--card:#f7f4ee;--ink:#1f1f1b;--muted:#6f6a62;--line:#ddd6c9;
-  --prep:#6a7f52;--gramador:#3f7a5a;--capas:#c49a4c;--pensante:#2f5a4d;
-  --nucleo:#6f5fa8;--midia:#4c5a7a;--expedicao:#6c7a46;
-  --novo:#2f7a59;--shadow:0 12px 28px rgba(0,0,0,.10);--radius:24px;
+  --bg:#ece8de;
+  --card:#f7f4ee;
+  --paper:#ffffff;
+  --ink:#1f1f1b;
+  --muted:#6f6a62;
+  --line:#ddd6c9;
+  --prep:#6a7f52;
+  --gramador:#3f7a5a;
+  --capas:#c49a4c;
+  --pensante:#2f5a4d;
+  --nucleo:#6f5fa8;
+  --midia:#4c5a7a;
+  --expedicao:#6c7a46;
+  --novo:#2f7a59;
+  --atualizado:#3a6aab;
+  --shadow:0 12px 28px rgba(0,0,0,.10);
+  --radius:24px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:'DM Sans',Georgia,serif;}
-body{padding:24px 16px 48px;}
-
+body{padding:24px 16px 56px;}
 .container{max-width:1160px;margin:0 auto;display:flex;flex-direction:column;gap:20px;}
 
-/* HERO */
+/* ── HERO ── */
 .hero{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--line);padding:32px 28px;}
-.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,6vw,4.2rem);line-height:1;margin:0;}
-.hero p{color:var(--muted);font-size:1.05rem;line-height:1.55;max-width:700px;}
-.versao-badge{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;background:rgba(47,122,89,.1);border:1px solid rgba(47,122,89,.25);color:var(--gramador);font-size:.82rem;font-weight:700;white-space:nowrap;}
-.versao-dot{width:8px;height:8px;border-radius:50%;background:var(--gramador);}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,6vw,4.4rem);line-height:1;color:var(--ink);}
+.hero-desc{color:var(--muted);font-size:1.05rem;line-height:1.6;max-width:720px;}
+.versao{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;background:rgba(47,122,89,.1);border:1px solid rgba(47,122,89,.25);color:var(--gramador);font-size:.82rem;font-weight:700;white-space:nowrap;flex-shrink:0;}
+.versao-dot{width:8px;height:8px;border-radius:50%;background:var(--gramador);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.congel{margin-top:14px;padding:13px 16px;border:1px dashed #cfc6b8;border-radius:14px;background:rgba(255,255,255,.45);color:#6a645d;line-height:1.5;font-size:.88rem;}
+.congel strong{color:var(--ink);}
 
-.note{margin-top:16px;padding:14px 16px;border:1px dashed #cfc6b8;border-radius:16px;background:rgba(255,255,255,.45);color:#6a645d;line-height:1.5;font-size:.93rem;}
-.note strong{color:var(--ink);}
+/* ── FLUXO ── */
+.fluxo{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px 20px;}
+.fluxo-titulo{font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:12px;}
+.fluxo-steps{display:flex;align-items:center;flex-wrap:wrap;gap:4px;}
+.fs{border:none;border-radius:10px;padding:7px 12px;font:600 .8rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;color:#fff;white-space:nowrap;}
+.fs:hover{transform:translateY(-1px);opacity:.9;}
+.fs-sep{color:#bbb;font-size:.85rem;padding:0 1px;}
+.fs-prep     {background:var(--prep);}
+.fs-pensante {background:var(--pensante);}
+.fs-nucleo   {background:var(--nucleo);}
+.fs-gramador {background:var(--gramador);}
+.fs-capas    {background:var(--capas);color:#2f1f08!important;}
+.fs-expedicao{background:var(--expedicao);}
 
-/* FLUXO */
-.fluxo-bar{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px 22px;}
-.fluxo-bar h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;}
-.fluxo-steps{display:flex;align-items:center;gap:0;flex-wrap:wrap;}
-.fluxo-step{display:flex;align-items:center;gap:0;}
-.fluxo-btn{border:none;background:none;padding:6px 10px;border-radius:10px;font:600 .78rem 'DM Sans',sans-serif;color:var(--muted);cursor:pointer;transition:.14s;white-space:nowrap;border:1px solid transparent;}
-.fluxo-btn:hover{background:rgba(0,0,0,.05);border-color:var(--line);}
-.fluxo-btn.ativo{color:#fff;border-color:transparent;}
-.fluxo-sep{color:#ccc;font-size:.9rem;padding:0 2px;}
+/* ── STATS RÁPIDOS ── */
+.quick-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;}
+.qs{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center;}
+.qs-val{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--ink);line-height:1;}
+.qs-lbl{font-size:.72rem;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.05em;}
 
-/* GRID SETORES */
-.setores-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
+/* ── GRID SETORES ── */
+.setores-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px;}
 
-/* CARD SETOR */
-.setor{background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 6px 18px rgba(0,0,0,.07);display:flex;flex-direction:column;gap:11px;position:relative;transition:.18s ease;}
-.setor:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.11);}
-
-.tag{display:inline-flex;align-items:center;gap:6px;width:max-content;padding:5px 12px;border-radius:999px;font-size:.78rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#fff;}
-.tag-novo{font-size:.68rem;padding:2px 7px;border-radius:999px;background:var(--novo);color:#fff;font-weight:700;letter-spacing:.04em;vertical-align:middle;margin-left:4px;}
-.tag-atualizado{font-size:.68rem;padding:2px 7px;border-radius:999px;background:#4a7ab5;color:#fff;font-weight:700;letter-spacing:.04em;vertical-align:middle;margin-left:4px;}
-
+/* ── CARD ── */
+.setor{background:var(--paper);border:1.5px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 6px 18px rgba(0,0,0,.07);display:flex;flex-direction:column;gap:11px;transition:.18s ease;}
+.setor:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(0,0,0,.11);}
+.tag{display:inline-flex;align-items:center;gap:6px;width:max-content;padding:5px 13px;border-radius:999px;font-size:.76rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#fff;}
 .setor h2{font-family:'Playfair Display',serif;font-size:1.5rem;line-height:1.1;}
-.setor > p{color:var(--muted);font-size:.95rem;line-height:1.45;}
+.setor-desc{color:var(--muted);font-size:.93rem;line-height:1.5;}
 
-/* MÓDULOS */
-.modulos{display:flex;flex-direction:column;gap:4px;margin:2px 0;}
-.modulo-item{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:10px;cursor:pointer;transition:.12s;border:1px solid transparent;text-decoration:none;color:var(--ink);}
-.modulo-item:hover{background:rgba(0,0,0,.04);border-color:var(--line);}
-.modulo-icon{font-size:.95rem;flex-shrink:0;}
-.modulo-nome{font-size:.88rem;font-weight:600;flex:1;}
-.modulo-status{font-size:.68rem;padding:1px 6px;border-radius:999px;font-weight:700;flex-shrink:0;}
-.status-ativo    {background:rgba(47,122,89,.12);color:var(--gramador);}
-.status-novo     {background:rgba(47,122,89,.15);color:var(--gramador);}
-.status-atualizado{background:rgba(74,122,181,.12);color:#3a6aab;}
-.status-placeholder{background:rgba(183,146,30,.12);color:#7a6a20;}
+/* ── MÓDULOS ── */
+.modulos{display:flex;flex-direction:column;gap:3px;}
+.mod{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:11px;text-decoration:none;color:var(--ink);transition:.12s;border:1px solid transparent;}
+.mod:hover{background:rgba(0,0,0,.04);border-color:var(--line);}
+.mod-ico{font-size:.9rem;flex-shrink:0;width:20px;text-align:center;}
+.mod-nome{font-size:.87rem;font-weight:600;flex:1;line-height:1.3;}
+.mod-desc{font-size:.74rem;color:var(--muted);display:block;font-weight:400;}
+.badge{font-size:.65rem;padding:2px 7px;border-radius:999px;font-weight:700;flex-shrink:0;white-space:nowrap;}
+.b-novo      {background:rgba(47,122,89,.14);color:#2a6a48;}
+.b-atualizado{background:rgba(58,106,171,.12);color:#2a5a9a;}
+.b-motorv2   {background:rgba(80,60,160,.12);color:#503ca0;}
+.b-ia        {background:rgba(106,58,245,.12);color:#5a32c0;}
+.b-ativo     {background:rgba(0,0,0,.06);color:#5a5550;}
+.b-emdev     {background:rgba(183,146,30,.12);color:#7a6a20;}
 
-/* BOTÃO SETOR */
-.btn-setor{margin-top:auto;border:none;border-radius:14px;padding:13px 16px;font:700 .9rem 'DM Sans',sans-serif;cursor:pointer;transition:.16s ease;color:#fff;width:100%;}
+/* ── BOTÃO SETOR ── */
+.btn-setor{margin-top:auto;border:none;border-radius:14px;padding:13px;font:700 .9rem 'DM Sans',sans-serif;cursor:pointer;transition:.15s;color:#fff;width:100%;}
 .btn-setor:hover{transform:translateY(-1px);opacity:.95;}
+
+/* COR POR SETOR */
 .prep-c      .tag,.prep-c      .btn-setor{background:var(--prep);}
 .gramador-c  .tag,.gramador-c  .btn-setor{background:var(--gramador);}
 .capas-c     .tag,.capas-c     .btn-setor{background:var(--capas);color:#2f1f08!important;}
@@ -76,21 +99,32 @@ body{padding:24px 16px 48px;}
 .midia-c     .tag,.midia-c     .btn-setor{background:var(--midia);}
 .expedicao-c .tag,.expedicao-c .btn-setor{background:var(--expedicao);}
 
-/* FOOTER */
-.footer-block{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px 22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-.btn-foot{border:none;border-radius:14px;padding:13px 20px;font:700 .9rem 'DM Sans',sans-serif;cursor:pointer;transition:.15s;box-shadow:0 6px 16px rgba(0,0,0,.08);}
+/* ── NOTAS DE ATUALIZAÇÃO ── */
+.update-log{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px 22px;}
+.update-log h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;}
+.log-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;}
+.log-item{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px;}
+.log-item h4{font-size:.88rem;font-weight:700;color:var(--ink);margin-bottom:5px;display:flex;align-items:center;gap:7px;}
+.log-item ul{padding-left:14px;display:flex;flex-direction:column;gap:3px;}
+.log-item li{font-size:.78rem;color:var(--muted);line-height:1.4;}
+
+/* ── FOOTER ── */
+.footer-block{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px 20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn-foot{border:none;border-radius:13px;padding:12px 20px;font:700 .88rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;box-shadow:0 5px 14px rgba(0,0,0,.07);}
 .btn-foot:hover{transform:translateY(-1px);}
 .btn-back{background:#d9a441;color:#2a1d0d;}
 .btn-exit{background:#a63d40;color:#fff;}
+.btn-mapa{background:var(--pensante);color:#fff;}
 
-/* CONGELAMENTO */
-.congel-note{background:rgba(47,122,89,.07);border:1px solid rgba(47,122,89,.2);border-radius:14px;padding:12px 16px;font-size:.82rem;color:var(--gramador);line-height:1.5;text-align:center;}
+/* ── SELO CONGELAMENTO ── */
+.selo{background:rgba(47,122,89,.07);border:1px solid rgba(47,122,89,.2);border-radius:14px;padding:11px 16px;font-size:.8rem;color:var(--gramador);line-height:1.5;text-align:center;}
 
 @media(max-width:720px){
   .setores-grid{grid-template-columns:1fr;}
-  .hero{padding:22px 18px;}
-  .fluxo-steps{gap:2px;}
-  .footer-block{flex-direction:column;}
+  .hero{padding:22px 16px;}
+  .fluxo-steps{gap:3px;}
+  .quick-stats{grid-template-columns:1fr 1fr 1fr;}
+  .footer-block,.log-grid{flex-direction:column;}
   .btn-foot{width:100%;text-align:center;}
 }
 </style>
@@ -98,168 +132,387 @@ body{padding:24px 16px 48px;}
 <body>
 <div class="container">
 
-<!-- HERO -->
+<!-- ── HERO ── -->
 <section class="hero">
   <div class="hero-top">
     <h1>Lapidar</h1>
-    <div class="versao-badge"><div class="versao-dot"></div>Espinha dorsal v2 · 2026</div>
+    <div class="versao"><div class="versao-dot"></div>Espinha dorsal v2 · 2026</div>
   </div>
-  <p>Hub editorial central do Celeiro Literário. Todos os setores foram atualizados, corrigidos e integrados com IA real. A estrutura abaixo é a espinha dorsal congelada do sistema.</p>
-  <div class="note">
-    <strong>Estrutura congelada por hubs · v2 · 2026</strong><br>
-    A partir daqui, cada setor evolui por dentro sem mexer no coração do Lapidar. Módulos novos são adicionados dentro dos setores — nunca alterando este hub central. Motor Editorial v2 integrado em Pólux, Castor e Centauro. IA real ativa em todos os módulos de avaliação, tradução e capas.
+  <p class="hero-desc">Hub editorial central do Celeiro Literário. Todos os setores foram atualizados, corrigidos e integrados com IA real. Motores tipográficos v2 ativos em Pólux, Castor e Centauro. Estrutura congelada para estabilidade do sistema.</p>
+  <div class="congel">
+    <strong>✦ Estrutura congelada — espinha dorsal v2 · Celeiro Literário · 2026</strong><br>
+    Cada setor evolui por dentro sem alterar este hub central. Novos módulos entram dentro dos setores. Motor Editorial v2 com hifenização PT-BR, correção de viúvas/órfãs e capitular em 5 estilos. IA Anthropic integrada em todos os módulos de avaliação, tradução e capas.
   </div>
 </section>
 
-<!-- FLUXO -->
-<div class="fluxo-bar">
-  <h3>Fluxo da obra</h3>
+<!-- ── FLUXO DA OBRA ── -->
+<div class="fluxo">
+  <div class="fluxo-titulo">✦ Fluxo da obra dentro do Celeiro</div>
   <div class="fluxo-steps">
-    <div class="fluxo-step">
-      <button class="fluxo-btn" style="background:var(--prep);color:#fff;" onclick="ir('preparacao_da_obra.html')">① Preparação</button>
-      <span class="fluxo-sep">→</span>
-    </div>
-    <div class="fluxo-step">
-      <button class="fluxo-btn" style="background:var(--pensante);color:#fff;" onclick="ir('lapidar_pensante.html')">② Lapidar Pensante</button>
-      <span class="fluxo-sep">→</span>
-    </div>
-    <div class="fluxo-step">
-      <button class="fluxo-btn" style="background:var(--nucleo);color:#fff;" onclick="ir('nucleo_editorial_obra.html')">③ Núcleo Editorial</button>
-      <span class="fluxo-sep">→</span>
-    </div>
-    <div class="fluxo-step">
-      <button class="fluxo-btn" style="background:var(--gramador);color:#fff;" onclick="ir('dias_gramador_livros.html')">④ Diagramação</button>
-      <span class="fluxo-sep">→</span>
-    </div>
-    <div class="fluxo-step">
-      <button class="fluxo-btn" style="background:var(--capas);color:#2f1f08;" onclick="ir('okapista.html')">⑤ Capas</button>
-      <span class="fluxo-sep">→</span>
-    </div>
-    <div class="fluxo-step">
-      <button class="fluxo-btn" style="background:var(--expedicao);color:#fff;" onclick="ir('expedicao_editorial.html')">⑥ Expedição</button>
-    </div>
+    <button class="fs fs-prep"      onclick="ir('preparacao_da_obra.html')">① Preparação</button>
+    <span class="fs-sep">→</span>
+    <button class="fs fs-pensante"  onclick="ir('lapidar_pensante.html')">② Lapidar Pensante</button>
+    <span class="fs-sep">→</span>
+    <button class="fs fs-nucleo"    onclick="ir('nucleo_editorial_obra.html')">③ Núcleo Editorial</button>
+    <span class="fs-sep">→</span>
+    <button class="fs fs-gramador"  onclick="ir('dias_gramador_livros.html')">④ Diagramação</button>
+    <span class="fs-sep">→</span>
+    <button class="fs fs-capas"     onclick="ir('okapista.html')">⑤ Capas</button>
+    <span class="fs-sep">→</span>
+    <button class="fs fs-expedicao" onclick="ir('expedicao_editorial.html')">⑥ Expedição</button>
   </div>
 </div>
 
-<!-- SETORES GRID -->
+<!-- ── QUICK STATS ── -->
+<div class="quick-stats">
+  <div class="qs"><div class="qs-val">36</div><div class="qs-lbl">Módulos ativos</div></div>
+  <div class="qs"><div class="qs-val">14</div><div class="qs-lbl">Novos ou atualizados</div></div>
+  <div class="qs"><div class="qs-val">7</div><div class="qs-lbl">Setores</div></div>
+  <div class="qs"><div class="qs-val">IA</div><div class="qs-lbl">API Anthropic ativa</div></div>
+  <div class="qs"><div class="qs-val">v2</div><div class="qs-lbl">Motor Editorial</div></div>
+</div>
+
+<!-- ── SETORES ── -->
 <div class="setores-grid">
 
   <!-- 1. PREPARAÇÃO -->
   <article class="setor prep-c">
     <span class="tag">① Entrada</span>
     <h2>Preparação da Obra</h2>
-    <p>Limpeza inicial, desbaste leve, polimento de imagens e organização do material bruto.</p>
+    <p class="setor-desc">Limpeza, desbaste leve, polimento de imagens e tradução. Primeiro contato da obra com o sistema.</p>
     <div class="modulos">
-      <a class="modulo-item" href="preparacao_da_obra.html"><span class="modulo-icon">📄</span><span class="modulo-nome">Mesário da Preparação</span><span class="modulo-status status-placeholder">em dev</span></a>
-      <a class="modulo-item" href="desbaste_textual_leve.html"><span class="modulo-icon">✂️</span><span class="modulo-nome">Desbaste Textual Leve</span><span class="modulo-status status-ativo">ativo</span></a>
-      <a class="modulo-item" href="barracao_polimento_imagens.html"><span class="modulo-icon">🧱</span><span class="modulo-nome">Barracão de Polimento</span><span class="modulo-status status-atualizado">atualizado</span></a>
-      <a class="modulo-item" href="segunda_linguas.html"><span class="modulo-icon">🌐</span><span class="modulo-nome">Segunda Língua(s)</span><span class="modulo-status status-novo">novo</span></a>
+      <a class="mod" href="preparacao_da_obra.html">
+        <span class="mod-ico">📄</span>
+        <span class="mod-nome">Mesário da Preparação<span class="mod-desc">Hub de entrada do setor</span></span>
+        <span class="badge b-emdev">em dev</span>
+      </a>
+      <a class="mod" href="desbaste_textual_leve.html">
+        <span class="mod-ico">✂️</span>
+        <span class="mod-nome">Desbaste Textual Leve<span class="mod-desc">Limpeza inicial do texto</span></span>
+        <span class="badge b-ativo">ativo</span>
+      </a>
+      <a class="mod" href="barracao_polimento_imagens.html">
+        <span class="mod-ico">🧱</span>
+        <span class="mod-nome">Barracão de Polimento<span class="mod-desc">Brilho, contraste, vinheta, histograma</span></span>
+        <span class="badge b-atualizado">atualizado</span>
+      </a>
+      <a class="mod" href="segunda_linguas.html">
+        <span class="mod-ico">🌐</span>
+        <span class="mod-nome">Segunda Língua(s)<span class="mod-desc">Tradução literária em 12 idiomas</span></span>
+        <span class="badge b-novo">novo</span>
+      </a>
     </div>
-    <button class="btn-setor" onclick="ir('preparacao_da_obra.html')">Abrir setor</button>
+    <button class="btn-setor" onclick="ir('preparacao_da_obra.html')">Abrir setor →</button>
   </article>
 
   <!-- 2. LAPIDAR PENSANTE -->
   <article class="setor pensante-c">
     <span class="tag">② Inteligência</span>
     <h2>Lapidar Pensante</h2>
-    <p>Núcleo de inteligência editorial em seis camadas com IA real integrada.</p>
+    <p class="setor-desc">Seis camadas de inteligência editorial com IA real. Análise, desbaste, identificação, integração, aceleração e síntese.</p>
     <div class="modulos">
-      <a class="modulo-item" href="lapidar_pensante.html"><span class="modulo-icon">✦</span><span class="modulo-nome">Lapidar Pensante (6 camadas)</span><span class="modulo-status status-atualizado">atualizado</span></a>
-      <a class="modulo-item" href="lapidar_pensante.html#AN"><span class="modulo-icon">🔬</span><span class="modulo-nome">AN — Análise Inicial</span><span class="modulo-status status-ativo">IA ativa</span></a>
-      <a class="modulo-item" href="lapidar_pensante.html#DRO"><span class="modulo-icon">⚙️</span><span class="modulo-nome">DRO — Desbaste</span><span class="modulo-status status-ativo">IA ativa</span></a>
-      <a class="modulo-item" href="lapidar_pensante.html#ID"><span class="modulo-icon">🪪</span><span class="modulo-nome">ID — Identificação</span><span class="modulo-status status-ativo">IA ativa</span></a>
-      <a class="modulo-item" href="lapidar_pensante.html#NAS"><span class="modulo-icon">🔗</span><span class="modulo-nome">NAS — Núcleo Simbiótico</span><span class="modulo-status status-ativo">IA ativa</span></a>
-      <a class="modulo-item" href="lapidar_pensante.html#FISA"><span class="modulo-icon">⚡</span><span class="modulo-nome">FISA — Aceleração</span><span class="modulo-status status-ativo">IA ativa</span></a>
-      <a class="modulo-item" href="lapidar_pensante.html#FIIISAA"><span class="modulo-icon">🌌</span><span class="modulo-nome">FIIISAA — Síntese Final</span><span class="modulo-status status-ativo">IA ativa</span></a>
+      <a class="mod" href="lapidar_pensante.html">
+        <span class="mod-ico">✦</span>
+        <span class="mod-nome">Lapidar Pensante — 6 camadas<span class="mod-desc">AN · DRO · ID · NAS · FISA · FIIISAA</span></span>
+        <span class="badge b-ia">IA ativa</span>
+      </a>
+      <a class="mod" href="lapidar_pensante.html">
+        <span class="mod-ico">🔬</span>
+        <span class="mod-nome">AN — Análise Inicial<span class="mod-desc">Primeira leitura editorial</span></span>
+        <span class="badge b-ia">IA</span>
+      </a>
+      <a class="mod" href="lapidar_pensante.html">
+        <span class="mod-ico">⚙️</span>
+        <span class="mod-nome">DRO — Desbaste e Reorganização<span class="mod-desc">Estrutura, fluxo e coerência</span></span>
+        <span class="badge b-ia">IA</span>
+      </a>
+      <a class="mod" href="lapidar_pensante.html">
+        <span class="mod-ico">🪪</span>
+        <span class="mod-nome">ID — Identificação Editorial<span class="mod-desc">Voz autoral, leitor, mercado</span></span>
+        <span class="badge b-ia">IA</span>
+      </a>
+      <a class="mod" href="lapidar_pensante.html">
+        <span class="mod-ico">🔗</span>
+        <span class="mod-nome">NAS — Núcleo Simbiótico<span class="mod-desc">Integração interna da obra</span></span>
+        <span class="badge b-ia">IA</span>
+      </a>
+      <a class="mod" href="lapidar_pensante.html">
+        <span class="mod-ico">⚡</span>
+        <span class="mod-nome">FISA — Força de Aceleração<span class="mod-desc">O que puxa e o que freia</span></span>
+        <span class="badge b-ia">IA</span>
+      </a>
+      <a class="mod" href="lapidar_pensante.html">
+        <span class="mod-ico">🌌</span>
+        <span class="mod-nome">FIIISAA — Síntese Final<span class="mod-desc">Mapa editorial completo</span></span>
+        <span class="badge b-ia">IA</span>
+      </a>
     </div>
-    <button class="btn-setor" onclick="ir('lapidar_pensante.html')">Abrir setor</button>
+    <button class="btn-setor" onclick="ir('lapidar_pensante.html')">Abrir setor →</button>
   </article>
 
   <!-- 3. NÚCLEO EDITORIAL -->
   <article class="setor nucleo-c">
     <span class="tag">③ Editorial</span>
     <h2>Núcleo Editorial da Obra</h2>
-    <p>Avaliação literária, emocional e de mercado. Lapidação e tradução da obra.</p>
+    <p class="setor-desc">Avaliação completa da obra — literária, emocional (0–10.000) e de mercado. Lapidação e tradução.</p>
     <div class="modulos">
-      <a class="modulo-item" href="avaliacao_literaria.html"><span class="modulo-icon">📗</span><span class="modulo-nome">Avaliação Literária</span><span class="modulo-status status-novo">novo</span></a>
-      <a class="modulo-item" href="avaliacao_emocional.html"><span class="modulo-icon">💜</span><span class="modulo-nome">Avaliação Emocional (0–10.000)</span><span class="modulo-status status-novo">novo</span></a>
-      <a class="modulo-item" href="avaliacao_mercado.html"><span class="modulo-icon">📊</span><span class="modulo-nome">Avaliação de Mercado</span><span class="modulo-status status-novo">novo</span></a>
-      <a class="modulo-item" href="lapidacao_literaria.html"><span class="modulo-icon">💎</span><span class="modulo-nome">Lapidação Literária</span><span class="modulo-status status-ativo">ativo</span></a>
-      <a class="modulo-item" href="segunda_linguas.html"><span class="modulo-icon">🌐</span><span class="modulo-nome">Segunda Língua(s) — Tradução</span><span class="modulo-status status-novo">novo</span></a>
+      <a class="mod" href="avaliacao_literaria.html">
+        <span class="mod-ico">📗</span>
+        <span class="mod-nome">Avaliação Literária<span class="mod-desc">8 dimensões · Parecer técnico editorial</span></span>
+        <span class="badge b-novo">novo</span>
+      </a>
+      <a class="mod" href="avaliacao_emocional.html">
+        <span class="mod-ico">💜</span>
+        <span class="mod-nome">Avaliação Emocional<span class="mod-desc">12 categorias · Nota 0–10.000 / 0–10.0</span></span>
+        <span class="badge b-novo">novo</span>
+      </a>
+      <a class="mod" href="avaliacao_mercado.html">
+        <span class="mod-ico">📊</span>
+        <span class="mod-nome">Avaliação de Mercado<span class="mod-desc">9 dimensões · Viabilidade editorial</span></span>
+        <span class="badge b-novo">novo</span>
+      </a>
+      <a class="mod" href="lapidacao_literaria.html">
+        <span class="mod-ico">💎</span>
+        <span class="mod-nome">Lapidação Literária<span class="mod-desc">Refinamento do texto</span></span>
+        <span class="badge b-ativo">ativo</span>
+      </a>
+      <a class="mod" href="segunda_linguas.html">
+        <span class="mod-ico">🌐</span>
+        <span class="mod-nome">Segunda Língua(s)<span class="mod-desc">6 modos · 12 idiomas · IA literária</span></span>
+        <span class="badge b-novo">novo</span>
+      </a>
     </div>
-    <button class="btn-setor" onclick="ir('nucleo_editorial_obra.html')">Abrir setor</button>
+    <button class="btn-setor" onclick="ir('nucleo_editorial_obra.html')">Abrir setor →</button>
   </article>
 
   <!-- 4. DIAGRAMAÇÃO -->
   <article class="setor gramador-c">
     <span class="tag">④ Diagramação</span>
     <h2>Dias Gramador de Livros</h2>
-    <p>Diagramação do miolo editorial com motores tipográficos reais: viúvas/órfãs, hifenização PT-BR e capitular.</p>
+    <p class="setor-desc">Motor Editorial v2 integrado. Hifenização PT-BR, correção de viúvas/órfãs, capitular em 5 estilos e regulador de parágrafo.</p>
     <div class="modulos">
-      <a class="modulo-item" href="polux.html"><span class="modulo-icon">🌾</span><span class="modulo-nome">Pólux — Prosa</span><span class="modulo-status status-atualizado">motor v2</span></a>
-      <a class="modulo-item" href="castor.html"><span class="modulo-icon">🔵</span><span class="modulo-nome">Castor — Poesia</span><span class="modulo-status status-atualizado">motor v2</span></a>
-      <a class="modulo-item" href="centauro.html"><span class="modulo-icon">⚗️</span><span class="modulo-nome">Centauro — Híbrido</span><span class="modulo-status status-atualizado">motor v2</span></a>
-      <a class="modulo-item" href="quironxada.html"><span class="modulo-icon">📜</span><span class="modulo-nome">Qui(RON)xadá — Cordel</span><span class="modulo-status status-atualizado">atualizado</span></a>
-      <a class="modulo-item" href="hercules.html"><span class="modulo-icon">📖</span><span class="modulo-nome">Hércules — Especializados</span><span class="modulo-status status-novo">novo</span></a>
+      <a class="mod" href="polux.html">
+        <span class="mod-ico">🌾</span>
+        <span class="mod-nome">Pólux — Prosa Paginada<span class="mod-desc">Motor v2 · Viúvas/órfãs · Capitular · Hifenização</span></span>
+        <span class="badge b-motorv2">motor v2</span>
+      </a>
+      <a class="mod" href="castor.html">
+        <span class="mod-ico">🔵</span>
+        <span class="mod-nome">Castor — Poesia<span class="mod-desc">Motor v2 · Padrões rimáticos · Capitular</span></span>
+        <span class="badge b-motorv2">motor v2</span>
+      </a>
+      <a class="mod" href="centauro.html">
+        <span class="mod-ico">⚗️</span>
+        <span class="mod-nome">Centauro — Híbrido<span class="mod-desc">Motor v2 · Prosa + poesia · Ornamentos</span></span>
+        <span class="badge b-motorv2">motor v2</span>
+      </a>
+      <a class="mod" href="quironxada.html">
+        <span class="mod-ico">📜</span>
+        <span class="mod-nome">Qui(RON)xadá — Cordel<span class="mod-desc">Sextilha, décima, quadra · Análise rimática</span></span>
+        <span class="badge b-atualizado">atualizado</span>
+      </a>
+      <a class="mod" href="hercules.html">
+        <span class="mod-ico">📖</span>
+        <span class="mod-nome">Hércules — Especializados<span class="mod-desc">Infantil · Técnico · Fotográfico · Receitas</span></span>
+        <span class="badge b-novo">novo</span>
+      </a>
     </div>
-    <button class="btn-setor" onclick="ir('dias_gramador_livros.html')">Abrir setor</button>
+    <button class="btn-setor" onclick="ir('dias_gramador_livros.html')">Abrir setor →</button>
   </article>
 
   <!-- 5. CAPAS -->
   <article class="setor capas-c">
     <span class="tag">⑤ Capas</span>
     <h2>OKapista — Criador de Capas</h2>
-    <p>Três criadores especializados e o Barracão de Polimento integrado. Canvas, IA e download em JPG.</p>
+    <p class="setor-desc">Três criadores especializados com canvas, IA para sugestão de conceito e download em JPG. Barracão integrado.</p>
     <div class="modulos">
-      <a class="modulo-item" href="faca_kapa_literario.html"><span class="modulo-icon">📚</span><span class="modulo-nome">Faça Kapa Literário</span><span class="modulo-status status-atualizado">atualizado</span></a>
-      <a class="modulo-item" href="faca_kapa_cordel.html"><span class="modulo-icon">📜</span><span class="modulo-nome">Faça Kapa Cordel</span><span class="modulo-status status-atualizado">atualizado</span></a>
-      <a class="modulo-item" href="faca_kapa_polimata.html"><span class="modulo-icon">🎨</span><span class="modulo-nome">Polimata — Especializados</span><span class="modulo-status status-novo">novo</span></a>
-      <a class="modulo-item" href="barracao_polimento_imagens.html"><span class="modulo-icon">🧱</span><span class="modulo-nome">Barracão de Polimento</span><span class="modulo-status status-atualizado">atualizado</span></a>
+      <a class="mod" href="okapista.html">
+        <span class="mod-ico">📘</span>
+        <span class="mod-nome">OKapista — Hub de Capas<span class="mod-desc">Central com fluxo integrado</span></span>
+        <span class="badge b-atualizado">atualizado</span>
+      </a>
+      <a class="mod" href="faca_kapa_literario.html">
+        <span class="mod-ico">📚</span>
+        <span class="mod-nome">Faça Kapa Literário<span class="mod-desc">6 estilos · Canvas · IA · JPG</span></span>
+        <span class="badge b-atualizado">atualizado</span>
+      </a>
+      <a class="mod" href="faca_kapa_cordel.html">
+        <span class="mod-ico">📜</span>
+        <span class="mod-nome">Faça Kapa Cordel<span class="mod-desc">Xilogravura · Arte automática</span></span>
+        <span class="badge b-atualizado">atualizado</span>
+      </a>
+      <a class="mod" href="faca_kapa_polimata.html">
+        <span class="mod-ico">🎨</span>
+        <span class="mod-nome">Polimata — Capas Especializadas<span class="mod-desc">Infantil · Técnico · Foto · Receitas</span></span>
+        <span class="badge b-novo">novo</span>
+      </a>
+      <a class="mod" href="barracao_polimento_imagens.html">
+        <span class="mod-ico">🧱</span>
+        <span class="mod-nome">Barracão de Polimento<span class="mod-desc">6 presets · Histograma · Antes/depois</span></span>
+        <span class="badge b-atualizado">atualizado</span>
+      </a>
     </div>
-    <button class="btn-setor" onclick="ir('okapista.html')">Abrir setor</button>
+    <button class="btn-setor" onclick="ir('okapista.html')">Abrir setor →</button>
   </article>
 
   <!-- 6. MULTIMÍDIA -->
   <article class="setor midia-c">
     <span class="tag">Multimídia</span>
     <h2>Silo Multimídia</h2>
-    <p>Expansão sonora, visual, musical e sequencial da obra literária.</p>
+    <p class="setor-desc">Expansão sonora, visual, musical e sequencial da obra literária para outros formatos.</p>
     <div class="modulos">
-      <a class="modulo-item" href="silo_sonoro.html"><span class="modulo-icon">🔊</span><span class="modulo-nome">Silo Sonoro</span><span class="modulo-status status-ativo">ativo</span></a>
-      <a class="modulo-item" href="silo_cinematografi.html"><span class="modulo-icon">🎬</span><span class="modulo-nome">Silo Cinematográfico</span><span class="modulo-status status-ativo">ativo</span></a>
-      <a class="modulo-item" href="silo_music.html"><span class="modulo-icon">🎵</span><span class="modulo-nome">Silo Music</span><span class="modulo-status status-ativo">ativo</span></a>
-      <a class="modulo-item" href="silo_hq.html"><span class="modulo-icon">💬</span><span class="modulo-nome">Silo HQ</span><span class="modulo-status status-ativo">ativo</span></a>
-      <a class="modulo-item" href="silo_multimidia.html"><span class="modulo-icon">🌐</span><span class="modulo-nome">Hub Multimídia</span><span class="modulo-status status-ativo">ativo</span></a>
+      <a class="mod" href="silo_multimidia.html">
+        <span class="mod-ico">🌐</span>
+        <span class="mod-nome">Hub Multimídia<span class="mod-desc">Central do setor</span></span>
+        <span class="badge b-ativo">ativo</span>
+      </a>
+      <a class="mod" href="silo_sonoro.html">
+        <span class="mod-ico">🔊</span>
+        <span class="mod-nome">Silo Sonoro<span class="mod-desc">Expansão em áudio</span></span>
+        <span class="badge b-ativo">ativo</span>
+      </a>
+      <a class="mod" href="silo_cinematografi.html">
+        <span class="mod-ico">🎬</span>
+        <span class="mod-nome">Silo Cinematográfico<span class="mod-desc">Roteiro e adaptação visual</span></span>
+        <span class="badge b-ativo">ativo</span>
+      </a>
+      <a class="mod" href="silo_music.html">
+        <span class="mod-ico">🎵</span>
+        <span class="mod-nome">Silo Music<span class="mod-desc">Expansão musical</span></span>
+        <span class="badge b-ativo">ativo</span>
+      </a>
+      <a class="mod" href="silo_hq.html">
+        <span class="mod-ico">💬</span>
+        <span class="mod-nome">Silo HQ<span class="mod-desc">Adaptação para quadrinhos</span></span>
+        <span class="badge b-ativo">ativo</span>
+      </a>
+      <a class="mod" href="web_radio_celeiro.html">
+        <span class="mod-ico">📻</span>
+        <span class="mod-nome">Rádio Web Celeiro<span class="mod-desc">Transmissão literária</span></span>
+        <span class="badge b-ativo">ativo</span>
+      </a>
+      <a class="mod" href="web_tv_celeiro.html">
+        <span class="mod-ico">📺</span>
+        <span class="mod-nome">TV Web Celeiro<span class="mod-desc">Canal visual da obra</span></span>
+        <span class="badge b-ativo">ativo</span>
+      </a>
     </div>
-    <button class="btn-setor" onclick="ir('silo_multimidia.html')">Abrir setor</button>
+    <button class="btn-setor" onclick="ir('silo_multimidia.html')">Abrir setor →</button>
   </article>
 
   <!-- 7. EXPEDIÇÃO -->
   <article class="setor expedicao-c">
     <span class="tag">⑥ Saída</span>
     <h2>Expedição Editorial</h2>
-    <p>Fechamento, conferência final e liberação da obra para o mundo.</p>
+    <p class="setor-desc">Fechamento, conferência final, difusão e liberação da obra. Último setor antes do mundo.</p>
     <div class="modulos">
-      <a class="modulo-item" href="expedicao.html"><span class="modulo-icon">📦</span><span class="modulo-nome">Expedição</span><span class="modulo-status status-ativo">ativo</span></a>
-      <a class="modulo-item" href="expedicao_editorial.html"><span class="modulo-icon">📋</span><span class="modulo-nome">Expedição Editorial</span><span class="modulo-status status-ativo">ativo</span></a>
-      <a class="modulo-item" href="expedicao_multimidia.html"><span class="modulo-icon">🎬</span><span class="modulo-nome">Expedição Multimídia</span><span class="modulo-status status-ativo">ativo</span></a>
-      <a class="modulo-item" href="sistema_difusao_c.html"><span class="modulo-icon">📡</span><span class="modulo-nome">Sistema de Difusão</span><span class="modulo-status status-ativo">ativo</span></a>
+      <a class="mod" href="expedicao.html">
+        <span class="mod-ico">📦</span>
+        <span class="mod-nome">Expedição<span class="mod-desc">Conferência e fechamento</span></span>
+        <span class="badge b-ativo">ativo</span>
+      </a>
+      <a class="mod" href="expedicao_editorial.html">
+        <span class="mod-ico">📋</span>
+        <span class="mod-nome">Expedição Editorial<span class="mod-desc">Liberação da obra impressa</span></span>
+        <span class="badge b-ativo">ativo</span>
+      </a>
+      <a class="mod" href="expedicao_multimidia.html">
+        <span class="mod-ico">🎬</span>
+        <span class="mod-nome">Expedição Multimídia<span class="mod-desc">Liberação das mídias derivadas</span></span>
+        <span class="badge b-ativo">ativo</span>
+      </a>
+      <a class="mod" href="sistema_difusao_c.html">
+        <span class="mod-ico">📡</span>
+        <span class="mod-nome">Sistema de Difusão<span class="mod-desc">Circulação e distribuição</span></span>
+        <span class="badge b-ativo">ativo</span>
+      </a>
+      <a class="mod" href="corsi.html">
+        <span class="mod-ico">🔄</span>
+        <span class="mod-nome">CORSI — Circulação<span class="mod-desc">Sistema de circulação em redes</span></span>
+        <span class="badge b-ativo">ativo</span>
+      </a>
     </div>
-    <button class="btn-setor" onclick="ir('expedicao_editorial.html')">Abrir setor</button>
+    <button class="btn-setor" onclick="ir('expedicao_editorial.html')">Abrir setor →</button>
   </article>
 
 </div>
 
-<!-- NOTA DE CONGELAMENTO -->
-<div class="congel-note">
-  ✦ Espinha dorsal congelada · Celeiro Literário · Motor Editorial v2 · IA Anthropic integrada · 2026 ✦<br>
-  <span style="font-size:.75rem;opacity:.8;">Novos módulos entram dentro dos setores — este hub não muda sem decisão editorial.</span>
+<!-- ── LOG DE ATUALIZAÇÕES ── -->
+<div class="update-log">
+  <h3>✦ Atualizações desta versão — v2 · 2026</h3>
+  <div class="log-grid">
+    <div class="log-item">
+      <h4>🌾 Motor Editorial v2</h4>
+      <ul>
+        <li>Viúvas e órfãs — correção real automática</li>
+        <li>Hifenização silábica PT-BR</li>
+        <li>Capitular em 5 estilos (Simples, Clássica, Ornamental, Medieval, Iluminura)</li>
+        <li>Regulador de parágrafo inteligente</li>
+        <li>Integrado em Pólux, Castor e Centauro</li>
+      </ul>
+    </div>
+    <div class="log-item">
+      <h4>📊 Avaliações com IA</h4>
+      <ul>
+        <li>Avaliação Literária — 8 dimensões</li>
+        <li>Avaliação Emocional — 12 categorias · 0 a 10.000</li>
+        <li>Avaliação de Mercado — 9 dimensões</li>
+        <li>Nota final 0–10.0 com arredondamento estatístico</li>
+        <li>IA dupla: interna + API Anthropic</li>
+      </ul>
+    </div>
+    <div class="log-item">
+      <h4>🎨 Capas e Imagens</h4>
+      <ul>
+        <li>Polimata — 6 modos especializados</li>
+        <li>OKapista com Barracão integrado</li>
+        <li>Barracão — 6 presets, histograma, antes/depois</li>
+        <li>Faça Kapa Literário — reescrito do zero</li>
+        <li>Faça Kapa Cordel — botões corrigidos</li>
+      </ul>
+    </div>
+    <div class="log-item">
+      <h4>🌐 Tradução e Línguas</h4>
+      <ul>
+        <li>Segunda Língua(s) — criado do zero</li>
+        <li>12 idiomas de destino</li>
+        <li>6 modos de tradução literária</li>
+        <li>Histórico de sessão</li>
+        <li>Download em .txt</li>
+      </ul>
+    </div>
+    <div class="log-item">
+      <h4>📖 Novos Diagramadores</h4>
+      <ul>
+        <li>Hércules — Infantil, Técnico, Fotográfico, Receitas</li>
+        <li>Qui(RON)xadá — Cordel com análise rimática</li>
+        <li>Centauro — ornamento de transição prosa↔poesia</li>
+        <li>Castor — padrão rimático detectado automaticamente</li>
+      </ul>
+    </div>
+    <div class="log-item">
+      <h4>🔧 Correções gerais</h4>
+      <ul>
+        <li>Botões "Sair" corrigidos em todos os módulos</li>
+        <li>Links para páginas inexistentes removidos</li>
+        <li>Lapidar Pensante — 6 camadas com IA real</li>
+        <li>Motor base diagramação — pasta correta</li>
+        <li>Antologia — capa e convite criados</li>
+      </ul>
+    </div>
+  </div>
 </div>
 
-<!-- FOOTER -->
+<!-- ── SELO ── -->
+<div class="selo">
+  ✦ Espinha dorsal congelada · Celeiro Literário · Motor Editorial v2 · IA Anthropic Claude Sonnet · 2026 ✦<br>
+  <span style="font-size:.72rem;opacity:.75;">Novos módulos entram dentro dos setores — este hub não muda sem decisão editorial consciente.</span>
+</div>
+
+<!-- ── FOOTER ── -->
 <div class="footer-block">
   <button class="btn-foot btn-back" onclick="window.location.href='index.html'">← Retornar ao Celeiro</button>
-  <button class="btn-foot btn-back" onclick="window.location.href='mapa_fluxo_celeiro.html'">🗺 Mapa do fluxo</button>
+  <button class="btn-foot btn-mapa" onclick="window.location.href='mapa_fluxo_celeiro.html'">🗺 Mapa do fluxo</button>
   <button class="btn-foot btn-exit" onclick="window.location.href='pagina_respiro_celeiro.html'">Sair do sistema</button>
 </div>
 
@@ -267,15 +520,6 @@ body{padding:24px 16px 48px;}
 
 <script>
 function ir(pagina){ window.location.href = pagina; }
-
-// Destacar setor pelo hash da URL
-window.addEventListener('load', ()=>{
-  const hash = window.location.hash.replace('#','');
-  if(hash){
-    const el = document.querySelector(`[data-setor="${hash}"]`);
-    if(el){ el.scrollIntoView({behavior:'smooth', block:'center'}); el.style.outline='3px solid #2f7a59'; }
-  }
-});
 </script>
 </body>
 </html>
