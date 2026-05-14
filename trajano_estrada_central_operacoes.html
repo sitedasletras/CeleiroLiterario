@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trajano Estrada — Central de Operações | Mentoria Cibernética</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --tinta: #0a0d0f;
+  --meia-tinta: #141a1f;
+  --terceiro: #1e2730;
+  --ouro: #c9a850;
+  --ouro-claro: #f0d68a;
+  --cobre: #b87333;
+  --papel: #f8f3e8;
+  --papel2: #fffcf5;
+  --texto: #1a1a2e;
+  --verde-selva: #1a4a2e;
+  --verde: #2d7a4a;
+  --vermelho: #8b2020;
+  --azul-noite: #0d2140;
+  --chumbo: #4a5568;
+  --linha: rgba(201,168,80,.25);
+  --r: 20px;
+  --sombra: 0 20px 60px rgba(0,0,0,.18);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: #f5efe2;
+  color: var(--texto);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ====== FAIXA TOPO ====== */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,13,15,.97);
+  border-bottom: 2px solid var(--ouro);
+  backdrop-filter: blur(8px);
+}
+.topbar-inner {
+  max-width: 1280px; margin: auto;
+  padding: 10px 22px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+.brand { font-family: 'Playfair Display', serif; color: var(--ouro-claro); font-size: 15px; letter-spacing: .06em; }
+.brand span { opacity: .55; font-size: 12px; display: block; font-family: 'JetBrains Mono', monospace; }
+.nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+.nav-links a {
+  text-decoration: none; color: #c9c9c9;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 6px 11px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.1);
+  transition: .2s;
+}
+.nav-links a:hover { background: rgba(201,168,80,.15); color: var(--ouro-claro); border-color: var(--ouro); }
+
+/* ====== HERO ====== */
+.hero {
+  background: linear-gradient(155deg, var(--tinta) 0%, var(--azul-noite) 55%, #0f2a18 100%);
+  color: white;
+  padding: 70px 22px 56px;
+  border-bottom: 6px solid var(--ouro);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 20%, rgba(201,168,80,.12), transparent),
+    radial-gradient(ellipse 40% 60% at 90% 80%, rgba(45,122,74,.15), transparent);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1280px; margin: auto;
+  display: grid; grid-template-columns: 200px 1fr; gap: 40px; align-items: start;
+  position: relative; z-index: 1;
+}
+.avatar-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.avatar-circle {
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--ouro) 0%, var(--cobre) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 72px; font-weight: 900;
+  color: var(--tinta);
+  box-shadow: 0 0 0 6px rgba(201,168,80,.25), 0 24px 60px rgba(0,0,0,.4);
+  flex-shrink: 0;
+}
+.avatar-status {
+  background: var(--verde); color: white;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 5px 14px; border-radius: 999px;
+  display: flex; align-items: center; gap: 6px;
+}
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #7fffa0; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+.hero-texto .eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(201,168,80,.5); color: var(--ouro-claro);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  padding: 7px 14px; border-radius: 999px; margin-bottom: 18px;
+}
+.hero-texto h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(38px, 6vw, 72px);
+  line-height: 1.0; color: var(--ouro-claro);
+  margin-bottom: 10px;
+}
+.hero-texto .cargo {
+  font-size: clamp(15px, 2vw, 21px); color: #b8d4c0;
+  font-style: italic; margin-bottom: 20px;
+}
+.hero-texto .missao {
+  font-size: 18px; line-height: 1.65; color: #e2ddd0;
+  max-width: 760px; margin-bottom: 24px;
+  border-left: 3px solid var(--ouro); padding-left: 18px;
+}
+.hero-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+.badge {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.18);
+  color: #e8e0cc;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  padding: 8px 14px; border-radius: 12px;
+}
+.badge strong { color: var(--ouro-claro); }
+
+/* ====== LAYOUT PRINCIPAL ====== */
+.wrap { max-width: 1280px; margin: auto; padding: 40px 22px 80px; }
+
+/* ====== SEÇÕES ====== */
+.sec { margin-bottom: 50px; }
+.sec-titulo {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 22px;
+}
+.sec-titulo .barra { width: 6px; height: 36px; background: var(--ouro); border-radius: 20px; }
+.sec-titulo h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 3vw, 38px); color: var(--azul-noite);
+}
+.sec-titulo .subtag {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  background: var(--azul-noite); color: var(--ouro-claro);
+  padding: 4px 10px; border-radius: 999px;
+}
+
+/* ====== CARDS ====== */
+.card {
+  background: var(--papel2);
+  border: 1px solid rgba(201,168,80,.4);
+  border-radius: var(--r);
+  padding: 26px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.07);
+}
+.card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; color: var(--azul-noite);
+  margin-bottom: 12px;
+}
+.card p, .card li {
+  font-size: 15px; line-height: 1.65; color: #3a4557;
+}
+.card ul { padding-left: 18px; }
+.card ul li { margin-bottom: 6px; }
+
+/* ====== GRIDS ====== */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+/* ====== FLUXO CICILE ====== */
+.fluxo-cicile {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+  margin: 8px 0 22px;
+}
+.fluxo-etapa {
+  background: var(--tinta); color: var(--ouro-claro);
+  border: 2px solid var(--ouro); padding: 18px 12px;
+  text-align: center; font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 700;
+  position: relative;
+}
+.fluxo-etapa:first-child { border-radius: 16px 0 0 16px; }
+.fluxo-etapa:last-child { border-radius: 0 16px 16px 0; }
+.fluxo-etapa + .fluxo-etapa { border-left: 0; }
+.fluxo-etapa .num { font-size: 28px; font-weight: 900; display: block; color: var(--ouro); margin-bottom: 8px; }
+.fluxo-etapa small { font-weight: 400; color: #aaa; font-size: 11px; display: block; margin-top: 6px; }
+.fluxo-seta { display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--ouro); }
+
+/* ====== ÁREAS SIGMAL ====== */
+.areas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.area-item {
+  background: linear-gradient(135deg, var(--azul-noite), #162940);
+  border: 2px solid var(--ouro); border-radius: 16px;
+  padding: 16px; display: flex; align-items: center; gap: 12px;
+  text-decoration: none; color: white;
+  transition: .2s;
+}
+.area-item:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,0,0,.2); }
+.area-icon { font-size: 28px; flex-shrink: 0; }
+.area-nome { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--ouro-claro); }
+.area-desc { font-size: 12px; color: #b0bcc9; font-family: 'JetBrains Mono', monospace; }
+
+/* ====== PAINEL PREÇO ====== */
+.preco-painel {
+  background: linear-gradient(135deg, var(--tinta), var(--azul-noite));
+  border: 2px solid var(--ouro); border-radius: var(--r);
+  padding: 28px; color: white;
+}
+.preco-painel h3 { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--ouro-claro); margin-bottom: 6px; }
+.preco-painel p { color: #c9d8e0; font-size: 15px; margin-bottom: 20px; }
+.precos-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+.preco-box {
+  background: rgba(255,255,255,.06); border: 1px solid rgba(201,168,80,.45);
+  border-radius: 16px; padding: 18px; text-align: center;
+}
+.preco-box .flag { font-size: 28px; }
+.preco-box .valor { font-size: 36px; font-weight: 900; color: var(--ouro-claro); font-family: 'Playfair Display', serif; }
+.preco-box .periodo { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #999; }
+.preco-bonus {
+  background: rgba(45,122,74,.2); border: 1px solid rgba(45,200,80,.35);
+  border-radius: 14px; padding: 14px; margin-top: 16px;
+  font-size: 14px; color: #a0e8b0;
+}
+
+/* ====== OHE PARCEIROS ====== */
+.ohe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.ohe-card {
+  background: linear-gradient(135deg, #0e1f14, #1a3626);
+  border: 2px solid #2d7a4a; border-radius: var(--r);
+  padding: 24px; color: white;
+}
+.ohe-card .nome { font-family: 'Playfair Display', serif; font-size: 24px; color: #7fffa0; margin-bottom: 4px; }
+.ohe-card .organizacao { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #55b87a; margin-bottom: 16px; }
+.ohe-card p { font-size: 15px; color: #b8d4c0; line-height: 1.6; }
+
+/* ====== FORMULÁRIO FICHA ====== */
+.ficha-form {
+  background: var(--papel2);
+  border: 2px solid var(--ouro); border-radius: var(--r);
+  padding: 32px;
+  box-shadow: var(--sombra);
+}
+.ficha-form h3 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--azul-noite); margin-bottom: 6px; }
+.ficha-form .subtitulo { font-size: 15px; color: var(--chumbo); margin-bottom: 26px; font-style: italic; }
+.form-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.campo { margin-bottom: 16px; }
+.campo label {
+  display: block; font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 700; color: var(--azul-noite);
+  margin-bottom: 7px; letter-spacing: .04em; text-transform: uppercase;
+}
+.campo input, .campo select, .campo textarea {
+  width: 100%; border: 2px solid #d4c89a; border-radius: 12px;
+  padding: 12px 14px; font-size: 15px; font-family: 'Source Serif 4', serif;
+  background: white; color: var(--texto); outline: none;
+  transition: border-color .2s;
+}
+.campo input:focus, .campo select:focus, .campo textarea:focus {
+  border-color: var(--ouro);
+}
+.campo textarea { min-height: 100px; resize: vertical; }
+.wide { grid-column: 1 / -1; }
+
+/* ====== ACOMPANHAMENTO CRESCIMENTO ====== */
+.tracker-card {
+  background: var(--papel2);
+  border: 1px solid rgba(201,168,80,.4);
+  border-radius: var(--r);
+  padding: 24px;
+}
+.tracker-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.tracker-header h3 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--azul-noite); }
+.status-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 5px 12px; border-radius: 999px;
+}
+.status-ativo { background: #d4f8e4; color: #166534; }
+.status-atencao { background: #fef9c3; color: #854d0e; }
+.status-pausa { background: #fee2e2; color: #991b1b; }
+.linha-etapas { display: flex; gap: 8px; margin: 14px 0; flex-wrap: wrap; }
+.etapa-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 6px 12px; border-radius: 999px; border: 1px solid;
+}
+.et-feito { background: #d4f8e4; border-color: #86efac; color: #166534; }
+.et-atual { background: var(--ouro); border-color: var(--cobre); color: #1a0d00; font-weight: 700; }
+.et-futuro { background: #f1f5f9; border-color: #cbd5e1; color: #64748b; }
+
+/* ====== TABELA DE OBRIGAÇÕES ====== */
+.tabela-obrig { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabela-obrig th {
+  background: var(--azul-noite); color: var(--ouro-claro);
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 12px 16px; text-align: left; letter-spacing: .05em;
+}
+.tabela-obrig th:first-child { border-radius: 12px 0 0 0; }
+.tabela-obrig th:last-child { border-radius: 0 12px 0 0; }
+.tabela-obrig td { padding: 12px 16px; border-bottom: 1px solid #e8ddc5; vertical-align: top; }
+.tabela-obrig tr:last-child td { border-bottom: none; }
+.tabela-obrig tr:hover td { background: rgba(201,168,80,.05); }
+.check { color: #16a34a; font-size: 16px; }
+.pending { color: #d97706; font-size: 16px; }
+
+/* ====== PAINEIS INFORMATIVOS ====== */
+.info-panel {
+  background: linear-gradient(135deg, #fffbf0, #fff5d6);
+  border: 2px solid #f0c040; border-left: 6px solid var(--ouro);
+  border-radius: 16px; padding: 20px;
+  font-size: 15px; color: #4a3800; line-height: 1.65;
+}
+.info-panel strong { color: #7a5200; }
+
+/* ====== BOTÕES ====== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  text-decoration: none; border: none; cursor: pointer;
+  font-family: 'JetBrains Mono', monospace; font-weight: 700;
+  border-radius: 999px; padding: 13px 22px; font-size: 13px;
+  transition: .2s; box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+.btn-ouro { background: var(--ouro); color: var(--tinta); }
+.btn-ouro:hover { background: var(--ouro-claro); }
+.btn-verde { background: var(--verde); color: white; }
+.btn-verde:hover { background: #1f6b3d; }
+.btn-escuro { background: var(--azul-noite); color: var(--ouro-claro); }
+.btn-escuro:hover { background: #0d1a30; }
+.btn-vermelho { background: var(--vermelho); color: white; }
+.btn-vermelho:hover { background: #6b1818; }
+.btns-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+
+/* ====== RÉGUA PADRÃO CICILE ====== */
+.regua-tipos { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+.tipo-tag {
+  background: var(--azul-noite); color: var(--ouro-claro);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  padding: 8px 14px; border-radius: 12px;
+  border: 1px solid rgba(201,168,80,.4);
+}
+
+/* ====== RODAPÉ ====== */
+footer {
+  background: var(--tinta); color: #c8c0ae;
+  border-top: 5px solid var(--ouro);
+  padding: 36px 22px; text-align: center;
+}
+footer strong { color: var(--ouro-claro); }
+footer p { font-size: 14px; line-height: 1.7; }
+
+/* ====== RESPONSIVO ====== */
+@media (max-width: 960px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .avatar-wrap { flex-direction: row; justify-content: flex-start; }
+  .fluxo-cicile { grid-template-columns: repeat(3, 1fr); }
+  .g3, .g4, .areas-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-2col { grid-template-columns: 1fr; }
+  .ohe-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .g2, .g3, .g4, .areas-grid, .precos-duo, .fluxo-cicile { grid-template-columns: 1fr; }
+  .fluxo-etapa { border-radius: 0 !important; border-left: 2px solid var(--ouro) !important; border-top: 0; }
+  .fluxo-etapa:first-child { border-radius: 16px 16px 0 0 !important; border-top: 2px solid var(--ouro) !important; }
+  .fluxo-etapa:last-child { border-radius: 0 0 16px 16px !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      Instituto Cultural Celeiro Literário
+      <span>Mentoria Cibernética · CICILE · SIGMAL · OHE</span>
+    </div>
+    <nav class="nav-links">
+      <a href="#triagem">Triagem CICILE</a>
+      <a href="#sigmal">SIGMAL</a>
+      <a href="#ohe">OHE</a>
+      <a href="#associados">Associados</a>
+      <a href="#ficha">Ficha</a>
+    </nav>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="avatar-wrap">
+      <div class="avatar-circle">T</div>
+      <div class="avatar-status">
+        <span class="dot"></span> Operacional
+      </div>
+    </div>
+    <div class="hero-texto">
+      <div class="eyebrow">✦ Mentoria Cibernética · Celeiro Literário</div>
+      <h1>Trajano Estrada</h1>
+      <p class="cargo">Curador de Oportunidades & Responsável pelo Acompanhamento de Trajetória</p>
+      <p class="missao">
+        Sou o encarregado de varrer o universo cultural em busca de tudo aquilo que pode impulsionar a carreira dos associados do Celeiro Literário. Editais, concursos, chamadas literárias, leis de fomento, cursos — faço a triagem, organizo por área e encaminho para quem pode se beneficiar. Minha responsabilidade é garantir que nenhuma oportunidade relevante escape.
+      </p>
+      <div class="hero-badges">
+        <div class="badge">🔍 <strong>Triagem CICILE</strong></div>
+        <div class="badge">📋 <strong>9 áreas SIGMAL</strong></div>
+        <div class="badge">🌐 <strong>Snake As · Lonely Eagle / OHE</strong></div>
+        <div class="badge">📈 <strong>Acompanhamento de crescimento</strong></div>
+        <div class="badge">💰 <strong>R$25 / US$25 mensais</strong></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- CONTEÚDO PRINCIPAL -->
+<main class="wrap">
+
+  <!-- ====== SEÇÃO: TRIAGEM CICILE ====== -->
+  <section class="sec" id="triagem">
+    <div class="sec-titulo">
+      <div class="barra"></div>
+      <h2>Triagem CICILE</h2>
+      <span class="subtag">Central de Inteligência Cultural</span>
+    </div>
+
+    <div class="info-panel" style="margin-bottom:22px;">
+      A <strong>CICILE</strong> (Central de Inteligência Cultural e Literária do Celeiro) vasculha continuamente a internet em busca de oportunidades para os associados. Trajano Estrada recebe esse material bruto, faz a triagem qualitativa e decide o destino de cada item encontrado.
+    </div>
+
+    <!-- Fluxo -->
+    <div class="fluxo-cicile" style="margin-bottom:28px;">
+      <div class="fluxo-etapa">
+        <span class="num">①</span>
+        CICILE busca
+        <small>Varredura contínua na internet</small>
+      </div>
+      <div class="fluxo-etapa">
+        <span class="num">②</span>
+        Trajano filtra
+        <small>Relevância, prazo, elegibilidade</small>
+      </div>
+      <div class="fluxo-etapa">
+        <span class="num">③</span>
+        Classifica
+        <small>Por área SIGMAL e perfil</small>
+      </div>
+      <div class="fluxo-etapa">
+        <span class="num">④</span>
+        Encaminha
+        <small>Associados + Snake As + Lonely Eagle</small>
+      </div>
+      <div class="fluxo-etapa">
+        <span class="num">⑤</span>
+        Registra
+        <small>Histórico de oportunidades</small>
+      </div>
+    </div>
+
+    <p style="font-size:15px;color:#4a5568;margin-bottom:18px;">Tipos de material monitorados e triados:</p>
+    <div class="regua-tipos">
+      <span class="tipo-tag">✒️ Editais literários</span>
+      <span class="tipo-tag">🏆 Concursos com premiação</span>
+      <span class="tipo-tag">📖 Chamadas para antologias</span>
+      <span class="tipo-tag">🎭 Festivais culturais</span>
+      <span class="tipo-tag">🏛️ Lei Rouanet</span>
+      <span class="tipo-tag">⚖️ Lei Aldir Blanc</span>
+      <span class="tipo-tag">💼 Outros editais de fomento</span>
+      <span class="tipo-tag">🌍 Residências artísticas</span>
+      <span class="tipo-tag">🎓 Cursos e formações</span>
+      <span class="tipo-tag">📸 Exposições / mostras</span>
+      <span class="tipo-tag">🎵 Chamadas musicais</span>
+      <span class="tipo-tag">🎬 Editais audiovisuais</span>
+    </div>
+
+    <div class="g3" style="margin-top:22px;">
+      <div class="card">
+        <h3>Critérios de triagem</h3>
+        <ul>
+          <li>Prazo viável para o associado</li>
+          <li>Correspondência com área artística</li>
+          <li>Gratuidade ou baixo custo de inscrição</li>
+          <li>Legitimidade e histórico do promotor</li>
+          <li>Premiação real ou benefício tangível</li>
+          <li>Compatibilidade com nível de produção</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Análise de edital</h3>
+        <ul>
+          <li>Histórico de edições anteriores</li>
+          <li>Perfil dos premiados passados</li>
+          <li>Tendência da banca avaliadora</li>
+          <li>Grau de competitividade</li>
+          <li>Linguagem e formato favorecido</li>
+          <li>Riscos e pontos de atenção</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Material entregue</h3>
+        <ul>
+          <li>Resumo estratégico do edital</li>
+          <li>Recomendação de participação</li>
+          <li>Documentos necessários</li>
+          <li>Macetes de envio</li>
+          <li>Prazo real de preparo</li>
+          <li>Sugestão de estratégia</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SEÇÃO: ÁREAS SIGMAL ====== -->
+  <section class="sec" id="sigmal">
+    <div class="sec-titulo">
+      <div class="barra"></div>
+      <h2>Áreas SIGMAL</h2>
+      <span class="subtag">São Roque International Global Music, Arts &amp; Letters Academy</span>
+    </div>
+
+    <p style="font-size:15px;color:var(--chumbo);margin-bottom:20px;max-width:900px;">
+      Trajano Estrada opera em todas as áreas da SIGMAL. Cada oportunidade triada é classificada conforme a área pertinente antes do encaminhamento.
+    </p>
+
+    <div class="areas-grid">
+      <div class="area-item">
+        <div class="area-icon">✒️</div>
+        <div>
+          <div class="area-nome">Literatura</div>
+          <div class="area-desc">Concursos, editais, antologias, publicações</div>
+        </div>
+      </div>
+      <div class="area-item">
+        <div class="area-icon">♪</div>
+        <div>
+          <div class="area-nome">Música</div>
+          <div class="area-desc">Festivais, chamadas, gravação, bolsas</div>
+        </div>
+      </div>
+      <div class="area-item">
+        <div class="area-icon">🎨</div>
+        <div>
+          <div class="area-nome">Artes Visuais</div>
+          <div class="area-desc">Exposições, editais, residências visuais</div>
+        </div>
+      </div>
+      <div class="area-item">
+        <div class="area-icon">🎬</div>
+        <div>
+          <div class="area-nome">Cinema / Audiovisual</div>
+          <div class="area-desc">Pitching, editais de produção, festivais</div>
+        </div>
+      </div>
+      <div class="area-item">
+        <div class="area-icon">🎙️</div>
+        <div>
+          <div class="area-nome">Performance / Voz / Narrativa</div>
+          <div class="area-desc">Slam, contação, espetáculos, chamadas</div>
+        </div>
+      </div>
+      <div class="area-item">
+        <div class="area-icon">▶️</div>
+        <div>
+          <div class="area-nome">Multimídia Narrativa</div>
+          <div class="area-desc">Transmídia, HQs, games narrativos</div>
+        </div>
+      </div>
+      <div class="area-item">
+        <div class="area-icon">🧵</div>
+        <div>
+          <div class="area-nome">Artesanato</div>
+          <div class="area-desc">Feiras, editais culturais, formações</div>
+        </div>
+      </div>
+      <div class="area-item">
+        <div class="area-icon">🖼️</div>
+        <div>
+          <div class="area-nome">Artes Plásticas</div>
+          <div class="area-desc">Galerias, concursos, bolsas de arte</div>
+        </div>
+      </div>
+      <div class="area-item">
+        <div class="area-icon">💃</div>
+        <div>
+          <div class="area-nome">Dança</div>
+          <div class="area-desc">Festivais, editais, companhias, mostras</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SEÇÃO: OHE — SNAKE AS E LONELY EAGLE ====== -->
+  <section class="sec" id="ohe">
+    <div class="sec-titulo">
+      <div class="barra"></div>
+      <h2>Encaminhamento OHE</h2>
+      <span class="subtag">Conglomerado — Snake As &amp; Lonely Eagle</span>
+    </div>
+
+    <div class="info-panel" style="margin-bottom:22px;">
+      Além dos associados do Celeiro Literário, Trajano Estrada tem a responsabilidade de encaminhar o material triado também para <strong>Snake As</strong> e <strong>Lonely Eagle</strong>, que integram o conglomerado da <strong>OHE</strong>. O material enviado a eles passa pelo mesmo processo de triagem e classificação por área.
+    </div>
+
+    <div class="ohe-grid">
+      <div class="ohe-card">
+        <div class="nome">Snake As</div>
+        <div class="organizacao">Conglomerado OHE</div>
+        <p>Recebe o material triado por Trajano Estrada conforme as áreas artísticas de atuação e interesse. O encaminhamento inclui resumo estratégico, prazos e orientações de participação.</p>
+        <div class="linha-etapas" style="margin-top:14px;">
+          <span class="etapa-tag et-feito">Triagem feita</span>
+          <span class="etapa-tag et-feito">Classificado por área</span>
+          <span class="etapa-tag et-atual">Encaminhamento ativo</span>
+        </div>
+      </div>
+      <div class="ohe-card">
+        <div class="nome">Lonely Eagle</div>
+        <div class="organizacao">Conglomerado OHE</div>
+        <p>Recebe, em paralelo, os materiais selecionados relevantes ao seu perfil e áreas de atuação. A curadoria de Trajano garante que o conteúdo chegue organizado, sem ruído.</p>
+        <div class="linha-etapas" style="margin-top:14px;">
+          <span class="etapa-tag et-feito">Triagem feita</span>
+          <span class="etapa-tag et-feito">Classificado por área</span>
+          <span class="etapa-tag et-atual">Encaminhamento ativo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+      <h3>Protocolo de encaminhamento para a OHE</h3>
+      <div class="g3" style="margin-top:12px;">
+        <div>
+          <p><strong>O que é enviado</strong></p>
+          <ul style="margin-top:8px;">
+            <li>Editais compatíveis com as áreas de atuação</li>
+            <li>Concursos com premiação relevante</li>
+            <li>Oportunidades de fomento (Rouanet, Aldir Blanc)</li>
+            <li>Chamadas internacionais pertinentes</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong>Formato do envio</strong></p>
+          <ul style="margin-top:8px;">
+            <li>Resumo executivo do edital</li>
+            <li>Área SIGMAL correspondente</li>
+            <li>Prazo de inscrição e datas-chave</li>
+            <li>Link oficial da oportunidade</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong>Periodicidade</strong></p>
+          <ul style="margin-top:8px;">
+            <li>Encaminhamentos sob demanda</li>
+            <li>Compilado semanal de oportunidades</li>
+            <li>Alertas urgentes de prazo curto</li>
+            <li>Relatório mensal de triagem</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SEÇÃO: ACOMPANHAMENTO DE ASSOCIADOS ====== -->
+  <section class="sec" id="associados">
+    <div class="sec-titulo">
+      <div class="barra"></div>
+      <h2>Acompanhamento de Crescimento</h2>
+      <span class="subtag">Associados · R$25/mês · US$25/mês</span>
+    </div>
+
+    <div class="g2" style="margin-bottom:22px;">
+      <div class="preco-painel">
+        <h3>Plano de Associação</h3>
+        <p>Acesso ao acompanhamento individual de trajetória, triagem personalizada de oportunidades e orientação estratégica por Trajano Estrada.</p>
+        <div class="precos-duo">
+          <div class="preco-box">
+            <div class="flag">🇧🇷</div>
+            <div class="valor">R$ 25</div>
+            <div class="periodo">por mês · Brasil</div>
+          </div>
+          <div class="preco-box">
+            <div class="flag">🌐</div>
+            <div class="valor">US$ 25</div>
+            <div class="periodo">por mês · Exterior</div>
+          </div>
+        </div>
+        <div class="preco-bonus">
+          🎁 <strong>Bônus SIGMAL:</strong> quem ingressa na academia recebe 1 mês gratuito deste acompanhamento.
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>O que o associado recebe</h3>
+        <ul>
+          <li><strong>Ficha individual</strong> — perfil artístico próprio no sistema</li>
+          <li><strong>Oportunidades filtradas</strong> por área, idioma e objetivo</li>
+          <li><strong>Análise estratégica</strong> de editais antes da inscrição</li>
+          <li><strong>Orientação de portfólio</strong> e sugestões de produção</li>
+          <li><strong>Linha de trajetória</strong> — registro da evolução</li>
+          <li><strong>Indicação de recursos internos</strong> do Celeiro (Silos, LabC, Expedição)</li>
+          <li><strong>Encaminhamento por e-mail</strong> assinado por Trajano Estrada</li>
+          <li><strong>Relatório periódico</strong> de progresso e próximos passos</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Tabela de obrigações de Trajano -->
+    <div class="card" style="padding:0; overflow:hidden;">
+      <table class="tabela-obrig">
+        <thead>
+          <tr>
+            <th>Obrigação de Trajano Estrada</th>
+            <th>Frequência</th>
+            <th>Destinatário</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Triagem de editais e concursos da CICILE</td>
+            <td>Contínua</td>
+            <td>Associados + OHE</td>
+            <td><span class="check">✔</span></td>
+          </tr>
+          <tr>
+            <td>Classificação por área SIGMAL</td>
+            <td>A cada lote</td>
+            <td>Sistema interno</td>
+            <td><span class="check">✔</span></td>
+          </tr>
+          <tr>
+            <td>Encaminhamento para Snake As (OHE)</td>
+            <td>Semanal</td>
+            <td>Snake As</td>
+            <td><span class="check">✔</span></td>
+          </tr>
+          <tr>
+            <td>Encaminhamento para Lonely Eagle (OHE)</td>
+            <td>Semanal</td>
+            <td>Lonely Eagle</td>
+            <td><span class="check">✔</span></td>
+          </tr>
+          <tr>
+            <td>Análise histórica de editais específicos</td>
+            <td>Sob demanda</td>
+            <td>Associado solicitante</td>
+            <td><span class="check">✔</span></td>
+          </tr>
+          <tr>
+            <td>Envio personalizado por ficha individual</td>
+            <td>Mensal (mínimo)</td>
+            <td>Cada associado</td>
+            <td><span class="check">✔</span></td>
+          </tr>
+          <tr>
+            <td>Monitoramento de leis de fomento (Rouanet, Aldir Blanc)</td>
+            <td>Contínua</td>
+            <td>Associados</td>
+            <td><span class="check">✔</span></td>
+          </tr>
+          <tr>
+            <td>Triagem de cursos e formações artísticas</td>
+            <td>Contínua</td>
+            <td>Associados</td>
+            <td><span class="check">✔</span></td>
+          </tr>
+          <tr>
+            <td>Acompanhamento de crescimento por linha de trajetória</td>
+            <td>Mensal</td>
+            <td>Cada associado</td>
+            <td><span class="check">✔</span></td>
+          </tr>
+          <tr>
+            <td>Relatório de trajetória com próximos passos</td>
+            <td>Trimestral</td>
+            <td>Cada associado + CECILE</td>
+            <td><span class="pending">⏳</span></td>
+          </tr>
+          <tr>
+            <td>Verificação de pagamento mensal dos associados</td>
+            <td>Mensal</td>
+            <td>Gestão interna</td>
+            <td><span class="pending">⏳</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Exemplos de acompanhamento de crescimento -->
+    <div style="margin-top:28px;">
+      <p style="font-size:16px;color:var(--azul-noite);font-family:'Playfair Display',serif;font-weight:700;margin-bottom:16px;">
+        Linha de crescimento por associado
+      </p>
+      <div class="g2">
+        <div class="tracker-card">
+          <div class="tracker-header">
+            <h3>Associado · Área: Literatura</h3>
+            <span class="status-badge status-ativo">● Ativo</span>
+          </div>
+          <p style="font-size:14px;color:var(--chumbo);">Participação em concursos e construção de portfólio de publicação.</p>
+          <div class="linha-etapas">
+            <span class="etapa-tag et-feito">Ficha criada</span>
+            <span class="etapa-tag et-feito">1ª triagem enviada</span>
+            <span class="etapa-tag et-feito">Edital analisado</span>
+            <span class="etapa-tag et-atual">Inscrição em andamento</span>
+            <span class="etapa-tag et-futuro">Resultado</span>
+            <span class="etapa-tag et-futuro">Próxima oportunidade</span>
+          </div>
+        </div>
+        <div class="tracker-card">
+          <div class="tracker-header">
+            <h3>Associado · Área: Música</h3>
+            <span class="status-badge status-atencao">● Atenção</span>
+          </div>
+          <p style="font-size:14px;color:var(--chumbo);">Aguardando edital de festival regional. Prazo de renovação próximo.</p>
+          <div class="linha-etapas">
+            <span class="etapa-tag et-feito">Ficha criada</span>
+            <span class="etapa-tag et-feito">Triagem semanal</span>
+            <span class="etapa-tag et-atual">Aguardando edital</span>
+            <span class="etapa-tag et-futuro">Inscrição</span>
+            <span class="etapa-tag et-futuro">Festival</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SEÇÃO: FICHA DO ASSOCIADO ====== -->
+  <section class="sec" id="ficha">
+    <div class="sec-titulo">
+      <div class="barra"></div>
+      <h2>Ficha Individual do Associado</h2>
+      <span class="subtag">Cadastro de Trajetória</span>
+    </div>
+
+    <div class="ficha-form">
+      <h3>Perfil artístico para acompanhamento</h3>
+      <p class="subtitulo">Preencha os dados do associado para que Trajano Estrada organize o encaminhamento individualizado.</p>
+
+      <div class="form-2col">
+        <div class="campo">
+          <label>Nome artístico ou civil</label>
+          <input type="text" placeholder="Nome do associado">
+        </div>
+        <div class="campo">
+          <label>E-mail para oportunidades</label>
+          <input type="email" placeholder="email@exemplo.com">
+        </div>
+        <div class="campo">
+          <label>País de residência</label>
+          <input type="text" placeholder="Brasil, Portugal, EUA...">
+        </div>
+        <div class="campo">
+          <label>Moeda de pagamento</label>
+          <select>
+            <option>R$ 25,00 — Brasil</option>
+            <option>US$ 25,00 — Exterior</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Área principal (SIGMAL)</label>
+          <select>
+            <option>Selecione a área principal</option>
+            <option>Literatura</option>
+            <option>Música</option>
+            <option>Artes Visuais</option>
+            <option>Cinema / Audiovisual</option>
+            <option>Performance / Voz / Narrativa</option>
+            <option>Multimídia Narrativa</option>
+            <option>Artesanato</option>
+            <option>Artes Plásticas</option>
+            <option>Dança</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Área secundária (opcional)</label>
+          <select>
+            <option>Nenhuma</option>
+            <option>Literatura</option>
+            <option>Música</option>
+            <option>Artes Visuais</option>
+            <option>Cinema / Audiovisual</option>
+            <option>Performance / Voz / Narrativa</option>
+            <option>Multimídia Narrativa</option>
+            <option>Artesanato</option>
+            <option>Artes Plásticas</option>
+            <option>Dança</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Momento de carreira</label>
+          <select>
+            <option>Iniciante — primeiras obras</option>
+            <option>Em consolidação — produção regular</option>
+            <option>Com obra pronta — buscando publicação/circulação</option>
+            <option>Em circulação — já publicado/premiado</option>
+            <option>Internacionalização — buscando alcance global</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Idioma das oportunidades</label>
+          <select>
+            <option>Português</option>
+            <option>Português e espanhol</option>
+            <option>Português e inglês</option>
+            <option>Multilíngue</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Interesse principal</label>
+          <select>
+            <option>Oportunidades gratuitas</option>
+            <option>Premiações em dinheiro</option>
+            <option>Gratuitas e com premiação</option>
+            <option>Publicação e circulação</option>
+            <option>Exposições / festivais</option>
+            <option>Lei Rouanet / fomento</option>
+            <option>Cursos e formações</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Data de início da associação</label>
+          <input type="date">
+        </div>
+        <div class="campo wide">
+          <label>Objetivo de trajetória</label>
+          <textarea placeholder="Descreva o que o associado deseja alcançar nos próximos meses: publicação, prêmio, festival, formação, bolsa..."></textarea>
+        </div>
+        <div class="campo wide">
+          <label>Premiações, menções e histórico (opcional)</label>
+          <textarea placeholder="Liste prêmios, menções honrosas, participações anteriores em concursos ou festivais..."></textarea>
+        </div>
+      </div>
+
+      <div class="info-panel" style="margin-top:18px;">
+        <strong>Próxima etapa técnica:</strong> conectar esta ficha ao banco de dados do Celeiro, à plataforma de pagamento (Hotmart) e ao sistema de envio de e-mails assinados por Trajano Estrada, com validação automática de mensalidade ativa.
+      </div>
+
+      <div class="btns-row">
+        <button class="btn btn-verde" type="button">✔ Salvar ficha do associado</button>
+        <button class="btn btn-ouro" type="button">📧 Iniciar encaminhamento</button>
+        <a class="btn btn-escuro" href="sigmal_academia_artistica_internacional.html">↗ Ir para SIGMAL</a>
+        <a class="btn btn-escuro" href="acompanhamento_evolucao_trajetoria.html">↗ Central de trajetória</a>
+        <button class="btn btn-vermelho" type="button">✕ Cancelar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SEÇÃO: RELAÇÃO COM CECILE ====== -->
+  <section class="sec">
+    <div class="sec-titulo">
+      <div class="barra"></div>
+      <h2>Supervisão — CECILE</h2>
+    </div>
+    <div class="card">
+      <h3>Relatório para a CEO do Instituto</h3>
+      <p>Trajano Estrada presta contas periodicamente a <strong>Cecile</strong>, CEO do Instituto Cultural Celeiro Literário. Os relatórios abrangem:</p>
+      <div class="g4" style="margin-top:16px;">
+        <div style="background:#f1f5f9;border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:28px;margin-bottom:8px;">📊</div>
+          <strong style="font-size:14px;color:var(--azul-noite);">Áreas ativas</strong>
+          <p style="font-size:13px;color:var(--chumbo);margin-top:4px;">Quais áreas SIGMAL estão recebendo mais oportunidades</p>
+        </div>
+        <div style="background:#f1f5f9;border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:28px;margin-bottom:8px;">📬</div>
+          <strong style="font-size:14px;color:var(--azul-noite);">Oportunidades encaminhadas</strong>
+          <p style="font-size:13px;color:var(--chumbo);margin-top:4px;">Volume e qualidade dos encaminhamentos do período</p>
+        </div>
+        <div style="background:#f1f5f9;border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:28px;margin-bottom:8px;">👥</div>
+          <strong style="font-size:14px;color:var(--azul-noite);">Adesões ao plano</strong>
+          <p style="font-size:13px;color:var(--chumbo);margin-top:4px;">Novos associados e renovações do mês</p>
+        </div>
+        <div style="background:#f1f5f9;border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:28px;margin-bottom:8px;">📈</div>
+          <strong style="font-size:14px;color:var(--azul-noite);">Evolução dos participantes</strong>
+          <p style="font-size:13px;color:var(--chumbo);margin-top:4px;">Crescimento geral da trajetória dos associados</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>Trajano Estrada</strong> — Curador de Oportunidades & Acompanhamento de Trajetória</p>
+  <p>Instituto Cultural Celeiro Literário · Mentoria Cibernética · CICILE · SIGMAL · OHE</p>
+  <p style="margin-top:10px;opacity:.6;font-size:13px;font-family:'JetBrains Mono',monospace;">
+    Caminhando e encaminhando oportunidades para você.
+  </p>
+</footer>
+
+</body>
+</html>
