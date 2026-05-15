@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIGMAL Academy — São Roque International Global Music, Arts & Letters Academy</title>
+<style>
+:root{
+  --preto:#050505;
+  --grafite:#111;
+  --girassol:#ffd23f;
+  --girassol2:#ffe680;
+  --girassol3:#fff3b0;
+  --branco:#fffaf0;
+  --verde:#1a6b35;
+  --azul:#0d2d5e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Georgia,'Times New Roman',serif;
+  background:linear-gradient(180deg,#050505,#141414 60%,#28210b);
+  color:#fff;
+  min-height:100vh;
+}
+
+/* ── HERO ── */
+.hero{
+  background:#050505;
+  border-bottom:7px solid var(--girassol);
+  padding:30px 18px;
+}
+.hero-inner{
+  max-width:1140px;margin:auto;
+  display:grid;grid-template-columns:260px 1fr;gap:28px;align-items:center;
+}
+.avatar-wrap{
+  border:4px solid var(--girassol);border-radius:22px;
+  overflow:hidden;background:#111;
+  box-shadow:0 16px 48px rgba(0,0,0,.6);
+}
+.avatar-wrap img{width:100%;display:block}
+.avatar-svg{width:100%;display:block}
+.headline h1{
+  font-size:clamp(36px,6vw,70px);
+  color:var(--girassol);letter-spacing:.06em;margin-bottom:8px;
+}
+.headline h2{
+  font-size:clamp(14px,2.2vw,22px);
+  color:var(--branco);letter-spacing:.06em;margin-bottom:16px;
+}
+.headline p{
+  font-size:clamp(15px,1.8vw,20px);
+  line-height:1.5;color:#fff3bf;max-width:700px;
+}
+
+/* ── WRAP ── */
+.wrap{max-width:1140px;margin:auto;padding:28px 18px 60px}
+
+/* ── PAINEL ── */
+.painel{
+  background:#0b0f13;
+  border:2px solid var(--girassol);
+  border-radius:26px;padding:26px;
+  box-shadow:0 18px 56px rgba(0,0,0,.4);
+  margin-bottom:24px;
+}
+.painel h2{
+  color:var(--girassol);font-size:28px;
+  text-align:center;margin-bottom:6px;
+}
+.painel .sub{
+  text-align:center;color:#fff3bf;
+  font-family:Arial,sans-serif;font-size:14px;margin-bottom:20px;
+}
+
+/* ── CATEGORIAS GRID ── */
+.categorias{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+}
+.cat{
+  background:var(--girassol);color:#000;
+  border:3px solid #000;border-radius:18px;
+  padding:20px 14px;text-decoration:none;
+  min-height:140px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  box-shadow:0 7px 0 #8a6b00;
+  transition:transform .15s,box-shadow .15s;
+  cursor:pointer;
+}
+.cat:hover{transform:translateY(-3px);box-shadow:0 10px 0 #8a6b00}
+.cat.ativa{background:var(--girassol2);border-color:var(--verde);box-shadow:0 0 0 4px var(--verde)}
+.cat-icon{font-size:38px;margin-bottom:8px}
+.cat strong{font-size:18px;line-height:1.1}
+.cat span{font-family:Arial,sans-serif;font-size:12px;margin-top:6px;color:#333}
+
+/* ── PAINEL CATEGORIA (Márcio guia) ── */
+.cat-painel{
+  display:none;
+  background:#0d1117;
+  border:2px solid var(--girassol);
+  border-radius:26px;padding:26px;
+  margin-bottom:24px;
+  animation:fadeIn .3s ease;
+}
+.cat-painel.ativo{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.marcio-guia{
+  display:grid;grid-template-columns:160px 1fr;gap:20px;
+  align-items:start;margin-bottom:22px;
+}
+.marcio-avatar{
+  border:3px solid var(--girassol);border-radius:18px;
+  overflow:hidden;background:#111;
+  box-shadow:0 10px 28px rgba(0,0,0,.5);
+}
+.marcio-fala h3{color:var(--girassol);font-size:22px;margin-bottom:8px}
+.marcio-fala p{color:#fff3bf;line-height:1.55;font-size:15px;margin-bottom:8px}
+.marcio-fala .assinatura{color:var(--girassol2);font-weight:900;font-style:italic}
+
+.passos{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;
+  margin-bottom:18px;
+}
+.passo{
+  background:#111;border:1px solid var(--girassol)66;
+  border-radius:16px;padding:16px;
+}
+.passo .num{
+  display:inline-block;
+  background:var(--girassol);color:#000;
+  border-radius:50%;width:28px;height:28px;
+  line-height:28px;text-align:center;
+  font-weight:900;font-size:14px;margin-bottom:8px;
+}
+.passo strong{display:block;color:var(--girassol2);margin-bottom:4px;font-size:15px}
+.passo p{color:#e8dbb0;font-family:Arial,sans-serif;font-size:13px;line-height:1.4}
+
+.oportunidades{margin-top:16px}
+.oportunidades h4{color:var(--girassol);margin-bottom:10px;font-size:18px}
+.oport-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;
+}
+.oport{
+  background:#0b0f13;border:1px solid var(--girassol)44;
+  border-radius:14px;padding:14px;
+}
+.oport .tipo{
+  display:inline-block;background:var(--girassol);color:#000;
+  border-radius:999px;padding:2px 10px;font-size:11px;
+  font-weight:900;font-family:Arial,sans-serif;margin-bottom:6px;
+}
+.oport strong{display:block;color:#fff;margin-bottom:4px;font-size:14px}
+.oport p{color:#c8b870;font-family:Arial,sans-serif;font-size:12px;line-height:1.35}
+
+.fechar-cat{
+  display:inline-block;margin-top:16px;
+  background:transparent;border:2px solid var(--girassol)66;
+  color:var(--girassol);border-radius:999px;padding:8px 18px;
+  font-size:13px;font-weight:900;cursor:pointer;font-family:inherit;
+  transition:background .15s;
+}
+.fechar-cat:hover{background:var(--girassol)22}
+
+/* ── FICHA DE INSCRIÇÃO ── */
+.form-grid{display:grid;grid-template-columns:1.3fr .9fr;gap:18px}
+.card{
+  background:var(--branco);color:#111;
+  border:2px solid var(--girassol);border-radius:22px;padding:22px;
+  box-shadow:0 14px 36px rgba(0,0,0,.25);
+}
+.card h2{color:#111;margin-bottom:10px;font-family:Georgia,serif}
+.card p{font-size:13px;color:#444;margin-bottom:12px;font-family:Arial,sans-serif}
+.campo{margin-bottom:12px}
+.campo label{
+  display:block;font-family:Arial,sans-serif;
+  font-weight:900;font-size:13px;margin-bottom:5px;color:#111;
+}
+.campo input,.campo select,.campo textarea{
+  width:100%;border:2px solid #333;border-radius:10px;
+  padding:10px 12px;font-size:14px;font-family:inherit;
+  background:#fff;color:#111;
+}
+.campo textarea{min-height:90px;resize:vertical}
+.btn-inscricao{
+  display:block;width:100%;border:0;border-radius:12px;
+  padding:14px;background:var(--girassol);color:#000;
+  font-weight:900;font-size:16px;font-family:inherit;
+  box-shadow:0 5px 0 #8a6b00;cursor:pointer;
+  transition:transform .1s;
+}
+.btn-inscricao:active{transform:translateY(2px);box-shadow:0 3px 0 #8a6b00}
+
+/* ── PREÇOS ── */
+.precos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.preco{
+  background:#0b0f13;color:var(--girassol);
+  border:2px solid var(--girassol);border-radius:16px;
+  text-align:center;padding:16px;
+}
+.preco strong{font-size:26px;display:block}
+.preco span{font-family:Arial,sans-serif;font-size:12px;color:#fff3bf}
+.bolsa{
+  background:#e8ffe8;border:2px solid var(--verde);
+  border-radius:16px;padding:16px;color:#0a3a1a;
+}
+.bolsa h3{color:var(--verde);margin-bottom:8px}
+.bolsa p{font-family:Arial,sans-serif;font-size:13px;line-height:1.4}
+
+/* ── PILARES ── */
+.pilares{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px;
+}
+.pilar{
+  background:#111;color:var(--girassol);
+  border:1px solid var(--girassol)55;border-radius:16px;padding:16px;
+  font-family:Arial,sans-serif;
+}
+.pilar strong{display:block;color:#fff;margin-bottom:6px;font-size:14px}
+.pilar p{font-size:12px;color:#c8b870;line-height:1.4}
+
+/* ── DEPARTAMENTOS ── */
+.deps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.dep{
+  background:#111;border:1px solid var(--girassol)44;
+  border-radius:16px;padding:16px;
+}
+.dep-icon{font-size:28px;margin-bottom:8px}
+.dep strong{color:var(--girassol2);display:block;margin-bottom:4px;font-size:14px}
+.dep p{color:#c8b870;font-family:Arial,sans-serif;font-size:12px;line-height:1.35}
+.dep-status{
+  display:inline-block;margin-top:8px;
+  background:var(--verde);color:#fff;
+  border-radius:999px;padding:3px 10px;
+  font-size:11px;font-family:Arial,sans-serif;font-weight:900;
+}
+
+/* ── NAVEGAÇÃO ACOES ── */
+.acoes{
+  display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px;
+}
+.link-acao{
+  display:inline-block;text-decoration:none;
+  background:#111;color:var(--girassol);
+  border:2px solid var(--girassol);border-radius:999px;
+  padding:10px 20px;font-weight:900;font-family:Arial,sans-serif;font-size:13px;
+  transition:background .15s;
+}
+.link-acao:hover{background:var(--girassol);color:#000}
+.link-acao.vermelho{border-color:#8b1e1e;color:#e88}
+.link-acao.vermelho:hover{background:#8b1e1e;color:#fff}
+
+/* ── FOOTER ── */
+footer{
+  text-align:center;color:#fff3bf;
+  border-top:4px solid var(--girassol);
+  padding:22px;background:#050505;
+  font-family:Arial,sans-serif;font-size:13px;
+}
+
+/* ── MODAL INSCRIÇÃO ── */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,.8);
+  z-index:999;display:none;align-items:center;justify-content:center;
+  padding:16px;
+}
+.modal-bg.aberto{display:flex}
+.modal{
+  background:var(--branco);color:#111;border-radius:22px;
+  padding:26px;max-width:500px;width:100%;
+  border:3px solid var(--girassol);
+  box-shadow:0 24px 64px rgba(0,0,0,.6);
+  max-height:90vh;overflow-y:auto;
+}
+.modal h3{color:#111;margin-bottom:14px;font-family:Georgia,serif;font-size:22px}
+.modal-fechar{
+  float:right;background:none;border:none;
+  font-size:22px;cursor:pointer;color:#666;margin-top:-4px;
+}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:var(--verde);color:#fff;
+  border-radius:999px;padding:12px 24px;
+  font-weight:900;font-family:Arial,sans-serif;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+  display:none;z-index:9999;font-size:14px;
+}
+.toast.ativo{display:block;animation:toastIn .3s ease}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* ── MARCIO SVG ── */
+.marcio-svg-wrap{width:100%;aspect-ratio:3/4;display:block}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero-inner,.form-grid{grid-template-columns:1fr}
+  .avatar-wrap{max-width:300px;margin:auto}
+  .categorias{grid-template-columns:repeat(2,1fr)}
+  .pilares,.deps{grid-template-columns:repeat(2,1fr)}
+  .marcio-guia{grid-template-columns:120px 1fr}
+}
+@media(max-width:560px){
+  .categorias,.pilares,.deps,.precos{grid-template-columns:1fr}
+  .marcio-guia{grid-template-columns:1fr;text-align:center}
+  .marcio-avatar{max-width:140px;margin:0 auto}
+  .headline h1{font-size:36px;text-align:center}
+  .headline h2,.headline p{text-align:center}
+}
+
+/* ── CADEADO vitrine ── */
+.bloqueado{position:relative;cursor:pointer}
+.bloqueado::after{content:'🔒';position:absolute;top:8px;right:10px;font-size:15px;opacity:.6}
+.bloqueado:hover::after{opacity:1}
+.aviso-vitrine{
+  display:inline-block;background:#1a1205;
+  border:1px solid var(--girassol)44;border-radius:999px;
+  padding:4px 12px;font-size:11px;font-family:Arial,sans-serif;
+  color:var(--girassol2);margin-top:8px;
+}
+/* ── MODAL LOGIN ── */
+.modal-login-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,.88);
+  z-index:9998;display:none;align-items:center;justify-content:center;padding:16px;
+}
+.modal-login-bg.aberto{display:flex}
+.modal-login{
+  background:#0d1117;border:3px solid var(--girassol);
+  border-radius:26px;padding:28px;max-width:420px;width:100%;
+  text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.7);
+  animation:fadeIn .25s ease;
+}
+.marcio-mini{
+  width:90px;height:90px;border-radius:50%;
+  border:3px solid var(--girassol);overflow:hidden;
+  margin:0 auto 14px;
+}
+.marcio-mini img{width:100%;height:100%;object-fit:cover;object-position:top}
+.modal-login h3{color:var(--girassol);font-size:20px;margin-bottom:10px}
+.modal-login p{color:#fff3bf;font-family:Arial,sans-serif;font-size:14px;line-height:1.55;margin-bottom:18px}
+.btn-login-ir{
+  display:block;width:100%;padding:13px;
+  background:var(--girassol);color:#000;border:0;
+  border-radius:12px;font-weight:900;font-size:15px;
+  font-family:inherit;cursor:pointer;
+  box-shadow:0 5px 0 #8a6b00;text-decoration:none;
+}
+.btn-login-ir:hover{opacity:.9}
+.btn-fechar-login{
+  display:block;margin-top:12px;background:none;border:none;
+  color:var(--girassol2);font-family:Arial,sans-serif;
+  font-size:13px;cursor:pointer;text-decoration:underline;
+}
+/* faixa vitrine */
+.faixa-vitrine{
+  background:var(--girassol);color:#000;
+  text-align:center;padding:9px 16px;
+  font-family:Arial,sans-serif;font-size:13px;font-weight:900;
+  position:sticky;top:0;z-index:190;
+  border-bottom:3px solid #8a6b00;
+}
+.faixa-vitrine a{color:#000;text-decoration:underline;cursor:pointer}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══════════════════════════════════════════ -->
+<!-- FAIXA VITRINE -->
+<div class="faixa-vitrine" id="faixaVitrine">
+  🔒 Você está na <strong>vitrine da SIGMAL Academy</strong> — pode ver, mas para acessar o conteúdo completo <a onclick="abrirModalLogin()">faça seu login no Celeiro Literário</a>.
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="avatar-wrap">
+      <!-- Márcio Aparecido Santos — SVG inline (fallback para imagem) -->
+      <img src="file_00000000b1e071fbad15b4ac2196c73e~2.png"
+           alt="Márcio Aparecido Santos"
+           onerror="this.style.display='none';document.getElementById('marcio-svg-hero').style.display='block'">
+      <svg id="marcio-svg-hero" viewBox="0 0 260 340" xmlns="http://www.w3.org/2000/svg" style="display:none;width:100%">
+        <defs>
+          <radialGradient id="bgM" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#2b1a05"/><stop offset="100%" stop-color="#0a0800"/></radialGradient>
+          <radialGradient id="peleM" cx="45%" cy="40%" r="55%"><stop offset="0%" stop-color="#d4956a"/><stop offset="100%" stop-color="#b06030"/></radialGradient>
+        </defs>
+        <rect width="260" height="340" fill="url(#bgM)" rx="22"/>
+        <!-- Aura girassol -->
+        <circle cx="130" cy="110" r="70" fill="none" stroke="#ffd23f" stroke-width="2" opacity=".35"/>
+        <!-- Corpo -->
+        <rect x="70" y="195" width="120" height="90" rx="12" fill="#1a1205"/>
+        <ellipse cx="130" cy="260" rx="68" ry="42" fill="#1a1205"/>
+        <!-- Terno escuro -->
+        <rect x="78" y="198" width="104" height="78" rx="10" fill="#222"/>
+        <!-- Gravata girassol -->
+        <polygon points="130,200 122,218 130,230 138,218" fill="#ffd23f"/>
+        <!-- Pescoço -->
+        <rect x="115" y="175" width="30" height="26" rx="9" fill="url(#peleM)"/>
+        <!-- Cabeça -->
+        <ellipse cx="130" cy="120" rx="44" ry="48" fill="url(#peleM)"/>
+        <!-- Cabelo -->
+        <ellipse cx="130" cy="78" rx="45" ry="20" fill="#111"/>
+        <path d="M86 105 Q90 74 130 68 Q170 74 174 105" fill="#111"/>
+        <!-- Óculos -->
+        <rect x="106" y="115" width="18" height="14" rx="6" fill="none" stroke="#333" stroke-width="3"/>
+        <rect x="136" y="115" width="18" height="14" rx="6" fill="none" stroke="#333" stroke-width="3"/>
+        <line x1="124" y1="122" x2="136" y2="122" stroke="#444" stroke-width="2.5"/>
+        <line x1="106" y1="122" x2="100" y2="125" stroke="#444" stroke-width="2.5"/>
+        <line x1="154" y1="122" x2="160" y2="125" stroke="#444" stroke-width="2.5"/>
+        <!-- Olhos -->
+        <circle cx="115" cy="122" r="4" fill="#1a3a6b"/>
+        <circle cx="145" cy="122" r="4" fill="#1a3a6b"/>
+        <circle cx="116" cy="121" r="1.2" fill="white"/>
+        <circle cx="146" cy="121" r="1.2" fill="white"/>
+        <!-- Sobrancelhas -->
+        <path d="M107 112 Q115 109 123 112" fill="none" stroke="#111" stroke-width="2"/>
+        <path d="M137 112 Q145 109 153 112" fill="none" stroke="#111" stroke-width="2"/>
+        <!-- Nariz -->
+        <path d="M127 132 Q130 136 133 132" fill="none" stroke="#8a4820" stroke-width="1.5"/>
+        <!-- Sorriso acolhedor -->
+        <path d="M116 146 Q130 156 144 146" fill="none" stroke="#7a3010" stroke-width="2.5"/>
+        <path d="M116 146 Q130 158 144 146" fill="#c06040" opacity=".3"/>
+        <!-- Orelhas -->
+        <ellipse cx="86" cy="120" rx="8" ry="13" fill="url(#peleM)"/>
+        <ellipse cx="174" cy="120" rx="8" ry="13" fill="url(#peleM)"/>
+        <!-- Caneta bolso -->
+        <rect x="148" y="208" width="4" height="22" rx="2" fill="#ffd23f"/>
+        <!-- Estrelas girassol -->
+        <text x="30" y="50" font-size="16" fill="#ffd23f" opacity=".5">✦</text>
+        <text x="210" y="70" font-size="12" fill="#ffd23f" opacity=".4">✦</text>
+        <text x="200" y="300" font-size="14" fill="#ffd23f" opacity=".35">✦</text>
+        <!-- Nome -->
+        <text x="130" y="318" text-anchor="middle" fill="#ffd23f" font-size="13" font-weight="900" font-family="Georgia,serif">MÁRCIO</text>
+        <text x="130" y="332" text-anchor="middle" fill="#ffe680" font-size="10" font-family="Arial,sans-serif" opacity=".85">Guia da SIGMAL Academy</text>
+      </svg>
+    </div>
+    <div class="headline">
+      <h1>SIGMAL ACADEMY</h1>
+      <h2>São Roque International Global Music, Arts &amp; Letters Academy</h2>
+      <p><strong>Onde talentos ganham o mundo.</strong><br>
+      Eu sou <strong>Márcio Aparecido Santos</strong>. Vou acompanhar você em cada passo dentro da SIGMAL Academy — um espaço internacional de formação, criação e conexão para artistas, autores e fazedores de cultura.</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ═══ CATEGORIAS ════════════════════════════════════ -->
+<section class="painel">
+  <h2>Escolha sua área</h2>
+  <p class="sub">Clique numa categoria — Márcio entrará e guiará você pelo caminho completo.</p>
+  <div class="categorias">
+    <div class="cat" onclick="abrirCategoria('literatura')">
+      <div class="cat-icon">✒️</div>
+      <strong>Literatura</strong>
+      <span>Palavras que inspiram e eternizam.</span>
+    </div>
+    <div class="cat" onclick="abrirCategoria('musica')">
+      <div class="cat-icon">♪</div>
+      <strong>Música</strong>
+      <span>Sons que emocionam e conectam.</span>
+    </div>
+    <div class="cat" onclick="abrirCategoria('artes-visuais')">
+      <div class="cat-icon">🎨</div>
+      <strong>Artes Visuais</strong>
+      <span>Imagens que expressam e revelam.</span>
+    </div>
+    <div class="cat" onclick="abrirCategoria('cinema')">
+      <div class="cat-icon">🎬</div>
+      <strong>Cinema / Audiovisual</strong>
+      <span>Narrativas que ganham movimento.</span>
+    </div>
+    <div class="cat" onclick="abrirCategoria('performance')">
+      <div class="cat-icon">🎙️</div>
+      <strong>Performance / Voz / Narrativa</strong>
+      <span>Vozes que tocam, narram e despertam.</span>
+    </div>
+    <div class="cat" onclick="abrirCategoria('multimidia')">
+      <div class="cat-icon">▶</div>
+      <strong>Multimídia Narrativa</strong>
+      <span>Histórias que cruzam linguagens.</span>
+    </div>
+    <div class="cat" onclick="abrirCategoria('artesanato')">
+      <div class="cat-icon">🧵</div>
+      <strong>Artesanato</strong>
+      <span>Tradição que transforma matéria em cultura.</span>
+    </div>
+    <div class="cat" onclick="abrirCategoria('artes-plasticas')">
+      <div class="cat-icon">🖼️</div>
+      <strong>Artes Plásticas</strong>
+      <span>Forma, cor e identidade artística.</span>
+    </div>
+    <div class="cat" onclick="abrirCategoria('danca')">
+      <div class="cat-icon">💃</div>
+      <strong>Dança</strong>
+      <span>Movimento que comunica além das palavras.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PAINÉIS DE CATEGORIA (Márcio guia) ══════════ -->
+
+<!-- LITERATURA -->
+<div class="cat-painel" id="cat-literatura">
+  <div class="marcio-guia">
+    <div class="marcio-avatar" style="width:150px">
+      <img src="file_00000000b1e071fbad15b4ac2196c73e~2.png" alt="Márcio" style="width:100%;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg" style="display:none;width:100%"><use href="#marcio-base"/></svg>
+    </div>
+    <div class="marcio-fala">
+      <h3>✒️ Bem-vindo à Literatura</h3>
+      <p>Olá! Sou o Márcio. Aqui você entra no universo das palavras que transformam — poesia, prosa, cordel, crônica, romance. A SIGMAL Academy abre portas para concursos, editais e publicações no Brasil e no mundo.</p>
+      <p>Deixa eu te mostrar o caminho passo a passo:</p>
+    </div>
+  </div>
+  <div class="passos">
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">1</div><strong>Cadastro autoral</strong><p>Você preenche a ficha com seu nome artístico, área e mini-biografia. Isso cria seu perfil na SIGMAL.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">2</div><strong>Avaliação de obra</strong><p>Submeta um texto para avaliação editorial. Nossa equipe lê, pondera e devolve orientação de posicionamento.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">3</div><strong>Oportunidades abertas</strong><p>Receba indicações de concursos, editais, antologias e prêmios literários alinhados ao seu perfil.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">4</div><strong>Bolsa Trajano Estrada</strong><p>1 mês gratuito de acompanhamento de trajetória — editais, posicionamento e próximos passos.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">5</div><strong>Publicação e expedição</strong><p>Encaminhamento para o Celeiro Literário, Lapidar e demais motores editoriais do Celeiro.</p></div>
+  </div>
+  <div class="oportunidades">
+    <h4>Oportunidades em Literatura</h4>
+    <div class="oport-grid">
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Concurso</span><strong>Prêmio Nacional de Poesia</strong><p>Submissão anual. Categorias: poesia, conto e crônica. Premiação em publicação e valor em espécie.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Edital</span><strong>Antologia Internacional SIGMAL</strong><p>Chamada aberta para autores de língua portuguesa. Publicação coletiva com ISBN.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Residência</span><strong>Residência de Escrita Celeiro</strong><p>Programa de acompanhamento intensivo por 30 dias com orientação editorial.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Publicação</span><strong>Site das Letras Edições</strong><p>Publicação individual via Celeiro Literário. Encaminhamento direto pela SIGMAL.</p></div>
+    </div>
+  </div>
+  <button class="fechar-cat" onclick="fecharCategoria('literatura')">← Voltar às categorias</button>
+</div>
+
+<!-- MÚSICA -->
+<div class="cat-painel" id="cat-musica">
+  <div class="marcio-guia">
+    <div class="marcio-avatar" style="width:150px">
+      <img src="file_00000000b1e071fbad15b4ac2196c73e~2.png" alt="Márcio" style="width:100%;display:block" onerror="this.style.display='none'">
+    </div>
+    <div class="marcio-fala">
+      <h3>♪ Bem-vindo à Música</h3>
+      <p>Na SIGMAL Academy, música é linguagem editorial. Aqui você registra sua produção sonora, acessa editais de fomento, conecta com o Silo Music e o SIGMAL Music para trilhas, vinhetas e produções completas.</p>
+      <p>Sigo do seu lado em cada etapa:</p>
+    </div>
+  </div>
+  <div class="passos">
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">1</div><strong>Perfil musical</strong><p>Cadastre seu estilo, instrumentos, obras e trajetória. Isso posiciona você nos bancos de oportunidades.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">2</div><strong>Silo Music</strong><p>Acesse o motor de produção musical do Celeiro: gere letras, trilhas, estruturas e vinhetas.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">3</div><strong>Editais de fomento</strong><p>Mapeamento de editais municipais, estaduais e federais para música independente e cultural.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">4</div><strong>Web Rádio Celeiro</strong><p>Sua música pode entrar na programação da Web Rádio Celeiro. Encaminhamos via SIGMAL.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">5</div><strong>Conexão internacional</strong><p>Plataformas de distribuição digital, festivais e feiras internacionais com curadoria SIGMAL.</p></div>
+  </div>
+  <div class="oportunidades">
+    <h4>Oportunidades em Música</h4>
+    <div class="oport-grid">
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Festival</span><strong>Festival SIGMAL de Música</strong><p>Apresentações presenciais e online. Categorias por gênero e faixa etária.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Produção</span><strong>Trilha para WebTV Celeiro</strong><p>Chamada aberta para composição de trilhas institucionais e programas da WebTV.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Rádio</span><strong>Web Rádio Celeiro</strong><p>Programa Cheiro da Terra e demais slots para músicos independentes.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Edital</span><strong>Fomento Municipal São Roque</strong><p>Acompanhamento e orientação para editais da região de São Roque e interior de SP.</p></div>
+    </div>
+  </div>
+  <button class="fechar-cat" onclick="fecharCategoria('musica')">← Voltar às categorias</button>
+</div>
+
+<!-- ARTES VISUAIS -->
+<div class="cat-painel" id="cat-artes-visuais">
+  <div class="marcio-guia">
+    <div class="marcio-avatar" style="width:150px">
+      <img src="file_00000000b1e071fbad15b4ac2196c73e~2.png" alt="Márcio" style="width:100%;display:block" onerror="this.style.display='none'">
+    </div>
+    <div class="marcio-fala">
+      <h3>🎨 Bem-vindo às Artes Visuais</h3>
+      <p>Pintura, ilustração, fotografia, gravura, arte digital — aqui sua imagem encontra destino editorial e institucional. A SIGMAL conecta artistas visuais a editais, exposições e publicações.</p>
+    </div>
+  </div>
+  <div class="passos">
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">1</div><strong>Portfólio visual</strong><p>Cadastre suas obras, técnicas e referências. Seu perfil visual é construído para posicionamento em editais.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">2</div><strong>Capas e diagramação</strong><p>Acesso ao Faz Kapa e motores de diagramação do Celeiro para produção editorial de livros e materiais.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">3</div><strong>Editais de exposição</strong><p>Mapeamento de salões, mostras e bienais nacionais e internacionais.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">4</div><strong>Arte para publicação</strong><p>Ilustração de livros, capas e materiais do Celeiro Literário e Site das Letras.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">5</div><strong>Galeria SIGMAL</strong><p>Exposição virtual no ambiente digital da SIGMAL Academy.</p></div>
+  </div>
+  <div class="oportunidades">
+    <h4>Oportunidades em Artes Visuais</h4>
+    <div class="oport-grid">
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Mostra</span><strong>Galeria Digital SIGMAL</strong><p>Exposição permanente online com obras de associados da Academia.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Publicação</span><strong>Ilustração de Obras</strong><p>Chamada para ilustradores de livros infantis, poesia e cordel do Celeiro.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Edital</span><strong>Salões Nacionais</strong><p>Mapeamento e orientação para salões de arte e feiras culturais brasileiras.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Parceria</span><strong>Arte e Letra</strong><p>Encontro entre escritores e artistas visuais para obras híbridas.</p></div>
+    </div>
+  </div>
+  <button class="fechar-cat" onclick="fecharCategoria('artes-visuais')">← Voltar às categorias</button>
+</div>
+
+<!-- CINEMA -->
+<div class="cat-painel" id="cat-cinema">
+  <div class="marcio-guia">
+    <div class="marcio-avatar" style="width:150px">
+      <img src="file_00000000b1e071fbad15b4ac2196c73e~2.png" alt="Márcio" style="width:100%;display:block" onerror="this.style.display='none'">
+    </div>
+    <div class="marcio-fala">
+      <h3>🎬 Bem-vindo ao Cinema / Audiovisual</h3>
+      <p>Do roteiro ao curta-metragem, da WebTV ao documentário. A SIGMAL conecta realizadores audiovisuais ao Silo Cinematográfico, ao Silo Sonoro e às plataformas de distribuição do Celeiro.</p>
+    </div>
+  </div>
+  <div class="passos">
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">1</div><strong>Perfil audiovisual</strong><p>Cadastre seus projetos, gêneros e experiência. Posicionamento para editais de fomento ao audiovisual.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">2</div><strong>Silo Cinematográfico</strong><p>Motor de roteiros, escaletas e tratamentos. Gere material para curtas, médias e longas.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">3</div><strong>WebTV Celeiro</strong><p>Veiculação de curtas, documentários e conteúdos na WebTV do Celeiro Literário.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">4</div><strong>Editais de audiovisual</strong><p>FSA, BNDES Audiovisual, editais estaduais e municipais. Orientação completa pela SIGMAL.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">5</div><strong>Festivais internacionais</strong><p>Mapeamento de festivais de curta-metragem e mostras internacionais para inscrição.</p></div>
+  </div>
+  <div class="oportunidades">
+    <h4>Oportunidades em Cinema / Audiovisual</h4>
+    <div class="oport-grid">
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Veiculação</span><strong>WebTV Celeiro</strong><p>Exibição de curtas e documentários na plataforma do Celeiro Literário.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Produção</span><strong>Silo Cinematográfico</strong><p>Motor de roteiros integrado ao Celeiro. Geração de escaletas e cenas completas.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Edital</span><strong>FSA — Fundo Setorial Audiovisual</strong><p>Orientação para submissão de projetos ao principal fundo de fomento audiovisual do Brasil.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Festival</span><strong>Festivais de Curta SIGMAL</strong><p>Seleção e encaminhamento de obras para festivais nacionais e internacionais parceiros.</p></div>
+    </div>
+  </div>
+  <button class="fechar-cat" onclick="fecharCategoria('cinema')">← Voltar às categorias</button>
+</div>
+
+<!-- PERFORMANCE -->
+<div class="cat-painel" id="cat-performance">
+  <div class="marcio-guia">
+    <div class="marcio-avatar" style="width:150px">
+      <img src="file_00000000b1e071fbad15b4ac2196c73e~2.png" alt="Márcio" style="width:100%;display:block" onerror="this.style.display='none'">
+    </div>
+    <div class="marcio-fala">
+      <h3>🎙️ Bem-vindo à Performance / Voz / Narrativa</h3>
+      <p>Narração, declamação, storytelling, contação de histórias, locução — aqui sua voz ganha alcance. Conectamos você ao Silo Sonoro e às oportunidades de Web Rádio, audiobook e eventos presenciais.</p>
+    </div>
+  </div>
+  <div class="passos">
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">1</div><strong>Perfil de voz</strong><p>Cadastre seu tipo de voz, experiências e formatos preferidos. Posicionamento em produções sonoras.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">2</div><strong>Silo Sonoro</strong><p>Motor de audiobooks, vinhetas e pacotes sonoros do Celeiro. Sua voz em projetos reais.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">3</div><strong>Web Rádio Celeiro</strong><p>Participação em programas, narração de episódios e chamadas da Web Rádio.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">4</div><strong>Eventos presenciais</strong><p>Rodas de leitura, saraus, encontros e festivais de contação de histórias mapeados pela SIGMAL.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">5</div><strong>Audiobook editorial</strong><p>Produção de audiobooks para obras do Celeiro e Site das Letras Edições Literárias.</p></div>
+  </div>
+  <div class="oportunidades">
+    <h4>Oportunidades em Performance / Voz</h4>
+    <div class="oport-grid">
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Produção</span><strong>Audiobook Celeiro</strong><p>Narração de obras literárias do acervo do Site das Letras para formato audiobook.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Rádio</span><strong>Web Rádio Celeiro</strong><p>Locução de programas, chamadas e vinhetas institucionais.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Evento</span><strong>Sarau SIGMAL</strong><p>Encontros presenciais e online de declamação, narração e performance literária.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Concurso</span><strong>Voz das Letras</strong><p>Concurso de leitura em voz alta e narração literária aberto a associados SIGMAL.</p></div>
+    </div>
+  </div>
+  <button class="fechar-cat" onclick="fecharCategoria('performance')">← Voltar às categorias</button>
+</div>
+
+<!-- MULTIMÍDIA -->
+<div class="cat-painel" id="cat-multimidia">
+  <div class="marcio-guia">
+    <div class="marcio-avatar" style="width:150px">
+      <img src="file_00000000b1e071fbad15b4ac2196c73e~2.png" alt="Márcio" style="width:100%;display:block" onerror="this.style.display='none'">
+    </div>
+    <div class="marcio-fala">
+      <h3>▶ Bem-vindo à Multimídia Narrativa</h3>
+      <p>Histórias que cruzam texto, imagem, som, HQ e vídeo. Aqui vivem os criadores que não cabem numa só linguagem. A SIGMAL conecta você a todos os Silos do Celeiro e ao CORSI.</p>
+    </div>
+  </div>
+  <div class="passos">
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">1</div><strong>Mapeamento criativo</strong><p>Identificamos quais linguagens você domina e como integrá-las num projeto multimídia coerente.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">2</div><strong>Silos integrados</strong><p>Acesso a todos os 4 Silos: Cinematográfico, Sonoro, Music e HQ — numa única jornada editorial.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">3</div><strong>CORSI</strong><p>Centro de Organização e Roteamento de Saídas Institucionais — expedição do seu projeto para todos os canais.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">4</div><strong>WebTV + Web Rádio</strong><p>Veiculação multicanal da sua obra: texto, áudio e vídeo em simultâneo.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">5</div><strong>Publicação híbrida</strong><p>Livro + audiobook + HQ + trilha — produção completa pela SIGMAL e Celeiro.</p></div>
+  </div>
+  <div class="oportunidades">
+    <h4>Oportunidades em Multimídia Narrativa</h4>
+    <div class="oport-grid">
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Projeto</span><strong>Obra Híbrida SIGMAL</strong><p>Produção de obras que cruzam ao menos 3 linguagens: texto, imagem e som.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Silos</span><strong>Acesso completo aos Silos</strong><p>HQ, Sonoro, Music e Cinematográfico disponíveis via Celeiro Literário.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Distribuição</span><strong>CORSI Expedição</strong><p>Roteamento da obra para WebTV, Web Rádio, redes sociais e plataformas digitais.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Edital</span><strong>Multimídia e Cultura Digital</strong><p>Editais de cultura digital, inovação narrativa e projetos transmídia.</p></div>
+    </div>
+  </div>
+  <button class="fechar-cat" onclick="fecharCategoria('multimidia')">← Voltar às categorias</button>
+</div>
+
+<!-- ARTESANATO -->
+<div class="cat-painel" id="cat-artesanato">
+  <div class="marcio-guia">
+    <div class="marcio-avatar" style="width:150px">
+      <img src="file_00000000b1e071fbad15b4ac2196c73e~2.png" alt="Márcio" style="width:100%;display:block" onerror="this.style.display='none'">
+    </div>
+    <div class="marcio-fala">
+      <h3>🧵 Bem-vindo ao Artesanato</h3>
+      <p>Tradição, memória e identidade cultural transformadas em obra. A SIGMAL reconhece o artesanato como expressão artística legítima e abre espaço institucional, editorial e expositivo para artesãos e artesãs.</p>
+    </div>
+  </div>
+  <div class="passos">
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">1</div><strong>Cadastro artesanal</strong><p>Registre sua técnica, origem cultural, materiais e trajetória. Seu perfil artesanal ganha visibilidade.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">2</div><strong>Documentação editorial</strong><p>Produção de texto, fotografia e narrativa sobre sua obra para fins de preservação e publicação.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">3</div><strong>Feiras e mostras</strong><p>Mapeamento de feiras de artesanato, mostras culturais e eventos de cultura popular.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">4</div><strong>Publicação cultural</strong><p>Inclusão em catálogos, livros e publicações do Celeiro sobre cultura material e tradição.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">5</div><strong>Editais de cultura</strong><p>Orientação para editais de cultura popular, patrimônio imaterial e fomento ao artesanato.</p></div>
+  </div>
+  <div class="oportunidades">
+    <h4>Oportunidades em Artesanato</h4>
+    <div class="oport-grid">
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Mostra</span><strong>Exposição Arte-Ofício</strong><p>Mostra anual de artesanato cultural da SIGMAL com catálogo publicado.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Publicação</span><strong>Catálogo Cultural</strong><p>Registro editorial de técnicas e obras artesanais com ISBN e distribuição digital.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Edital</span><strong>Cultura Popular MINC</strong><p>Orientação para editais de cultura popular, mestre de ofício e patrimônio imaterial.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Feira</span><strong>Feira SIGMAL de Cultura</strong><p>Espaço para artesãos e artistas populares na feira anual da Academia.</p></div>
+    </div>
+  </div>
+  <button class="fechar-cat" onclick="fecharCategoria('artesanato')">← Voltar às categorias</button>
+</div>
+
+<!-- ARTES PLÁSTICAS -->
+<div class="cat-painel" id="cat-artes-plasticas">
+  <div class="marcio-guia">
+    <div class="marcio-avatar" style="width:150px">
+      <img src="file_00000000b1e071fbad15b4ac2196c73e~2.png" alt="Márcio" style="width:100%;display:block" onerror="this.style.display='none'">
+    </div>
+    <div class="marcio-fala">
+      <h3>🖼️ Bem-vindo às Artes Plásticas</h3>
+      <p>Escultura, instalação, gravura, cerâmica, performance visual — as artes plásticas têm espaço garantido na SIGMAL. Conectamos artistas a salões, galerias, residências e publicações institucionais.</p>
+    </div>
+  </div>
+  <div class="passos">
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">1</div><strong>Portfólio plástico</strong><p>Cadastre obras, técnicas, dimensões e trajetória expositiva. Posicionamento em salões e editais.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">2</div><strong>Galeria virtual SIGMAL</strong><p>Exposição online permanente das obras cadastradas na plataforma da Academia.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">3</div><strong>Salões e prêmios</strong><p>Mapeamento de salões nacionais e internacionais de artes plásticas e concursos de arte.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">4</div><strong>Residências artísticas</strong><p>Mapeamento e orientação para residências no Brasil e no exterior.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">5</div><strong>Publicação crítica</strong><p>Textos críticos e ensaios sobre sua obra publicados no acervo do Celeiro.</p></div>
+  </div>
+  <div class="oportunidades">
+    <h4>Oportunidades em Artes Plásticas</h4>
+    <div class="oport-grid">
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Galeria</span><strong>Galeria Digital SIGMAL</strong><p>Exposição virtual permanente com obras em alta resolução e ficha técnica.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Salão</span><strong>Salões Nacionais</strong><p>Orientação para submissão em salões de arte contemporânea no Brasil.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Residência</span><strong>Residência Artística</strong><p>Mapeamento de programas de residência nacional e internacional.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Crítica</span><strong>Publicação Crítica</strong><p>Texto crítico sobre sua obra no acervo editorial do Celeiro Literário.</p></div>
+    </div>
+  </div>
+  <button class="fechar-cat" onclick="fecharCategoria('artes-plasticas')">← Voltar às categorias</button>
+</div>
+
+<!-- DANÇA -->
+<div class="cat-painel" id="cat-danca">
+  <div class="marcio-guia">
+    <div class="marcio-avatar" style="width:150px">
+      <img src="file_00000000b1e071fbad15b4ac2196c73e~2.png" alt="Márcio" style="width:100%;display:block" onerror="this.style.display='none'">
+    </div>
+    <div class="marcio-fala">
+      <h3>💃 Bem-vindo à Dança</h3>
+      <p>Movimento, corpo e presença como linguagem. A SIGMAL acolhe dançarinos, coreógrafos e grupos de dança. Aqui encontramos oportunidades de apresentação, editais, residências e documentação artística.</p>
+    </div>
+  </div>
+  <div class="passos">
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">1</div><strong>Perfil de dança</strong><p>Cadastre seu estilo, grupo, formação e trajetória. Posicionamento em festivais e editais.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">2</div><strong>Documentação audiovisual</strong><p>Orientação para registro em vídeo das performances para submissão em editais e festivais.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">3</div><strong>Festivais de dança</strong><p>Mapeamento de festivais nacionais e internacionais com orientação para inscrição.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">4</div><strong>Editais de fomento</strong><p>Editais de circulação, criação e formação em dança no Brasil e no exterior.</p></div>
+    <div class="passo bloqueado" onclick="abrirModalLogin()"><div class="num">5</div><strong>WebTV Celeiro</strong><p>Veiculação de registros de performance na WebTV do Celeiro Literário.</p></div>
+  </div>
+  <div class="oportunidades">
+    <h4>Oportunidades em Dança</h4>
+    <div class="oport-grid">
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Festival</span><strong>Festival de Dança SIGMAL</strong><p>Apresentações e workshops em festival anual presencial e online.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Edital</span><strong>Fomento à Dança</strong><p>Mapeamento de editais estaduais, municipais e federais para dança independente.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Veiculação</span><strong>WebTV Celeiro</strong><p>Registro e exibição de performances na plataforma audiovisual do Celeiro.</p></div>
+      <div class="oport bloqueado" onclick="abrirModalLogin()"><span class="tipo">Residência</span><strong>Residência em Dança</strong><p>Programas de residência artística para criação e pesquisa coreográfica.</p></div>
+    </div>
+  </div>
+  <button class="fechar-cat" onclick="fecharCategoria('danca')">← Voltar às categorias</button>
+</div>
+
+<!-- ═══ DEPARTAMENTOS ══════════════════════════════════ -->
+<section class="painel">
+  <h2>Departamentos da SIGMAL Academy</h2>
+  <p class="sub">Estrutura institucional completa — todos os departamentos ativos.</p>
+  <div class="deps">
+    <div class="dep">
+      <div class="dep-icon">📋</div>
+      <strong>Departamento de Inscrições e Cadastro</strong>
+      <p>Gerencia o ingresso de associados, triagem de perfis e encaminhamento para as áreas corretas.</p>
+      <span class="dep-status">✓ Ativo</span>
+    </div>
+    <div class="dep">
+      <div class="dep-icon">📚</div>
+      <strong>Departamento Editorial</strong>
+      <p>Avaliação literária, orientação de manuscritos, encaminhamento para Lapidar e publicação no Site das Letras.</p>
+      <span class="dep-status">✓ Ativo</span>
+    </div>
+    <div class="dep">
+      <div class="dep-icon">🔍</div>
+      <strong>Departamento de Oportunidades</strong>
+      <p>Mapeamento contínuo de concursos, editais, festivais, residências e chamadas nacionais e internacionais.</p>
+      <span class="dep-status">✓ Ativo</span>
+    </div>
+    <div class="dep">
+      <div class="dep-icon">🎓</div>
+      <strong>Departamento de Formação</strong>
+      <p>Bolsa Trajano Estrada, acompanhamento de trajetória, mentorias e Caminho das Pedras.</p>
+      <span class="dep-status">✓ Ativo</span>
+    </div>
+    <div class="dep">
+      <div class="dep-icon">🌐</div>
+      <strong>Departamento Internacional</strong>
+      <p>Conexões com academias, editoras e festivais internacionais. Traduções e internacionalização de obras.</p>
+      <span class="dep-status">✓ Ativo</span>
+    </div>
+    <div class="dep">
+      <div class="dep-icon">📡</div>
+      <strong>Departamento de Expedição Multimídia</strong>
+      <p>CORSI, WebTV, Web Rádio, redes sociais e distribuição digital das obras dos associados.</p>
+      <span class="dep-status">✓ Ativo</span>
+    </div>
+    <div class="dep">
+      <div class="dep-icon">🤝</div>
+      <strong>Departamento de Parcerias</strong>
+      <p>Articulação com instituições culturais, prefeituras, universidades e organismos de fomento.</p>
+      <span class="dep-status">✓ Ativo</span>
+    </div>
+    <div class="dep">
+      <div class="dep-icon">🏆</div>
+      <strong>Departamento de Premiações</strong>
+      <p>Gestão de prêmios, selos de mérito e reconhecimentos institucionais da SIGMAL Academy.</p>
+      <span class="dep-status">✓ Ativo</span>
+    </div>
+    <div class="dep">
+      <div class="dep-icon">🎪</div>
+      <strong>Departamento de Eventos</strong>
+      <p>Saraus, festivais, feiras, rodas de leitura e eventos presenciais e online da Academia.</p>
+      <span class="dep-status">✓ Ativo</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FICHA DE INSCRIÇÃO ══════════════════════════════ -->
+<section class="form-grid">
+  <div class="card">
+    <h2>Ficha de inscrição</h2>
+    <p>Preencha seus dados para participar da SIGMAL Academy. Márcio acompanhará sua trajetória desde o primeiro passo.</p>
+    <div class="campo">
+      <label>Nome artístico ou autoral</label>
+      <input id="f-nome" placeholder="Seu nome artístico">
+    </div>
+    <div class="campo">
+      <label>Área escolhida</label>
+      <select id="f-area">
+        <option value="">Selecione uma área</option>
+        <option>Literatura</option><option>Música</option>
+        <option>Artes Visuais</option><option>Cinema / Audiovisual</option>
+        <option>Performance / Voz / Narrativa</option><option>Multimídia Narrativa</option>
+        <option>Artesanato</option><option>Artes Plásticas</option><option>Dança</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label>Mini-biografia (até 90 palavras)</label>
+      <textarea id="f-bio" maxlength="900" placeholder="Escreva sua mini-biografia institucional."></textarea>
+    </div>
+    <div class="campo">
+      <label>Premiações, menções e destaques (opcional)</label>
+      <input id="f-premios" placeholder="Liste prêmios, menções, participações...">
+    </div>
+    <div class="campo">
+      <label>Cidade / País</label>
+      <input id="f-cidade" placeholder="Sua cidade / seu país">
+    </div>
+    <div class="campo">
+      <label>E-mail de contato</label>
+      <input id="f-email" type="email" placeholder="seu@email.com">
+    </div>
+    <button class="btn-inscricao" onclick="enviarInscricao()">Enviar inscrição para Márcio</button>
+  </div>
+
+  <div>
+    <div class="card" style="margin-bottom:14px">
+      <h2>Investimento</h2>
+      <p>Valor por área escolhida. Acesso a todos os departamentos e benefícios da Academia.</p>
+      <div class="precos">
+        <div class="preco">
+          <span>Brasil</span>
+          <strong>R$ 300,00</strong>
+        </div>
+        <div class="preco">
+          <span>Internacional</span>
+          <strong>US$ 300,00</strong>
+        </div>
+      </div>
+    </div>
+    <div class="bolsa">
+      <h3>🌻 Bolsa Trajano Estrada</h3>
+      <p>Ao se inscrever, você ganha <strong>1 mês gratuito</strong> de acompanhamento de trajetória — editais, concursos, posicionamento autoral e orientação de Márcio.</p>
+      <p style="margin-top:8px;font-size:12px;color:#1a5a2a"><em>Benefício institucional da SIGMAL Academy / Celeiro Literário.</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PILARES ═══════════════════════════════════════ -->
+<div class="pilares">
+  <div class="pilar"><strong>Formação Global</strong><p>Conteúdo, conexões e oportunidades internacionais para artistas de todos os campos.</p></div>
+  <div class="pilar"><strong>Excelência Artística</strong><p>Desenvolvimento com qualidade, propósito e reconhecimento institucional.</p></div>
+  <div class="pilar"><strong>Vozes que Transformam</strong><p>Seu talento pode inspirar, conectar e transformar comunidades inteiras.</p></div>
+  <div class="pilar"><strong>Conectando ao Mundo</strong><p>Oportunidades reais: editais, festivais, prêmios e publicações internacionais.</p></div>
+</div>
+
+<!-- ═══ AÇÕES ══════════════════════════════════════════ -->
+<div class="acoes">
+  <a class="link-acao" href="silo_multimidia.html">🎬 Silos Multimídia</a>
+  <a class="link-acao" href="index.html">🌾 Voltar ao Celeiro</a>
+  <a class="link-acao" href="corsi.html">📡 CORSI</a>
+  <a class="link-acao" href="expedicao_multimidia.html">📦 Expedição</a>
+  <a class="link-acao" href="login_kit_editorial.html">🔑 Entrar</a>
+  <a class="link-acao vermelho" href="instituto_celeiro_literario.html">Sair</a>
+</div>
+
+</main>
+
+<!-- ═══ MODAL LOGIN ══════════════════════════════════ -->
+<div class="modal-login-bg" id="modalLoginBg">
+  <div class="modal-login">
+    <div class="marcio-mini">
+      <img src="file_00000000b1e071fbad15b4ac2196c73e~2.png" alt="Márcio">
+    </div>
+    <h3>Conteúdo exclusivo</h3>
+    <p>Este conteúdo é exclusivo para <strong>associados da SIGMAL Academy</strong>.<br><br>
+    Você está na vitrine — pode ver, conhecer e se inscrever. Para acessar os materiais, oportunidades detalhadas e a jornada completa, faça seu login no Celeiro Literário.</p>
+    <a class="btn-login-ir" href="login_kit_editorial.html">🔑 Fazer login no Celeiro</a>
+    <button class="btn-fechar-login" onclick="fecharModalLogin()">Continuar navegando na vitrine</button>
+  </div>
+</div>
+
+<!-- ═══ MODAL CONFIRMAÇÃO ══════════════════════════════ -->
+<div class="modal-bg" id="modal-inscricao">
+  <div class="modal">
+    <button class="modal-fechar" onclick="fecharModal()">✕</button>
+    <h3>🌻 Inscrição recebida!</h3>
+    <p style="font-family:Arial,sans-serif;font-size:14px;line-height:1.6;color:#333">
+      <strong id="modal-nome"></strong>, sua inscrição na área de <strong id="modal-area"></strong> foi registrada com sucesso na SIGMAL Academy.<br><br>
+      Márcio Aparecido Santos irá acompanhar sua trajetória. Em breve você receberá orientações sobre os próximos passos, sua Bolsa Trajano Estrada e as primeiras oportunidades mapeadas para o seu perfil.<br><br>
+      <em style="color:#1a6b35">Bem-vindo ao mundo. Onde talentos ganham o mundo.</em>
+    </p>
+    <button class="btn-inscricao" style="margin-top:14px" onclick="fecharModal()">Fechar</button>
+  </div>
+</div>
+
+<!-- ═══ TOAST ══════════════════════════════════════════ -->
+<div class="toast" id="toast"></div>
+
+<footer>
+  <p><strong>SIGMAL — São Roque International Global Music, Arts &amp; Letters Academy</strong></p>
+  <p style="margin-top:6px">Onde talentos ganham o mundo. · Celeiro Literário · Site das Letras Edições Literárias</p>
+</footer>
+
+<script>
+'use strict';
+
+/* ── Vitrine — Modal de login ── */
+function abrirModalLogin(){
+  document.getElementById('modalLoginBg').classList.add('aberto');
+}
+function fecharModalLogin(){
+  document.getElementById('modalLoginBg').classList.remove('aberto');
+}
+document.getElementById('modalLoginBg').addEventListener('click',function(e){
+  if(e.target===this) fecharModalLogin();
+});
+
+
+
+/* ── Abrir / fechar categoria com Márcio ── */
+function abrirCategoria(id){
+  // Fecha todas
+  document.querySelectorAll('.cat-painel').forEach(p=>p.classList.remove('ativo'));
+  document.querySelectorAll('.cat').forEach(c=>c.classList.remove('ativa'));
+
+  // Abre a selecionada
+  const painel = document.getElementById('cat-'+id);
+  if(painel){
+    painel.classList.add('ativo');
+    painel.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}
+
+function fecharCategoria(id){
+  const painel = document.getElementById('cat-'+id);
+  if(painel) painel.classList.remove('ativo');
+  document.querySelector('.categorias')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ── Enviar inscrição ── */
+function enviarInscricao(){
+  const nome  = document.getElementById('f-nome').value.trim();
+  const area  = document.getElementById('f-area').value;
+  const email = document.getElementById('f-email').value.trim();
+  const bio   = document.getElementById('f-bio').value.trim();
+  const cidade= document.getElementById('f-cidade').value.trim();
+
+  if(!nome){ mostrarToast('⚠ Informe seu nome artístico.'); return; }
+  if(!area){ mostrarToast('⚠ Selecione uma área.'); return; }
+  if(!email){ mostrarToast('⚠ Informe seu e-mail.'); return; }
+
+  // Salvar no localStorage como bunker local
+  const inscricao = { nome, area, email, bio, cidade, data: new Date().toLocaleString('pt-BR') };
+  localStorage.setItem('sigmal_inscricao', JSON.stringify(inscricao));
+
+  // Mostrar modal de confirmação
+  document.getElementById('modal-nome').textContent = nome;
+  document.getElementById('modal-area').textContent = area;
+  document.getElementById('modal-inscricao').classList.add('aberto');
+}
+
+function fecharModal(){
+  document.getElementById('modal-inscricao').classList.remove('aberto');
+}
+
+document.getElementById('modal-inscricao').addEventListener('click',function(e){
+  if(e.target===this) fecharModal();
+});
+
+/* ── Toast ── */
+function mostrarToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('ativo');
+  setTimeout(()=>t.classList.remove('ativo'), 3000);
+}
+</script>
+</body>
+</html>
