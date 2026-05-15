@@ -314,10 +314,10 @@ footer{
     <button class="nav-btn" onclick="irTela('sonoro')">🎧 Sonoro</button>
     <button class="nav-btn" onclick="irTela('music')">🎵 Music</button>
     <button class="nav-btn" onclick="irTela('hq')">📖 HQ</button>
-    <span class="api-badge" id="apiBadge" title="IA configurada via servidor Vercel">
-      <span class="dot ok" id="apiDot"></span>
-      <span id="apiLabel">IA ativa</span>
-    </span>
+    <button class="api-badge" onclick="abrirModal()" id="apiBadge">
+      <span class="dot" id="apiDot"></span>
+      <span id="apiLabel">Configurar chave IA</span>
+    </button>
   </div>
 </header>
 
@@ -758,7 +758,24 @@ footer{
 
 </main>
 
-<!-- chave gerenciada pelo proxy Vercel — modal removido -->
+<!-- ═══════════════════════════════════════════════════════
+     MODAL — CHAVE DE API
+═══════════════════════════════════════════════════════ -->
+<div class="modal-bg" id="modal-api">
+  <div class="modal">
+    <h3>🔑 Chave de API Anthropic</h3>
+    <p>Para usar a geração com IA real, informe sua chave Anthropic. Ela fica salva <strong>apenas no seu navegador</strong> (localStorage) e nunca é enviada a nenhum servidor além da API da Anthropic.</p>
+    <p>Sem chave, o sistema usa o modo local (templates estruturados) — todos os silos continuam funcionando.</p>
+    <p><a href="https://console.anthropic.com/" target="_blank" style="color:var(--azul);font-weight:900">Obter chave gratuita → console.anthropic.com</a></p>
+    <label class="lbl">Cole sua chave aqui</label>
+    <input type="password" id="api-key-input" placeholder="sk-ant-...">
+    <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+      <button class="btn btn-verde" onclick="salvarChave()">Salvar chave</button>
+      <button class="btn btn-vermelho btn-sm" onclick="removerChave()">Remover</button>
+      <button class="btn btn-escuro btn-sm" onclick="fecharModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
 
 <footer>
   Celeiro Literário · Site das Letras Edições Literárias · Motor: Claude (Anthropic) · GitHub Pages
@@ -783,23 +800,43 @@ function irTela(id){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* ── URL do proxy Vercel (chave fica segura no servidor) ── */
-const ENGINE_URL = 'https://celeiro-literario-api.vercel.app/api/claude';
-
-/* ── Badge de status ─────────────────────────────────── */
-function abrirModal(){ /* desativado — chave no servidor */ alert('A chave está configurada de forma segura no servidor Vercel. Nenhuma ação necessária.'); }
-function atualizarBadge(){
-  document.getElementById('apiDot').className = 'dot ok';
-  document.getElementById('apiLabel').textContent = 'IA ativa';
+/* ── API Key ─────────────────────────────────────────── */
+function getChave(){ return localStorage.getItem('celeiro_api_key')||''; }
+function abrirModal(){
+  document.getElementById('api-key-input').value = getChave();
+  document.getElementById('modal-api').classList.add('aberto');
 }
+function fecharModal(){ document.getElementById('modal-api').classList.remove('aberto'); }
+function salvarChave(){
+  const k = document.getElementById('api-key-input').value.trim();
+  if(k) localStorage.setItem('celeiro_api_key',k);
+  fecharModal(); atualizarBadge();
+  alert('Chave salva. IA real ativada!');
+}
+function removerChave(){
+  localStorage.removeItem('celeiro_api_key');
+  document.getElementById('api-key-input').value='';
+  atualizarBadge();
+  alert('Chave removida. Modo local ativado.');
+}
+function atualizarBadge(){
+  const ok = !!getChave();
+  document.getElementById('apiDot').className = ok ? 'dot ok' : 'dot';
+  document.getElementById('apiLabel').textContent = ok ? 'IA ativa' : 'Configurar chave IA';
+}
+document.getElementById('modal-api').addEventListener('click',function(e){
+  if(e.target===this) fecharModal();
+});
 atualizarBadge();
 
-/* ── Chamada ao proxy Vercel ─────────────────────────── */
+/* ── Chamada à API Anthropic ─────────────────────────── */
 async function chamarClaude(system, user, maxTokens){
+  const chave = getChave();
+  if(!chave) return null; // usa fallback local
   try{
-    const r = await fetch(ENGINE_URL,{
+    const r = await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json','x-api-key':chave,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',
         max_tokens: maxTokens||1000,
@@ -807,11 +844,11 @@ async function chamarClaude(system, user, maxTokens){
       })
     });
     const d = await r.json();
-    if(d.error) throw new Error(typeof d.error==='string'?d.error:d.error.message||JSON.stringify(d.error));
+    if(d.error) throw new Error(d.error.message);
     return d.content?.map(b=>b.text||'').join('\n') || '';
   }catch(e){
-    console.error('Erro no proxy Vercel:',e);
-    return null; // cai no fallback local
+    console.error('API error:',e);
+    return null;
   }
 }
 
