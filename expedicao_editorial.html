@@ -3,170 +3,390 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Expedição Editorial</title>
-
+<title>Expedição Editorial — Lapidar | Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
---bg:#ece8de;
---card:#f7f4ee;
---ink:#1f1f1b;
---muted:#6f6a62;
---line:#ddd6c9;
---accent:#6c7a46;
---shadow:0 12px 28px rgba(0,0,0,.10);
---radius:24px;
+  --azul:#0f1c2e;--azul2:#07101d;--ouro:#c9a646;--ouro2:#f4dc88;--cobre:#b87333;
+  --papel:#fffaf0;--papel2:#f7f1e2;--texto:#243043;--cinza:#4a5568;
+  --terra:#3a1f06;--terra2:#5c3a10;--terra3:#8c5a20;
+  --linha:rgba(201,166,70,.28);--r:22px;--s:0 18px 50px rgba(8,17,31,.15)
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Source Serif 4',Georgia,serif;background:linear-gradient(170deg,#fbf7ed,#ede0c4);color:var(--texto);min-height:100vh}
 
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(7,16,29,.97);border-bottom:2px solid var(--ouro);backdrop-filter:blur(10px)}
+.top-in{max-width:1200px;margin:auto;padding:10px 22px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.marca{font-family:'Playfair Display',serif;color:var(--ouro2);font-size:14px}
+.marca small{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(244,220,136,.5)}
+.tnav{display:flex;gap:6px;flex-wrap:wrap}
+.tnav a{font-family:'JetBrains Mono',monospace;font-size:11px;color:#c8c0ae;text-decoration:none;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.1);transition:.18s}
+.tnav a:hover{color:var(--ouro2);border-color:var(--ouro);background:rgba(201,166,70,.12)}
 
-body{
-min-height:100vh;
-font-family:Georgia,"Times New Roman",serif;
-background:var(--bg);
-color:var(--ink);
-display:flex;
-align-items:center;
-justify-content:center;
-padding:16px;
+/* HERO — paleta terra/ouro do Lapidar */
+.hero{
+  background:radial-gradient(ellipse 65% 55% at 10% 15%,rgba(92,58,16,.35),transparent),
+             radial-gradient(ellipse 45% 60% at 90% 85%,rgba(201,166,70,.14),transparent),
+             linear-gradient(148deg,var(--terra) 0%,#1a0d04 55%,#0d1a10 100%);
+  color:white;padding:68px 22px 56px;border-bottom:7px solid var(--ouro);position:relative;overflow:hidden
 }
+.hero::after{content:'✒';position:absolute;right:30px;bottom:-30px;font-size:240px;color:rgba(201,166,70,.05);line-height:1;pointer-events:none}
+.hero-in{max-width:1200px;margin:auto;display:grid;grid-template-columns:200px 1fr;gap:44px;align-items:start;position:relative;z-index:1}
+.h-esq{display:flex;flex-direction:column;align-items:center;gap:14px}
+.ed-av{width:178px;height:178px;border-radius:28px;background:linear-gradient(135deg,var(--terra),var(--terra2));border:4px solid var(--ouro);box-shadow:0 0 0 8px rgba(201,166,70,.14),0 28px 64px rgba(0,0,0,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.ed-av .av-s{font-family:'Playfair Display',serif;font-size:46px;font-weight:900;color:var(--ouro2);line-height:1}
+.ed-av .av-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(244,220,136,.6);letter-spacing:.1em;text-align:center}
+.pill{font-family:'JetBrains Mono',monospace;font-size:11px;padding:6px 14px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+.p-terra{background:rgba(92,58,16,.35);border:1px solid var(--terra3);color:#f0c080}
+.p-ouro{background:rgba(201,166,70,.15);border:1px solid rgba(201,166,70,.4);color:var(--ouro2)}
+.dot{width:7px;height:7px;border-radius:50%;background:#f0c080;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.h-dir .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ouro2);border:1px solid rgba(201,166,70,.4);display:inline-block;padding:7px 14px;border-radius:999px;margin-bottom:14px}
+.h-dir h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5.5vw,68px);line-height:1;color:var(--ouro2);margin-bottom:6px}
+.h-dir .cargo{font-size:clamp(15px,2vw,20px);color:#c8b090;font-style:italic;margin-bottom:20px}
+.h-dir .missao{font-size:17px;line-height:1.72;color:#e0dace;border-left:3px solid var(--ouro);padding-left:18px;max-width:740px;margin-bottom:24px}
+.h-chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#ddd8cc;font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px 13px;border-radius:12px}
+.chip strong{color:var(--ouro2)}
 
-.box{
-width:min(92vw,860px);
-background:var(--card);
-border-radius:var(--radius);
-box-shadow:var(--shadow);
-border:1px solid var(--line);
-padding:34px 26px;
-text-align:center;
-}
+.wrap{max-width:1200px;margin:auto;padding:44px 22px 80px}
+.sec{margin-bottom:52px}
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.sec-head .barra{width:7px;height:34px;background:var(--ouro);border-radius:20px;flex-shrink:0}
+.sec-head h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,36px);color:var(--azul)}
+.subtag{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--azul);color:var(--ouro2);padding:4px 11px;border-radius:999px}
 
-.tag{
-display:inline-block;
-padding:6px 12px;
-border-radius:999px;
-background:#eef2df;
-color:#566331;
-font-size:.88rem;
-font-weight:700;
-letter-spacing:.05em;
-text-transform:uppercase;
-margin-bottom:14px;
-}
+.card{background:var(--papel);border:1px solid var(--linha);border-radius:var(--r);padding:26px;box-shadow:var(--s)}
+.card h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--azul);margin-bottom:12px}
+.card p,.card li{font-size:15px;line-height:1.68;color:#3a4557}
+.card ul{padding-left:18px}
+.card ul li{margin-bottom:7px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 
-h1{
-margin:0 0 12px 0;
-font-size:clamp(2.1rem,5vw,3.4rem);
-line-height:1.05;
-color:#000;
+/* MESÁRIO GERAL */
+.mesario-card{
+  background:linear-gradient(135deg,var(--terra),var(--azul2));
+  border:2px solid var(--ouro);border-radius:var(--r);padding:30px;color:white;
+  display:grid;grid-template-columns:88px 1fr;gap:22px;align-items:start;
+  box-shadow:0 20px 60px rgba(0,0,0,.22)
 }
+.m-av{width:88px;height:88px;border-radius:20px;background:linear-gradient(135deg,var(--ouro),var(--cobre));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--terra);flex-shrink:0;box-shadow:inset 0 0 0 2px rgba(255,255,255,.2)}
+.m-nome{font-family:'Playfair Display',serif;font-size:26px;color:var(--ouro2);margin-bottom:4px}
+.m-cargo{font-family:'JetBrains Mono',monospace;font-size:12px;color:#b09070;margin-bottom:14px}
+.m-frase{font-style:italic;font-size:16px;line-height:1.65;color:#ddd8cc;border-left:3px solid var(--ouro);padding-left:16px;margin-bottom:14px}
+.m-tags{display:flex;flex-wrap:wrap;gap:8px}
+.m-tag{background:rgba(201,166,70,.18);border:1px solid rgba(201,166,70,.4);color:var(--ouro2);font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 12px;border-radius:999px}
 
-p{
-margin:0 0 18px 0;
-color:var(--muted);
-font-size:1.08rem;
-line-height:1.5;
-}
+/* FLUXO */
+.fluxo{display:grid;grid-template-columns:repeat(6,1fr);border:2px solid var(--ouro);border-radius:18px;overflow:hidden;margin:18px 0}
+.f-et{background:var(--azul2);color:var(--ouro2);padding:18px 10px;text-align:center;border-right:1px solid rgba(201,166,70,.3);font-family:'JetBrains Mono',monospace}
+.f-et:last-child{border-right:none}
+.f-et .fn{font-size:22px;font-weight:900;color:var(--ouro);display:block;margin-bottom:7px}
+.f-et .ft{font-size:11px;font-weight:700;display:block;margin-bottom:4px}
+.f-et small{font-size:10px;color:#8a9aaa}
 
-.note{
-margin:18px 0 0 0;
-padding:14px 16px;
-border:1px dashed #cfc6b8;
-border-radius:16px;
-background:rgba(255,255,255,.45);
-color:#6a645d;
-font-size:1rem;
-line-height:1.45;
-}
+/* SAÍDAS */
+.saidas-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.saida{background:var(--papel);border:1px solid var(--linha);border-radius:18px;padding:20px;text-align:center;box-shadow:0 6px 18px rgba(8,17,31,.08);transition:.18s;text-decoration:none;color:inherit;display:block}
+.saida:hover{transform:translateY(-3px);border-color:var(--ouro);box-shadow:0 12px 28px rgba(8,17,31,.14)}
+.saida .si{font-size:30px;margin-bottom:10px}
+.saida h4{font-family:'Playfair Display',serif;font-size:16px;color:var(--azul);margin-bottom:5px}
+.saida p{font-size:13px;color:var(--cinza);line-height:1.5}
 
-.actions{
-margin-top:24px;
-display:flex;
-gap:12px;
-justify-content:center;
-flex-wrap:wrap;
-}
+/* FALA */
+.fala{background:white;border:2px solid var(--ouro);border-radius:0 22px 22px 22px;padding:20px 24px;font-size:17px;line-height:1.6;color:var(--azul);position:relative;margin-bottom:10px;box-shadow:0 6px 20px rgba(8,17,31,.08);font-style:italic}
+.fala::before{content:'Mesário Geral';position:absolute;top:-12px;left:0;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:var(--ouro);color:var(--azul2);padding:3px 12px;border-radius:999px;font-style:normal}
 
-.btn{
-border:none;
-border-radius:16px;
-padding:14px 20px;
-font:inherit;
-font-weight:700;
-cursor:pointer;
-transition:.18s ease;
-box-shadow:0 8px 18px rgba(0,0,0,.08);
-}
+.notice{background:#fff8d6;border-left:6px solid var(--ouro);border-radius:16px;padding:18px;font-size:15px;color:#3c300a;line-height:1.65;margin-bottom:22px}
+.notice strong{color:#7a5200}
 
-.btn:hover{
-transform:translateY(-1px);
-}
+/* FORMULÁRIO DESPACHO */
+.despacho-form{background:var(--papel);border:2px solid var(--ouro);border-radius:var(--r);padding:30px;box-shadow:var(--s)}
+.despacho-form h3{font-family:'Playfair Display',serif;font-size:26px;color:var(--azul);margin-bottom:6px}
+.despacho-form .sub{font-size:15px;color:var(--cinza);margin-bottom:24px;font-style:italic}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.campo label{display:block;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--azul);margin-bottom:7px;letter-spacing:.04em;text-transform:uppercase}
+.campo input,.campo select,.campo textarea{width:100%;border:2px solid #d4c89a;border-radius:12px;padding:12px 14px;font-size:15px;font-family:'Source Serif 4',serif;background:white;color:var(--texto);outline:none;transition:border-color .2s}
+.campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--ouro)}
+.campo textarea{min-height:90px;resize:vertical}
+.wide{grid-column:1/-1}
 
-.btn-back{
-background:#d9a441;
-color:#2a1d0d;
-}
+/* RESULTADO */
+.resultado{display:none;background:#f0fff4;border:2px solid #2d7a4a;border-radius:18px;padding:24px;text-align:center}
+.resultado.vis{display:block}
+.resultado .rcheck{font-size:48px;margin-bottom:12px}
+.resultado h3{font-family:'Playfair Display',serif;font-size:22px;color:#184b30;margin-bottom:8px}
+.resultado p{font-size:15px;color:#2d5a3d;line-height:1.65}
+.resultado .pnum{font-family:'JetBrains Mono',monospace;font-size:13px;background:#184b30;color:#7fffa0;padding:8px 18px;border-radius:999px;display:inline-block;margin-top:14px}
 
-.btn-home{
-background:var(--accent);
-color:#fff;
-}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:0;cursor:pointer;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;padding:13px 22px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.12);transition:.18s}
+.b-ouro{background:var(--ouro);color:var(--azul2)}
+.b-ouro:hover{background:var(--ouro2)}
+.b-terra{background:var(--terra2);color:white}
+.b-terra:hover{background:var(--terra)}
+.b-esc{background:var(--azul);color:var(--ouro2);border:1px solid rgba(201,166,70,.35)}
+.b-esc:hover{background:#0a1422}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
 
-@media (max-width:640px){
-.box{
-padding:28px 18px;
-border-radius:20px;
-}
+footer{background:var(--azul2);color:#c8c0ae;border-top:6px solid var(--ouro);padding:32px 22px;text-align:center}
+footer strong{color:var(--ouro2)}
+footer p{font-size:14px;line-height:1.8}
+footer .mono{font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.4;margin-top:8px}
 
-.actions{
-flex-direction:column;
-}
-
-.btn{
-width:100%;
-}
-}
+@media(max-width:980px){.hero-in{grid-template-columns:1fr}.h-esq{flex-direction:row}.saidas-grid{grid-template-columns:repeat(2,1fr)}.fluxo{grid-template-columns:repeat(3,1fr)}.f-et{border-bottom:1px solid rgba(201,166,70,.3);border-right:none}.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.g2,.g3,.saidas-grid,.f2{grid-template-columns:1fr}.fluxo{grid-template-columns:1fr}.mesario-card{grid-template-columns:1fr}}
 </style>
 </head>
-
 <body>
 
-<main class="box">
-
-<div class="tag">Lapidar — Fechamento</div>
-
-<h1>Expedição Editorial</h1>
-
-<p>
-Departamento final do Lapidar. Aqui a obra chega depois de passar pelos setores escolhidos,
-pelos mesários de sessão e pela consolidação editorial.
-</p>
-
-<p>
-A Expedição Editorial será responsável pelo fechamento da jornada,
-conferência final, organização dos arquivos e liberação dos materiais prontos ao autor.
-</p>
-
-<div class="note">
-Placeholder ativo da Expedição Editorial. Esta será a última porta do fluxo,
-onde o Mesário Geral consolida as contribuições e libera a obra final.
+<div class="topbar">
+  <div class="top-in">
+    <div class="marca">Instituto Cultural Celeiro Literário<small>EXPEDIÇÃO EDITORIAL · PORTA DE SAÍDA DO LAPIDAR</small></div>
+    <nav class="tnav">
+      <a href="#mesario">Mesário Geral</a>
+      <a href="#fluxo">Fluxo</a>
+      <a href="#despacho">Despacho</a>
+      <a href="expedicao.html">Expedição Geral</a>
+      <a href="corsi.html">CORSI</a>
+      <a href="pagina_respiro_celeiro.html">← Celeiro</a>
+    </nav>
+  </div>
 </div>
 
-<div class="actions">
+<header class="hero">
+  <div class="hero-in">
+    <div class="h-esq">
+      <div class="ed-av">
+        <span class="av-s">EE</span>
+        <span class="av-sub">EXPEDIÇÃO<br>EDITORIAL</span>
+      </div>
+      <span class="pill p-terra"><span class="dot"></span> Porta de saída do Lapidar</span>
+      <span class="pill p-ouro">✦ Celeiro Literário</span>
+    </div>
+    <div class="h-dir">
+      <div class="eyebrow">✦ LAPIDAR · FECHAMENTO EDITORIAL · DESPACHO AO CORSI</div>
+      <h1>Expedição Editorial</h1>
+      <p class="cargo">A porta de saída oficial das obras finalizadas pelo Lapidar</p>
+      <p class="missao">A Expedição Editorial é o momento em que uma obra deixa de ser trabalho interno e passa a existir para o mundo. O Mesário Geral assina o despacho, libera a obra e ela segue para o CORSI fazer circular nas redes. Nenhuma obra sai do Lapidar sem passar pela Expedição Editorial.</p>
+      <div class="h-chips">
+        <div class="chip">✒️ <strong>Obras individuais</strong></div>
+        <div class="chip">💎 <strong>Lapidar</strong></div>
+        <div class="chip">🧾 <strong>Mesário Geral</strong></div>
+        <div class="chip">📲 <strong>→ CORSI</strong></div>
+        <div class="chip">📦 <strong>→ Expedição Geral</strong></div>
+      </div>
+    </div>
+  </div>
+</header>
 
-<button class="btn btn-back"
-onclick="window.location.href='lapidar.html'">
-Retornar ao Lapidar
-</button>
+<main class="wrap">
 
-<button class="btn btn-home"
-onclick="window.location.href='index.html'">
-Ir ao Celeiro
-</button>
+  <!-- MESÁRIO GERAL -->
+  <section class="sec" id="mesario">
+    <div class="sec-head"><div class="barra"></div><h2>Mesário Geral</h2><span class="subtag">Autoridade de despacho do Lapidar</span></div>
 
-</div>
+    <div class="mesario-card" style="margin-bottom:22px">
+      <div class="m-av">M</div>
+      <div>
+        <div class="m-nome">Mesário Geral</div>
+        <div class="m-cargo">AUTORIDADE DE FECHAMENTO EDITORIAL · LAPIDAR · EXPEDIÇÃO EDITORIAL</div>
+        <p class="m-frase">"Uma obra está pronta quando está pronta — não quando o autor quer que esteja. Meu papel é garantir que o que sai pela Expedição Editorial represente o melhor que o Celeiro pode entregar ao mundo."</p>
+        <div class="m-tags">
+          <span class="m-tag">Revisão final</span>
+          <span class="m-tag">Autorização de despacho</span>
+          <span class="m-tag">Assinatura de saída</span>
+          <span class="m-tag">Classificação editorial</span>
+          <span class="m-tag">Orientação ao autor</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="g3">
+      <div class="card">
+        <h3>O que o Mesário verifica</h3>
+        <ul>
+          <li>Obra revisada e com versão final fechada</li>
+          <li>Metadados completos: título, autor, área, idioma</li>
+          <li>Direitos autorais e declaração de autoria</li>
+          <li>Formato adequado para a plataforma de destino</li>
+          <li>Compatibilidade com as 9 áreas SIGMAL</li>
+          <li>Ausência de pendências no Lapidar</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>O que o Mesário assina</h3>
+        <ul>
+          <li>Despacho de saída da obra do Lapidar</li>
+          <li>Classificação editorial da obra</li>
+          <li>Indicação das plataformas de destino</li>
+          <li>Briefing de circulação para o CORSI</li>
+          <li>Registro no histórico editorial do autor</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>O que o autor recebe</h3>
+        <ul>
+          <li>Confirmação de despacho com número de protocolo</li>
+          <li>Orientação sobre onde a obra circulará</li>
+          <li>Prazo estimado de publicação pelo CORSI</li>
+          <li>Atualização na linha de trajetória (Trajano Estrada)</li>
+          <li>Registro no portfólio institucional do Celeiro</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLUXO -->
+  <section class="sec" id="fluxo">
+    <div class="sec-head"><div class="barra"></div><h2>Fluxo da Expedição Editorial</h2></div>
+
+    <div class="fala">"Obra recebida do Lapidar. Revisão concluída. Metadados conferidos. Direitos declarados. Despacho assinado. Seguindo para o CORSI."</div>
+
+    <div class="fluxo">
+      <div class="f-et"><span class="fn">①</span><span class="ft">Lapidar</span><small>Autor finaliza a obra</small></div>
+      <div class="f-et"><span class="fn">②</span><span class="ft">Mesário recebe</span><small>Verifica checklist</small></div>
+      <div class="f-et"><span class="fn">③</span><span class="ft">Revisão final</span><small>Última leitura editorial</small></div>
+      <div class="f-et"><span class="fn">④</span><span class="ft">Despacho assinado</span><small>Mesário autoriza saída</small></div>
+      <div class="f-et"><span class="fn">⑤</span><span class="ft">Expedição Geral</span><small>Hub recebe e coordena</small></div>
+      <div class="f-et"><span class="fn">⑥</span><span class="ft">CORSI circula</span><small>Redes e plataformas</small></div>
+    </div>
+  </section>
+
+  <!-- SAÍDAS POSSÍVEIS -->
+  <section class="sec">
+    <div class="sec-head"><div class="barra"></div><h2>Para onde a obra pode ir</h2><span class="subtag">Destinos após o despacho</span></div>
+
+    <div class="saidas-grid">
+      <a class="saida" href="corsi.html">
+        <div class="si">📲</div>
+        <h4>CORSI — Redes</h4>
+        <p>Instagram, YouTube, TikTok, X, Web Rádio e Web TV</p>
+      </a>
+      <a class="saida" href="#">
+        <div class="si">📚</div>
+        <h4>Portal do Celeiro</h4>
+        <p>Publicação na biblioteca digital do Instituto</p>
+      </a>
+      <a class="saida" href="rede_mundial_oportunidades_artisticas.html">
+        <div class="si">🌍</div>
+        <h4>Rede Mundial</h4>
+        <p>Circulação internacional conforme área SIGMAL</p>
+      </a>
+      <a class="saida" href="trajano_estrada_oportunidades.html">
+        <div class="si">📈</div>
+        <h4>Trajetória</h4>
+        <p>Registro no portfólio e linha de crescimento do autor</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- FORMULÁRIO DE DESPACHO -->
+  <section class="sec" id="despacho">
+    <div class="sec-head"><div class="barra"></div><h2>Formulário de Despacho</h2><span class="subtag">Mesário Geral · Autorização de saída</span></div>
+
+    <div class="despacho-form">
+      <h3>Despacho de obra — Expedição Editorial</h3>
+      <p class="sub">Preencha os dados da obra para que o Mesário Geral avalie e assine o despacho de saída do Lapidar.</p>
+
+      <div class="f2">
+        <div class="campo"><label>Nome do autor</label><input type="text" id="autor" placeholder="Nome civil ou artístico"></div>
+        <div class="campo"><label>Título da obra</label><input type="text" id="titulo" placeholder="Título definitivo"></div>
+        <div class="campo"><label>Área SIGMAL</label>
+          <select id="area">
+            <option value="">— Selecione a área —</option>
+            <option>Literatura</option><option>Música</option><option>Artes Visuais</option>
+            <option>Cinema / Audiovisual</option><option>Performance / Voz / Narrativa</option>
+            <option>Multimídia Narrativa</option><option>Artesanato</option>
+            <option>Artes Plásticas</option><option>Dança</option>
+          </select>
+        </div>
+        <div class="campo"><label>Formato da obra</label>
+          <select id="formato">
+            <option>Texto / Conto / Crônica</option><option>Poesia / Poema</option>
+            <option>Livro digital (PDF/ePub)</option><option>Roteiro</option>
+            <option>Ensaio / Artigo</option><option>Letra de música</option>
+            <option>Outro formato textual</option>
+          </select>
+        </div>
+        <div class="campo"><label>Destino principal</label>
+          <select id="destino">
+            <option>CORSI — Circulação em redes</option>
+            <option>Portal do Celeiro Literário</option>
+            <option>Rede Mundial de Oportunidades</option>
+            <option>Trajano Estrada — Trajetória</option>
+            <option>Múltiplos destinos</option>
+          </select>
+        </div>
+        <div class="campo"><label>Idioma da obra</label>
+          <select id="idioma">
+            <option>Português</option><option>Espanhol</option>
+            <option>Inglês</option><option>Multilíngue</option>
+          </select>
+        </div>
+        <div class="campo wide"><label>Observações ao Mesário Geral (opcional)</label>
+          <textarea id="obs" placeholder="Alguma instrução especial sobre como a obra deve circular, público-alvo preferencial ou restrições de uso?"></textarea>
+        </div>
+        <div class="campo wide">
+          <label>Declaração de autoria</label>
+          <select id="declaracao">
+            <option value="">— Selecione —</option>
+            <option value="sim">Declaro que sou o(a) autor(a) desta obra e detenho os direitos sobre ela</option>
+            <option value="coautoria">Obra em coautoria — todos os autores concordam com a publicação</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btns">
+        <button class="btn b-ouro" onclick="despachar()">🧾 Solicitar despacho ao Mesário Geral</button>
+        <a class="btn b-esc" href="lapidar_sistema_editorial_modular.html">← Voltar ao Lapidar</a>
+        <a class="btn b-esc" href="expedicao.html">Expedição Geral</a>
+      </div>
+    </div>
+
+    <div class="resultado" id="resultado">
+      <div class="rcheck">✅</div>
+      <h3>Despacho registrado pelo Mesário Geral</h3>
+      <p id="res-texto">Obra recebida e encaminhada para revisão final. O Mesário Geral assinará o despacho e a obra seguirá para o CORSI.</p>
+      <div class="pnum" id="res-num">EE-000000</div>
+      <div class="btns" style="justify-content:center;margin-top:20px">
+        <a class="btn b-ouro" href="corsi.html">📲 Acompanhar no CORSI</a>
+        <a class="btn b-esc" href="expedicao.html">Expedição Geral</a>
+      </div>
+    </div>
+  </section>
 
 </main>
 
+<footer>
+  <p><strong>Expedição Editorial</strong> — Porta de saída do Lapidar</p>
+  <p>Mesário Geral · Instituto Cultural Celeiro Literário · CORSI · Expedição Geral</p>
+  <p class="mono">expedicao_editorial.html · lapidar · despacho de obras</p>
+</footer>
+
+<script>
+function gerarNum(){
+  return 'EE-'+Date.now().toString().slice(-6)+'-'+Math.floor(Math.random()*900+100)
+}
+function despachar(){
+  const autor = document.getElementById('autor').value.trim()
+  const titulo = document.getElementById('titulo').value.trim()
+  const decl = document.getElementById('declaracao').value
+  if(!autor){alert('Por favor, informe o nome do autor.');return}
+  if(!titulo){alert('Por favor, informe o título da obra.');return}
+  if(!decl){alert('Por favor, faça a declaração de autoria.');return}
+  const num = gerarNum()
+  const area = document.getElementById('area').value || 'não especificada'
+  const destino = document.getElementById('destino').value
+  document.getElementById('res-texto').textContent =
+    'Obra "'+titulo+'" de '+autor+' ('+area+') registrada para despacho. Destino: '+destino+'. O Mesário Geral revisará e assinará a saída.'
+  document.getElementById('res-num').textContent = num
+  document.querySelector('.despacho-form').style.display='none'
+  const res = document.getElementById('resultado')
+  res.classList.add('vis')
+  res.scrollIntoView({behavior:'smooth'})
+}
+</script>
 </body>
 </html>
