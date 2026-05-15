@@ -3,174 +3,281 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CICILE — Central de Reclamações | Celeiro Literário</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Mentoria Cibernética — Instituto Cultural Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --azul:  #0f1c2e;
-  --azul2: #07101d;
-  --ouro:  #c9a646;
-  --ouro2: #f4dc88;
-  --papel: #fffaf0;
-  --texto: #243043;
-  --verde: #1f7a42;
-  --verm:  #8b1e1e;
-  --verm2: #b83232;
-  --linha: rgba(201,166,70,.28);
+  --tinta:    #07101d;
+  --noite:    #0d1e30;
+  --azul:     #0f2a46;
+  --ouro:     #c9a646;
+  --ouro2:    #f4dc88;
+  --cobre:    #b87333;
+  --papel:    #fffaf0;
+  --papel2:   #f7f1e2;
+  --texto:    #1e2b3a;
+  --verde:    #1a4a2e;
+  --verde2:   #2d7a4a;
+  --cinza:    #4a5568;
+  --linha:    rgba(201,166,70,.28);
   --r: 22px;
-  --s: 0 18px 50px rgba(8,17,31,.15);
+  --s: 0 16px 48px rgba(0,0,0,.13);
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
   font-family: 'Source Serif 4', Georgia, serif;
-  background: linear-gradient(170deg, #fbf7ed, #ede0c4);
-  color: var(--texto); min-height: 100vh;
+  background: linear-gradient(170deg, #f9f4e8 0%, #efe2c5 100%);
+  color: var(--texto);
+  min-height: 100vh;
 }
 
 /* ── TOPBAR ── */
 .topbar {
   position: sticky; top: 0; z-index: 99;
-  background: rgba(7,16,29,.97); border-bottom: 2px solid var(--ouro);
+  background: rgba(7,16,29,.97);
+  border-bottom: 2px solid var(--ouro);
   backdrop-filter: blur(10px);
 }
-.top-in {
-  max-width: 1100px; margin: auto; padding: 10px 22px;
+.top-inner {
+  max-width: 1200px; margin: auto;
+  padding: 11px 22px;
   display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
 }
-.marca { font-family: 'Playfair Display', serif; color: var(--ouro2); font-size: 14px; }
-.marca small { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(244,220,136,.5); }
-.tnav { display: flex; gap: 6px; flex-wrap: wrap; }
-.tnav a {
-  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #c8c0ae;
-  text-decoration: none; padding: 6px 12px; border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.1); transition: .18s;
+.marca {
+  font-family: 'Playfair Display', serif;
+  color: var(--ouro2); font-size: 14px; letter-spacing: .05em;
 }
-.tnav a:hover { color: var(--ouro2); border-color: var(--ouro); background: rgba(201,166,70,.12); }
+.marca small {
+  display: block; font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: rgba(244,220,136,.55); letter-spacing: .08em;
+}
+.topnav { display: flex; gap: 6px; flex-wrap: wrap; }
+.topnav a {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: #c8c0ae; text-decoration: none;
+  padding: 6px 12px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.1);
+  transition: .18s;
+}
+.topnav a:hover { color: var(--ouro2); border-color: var(--ouro); background: rgba(201,166,70,.12); }
 
 /* ── HERO ── */
 .hero {
-  background: linear-gradient(148deg, var(--azul2) 0%, #1a0808 60%, #2a0f0f 100%);
-  color: white; padding: 60px 22px 50px;
-  border-bottom: 7px solid var(--verm2);
-  text-align: center; position: relative; overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 55% at 10% 15%, rgba(201,166,70,.14), transparent),
+    radial-gradient(ellipse 50% 70% at 90% 90%, rgba(26,74,46,.18), transparent),
+    linear-gradient(150deg, var(--tinta) 0%, var(--noite) 50%, #0a1e10 100%);
+  color: white;
+  padding: 72px 22px 58px;
+  border-bottom: 7px solid var(--ouro);
+  position: relative; overflow: hidden;
 }
 .hero::after {
-  content: '!';
-  position: absolute; right: 30px; bottom: -40px;
-  font-family: 'Playfair Display', serif; font-size: 300px; font-weight: 900;
-  color: rgba(184,50,50,.05); line-height: 1; pointer-events: none;
+  content: 'MC';
+  position: absolute; right: -30px; bottom: -40px;
+  font-family: 'Playfair Display', serif; font-size: 260px; font-weight: 900;
+  color: rgba(201,166,70,.04); line-height: 1; pointer-events: none; user-select: none;
 }
-.hero .eyebrow {
-  font-family: 'JetBrains Mono', monospace; font-size: 12px;
-  border: 1px solid rgba(184,50,50,.5); color: #ffb8b8;
-  display: inline-block; padding: 7px 14px; border-radius: 999px; margin-bottom: 16px;
+.hero-grid {
+  max-width: 1200px; margin: auto;
+  display: grid; grid-template-columns: 220px 1fr; gap: 44px; align-items: start;
+  position: relative; z-index: 1;
 }
-.hero h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(36px, 6vw, 68px); color: #f4dc88; margin-bottom: 8px;
+.hero-avatar {
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
 }
-.hero .cargo {
-  font-size: 18px; color: #c8aaa0; font-style: italic; margin-bottom: 16px;
+.avatar-mc {
+  width: 190px; height: 190px; border-radius: 28px;
+  background: linear-gradient(135deg, #112a18, #1d4a2e);
+  border: 3px solid var(--ouro);
+  box-shadow: 0 0 0 8px rgba(201,166,70,.12), 0 24px 64px rgba(0,0,0,.45);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 6px;
 }
-.hero .fala-hero {
-  max-width: 720px; margin: 0 auto; font-size: 17px; line-height: 1.65;
-  color: #e8e0cc; border-left: 3px solid var(--verm2); padding-left: 18px;
-  text-align: left;
+.avatar-mc .sigla {
+  font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 900;
+  color: var(--ouro2); line-height: 1;
 }
-.dot { width: 7px; height: 7px; border-radius: 50%; background: #ff8888; animation: pulse 2s infinite; display: inline-block; }
+.avatar-mc .sub-sigla {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: rgba(244,220,136,.6); letter-spacing: .12em; text-align: center;
+}
+.pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 6px 14px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 7px;
+}
+.pill-verde { background: #1a4a2e; border: 1px solid #2d7a4a; color: #7fffa0; }
+.pill-ouro  { background: rgba(201,166,70,.15); border: 1px solid rgba(201,166,70,.45); color: var(--ouro2); }
+.dot-pulse { width: 7px; height: 7px; border-radius: 50%; background: #7fffa0; animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-/* ── WRAP ── */
-.wrap { max-width: 1100px; margin: auto; padding: 40px 22px 80px; }
+.hero-texto .eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--ouro2); letter-spacing: .1em;
+  border: 1px solid rgba(201,166,70,.4);
+  display: inline-block; padding: 7px 14px; border-radius: 999px; margin-bottom: 16px;
+}
+.hero-texto h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 5.5vw, 68px); line-height: 1.0;
+  color: var(--ouro2); margin-bottom: 8px;
+}
+.hero-texto .cargo {
+  font-size: clamp(15px, 2vw, 20px); color: #a8c8b8;
+  font-style: italic; margin-bottom: 22px;
+}
+.hero-texto .missao {
+  font-size: 17px; line-height: 1.72; color: #e0dace;
+  border-left: 3px solid var(--ouro); padding-left: 18px;
+  max-width: 720px; margin-bottom: 26px;
+}
+.hero-chips { display: flex; flex-wrap: wrap; gap: 9px; }
+.chip {
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.16);
+  color: #ddd8cc; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  padding: 7px 13px; border-radius: 12px;
+}
+.chip strong { color: var(--ouro2); }
 
-/* ── FORMULÁRIO ── */
-.form-card {
-  background: var(--papel); border: 2px solid var(--ouro);
-  border-radius: var(--r); padding: 34px; box-shadow: var(--s);
-  margin-bottom: 28px;
+/* ── LAYOUT ── */
+.wrap { max-width: 1200px; margin: auto; padding: 44px 22px 80px; }
+.sec { margin-bottom: 52px; }
+.sec-head {
+  display: flex; align-items: center; gap: 13px; margin-bottom: 22px; flex-wrap: wrap;
 }
-.form-card h2 {
-  font-family: 'Playfair Display', serif; font-size: 28px;
-  color: var(--azul); margin-bottom: 6px;
+.sec-head .barra { width: 6px; height: 34px; background: var(--ouro); border-radius: 20px; flex-shrink: 0; }
+.sec-head h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(22px, 3vw, 36px); color: var(--noite);
 }
-.form-card .subtitulo {
-  font-size: 15px; color: #4a5568; margin-bottom: 26px; font-style: italic;
+.subtag {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  background: var(--noite); color: var(--ouro2);
+  padding: 4px 11px; border-radius: 999px;
 }
-.form-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-.campo { margin-bottom: 0; }
-.campo label {
-  display: block; font-family: 'JetBrains Mono', monospace; font-size: 12px;
-  font-weight: 700; color: var(--azul); margin-bottom: 7px;
-  letter-spacing: .04em; text-transform: uppercase;
-}
-.campo input, .campo select, .campo textarea {
-  width: 100%; border: 2px solid #d4c89a; border-radius: 12px;
-  padding: 12px 14px; font-size: 15px; font-family: 'Source Serif 4', serif;
-  background: white; color: var(--texto); outline: none; transition: border-color .2s;
-}
-.campo input:focus, .campo select:focus, .campo textarea:focus { border-color: var(--ouro); }
-.campo textarea { min-height: 120px; resize: vertical; }
-.wide { grid-column: 1 / -1; }
 
-/* ── ALERTA BUG ── */
-.alerta {
-  display: none; background: #fff0f0; border: 2px solid var(--verm2);
-  border-radius: 14px; padding: 16px; margin-top: 14px;
-  font-size: 14px; color: #5a0f0f; line-height: 1.6;
+/* ── CARDS ── */
+.card {
+  background: var(--papel);
+  border: 1px solid var(--linha);
+  border-radius: var(--r); padding: 26px;
+  box-shadow: var(--s);
+}
+.card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 21px; color: var(--noite); margin-bottom: 12px;
+}
+.card p, .card li { font-size: 15px; line-height: 1.68; color: #3a4557; }
+.card ul { padding-left: 18px; }
+.card ul li { margin-bottom: 7px; }
+
+/* ── GRIDS ── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+
+/* ── CARD TRAJANO (destaque) ── */
+.trajano-card {
+  background: linear-gradient(135deg, var(--tinta), var(--azul));
+  border: 2px solid var(--ouro); border-radius: var(--r);
+  padding: 30px; color: white;
+  display: grid; grid-template-columns: 90px 1fr; gap: 22px; align-items: start;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+.t-avatar {
+  width: 90px; height: 90px; border-radius: 20px;
+  background: linear-gradient(135deg, var(--ouro), var(--cobre));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 900;
+  color: var(--tinta); box-shadow: inset 0 0 0 2px rgba(255,255,255,.2);
+  flex-shrink: 0;
+}
+.t-nome { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--ouro2); margin-bottom: 4px; }
+.t-cargo { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7eaaa0; margin-bottom: 14px; }
+.t-frase {
+  font-style: italic; font-size: 16px; line-height: 1.65;
+  color: #ddd8cc; border-left: 3px solid var(--ouro); padding-left: 16px; margin-bottom: 14px;
+}
+.t-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.t-tag {
+  background: rgba(201,166,70,.15); border: 1px solid rgba(201,166,70,.4);
+  color: var(--ouro2); font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 5px 12px; border-radius: 999px;
+}
+
+/* ── MÓDULOS DA MENTORIA ── */
+.modulo-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.modulo {
+  background: var(--papel); border: 1px solid var(--linha);
+  border-radius: 18px; padding: 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.07);
+  position: relative; overflow: hidden;
+}
+.modulo::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: var(--ouro);
+}
+.modulo .num {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+  color: var(--ouro); letter-spacing: .08em; margin-bottom: 10px;
+}
+.modulo h4 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--noite); margin-bottom: 8px; }
+.modulo p { font-size: 14px; line-height: 1.6; color: var(--cinza); }
+
+/* ── FLUXO ── */
+.fluxo {
+  display: grid; grid-template-columns: repeat(5,1fr);
+  border: 2px solid var(--ouro); border-radius: 18px; overflow: hidden;
+}
+.f-etapa {
+  background: var(--tinta); color: var(--ouro2);
+  padding: 20px 14px; text-align: center;
+  border-right: 1px solid rgba(201,166,70,.3);
   font-family: 'JetBrains Mono', monospace;
 }
-.alerta.visivel { display: block; }
-.alerta strong { color: var(--verm); }
+.f-etapa:last-child { border-right: none; }
+.f-etapa .fn { font-size: 30px; font-weight: 900; color: var(--ouro); display: block; margin-bottom: 8px; }
+.f-etapa .ft { font-size: 12px; font-weight: 700; display: block; margin-bottom: 6px; }
+.f-etapa small { font-size: 11px; color: #8a9aaa; font-weight: 400; }
 
-/* ── PROTOCOLO ── */
-.protocolo {
-  background: linear-gradient(135deg, var(--azul2), #1a0808);
-  border: 2px solid var(--verm2); border-radius: var(--r);
-  padding: 28px; color: white; margin-bottom: 28px;
+/* ── INTEGRAÇÃO COM O CELEIRO ── */
+.integracao-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+.int-item {
+  background: var(--papel); border: 1px solid var(--linha);
+  border-radius: 16px; padding: 18px;
+  text-align: center; text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0,0,0,.07); transition: .2s;
 }
-.protocolo h3 {
-  font-family: 'Playfair Display', serif; font-size: 24px;
-  color: #ffb8b8; margin-bottom: 8px;
-}
-.protocolo p { font-size: 15px; color: #e0d4d4; line-height: 1.65; margin-bottom: 18px; }
-.dep-lista {
-  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px;
-}
-.dep {
-  background: rgba(184,50,50,.2); border: 1px solid rgba(184,50,50,.45);
-  color: #ffb8b8; font-family: 'JetBrains Mono', monospace; font-size: 11px;
-  padding: 6px 12px; border-radius: 10px;
-}
-.fluxo-rec {
-  display: grid; grid-template-columns: repeat(4,1fr);
-  border: 1px solid rgba(184,50,50,.35); border-radius: 14px;
-  overflow: hidden; margin-top: 18px;
-}
-.frec {
-  background: rgba(255,255,255,.05); padding: 16px 12px;
-  text-align: center; border-right: 1px solid rgba(184,50,50,.25);
-  font-family: 'JetBrains Mono', monospace;
-}
-.frec:last-child { border-right: none; }
-.frec .fn { font-size: 24px; color: #ff8888; font-weight: 900; display: block; margin-bottom: 6px; }
-.frec .ft { font-size: 12px; color: #ffb8b8; font-weight: 700; display: block; margin-bottom: 4px; }
-.frec small { font-size: 11px; color: #9a8888; }
+.int-item:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,.12); border-color: var(--ouro); }
+.int-icone { font-size: 32px; margin-bottom: 10px; }
+.int-nome { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--noite); margin-bottom: 4px; }
+.int-desc { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--cinza); }
 
-/* ── RESULTADO ── */
-.resultado {
-  display: none; background: #f0fff4; border: 2px solid #2d7a4a;
-  border-radius: 18px; padding: 24px; text-align: center;
-  font-family: 'Source Serif 4', serif;
+/* ── PREÇO ── */
+.preco-wrap {
+  background: linear-gradient(135deg, var(--tinta), var(--azul));
+  border: 2px solid var(--ouro); border-radius: var(--r);
+  padding: 30px; color: white;
 }
-.resultado.visivel { display: block; }
-.resultado .check { font-size: 48px; margin-bottom: 12px; }
-.resultado h3 { font-family: 'Playfair Display', serif; font-size: 24px; color: #184b30; margin-bottom: 8px; }
-.resultado p { font-size: 15px; color: #2d5a3d; line-height: 1.65; }
-.resultado .protocolo-num {
-  font-family: 'JetBrains Mono', monospace; font-size: 13px;
-  background: #184b30; color: #7fffa0;
-  padding: 8px 18px; border-radius: 999px; display: inline-block; margin-top: 14px;
+.preco-wrap h3 { font-family: 'Playfair Display', serif; color: var(--ouro2); font-size: 26px; margin-bottom: 6px; }
+.preco-wrap > p { color: #c8d8e0; font-size: 15px; margin-bottom: 22px; }
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+.preco-box {
+  background: rgba(255,255,255,.07); border: 1px solid rgba(201,166,70,.4);
+  border-radius: 16px; padding: 20px; text-align: center;
+}
+.preco-box .pflag { font-size: 32px; margin-bottom: 8px; }
+.preco-box .pval {
+  font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 900;
+  color: var(--ouro2); display: block;
+}
+.preco-box .pper { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #888; }
+.bonus-box {
+  background: rgba(45,122,74,.2); border: 1px solid rgba(45,200,80,.3);
+  border-radius: 14px; padding: 14px; font-size: 14px; color: #a0e8b0; margin-top: 16px;
 }
 
 /* ── BOTÕES ── */
@@ -181,30 +288,47 @@ body {
   padding: 13px 22px; border-radius: 999px;
   box-shadow: 0 4px 14px rgba(0,0,0,.12); transition: .18s;
 }
-.b-ouro { background: var(--ouro); color: var(--azul2); }
-.b-ouro:hover { background: var(--ouro2); }
-.b-verde { background: var(--verde); color: white; }
-.b-verde:hover { background: #165c31; }
-.b-red   { background: var(--verm); color: white; }
-.b-red:hover { background: #6b1515; }
-.b-esc   { background: var(--azul); color: var(--ouro2); border: 1px solid rgba(201,166,70,.35); }
-.b-esc:hover { background: #0a1422; }
-.btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.btn-ouro  { background: var(--ouro); color: var(--tinta); }
+.btn-ouro:hover { background: var(--ouro2); }
+.btn-verde { background: var(--verde2); color: white; }
+.btn-verde:hover { background: #1f6b3d; }
+.btn-esc   { background: var(--noite); color: var(--ouro2); border: 1px solid rgba(201,166,70,.4); }
+.btn-esc:hover { background: #0d1a30; }
+.btn-red   { background: #7b1f1f; color: white; }
+.btn-red:hover { background: #5a1515; }
+.btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+
+/* ── ALERTA / NOTICE ── */
+.notice {
+  background: #fff8d6; border-left: 6px solid var(--ouro);
+  border-radius: 16px; padding: 18px; font-size: 15px; color: #3c300a;
+  line-height: 1.65;
+}
+.notice strong { color: #7a5200; }
 
 /* ── RODAPÉ ── */
 footer {
-  background: var(--azul2); color: #c8c0ae;
-  border-top: 6px solid var(--ouro); padding: 30px 22px; text-align: center;
+  background: var(--tinta); color: #c8c0ae;
+  border-top: 6px solid var(--ouro);
+  padding: 34px 22px; text-align: center;
 }
 footer strong { color: var(--ouro2); }
 footer p { font-size: 14px; line-height: 1.8; }
-footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; opacity: .4; margin-top: 8px; }
+footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; opacity: .5; margin-top: 10px; }
 
-@media (max-width: 640px) {
-  .form-2col { grid-template-columns: 1fr; }
-  .fluxo-rec { grid-template-columns: repeat(2,1fr); }
-  .frec { border-bottom: 1px solid rgba(184,50,50,.25); border-right: none; }
-  .frec:nth-child(odd) { border-right: 1px solid rgba(184,50,50,.25); }
+/* ── RESPONSIVO ── */
+@media (max-width: 980px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-avatar { flex-direction: row; align-items: flex-start; }
+  .g3, .modulo-grid, .integracao-grid, .g4 { grid-template-columns: repeat(2,1fr); }
+  .fluxo { grid-template-columns: repeat(3,1fr); }
+  .f-etapa { border-bottom: 1px solid rgba(201,166,70,.3); border-right: none; }
+  .f-etapa:nth-child(3n) { border-right: none; }
+}
+@media (max-width: 620px) {
+  .g2, .g3, .g4, .modulo-grid, .integracao-grid, .duo { grid-template-columns: 1fr; }
+  .fluxo { grid-template-columns: 1fr; }
+  .trajano-card { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -212,274 +336,317 @@ footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; opacit
 
 <!-- TOPBAR -->
 <div class="topbar">
-  <div class="top-in">
+  <div class="top-inner">
     <div class="marca">
       Instituto Cultural Celeiro Literário
-      <small>CICILE · CENTRAL DE RECLAMAÇÕES</small>
+      <small>MENTORIA CIBERNÉTICA · CICILE · SIGMAL · OHE</small>
     </div>
-    <nav class="tnav">
-      <a href="cicile.html">← CICILE Central</a>
-      <a href="pagina_respiro_celeiro.html">Mapa do Celeiro</a>
-      <a href="portal_instituto_celeiro_literario.html">Portal</a>
+    <nav class="topnav">
+      <a href="#trajano">Trajano Estrada</a>
+      <a href="#modulos">Módulos</a>
+      <a href="#fluxo">Fluxo</a>
+      <a href="#plano">Plano</a>
+      <a href="#integrar">Integração</a>
+      <a href="pagina_respiro_celeiro.html">← Celeiro</a>
     </nav>
   </div>
 </div>
 
 <!-- HERO -->
 <header class="hero">
-  <div class="eyebrow"><span class="dot"></span> Central de Reclamações Ativa</div>
-  <h1>CICILE</h1>
-  <p class="cargo">Central de Inteligência Cultural e Literária — Canal Oficial de Reclamações</p>
-  <p class="fala-hero">
-    "Olá. Sou a CICILE, assistente de direção do Celeiro Literário. Toda reclamação, observação ou queixa chega primeiro a mim. Eu registro, classifico e comunico imediatamente à direção do Instituto e aos departamentos envolvidos. Nenhuma reclamação fica sem destino aqui."
-  </p>
+  <div class="hero-grid">
+    <div class="hero-avatar">
+      <div class="avatar-mc">
+        <span class="sigla">MC</span>
+        <span class="sub-sigla">MENTORIA<br>CIBERNÉTICA</span>
+      </div>
+      <span class="pill pill-verde"><span class="dot-pulse"></span> Operacional</span>
+      <span class="pill pill-ouro">✦ Celeiro Literário</span>
+    </div>
+    <div class="hero-texto">
+      <div class="eyebrow">✦ DEPARTAMENTO INTERNO DO CELEIRO</div>
+      <h1>Mentoria Cibernética</h1>
+      <p class="cargo">Sistema integrado de orientação, triagem e acompanhamento de trajetórias artísticas</p>
+      <p class="missao">
+        A Mentoria Cibernética é o núcleo estratégico do Celeiro Literário responsável por conectar oportunidades culturais com as trajetórias dos associados. Opera a partir do trabalho da CICILE — que vasculha a internet em busca de editais, concursos, leis de fomento e chamadas —, classifica por área na SIGMAL e encaminha individualmente por meio do <strong>Senhor Trajano Estrada</strong>.
+      </p>
+      <div class="hero-chips">
+        <div class="chip">🔍 <strong>Triagem CICILE</strong></div>
+        <div class="chip">📋 <strong>9 áreas SIGMAL</strong></div>
+        <div class="chip">🤝 <strong>OHE · Snake As · Lonely Eagle</strong></div>
+        <div class="chip">📈 <strong>Acompanhamento de crescimento</strong></div>
+        <div class="chip">💰 <strong>R$25 · US$25 / mês</strong></div>
+        <div class="chip">🏛️ <strong>Lei Rouanet · Lei Aldir Blanc</strong></div>
+      </div>
+    </div>
+  </div>
 </header>
 
 <!-- CONTEÚDO -->
 <main class="wrap">
 
-  <!-- PROTOCOLO -->
-  <div class="protocolo">
-    <h3>Como funciona o protocolo</h3>
-    <p>
-      Ao registrar sua reclamação ou observação, a CICILE a recebe, gera um número de protocolo, classifica por departamento e comunica à direção do Instituto e ao setor responsável. Você receberá o número de protocolo ao final do registro.
-    </p>
+  <!-- TRAJANO ESTRADA -->
+  <section class="sec" id="trajano">
+    <div class="sec-head">
+      <div class="barra"></div>
+      <h2>Senhor Trajano Estrada</h2>
+      <span class="subtag">Curador de Oportunidades</span>
+    </div>
 
-    <div class="fluxo-rec">
-      <div class="frec">
+    <div class="trajano-card">
+      <div class="t-avatar">T</div>
+      <div>
+        <div class="t-nome">Trajano Estrada</div>
+        <div class="t-cargo">CURADOR DE OPORTUNIDADES · GUIA DE TRAJETÓRIA · MENTORIA CIBERNÉTICA</div>
+        <p class="t-frase">
+          "Você tem o talento. Eu tenho o conhecimento do caminho. O talento precisa ser preparado — e eu estou aqui para isso. Caminhando e encaminhando oportunidades para você."
+        </p>
+        <div class="t-tags">
+          <span class="t-tag">Triagem CICILE</span>
+          <span class="t-tag">Classificação SIGMAL</span>
+          <span class="t-tag">Encaminhamento OHE</span>
+          <span class="t-tag">Ficha individual</span>
+          <span class="t-tag">Análise de editais</span>
+          <span class="t-tag">Acompanhamento mensal</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MÓDULOS DA MENTORIA -->
+  <section class="sec" id="modulos">
+    <div class="sec-head">
+      <div class="barra"></div>
+      <h2>Módulos da Mentoria Cibernética</h2>
+    </div>
+
+    <div class="modulo-grid">
+      <div class="modulo">
+        <div class="num">MÓDULO 01</div>
+        <h4>Triagem CICILE</h4>
+        <p>A CICILE vasculha continuamente a internet. Trajano recebe o material bruto e aplica filtros de relevância, prazo, área artística e elegibilidade antes de qualquer encaminhamento.</p>
+      </div>
+      <div class="modulo">
+        <div class="num">MÓDULO 02</div>
+        <h4>Classificação SIGMAL</h4>
+        <p>Cada oportunidade triada é classificada conforme as 9 áreas artísticas da SIGMAL Academy: Literatura, Música, Artes Visuais, Cinema, Performance, Multimídia, Artesanato, Artes Plásticas e Dança.</p>
+      </div>
+      <div class="modulo">
+        <div class="num">MÓDULO 03</div>
+        <h4>Ficha Individual</h4>
+        <p>Cada associado tem uma ficha própria com área, objetivo, momento de carreira, idioma e histórico. O encaminhamento de Trajano é sempre personalizado por ficha — sem envios genéricos.</p>
+      </div>
+      <div class="modulo">
+        <div class="num">MÓDULO 04</div>
+        <h4>Análise de Edital</h4>
+        <p>Para editais relevantes, Trajano entrega análise histórica: edições anteriores, perfil de premiados, tendência da banca, grau de competitividade, riscos e recomendação estratégica.</p>
+      </div>
+      <div class="modulo">
+        <div class="num">MÓDULO 05</div>
+        <h4>Encaminhamento OHE</h4>
+        <p>O material triado é encaminhado também a Snake As e Lonely Eagle, do conglomerado OHE, com resumo executivo, área SIGMAL correspondente, prazo e link oficial.</p>
+      </div>
+      <div class="modulo">
+        <div class="num">MÓDULO 06</div>
+        <h4>Acompanhamento de Crescimento</h4>
+        <p>Trajano registra a evolução de cada associado em linha de trajetória: fichas, oportunidades enviadas, participações, resultados e próximos passos. Relatório trimestral para CECILE.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLUXO OPERACIONAL -->
+  <section class="sec" id="fluxo">
+    <div class="sec-head">
+      <div class="barra"></div>
+      <h2>Fluxo operacional</h2>
+      <span class="subtag">Da busca ao acompanhamento</span>
+    </div>
+
+    <div class="fluxo">
+      <div class="f-etapa">
         <span class="fn">①</span>
-        <span class="ft">Você registra</span>
-        <small>Formulário abaixo</small>
+        <span class="ft">CICILE busca</span>
+        <small>Varredura contínua na internet</small>
       </div>
-      <div class="frec">
+      <div class="f-etapa">
         <span class="fn">②</span>
-        <span class="ft">CICILE recebe</span>
-        <small>Classifica e protocola</small>
+        <span class="ft">Trajano filtra</span>
+        <small>Relevância, prazo, elegibilidade</small>
       </div>
-      <div class="frec">
+      <div class="f-etapa">
         <span class="fn">③</span>
-        <span class="ft">Comunica à direção</span>
-        <small>CEO + setor envolvido</small>
+        <span class="ft">Classifica</span>
+        <small>Por área SIGMAL</small>
       </div>
-      <div class="frec">
+      <div class="f-etapa">
         <span class="fn">④</span>
-        <span class="ft">Resposta e resolução</span>
-        <small>Departamento age</small>
+        <span class="ft">Encaminha</span>
+        <small>Associados + OHE</small>
+      </div>
+      <div class="f-etapa">
+        <span class="fn">⑤</span>
+        <span class="ft">Registra</span>
+        <small>Linha de trajetória</small>
       </div>
     </div>
 
-    <p style="margin-top:18px; font-size:14px; color:#e0d4d4;">A comunicação é encaminhada para:</p>
-    <div class="dep-lista">
-      <span class="dep">🏛️ CEO · Direção do Instituto</span>
-      <span class="dep">🧠 Mentoria Cibernética</span>
-      <span class="dep">💎 Lapidar</span>
-      <span class="dep">🎓 SIGMAL</span>
-      <span class="dep">🪨 Caminho das Pedras</span>
-      <span class="dep">⚙️ Máquina de Estímulos</span>
-      <span class="dep">📈 Trajetória</span>
-      <span class="dep">🤝 Conta Comigo</span>
-      <span class="dep">🌍 Rede Mundial</span>
-      <span class="dep">📡 Radar Literário</span>
-      <span class="dep">💼 Auxílio de Carreira</span>
-      <span class="dep">🔧 Assistência Técnica</span>
+    <div class="g3" style="margin-top:22px;">
+      <div class="card">
+        <h3>O que é monitorado</h3>
+        <ul>
+          <li>Editais literários e culturais</li>
+          <li>Concursos com premiação real</li>
+          <li>Chamadas para antologias</li>
+          <li>Festivais e exposições</li>
+          <li>Lei Rouanet e Lei Aldir Blanc</li>
+          <li>Residências artísticas</li>
+          <li>Cursos e formações</li>
+          <li>Chamadas internacionais</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Critérios de triagem</h3>
+        <ul>
+          <li>Prazo viável para o associado</li>
+          <li>Correspondência com área artística</li>
+          <li>Gratuidade ou baixo custo</li>
+          <li>Legitimidade e histórico do promotor</li>
+          <li>Premiação ou benefício tangível</li>
+          <li>Compatibilidade com nível de produção</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>O associado recebe</h3>
+        <ul>
+          <li>Resumo estratégico do edital</li>
+          <li>Análise histórica quando pertinente</li>
+          <li>Macetes de participação</li>
+          <li>Documentos necessários</li>
+          <li>Recomendação de Trajano Estrada</li>
+          <li>Orientação de próximos passos</li>
+        </ul>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- FORMULÁRIO -->
-  <div class="form-card">
-    <h2>Registrar observação ou reclamação</h2>
-    <p class="subtitulo">Todos os campos marcados são importantes para que a CICILE encaminhe corretamente.</p>
-
-    <div class="form-2col">
-
-      <div class="campo">
-        <label>Seu nome ou identificação</label>
-        <input type="text" id="nome" placeholder="Nome ou apelido artístico">
-      </div>
-
-      <div class="campo">
-        <label>E-mail para resposta (opcional)</label>
-        <input type="email" id="email" placeholder="seu@email.com">
-      </div>
-
-      <div class="campo">
-        <label>Departamento envolvido</label>
-        <select id="departamento">
-          <option value="">— Selecione o departamento —</option>
-          <option value="Mentoria Cibernética / Trajano Estrada">🧠 Mentoria Cibernética / Trajano Estrada</option>
-          <option value="SIGMAL Academy">🎓 SIGMAL Academy</option>
-          <option value="Lapidar">💎 Lapidar</option>
-          <option value="Caminho das Pedras">🪨 Caminho das Pedras</option>
-          <option value="Rede Mundial de Oportunidades">🌍 Rede Mundial de Oportunidades</option>
-          <option value="Radar Literário">📡 Radar Literário</option>
-          <option value="Máquina de Estímulos Narrativos">⚙️ Máquina de Estímulos Narrativos</option>
-          <option value="Conta Comigo">🤝 Conta Comigo</option>
-          <option value="Acompanhamento de Trajetória">📈 Acompanhamento de Trajetória</option>
-          <option value="Auxílio de Carreira">💼 Auxílio de Carreira</option>
-          <option value="Portal / Acesso ao Instituto">🏛️ Portal / Acesso ao Instituto</option>
-          <option value="Mau funcionamento técnico do sistema">🔧 Mau funcionamento técnico do sistema</option>
-          <option value="Geral / Não sei identificar">❓ Geral / Não sei identificar o departamento</option>
-        </select>
-      </div>
-
-      <div class="campo">
-        <label>Tipo de registro</label>
-        <select id="tipo">
-          <option value="reclamacao">Reclamação formal</option>
-          <option value="observacao">Observação geral</option>
-          <option value="duvida_pedagogica">Dúvida pedagógica sem resposta</option>
-          <option value="trajetoria">Trajetória / Editais / Oportunidades</option>
-          <option value="bug">Mau funcionamento do sistema</option>
-          <option value="elogio">Elogio ou sugestão de melhoria</option>
-        </select>
-      </div>
-
-      <div class="campo">
-        <label>Urgência</label>
-        <select id="urgencia">
-          <option value="normal">Normal — pode aguardar alguns dias</option>
-          <option value="media">Média — há prazo próximo envolvido</option>
-          <option value="alta">Alta — está impedindo minha participação</option>
-          <option value="critica">Crítica — sistema fora do ar / bloqueio total</option>
-        </select>
-      </div>
-
-      <div class="campo">
-        <label>Data em que ocorreu (aproximada)</label>
-        <input type="date" id="data_ocorrencia">
-      </div>
-
-      <div class="campo wide">
-        <label>Descreva o que aconteceu</label>
-        <textarea id="descricao" placeholder="Conte com detalhes: o que aconteceu, quando, onde dentro do Celeiro, o que você tentou fazer e qual foi o resultado. Quanto mais detalhes, mais rápido a CICILE consegue encaminhar ao departamento certo."></textarea>
-      </div>
-
-      <div class="campo wide">
-        <label>O que você espera como resolução (opcional)</label>
-        <textarea id="resolucao" placeholder="Você tem alguma sugestão de como isso poderia ser resolvido? Não é obrigatório, mas ajuda muito." style="min-height:80px;"></textarea>
-      </div>
-
+  <!-- PLANO DE ASSOCIAÇÃO -->
+  <section class="sec" id="plano">
+    <div class="sec-head">
+      <div class="barra"></div>
+      <h2>Plano de Associação</h2>
+      <span class="subtag">Caminho das Oportunidades</span>
     </div>
 
-    <!-- Alerta mau funcionamento -->
-    <div class="alerta" id="alertaBug">
-      <strong>🔧 Mau funcionamento identificado.</strong><br>
-      Este registro será marcado como prioridade técnica e encaminhado imediatamente ao assistente técnico do Celeiro, além da direção do Instituto. Por favor, descreva com o máximo de detalhes possível: qual página, qual ação você tentava executar e o que apareceu na tela.
+    <div class="g2">
+      <div class="preco-wrap">
+        <h3>Contribuição mensal</h3>
+        <p>Acesso ao acompanhamento individual de trajetória, triagem personalizada por Trajano Estrada e orientação estratégica contínua.</p>
+        <div class="duo">
+          <div class="preco-box">
+            <div class="pflag">🇧🇷</div>
+            <strong class="pval">R$ 25</strong>
+            <span class="pper">por mês · Brasil</span>
+          </div>
+          <div class="preco-box">
+            <div class="pflag">🌐</div>
+            <strong class="pval">US$ 25</strong>
+            <span class="pper">por mês · Exterior</span>
+          </div>
+        </div>
+        <div class="bonus-box">
+          🎁 <strong>Bônus SIGMAL:</strong> quem ingressa na SIGMAL Academy recebe <strong>1 mês gratuito</strong> de acompanhamento pela Mentoria Cibernética.
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>O que está incluído</h3>
+        <ul>
+          <li><strong>Ficha individual</strong> de trajetória artística</li>
+          <li><strong>Triagem personalizada</strong> por área, idioma e objetivo</li>
+          <li><strong>Análise estratégica</strong> de editais selecionados</li>
+          <li><strong>Orientação de portfólio</strong> e sugestões de produção</li>
+          <li><strong>Linha de trajetória</strong> registrada e acompanhada</li>
+          <li><strong>Indicação de recursos</strong> do Celeiro (Silos, LabC, Lapidar, Caminho das Pedras)</li>
+          <li><strong>Envio por e-mail</strong> assinado por Trajano Estrada</li>
+          <li><strong>Relatório periódico</strong> de progresso</li>
+        </ul>
+        <div class="btns">
+          <a class="btn btn-ouro" href="acompanhamento_evolucao_trajetoria.html">Ativar acompanhamento</a>
+          <a class="btn btn-esc" href="trajano_estrada_oportunidades.html">Ver central do Trajano</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRAÇÃO COM O CELEIRO -->
+  <section class="sec" id="integrar">
+    <div class="sec-head">
+      <div class="barra"></div>
+      <h2>Integração com o Celeiro Literário</h2>
     </div>
 
-    <!-- Alerta alta urgência -->
-    <div class="alerta" id="alertaUrgencia" style="border-color:#7a5200; background:#fff8d6; color:#3c300a;">
-      <strong>⚡ Registro de alta urgência.</strong><br>
-      A CICILE vai priorizar este encaminhamento. Se houver um prazo de edital ou festival envolvido, mencione a data exata na descrição.
+    <div class="notice" style="margin-bottom:22px;">
+      A Mentoria Cibernética está integrada ao ecossistema do Celeiro. Trajano Estrada indica os recursos internos conforme a fase de cada associado — nunca de forma genérica, sempre por perfil.
     </div>
 
-    <div class="btns">
-      <button class="btn b-red" onclick="registrar()">📣 Registrar junto à CICILE</button>
-      <a class="btn b-esc" href="cicile.html">← Voltar à CICILE</a>
-      <a class="btn b-esc" href="pagina_respiro_celeiro.html">Mapa do Celeiro</a>
+    <div class="integracao-grid">
+      <a class="int-item" href="sigmal_academia_artistica_internacional.html">
+        <div class="int-icone">🎓</div>
+        <div class="int-nome">SIGMAL Academy</div>
+        <div class="int-desc">9 áreas artísticas internacionais</div>
+      </a>
+      <a class="int-item" href="rede_mundial_oportunidades_artisticas.html">
+        <div class="int-icone">🌍</div>
+        <div class="int-nome">Rede Mundial</div>
+        <div class="int-desc">Portal público de oportunidades</div>
+      </a>
+      <a class="int-item" href="radar_mundial_oportunidades_artisticas.html">
+        <div class="int-icone">📡</div>
+        <div class="int-nome">Radar Mundial</div>
+        <div class="int-desc">Monitoramento em tempo real</div>
+      </a>
+      <a class="int-item" href="lapidar_sistema_editorial_modular.html">
+        <div class="int-icone">💎</div>
+        <div class="int-nome">Lapidar</div>
+        <div class="int-desc">Sistema editorial modular</div>
+      </a>
+      <a class="int-item" href="caminho_das_pedras.html">
+        <div class="int-icone">🪨</div>
+        <div class="int-nome">Caminho das Pedras</div>
+        <div class="int-desc">Formação artística progressiva</div>
+      </a>
+      <a class="int-item" href="conta_comigo.html">
+        <div class="int-icone">🤝</div>
+        <div class="int-nome">Conta Comigo</div>
+        <div class="int-desc">Apoio e comunidade interna</div>
+      </a>
+      <a class="int-item" href="maquina_estimulos_narrativos.html">
+        <div class="int-icone">⚙️</div>
+        <div class="int-nome">Máquina de Estímulos</div>
+        <div class="int-desc">Criação guiada de narrativas</div>
+      </a>
+      <a class="int-item" href="trajano_estrada_oportunidades.html">
+        <div class="int-icone">📋</div>
+        <div class="int-nome">Central Trajano</div>
+        <div class="int-desc">Operações e fichas individuais</div>
+      </a>
     </div>
-  </div>
 
-  <!-- RESULTADO (aparece após registro) -->
-  <div class="resultado" id="resultado">
-    <div class="check">✅</div>
-    <h3>Reclamação registrada pela CICILE</h3>
-    <p id="resultado-texto">Seu registro foi recebido. A CICILE já comunicou à direção do Instituto e ao departamento responsável. Guarde seu número de protocolo para acompanhamento.</p>
-    <div class="protocolo-num" id="num-protocolo">CICILE-000000</div>
-    <div class="btns" style="justify-content:center; margin-top:20px;">
-      <a class="btn b-esc" href="cicile.html">← Voltar à CICILE</a>
-      <a class="btn b-esc" href="pagina_respiro_celeiro.html">Mapa do Celeiro</a>
+    <div class="btns" style="justify-content:center; margin-top:32px;">
+      <a class="btn btn-verde" href="acompanhamento_evolucao_trajetoria.html">✔ Ativar meu acompanhamento</a>
+      <a class="btn btn-ouro" href="sigmal_academia_artistica_internacional.html">↗ Ingressar na SIGMAL</a>
+      <a class="btn btn-esc" href="pagina_respiro_celeiro.html">← Voltar ao mapa do Celeiro</a>
+      <a class="btn btn-esc" href="portal_instituto_celeiro_literario.html">⊠ Sair do sistema</a>
     </div>
-  </div>
+  </section>
 
 </main>
 
 <footer>
-  <p><strong>CICILE</strong> — Central de Inteligência Cultural e Literária do Celeiro</p>
-  <p>Canal oficial de reclamações · Instituto Cultural Celeiro Literário</p>
-  <p class="mono">cicile_reclamacao.html · toda reclamação tem destino</p>
+  <p><strong>Mentoria Cibernética</strong> — Instituto Cultural Celeiro Literário</p>
+  <p>Trajano Estrada · CICILE · SIGMAL · OHE · Snake As · Lonely Eagle</p>
+  <p class="mono">mentoria_cibernetica.html · departamento interno · modo=interno</p>
 </footer>
-
-<script>
-const tipo      = document.getElementById('tipo');
-const urgencia  = document.getElementById('urgencia');
-const alertaBug = document.getElementById('alertaBug');
-const alertaUrg = document.getElementById('alertaUrgencia');
-
-tipo.addEventListener('change', () => {
-  alertaBug.classList.toggle('visivel', tipo.value === 'bug');
-});
-
-urgencia.addEventListener('change', () => {
-  alertaUrg.classList.toggle('visivel', urgencia.value === 'alta' || urgencia.value === 'critica');
-});
-
-function gerarProtocolo() {
-  const ts  = Date.now().toString().slice(-6);
-  const rnd = Math.floor(Math.random() * 900 + 100);
-  return 'CICILE-' + ts + '-' + rnd;
-}
-
-function registrar() {
-  const nome    = document.getElementById('nome').value.trim();
-  const depto   = document.getElementById('departamento').value;
-  const tipoVal = tipo.value;
-  const desc    = document.getElementById('descricao').value.trim();
-
-  if (!depto) {
-    alert('Por favor, selecione o departamento envolvido para que a CICILE encaminhe corretamente.');
-    return;
-  }
-  if (!desc) {
-    alert('Por favor, descreva o que aconteceu. Quanto mais detalhes, melhor.');
-    return;
-  }
-
-  const protocolo = gerarProtocolo();
-  const payload = {
-    protocolo,
-    nome:      nome || 'Não identificado',
-    email:     document.getElementById('email').value,
-    depto,
-    tipo:      tipoVal,
-    urgencia:  urgencia.value,
-    data_ocorrencia: document.getElementById('data_ocorrencia').value,
-    descricao: desc,
-    resolucao: document.getElementById('resolucao').value,
-    registrado_em: new Date().toISOString(),
-    origem: location.href
-  };
-
-  // Salva localmente (será substituído por integração real)
-  try {
-    const historico = JSON.parse(localStorage.getItem('cicile_registros') || '[]');
-    historico.push(payload);
-    localStorage.setItem('cicile_registros', JSON.stringify(historico));
-    localStorage.setItem('cicile_ultimo', JSON.stringify(payload));
-  } catch(e) {}
-
-  // Monta mensagem de resultado
-  const msgs = {
-    reclamacao:       'Reclamação formal registrada. A CICILE comunicou à direção e ao departamento responsável.',
-    observacao:       'Observação registrada. A CICILE encaminhou ao departamento indicado.',
-    duvida_pedagogica:'Dúvida pedagógica registrada. O setor responsável será notificado.',
-    trajetoria:       'Registro de trajetória/oportunidades recebido. Trajano Estrada será notificado.',
-    bug:              'Mau funcionamento registrado como prioridade técnica. A assistência técnica e a direção foram notificadas.',
-    elogio:           'Elogio/sugestão recebido com satisfação. A direção do Instituto será informada.'
-  };
-
-  document.getElementById('resultado-texto').textContent =
-    (msgs[tipoVal] || 'Registro recebido pela CICILE.') +
-    ' Departamento: ' + depto + '. Urgência: ' + urgencia.value + '.';
-  document.getElementById('num-protocolo').textContent = protocolo;
-
-  // Exibe resultado, oculta formulário
-  document.querySelector('.form-card').style.display = 'none';
-  document.querySelector('.protocolo').style.display = 'none';
-  document.getElementById('resultado').classList.add('visivel');
-  document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
-}
-</script>
 
 </body>
 </html>
