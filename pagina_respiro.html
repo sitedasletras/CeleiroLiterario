@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Página de Respiro — Celeiro Literário</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+/* ══════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════ */
+:root {
+  --azul0:  #07101d;
+  --azul1:  #0e2140;
+  --azul2:  #17365d;
+  --azul3:  #225d99;
+  --azul4:  #eaf4ff;
+  --ouro:   #d6b354;
+  --ouro-c: #f0d882;
+  --ouro-e: #a8872e;
+  --papel:  #fffef8;
+  --tinta:  #0b1d33;
+
+  /* Cores por departamento */
+  --cor-editorial:  #1a4875;
+  --cor-lapidar:    #2d5a27;
+  --cor-radar:      #5a1a3a;
+  --cor-expedicao:  #4a3a1a;
+  --cor-parceiros:  #1a3a5a;
+  --cor-banco:      #3a1a5a;
+  --cor-caminho:    #1a4a3a;
+  --cor-instituto:  #0f2a3a;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ══════════════════════════════════════════
+   FUNDO — CÉU ESTRELADO ANIMADO
+══════════════════════════════════════════ */
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--azul0);
+  color: var(--papel);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* estrelas de fundo */
+.estrelas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.estrela {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: piscarEstrela var(--dur, 3s) ease-in-out infinite;
+  opacity: 0;
+}
+@keyframes piscarEstrela {
+  0%, 100% { opacity: 0; }
+  50%       { opacity: var(--brilho, .6); }
+}
+
+/* luz de fundo suave */
+.luz-fundo {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 30%, rgba(34,93,153,.18) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 80% 70%, rgba(168,135,46,.12) 0%, transparent 70%);
+}
+
+/* conteúdo acima */
+.conteudo { position: relative; z-index: 1; }
+
+/* ══════════════════════════════════════════
+   ENTRADA — PORTAL SUPERIOR
+══════════════════════════════════════════ */
+.portal-entrada {
+  text-align: center;
+  padding: 64px 20px 48px;
+  position: relative;
+}
+
+.ornamento-topo {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--ouro);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  opacity: .8;
+}
+
+.titulo-principal {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 900;
+  line-height: .95;
+  color: var(--papel);
+  letter-spacing: -2px;
+  margin-bottom: 16px;
+}
+.titulo-principal em {
+  color: var(--ouro);
+  font-style: italic;
+  display: block;
+}
+
+.subtitulo {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: clamp(18px, 2.5vw, 24px);
+  color: #8ab0d8;
+  max-width: 540px;
+  margin: 0 auto 28px;
+  line-height: 1.5;
+}
+
+/* Divisa ornamentada */
+.divisa {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: center;
+  margin: 0 auto 48px;
+  max-width: 440px;
+}
+.divisa-linha {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ouro), transparent);
+}
+.divisa-ornamento {
+  color: var(--ouro);
+  font-size: 20px;
+}
+
+/* ══════════════════════════════════════════
+   MAPA GERAL
+══════════════════════════════════════════ */
+.mapa-wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 18px 80px;
+}
+
+/* ── SEÇÃO ── */
+.secao {
+  margin-bottom: 60px;
+}
+.secao-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid rgba(214,179,84,.2);
+}
+.secao-numero {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--ouro);
+  background: rgba(214,179,84,.1);
+  border: 1px solid rgba(214,179,84,.3);
+  border-radius: 999px;
+  padding: 3px 10px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+.secao-nome {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ouro-c);
+}
+.secao-desc {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: #6a8aaa;
+  margin-left: auto;
+}
+
+/* ── GRADE DE PORTAIS ── */
+.grade {
+  display: grid;
+  gap: 16px;
+}
+.grade-2 { grid-template-columns: repeat(2, 1fr); }
+.grade-3 { grid-template-columns: repeat(3, 1fr); }
+.grade-4 { grid-template-columns: repeat(4, 1fr); }
+.grade-auto { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+
+/* ── CARD DE PORTAL ── */
+.portal {
+  border-radius: 20px;
+  border: 1px solid rgba(214,179,84,.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .22s, box-shadow .22s, border-color .22s;
+  position: relative;
+  background: rgba(255,255,255,.04);
+  cursor: pointer;
+}
+.portal:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0,0,0,.5);
+  border-color: rgba(214,179,84,.6);
+}
+
+/* Faixa de cor por departamento */
+.portal::before {
+  content: '';
+  display: block;
+  height: 5px;
+  width: 100%;
+  background: var(--cor-dept, var(--azul3));
+}
+
+/* Portal em destaque — maior */
+.portal-destaque {
+  grid-column: span 2;
+  flex-direction: row;
+}
+.portal-destaque .portal-icone-wrap {
+  width: 130px;
+  flex-shrink: 0;
+  border-radius: 0;
+  aspect-ratio: auto;
+  height: 100%;
+}
+
+.portal-icone-wrap {
+  background: rgba(0,0,0,.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16/9;
+  font-size: 44px;
+  position: relative;
+  overflow: hidden;
+}
+.portal-icone-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,.07) 0%, transparent 70%);
+}
+
+.portal-icone-wrap.pequeno {
+  aspect-ratio: auto;
+  height: 80px;
+  font-size: 32px;
+}
+
+.portal-corpo {
+  padding: 16px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.portal-kicker {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ouro);
+  opacity: .8;
+}
+.portal-nome {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--papel);
+  line-height: 1.2;
+}
+.portal-nome.grande {
+  font-size: 24px;
+}
+.portal-desc {
+  font-family: 'Crimson Pro', serif;
+  font-size: 14px;
+  color: #8aabca;
+  line-height: 1.5;
+  flex: 1;
+}
+.portal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(214,179,84,.1);
+  border: 1px solid rgba(214,179,84,.25);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--ouro-c);
+  margin-top: 4px;
+  width: fit-content;
+}
+.badge-novo { background: rgba(39,174,96,.15); border-color: rgba(39,174,96,.4); color: #7de8a5; }
+.badge-beta { background: rgba(90,90,200,.15); border-color: rgba(90,90,200,.4); color: #b0b0ff; }
+
+/* seta de acesso */
+.portal-seta {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(214,179,84,.15);
+  border: 1px solid rgba(214,179,84,.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--ouro-c);
+  transition: .2s;
+}
+.portal:hover .portal-seta {
+  background: rgba(214,179,84,.35);
+}
+
+/* ══════════════════════════════════════════
+   FAIXA DE CITAÇÃO
+══════════════════════════════════════════ */
+.faixa-citacao {
+  margin: 52px 0;
+  padding: 32px 40px;
+  background: rgba(214,179,84,.06);
+  border-top: 1px solid rgba(214,179,84,.2);
+  border-bottom: 1px solid rgba(214,179,84,.2);
+  text-align: center;
+}
+.citacao-texto {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(20px, 3vw, 28px);
+  color: var(--ouro-c);
+  line-height: 1.4;
+  max-width: 700px;
+  margin: 0 auto 12px;
+}
+.citacao-fonte {
+  font-family: 'Crimson Pro', serif;
+  font-size: 14px;
+  color: #6a8aaa;
+  font-style: italic;
+}
+
+/* ══════════════════════════════════════════
+   MAPA DE FLUXO VISUAL
+══════════════════════════════════════════ */
+.mapa-fluxo {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(214,179,84,.2);
+  border-radius: 24px;
+  padding: 32px;
+  margin-bottom: 60px;
+}
+.fluxo-titulo {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ouro-c);
+  margin-bottom: 24px;
+  text-align: center;
+}
+.fluxo-linha {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+.fluxo-no {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: inherit;
+  padding: 14px 18px;
+  border-radius: 16px;
+  transition: .2s;
+  min-width: 90px;
+  text-align: center;
+}
+.fluxo-no:hover { background: rgba(214,179,84,.1); }
+.fluxo-icone { font-size: 28px; }
+.fluxo-nome {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: #7a9ab8;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+.fluxo-seta {
+  color: rgba(214,179,84,.4);
+  font-size: 18px;
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+
+/* ══════════════════════════════════════════
+   RODAPÉ
+══════════════════════════════════════════ */
+.rodape {
+  border-top: 2px solid rgba(214,179,84,.2);
+  padding: 36px 20px 24px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.rodape-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ouro-c);
+  margin-bottom: 8px;
+}
+.rodape-assinatura {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  color: #4a6a8a;
+  font-size: 14px;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVO
+══════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .grade-4 { grid-template-columns: repeat(2, 1fr); }
+  .grade-3 { grid-template-columns: repeat(2, 1fr); }
+  .portal-destaque { grid-column: span 1; flex-direction: column; }
+  .portal-destaque .portal-icone-wrap { width: 100%; height: auto; aspect-ratio: 16/9; }
+  .fluxo-seta { display: none; }
+}
+@media (max-width: 560px) {
+  .grade-2, .grade-3, .grade-4 { grid-template-columns: 1fr; }
+  .portal-destaque { grid-column: span 1; }
+  .titulo-principal { letter-spacing: -1px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ESTRELAS DE FUNDO -->
+<div class="estrelas" id="estrelas"></div>
+<div class="luz-fundo"></div>
+
+<div class="conteudo">
+
+<!-- ══════════════════════════════════════════
+     PORTAL DE ENTRADA
+══════════════════════════════════════════ -->
+<section class="portal-entrada">
+  <div class="ornamento-topo">✦ Instituto Cultural ✦ Site das Letras Edições Literárias ✦</div>
+  <h1 class="titulo-principal">
+    Celeiro
+    <em>Literário</em>
+  </h1>
+  <p class="subtitulo">Um ambiente editorial vivo — onde a palavra é lapidada, publicada, difundida e celebrada.</p>
+  <div class="divisa">
+    <div class="divisa-linha"></div>
+    <div class="divisa-ornamento">◆</div>
+    <div class="divisa-linha"></div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     MAPA DO CELEIRO
+══════════════════════════════════════════ -->
+<main class="mapa-wrap">
+
+  <!-- FLUXO EDITORIAL -->
+  <div class="mapa-fluxo">
+    <div class="fluxo-titulo">✦ O Caminho da Obra dentro do Celeiro ✦</div>
+    <div class="fluxo-linha">
+      <a class="fluxo-no" href="cadastro_celeiro.html?modo=interno">
+        <span class="fluxo-icone">📝</span>
+        <span class="fluxo-nome">Cadastro</span>
+      </a>
+      <span class="fluxo-seta">→</span>
+      <a class="fluxo-no" href="lapidar.html?modo=interno">
+        <span class="fluxo-icone">💎</span>
+        <span class="fluxo-nome">Lapidar</span>
+      </a>
+      <span class="fluxo-seta">→</span>
+      <a class="fluxo-no" href="avaliacao_literaria.html?modo=interno">
+        <span class="fluxo-icone">⚖️</span>
+        <span class="fluxo-nome">Avaliação</span>
+      </a>
+      <span class="fluxo-seta">→</span>
+      <a class="fluxo-no" href="faca_kapa_literario.html?modo=interno">
+        <span class="fluxo-icone">🎨</span>
+        <span class="fluxo-nome">Capa</span>
+      </a>
+      <span class="fluxo-seta">→</span>
+      <a class="fluxo-no" href="expedicao_editorial.html?modo=interno">
+        <span class="fluxo-icone">🚀</span>
+        <span class="fluxo-nome">Expedição</span>
+      </a>
+      <span class="fluxo-seta">→</span>
+      <a class="fluxo-no" href="site_editorial_livraria.html?modo=interno">
+        <span class="fluxo-icone">📚</span>
+        <span class="fluxo-nome">Livraria</span>
+      </a>
+      <span class="fluxo-seta">→</span>
+      <a class="fluxo-no" href="departamento_corsi_circulacao_redes.html?modo=interno">
+        <span class="fluxo-icone">📡</span>
+        <span class="fluxo-nome">Circulação</span>
+      </a>
+    </div>
+  </div>
+
+
+  <!-- ────────────────────────────────
+       SEÇÃO 1 — PORTAIS PRINCIPAIS
+  ──────────────────────────────── -->
+  <section class="secao">
+    <div class="secao-cabecalho">
+      <span class="secao-numero">01</span>
+      <span class="secao-nome">Portais Principais</span>
+      <span class="secao-desc">As portas-mestras do Celeiro</span>
+    </div>
+
+    <div class="grade grade-2">
+
+      <!-- DESTAQUE — Portal Instituto -->
+      <a class="portal portal-destaque" href="portal_instituto_celeiro_literario.html?modo=interno"
+         style="--cor-dept: var(--cor-instituto)">
+        <div class="portal-icone-wrap" style="font-size:60px; background: linear-gradient(145deg,#0a1e36,#122d50)">🏛️</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Pórtico Central</div>
+          <div class="portal-nome grande">Instituto Cultural<br>Celeiro Literário</div>
+          <div class="portal-desc">O hall de entrada do ecossistema. Ponto de orientação, identidade institucional e acesso a todos os ambientes do Celeiro.</div>
+          <div class="portal-badge">🏠 Entrada Principal</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <!-- DESTAQUE — Site das Letras -->
+      <a class="portal portal-destaque" href="site_das_letras_edicoes_literarias.html?modo=interno"
+         style="--cor-dept: var(--cor-editorial)">
+        <div class="portal-icone-wrap" style="font-size:60px; background: linear-gradient(145deg,#0e2840,#1a3e6a)">📖</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Sala Editorial</div>
+          <div class="portal-nome grande">Site das Letras<br>Edições Literárias</div>
+          <div class="portal-desc">A sede editorial — Heterônimos, biografias, catálogo de obras, identidade da editora e vitrine pública da produção literária.</div>
+          <div class="portal-badge badge-novo">✦ Novo</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+    </div>
+  </section>
+
+
+  <!-- ────────────────────────────────
+       SEÇÃO 2 — NOVOS PORTAIS (desta sessão)
+  ──────────────────────────────── -->
+  <section class="secao">
+    <div class="secao-cabecalho">
+      <span class="secao-numero">02</span>
+      <span class="secao-nome">Novos Portais do Celeiro</span>
+      <span class="secao-desc">Criados nesta sessão de construção</span>
+    </div>
+
+    <div class="grade grade-3">
+
+      <a class="portal" href="site_editorial_livraria.html?modo=interno"
+         style="--cor-dept: #b87f20">
+        <div class="portal-icone-wrap" style="background: linear-gradient(145deg,#3a2a0a,#6a4a10)">🛒</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Livraria</div>
+          <div class="portal-nome">Vitrine de Obras</div>
+          <div class="portal-desc">Catálogo completo com links de venda na UICLAP, Hotmart e parceiros. Cards por livro, botões de compra e "Onde Encontrar".</div>
+          <div class="portal-badge badge-novo">✦ Novo</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="radar_literario.html?modo=interno"
+         style="--cor-dept: var(--cor-radar)">
+        <div class="portal-icone-wrap" style="background: linear-gradient(145deg,#2a0a1e,#5a1a3a)">📡</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Notícias</div>
+          <div class="portal-nome">Radar Literário</div>
+          <div class="portal-desc">Portal de notícias culturais do Brasil e do mundo com tradução automática via Claude para o idioma do visitante.</div>
+          <div class="portal-badge badge-novo">✦ Novo · 11 idiomas</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="departamento_parceiros_culturais.html?modo=interno"
+         style="--cor-dept: var(--cor-parceiros)">
+        <div class="portal-icone-wrap" style="background: linear-gradient(145deg,#0a1e3a,#1a3a5a)">✦</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Parceiros</div>
+          <div class="portal-nome">Parceiros Culturais</div>
+          <div class="portal-desc">Links patrocinados curados — livrarias, cursos, festivais, editoras. Espaço AdSense configurado. Sem jogos ou vulgarização.</div>
+          <div class="portal-badge badge-novo">✦ Novo · Monetização</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+    </div>
+  </section>
+
+
+  <!-- CITAÇÃO -->
+  <div class="faixa-citacao">
+    <div class="citacao-texto">"A palavra que não circula apodrece em silêncio. O Celeiro existe para que ela respire, cresça e chegue ao mundo."</div>
+    <div class="citacao-fonte">— Site das Letras Edições Literárias & Multimídia</div>
+  </div>
+
+
+  <!-- ────────────────────────────────
+       SEÇÃO 3 — OFICINAS DE CRIAÇÃO
+  ──────────────────────────────── -->
+  <section class="secao">
+    <div class="secao-cabecalho">
+      <span class="secao-numero">03</span>
+      <span class="secao-nome">Oficinas de Criação</span>
+      <span class="secao-desc">Onde a obra nasce e é lapidada</span>
+    </div>
+
+    <div class="grade grade-auto">
+
+      <a class="portal" href="lapidar.html?modo=interno"
+         style="--cor-dept: var(--cor-lapidar)">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#142810,#2d5a27)">💎</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Ateliê</div>
+          <div class="portal-nome">Lapidar</div>
+          <div class="portal-desc">O coração das oficinas. Sistema editorial modular de criação e refinamento literário.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="maquina_fina_poesia.html?modo=interno"
+         style="--cor-dept: #5a1a6a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#2a0a36,#5a1a6a)">🖊️</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Poesia</div>
+          <div class="portal-nome">Máquina Fina de Poesia</div>
+          <div class="portal-desc">Ferramenta especializada para lapidação de poemas e linguagem poética.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="maquina_fina_prosa_v2.html?modo=interno"
+         style="--cor-dept: #1a5a3a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#0a2a1e,#1a5a3a)">📜</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Prosa</div>
+          <div class="portal-nome">Máquina Fina de Prosa</div>
+          <div class="portal-desc">Refinamento de narrativa, ritmo e textura da prosa literária.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="maquina_estimulos_narrativos.html?modo=interno"
+         style="--cor-dept: #3a5a1a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#1e3a0a,#3a5a1a)">⚡</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Criação</div>
+          <div class="portal-nome">Estímulos Narrativos</div>
+          <div class="portal-desc">Máquina de geração de estímulos, gatilhos e exercícios criativos.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="desbaste_textual_leve.html?modo=interno"
+         style="--cor-dept: #5a3a1a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#2a1e0a,#5a3a1a)">✂️</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Edição</div>
+          <div class="portal-nome">Desbaste Textual</div>
+          <div class="portal-desc">Revisão e desbaste leve de texto para lapidação inicial da obra.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="hq_editor.html?modo=interno"
+         style="--cor-dept: #1a1a5a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#0a0a2a,#1a1a5a)">🎭</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ HQ</div>
+          <div class="portal-nome">Editor de HQ</div>
+          <div class="portal-desc">Criação de histórias em quadrinhos e narrativas visuais literárias.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+    </div>
+  </section>
+
+
+  <!-- ────────────────────────────────
+       SEÇÃO 4 — FORMAÇÃO & TRAJETÓRIA
+  ──────────────────────────────── -->
+  <section class="secao">
+    <div class="secao-cabecalho">
+      <span class="secao-numero">04</span>
+      <span class="secao-nome">Formação & Trajetória</span>
+      <span class="secao-desc">O caminho do escritor dentro do Celeiro</span>
+    </div>
+
+    <div class="grade grade-auto">
+
+      <a class="portal" href="caminho_das_pedras.html?modo=interno"
+         style="--cor-dept: var(--cor-caminho)">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#0a2a1e,#1a4a3a)">🪨</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Jornada</div>
+          <div class="portal-nome">Caminho das Pedras</div>
+          <div class="portal-desc">Trilha formativa para escritores — etapas, marcos e orientação de carreira.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="caminho_das_pedras_poesia.html?modo=interno"
+         style="--cor-dept: #5a1a6a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#2a0a36,#4a1a5a)">🌹</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Poesia</div>
+          <div class="portal-nome">Caminho da Poesia</div>
+          <div class="portal-desc">Trilha especializada para a formação e desenvolvimento do poeta.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="caminho_das_pedras_prosa.html?modo=interno"
+         style="--cor-dept: #1a5a3a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#0a2a1e,#1a4a2a)">📗</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Prosa</div>
+          <div class="portal-nome">Caminho da Prosa</div>
+          <div class="portal-desc">Trilha para desenvolvimento do narrador, romancista e contista.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="acompanhamento_evolucao_trajetoria.html?modo=interno"
+         style="--cor-dept: #3a1a1a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#2a0a0a,#5a2a2a)">📊</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Evolução</div>
+          <div class="portal-nome">Acompanhamento</div>
+          <div class="portal-desc">Painel de evolução e trajetória do escritor ao longo do tempo.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="mentoria_cibernetica.html?modo=interno"
+         style="--cor-dept: #1a3a5a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#0a1e30,#1a3a5a)">🤖</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Mentoria</div>
+          <div class="portal-nome">Mentoria Cibernética</div>
+          <div class="portal-desc">Orientação inteligente de escrita e carreira literária com IA.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="departamento_auxilio_carreira.html?modo=interno"
+         style="--cor-dept: #3a5a1a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#1e3a0a,#3a5a1a)">🎓</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Carreira</div>
+          <div class="portal-nome">Auxílio de Carreira</div>
+          <div class="portal-desc">Suporte à profissionalização e ao desenvolvimento da carreira literária.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+    </div>
+  </section>
+
+
+  <!-- ────────────────────────────────
+       SEÇÃO 5 — PRODUÇÃO & EXPEDIÇÃO
+  ──────────────────────────────── -->
+  <section class="secao">
+    <div class="secao-cabecalho">
+      <span class="secao-numero">05</span>
+      <span class="secao-nome">Produção & Expedição</span>
+      <span class="secao-desc">Da obra ao mundo</span>
+    </div>
+
+    <div class="grade grade-auto">
+
+      <a class="portal" href="faca_kapa_literario.html?modo=interno"
+         style="--cor-dept: #5a4a1a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#2a2010,#5a4010)">🎨</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Design</div>
+          <div class="portal-nome">Faz a Capa Literária</div>
+          <div class="portal-desc">Criação e edição de capas para obras literárias.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="faca_kapa_cordel.html?modo=interno"
+         style="--cor-dept: #8a3a1a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#3a1a0a,#7a2a0a)">🖼️</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Cordel</div>
+          <div class="portal-nome">Faz a Capa Cordel</div>
+          <div class="portal-desc">Criação de capas no estilo da tradição do cordel brasileiro.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="barracao_polimento_imagens.html?modo=interno"
+         style="--cor-dept: #2a4a6a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#0e2040,#2a4060)">✨</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Imagens</div>
+          <div class="portal-nome">Barracão de Imagens</div>
+          <div class="portal-desc">Polimento e tratamento de imagens para publicação literária.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="expedicao_editorial.html?modo=interno"
+         style="--cor-dept: var(--cor-expedicao)">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#2a1e0a,#4a3a14)">🚀</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Lançamento</div>
+          <div class="portal-nome">Expedição Editorial</div>
+          <div class="portal-desc">Preparação e lançamento da obra no mercado editorial.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="expedicao_multimidia.html?modo=interno"
+         style="--cor-dept: #3a1a4a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#1e0a2a,#3a1a4a)">🎬</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Multimídia</div>
+          <div class="portal-nome">Expedição Multimídia</div>
+          <div class="portal-desc">Extensões audiovisuais e multimídia da obra literária.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="departamento_corsi_circulacao_redes.html?modo=interno"
+         style="--cor-dept: #1a5a5a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#0a2a2a,#1a4a4a)">📡</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ CORSI</div>
+          <div class="portal-nome">Circulação & Redes</div>
+          <div class="portal-desc">Distribuição e circulação em redes sociais e mídias literárias.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+    </div>
+  </section>
+
+
+  <!-- ────────────────────────────────
+       SEÇÃO 6 — ACERVO & MEMÓRIA
+  ──────────────────────────────── -->
+  <section class="secao">
+    <div class="secao-cabecalho">
+      <span class="secao-numero">06</span>
+      <span class="secao-nome">Acervo & Memória</span>
+      <span class="secao-desc">O patrimônio vivo do Celeiro</span>
+    </div>
+
+    <div class="grade grade-auto">
+
+      <a class="portal" href="bpl_banco_personagens_literarios.html?modo=interno"
+         style="--cor-dept: var(--cor-banco)">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#1a0a2a,#3a1a5a)">👥</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ BPL</div>
+          <div class="portal-nome">Banco de Personagens</div>
+          <div class="portal-desc">Repositório vivo de personagens literários criados no Celeiro.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="dias_gramador_livros.html?modo=interno"
+         style="--cor-dept: #5a2a1a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#2a1010,#5a2010)">📅</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Agenda</div>
+          <div class="portal-nome">Dias & Gramador</div>
+          <div class="portal-desc">Calendário e agendamento editorial da vida literária.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="mapa_fluxo_celeiro.html?modo=interno"
+         style="--cor-dept: #2a4a2a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#0a2010,#2a4020)">🗺️</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Mapa</div>
+          <div class="portal-nome">Mapa do Celeiro</div>
+          <div class="portal-desc">Visualização do fluxo e estrutura interna do ecossistema editorial.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="modulos_status_celeiro.html?modo=interno"
+         style="--cor-dept: #1a1a4a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#0a0a20,#1a1a40)">⚙️</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Status</div>
+          <div class="portal-nome">Status dos Módulos</div>
+          <div class="portal-desc">Painel de saúde e status operacional de todos os módulos.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+    </div>
+  </section>
+
+
+  <!-- ────────────────────────────────
+       SEÇÃO 7 — AVALIAÇÃO & PLANOS
+  ──────────────────────────────── -->
+  <section class="secao">
+    <div class="secao-cabecalho">
+      <span class="secao-numero">07</span>
+      <span class="secao-nome">Avaliação & Planos</span>
+      <span class="secao-desc">Critério e visão de futuro</span>
+    </div>
+
+    <div class="grade grade-auto">
+
+      <a class="portal" href="avaliacao_literaria.html?modo=interno"
+         style="--cor-dept: #4a3a0a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#2a1e0a,#4a3810)">⚖️</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Critério</div>
+          <div class="portal-nome">Avaliação Literária</div>
+          <div class="portal-desc">Sistema de avaliação crítica e qualitativa das obras em processo.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="lapidacao_literaria.html?modo=interno"
+         style="--cor-dept: var(--cor-lapidar)">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#0e2810,#1a4a20)">🔬</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Processo</div>
+          <div class="portal-nome">Lapidação Literária</div>
+          <div class="portal-desc">Metodologia e processo formal de lapidação da obra literária.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="console_privado_celeiro.html?modo=interno"
+         style="--cor-dept: #2a0a0a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#1a0505,#3a0a0a)">🔐</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Admin</div>
+          <div class="portal-nome">Console Privado</div>
+          <div class="portal-desc">Painel de controle privado e administrativo do Celeiro.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+    </div>
+  </section>
+
+
+  <!-- ────────────────────────────────
+       SEÇÃO 8 — HETERÔNIMOS (SILOS)
+  ──────────────────────────────── -->
+  <section class="secao">
+    <div class="secao-cabecalho">
+      <span class="secao-numero">08</span>
+      <span class="secao-nome">Silos & Heterônimos</span>
+      <span class="secao-desc">As vozes literárias do Site das Letras</span>
+    </div>
+
+    <div class="grade grade-4">
+
+      <a class="portal" href="ohe-pecanha/index.html?modo=interno"
+         style="--cor-dept: #6a1a2a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#2a0a12,#5a1a22)">🎭</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Heterônimo</div>
+          <div class="portal-nome">Ohê Peçanha</div>
+          <div class="portal-desc">Silo e arquivo do Heterônimo Ohê Peçanha.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="silos/index.html?modo=interno"
+         style="--cor-dept: #3a1a6a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#1a0a30,#3a1a5a)">🗃️</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Arquivo</div>
+          <div class="portal-nome">Silos Editoriais</div>
+          <div class="portal-desc">Repositório central dos silos e arquivos dos heterônimos.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="an.html?modo=interno"
+         style="--cor-dept: #1a4a6a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#0a1e30,#1a3a50)">📝</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Autoral</div>
+          <div class="portal-nome">Painel Autoral</div>
+          <div class="portal-desc">Módulo de identidade e perfil autoral do escritor.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+      <a class="portal" href="cadastro_autoral.html?modo=interno"
+         style="--cor-dept: #1a3a1a">
+        <div class="portal-icone-wrap pequeno" style="background: linear-gradient(145deg,#0a1e0a,#1a3a1a)">👤</div>
+        <div class="portal-corpo">
+          <div class="portal-kicker">✦ Registro</div>
+          <div class="portal-nome">Cadastro Autoral</div>
+          <div class="portal-desc">Registro e ficha de identidade do autor no Celeiro.</div>
+        </div>
+        <div class="portal-seta">→</div>
+      </a>
+
+    </div>
+  </section>
+
+</main><!-- /mapa-wrap -->
+
+
+<!-- RODAPÉ -->
+<footer class="rodape">
+  <div class="rodape-logo">✦ Celeiro Literário ✦</div>
+  <div class="rodape-assinatura">Site das Letras Edições Literárias & Multimídia · Todos os ambientes, um só propósito: a palavra.</div>
+</footer>
+
+</div><!-- /conteudo -->
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+/* ── Modo interno / externo ── */
+(function () {
+  const p = new URLSearchParams(location.search);
+  const interno =
+    p.get('modo') === 'interno' ||
+    p.get('entrada') === 'celeiro' ||
+    localStorage.getItem('celeiro_modo_interno') === 'sim';
+  if (interno) localStorage.setItem('celeiro_modo_interno', 'sim');
+
+  /* Propagar modo interno para todos os links internos */
+  if (interno) {
+    document.querySelectorAll('a[href]').forEach(a => {
+      const href = a.getAttribute('href');
+      if (href && !href.startsWith('http') && !href.startsWith('#')) {
+        try {
+          const url = new URL(href, location.href);
+          url.searchParams.set('modo', 'interno');
+          a.href = url.pathname + url.search;
+        } catch (e) {}
+      }
+    });
+  }
+})();
+
+/* ── Estrelas animadas ── */
+(function () {
+  const wrap = document.getElementById('estrelas');
+  const total = 120;
+  for (let i = 0; i < total; i++) {
+    const s = document.createElement('div');
+    s.className = 'estrela';
+    const size = Math.random() * 2.5 + .5;
+    s.style.cssText = [
+      `width:${size}px`,
+      `height:${size}px`,
+      `left:${Math.random() * 100}%`,
+      `top:${Math.random() * 100}%`,
+      `--dur:${(Math.random() * 4 + 2).toFixed(1)}s`,
+      `--brilho:${(Math.random() * .5 + .2).toFixed(2)}`,
+      `animation-delay:${(Math.random() * 6).toFixed(1)}s`
+    ].join(';');
+    wrap.appendChild(s);
+  }
+})();
+
+/* ── Paralax suave no scroll ── */
+window.addEventListener('scroll', function () {
+  const y = window.scrollY;
+  document.querySelector('.luz-fundo').style.transform =
+    `translateY(${y * .12}px)`;
+}, { passive: true });
+</script>
+
+</body>
+</html>
