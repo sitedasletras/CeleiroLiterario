@@ -1,1 +1,321 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>CORSI</title><script>location.replace('departamento_corsi_circulacao_redes.html?modo=interno');</script></head><body><p><a href="departamento_corsi_circulacao_redes.html?modo=interno">Abrir CORSI</a></p></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORSI — Circulação em Redes | Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --azul:#0f1c2e; --azul2:#07101d; --azul3:#0d2540;
+  --ouro:#c9a646; --ouro2:#f4dc88; --cobre:#b87333;
+  --papel:#fffaf0; --papel2:#f7f1e2; --texto:#243043; --cinza:#4a5568;
+  --roxo:#3b1f6e; --roxo2:#5e3aad; --roxo3:#9b6dff;
+  --linha:rgba(201,166,70,.28); --r:22px; --s:0 18px 50px rgba(8,17,31,.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Source Serif 4',Georgia,serif;background:linear-gradient(170deg,#fbf7ed,#ede0c4);color:var(--texto);min-height:100vh}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(7,16,29,.97);border-bottom:2px solid var(--ouro);backdrop-filter:blur(10px)}
+.top-in{max-width:1200px;margin:auto;padding:10px 22px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.marca{font-family:'Playfair Display',serif;color:var(--ouro2);font-size:14px}
+.marca small{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(244,220,136,.5)}
+.tnav{display:flex;gap:6px;flex-wrap:wrap}
+.tnav a{font-family:'JetBrains Mono',monospace;font-size:11px;color:#c8c0ae;text-decoration:none;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.1);transition:.18s}
+.tnav a:hover{color:var(--ouro2);border-color:var(--ouro);background:rgba(201,166,70,.12)}
+
+/* HERO */
+.hero{
+  background:radial-gradient(ellipse 60% 50% at 10% 15%,rgba(94,58,173,.2),transparent),
+             radial-gradient(ellipse 50% 60% at 90% 85%,rgba(201,166,70,.12),transparent),
+             linear-gradient(148deg,var(--azul2) 0%,var(--roxo) 55%,#0d0520 100%);
+  color:white;padding:68px 22px 56px;border-bottom:7px solid var(--ouro);position:relative;overflow:hidden
+}
+.hero::after{content:'CORSI';position:absolute;right:-10px;bottom:-50px;font-family:'Playfair Display',serif;font-size:200px;font-weight:900;color:rgba(155,109,255,.06);line-height:1;pointer-events:none}
+.hero-in{max-width:1200px;margin:auto;display:grid;grid-template-columns:200px 1fr;gap:44px;align-items:start;position:relative;z-index:1}
+.h-esq{display:flex;flex-direction:column;align-items:center;gap:14px}
+.corsi-av{width:178px;height:178px;border-radius:24px;background:linear-gradient(135deg,var(--roxo),#1a0d42);border:4px solid var(--ouro);box-shadow:0 0 0 8px rgba(94,58,173,.18),0 28px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.corsi-av .av-s{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;color:var(--ouro2);line-height:1}
+.corsi-av .av-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(244,220,136,.55);letter-spacing:.1em;text-align:center}
+.pill{font-family:'JetBrains Mono',monospace;font-size:11px;padding:6px 14px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+.p-roxo{background:rgba(94,58,173,.3);border:1px solid var(--roxo3);color:var(--roxo3)}
+.p-ouro{background:rgba(201,166,70,.15);border:1px solid rgba(201,166,70,.4);color:var(--ouro2)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--roxo3);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.h-dir .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ouro2);border:1px solid rgba(201,166,70,.4);display:inline-block;padding:7px 14px;border-radius:999px;margin-bottom:14px;letter-spacing:.08em}
+.h-dir h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5.5vw,68px);line-height:1;color:var(--ouro2);margin-bottom:6px}
+.h-dir .cargo{font-size:clamp(15px,2vw,20px);color:#b8a8d4;font-style:italic;margin-bottom:20px}
+.h-dir .missao{font-size:17px;line-height:1.72;color:#e0dace;border-left:3px solid var(--ouro);padding-left:18px;max-width:740px;margin-bottom:24px}
+.h-chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#ddd8cc;font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px 13px;border-radius:12px}
+.chip strong{color:var(--ouro2)}
+
+/* LAYOUT */
+.wrap{max-width:1200px;margin:auto;padding:44px 22px 80px}
+.sec{margin-bottom:52px}
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.sec-head .barra{width:7px;height:34px;background:var(--ouro);border-radius:20px;flex-shrink:0}
+.sec-head h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,36px);color:var(--azul)}
+.subtag{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--azul);color:var(--ouro2);padding:4px 11px;border-radius:999px}
+
+/* CARDS */
+.card{background:var(--papel);border:1px solid var(--linha);border-radius:var(--r);padding:26px;box-shadow:var(--s)}
+.card h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--azul);margin-bottom:12px}
+.card p,.card li{font-size:15px;line-height:1.68;color:#3a4557}
+.card ul{padding-left:18px}
+.card ul li{margin-bottom:7px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+
+/* REDES GRID */
+.redes-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.rede-item{background:var(--papel);border:1px solid var(--linha);border-radius:18px;padding:20px;text-align:center;box-shadow:0 6px 18px rgba(8,17,31,.08);transition:.18s;position:relative;overflow:hidden}
+.rede-item::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.rede-item.roxo::before{background:linear-gradient(90deg,var(--roxo2),var(--roxo3))}
+.rede-item.ouro::before{background:var(--ouro)}
+.rede-item:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(8,17,31,.14);border-color:var(--ouro)}
+.rede-item .ri{font-size:32px;margin-bottom:10px}
+.rede-item h4{font-family:'Playfair Display',serif;font-size:16px;color:var(--azul);margin-bottom:5px}
+.rede-item p{font-size:13px;color:var(--cinza);line-height:1.5}
+
+/* FLUXO */
+.fluxo{display:grid;grid-template-columns:repeat(5,1fr);border:2px solid var(--ouro);border-radius:18px;overflow:hidden;margin:18px 0}
+.f-et{background:var(--azul2);color:var(--ouro2);padding:20px 12px;text-align:center;border-right:1px solid rgba(201,166,70,.3);font-family:'JetBrains Mono',monospace}
+.f-et:last-child{border-right:none}
+.f-et .fn{font-size:26px;font-weight:900;color:var(--ouro);display:block;margin-bottom:8px}
+.f-et .ft{font-size:12px;font-weight:700;display:block;margin-bottom:5px}
+.f-et small{font-size:11px;color:#8a9aaa}
+
+/* CARD ESCURO */
+.card-esc{background:linear-gradient(135deg,var(--azul2),var(--roxo));border:2px solid var(--ouro);border-radius:var(--r);padding:28px;color:white}
+.card-esc h3{font-family:'Playfair Display',serif;font-size:24px;color:var(--ouro2);margin-bottom:10px}
+.card-esc p{font-size:15px;color:#d4cce8;line-height:1.65;margin-bottom:14px}
+.tags-roxo{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tag-r{background:rgba(94,58,173,.25);border:1px solid rgba(155,109,255,.4);color:var(--roxo3);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:10px}
+
+/* NOTICE */
+.notice{background:#fff8d6;border-left:6px solid var(--ouro);border-radius:16px;padding:18px;font-size:15px;color:#3c300a;line-height:1.65;margin-bottom:22px}
+.notice strong{color:#7a5200}
+
+/* BOTÕES */
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:0;cursor:pointer;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;padding:13px 22px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.12);transition:.18s}
+.b-ouro{background:var(--ouro);color:var(--azul2)}
+.b-ouro:hover{background:var(--ouro2)}
+.b-roxo{background:var(--roxo2);color:white}
+.b-roxo:hover{background:var(--roxo)}
+.b-esc{background:var(--azul);color:var(--ouro2);border:1px solid rgba(201,166,70,.35)}
+.b-esc:hover{background:#0a1422}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+
+footer{background:var(--azul2);color:#c8c0ae;border-top:6px solid var(--ouro);padding:32px 22px;text-align:center}
+footer strong{color:var(--ouro2)}
+footer p{font-size:14px;line-height:1.8}
+footer .mono{font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.4;margin-top:8px}
+
+@media(max-width:980px){.hero-in{grid-template-columns:1fr}.h-esq{flex-direction:row}.redes-grid{grid-template-columns:repeat(2,1fr)}.fluxo{grid-template-columns:repeat(3,1fr)}.f-et{border-bottom:1px solid rgba(201,166,70,.3);border-right:none}.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.g2,.g3,.redes-grid{grid-template-columns:1fr}.fluxo{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="top-in">
+    <div class="marca">Instituto Cultural Celeiro Literário<small>CORSI · CIRCULAÇÃO EM REDES · DEPARTAMENTO INTERNO</small></div>
+    <nav class="tnav">
+      <a href="#funcoes">Funções</a>
+      <a href="#redes">Redes</a>
+      <a href="#fluxo">Fluxo</a>
+      <a href="#expedicoes">Expedições</a>
+      <a href="cicile.html">CICILE</a>
+      <a href="pagina_respiro_celeiro.html">← Celeiro</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="h-esq">
+      <div class="corsi-av">
+        <span class="av-s">CO</span>
+        <span class="av-sub">CORSI<br>CIRCULAÇÃO</span>
+      </div>
+      <span class="pill p-roxo"><span class="dot"></span> Operacional</span>
+      <span class="pill p-ouro">✦ Celeiro Literário</span>
+    </div>
+    <div class="h-dir">
+      <div class="eyebrow">✦ DEPARTAMENTO DE CIRCULAÇÃO · REDES SOCIAIS E DIGITAIS</div>
+      <h1>CORSI</h1>
+      <p class="cargo">Departamento de Circulação em Redes do Instituto Cultural Celeiro Literário</p>
+      <p class="missao">O CORSI é o departamento responsável por colocar as obras, os autores e o Celeiro Literário em circulação nas redes digitais. Recebe o material finalizado pelas Expedições — Geral, Editorial e Multimídia — e o distribui de forma estratégica nas plataformas certas, no formato certo, para o público certo.</p>
+      <div class="h-chips">
+        <div class="chip">📲 <strong>Redes sociais</strong></div>
+        <div class="chip">▶️ <strong>YouTube</strong></div>
+        <div class="chip">🎙️ <strong>Web Rádio / Web TV</strong></div>
+        <div class="chip">📡 <strong>Streaming</strong></div>
+        <div class="chip">📰 <strong>Distribuição editorial</strong></div>
+        <div class="chip">🌐 <strong>Circulação internacional</strong></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- FUNÇÃO DO CORSI -->
+  <section class="sec" id="funcoes">
+    <div class="sec-head"><div class="barra"></div><h2>O papel do CORSI</h2><span class="subtag">Da obra finalizada à circulação pública</span></div>
+
+    <div class="notice">
+      O CORSI entra em ação depois que o material sai da Expedição. Ele não produz conteúdo — ele <strong>distribui, posiciona e faz circular</strong> o que foi finalizado pelo autor dentro do Celeiro.
+    </div>
+
+    <div class="fluxo">
+      <div class="f-et"><span class="fn">①</span><span class="ft">Obra finalizada</span><small>Expedição libera</small></div>
+      <div class="f-et"><span class="fn">②</span><span class="ft">CORSI recebe</span><small>Classifica por plataforma</small></div>
+      <div class="f-et"><span class="fn">③</span><span class="ft">Prepara formatos</span><small>Cada rede seu formato</small></div>
+      <div class="f-et"><span class="fn">④</span><span class="ft">Distribui</span><small>Publica e agenda</small></div>
+      <div class="f-et"><span class="fn">⑤</span><span class="ft">Monitora</span><small>Alcance e retorno</small></div>
+    </div>
+
+    <div class="g3">
+      <div class="card">
+        <h3>O que o CORSI recebe</h3>
+        <ul>
+          <li>Obras finalizadas pelo Lapidar / Expedição Editorial</li>
+          <li>Produções audiovisuais do Silo Multimídia / Expedição Multimídia</li>
+          <li>Material da Expedição Geral do Celeiro</li>
+          <li>Conteúdo institucional e comunicados do Instituto</li>
+          <li>Material da SIGMAL e de eventos do ecossistema</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>O que o CORSI entrega</h3>
+        <ul>
+          <li>Publicações nas redes sociais do Celeiro</li>
+          <li>Vídeos no YouTube com SEO editorial</li>
+          <li>Episódios na Web Rádio / Web TV</li>
+          <li>Distribuição em plataformas de streaming literário</li>
+          <li>Circulação em grupos e comunidades temáticas</li>
+          <li>Relatório de alcance para a direção e o autor</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Critérios de circulação</h3>
+        <ul>
+          <li>Perfil do público-alvo da obra</li>
+          <li>Área artística (9 áreas SIGMAL)</li>
+          <li>Idioma e alcance geográfico</li>
+          <li>Formato disponível (texto, áudio, vídeo)</li>
+          <li>Periodicidade e calendário editorial</li>
+          <li>Prioridade institucional da semana</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- REDES E PLATAFORMAS -->
+  <section class="sec" id="redes">
+    <div class="sec-head"><div class="barra"></div><h2>Redes e plataformas</h2><span class="subtag">Onde o CORSI faz circular</span></div>
+
+    <div class="redes-grid">
+      <div class="rede-item roxo">
+        <div class="ri">📸</div>
+        <h4>Instagram</h4>
+        <p>Posts, reels, stories e carrosséis de obras, autores e eventos do Celeiro</p>
+      </div>
+      <div class="rede-item roxo">
+        <div class="ri">▶️</div>
+        <h4>YouTube</h4>
+        <p>Vídeos de obras, entrevistas, leituras, lançamentos e conteúdo da SIGMAL</p>
+      </div>
+      <div class="rede-item roxo">
+        <div class="ri">🎵</div>
+        <h4>TikTok</h4>
+        <p>Conteúdo curto e dinâmico para alcance de novos públicos literários</p>
+      </div>
+      <div class="rede-item roxo">
+        <div class="ri">🐦</div>
+        <h4>X / Twitter</h4>
+        <p>Comunicados institucionais, citações e agenda cultural do Celeiro</p>
+      </div>
+      <div class="rede-item ouro">
+        <div class="ri">🎙️</div>
+        <h4>Web Rádio</h4>
+        <p>Transmissões de leituras, entrevistas e programação literária ao vivo</p>
+      </div>
+      <div class="rede-item ouro">
+        <div class="ri">📺</div>
+        <h4>Web TV</h4>
+        <p>Canal de vídeo do Celeiro com programação editorial e cultural</p>
+      </div>
+      <div class="rede-item ouro">
+        <div class="ri">🎧</div>
+        <h4>Podcast / Streaming</h4>
+        <p>Distribuição em Spotify, Deezer e plataformas de áudio literário</p>
+      </div>
+      <div class="rede-item ouro">
+        <div class="ri">🌐</div>
+        <h4>Portal e Rede Mundial</h4>
+        <p>Publicação no portal do Celeiro e na Rede Mundial de Oportunidades</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RELAÇÃO COM EXPEDIÇÕES -->
+  <section class="sec" id="expedicoes">
+    <div class="sec-head"><div class="barra"></div><h2>Relação com as Expedições</h2><span class="subtag">CORSI recebe de todas as três</span></div>
+
+    <div class="g3">
+      <div class="card-esc">
+        <h3>Expedição Geral</h3>
+        <p>A porta de saída geral do Celeiro. O CORSI recebe materiais de alcance amplo: comunicados, campanhas institucionais, lançamentos coletivos e conteúdo transversal do Instituto.</p>
+        <div class="tags-roxo">
+          <span class="tag-r">Comunicados</span>
+          <span class="tag-r">Campanhas</span>
+          <span class="tag-r">Lançamentos coletivos</span>
+        </div>
+        <div class="btns"><a class="btn b-ouro" href="expedicao.html">→ Expedição Geral</a></div>
+      </div>
+      <div class="card-esc">
+        <h3>Expedição Editorial</h3>
+        <p>A porta de saída do Lapidar. O CORSI recebe obras individuais finalizadas: textos, poesias, livros prontos para circulação digital — cada uma com seu público-alvo mapeado.</p>
+        <div class="tags-roxo">
+          <span class="tag-r">Obras individuais</span>
+          <span class="tag-r">Textos e poesias</span>
+          <span class="tag-r">Livros digitais</span>
+        </div>
+        <div class="btns"><a class="btn b-ouro" href="expedicao_editorial.html">→ Expedição Editorial</a></div>
+      </div>
+      <div class="card-esc">
+        <h3>Expedição Multimídia</h3>
+        <p>A porta de saída do Silo Multimídia. O CORSI recebe produções audiovisuais prontas — vídeos, áudios, podcasts — e distribui nas plataformas de mídia conforme o formato.</p>
+        <div class="tags-roxo">
+          <span class="tag-r">Vídeos</span>
+          <span class="tag-r">Áudios e podcasts</span>
+          <span class="tag-r">Produções ao vivo</span>
+        </div>
+        <div class="btns"><a class="btn b-ouro" href="expedicao_multimidia.html">→ Expedição Multimídia</a></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="btns" style="justify-content:center">
+    <a class="btn b-roxo" href="expedicao.html">📦 Expedição Geral</a>
+    <a class="btn b-ouro" href="expedicao_editorial.html">💎 Expedição Editorial</a>
+    <a class="btn b-ouro" href="expedicao_multimidia.html">▶️ Expedição Multimídia</a>
+    <a class="btn b-esc" href="cicile.html">CICILE</a>
+    <a class="btn b-esc" href="pagina_respiro_celeiro.html">← Celeiro</a>
+  </div>
+
+</main>
+
+<footer>
+  <p><strong>CORSI</strong> — Departamento de Circulação em Redes</p>
+  <p>Instituto Cultural Celeiro Literário · Expedições · SIGMAL · CICILE</p>
+  <p class="mono">corsi.html · departamento_corsi_circulacao_redes</p>
+</footer>
+
+</body>
+</html>
