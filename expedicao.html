@@ -1,1 +1,271 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Expedicao</title><script>location.replace('expedicao_editorial.html?modo=interno');</script></head><body><p><a href="expedicao_editorial.html?modo=interno">Abrir Expedicao</a></p></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expedição Geral — Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --azul:#0f1c2e;--azul2:#07101d;--ouro:#c9a646;--ouro2:#f4dc88;--cobre:#b87333;
+  --papel:#fffaf0;--texto:#243043;--cinza:#4a5568;
+  --verde:#184b30;--verde2:#1f7a42;
+  --linha:rgba(201,166,70,.28);--r:22px;--s:0 18px 50px rgba(8,17,31,.15)
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Source Serif 4',Georgia,serif;background:linear-gradient(170deg,#fbf7ed,#ede0c4);color:var(--texto);min-height:100vh}
+
+.topbar{position:sticky;top:0;z-index:100;background:rgba(7,16,29,.97);border-bottom:2px solid var(--ouro);backdrop-filter:blur(10px)}
+.top-in{max-width:1200px;margin:auto;padding:10px 22px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.marca{font-family:'Playfair Display',serif;color:var(--ouro2);font-size:14px}
+.marca small{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(244,220,136,.5)}
+.tnav{display:flex;gap:6px;flex-wrap:wrap}
+.tnav a{font-family:'JetBrains Mono',monospace;font-size:11px;color:#c8c0ae;text-decoration:none;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.1);transition:.18s}
+.tnav a:hover{color:var(--ouro2);border-color:var(--ouro);background:rgba(201,166,70,.12)}
+
+/* HERO — paleta terra/âmbar, identidade da Expedição Geral */
+.hero{
+  background:radial-gradient(ellipse 65% 55% at 12% 18%,rgba(184,115,51,.18),transparent),
+             radial-gradient(ellipse 45% 60% at 88% 85%,rgba(201,166,70,.15),transparent),
+             linear-gradient(148deg,var(--azul2) 0%,#2a1a08 55%,#1a3010 100%);
+  color:white;padding:68px 22px 56px;border-bottom:7px solid var(--ouro);position:relative;overflow:hidden
+}
+.hero::after{content:'EXP';position:absolute;right:-10px;bottom:-50px;font-family:'Playfair Display',serif;font-size:220px;font-weight:900;color:rgba(201,166,70,.05);line-height:1;pointer-events:none}
+.hero-in{max-width:1200px;margin:auto;display:grid;grid-template-columns:200px 1fr;gap:44px;align-items:start;position:relative;z-index:1}
+.h-esq{display:flex;flex-direction:column;align-items:center;gap:14px}
+.exp-av{width:178px;height:178px;border-radius:50%;background:linear-gradient(135deg,#3a1f06,var(--cobre));border:4px solid var(--ouro);box-shadow:0 0 0 8px rgba(201,166,70,.14),0 28px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.exp-av .av-s{font-family:'Playfair Display',serif;font-size:48px;font-weight:900;color:var(--ouro2);line-height:1}
+.exp-av .av-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(244,220,136,.6);letter-spacing:.1em;text-align:center}
+.pill{font-family:'JetBrains Mono',monospace;font-size:11px;padding:6px 14px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+.p-cobre{background:rgba(184,115,51,.25);border:1px solid var(--cobre);color:#f0c080}
+.p-ouro{background:rgba(201,166,70,.15);border:1px solid rgba(201,166,70,.4);color:var(--ouro2)}
+.dot{width:7px;height:7px;border-radius:50%;background:#f0c080;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.h-dir .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ouro2);border:1px solid rgba(201,166,70,.4);display:inline-block;padding:7px 14px;border-radius:999px;margin-bottom:14px}
+.h-dir h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5.5vw,68px);line-height:1;color:var(--ouro2);margin-bottom:6px}
+.h-dir .cargo{font-size:clamp(15px,2vw,20px);color:#c8b898;font-style:italic;margin-bottom:20px}
+.h-dir .missao{font-size:17px;line-height:1.72;color:#e0dace;border-left:3px solid var(--ouro);padding-left:18px;max-width:740px;margin-bottom:24px}
+.h-chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#ddd8cc;font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px 13px;border-radius:12px}
+.chip strong{color:var(--ouro2)}
+
+.wrap{max-width:1200px;margin:auto;padding:44px 22px 80px}
+.sec{margin-bottom:52px}
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.sec-head .barra{width:7px;height:34px;background:var(--ouro);border-radius:20px;flex-shrink:0}
+.sec-head h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,36px);color:var(--azul)}
+.subtag{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--azul);color:var(--ouro2);padding:4px 11px;border-radius:999px}
+
+.card{background:var(--papel);border:1px solid var(--linha);border-radius:var(--r);padding:26px;box-shadow:var(--s)}
+.card h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--azul);margin-bottom:12px}
+.card p,.card li{font-size:15px;line-height:1.68;color:#3a4557}
+.card ul{padding-left:18px}
+.card ul li{margin-bottom:7px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+
+/* As três expedições filhas */
+.exp-filhas{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+.exp-card{border-radius:var(--r);padding:26px;color:white;position:relative;overflow:hidden;text-decoration:none;display:block;transition:.2s;box-shadow:0 16px 44px rgba(0,0,0,.2)}
+.exp-card:hover{transform:translateY(-4px);box-shadow:0 24px 56px rgba(0,0,0,.28)}
+.exp-card.editorial{background:linear-gradient(135deg,#2a1a08,#5c3a10);border:2px solid var(--ouro)}
+.exp-card.multimidia{background:linear-gradient(135deg,var(--azul2),#0d2540);border:2px solid var(--ouro)}
+.exp-card.corsi{background:linear-gradient(135deg,#1f0d42,#3b1f6e);border:2px solid var(--ouro)}
+.exp-card .ec-icone{font-size:38px;margin-bottom:14px;display:block}
+.exp-card h3{font-family:'Playfair Display',serif;font-size:22px;color:var(--ouro2);margin-bottom:8px}
+.exp-card p{font-size:14px;line-height:1.6;color:rgba(255,255,255,.8);margin-bottom:14px}
+.exp-card .ec-tag{font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(201,166,70,.2);border:1px solid rgba(201,166,70,.4);color:var(--ouro2);padding:5px 11px;border-radius:10px;display:inline-block;margin-right:6px;margin-bottom:6px}
+.exp-card .ec-link{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--ouro2);display:block;margin-top:14px}
+
+/* Fluxo */
+.fluxo{display:grid;grid-template-columns:repeat(6,1fr);border:2px solid var(--ouro);border-radius:18px;overflow:hidden;margin:18px 0}
+.f-et{background:var(--azul2);color:var(--ouro2);padding:18px 10px;text-align:center;border-right:1px solid rgba(201,166,70,.3);font-family:'JetBrains Mono',monospace}
+.f-et:last-child{border-right:none}
+.f-et .fn{font-size:22px;font-weight:900;color:var(--ouro);display:block;margin-bottom:7px}
+.f-et .ft{font-size:11px;font-weight:700;display:block;margin-bottom:4px}
+.f-et small{font-size:10px;color:#8a9aaa}
+
+/* Tipos de material */
+.material-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.mat{background:var(--papel);border:1px solid var(--linha);border-radius:16px;padding:16px;text-align:center;box-shadow:0 4px 14px rgba(8,17,31,.07)}
+.mat .mi{font-size:26px;margin-bottom:8px}
+.mat p{font-size:13px;color:var(--cinza);line-height:1.5}
+
+.notice{background:#fff8d6;border-left:6px solid var(--ouro);border-radius:16px;padding:18px;font-size:15px;color:#3c300a;line-height:1.65;margin-bottom:22px}
+.notice strong{color:#7a5200}
+
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:0;cursor:pointer;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;padding:13px 22px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.12);transition:.18s}
+.b-ouro{background:var(--ouro);color:var(--azul2)}
+.b-ouro:hover{background:var(--ouro2)}
+.b-verde{background:var(--verde2);color:white}
+.b-verde:hover{background:#165c31}
+.b-esc{background:var(--azul);color:var(--ouro2);border:1px solid rgba(201,166,70,.35)}
+.b-esc:hover{background:#0a1422}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+
+footer{background:var(--azul2);color:#c8c0ae;border-top:6px solid var(--ouro);padding:32px 22px;text-align:center}
+footer strong{color:var(--ouro2)}
+footer p{font-size:14px;line-height:1.8}
+footer .mono{font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.4;margin-top:8px}
+
+@media(max-width:980px){.hero-in{grid-template-columns:1fr}.h-esq{flex-direction:row}.exp-filhas,.g3{grid-template-columns:1fr 1fr}.fluxo{grid-template-columns:repeat(3,1fr)}.f-et{border-bottom:1px solid rgba(201,166,70,.3);border-right:none}.material-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.g2,.g3,.exp-filhas,.material-grid{grid-template-columns:1fr}.fluxo{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="top-in">
+    <div class="marca">Instituto Cultural Celeiro Literário<small>EXPEDIÇÃO GERAL · HUB DAS SAÍDAS</small></div>
+    <nav class="tnav">
+      <a href="#hub">Hub</a>
+      <a href="#material">Material</a>
+      <a href="#fluxo">Fluxo</a>
+      <a href="expedicao_editorial.html">Editorial</a>
+      <a href="expedicao_multimidia.html">Multimídia</a>
+      <a href="corsi.html">CORSI</a>
+      <a href="pagina_respiro_celeiro.html">← Celeiro</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="h-esq">
+      <div class="exp-av">
+        <span class="av-s">EG</span>
+        <span class="av-sub">EXPEDIÇÃO<br>GERAL</span>
+      </div>
+      <span class="pill p-cobre"><span class="dot"></span> Porta de saída geral</span>
+      <span class="pill p-ouro">✦ Celeiro Literário</span>
+    </div>
+    <div class="h-dir">
+      <div class="eyebrow">✦ HUB DAS EXPEDIÇÕES · SAÍDA INSTITUCIONAL DO CELEIRO</div>
+      <h1>Expedição Geral</h1>
+      <p class="cargo">A porta de saída central do Instituto Cultural Celeiro Literário</p>
+      <p class="missao">A Expedição Geral é o hub que coordena as saídas do Celeiro. É daqui que comunicados institucionais, campanhas, lançamentos coletivos e conteúdo de alcance amplo são liberados e encaminhados ao CORSI para circulação nas redes. Ela conecta a Expedição Editorial, a Expedição Multimídia e o CORSI em um único fluxo organizado.</p>
+      <div class="h-chips">
+        <div class="chip">📦 <strong>Saída institucional</strong></div>
+        <div class="chip">📋 <strong>Comunicados e campanhas</strong></div>
+        <div class="chip">🔗 <strong>Hub das Expedições</strong></div>
+        <div class="chip">📲 <strong>→ CORSI</strong></div>
+        <div class="chip">💎 <strong>→ Expedição Editorial</strong></div>
+        <div class="chip">▶️ <strong>→ Expedição Multimídia</strong></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HUB: AS TRÊS EXPEDIÇÕES -->
+  <section class="sec" id="hub">
+    <div class="sec-head"><div class="barra"></div><h2>As três expedições do Celeiro</h2><span class="subtag">Cada saída tem seu caminho</span></div>
+
+    <div class="notice">
+      A Expedição Geral é o ponto de encontro. A <strong>Expedição Editorial</strong> traz as obras do Lapidar. A <strong>Expedição Multimídia</strong> traz as produções do Silo. Ambas chegam aqui e seguem para o <strong>CORSI</strong>, que faz a circulação nas redes.
+    </div>
+
+    <div class="exp-filhas">
+      <a class="exp-card editorial" href="expedicao_editorial.html">
+        <span class="ec-icone">💎</span>
+        <h3>Expedição Editorial</h3>
+        <p>Porta de saída do Lapidar. Obras individuais finalizadas pelo Mesário Geral: textos, poesias, livros prontos para circulação.</p>
+        <span class="ec-tag">Lapidar</span>
+        <span class="ec-tag">Mesário Geral</span>
+        <span class="ec-tag">Obras individuais</span>
+        <span class="ec-link">Acessar Expedição Editorial →</span>
+      </a>
+      <a class="exp-card multimidia" href="expedicao_multimidia.html">
+        <span class="ec-icone">▶️</span>
+        <h3>Expedição Multimídia</h3>
+        <p>Porta de saída do Silo Multimídia. Produções audiovisuais liberadas após confirmação de pagamento: vídeos, áudios, podcasts.</p>
+        <span class="ec-tag">Silo Multimídia</span>
+        <span class="ec-tag">Áudio e vídeo</span>
+        <span class="ec-tag">Hotmart</span>
+        <span class="ec-link">Acessar Expedição Multimídia →</span>
+      </a>
+      <a class="exp-card corsi" href="corsi.html">
+        <span class="ec-icone">📲</span>
+        <h3>CORSI — Circulação</h3>
+        <p>Destino final de tudo que sai das Expedições. O CORSI distribui nas redes sociais, YouTube, Web Rádio, Web TV e plataformas digitais.</p>
+        <span class="ec-tag">Instagram</span>
+        <span class="ec-tag">YouTube</span>
+        <span class="ec-tag">Web Rádio/TV</span>
+        <span class="ec-link">Acessar CORSI →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- FLUXO GERAL -->
+  <section class="sec" id="fluxo">
+    <div class="sec-head"><div class="barra"></div><h2>Fluxo da Expedição Geral</h2></div>
+
+    <div class="fluxo">
+      <div class="f-et"><span class="fn">①</span><span class="ft">Lapidar</span><small>Obra editorial finalizada</small></div>
+      <div class="f-et"><span class="fn">②</span><span class="ft">Silo Multimídia</span><small>Produção audiovisual</small></div>
+      <div class="f-et"><span class="fn">③</span><span class="ft">Expedição</span><small>Editorial ou Multimídia</small></div>
+      <div class="f-et"><span class="fn">④</span><span class="ft">Expedição Geral</span><small>Hub de coordenação</small></div>
+      <div class="f-et"><span class="fn">⑤</span><span class="ft">CORSI</span><small>Recebe e prepara</small></div>
+      <div class="f-et"><span class="fn">⑥</span><span class="ft">Circulação</span><small>Redes, plataformas, público</small></div>
+    </div>
+  </section>
+
+  <!-- MATERIAL DA EXPEDIÇÃO GERAL -->
+  <section class="sec" id="material">
+    <div class="sec-head"><div class="barra"></div><h2>Material da Expedição Geral</h2><span class="subtag">O que sai por aqui</span></div>
+
+    <div class="material-grid">
+      <div class="mat"><div class="mi">📢</div><p>Comunicados institucionais do Celeiro Literário</p></div>
+      <div class="mat"><div class="mi">🚀</div><p>Lançamentos coletivos e campanhas de divulgação</p></div>
+      <div class="mat"><div class="mi">📅</div><p>Agenda de eventos, festivais e sessões abertas</p></div>
+      <div class="mat"><div class="mi">🏆</div><p>Resultados de concursos e premiações do Instituto</p></div>
+      <div class="mat"><div class="mi">🎓</div><p>Comunicados da SIGMAL e das áreas artísticas</p></div>
+      <div class="mat"><div class="mi">🤝</div><p>Parcerias institucionais e convênios da OHE</p></div>
+      <div class="mat"><div class="mi">📡</div><p>Oportunidades do Radar Literário para divulgação ampla</p></div>
+      <div class="mat"><div class="mi">🌾</div><p>Conteúdo editorial do portal do Celeiro Literário</p></div>
+    </div>
+
+    <div class="g2" style="margin-top:22px">
+      <div class="card">
+        <h3>Quem autoriza a saída</h3>
+        <ul>
+          <li>Obras individuais: Mesário Geral do Lapidar</li>
+          <li>Produções audiovisuais: confirmação Hotmart + Silo</li>
+          <li>Comunicados institucionais: direção do Instituto (CEO)</li>
+          <li>Material SIGMAL: coordenação da área artística</li>
+          <li>Conteúdo da CICILE: CICILE diretamente</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Destino após a Expedição Geral</h3>
+        <ul>
+          <li>CORSI — circulação em redes sociais e plataformas</li>
+          <li>Portal do Celeiro — publicação no site institucional</li>
+          <li>Rede Mundial de Oportunidades — se pertinente</li>
+          <li>Radar Literário — para oportunidades e editais</li>
+          <li>Trajano Estrada — se for oportunidade para associados</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="btns" style="justify-content:center">
+    <a class="btn b-ouro" href="expedicao_editorial.html">💎 Expedição Editorial</a>
+    <a class="btn b-ouro" href="expedicao_multimidia.html">▶️ Expedição Multimídia</a>
+    <a class="btn b-verde" href="corsi.html">📲 CORSI — Circulação</a>
+    <a class="btn b-esc" href="cicile.html">CICILE</a>
+    <a class="btn b-esc" href="pagina_respiro_celeiro.html">← Celeiro</a>
+  </div>
+
+</main>
+
+<footer>
+  <p><strong>Expedição Geral</strong> — Instituto Cultural Celeiro Literário</p>
+  <p>Hub das Expedições · Editorial · Multimídia · CORSI · CICILE</p>
+  <p class="mono">expedicao.html · porta de saída geral do Instituto</p>
+</footer>
+
+</body>
+</html>
