@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CICILE — Assistente de Direção | Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --azul:   #0f1c2e;
+  --azul2:  #07101d;
+  --azul3:  #0d2540;
+  --ouro:   #c9a646;
+  --ouro2:  #f4dc88;
+  --cobre:  #b87333;
+  --papel:  #fffaf0;
+  --papel2: #f7f1e2;
+  --texto:  #243043;
+  --cinza:  #4a5568;
+  --verde:  #184b30;
+  --verde2: #1f7a42;
+  --linha:  rgba(201,166,70,.28);
+  --r: 22px;
+  --s: 0 18px 50px rgba(8,17,31,.15);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: linear-gradient(170deg, #fbf7ed 0%, #ede0c4 100%);
+  color: var(--texto); min-height: 100vh;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(7,16,29,.97);
+  border-bottom: 2px solid var(--ouro);
+  backdrop-filter: blur(10px);
+}
+.top-in {
+  max-width: 1200px; margin: auto; padding: 10px 22px;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+}
+.marca {
+  font-family: 'Playfair Display', serif;
+  color: var(--ouro2); font-size: 14px; letter-spacing: .05em;
+}
+.marca small {
+  display: block; font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: rgba(244,220,136,.5); letter-spacing: .08em;
+}
+.tnav { display: flex; gap: 6px; flex-wrap: wrap; }
+.tnav a {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: #c8c0ae; text-decoration: none;
+  padding: 6px 12px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.1); transition: .18s;
+}
+.tnav a:hover { color: var(--ouro2); border-color: var(--ouro); background: rgba(201,166,70,.12); }
+
+/* ── HERO ── */
+.hero {
+  background:
+    radial-gradient(ellipse 65% 50% at 8% 12%, rgba(201,166,70,.13), transparent),
+    radial-gradient(ellipse 45% 65% at 92% 88%, rgba(24,75,48,.18), transparent),
+    linear-gradient(148deg, var(--azul2) 0%, var(--azul3) 55%, #081a0e 100%);
+  color: white;
+  padding: 68px 22px 56px;
+  border-bottom: 7px solid var(--ouro);
+  position: relative; overflow: hidden;
+}
+.hero::after {
+  content: 'CICILE';
+  position: absolute; right: -10px; bottom: -50px;
+  font-family: 'Playfair Display', serif; font-size: 180px; font-weight: 900;
+  color: rgba(201,166,70,.04); line-height: 1; pointer-events: none;
+}
+.hero-in {
+  max-width: 1200px; margin: auto;
+  display: grid; grid-template-columns: 210px 1fr; gap: 44px; align-items: start;
+  position: relative; z-index: 1;
+}
+.h-esq { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.cicile-avatar {
+  width: 186px; height: 186px; border-radius: 50%;
+  background: linear-gradient(135deg, #112a18, #1e4a2e);
+  border: 4px solid var(--ouro);
+  box-shadow: 0 0 0 8px rgba(201,166,70,.12), 0 28px 64px rgba(0,0,0,.4);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+}
+.cicile-avatar .av-sigla {
+  font-family: 'Playfair Display', serif; font-size: 54px; font-weight: 900;
+  color: var(--ouro2); line-height: 1;
+}
+.cicile-avatar .av-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: rgba(244,220,136,.55); letter-spacing: .12em;
+}
+.pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 6px 14px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.p-verde { background: #184b30; border: 1px solid #2d7a4a; color: #7fffa0; }
+.p-ouro  { background: rgba(201,166,70,.15); border: 1px solid rgba(201,166,70,.4); color: var(--ouro2); }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #7fffa0; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.h-dir .eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ouro2);
+  border: 1px solid rgba(201,166,70,.4); display: inline-block;
+  padding: 7px 14px; border-radius: 999px; margin-bottom: 14px; letter-spacing: .08em;
+}
+.h-dir h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(38px, 6vw, 72px); line-height: 1.0;
+  color: var(--ouro2); margin-bottom: 6px;
+}
+.h-dir .cargo {
+  font-size: clamp(15px, 2vw, 20px); color: #a8c8b8;
+  font-style: italic; margin-bottom: 20px;
+}
+.h-dir .missao {
+  font-size: 17px; line-height: 1.72; color: #e0dace;
+  border-left: 3px solid var(--ouro); padding-left: 18px;
+  max-width: 740px; margin-bottom: 24px;
+}
+.h-chips { display: flex; flex-wrap: wrap; gap: 9px; }
+.chip {
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15);
+  color: #ddd8cc; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  padding: 7px 13px; border-radius: 12px;
+}
+.chip strong { color: var(--ouro2); }
+
+/* ── WRAP / SEÇÕES ── */
+.wrap { max-width: 1200px; margin: auto; padding: 44px 22px 80px; }
+.sec { margin-bottom: 54px; }
+.sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
+.sec-head .barra { width: 7px; height: 34px; background: var(--ouro); border-radius: 20px; flex-shrink: 0; }
+.sec-head h2 { font-family: 'Playfair Display', serif; font-size: clamp(22px,3vw,36px); color: var(--azul); }
+.subtag {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  background: var(--azul); color: var(--ouro2); padding: 4px 11px; border-radius: 999px;
+}
+
+/* ── CARDS GERAIS ── */
+.card {
+  background: var(--papel); border: 1px solid var(--linha);
+  border-radius: var(--r); padding: 26px; box-shadow: var(--s);
+}
+.card h3 { font-family: 'Playfair Display', serif; font-size: 21px; color: var(--azul); margin-bottom: 12px; }
+.card p, .card li { font-size: 15px; line-height: 1.68; color: #3a4557; }
+.card ul { padding-left: 18px; }
+.card ul li { margin-bottom: 7px; }
+
+/* ── GRIDS ── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+
+/* ── PAPEL 1: GUIA DO ASSOCIADO ── */
+.jornada {
+  display: grid; grid-template-columns: repeat(5,1fr);
+  border: 2px solid var(--ouro); border-radius: 18px; overflow: hidden;
+  margin: 18px 0;
+}
+.jornada-etapa {
+  background: var(--azul2); color: var(--ouro2); padding: 20px 12px;
+  text-align: center; border-right: 1px solid rgba(201,166,70,.3);
+  font-family: 'JetBrains Mono', monospace;
+}
+.jornada-etapa:last-child { border-right: none; }
+.jornada-etapa .jn { font-size: 28px; font-weight: 900; color: var(--ouro); display: block; margin-bottom: 8px; }
+.jornada-etapa .jt { font-size: 12px; font-weight: 700; display: block; margin-bottom: 6px; }
+.jornada-etapa small { font-size: 11px; color: #8a9aaa; }
+
+/* ── SETORES (grade de navegação da CICILE) ── */
+.setores-grid {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 12px;
+}
+.setor {
+  background: var(--papel); border: 1px solid var(--linha);
+  border-radius: 18px; padding: 18px; text-align: center;
+  text-decoration: none; color: var(--texto);
+  box-shadow: 0 6px 18px rgba(8,17,31,.08); transition: .18s;
+  position: relative; overflow: hidden;
+}
+.setor::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: var(--ouro);
+}
+.setor:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(8,17,31,.14); border-color: var(--ouro); }
+.setor .s-icone { font-size: 30px; margin-bottom: 10px; display: block; }
+.setor .s-nome { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--azul); margin-bottom: 4px; }
+.setor .s-desc { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--cinza); }
+.setor .s-resp { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ouro); margin-top: 6px; font-weight: 700; }
+
+/* ── PAPEL 2: RADAR LITERÁRIO ── */
+.radar-card {
+  background: linear-gradient(135deg, var(--azul2), var(--azul3));
+  border: 2px solid var(--ouro); border-radius: var(--r);
+  padding: 30px; color: white;
+}
+.radar-card h3 { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--ouro2); margin-bottom: 8px; }
+.radar-card p { font-size: 15px; line-height: 1.65; color: #c8d8e0; margin-bottom: 20px; }
+.radar-tipos { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 14px; }
+.rtipo {
+  background: rgba(201,166,70,.15); border: 1px solid rgba(201,166,70,.4);
+  color: var(--ouro2); font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  padding: 7px 13px; border-radius: 12px;
+}
+.radar-fluxo {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 0;
+  border: 1px solid rgba(201,166,70,.35); border-radius: 14px; overflow: hidden; margin-top: 20px;
+}
+.rf {
+  background: rgba(255,255,255,.05); padding: 16px 12px; text-align: center;
+  border-right: 1px solid rgba(201,166,70,.25);
+  font-family: 'JetBrains Mono', monospace;
+}
+.rf:last-child { border-right: none; }
+.rf .rn { font-size: 24px; color: var(--ouro); font-weight: 900; display: block; margin-bottom: 6px; }
+.rf .rt { font-size: 12px; font-weight: 700; color: var(--ouro2); display: block; margin-bottom: 4px; }
+.rf small { font-size: 11px; color: #8a9aaa; }
+
+/* ── PAPEL 3: RECLAMAÇÕES ── */
+.rec-painel {
+  background: linear-gradient(135deg, #1a0808, #2a0f0f);
+  border: 2px solid #b84444; border-radius: var(--r);
+  padding: 28px; color: white;
+}
+.rec-painel h3 { font-family: 'Playfair Display', serif; font-size: 24px; color: #ffb8b8; margin-bottom: 8px; }
+.rec-painel p { font-size: 15px; color: #e8d4d4; line-height: 1.65; margin-bottom: 18px; }
+.rec-fluxo { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; border: 1px solid rgba(184,68,68,.4); border-radius: 14px; overflow: hidden; }
+.rf-rec { background: rgba(255,255,255,.05); padding: 16px 12px; text-align: center; border-right: 1px solid rgba(184,68,68,.3); font-family: 'JetBrains Mono', monospace; }
+.rf-rec:last-child { border-right: none; }
+.rf-rec .rn { font-size: 24px; color: #ff8888; font-weight: 900; display: block; margin-bottom: 6px; }
+.rf-rec .rt { font-size: 12px; font-weight: 700; color: #ffb8b8; display: block; margin-bottom: 4px; }
+.rf-rec small { font-size: 11px; color: #9a8888; }
+.dep-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+.dep-tag {
+  background: rgba(184,68,68,.2); border: 1px solid rgba(184,68,68,.45);
+  color: #ffb8b8; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 6px 12px; border-radius: 10px;
+}
+
+/* ── FALA DA CICILE (chat) ── */
+.fala-cicile {
+  background: white; border: 2px solid var(--ouro);
+  border-radius: 0 22px 22px 22px; padding: 22px 26px;
+  font-size: 18px; line-height: 1.55; color: var(--azul);
+  position: relative; margin-bottom: 10px;
+  box-shadow: 0 8px 24px rgba(8,17,31,.1);
+}
+.fala-cicile::before {
+  content: 'CICILE';
+  position: absolute; top: -12px; left: 0;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+  background: var(--ouro); color: var(--azul2);
+  padding: 3px 12px; border-radius: 999px;
+}
+
+/* ── NOTICE ── */
+.notice {
+  background: #fff8d6; border-left: 6px solid var(--ouro);
+  border-radius: 16px; padding: 18px; font-size: 15px; color: #3c300a; line-height: 1.65;
+}
+.notice strong { color: #7a5200; }
+
+/* ── BOTÕES ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  text-decoration: none; border: 0; cursor: pointer;
+  font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 13px;
+  padding: 13px 22px; border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.12); transition: .18s;
+}
+.b-ouro   { background: var(--ouro); color: var(--azul2); }
+.b-ouro:hover { background: var(--ouro2); }
+.b-verde  { background: var(--verde2); color: white; }
+.b-verde:hover { background: #165c31; }
+.b-esc    { background: var(--azul); color: var(--ouro2); border: 1px solid rgba(201,166,70,.35); }
+.b-esc:hover { background: #0a1422; }
+.b-red    { background: #7b1f1f; color: white; }
+.b-red:hover { background: #5a1515; }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+
+/* ── RODAPÉ ── */
+footer {
+  background: var(--azul2); color: #c8c0ae;
+  border-top: 6px solid var(--ouro); padding: 32px 22px; text-align: center;
+}
+footer strong { color: var(--ouro2); }
+footer p { font-size: 14px; line-height: 1.8; }
+footer .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; opacity: .45; margin-top: 8px; }
+
+/* ── RESPONSIVO ── */
+@media (max-width: 980px) {
+  .hero-in { grid-template-columns: 1fr; }
+  .h-esq { flex-direction: row; align-items: flex-start; }
+  .setores-grid { grid-template-columns: repeat(2,1fr); }
+  .jornada { grid-template-columns: repeat(3,1fr); }
+  .jornada-etapa { border-bottom: 1px solid rgba(201,166,70,.3); border-right: none; }
+  .radar-fluxo, .rec-fluxo { grid-template-columns: repeat(2,1fr); }
+  .g3 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 620px) {
+  .g2, .g3, .setores-grid { grid-template-columns: 1fr; }
+  .jornada, .radar-fluxo, .rec-fluxo { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="top-in">
+    <div class="marca">
+      Instituto Cultural Celeiro Literário
+      <small>CICILE · ASSISTENTE DE DIREÇÃO TRANSVERSAL</small>
+    </div>
+    <nav class="tnav">
+      <a href="#guia">Guia do Associado</a>
+      <a href="#setores">Setores</a>
+      <a href="#radar">Radar Literário</a>
+      <a href="#reclamacoes">Reclamações</a>
+      <a href="cicile_reclamacao.html">→ Registrar</a>
+      <a href="pagina_respiro_celeiro.html">← Celeiro</a>
+    </nav>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-in">
+    <div class="h-esq">
+      <div class="cicile-avatar">
+        <span class="av-sigla">C</span>
+        <span class="av-sub">CICILE</span>
+      </div>
+      <span class="pill p-verde"><span class="dot"></span> Ativa em todos os setores</span>
+      <span class="pill p-ouro">✦ Assistente de Direção</span>
+    </div>
+    <div class="h-dir">
+      <div class="eyebrow">✦ PRESENÇA TRANSVERSAL · TODOS OS DEPARTAMENTOS</div>
+      <h1>CICILE</h1>
+      <p class="cargo">Central de Inteligência Cultural e Literária do Celeiro — Assistente de Direção</p>
+      <p class="missao">
+        Sou a assistente de direção do Celeiro Literário. Recebo cada associado que chega, apresento o instituto e o acompanho por todos os departamentos até entregá-lo ao responsável do setor. Faço a pesquisa de oportunidades para o Radar Literário e sou o canal oficial de todas as reclamações — que comunicarei à direção e a todos os departamentos envolvidos.
+      </p>
+      <div class="h-chips">
+        <div class="chip">🧭 <strong>Guia do associado</strong></div>
+        <div class="chip">📡 <strong>Radar Literário</strong></div>
+        <div class="chip">📣 <strong>Central de reclamações</strong></div>
+        <div class="chip">🔄 <strong>Comunicação transversal</strong></div>
+        <div class="chip">🔍 <strong>Pesquisa de editais</strong></div>
+        <div class="chip">🏛️ <strong>Todos os departamentos</strong></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- CONTEÚDO -->
+<main class="wrap">
+
+  <!-- PAPEL 1: GUIA DO ASSOCIADO -->
+  <section class="sec" id="guia">
+    <div class="sec-head">
+      <div class="barra"></div>
+      <h2>Papel 1 — Guia do Associado</h2>
+      <span class="subtag">Recepção · Apresentação · Entrega ao setor</span>
+    </div>
+
+    <div class="fala-cicile">
+      "Bem-vindo ao Celeiro Literário. Sou a CICILE, sua assistente de direção. Vou te apresentar o instituto, entender o que você precisa e te acompanhar até o departamento certo — onde o responsável do setor vai cuidar de você."
+    </div>
+
+    <div class="notice" style="margin-bottom:22px;">
+      A CICILE não pertence a nenhum setor específico. Ela <strong>atravessa todos</strong>. É o primeiro contato de cada associado e a ponte entre ele e os departamentos do Celeiro.
+    </div>
+
+    <!-- Jornada do associado guiada pela CICILE -->
+    <div class="jornada">
+      <div class="jornada-etapa">
+        <span class="jn">①</span>
+        <span class="jt">Chegada</span>
+        <small>CICILE recebe o associado</small>
+      </div>
+      <div class="jornada-etapa">
+        <span class="jn">②</span>
+        <span class="jt">Apresentação</span>
+        <small>Instituto, estrutura e cultura do Celeiro</small>
+      </div>
+      <div class="jornada-etapa">
+        <span class="jn">③</span>
+        <span class="jt">Escuta</span>
+        <small>O que o associado precisa e busca</small>
+      </div>
+      <div class="jornada-etapa">
+        <span class="jn">④</span>
+        <span class="jt">Navegação</span>
+        <small>CICILE guia pelos departamentos</small>
+      </div>
+      <div class="jornada-etapa">
+        <span class="jn">⑤</span>
+        <span class="jt">Entrega</span>
+        <small>Responsável do setor assume</small>
+      </div>
+    </div>
+
+    <div class="g3">
+      <div class="card">
+        <h3>Como a CICILE recebe</h3>
+        <ul>
+          <li>Apresenta o Celeiro Literário em sua estrutura completa</li>
+          <li>Explica a missão, os valores e o modo de funcionar</li>
+          <li>Identifica o perfil artístico do associado</li>
+          <li>Entende o momento de carreira e o objetivo</li>
+          <li>Orienta sobre os recursos disponíveis</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Como a CICILE guia</h3>
+        <ul>
+          <li>Apresenta os departamentos pertinentes ao perfil</li>
+          <li>Explica o papel de cada setor antes de entrar</li>
+          <li>Acompanha a navegação entre módulos</li>
+          <li>Indica a sequência lógica de uso</li>
+          <li>Responde dúvidas de orientação em qualquer ponto</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Como a CICILE entrega</h3>
+        <ul>
+          <li>Apresenta o associado ao responsável do setor</li>
+          <li>Passa o contexto do perfil e dos objetivos</li>
+          <li>Garante que a transição aconteça com clareza</li>
+          <li>Fica disponível para retorno se necessário</li>
+          <li>Registra a passagem para rastreio interno</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SETORES DO CELEIRO (navegação da CICILE) -->
+  <section class="sec" id="setores">
+    <div class="sec-head">
+      <div class="barra"></div>
+      <h2>Departamentos que a CICILE conhece</h2>
+      <span class="subtag">E entrega o associado a cada um</span>
+    </div>
+
+    <div class="setores-grid">
+      <a class="setor" href="mentoria_cibernetica.html">
+        <span class="s-icone">🧠</span>
+        <div class="s-nome">Mentoria Cibernética</div>
+        <div class="s-desc">Triagem de oportunidades · OHE</div>
+        <div class="s-resp">→ Trajano Estrada</div>
+      </a>
+      <a class="setor" href="sigmal_academia_artistica_internacional.html">
+        <span class="s-icone">🎓</span>
+        <div class="s-nome">SIGMAL Academy</div>
+        <div class="s-desc">9 áreas artísticas internacionais</div>
+        <div class="s-resp">→ Direção SIGMAL</div>
+      </a>
+      <a class="setor" href="lapidar_sistema_editorial_modular.html">
+        <span class="s-icone">💎</span>
+        <div class="s-nome">Lapidar</div>
+        <div class="s-desc">Sistema editorial modular</div>
+        <div class="s-resp">→ Editor responsável</div>
+      </a>
+      <a class="setor" href="caminho_das_pedras.html">
+        <span class="s-icone">🪨</span>
+        <div class="s-nome">Caminho das Pedras</div>
+        <div class="s-desc">Formação artística progressiva</div>
+        <div class="s-resp">→ Orientador de trilha</div>
+      </a>
+      <a class="setor" href="rede_mundial_oportunidades_artisticas.html">
+        <span class="s-icone">🌍</span>
+        <div class="s-nome">Rede Mundial</div>
+        <div class="s-desc">Portal de oportunidades globais</div>
+        <div class="s-resp">→ Curador da Rede</div>
+      </a>
+      <a class="setor" href="radar_mundial_oportunidades_artisticas.html">
+        <span class="s-icone">📡</span>
+        <div class="s-nome">Radar Literário</div>
+        <div class="s-desc">Editais, festivais, chamadas</div>
+        <div class="s-resp">→ CICILE + Trajano</div>
+      </a>
+      <a class="setor" href="maquina_estimulos_narrativos.html">
+        <span class="s-icone">⚙️</span>
+        <div class="s-nome">Máquina de Estímulos</div>
+        <div class="s-desc">Criação guiada de narrativas</div>
+        <div class="s-resp">→ Sistema Narrativo</div>
+      </a>
+      <a class="setor" href="conta_comigo.html">
+        <span class="s-icone">🤝</span>
+        <div class="s-nome">Conta Comigo</div>
+        <div class="s-desc">Apoio e comunidade interna</div>
+        <div class="s-resp">→ Equipe de suporte</div>
+      </a>
+      <a class="setor" href="acompanhamento_evolucao_trajetoria.html">
+        <span class="s-icone">📈</span>
+        <div class="s-nome">Trajetória</div>
+        <div class="s-desc">Crescimento e evolução autoral</div>
+        <div class="s-resp">→ Trajano Estrada</div>
+      </a>
+      <a class="setor" href="departamento_auxilio_carreira.html">
+        <span class="s-icone">💼</span>
+        <div class="s-nome">Auxílio de Carreira</div>
+        <div class="s-desc">Estratégia e posicionamento</div>
+        <div class="s-resp">→ Conselheiro de carreira</div>
+      </a>
+      <a class="setor" href="portal_instituto_celeiro_literario.html">
+        <span class="s-icone">🏛️</span>
+        <div class="s-nome">Portal do Instituto</div>
+        <div class="s-desc">Entrada e mapa geral</div>
+        <div class="s-resp">→ CICILE</div>
+      </a>
+      <a class="setor" href="pagina_respiro_celeiro.html">
+        <span class="s-icone">🌾</span>
+        <div class="s-nome">Mapa do Celeiro</div>
+        <div class="s-desc">Visão geral do ecossistema</div>
+        <div class="s-resp">→ Página Respiro</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- PAPEL 2: RADAR LITERÁRIO -->
+  <section class="sec" id="radar">
+    <div class="sec-head">
+      <div class="barra"></div>
+      <h2>Papel 2 — Pesquisa para o Radar Literário</h2>
+      <span class="subtag">A pesquisa grossa de tudo que existe lá fora</span>
+    </div>
+
+    <div class="radar-card">
+      <h3>A CICILE vasculha. O Radar entrega.</h3>
+      <p>
+        A CICILE faz a pesquisa primária — a "pesquisa grossa" — de tudo que existe na internet sobre oportunidades para artistas: editais, festivais, concursos, chamadas literárias, residências, leis de fomento, cursos e bolsas. Esse material é o combustível do Radar Literário do Celeiro, e depois passa pela triagem qualitativa do Trajano Estrada antes de chegar aos associados.
+      </p>
+
+      <div class="radar-tipos">
+        <span class="rtipo">✒️ Editais literários</span>
+        <span class="rtipo">🏆 Concursos com premiação</span>
+        <span class="rtipo">📖 Antologias e coletâneas</span>
+        <span class="rtipo">🎭 Festivais culturais</span>
+        <span class="rtipo">🏛️ Lei Rouanet</span>
+        <span class="rtipo">⚖️ Lei Aldir Blanc</span>
+        <span class="rtipo">🌍 Residências artísticas</span>
+        <span class="rtipo">🎓 Cursos e bolsas</span>
+        <span class="rtipo">🎵 Chamadas musicais</span>
+        <span class="rtipo">🎬 Editais audiovisuais</span>
+        <span class="rtipo">🖼️ Exposições e mostras</span>
+        <span class="rtipo">📸 Chamadas visuais</span>
+        <span class="rtipo">💃 Festivais de dança</span>
+        <span class="rtipo">🌐 Chamadas internacionais</span>
+      </div>
+
+      <div class="radar-fluxo">
+        <div class="rf">
+          <span class="rn">①</span>
+          <span class="rt">CICILE pesquisa</span>
+          <small>Varredura ampla e contínua</small>
+        </div>
+        <div class="rf">
+          <span class="rn">②</span>
+          <span class="rt">Coleta bruta</span>
+          <small>Tudo que existe, sem filtro</small>
+        </div>
+        <div class="rf">
+          <span class="rn">③</span>
+          <span class="rt">Trajano filtra</span>
+          <small>Triagem qualitativa por área</small>
+        </div>
+        <div class="rf">
+          <span class="rn">④</span>
+          <span class="rt">Radar publica</span>
+          <small>Associados recebem o resultado</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="btns">
+      <a class="btn b-ouro" href="radar_mundial_oportunidades_artisticas.html">📡 Acessar o Radar Literário</a>
+      <a class="btn b-esc" href="rede_mundial_oportunidades_artisticas.html">🌍 Rede Mundial de Oportunidades</a>
+      <a class="btn b-esc" href="trajano_estrada_oportunidades.html">✦ Central do Trajano Estrada</a>
+    </div>
+  </section>
+
+  <!-- PAPEL 3: CENTRAL DE RECLAMAÇÕES -->
+  <section class="sec" id="reclamacoes">
+    <div class="sec-head">
+      <div class="barra"></div>
+      <h2>Papel 3 — Central de Reclamações</h2>
+      <span class="subtag">Toda reclamação passa pela CICILE</span>
+    </div>
+
+    <div class="rec-painel">
+      <h3>Nenhuma reclamação fica sem destino.</h3>
+      <p>
+        Toda observação, queixa ou reclamação de associado chega primeiro à CICILE. Ela registra, classifica por departamento envolvido e comunica imediatamente à direção do Instituto e a todos os setores pertinentes. Nada fica retido, nada fica esquecido.
+      </p>
+
+      <div class="rec-fluxo">
+        <div class="rf-rec">
+          <span class="rn">①</span>
+          <span class="rt">Associado registra</span>
+          <small>Qualquer canal · qualquer hora</small>
+        </div>
+        <div class="rf-rec">
+          <span class="rn">②</span>
+          <span class="rt">CICILE recebe</span>
+          <small>Registra e classifica</small>
+        </div>
+        <div class="rf-rec">
+          <span class="rn">③</span>
+          <span class="rt">Comunica à direção</span>
+          <small>CEO + departamentos</small>
+        </div>
+        <div class="rf-rec">
+          <span class="rn">④</span>
+          <span class="rt">Resolução e resposta</span>
+          <small>Setor responsável age</small>
+        </div>
+      </div>
+
+      <p style="margin-top:18px;">Departamentos que recebem comunicação da CICILE:</p>
+      <div class="dep-tags">
+        <span class="dep-tag">🧠 Mentoria Cibernética</span>
+        <span class="dep-tag">💎 Lapidar</span>
+        <span class="dep-tag">🎓 SIGMAL</span>
+        <span class="dep-tag">🪨 Caminho das Pedras</span>
+        <span class="dep-tag">⚙️ Máquina de Estímulos</span>
+        <span class="dep-tag">📈 Trajetória</span>
+        <span class="dep-tag">🤝 Conta Comigo</span>
+        <span class="dep-tag">🌍 Rede Mundial</span>
+        <span class="dep-tag">📡 Radar Literário</span>
+        <span class="dep-tag">💼 Auxílio de Carreira</span>
+        <span class="dep-tag">🏛️ Direção · CEO</span>
+        <span class="dep-tag">🔧 Assistência Técnica</span>
+      </div>
+    </div>
+
+    <div class="btns">
+      <a class="btn b-red" href="cicile_reclamacao.html">📣 Registrar reclamação ou observação</a>
+      <a class="btn b-esc" href="pagina_respiro_celeiro.html">← Voltar ao Celeiro</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>CICILE</strong> — Central de Inteligência Cultural e Literária do Celeiro</p>
+  <p>Assistente de Direção Transversal · Instituto Cultural Celeiro Literário</p>
+  <p class="mono">cicile.html · presença ativa em todos os departamentos</p>
+</footer>
+
+</body>
+</html>
