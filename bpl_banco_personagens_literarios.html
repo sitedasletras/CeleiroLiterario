@@ -3,101 +3,1407 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BPL — Banco de Personagens Literários</title>
+<title>BPL — Banco de Personagens Literários · Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--azul:#071a3d;--azul2:#020817;--ouro:#c9a646;--ouro2:#f3dc8c;--papel:#fffaf0;--texto:#243043;--verde:#2f6f4e;--vermelho:#8b1e1e;--sombra:0 18px 42px rgba(0,0,0,.22)}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,var(--azul2),var(--azul) 48%,#030f2c);color:#fff7d6}header{padding:24px 18px 16px;text-align:center;border-bottom:1px solid rgba(201,166,70,.38)}h1{margin:0;font-family:Georgia,'Times New Roman',serif;font-size:clamp(30px,5vw,54px);color:var(--ouro2)}.sub{margin:8px auto 0;max-width:900px;color:#f8e8ad;line-height:1.45}.aviso{max-width:1100px;margin:18px auto 0;padding:12px 16px;border:1px solid rgba(244,220,136,.55);border-radius:14px;background:rgba(0,0,0,.22);font-size:14px;color:#fff1ba}main{max-width:1220px;margin:0 auto;padding:22px 16px 42px}.card{background:var(--papel);color:var(--texto);border:2px solid var(--ouro);border-radius:22px;box-shadow:var(--sombra);padding:20px;margin-bottom:18px}.card h2,.card h3{font-family:Georgia,'Times New Roman',serif;color:#102142;margin:0 0 12px}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.col-3{grid-column:span 3}.col-4{grid-column:span 4}.col-6{grid-column:span 6}.col-8{grid-column:span 8}.col-12{grid-column:span 12}label{display:block;font-weight:bold;margin-bottom:6px;color:#2b261a}input,select,textarea{width:100%;padding:11px 12px;border-radius:12px;border:1px solid #cfc2a3;background:#fff;color:#1e2633;font-size:15px}textarea{min-height:90px;resize:vertical}button,.btn{border:0;border-radius:999px;padding:12px 18px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(180deg,#f5df94,#c9a646);color:#111;box-shadow:0 10px 20px rgba(0,0,0,.14)}button.sec{background:#e8dcc5;color:#18233a}.danger{background:#8b1e1e!important;color:white!important}.ok{background:#2f6f4e!important;color:white!important}.acoes{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.lock{max-width:780px;margin:40px auto}.hidden{display:none!important}.reservatorios{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}.tag{border:1px solid #d8c796;background:#fff8df;border-radius:999px;padding:8px 11px;font-size:13px;color:#2b261a;font-weight:bold}.listagem{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:14px;margin-top:16px}.personagem{border:1px solid #d7c58e;background:#fff;border-radius:18px;padding:14px;box-shadow:0 8px 20px rgba(0,0,0,.07)}.personagem h3{margin:0 0 6px;color:#102142;font-size:22px}.meta{font-size:13px;line-height:1.45;color:#534833}.meta b{color:#111}.badge{display:inline-block;margin:4px 4px 0 0;border-radius:999px;background:#edf2ff;border:1px solid #cbd7ff;padding:4px 8px;font-size:12px;color:#1b2f62}.empty{text-align:center;color:#6c5b37;padding:22px;border:1px dashed #c9a646;border-radius:16px;background:#fff9e7}.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.small{font-size:13px;color:#6b5a35;line-height:1.35}.total{font-weight:bold;color:#102142}hr{border:0;border-top:1px solid #e3d7bd;margin:18px 0}.galeria{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.foto{width:54px;height:54px;border-radius:12px;background:#f2ead7;border:1px solid #d7c58e;display:flex;align-items:center;justify-content:center;font-size:20px}.menu-interno{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.menu-interno button{box-shadow:none;padding:10px 14px}.painel{display:none}.painel.ativo{display:block}@media(max-width:840px){.col-3,.col-4,.col-6,.col-8{grid-column:span 12}.topbar{align-items:flex-start}}@media print{body{background:white;color:#111}header,.no-print,.acoes,.menu-interno{display:none}.card{box-shadow:none;border:1px solid #bbb}.personagem{break-inside:avoid}}
+  :root {
+    --azul: #07182b;
+    --azul-mid: #10294a;
+    --azul-deep: #030d18;
+    --ouro: #d6b354;
+    --ouro-claro: #f5d87a;
+    --ouro-escuro: #a8882a;
+    --papel: #fff8df;
+    --vermelho: #c0392b;
+    --vinho: #6d1a2a;
+    --roxo: #5c2d6e;
+    --verde: #1a4a2e;
+    --cobre: #b5651d;
+    --prata: #8899aa;
+    --branco: #f0ece0;
+    --sombra: rgba(0,0,0,0.7);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--azul-deep);
+    color: var(--branco);
+    font-family: 'Libre Baskerville', Georgia, serif;
+    overflow-x: hidden;
+  }
+
+  /* ===== TEXTURA DE FUNDO ===== */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(214,179,84,0.015) 2px,
+        rgba(214,179,84,0.015) 4px
+      ),
+      radial-gradient(ellipse 70% 50% at 15% 20%, rgba(108,29,42,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 70% at 85% 80%, rgba(92,45,110,0.1) 0%, transparent 60%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Cortinas laterais */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      linear-gradient(to right, rgba(3,13,24,0.8) 0%, transparent 8%, transparent 92%, rgba(3,13,24,0.8) 100%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ===== HERO — PALCO ===== */
+  header {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 2rem;
+    overflow: hidden;
+  }
+
+  /* Holofotes */
+  .holofotes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .holofote {
+    position: absolute;
+    top: -10%;
+    width: 300px;
+    height: 600px;
+    background: linear-gradient(to bottom, rgba(214,179,84,0.12), transparent);
+    transform-origin: top center;
+    clip-path: polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
+    animation: swing var(--dur, 6s) ease-in-out infinite alternate;
+  }
+  .holofote:nth-child(1) { left: 15%; --dur: 7s; animation-delay: 0s; }
+  .holofote:nth-child(2) { left: 45%; --dur: 9s; animation-delay: -3s; opacity: 0.6; }
+  .holofote:nth-child(3) { right: 15%; --dur: 8s; animation-delay: -1.5s; }
+
+  @keyframes swing {
+    0% { transform: rotate(-8deg); }
+    100% { transform: rotate(8deg); }
+  }
+
+  /* Cortina de palco */
+  .curtain-left, .curtain-right {
+    position: absolute;
+    top: 0;
+    width: 120px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .curtain-left {
+    left: 0;
+    background: linear-gradient(to right, var(--vinho) 0%, rgba(109,26,42,0.4) 70%, transparent 100%);
+  }
+  .curtain-right {
+    right: 0;
+    background: linear-gradient(to left, var(--vinho) 0%, rgba(109,26,42,0.4) 70%, transparent 100%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+  }
+
+  .vitrine-badge {
+    background: rgba(192,57,43,0.15);
+    border: 1px solid var(--vermelho);
+    color: #e57368;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.4rem 1.2rem;
+    letter-spacing: 0.2em;
+    margin-bottom: 3rem;
+    display: inline-block;
+  }
+
+  .bpl-sigla {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(5rem, 18vw, 12rem);
+    letter-spacing: -0.02em;
+    line-height: 0.85;
+    background: linear-gradient(160deg, var(--ouro-claro) 0%, var(--ouro) 40%, var(--ouro-escuro) 70%, var(--cobre) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    position: relative;
+  }
+
+  .bpl-nome-completo {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(0.55rem, 1.5vw, 0.75rem);
+    letter-spacing: 0.45em;
+    color: var(--ouro);
+    opacity: 0.6;
+    margin-top: 0.8rem;
+    text-transform: uppercase;
+  }
+
+  /* Linha de palco */
+  .stage-line {
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--ouro), transparent);
+    margin: 2rem auto;
+  }
+
+  .hero-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    color: var(--branco);
+    opacity: 0.8;
+    max-width: 580px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
+  }
+
+  /* Aplausos animados */
+  .aplausos {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--ouro);
+    opacity: 0;
+    animation: aparece 1s ease 1.5s forwards;
+    margin-bottom: 2.5rem;
+  }
+  @keyframes aparece { to { opacity: 0.4; } }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-cena {
+    background: linear-gradient(135deg, var(--vinho), var(--vermelho));
+    color: var(--branco);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    padding: 0.9rem 2rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  }
+  .btn-cena:hover {
+    background: linear-gradient(135deg, var(--vermelho), #e74c3c);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(192,57,43,0.4);
+  }
+
+  .btn-ouro {
+    background: transparent;
+    color: var(--ouro);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    padding: 0.9rem 2rem;
+    border: 1px solid rgba(214,179,84,0.35);
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+  }
+  .btn-ouro:hover {
+    border-color: var(--ouro);
+    background: rgba(214,179,84,0.08);
+  }
+
+  /* ===== LAYOUT GERAL ===== */
+  .container {
+    position: relative;
+    z-index: 10;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    color: var(--ouro);
+    opacity: 0.55;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--branco);
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+  .section-title em { color: var(--ouro); font-style: italic; }
+
+  .section-divider {
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(to right, var(--ouro), transparent);
+    margin: 1.5rem 0 3rem;
+  }
+
+  .hr-cena {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(214,179,84,0.2), transparent);
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* ===== O QUE É O BPL ===== */
+  .sobre-texto p {
+    font-size: 1.1rem;
+    line-height: 1.9;
+    color: rgba(240,236,224,0.82);
+    margin-bottom: 1.2rem;
+    max-width: 780px;
+  }
+  .sobre-texto p strong { color: var(--ouro); }
+
+  .referencia-box {
+    background: rgba(109,26,42,0.2);
+    border-left: 3px solid var(--vermelho);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    max-width: 680px;
+  }
+  .referencia-box p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: rgba(240,236,224,0.75);
+    line-height: 1.7;
+    margin: 0;
+  }
+  .referencia-box cite {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-style: normal;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--ouro);
+    opacity: 0.6;
+    margin-top: 0.8rem;
+  }
+
+  /* ===== UNIVERSOS / CATEGORIAS ===== */
+  .universos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  .universo-card {
+    border: 1px solid rgba(214,179,84,0.1);
+    overflow: hidden;
+    transition: all 0.4s;
+    position: relative;
+  }
+  .universo-card:hover {
+    border-color: rgba(214,179,84,0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .universo-header {
+    padding: 1.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .universo-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.12;
+  }
+
+  /* Cores por universo */
+  .u-musica .universo-header { background: linear-gradient(135deg, var(--vinho), var(--azul-mid)); }
+  .u-drama .universo-header { background: linear-gradient(135deg, #1a1a4a, var(--azul-mid)); }
+  .u-comedia .universo-header { background: linear-gradient(135deg, #2a3a1a, var(--azul-mid)); }
+  .u-acao .universo-header { background: linear-gradient(135deg, #3a1a0a, var(--azul-mid)); }
+  .u-romance .universo-header { background: linear-gradient(135deg, var(--roxo), var(--azul-mid)); }
+  .u-suspense .universo-header { background: linear-gradient(135deg, #0a1a1a, var(--azul-mid)); }
+
+  .universo-icon { font-size: 2.5rem; margin-bottom: 0.8rem; display: block; }
+  .universo-nome {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--branco);
+    margin-bottom: 0.3rem;
+  }
+  .universo-subtitulo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--ouro);
+    opacity: 0.6;
+    text-transform: uppercase;
+  }
+
+  .universo-body {
+    background: rgba(7,24,43,0.95);
+    padding: 1.5rem 2rem;
+  }
+
+  .universo-desc {
+    font-size: 0.95rem;
+    color: rgba(240,236,224,0.65);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Slots de personagens */
+  .slots-personagens {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  .slot-personagem {
+    background: rgba(214,179,84,0.04);
+    border: 1px dashed rgba(214,179,84,0.15);
+    padding: 0.8rem;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .slot-personagem:hover {
+    border-color: rgba(214,179,84,0.35);
+    background: rgba(214,179,84,0.08);
+  }
+  .slot-personagem.ocupado {
+    border-style: solid;
+    border-color: rgba(214,179,84,0.2);
+  }
+
+  .slot-avatar {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(214,179,84,0.08);
+    border: 1px dashed rgba(214,179,84,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin: 0 auto 0.5rem;
+  }
+
+  .slot-rotulo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    color: rgba(214,179,84,0.4);
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+
+  .slot-vago {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    color: rgba(214,179,84,0.25);
+    margin-top: 0.2rem;
+  }
+
+  /* ===== ESTILOS MUSICAIS ===== */
+  .estilos-intro {
+    font-size: 1.05rem;
+    color: rgba(240,236,224,0.75);
+    line-height: 1.8;
+    margin-bottom: 3rem;
+    max-width: 700px;
+  }
+
+  .estilos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .estilo-card {
+    background: rgba(7,24,43,0.8);
+    border: 1px solid rgba(214,179,84,0.08);
+    padding: 1.5rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .estilo-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 3px; height: 100%;
+    background: var(--cor-estilo, var(--ouro));
+    opacity: 0.6;
+  }
+  .estilo-card:hover {
+    border-color: rgba(214,179,84,0.2);
+    background: rgba(16,41,74,0.8);
+    transform: translateX(4px);
+  }
+
+  .estilo-nome {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--branco);
+    margin-bottom: 0.4rem;
+  }
+  .estilo-desc {
+    font-size: 0.85rem;
+    color: rgba(240,236,224,0.55);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  /* Mini-slots de artistas do estilo */
+  .artistas-do-estilo {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .artista-slot-mini {
+    background: rgba(214,179,84,0.05);
+    border: 1px dashed rgba(214,179,84,0.15);
+    padding: 0.3rem 0.6rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    color: rgba(214,179,84,0.35);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ===== ELENCO — ATORES/ATRIZES ===== */
+  .sabores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .sabor-card {
+    background: rgba(7,24,43,0.9);
+    border: 1px solid rgba(214,179,84,0.08);
+    overflow: hidden;
+    transition: all 0.35s;
+  }
+  .sabor-card:hover {
+    border-color: rgba(214,179,84,0.25);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  }
+
+  .sabor-header {
+    padding: 1.2rem 1.5rem;
+    background: rgba(16,41,74,0.6);
+    border-bottom: 1px solid rgba(214,179,84,0.08);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .sabor-icon-grande {
+    font-size: 2rem;
+    width: 52px; height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(214,179,84,0.08);
+    border: 1px solid rgba(214,179,84,0.15);
+    flex-shrink: 0;
+  }
+
+  .sabor-info { flex: 1; }
+  .sabor-tipo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--branco);
+    margin-bottom: 0.2rem;
+  }
+  .sabor-subtipo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    color: var(--ouro);
+    opacity: 0.5;
+    text-transform: uppercase;
+  }
+
+  .sabor-body { padding: 1.5rem; }
+  .sabor-desc {
+    font-size: 0.9rem;
+    color: rgba(240,236,224,0.6);
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+  }
+
+  .elenco-slots-sabor {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .slot-ator {
+    background: rgba(214,179,84,0.04);
+    border: 1px dashed rgba(214,179,84,0.12);
+    padding: 0.7rem;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .slot-ator:hover {
+    border-color: rgba(214,179,84,0.3);
+    background: rgba(214,179,84,0.07);
+  }
+
+  .ator-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(214,179,84,0.06);
+    border: 1px dashed rgba(214,179,84,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    margin: 0 auto 0.4rem;
+  }
+  .ator-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    color: rgba(214,179,84,0.35);
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+
+  /* ===== COLABORAÇÕES ===== */
+  .colab-intro {
+    font-size: 1.05rem;
+    color: rgba(240,236,224,0.75);
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    max-width: 720px;
+  }
+
+  .colab-tipos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+
+  .colab-item {
+    padding: 1.5rem;
+    border: 1px solid rgba(214,179,84,0.1);
+    position: relative;
+    background: rgba(7,24,43,0.7);
+    transition: all 0.3s;
+  }
+  .colab-item:hover {
+    border-color: rgba(214,179,84,0.25);
+    background: rgba(16,41,74,0.7);
+  }
+
+  .colab-logos {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .colab-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid;
+  }
+  .tag-bpl { border-color: var(--ouro); color: var(--ouro); }
+  .tag-sigmal { border-color: #39ff8f; color: #39ff8f; }
+  .colab-x {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: rgba(214,179,84,0.4);
+  }
+
+  .colab-titulo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--branco);
+    margin-bottom: 0.5rem;
+  }
+  .colab-desc {
+    font-size: 0.88rem;
+    color: rgba(240,236,224,0.6);
+    line-height: 1.6;
+  }
+
+  /* ===== ACESSO ===== */
+  .acesso-duplo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .acesso-card {
+    padding: 2.5rem;
+    border: 1px solid;
+  }
+  .acesso-externo {
+    border-color: rgba(214,179,84,0.15);
+    background: rgba(7,24,43,0.8);
+  }
+  .acesso-membro {
+    border-color: var(--ouro);
+    background: linear-gradient(135deg, rgba(109,26,42,0.2), rgba(7,24,43,0.95));
+    position: relative;
+  }
+  .acesso-membro::before {
+    content: '✦ EXCLUSIVO';
+    position: absolute;
+    top: 1rem; right: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    color: var(--ouro);
+    opacity: 0.6;
+  }
+
+  .acesso-tipo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+  .acesso-externo .acesso-tipo { color: var(--prata); }
+  .acesso-membro .acesso-tipo { color: var(--ouro); }
+
+  .acesso-lista {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .acesso-lista li {
+    font-size: 0.92rem;
+    color: rgba(240,236,224,0.72);
+    padding-left: 1.2rem;
+    position: relative;
+    line-height: 1.4;
+  }
+  .acesso-lista li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--ouro);
+    opacity: 0.4;
+  }
+  .acesso-externo li.bloqueado {
+    opacity: 0.3;
+    text-decoration: line-through;
+  }
+  .acesso-externo li.bloqueado::before {
+    content: '✕';
+    color: var(--vermelho);
+  }
+
+  /* ===== RODAPÉ ===== */
+  footer {
+    position: relative;
+    z-index: 10;
+    border-top: 1px solid rgba(214,179,84,0.12);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 2rem;
+    color: var(--ouro);
+    opacity: 0.4;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  .footer-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--prata);
+    text-decoration: none;
+    transition: color 0.3s;
+    text-transform: uppercase;
+  }
+  .footer-links a:hover { color: var(--ouro); }
+  .footer-copy {
+    font-size: 0.78rem;
+    color: rgba(136,153,170,0.45);
+  }
+
+  /* ===== RESPONSIVO ===== */
+  @media (max-width: 768px) {
+    .acesso-duplo { grid-template-columns: 1fr; }
+    .slots-personagens { grid-template-columns: 1fr 1fr; }
+    .elenco-slots-sabor { grid-template-columns: 1fr 1fr; }
+    .curtain-left, .curtain-right { width: 60px; }
+    .container { padding: 3rem 1.2rem; }
+  }
 </style>
 </head>
 <body>
+
+<!-- ===== HERO / PALCO ===== -->
 <header>
-  <h1>BPL — Banco de Personagens Literários</h1>
-  <p class="sub">Motor interno do Celeiro para guardar personagens das histórias, imagens do Barracão e acervos visuais ligados às obras.</p>
-  <div class="aviso">Uso exclusivo: <b>Admin</b>, <b>Wagner Planas</b> e <b>Heterônimo</b>. Não é público. Não é para terceiros.</div>
+  <div class="holofotes">
+    <div class="holofote"></div>
+    <div class="holofote"></div>
+    <div class="holofote"></div>
+  </div>
+  <div class="curtain-left"></div>
+  <div class="curtain-right"></div>
+
+  <div class="hero-content">
+    <div class="vitrine-badge">🎭 VITRINE — CONTEÚDO COMPLETO DISPONÍVEL AOS MEMBROS</div>
+
+    <div class="bpl-sigla">BPL</div>
+    <div class="bpl-nome-completo">BANCO DE PERSONAGENS LITERÁRIOS · CELEIRO LITERÁRIO</div>
+
+    <div class="stage-line"></div>
+
+    <p class="hero-tagline">
+      Personagens que existem.<br>
+      Artistas que vivem dentro das histórias.<br>
+      <em>Um universo criado para durar.</em>
+    </p>
+
+    <div class="aplausos">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div>
+
+    <div class="hero-ctas">
+      <a href="pagina_respiro_celeiro.html" class="btn-cena">🎭 ENTRAR NO CELEIRO</a>
+      <a href="cadastro_celeiro.html" class="btn-ouro">CRIAR CONTA GRATUITA</a>
+    </div>
+  </div>
 </header>
-<main>
-  <section id="bloqueio" class="card lock">
-    <h2>Acesso interno</h2>
-    <p>Escolha o perfil para abrir o BPL.</p>
-    <div class="grid">
-      <div class="col-8"><label>Perfil</label><select id="perfilAcesso"><option value="">Selecione...</option><option>Admin</option><option>Wagner Planas</option><option>Heterônimo</option><option>Usuário externo</option></select></div>
-      <div class="col-4" style="display:flex;align-items:end"><button onclick="entrarBPL()">Entrar no BPL</button></div>
-    </div>
-    <p id="erroAcesso" class="small" style="color:#8b1e1e;font-weight:bold"></p>
-  </section>
 
-  <section id="app" class="hidden">
-    <div class="card">
-      <div class="topbar">
-        <div><h2>BPL interno</h2><p class="small">Aqui ficam personagens literários, não avatares administrativos do Celeiro.</p></div>
-        <div class="total" id="totalPersonagens">0 personagens</div>
-      </div>
-      <div class="menu-interno no-print">
-        <button onclick="abrirPainel('cadastro')">Cadastrar personagem</button>
-        <button onclick="abrirPainel('acervo')">Acervo visual</button>
-        <button onclick="abrirPainel('lista')">Ver banco</button>
-        <button onclick="exportarJSON()" class="sec">Exportar backup</button>
-        <button onclick="window.print()" class="sec">Imprimir relatório</button>
-      </div>
-      <div class="reservatorios"><span class="tag">Prosa</span><span class="tag">Poesia</span><span class="tag">Infantil</span><span class="tag">Infantojuvenil</span><span class="tag">Cordel</span><span class="tag">Híbrido</span><span class="tag">Terror / Gótico</span><span class="tag">Fantasia / Mitologia</span><span class="tag">MitoPunkLogia</span><span class="tag">Outros</span></div>
+<hr class="hr-cena">
+
+<!-- ===== O QUE É O BPL ===== -->
+<div class="container">
+  <div class="section-label">// 01 — IDENTIDADE</div>
+  <h2 class="section-title">O que é o <em>BPL</em></h2>
+  <div class="section-divider"></div>
+
+  <div class="sobre-texto">
+    <p>
+      O <strong>BPL — Banco de Personagens Literários</strong> é o elenco vivo do Celeiro Literário. São atores, atrizes, cantores, bandas e figuras artísticas <strong>criadas por nós</strong> — identidades ficcionais com personalidade, estética e história próprias, que habitam o universo do Site das Letras Edições Literárias.
+    </p>
+    <p>
+      Não são pessoas reais contratadas. São <strong>personagens construídos</strong> — com nome artístico, visual, voz, comportamento e trajetória definidos internamente. Eles existem dentro do ecossistema e dão vida às histórias, músicas, clipes, audiobooks e produções do Celeiro.
+    </p>
+
+    <div class="referencia-box">
+      <p>
+        Pense no que a Gorillaz fez com Murdoc, 2-D, Noodle e Russel — personagens fictícios que são uma banda real, com discografia, clipes, entrevistas e presença cultural genuína. O BPL faz o mesmo, mas dentro do universo literário e multimídia do Celeiro.
+      </p>
+      <cite>— REFERÊNCIA DE UNIVERSO · ESTILO BPL</cite>
     </div>
 
-    <section id="painel-cadastro" class="card painel ativo">
-      <h2>Cadastrar personagem literário</h2>
-      <div class="grid">
-        <div class="col-4"><label>Nome do personagem</label><input id="nome" placeholder="Ex.: Helena Duarte"></div>
-        <div class="col-4"><label>Autor / heterônimo</label><input id="autor" placeholder="Ex.: Snake As"></div>
-        <div class="col-4"><label>Livro / obra</label><input id="obra" placeholder="Ex.: O casarão da noite"></div>
-        <div class="col-4"><label>Reservatório</label><select id="reservatorio"><option>Prosa</option><option>Poesia</option><option>Infantil</option><option>Infantojuvenil</option><option>Cordel</option><option>Híbrido</option><option>Terror / Gótico</option><option>Fantasia / Mitologia</option><option>MitoPunkLogia</option><option>Outros</option></select></div>
-        <div class="col-4"><label>Função na história</label><select id="funcao"><option>Protagonista</option><option>Antagonista</option><option>Secundário</option><option>Narrador</option><option>Figura simbólica</option><option>Participação breve</option></select></div>
-        <div class="col-4"><label>Pode ir para Silos?</label><select id="silos"><option>Sim</option><option>Não</option><option>Avaliar depois</option></select></div>
-        <div class="col-6"><label>Descrição física</label><textarea id="fisico" placeholder="Aparência, idade, roupa, marcas etc."></textarea></div>
-        <div class="col-6"><label>Personalidade</label><textarea id="psico" placeholder="Temperamento, desejo, medo, modo de falar etc."></textarea></div>
-        <div class="col-12"><label>Relações importantes</label><textarea id="relacoes" placeholder="Com quem se relaciona, rivalidades, família, pares românticos etc."></textarea></div>
-        <div class="col-12"><label>Observações para vídeo / HQ / capa</label><textarea id="obs" placeholder="Como deve aparecer em trailer, HQ, imagem interna, capa etc."></textarea></div>
-      </div>
-      <div class="acoes"><button onclick="salvarPersonagem()" class="ok">Salvar personagem</button><button onclick="limparFormulario()" class="sec">Limpar</button></div>
-    </section>
+    <p>
+      O BPL e a <strong>SIGMAL Music</strong> vivem em universos separados — mas frequentemente se cruzam em projetos conjuntos: clipes, trilhas, audiobooks musicados, séries e produções transmídia.
+    </p>
+  </div>
+</div>
 
-    <section id="painel-acervo" class="card painel">
-      <h2>Acervo visual do Barracão</h2>
-      <p class="small">Guarde aqui o caminho, link ou nome das imagens criadas no Barracão de Polimento, imagens usadas em capa, imagens internas e referências para Silos.</p>
-      <div class="grid">
-        <div class="col-4"><label>Personagem relacionado</label><input id="imgPersonagem" placeholder="Nome do personagem"></div>
-        <div class="col-4"><label>Obra relacionada</label><input id="imgObra" placeholder="Nome da obra"></div>
-        <div class="col-4"><label>Tipo de imagem</label><select id="imgTipo"><option>Barracão de Polimento</option><option>Capa</option><option>Contracapa</option><option>Imagem interna</option><option>Trailer / vídeo</option><option>HQ</option><option>Referência visual</option></select></div>
-        <div class="col-8"><label>Link, caminho ou nome do arquivo</label><input id="imgLink" placeholder="Ex.: barracao/helena_retrato_01.png"></div>
-        <div class="col-4"><label>Uso permitido</label><select id="imgUso"><option>Uso interno</option><option>Capa</option><option>Miolo</option><option>Silos</option><option>WebTV</option><option>Todos os usos institucionais</option></select></div>
-        <div class="col-12"><label>Observações</label><textarea id="imgObs" placeholder="Ex.: imagem aprovada para capa do volume 1; não alterar olhos; pode usar em trailer."></textarea></div>
-      </div>
-      <div class="acoes"><button onclick="salvarImagem()" class="ok">Salvar imagem no acervo</button></div>
-      <hr>
-      <div id="listaImagens" class="listagem"></div>
-    </section>
+<hr class="hr-cena">
 
-    <section id="painel-lista" class="card painel">
-      <div class="topbar"><h2>Banco salvo</h2><input id="busca" oninput="renderizar()" placeholder="Pesquisar por personagem, autor, obra ou reservatório" style="max-width:420px"></div>
-      <div id="lista" class="listagem"></div>
-    </section>
-  </section>
-</main>
-<script>
-const chave='BPL_CELEIRO_PERSONAGENS_V1';
-const chaveImg='BPL_CELEIRO_IMAGENS_V1';
-let personagens=JSON.parse(localStorage.getItem(chave)||'[]');
-let imagens=JSON.parse(localStorage.getItem(chaveImg)||'[]');
-function entrarBPL(){const perfil=document.getElementById('perfilAcesso').value;const ok=['Admin','Wagner Planas','Heterônimo'].includes(perfil);if(!ok){document.getElementById('erroAcesso').textContent='Acesso bloqueado. O BPL é exclusivo para Admin, Wagner Planas e Heterônimo.';return}document.getElementById('bloqueio').classList.add('hidden');document.getElementById('app').classList.remove('hidden');renderizar();renderizarImagens()}
-function abrirPainel(nome){document.querySelectorAll('.painel').forEach(p=>p.classList.remove('ativo'));document.getElementById('painel-'+nome).classList.add('ativo');if(nome==='lista')renderizar();if(nome==='acervo')renderizarImagens()}
-function salvarPersonagem(){const p={id:Date.now(),nome:v('nome'),autor:v('autor'),obra:v('obra'),reservatorio:v('reservatorio'),funcao:v('funcao'),silos:v('silos'),fisico:v('fisico'),psico:v('psico'),relacoes:v('relacoes'),obs:v('obs'),data:new Date().toLocaleString('pt-BR')};if(!p.nome||!p.autor||!p.obra){alert('Preencha pelo menos nome do personagem, autor/heterônimo e obra.');return}personagens.push(p);localStorage.setItem(chave,JSON.stringify(personagens));limparFormulario();renderizar();alert('Personagem salvo no BPL.')}
-function salvarImagem(){const img={id:Date.now(),personagem:v('imgPersonagem'),obra:v('imgObra'),tipo:v('imgTipo'),link:v('imgLink'),uso:v('imgUso'),obs:v('imgObs'),data:new Date().toLocaleString('pt-BR')};if(!img.link||!img.obra){alert('Informe pelo menos a obra e o link/caminho/nome da imagem.');return}imagens.push(img);localStorage.setItem(chaveImg,JSON.stringify(imagens));['imgPersonagem','imgObra','imgLink','imgObs'].forEach(id=>document.getElementById(id).value='');renderizarImagens();alert('Imagem salva no acervo visual.')}
-function renderizar(){document.getElementById('totalPersonagens').textContent=personagens.length+' personagens';const q=(document.getElementById('busca')?.value||'').toLowerCase();const filtrados=personagens.filter(p=>[p.nome,p.autor,p.obra,p.reservatorio,p.funcao].join(' ').toLowerCase().includes(q));const lista=document.getElementById('lista');if(!lista)return;if(!filtrados.length){lista.innerHTML='<div class="empty">Nenhum personagem encontrado.</div>';return}lista.innerHTML=filtrados.map(p=>{const imgs=imagens.filter(i=>(i.personagem||'').toLowerCase()===p.nome.toLowerCase()||(i.obra||'').toLowerCase()===p.obra.toLowerCase());return `<article class="personagem"><h3>${esc(p.nome)}</h3><div class="meta"><b>Autor:</b> ${esc(p.autor)}<br><b>Obra:</b> ${esc(p.obra)}<br><b>Reservatório:</b> ${esc(p.reservatorio)}<br><b>Função:</b> ${esc(p.funcao)}<br><b>Silos:</b> ${esc(p.silos)}<br><b>Salvo:</b> ${esc(p.data)}</div><p class="meta"><b>Físico:</b> ${esc(p.fisico||'-')}</p><p class="meta"><b>Personalidade:</b> ${esc(p.psico||'-')}</p><p class="meta"><b>Relações:</b> ${esc(p.relacoes||'-')}</p><p class="meta"><b>Obs.:</b> ${esc(p.obs||'-')}</p><span class="badge">${imgs.length} imagens ligadas</span><div class="acoes no-print"><button class="danger" onclick="excluirPersonagem(${p.id})">Excluir</button></div></article>`}).join('')}
-function renderizarImagens(){const lista=document.getElementById('listaImagens');if(!lista)return;if(!imagens.length){lista.innerHTML='<div class="empty">Nenhuma imagem cadastrada ainda.</div>';return}lista.innerHTML=imagens.map(i=>`<article class="personagem"><h3>${esc(i.tipo)}</h3><div class="meta"><b>Personagem:</b> ${esc(i.personagem||'-')}<br><b>Obra:</b> ${esc(i.obra)}<br><b>Arquivo/link:</b> ${esc(i.link)}<br><b>Uso:</b> ${esc(i.uso)}<br><b>Salvo:</b> ${esc(i.data)}</div><p class="meta"><b>Obs.:</b> ${esc(i.obs||'-')}</p><div class="galeria"><div class="foto">🖼️</div></div><div class="acoes no-print"><button class="danger" onclick="excluirImagem(${i.id})">Excluir</button></div></article>`).join('')}
-function excluirPersonagem(id){if(confirm('Excluir personagem do BPL?')){personagens=personagens.filter(p=>p.id!==id);localStorage.setItem(chave,JSON.stringify(personagens));renderizar()}}
-function excluirImagem(id){if(confirm('Excluir imagem do acervo?')){imagens=imagens.filter(i=>i.id!==id);localStorage.setItem(chaveImg,JSON.stringify(imagens));renderizarImagens();renderizar()}}
-function limparFormulario(){['nome','autor','obra','fisico','psico','relacoes','obs'].forEach(id=>document.getElementById(id).value='')}
-function exportarJSON(){const data={personagens,imagens,exportadoEm:new Date().toISOString()};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bpl_banco_personagens_literarios.json';a.click()}
-function v(id){return document.getElementById(id).value.trim()}
-function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-renderizar();renderizarImagens();
-</script>
+<!-- ===== UNIVERSOS / GÊNEROS DRAMÁTICOS ===== -->
+<div class="container">
+  <div class="section-label">// 02 — UNIVERSOS DRAMÁTICOS</div>
+  <h2 class="section-title">Os <em>Universos</em> do BPL</h2>
+  <div class="section-divider"></div>
+
+  <div class="universos-grid">
+
+    <div class="universo-card u-drama">
+      <div class="universo-header">
+        <span class="universo-icon">🎭</span>
+        <div class="universo-nome">Drama</div>
+        <div class="universo-subtitulo">INTENSIDADE · CONFLITO · PROFUNDIDADE</div>
+      </div>
+      <div class="universo-body">
+        <p class="universo-desc">Personagens de alta tensão dramática. Histórias de conflito interno, perdas, redenção e transformação. O sabor do ator que carrega o mundo nos olhos.</p>
+        <div class="slots-personagens">
+          <div class="slot-personagem">
+            <div class="slot-avatar">🎭</div>
+            <div class="slot-rotulo">Ator Principal</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">🎭</div>
+            <div class="slot-rotulo">Atriz Principal</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">🎭</div>
+            <div class="slot-rotulo">Antagonista</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">🎭</div>
+            <div class="slot-rotulo">Coadjuvante</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="universo-card u-romance">
+      <div class="universo-header">
+        <span class="universo-icon">💜</span>
+        <div class="universo-nome">Romance</div>
+        <div class="universo-subtitulo">PAIXÃO · BELEZA · VULNERABILIDADE</div>
+      </div>
+      <div class="universo-body">
+        <p class="universo-desc">Personagens construídos para narrativas de amor — em todas as formas. Presença magnética, beleza própria, vulnerabilidade autêntica. Da comédia romântica ao amor impossível.</p>
+        <div class="slots-personagens">
+          <div class="slot-personagem">
+            <div class="slot-avatar">💜</div>
+            <div class="slot-rotulo">Protagonista</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">💜</div>
+            <div class="slot-rotulo">Par Romântico</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">💜</div>
+            <div class="slot-rotulo">Confidente</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">💜</div>
+            <div class="slot-rotulo">Rival</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="universo-card u-suspense">
+      <div class="universo-header">
+        <span class="universo-icon">🌑</span>
+        <div class="universo-nome">Suspense & Noir</div>
+        <div class="universo-subtitulo">MISTÉRIO · SOMBRA · AMBIGUIDADE</div>
+      </div>
+      <div class="universo-body">
+        <p class="universo-desc">Personagens de olhar calculado e passado nebuloso. O sabor do ator que nunca entrega tudo — que deixa o espectador sempre querendo mais. Noir, thriller, mistério literário.</p>
+        <div class="slots-personagens">
+          <div class="slot-personagem">
+            <div class="slot-avatar">🌑</div>
+            <div class="slot-rotulo">Detetive / Investigador</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">🌑</div>
+            <div class="slot-rotulo">Femme / Homme Fatale</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">🌑</div>
+            <div class="slot-rotulo">Vilão</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">🌑</div>
+            <div class="slot-rotulo">Testemunha</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="universo-card u-comedia">
+      <div class="universo-header">
+        <span class="universo-icon">🎪</span>
+        <div class="universo-nome">Comédia & Sátira</div>
+        <div class="universo-subtitulo">HUMOR · IRONIA · LEVEZA</div>
+      </div>
+      <div class="universo-body">
+        <p class="universo-desc">Personagens com timing perfeito, olhar irônico e leveza inteligente. O sabor do ator que faz rir sem perder a profundidade. Comédia de costumes, paródia literária, sátira social.</p>
+        <div class="slots-personagens">
+          <div class="slot-personagem">
+            <div class="slot-avatar">🎪</div>
+            <div class="slot-rotulo">Cômico Central</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">🎪</div>
+            <div class="slot-rotulo">Ponto de Ironia</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">🎪</div>
+            <div class="slot-rotulo">Ingênuo / Caipira</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">🎪</div>
+            <div class="slot-rotulo">Satírico</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="universo-card u-acao">
+      <div class="universo-header">
+        <span class="universo-icon">⚡</span>
+        <div class="universo-nome">Ação & Aventura</div>
+        <div class="universo-subtitulo">MOVIMENTO · FORÇA · EPOPEIA</div>
+      </div>
+      <div class="universo-body">
+        <p class="universo-desc">Personagens de presença física e energia intensa. Heróis, anti-heróis, guerreiros e viajantes. Para as histórias de jornada, épicos e aventuras do Celeiro.</p>
+        <div class="slots-personagens">
+          <div class="slot-personagem">
+            <div class="slot-avatar">⚡</div>
+            <div class="slot-rotulo">Herói / Heroína</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">⚡</div>
+            <div class="slot-rotulo">Anti-Herói</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">⚡</div>
+            <div class="slot-rotulo">Companheiro</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">⚡</div>
+            <div class="slot-rotulo">Oponente</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="universo-card u-musica">
+      <div class="universo-header">
+        <span class="universo-icon">🎵</span>
+        <div class="universo-nome">Musical & Poético</div>
+        <div class="universo-subtitulo">VOZ · RITMO · EMOÇÃO CANTADA</div>
+      </div>
+      <div class="universo-body">
+        <p class="universo-desc">Personagens que vivem na fronteira entre a atuação e a música. O ator que canta. A atriz que recita. Para produções conjuntas com a SIGMAL Music — clipes, musicais literários e audiobooks.</p>
+        <div class="slots-personagens">
+          <div class="slot-personagem">
+            <div class="slot-avatar">🎵</div>
+            <div class="slot-rotulo">Cantor / Cantora</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">🎵</div>
+            <div class="slot-rotulo">Narrador Poético</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">🎵</div>
+            <div class="slot-rotulo">Declamador</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+          <div class="slot-personagem">
+            <div class="slot-avatar">🎵</div>
+            <div class="slot-rotulo">Performer</div>
+            <div class="slot-vago">[ A DEFINIR ]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="hr-cena">
+
+<!-- ===== ESTILOS MUSICAIS (SIGMAL MUSIC via BPL) ===== -->
+<div class="container">
+  <div class="section-label">// 03 — ESTILOS MUSICAIS</div>
+  <h2 class="section-title">Artistas por <em>Estilo</em></h2>
+  <div class="section-divider"></div>
+
+  <p class="estilos-intro">
+    Cada estilo musical do universo SIGMAL Music tem seus próprios personagens — bandas, duplas, solos e coletivos criados para habitar aquele som com autenticidade. Todos são criações internas do Celeiro.
+  </p>
+
+  <div class="estilos-grid">
+
+    <div class="estilo-card" style="--cor-estilo: #e74c3c;">
+      <div class="estilo-nome">Rock</div>
+      <p class="estilo-desc">Do clássico ao alternativo. Personagens de presença forte, identidade visual marcante e sonoridade intensa.</p>
+      <div class="artistas-do-estilo">
+        <div class="artista-slot-mini">BANDA [ A DEFINIR ]</div>
+        <div class="artista-slot-mini">SOLO [ A DEFINIR ]</div>
+      </div>
+    </div>
+
+    <div class="estilo-card" style="--cor-estilo: #f39c12;">
+      <div class="estilo-nome">MPB & Samba</div>
+      <p class="estilo-desc">Raiz brasileira. Personagens que carregam a tradição com modernidade — voz, violão e letra de poeta.</p>
+      <div class="artistas-do-estilo">
+        <div class="artista-slot-mini">ARTISTA [ A DEFINIR ]</div>
+        <div class="artista-slot-mini">DUPLA [ A DEFINIR ]</div>
+      </div>
+    </div>
+
+    <div class="estilo-card" style="--cor-estilo: #9b59b6;">
+      <div class="estilo-nome">Pop & Eletrônico</div>
+      <p class="estilo-desc">Sonoridade contemporânea, visual arrojado. Personagens que vivem nas telas e no streaming.</p>
+      <div class="artistas-do-estilo">
+        <div class="artista-slot-mini">PROJETO [ A DEFINIR ]</div>
+        <div class="artista-slot-mini">BANDA [ A DEFINIR ]</div>
+      </div>
+    </div>
+
+    <div class="estilo-card" style="--cor-estilo: #1abc9c;">
+      <div class="estilo-nome">Jazz & Blues</div>
+      <p class="estilo-desc">Sofisticação, improviso e alma. Personagens de bar, de noite, de conversa longa e silêncio cheio.</p>
+      <div class="artistas-do-estilo">
+        <div class="artista-slot-mini">TRIO [ A DEFINIR ]</div>
+        <div class="artista-slot-mini">SOLO [ A DEFINIR ]</div>
+      </div>
+    </div>
+
+    <div class="estilo-card" style="--cor-estilo: #e67e22;">
+      <div class="estilo-nome">Forró & Regional</div>
+      <p class="estilo-desc">Nordeste, festa e saudade. Personagens que trazem calor, história e identidade cultural nordestina.</p>
+      <div class="artistas-do-estilo">
+        <div class="artista-slot-mini">BANDA [ A DEFINIR ]</div>
+        <div class="artista-slot-mini">DUPLA [ A DEFINIR ]</div>
+      </div>
+    </div>
+
+    <div class="estilo-card" style="--cor-estilo: #2ecc71;">
+      <div class="estilo-nome">Rap & Hip-Hop</div>
+      <p class="estilo-desc">Palavra como arma e poesia. Personagens de rua, de luta e de mensagem — ligados ao universo literário do Celeiro.</p>
+      <div class="artistas-do-estilo">
+        <div class="artista-slot-mini">MC [ A DEFINIR ]</div>
+        <div class="artista-slot-mini">COLETIVO [ A DEFINIR ]</div>
+      </div>
+    </div>
+
+    <div class="estilo-card" style="--cor-estilo: #c0392b;">
+      <div class="estilo-nome">Clássico & Erudito</div>
+      <p class="estilo-desc">Câmara, orquestra, ópera. Personagens de tradição clássica integrados ao universo literário e poético.</p>
+      <div class="artistas-do-estilo">
+        <div class="artista-slot-mini">INTÉRPRETE [ A DEFINIR ]</div>
+        <div class="artista-slot-mini">DUO [ A DEFINIR ]</div>
+      </div>
+    </div>
+
+    <div class="estilo-card" style="--cor-estilo: #d6b354;">
+      <div class="estilo-nome">Experimental & Trilha</div>
+      <p class="estilo-desc">Sons que não cabem em categorias. Para trilhas, audiobooks, instalações sonoras e projetos transmídia do Celeiro.</p>
+      <div class="artistas-do-estilo">
+        <div class="artista-slot-mini">PROJETO [ A DEFINIR ]</div>
+        <div class="artista-slot-mini">COLETIVO [ A DEFINIR ]</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="hr-cena">
+
+<!-- ===== SABORES DE ATUAÇÃO ===== -->
+<div class="container">
+  <div class="section-label">// 04 — SABORES DE ATUAÇÃO</div>
+  <h2 class="section-title">O <em>Sabor</em> de cada Ator</h2>
+  <div class="section-divider"></div>
+
+  <div class="sabores-grid">
+
+    <div class="sabor-card">
+      <div class="sabor-header">
+        <div class="sabor-icon-grande">🔥</div>
+        <div class="sabor-info">
+          <div class="sabor-tipo">Intensidade Bruta</div>
+          <div class="sabor-subtipo">PRESENÇA · FORÇA · AUTENTICIDADE</div>
+        </div>
+      </div>
+      <div class="sabor-body">
+        <p class="sabor-desc">O ator/atriz que ocupa o espaço. Presença física e emocional avassaladora. Nenhuma cena passa despercebida quando estão em campo.</p>
+        <div class="elenco-slots-sabor">
+          <div class="slot-ator"><div class="ator-avatar">🔥</div><div class="ator-label">Ator<br>[ A DEFINIR ]</div></div>
+          <div class="slot-ator"><div class="ator-avatar">🔥</div><div class="ator-label">Atriz<br>[ A DEFINIR ]</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sabor-card">
+      <div class="sabor-header">
+        <div class="sabor-icon-grande">🌊</div>
+        <div class="sabor-info">
+          <div class="sabor-tipo">Sutileza & Nuance</div>
+          <div class="sabor-subtipo">OLHAR · SILÊNCIO · CAMADAS</div>
+        </div>
+      </div>
+      <div class="sabor-body">
+        <p class="sabor-desc">O ator/atriz que diz mais com um olhar do que com um monólogo. Cada expressão é uma revelação. A câmera os ama — e o leitor também.</p>
+        <div class="elenco-slots-sabor">
+          <div class="slot-ator"><div class="ator-avatar">🌊</div><div class="ator-label">Ator<br>[ A DEFINIR ]</div></div>
+          <div class="slot-ator"><div class="ator-avatar">🌊</div><div class="ator-label">Atriz<br>[ A DEFINIR ]</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sabor-card">
+      <div class="sabor-header">
+        <div class="sabor-icon-grande">⚗️</div>
+        <div class="sabor-info">
+          <div class="sabor-tipo">Carisma & Sedução</div>
+          <div class="sabor-subtipo">CHARME · MAGNETISMO · IRRESISTÍVEL</div>
+        </div>
+      </div>
+      <div class="sabor-body">
+        <p class="sabor-desc">O ator/atriz que o público segue sem questionar. Personagens que vendem qualquer projeto só pela presença. Naturalmente carismáticos, impossivelmente sedutores.</p>
+        <div class="elenco-slots-sabor">
+          <div class="slot-ator"><div class="ator-avatar">⚗️</div><div class="ator-label">Ator<br>[ A DEFINIR ]</div></div>
+          <div class="slot-ator"><div class="ator-avatar">⚗️</div><div class="ator-label">Atriz<br>[ A DEFINIR ]</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sabor-card">
+      <div class="sabor-header">
+        <div class="sabor-icon-grande">🪞</div>
+        <div class="sabor-info">
+          <div class="sabor-tipo">Versatilidade Total</div>
+          <div class="sabor-subtipo">MÚLTIPLOS GÊNEROS · CAMELEON · TRANSFORMAÇÃO</div>
+        </div>
+      </div>
+      <div class="sabor-body">
+        <p class="sabor-desc">O ator/atriz que serve qualquer universo. Drama, comédia, ação, romance — habitam todos com naturalidade. O curinga do BPL.</p>
+        <div class="elenco-slots-sabor">
+          <div class="slot-ator"><div class="ator-avatar">🪞</div><div class="ator-label">Ator<br>[ A DEFINIR ]</div></div>
+          <div class="slot-ator"><div class="ator-avatar">🪞</div><div class="ator-label">Atriz<br>[ A DEFINIR ]</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sabor-card">
+      <div class="sabor-header">
+        <div class="sabor-icon-grande">🗡️</div>
+        <div class="sabor-info">
+          <div class="sabor-tipo">O Grande Vilão</div>
+          <div class="sabor-subtipo">COMPLEXIDADE · MORAL AMBÍGUA · FASCINANTE</div>
+        </div>
+      </div>
+      <div class="sabor-body">
+        <p class="sabor-desc">O ator/atriz que rouba a cena como antagonista. Vilões que o público ama odiar — ou apenas ama. Personagens de moral ambígua e profundidade perturbadora.</p>
+        <div class="elenco-slots-sabor">
+          <div class="slot-ator"><div class="ator-avatar">🗡️</div><div class="ator-label">Ator<br>[ A DEFINIR ]</div></div>
+          <div class="slot-ator"><div class="ator-avatar">🗡️</div><div class="ator-label">Atriz<br>[ A DEFINIR ]</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sabor-card">
+      <div class="sabor-header">
+        <div class="sabor-icon-grande">🌙</div>
+        <div class="sabor-info">
+          <div class="sabor-tipo">Voz & Narração</div>
+          <div class="sabor-subtipo">AUDIOBOOK · RÁDIO · PRESENÇA SONORA</div>
+        </div>
+      </div>
+      <div class="sabor-body">
+        <p class="sabor-desc">O ator/atriz de voz inconfundível. Para audiobooks, Web Rádio, narrações literárias e produções sonoras. A voz que o ouvinte reconhece antes do nome.</p>
+        <div class="elenco-slots-sabor">
+          <div class="slot-ator"><div class="ator-avatar">🌙</div><div class="ator-label">Narrador<br>[ A DEFINIR ]</div></div>
+          <div class="slot-ator"><div class="ator-avatar">🌙</div><div class="ator-label">Narradora<br>[ A DEFINIR ]</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="hr-cena">
+
+<!-- ===== COLABORAÇÕES BPL × SIGMAL MUSIC ===== -->
+<div class="container">
+  <div class="section-label">// 05 — COLABORAÇÕES</div>
+  <h2 class="section-title">BPL <em>×</em> SIGMAL Music</h2>
+  <div class="section-divider"></div>
+
+  <p class="colab-intro">
+    Universos separados — mas que se cruzam em projetos conjuntos. Quando a história pede música e atuação ao mesmo tempo, BPL e SIGMAL Music trabalham juntos. Aqui estão os formatos de colaboração:
+  </p>
+
+  <div class="colab-tipos">
+
+    <div class="colab-item">
+      <div class="colab-logos">
+        <span class="colab-tag tag-bpl">BPL</span>
+        <span class="colab-x">×</span>
+        <span class="colab-tag tag-sigmal">SIGMAL</span>
+      </div>
+      <div class="colab-titulo">Videoclipes</div>
+      <p class="colab-desc">Artistas da SIGMAL Music ganham rosto e atuação com personagens do BPL. O clipe vira uma narrativa completa.</p>
+    </div>
+
+    <div class="colab-item">
+      <div class="colab-logos">
+        <span class="colab-tag tag-bpl">BPL</span>
+        <span class="colab-x">×</span>
+        <span class="colab-tag tag-sigmal">SIGMAL</span>
+      </div>
+      <div class="colab-titulo">Audiobooks Musicados</div>
+      <p class="colab-desc">Narradores do BPL + trilhas da SIGMAL Music. A história literária ganha dimensão sonora completa.</p>
+    </div>
+
+    <div class="colab-item">
+      <div class="colab-logos">
+        <span class="colab-tag tag-bpl">BPL</span>
+        <span class="colab-x">×</span>
+        <span class="colab-tag tag-sigmal">SIGMAL</span>
+      </div>
+      <div class="colab-titulo">Musicais Literários</div>
+      <p class="colab-desc">Obras do Site das Letras viram musicais — com elenco do BPL atuando e músicas originais da SIGMAL Music.</p>
+    </div>
+
+    <div class="colab-item">
+      <div class="colab-logos">
+        <span class="colab-tag tag-bpl">BPL</span>
+        <span class="colab-x">×</span>
+        <span class="colab-tag tag-sigmal">SIGMAL</span>
+      </div>
+      <div class="colab-titulo">Trilhas de Série</div>
+      <p class="colab-desc">Quando uma história do Celeiro vira série, BPL fornece o elenco e SIGMAL Music compõe a trilha original.</p>
+    </div>
+
+    <div class="colab-item">
+      <div class="colab-logos">
+        <span class="colab-tag tag-bpl">BPL</span>
+        <span class="colab-x">×</span>
+        <span class="colab-tag tag-sigmal">SIGMAL</span>
+      </div>
+      <div class="colab-titulo">Performances ao Vivo</div>
+      <p class="colab-desc">Eventos do Celeiro — lançamentos, saraus, festivais — com performance integrada: músicos e atores no mesmo palco.</p>
+    </div>
+
+    <div class="colab-item">
+      <div class="colab-logos">
+        <span class="colab-tag tag-bpl">BPL</span>
+        <span class="colab-x">×</span>
+        <span class="colab-tag tag-sigmal">SIGMAL</span>
+      </div>
+      <div class="colab-titulo">Conteúdo para Redes</div>
+      <p class="colab-desc">A Corsi distribui: BPL e SIGMAL Music juntos em reels, TikToks e conteúdos das redes sociais do Celeiro.</p>
+    </div>
+
+  </div>
+</div>
+
+<hr class="hr-cena">
+
+<!-- ===== ACESSO ===== -->
+<div class="container">
+  <div class="section-label">// 06 — ACESSO</div>
+  <h2 class="section-title">Vitrine vs. <em>Interno</em></h2>
+  <div class="section-divider"></div>
+
+  <div class="acesso-duplo">
+    <div class="acesso-card acesso-externo">
+      <div class="acesso-tipo">Vitrine Pública</div>
+      <ul class="acesso-lista">
+        <li>Ver os universos e gêneros do BPL</li>
+        <li>Conhecer os sabores de atuação</li>
+        <li>Ver prévias de personagens e projetos</li>
+        <li class="bloqueado">Fichas completas dos personagens</li>
+        <li class="bloqueado">Backstories e trajetórias</li>
+        <li class="bloqueado">Material de vídeo e áudio completo</li>
+        <li class="bloqueado">Acesso ao arquivo BPL interno</li>
+      </ul>
+    </div>
+    <div class="acesso-card acesso-membro">
+      <div class="acesso-tipo">Membro do Celeiro</div>
+      <ul class="acesso-lista">
+        <li>Fichas completas de todos os personagens</li>
+        <li>Backstories, histórias e trajetórias</li>
+        <li>Material audiovisual na íntegra</li>
+        <li>Arquivo BPL completo e atualizado</li>
+        <li>Acesso às colaborações BPL × SIGMAL Music</li>
+        <li>Participação em projetos transmídia</li>
+        <li>Acesso prioritário a novos personagens</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top: 3rem;">
+    <a href="cadastro_celeiro.html" class="btn-cena" style="margin-right:1rem">CRIAR CONTA</a>
+    <a href="pagina_respiro_celeiro.html" class="btn-ouro">JÁ SOU MEMBRO</a>
+  </div>
+</div>
+
+<!-- ===== RODAPÉ ===== -->
+<footer>
+  <div class="footer-logo">BPL</div>
+  <div class="footer-links">
+    <a href="portal_instituto_celeiro_literario.html">Celeiro Literário</a>
+    <a href="sigmal_academia_artistica_internacional.html">SIGMAL Academy</a>
+    <a href="sigmal_music.html">SIGMAL Music</a>
+    <a href="silo_multimidia.html">Silo Multimídia</a>
+    <a href="corsi.html">Corsi</a>
+    <a href="lapidar.html">Lapidar</a>
+  </div>
+  <div class="footer-copy">
+    BPL — Banco de Personagens Literários · Celeiro Literário · Site das Letras Edições Literárias
+  </div>
+</footer>
+
 </body>
 </html>
