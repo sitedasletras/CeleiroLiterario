@@ -3,29 +3,473 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Expedição Multimídia</title>
+<title>Expedição Multimídia — Silo Multimídia | Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--fundo:#05070c;--ouro:#d6b354;--papel:#fff8df;--verde:#1f7a42;--vermelho:#8b1e1e}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#05070c,#10294a,#efe2c7);color:white;text-align:center;padding:24px}.wrap{max-width:900px;margin:auto}.card{background:#fff8df;color:#111;border:2px solid var(--ouro);border-radius:22px;padding:20px;margin:18px 0;box-shadow:0 12px 30px rgba(0,0,0,.25)}h1{color:#f5d87a;font-family:Georgia,serif}.status{font-weight:900;font-size:18px}.ok{color:var(--verde)}.erro{color:var(--vermelho)}input,select{padding:12px;border-radius:12px;border:2px solid #111;width:90%;max-width:620px;margin:8px}.btn{display:inline-block;padding:13px 18px;border-radius:999px;background:var(--ouro);color:#111;text-decoration:none;font-weight:900;border:0;cursor:pointer;margin:6px}.verde{background:var(--verde);color:white}.sair{background:var(--vermelho);color:white}.lista{text-align:left;background:white;color:#111;border-radius:14px;padding:14px;white-space:pre-line}.bloqueado{opacity:.55;filter:grayscale(.4)}
+:root{
+  --azul:#0f1c2e;--azul2:#07101d;--azul3:#0d2540;
+  --ouro:#c9a646;--ouro2:#f4dc88;--cobre:#b87333;
+  --papel:#fffaf0;--texto:#243043;--cinza:#4a5568;
+  --ciano:#0e7490;--ciano2:#06b6d4;--ciano3:#a5f3fc;
+  --verde:#184b30;--verde2:#1f7a42;
+  --linha:rgba(201,166,70,.28);--r:22px;--s:0 18px 50px rgba(8,17,31,.15)
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Source Serif 4',Georgia,serif;background:linear-gradient(170deg,#fbf7ed,#ede0c4);color:var(--texto);min-height:100vh}
+
+.topbar{position:sticky;top:0;z-index:100;background:rgba(7,16,29,.97);border-bottom:2px solid var(--ouro);backdrop-filter:blur(10px)}
+.top-in{max-width:1200px;margin:auto;padding:10px 22px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.marca{font-family:'Playfair Display',serif;color:var(--ouro2);font-size:14px}
+.marca small{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(244,220,136,.5)}
+.tnav{display:flex;gap:6px;flex-wrap:wrap}
+.tnav a{font-family:'JetBrains Mono',monospace;font-size:11px;color:#c8c0ae;text-decoration:none;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.1);transition:.18s}
+.tnav a:hover{color:var(--ouro2);border-color:var(--ouro);background:rgba(201,166,70,.12)}
+
+/* HERO — paleta azul/ciano do Silo Multimídia */
+.hero{
+  background:radial-gradient(ellipse 65% 55% at 10% 15%,rgba(6,182,212,.15),transparent),
+             radial-gradient(ellipse 45% 60% at 90% 85%,rgba(201,166,70,.12),transparent),
+             linear-gradient(148deg,var(--azul2) 0%,var(--ciano) 60%,#062030 100%);
+  color:white;padding:68px 22px 56px;border-bottom:7px solid var(--ouro);position:relative;overflow:hidden
+}
+.hero::after{content:'▶';position:absolute;right:20px;bottom:-40px;font-size:260px;color:rgba(6,182,212,.06);line-height:1;pointer-events:none}
+.hero-in{max-width:1200px;margin:auto;display:grid;grid-template-columns:200px 1fr;gap:44px;align-items:start;position:relative;z-index:1}
+.h-esq{display:flex;flex-direction:column;align-items:center;gap:14px}
+.mm-av{width:178px;height:178px;border-radius:50%;background:linear-gradient(135deg,var(--ciano),#0a4a60);border:4px solid var(--ouro);box-shadow:0 0 0 8px rgba(6,182,212,.14),0 28px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.mm-av .av-s{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;color:var(--ouro2);line-height:1}
+.mm-av .av-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(244,220,136,.6);letter-spacing:.1em;text-align:center}
+.pill{font-family:'JetBrains Mono',monospace;font-size:11px;padding:6px 14px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+.p-ciano{background:rgba(6,182,212,.2);border:1px solid var(--ciano2);color:var(--ciano3)}
+.p-ouro{background:rgba(201,166,70,.15);border:1px solid rgba(201,166,70,.4);color:var(--ouro2)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--ciano3);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.h-dir .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ouro2);border:1px solid rgba(201,166,70,.4);display:inline-block;padding:7px 14px;border-radius:999px;margin-bottom:14px}
+.h-dir h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5.5vw,68px);line-height:1;color:var(--ouro2);margin-bottom:6px}
+.h-dir .cargo{font-size:clamp(15px,2vw,20px);color:#a0d4e0;font-style:italic;margin-bottom:20px}
+.h-dir .missao{font-size:17px;line-height:1.72;color:#e0dace;border-left:3px solid var(--ouro);padding-left:18px;max-width:740px;margin-bottom:24px}
+.h-chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#ddd8cc;font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px 13px;border-radius:12px}
+.chip strong{color:var(--ouro2)}
+
+.wrap{max-width:1200px;margin:auto;padding:44px 22px 80px}
+.sec{margin-bottom:52px}
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.sec-head .barra{width:7px;height:34px;background:var(--ouro);border-radius:20px;flex-shrink:0}
+.sec-head h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,36px);color:var(--azul)}
+.subtag{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--azul);color:var(--ouro2);padding:4px 11px;border-radius:999px}
+
+.card{background:var(--papel);border:1px solid var(--linha);border-radius:var(--r);padding:26px;box-shadow:var(--s)}
+.card h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--azul);margin-bottom:12px}
+.card p,.card li{font-size:15px;line-height:1.68;color:#3a4557}
+.card ul{padding-left:18px}
+.card ul li{margin-bottom:7px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+
+/* FLUXO */
+.fluxo{display:grid;grid-template-columns:repeat(5,1fr);border:2px solid var(--ouro);border-radius:18px;overflow:hidden;margin:18px 0}
+.f-et{background:var(--azul2);color:var(--ouro2);padding:20px 12px;text-align:center;border-right:1px solid rgba(201,166,70,.3);font-family:'JetBrains Mono',monospace}
+.f-et:last-child{border-right:none}
+.f-et .fn{font-size:26px;font-weight:900;color:var(--ouro);display:block;margin-bottom:8px}
+.f-et .ft{font-size:12px;font-weight:700;display:block;margin-bottom:5px}
+.f-et small{font-size:11px;color:#8a9aaa}
+
+/* PLATAFORMAS DE SAÍDA */
+.plat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.plat{background:var(--papel);border:1px solid var(--linha);border-radius:18px;padding:20px;text-align:center;box-shadow:0 6px 18px rgba(8,17,31,.08);position:relative;overflow:hidden}
+.plat::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--ciano),var(--ciano2))}
+.plat .pi{font-size:30px;margin-bottom:10px}
+.plat h4{font-family:'Playfair Display',serif;font-size:16px;color:var(--azul);margin-bottom:5px}
+.plat p{font-size:13px;color:var(--cinza);line-height:1.5}
+
+/* PAINEL DE VALIDAÇÃO HOTMART */
+.hotmart-painel{background:linear-gradient(135deg,var(--azul2),var(--ciano));border:2px solid var(--ouro);border-radius:var(--r);padding:30px;color:white;box-shadow:0 20px 60px rgba(0,0,0,.22)}
+.hotmart-painel h3{font-family:'Playfair Display',serif;font-size:26px;color:var(--ouro2);margin-bottom:8px}
+.hotmart-painel .hp-desc{font-size:15px;color:#c8e8f4;line-height:1.65;margin-bottom:22px}
+
+/* ESTADO: aguardando, validando, liberado, erro */
+.estado{display:none;border-radius:14px;padding:16px;font-family:'JetBrains Mono',monospace;font-size:14px;margin-top:14px;text-align:center}
+.estado.vis{display:block}
+.estado-aguardando{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#e8e0cc}
+.estado-validando{background:rgba(6,182,212,.15);border:1px solid var(--ciano2);color:var(--ciano3)}
+.estado-liberado{background:rgba(31,122,66,.2);border:1px solid #4ade80;color:#7fffa0}
+.estado-erro{background:rgba(184,50,50,.2);border:1px solid #f87171;color:#ffb8b8}
+
+/* CAMPO INPUT */
+.campo label{display:block;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:rgba(244,220,136,.8);margin-bottom:8px;letter-spacing:.04em;text-transform:uppercase}
+.campo input{width:100%;border:2px solid rgba(201,166,70,.4);border-radius:12px;padding:13px 16px;font-size:15px;font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,.07);color:white;outline:none;transition:border-color .2s}
+.campo input::placeholder{color:rgba(255,255,255,.35)}
+.campo input:focus{border-color:var(--ouro);background:rgba(255,255,255,.1)}
+
+/* SAÍDAS LIBERADAS */
+.saidas-liberadas{display:none;margin-top:24px}
+.saidas-liberadas.vis{display:block}
+.saidas-liberadas h4{font-family:'Playfair Display',serif;font-size:20px;color:var(--ouro2);margin-bottom:16px}
+.saidas-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.saida-btn{background:rgba(255,255,255,.08);border:1px solid rgba(201,166,70,.4);border-radius:16px;padding:16px;text-align:center;cursor:pointer;transition:.18s;text-decoration:none;color:white;display:block}
+.saida-btn:hover{background:rgba(201,166,70,.15);border-color:var(--ouro);transform:translateY(-2px)}
+.saida-btn .sb-ic{font-size:28px;margin-bottom:8px}
+.saida-btn .sb-n{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--ouro2);display:block;margin-bottom:4px}
+.saida-btn .sb-d{font-size:12px;color:rgba(255,255,255,.6)}
+
+/* HISTÓRICO */
+.historico-painel{background:var(--papel);border:1px solid var(--linha);border-radius:var(--r);padding:26px;box-shadow:var(--s)}
+.historico-painel h3{font-family:'Playfair Display',serif;font-size:22px;color:var(--azul);margin-bottom:14px}
+.hist-lista{list-style:none;padding:0}
+.hist-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(201,166,70,.2);gap:12px;flex-wrap:wrap}
+.hist-item:last-child{border-bottom:none}
+.hist-titulo{font-size:15px;color:var(--azul);font-weight:600}
+.hist-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cinza)}
+.hist-vazio{font-style:italic;color:var(--cinza);font-size:15px;padding:14px 0}
+.hist-num{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--azul);color:var(--ouro2);padding:3px 10px;border-radius:999px}
+
+.notice{background:#fff8d6;border-left:6px solid var(--ouro);border-radius:16px;padding:18px;font-size:15px;color:#3c300a;line-height:1.65;margin-bottom:22px}
+.notice strong{color:#7a5200}
+
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:0;cursor:pointer;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;padding:13px 22px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.12);transition:.18s}
+.b-ouro{background:var(--ouro);color:var(--azul2)}
+.b-ouro:hover{background:var(--ouro2)}
+.b-ciano{background:var(--ciano);color:white}
+.b-ciano:hover{background:#0a5a70}
+.b-esc{background:var(--azul);color:var(--ouro2);border:1px solid rgba(201,166,70,.35)}
+.b-esc:hover{background:#0a1422}
+.b-red{background:#7b1f1f;color:white}
+.b-red:hover{background:#5a1515}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+
+footer{background:var(--azul2);color:#c8c0ae;border-top:6px solid var(--ouro);padding:32px 22px;text-align:center}
+footer strong{color:var(--ouro2)}
+footer p{font-size:14px;line-height:1.8}
+footer .mono{font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.4;margin-top:8px}
+
+@media(max-width:980px){.hero-in{grid-template-columns:1fr}.h-esq{flex-direction:row}.plat-grid,.saidas-btns{grid-template-columns:repeat(2,1fr)}.fluxo{grid-template-columns:repeat(3,1fr)}.f-et{border-bottom:1px solid rgba(201,166,70,.3);border-right:none}.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.g2,.g3,.plat-grid,.saidas-btns{grid-template-columns:1fr}.fluxo{grid-template-columns:1fr}}
 </style>
-<script>
-function dados(){return {arquivo:localStorage.getItem('arquivoNome')||'',pagamento:localStorage.getItem('pagamento')||'',tempo:Number(localStorage.getItem('tempo')||0),historico:JSON.parse(localStorage.getItem('historicoExpedicao')||'[]')}}
-function salvarHistorico(item){const d=dados();d.historico.unshift(item);localStorage.setItem('historicoExpedicao',JSON.stringify(d.historico.slice(0,10)))}
-function render(){const d=dados();document.getElementById('arquivoAtual').innerText=d.arquivo||'Nenhum material recebido dos Silos';document.getElementById('tempoAtual').innerText=d.pagamento?'Tempo liberado: '+d.tempo+' minutos':'Pagamento ainda não identificado';document.getElementById('tempoAtual').className=d.pagamento?'status ok':'status erro';document.getElementById('historico').innerText=d.historico.length?d.historico.map((h,i)=>(i+1)+'. '+h).join('\n'):'Nenhuma expedição registrada ainda.'}
-function validarCodigo(){const codigo=document.getElementById('codigo').value.trim().toUpperCase();const mapa={'CELEIRO-10':10,'CELEIRO-20':20,'CELEIRO-30':30,'CELEIRO-60':60};if(!mapa[codigo]){document.getElementById('retorno').innerHTML='<span class="erro">Código inválido. Compra Hotmart não confirmada.</span>';return}localStorage.setItem('pagamento','true');localStorage.setItem('tempo',String(mapa[codigo]));document.getElementById('retorno').innerHTML='<span class="ok">Pagamento confirmado. Tempo ativado: '+mapa[codigo]+' minutos.</span>';render()}
-function gerar(){const d=dados();if(!d.pagamento){document.getElementById('saida').innerHTML='<span class="erro">Material bloqueado. É necessário pagamento confirmado pela Hotmart ou código de liberação.</span>';return}if(!d.arquivo){document.getElementById('saida').innerHTML='<span class="erro">Nenhum material recebido dos Silos.</span>';return}document.getElementById('saida').innerHTML='Processando material...';setTimeout(function(){const item=d.arquivo+' liberado com '+d.tempo+' minutos — '+new Date().toLocaleString('pt-BR');salvarHistorico(item);document.getElementById('saida').innerHTML='<span class="ok">Material liberado.</span><br><br>Arquivo: <b>'+d.arquivo+'</b><br>Tempo contratado: '+d.tempo+' minutos<br><br>Saídas preparadas:<br>Download interno<br>YouTube<br>Instagram<br>TikTok<br>Web Rádio / Web TV quando aplicável';render()},900)}
-function limpar(){localStorage.removeItem('pagamento');localStorage.removeItem('tempo');document.getElementById('retorno').innerHTML='<span class="erro">Liberação removida desta sessão.</span>';render()}
-window.addEventListener('load',render);
-</script>
 </head>
 <body>
-<div class="wrap">
-<h1>Expedição Multimídia</h1>
-<p>Porta final dos Silos. Sem pagamento confirmado, nada é liberado.</p>
-<section class="card"><h2>Material recebido</h2><p id="arquivoAtual" class="status"></p><p id="tempoAtual" class="status"></p></section>
-<section class="card"><h2>Confirmação Hotmart / Código de liberação</h2><p>Enquanto a integração automática com a Hotmart não estiver conectada, use o código de liberação correspondente ao tempo comprado.</p><input id="codigo" placeholder="Ex.: CELEIRO-20"><br><button class="btn verde" onclick="validarCodigo()">Ativar pagamento</button><button class="btn sair" onclick="limpar()">Limpar liberação</button><p id="retorno"></p></section>
-<section class="card"><h2>Gerar saída</h2><button class="btn verde" onclick="gerar()">Liberar material</button><div id="saida" class="lista" style="margin-top:14px"></div></section>
-<section class="card"><h2>Histórico desta sessão</h2><div id="historico" class="lista"></div></section>
-<a class="btn" href="silo_multimidia.html">Voltar aos Silos</a><a class="btn" href="cicile_reclamacao.html?departamento=Expedicao%20Multimidia">Reclamar com a CICILE</a><a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
+
+<div class="topbar">
+  <div class="top-in">
+    <div class="marca">Instituto Cultural Celeiro Literário<small>EXPEDIÇÃO MULTIMÍDIA · SILO MULTIMÍDIA · PORTA DE SAÍDA AUDIOVISUAL</small></div>
+    <nav class="tnav">
+      <a href="#validacao">Validação</a>
+      <a href="#plataformas">Plataformas</a>
+      <a href="#historico">Histórico</a>
+      <a href="expedicao.html">Expedição Geral</a>
+      <a href="corsi.html">CORSI</a>
+      <a href="cicile_reclamacao.html">CICILE</a>
+      <a href="pagina_respiro_celeiro.html">← Celeiro</a>
+    </nav>
+  </div>
 </div>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="h-esq">
+      <div class="mm-av">
+        <span class="av-s">EM</span>
+        <span class="av-sub">EXPEDIÇÃO<br>MULTIMÍDIA</span>
+      </div>
+      <span class="pill p-ciano"><span class="dot"></span> Silo Multimídia ativo</span>
+      <span class="pill p-ouro">✦ Celeiro Literário</span>
+    </div>
+    <div class="h-dir">
+      <div class="eyebrow">✦ SILO MULTIMÍDIA · VALIDAÇÃO HOTMART · SAÍDA AUDIOVISUAL</div>
+      <h1>Expedição Multimídia</h1>
+      <p class="cargo">Porta de saída das produções audiovisuais do Silo Multimídia</p>
+      <p class="missao">A Expedição Multimídia libera produções audiovisuais — vídeos, áudios, podcasts, transmissões — após confirmação de pagamento via Hotmart. O material liberado segue diretamente para as plataformas: YouTube, Instagram, TikTok, Web Rádio e Web TV, com registro automático de histórico de sessão.</p>
+      <div class="h-chips">
+        <div class="chip">▶️ <strong>YouTube</strong></div>
+        <div class="chip">📸 <strong>Instagram</strong></div>
+        <div class="chip">🎵 <strong>TikTok</strong></div>
+        <div class="chip">🎙️ <strong>Web Rádio / Web TV</strong></div>
+        <div class="chip">💳 <strong>Hotmart validado</strong></div>
+        <div class="chip">📥 <strong>Download direto</strong></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- FLUXO -->
+  <section class="sec">
+    <div class="sec-head"><div class="barra"></div><h2>Fluxo da Expedição Multimídia</h2></div>
+    <div class="fluxo">
+      <div class="f-et"><span class="fn">①</span><span class="ft">Silo Multimídia</span><small>Produção finalizada</small></div>
+      <div class="f-et"><span class="fn">②</span><span class="ft">Hotmart</span><small>Código de acesso gerado</small></div>
+      <div class="f-et"><span class="fn">③</span><span class="ft">Validação</span><small>Expedição confirma pagamento</small></div>
+      <div class="f-et"><span class="fn">④</span><span class="ft">Saídas liberadas</span><small>Download + plataformas</small></div>
+      <div class="f-et"><span class="fn">⑤</span><span class="ft">CORSI circula</span><small>Redes e streaming</small></div>
+    </div>
+  </section>
+
+  <!-- PAINEL HOTMART / VALIDAÇÃO -->
+  <section class="sec" id="validacao">
+    <div class="sec-head"><div class="barra"></div><h2>Validação de acesso — Hotmart</h2><span class="subtag">Confirmar pagamento e liberar produção</span></div>
+
+    <div class="notice">
+      Insira o <strong>código de acesso Hotmart</strong> recebido após a confirmação do pagamento. O sistema da Expedição verificará e liberará as saídas disponíveis para a sua produção.
+    </div>
+
+    <div class="hotmart-painel">
+      <h3>Central de liberação</h3>
+      <p class="hp-desc">Após confirmar seu código Hotmart, as saídas da sua produção serão liberadas: download direto, publicação no YouTube, Instagram, TikTok, Web Rádio e Web TV.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div class="campo">
+          <label>Código de acesso Hotmart</label>
+          <input type="text" id="hotmart-codigo" placeholder="Ex: HM-CELEIRO-2024-XXXXX" maxlength="40">
+        </div>
+        <div class="campo">
+          <label>Título da produção</label>
+          <input type="text" id="prod-titulo" placeholder="Nome do seu arquivo / episódio">
+        </div>
+      </div>
+
+      <!-- Estados de validação -->
+      <div class="estado estado-aguardando vis" id="est-aguardando">
+        ⏳ Aguardando código de acesso Hotmart para liberar as saídas.
+      </div>
+      <div class="estado estado-validando" id="est-validando">
+        🔄 Verificando código junto ao sistema Hotmart…
+      </div>
+      <div class="estado estado-liberado" id="est-liberado">
+        ✅ Acesso confirmado. Saídas liberadas abaixo.
+      </div>
+      <div class="estado estado-erro" id="est-erro">
+        ❌ Código inválido ou não encontrado. Verifique o e-mail de confirmação Hotmart ou <a href="cicile_reclamacao.html" style="color:#ffb8b8;text-decoration:underline">acione a CICILE</a>.
+      </div>
+
+      <div class="btns">
+        <button class="btn b-ouro" onclick="validarHotmart()">🔓 Validar e liberar produção</button>
+        <button class="btn b-esc" onclick="limpar()">✕ Limpar</button>
+      </div>
+
+      <!-- SAÍDAS LIBERADAS — aparece após validação -->
+      <div class="saidas-liberadas" id="saidas-liberadas">
+        <h4 style="margin-top:24px">Saídas disponíveis para <span id="prod-nome-exibido">sua produção</span></h4>
+        <div class="saidas-btns">
+          <a class="saida-btn" href="#" onclick="registrarSaida('Download direto');return false">
+            <div class="sb-ic">📥</div>
+            <span class="sb-n">Download direto</span>
+            <span class="sb-d">Baixar arquivo da produção</span>
+          </a>
+          <a class="saida-btn" href="#" onclick="registrarSaida('YouTube');return false">
+            <div class="sb-ic">▶️</div>
+            <span class="sb-n">YouTube</span>
+            <span class="sb-d">Publicar ou agendar no canal</span>
+          </a>
+          <a class="saida-btn" href="#" onclick="registrarSaida('Instagram');return false">
+            <div class="sb-ic">📸</div>
+            <span class="sb-n">Instagram</span>
+            <span class="sb-d">Reels, stories ou feed</span>
+          </a>
+          <a class="saida-btn" href="#" onclick="registrarSaida('TikTok');return false">
+            <div class="sb-ic">🎵</div>
+            <span class="sb-n">TikTok</span>
+            <span class="sb-d">Vídeo curto ou série</span>
+          </a>
+          <a class="saida-btn" href="#" onclick="registrarSaida('Web Rádio');return false">
+            <div class="sb-ic">🎙️</div>
+            <span class="sb-n">Web Rádio</span>
+            <span class="sb-d">Transmissão ou episódio</span>
+          </a>
+          <a class="saida-btn" href="#" onclick="registrarSaida('Web TV');return false">
+            <div class="sb-ic">📺</div>
+            <span class="sb-n">Web TV</span>
+            <span class="sb-d">Canal de vídeo do Celeiro</span>
+          </a>
+        </div>
+        <div class="btns" style="margin-top:18px">
+          <a class="btn b-ciano" href="corsi.html">📲 Encaminhar ao CORSI para circulação</a>
+          <a class="btn b-esc" href="expedicao.html">Expedição Geral</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATAFORMAS -->
+  <section class="sec" id="plataformas">
+    <div class="sec-head"><div class="barra"></div><h2>Plataformas de saída</h2><span class="subtag">Onde as produções do Silo circulam</span></div>
+
+    <div class="plat-grid">
+      <div class="plat">
+        <div class="pi">▶️</div>
+        <h4>YouTube</h4>
+        <p>Vídeos, entrevistas, leituras e produções do Silo Multimídia com SEO editorial do Celeiro</p>
+      </div>
+      <div class="plat">
+        <div class="pi">📸</div>
+        <h4>Instagram</h4>
+        <p>Reels, stories e clipes curtos extraídos das produções do Silo para alcance de público</p>
+      </div>
+      <div class="plat">
+        <div class="pi">🎵</div>
+        <h4>TikTok</h4>
+        <p>Conteúdo vertical e dinâmico para alcançar novos públicos em formato de série ou episódio</p>
+      </div>
+      <div class="plat">
+        <div class="pi">🎙️</div>
+        <h4>Web Rádio</h4>
+        <p>Transmissões ao vivo e episódios gravados de conteúdo literário e cultural do Celeiro</p>
+      </div>
+      <div class="plat">
+        <div class="pi">📺</div>
+        <h4>Web TV</h4>
+        <p>Canal de vídeo institucional do Celeiro com programação editorial, entrevistas e eventos</p>
+      </div>
+      <div class="plat">
+        <div class="pi">🎧</div>
+        <h4>Podcast / Streaming</h4>
+        <p>Distribuição em Spotify, Deezer e plataformas de áudio para programas e séries do Celeiro</p>
+      </div>
+      <div class="plat">
+        <div class="pi">📥</div>
+        <h4>Download direto</h4>
+        <p>Arquivo disponível para download pelo autor ou distribuidor autorizado pelo Silo</p>
+      </div>
+      <div class="plat">
+        <div class="pi">🌐</div>
+        <h4>Portal do Celeiro</h4>
+        <p>Publicação na videoteca e fonoteca digital do Instituto Cultural Celeiro Literário</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTÓRICO DE SESSÃO -->
+  <section class="sec" id="historico">
+    <div class="sec-head"><div class="barra"></div><h2>Histórico de saídas desta sessão</h2><span class="subtag">Registro automático</span></div>
+
+    <div class="historico-painel">
+      <h3>Saídas registradas</h3>
+      <ul class="hist-lista" id="hist-lista">
+        <li class="hist-vazio" id="hist-vazio">Nenhuma saída registrada nesta sessão ainda.</li>
+      </ul>
+      <div class="btns">
+        <button class="btn b-esc" onclick="limparHistorico()">✕ Limpar histórico da sessão</button>
+        <a class="btn b-red" href="cicile_reclamacao.html">📣 Problema? Acionar CICILE</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="btns" style="justify-content:center">
+    <a class="btn b-ouro" href="expedicao.html">📦 Expedição Geral</a>
+    <a class="btn b-ouro" href="expedicao_editorial.html">💎 Expedição Editorial</a>
+    <a class="btn b-ciano" href="corsi.html">📲 CORSI — Circulação</a>
+    <a class="btn b-esc" href="cicile.html">CICILE</a>
+    <a class="btn b-esc" href="pagina_respiro_celeiro.html">← Celeiro</a>
+  </div>
+
+</main>
+
+<footer>
+  <p><strong>Expedição Multimídia</strong> — Porta de saída do Silo Multimídia</p>
+  <p>Instituto Cultural Celeiro Literário · Hotmart · CORSI · Expedição Geral · CICILE</p>
+  <p class="mono">expedicao_multimidia.html · validação hotmart · saída audiovisual</p>
+</footer>
+
+<script>
+// ── CÓDIGOS HOTMART VÁLIDOS (demo — substituir por integração real) ──
+const CODIGOS_VALIDOS = [
+  'HM-CELEIRO-2024', 'HM-CELEIRO-2025', 'HM-SILO-001',
+  'HM-SILO-002', 'HM-MM-TESTE', 'CELEIRO-DEMO'
+]
+
+let sessaoSaidas = JSON.parse(sessionStorage.getItem('expedicao_mm_saidas') || '[]')
+renderHistorico()
+
+function validarHotmart() {
+  const codigo = document.getElementById('hotmart-codigo').value.trim().toUpperCase()
+  const titulo = document.getElementById('prod-titulo').value.trim()
+
+  if (!codigo) { alert('Por favor, insira o código de acesso Hotmart.'); return }
+
+  ocultarEstados()
+  mostrarEstado('est-validando')
+
+  setTimeout(() => {
+    ocultarEstados()
+    const valido = CODIGOS_VALIDOS.some(c => codigo.startsWith(c) || codigo === c)
+
+    if (valido) {
+      mostrarEstado('est-liberado')
+      document.getElementById('prod-nome-exibido').textContent = titulo || 'sua produção'
+      document.getElementById('saidas-liberadas').classList.add('vis')
+      // Salva código usado na sessão
+      sessionStorage.setItem('expedicao_mm_codigo', codigo)
+      sessionStorage.setItem('expedicao_mm_titulo', titulo)
+    } else {
+      mostrarEstado('est-erro')
+      document.getElementById('saidas-liberadas').classList.remove('vis')
+    }
+  }, 1800)
+}
+
+function registrarSaida(plataforma) {
+  const titulo = sessionStorage.getItem('expedicao_mm_titulo') || 'Produção'
+  const codigo = sessionStorage.getItem('expedicao_mm_codigo') || '—'
+  const entrada = {
+    titulo,
+    plataforma,
+    codigo,
+    num: 'MM-' + Date.now().toString().slice(-6),
+    hora: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  }
+  sessaoSaidas.unshift(entrada)
+  sessionStorage.setItem('expedicao_mm_saidas', JSON.stringify(sessaoSaidas))
+  renderHistorico()
+  alert('✅ Saída registrada!\n\nProdução: ' + titulo + '\nPlataforma: ' + plataforma + '\nProtocolo: ' + entrada.num)
+}
+
+function renderHistorico() {
+  const lista = document.getElementById('hist-lista')
+  const vazio = document.getElementById('hist-vazio')
+  if (sessaoSaidas.length === 0) {
+    vazio.style.display = 'block'
+    lista.innerHTML = ''
+    lista.appendChild(vazio)
+    return
+  }
+  lista.innerHTML = ''
+  sessaoSaidas.forEach(s => {
+    const li = document.createElement('li')
+    li.className = 'hist-item'
+    li.innerHTML = `
+      <div>
+        <div class="hist-titulo">${s.titulo}</div>
+        <div class="hist-meta">${s.plataforma} · ${s.hora} · Código: ${s.codigo}</div>
+      </div>
+      <span class="hist-num">${s.num}</span>
+    `
+    lista.appendChild(li)
+  })
+}
+
+function limparHistorico() {
+  if (!confirm('Limpar o histórico desta sessão?')) return
+  sessaoSaidas = []
+  sessionStorage.removeItem('expedicao_mm_saidas')
+  renderHistorico()
+}
+
+function limpar() {
+  document.getElementById('hotmart-codigo').value = ''
+  document.getElementById('prod-titulo').value = ''
+  ocultarEstados()
+  mostrarEstado('est-aguardando')
+  document.getElementById('saidas-liberadas').classList.remove('vis')
+}
+
+function ocultarEstados() {
+  ['est-aguardando','est-validando','est-liberado','est-erro'].forEach(id => {
+    document.getElementById(id).classList.remove('vis')
+  })
+}
+function mostrarEstado(id) {
+  document.getElementById(id).classList.add('vis')
+}
+</script>
 </body>
 </html>
