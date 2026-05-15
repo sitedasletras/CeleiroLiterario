@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silos Multimídia — Celeiro Literário</title>
+<style>
+/* ── Variáveis ─────────────────────────────────────────── */
+:root{
+  --azul:#07182b;
+  --azul-mid:#10294a;
+  --ouro:#d6b354;
+  --ouro-claro:#f5d87a;
+  --papel:#fff8df;
+  --verde:#1f7a42;
+  --vermelho:#8b1e1e;
+  --roxo:#42246b;
+  --turquesa:#197d7a;
+  --rosa:#b44b71;
+  --texto:#1a1a2e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Palatino Linotype','Book Antiqua',Palatino,Georgia,serif;
+  background:radial-gradient(circle at 50% 30%,#466d99 0%,#132d4e 45%,#06111f 100%);
+  min-height:100vh;
+  color:#fff;
+}
+
+/* ── Header ────────────────────────────────────────────── */
+header{
+  text-align:center;
+  padding:18px 16px;
+  background:#07101d;
+  border-bottom:5px solid var(--ouro);
+  position:sticky;top:0;z-index:200;
+}
+header h1{
+  color:var(--ouro-claro);
+  font-size:clamp(22px,4vw,34px);
+  letter-spacing:.5px;
+}
+header .sub{color:#b8c8e0;font-size:13px;margin-top:4px;font-family:Arial,sans-serif}
+.nav-silos{
+  display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:12px;
+}
+.nav-btn{
+  background:transparent;
+  border:1px solid var(--ouro)55;
+  color:var(--ouro-claro);
+  border-radius:999px;
+  padding:7px 16px;
+  font-size:13px;font-weight:900;
+  cursor:pointer;font-family:inherit;
+  transition:background .18s,color .18s;
+}
+.nav-btn:hover,.nav-btn.ativo{background:var(--ouro);color:#111}
+
+/* ── Wrap ──────────────────────────────────────────────── */
+main{max-width:1100px;margin:0 auto;padding:24px 16px 56px}
+
+/* ── Telas ─────────────────────────────────────────────── */
+.tela{display:none}
+.tela.ativa{display:block}
+
+/* ── Painel (card) ─────────────────────────────────────── */
+.painel{
+  background:var(--papel);
+  color:var(--texto);
+  border:2px solid #c9a64655;
+  border-radius:20px;
+  padding:22px;
+  margin-bottom:18px;
+  box-shadow:0 12px 32px rgba(0,0,0,.28);
+}
+.painel h2{font-family:Georgia,serif;color:var(--azul);margin-bottom:12px;font-size:22px}
+.painel h3{font-family:Georgia,serif;color:var(--azul);margin-bottom:10px;font-size:18px}
+.painel p{line-height:1.5;color:#333;font-size:14px;margin-bottom:8px}
+
+/* ── Grid 2 colunas ────────────────────────────────────── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid-silos{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+
+/* ── Silo card (hub) ───────────────────────────────────── */
+.silo-card{
+  background:#080d18;
+  color:#fff;
+  border-radius:16px;
+  padding:22px 18px;
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;flex-direction:column;justify-content:space-between;
+  min-height:160px;
+  transition:border-color .2s;
+  cursor:pointer;
+}
+.silo-card:hover{border-color:var(--ouro)88}
+.silo-card h3{color:var(--ouro-claro);font-family:Georgia,serif;font-size:20px;margin-bottom:8px}
+.silo-card p{color:#e9edf6;font-weight:700;font-size:13px;line-height:1.4}
+
+/* ── Formato HQ card ───────────────────────────────────── */
+.formato-card{
+  background:#080d18;color:#fff;
+  border-radius:14px;padding:18px 14px;
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;flex-direction:column;justify-content:space-between;
+  min-height:200px;
+  transition:border-color .2s;
+}
+.formato-card:hover{border-color:var(--ouro)88}
+.formato-card h3{color:var(--ouro-claro);font-family:Georgia,serif;font-size:18px;margin-bottom:6px}
+.formato-card p{color:#e9edf6;font-weight:700;font-size:12px;line-height:1.4;margin-bottom:4px}
+.pais-tag{
+  display:inline-block;background:var(--papel);color:#111;
+  font-size:11px;font-weight:900;border-radius:999px;
+  padding:3px 9px;margin-bottom:8px;
+}
+
+/* ── Botões ────────────────────────────────────────────── */
+.btn{
+  display:inline-block;
+  padding:11px 18px;border-radius:999px;border:0;
+  font-weight:900;font-size:13px;cursor:pointer;
+  text-decoration:none;font-family:inherit;
+  transition:opacity .15s,transform .1s;
+}
+.btn:active{transform:scale(.97)}
+.btn-ouro{background:var(--ouro);color:#111}
+.btn-verde{background:var(--verde);color:#fff}
+.btn-azul{background:#244d86;color:#fff}
+.btn-vermelho{background:var(--vermelho);color:#fff}
+.btn-roxo{background:var(--roxo);color:#fff}
+.btn-turquesa{background:var(--turquesa);color:#fff}
+.btn-escuro{background:#0d1929;color:var(--ouro-claro);border:1px solid var(--ouro)44}
+.btn-sm{padding:8px 14px;font-size:12px}
+.btn:disabled,.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* ── Campos de formulário ──────────────────────────────── */
+label.lbl{
+  display:block;font-weight:900;font-size:13px;
+  color:var(--azul);margin:12px 0 5px;
+}
+input,select,textarea{
+  width:100%;padding:11px 14px;
+  border-radius:12px;border:2px solid #253858;
+  font-size:14px;font-family:inherit;
+  background:#fff;color:#111;
+  resize:vertical;
+}
+textarea{min-height:130px}
+
+/* ── Tags decorativas ──────────────────────────────────── */
+.tag{
+  display:inline-block;background:#111;
+  color:var(--ouro-claro);border-radius:999px;
+  padding:5px 11px;font-size:12px;font-weight:900;margin:3px;
+  font-family:Arial,sans-serif;
+}
+
+/* ── Saída de texto ────────────────────────────────────── */
+.saida{
+  white-space:pre-wrap;
+  background:#fff;color:#111;
+  border:1px solid var(--ouro)88;
+  border-radius:14px;padding:16px;
+  min-height:220px;max-height:480px;
+  overflow-y:auto;
+  line-height:1.55;font-size:14px;
+  font-family:Georgia,serif;
+  position:relative;
+}
+.saida-vazia{color:#aaa;font-style:italic}
+
+/* ── Loader ────────────────────────────────────────────── */
+.loader{text-align:center;padding:32px;color:var(--ouro);display:none}
+.loader.ativo{display:block}
+.spinner{
+  width:40px;height:40px;
+  border:4px solid var(--ouro)33;
+  border-top-color:var(--ouro);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  margin:0 auto 12px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Config key modal ──────────────────────────────────── */
+.modal-bg{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.75);
+  z-index:9999;
+  display:none;
+  align-items:center;justify-content:center;
+}
+.modal-bg.aberto{display:flex}
+.modal{
+  background:var(--papel);color:var(--texto);
+  border-radius:20px;padding:28px;
+  max-width:480px;width:90%;
+  border:3px solid var(--ouro);
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.modal h3{color:var(--azul);margin-bottom:12px;font-family:Georgia,serif}
+.modal p{font-size:13px;line-height:1.5;color:#444;margin-bottom:12px}
+.modal input{margin-bottom:12px}
+
+/* ── Preview HQ ────────────────────────────────────────── */
+.hq-pagina{
+  background:#fff;border:4px solid #111;
+  border-radius:6px;padding:12px;
+  max-width:780px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+}
+.hq-pagina.webtoon{grid-template-columns:1fr;max-width:480px}
+.hq-titulo{
+  grid-column:1/-1;
+  text-align:center;font-family:Georgia,serif;
+  color:#111;font-size:16px;font-weight:900;
+  margin-bottom:4px;
+}
+.quadro{
+  border:3px solid #111;border-radius:4px;
+  overflow:hidden;background:#f2f2f2;
+  display:flex;flex-direction:column;
+}
+.quadro.full{grid-column:1/-1}
+.quadro-label{
+  padding:4px 8px;font-weight:900;font-size:11px;
+  border-bottom:2px solid #111;background:#e8e8e8;
+  color:#111;font-family:Arial,sans-serif;
+}
+.quadro-balao{
+  background:#fff;border-top:2px solid #111;
+  padding:7px 10px;font-size:12px;line-height:1.4;
+  color:#111;font-family:Arial,sans-serif;
+  min-height:40px;
+}
+
+/* ── Apresentação personagens ──────────────────────────── */
+.apresentacao{
+  display:grid;
+  grid-template-columns:180px 1fr;
+  gap:22px;align-items:center;
+}
+.personagem-img{
+  border-radius:18px;
+  border:4px solid var(--ouro);
+  overflow:hidden;
+  box-shadow:0 10px 24px rgba(0,0,0,.35);
+}
+
+/* ── Fluxo rodapé ──────────────────────────────────────── */
+.fluxo{
+  text-align:center;color:#334;
+  font-size:13px;font-family:Arial,sans-serif;
+}
+
+/* ── Botões de navegação da página HQ ─────────────────── */
+.hq-nav{
+  display:flex;align-items:center;gap:10px;
+  flex-wrap:wrap;margin-bottom:14px;
+}
+.chip{
+  background:#111;color:var(--ouro-claro);
+  border-radius:999px;padding:6px 14px;
+  font-size:13px;font-weight:900;
+  font-family:Arial,sans-serif;
+}
+
+/* ── API key badge ─────────────────────────────────────── */
+.api-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#0d1929;color:var(--ouro-claro);
+  border:1px solid var(--ouro)44;
+  border-radius:999px;padding:6px 12px;
+  font-size:12px;font-weight:900;cursor:pointer;
+  font-family:Arial,sans-serif;
+}
+.api-badge .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:#e00;display:inline-block;
+}
+.api-badge .dot.ok{background:var(--verde)}
+
+/* ── Responsivo ────────────────────────────────────────── */
+@media(max-width:760px){
+  .grid2,.grid-silos,.grid3{grid-template-columns:1fr}
+  .apresentacao{grid-template-columns:1fr;text-align:center}
+  .personagem-img{margin:0 auto}
+  .hq-pagina{grid-template-columns:1fr}
+  .quadro.full{grid-column:1}
+}
+
+/* ── Footer ────────────────────────────────────────────── */
+footer{
+  text-align:center;padding:16px;
+  border-top:2px solid var(--ouro)22;
+  color:#6888aa;font-size:12px;
+  font-family:Arial,sans-serif;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════════════ -->
+<header>
+  <h1>🌾 Celeiro Literário</h1>
+  <div class="sub">Silos Multimídia — Site das Letras Edições Literárias</div>
+  <div class="nav-silos">
+    <button class="nav-btn ativo" onclick="irTela('hub')">Hub</button>
+    <button class="nav-btn" onclick="irTela('cinematografico')">🎬 Cinematográfico</button>
+    <button class="nav-btn" onclick="irTela('sonoro')">🎧 Sonoro</button>
+    <button class="nav-btn" onclick="irTela('music')">🎵 Music</button>
+    <button class="nav-btn" onclick="irTela('hq')">📖 HQ</button>
+    <span class="api-badge" id="apiBadge" title="IA configurada via servidor Vercel">
+      <span class="dot ok" id="apiDot"></span>
+      <span id="apiLabel">IA ativa</span>
+    </span>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════
+     MAIN
+═══════════════════════════════════════════════════════ -->
+<main>
+
+<!-- ── TELA HUB ──────────────────────────────────────── -->
+<div class="tela ativa" id="tela-hub">
+
+  <div class="painel">
+    <div class="apresentacao">
+      <div class="personagem-img" style="width:168px;height:200px">
+        <!-- CICILE — SVG inline -->
+        <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" width="168" height="200">
+          <defs>
+            <radialGradient id="bgC" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1a3a6b"/><stop offset="100%" stop-color="#07182b"/></radialGradient>
+            <radialGradient id="peleC" cx="45%" cy="40%" r="55%"><stop offset="0%" stop-color="#f5c89a"/><stop offset="100%" stop-color="#d4956a"/></radialGradient>
+          </defs>
+          <rect width="200" height="240" fill="url(#bgC)" rx="18"/>
+          <circle cx="100" cy="85" r="58" fill="none" stroke="#d6b354" stroke-width="2" opacity=".4"/>
+          <ellipse cx="100" cy="185" rx="52" ry="38" fill="#1d3f7a"/>
+          <rect x="58" y="148" width="84" height="50" rx="10" fill="#1d3f7a"/>
+          <ellipse cx="100" cy="149" rx="22" ry="6" fill="none" stroke="#d6b354" stroke-width="2.5"/>
+          <circle cx="100" cy="143" r="4" fill="#d6b354"/>
+          <rect x="89" y="125" width="22" height="24" rx="8" fill="url(#peleC)"/>
+          <ellipse cx="100" cy="108" rx="35" ry="38" fill="url(#peleC)"/>
+          <ellipse cx="100" cy="78" rx="36" ry="18" fill="#1a0a2e"/>
+          <ellipse cx="68" cy="100" rx="10" ry="22" fill="#1a0a2e"/>
+          <ellipse cx="132" cy="100" rx="10" ry="22" fill="#1a0a2e"/>
+          <path d="M70 78 Q100 60 130 78" fill="#1a0a2e"/>
+          <path d="M72 82 Q78 72 85 80" fill="none" stroke="#d6b354" stroke-width="2" opacity=".7"/>
+          <path d="M128 82 Q122 72 115 80" fill="none" stroke="#d6b354" stroke-width="2" opacity=".7"/>
+          <ellipse cx="88" cy="108" rx="7" ry="8" fill="#0d1f3c"/>
+          <ellipse cx="112" cy="108" rx="7" ry="8" fill="#0d1f3c"/>
+          <circle cx="90" cy="107" r="2.5" fill="#4a9eff"/>
+          <circle cx="114" cy="107" r="2.5" fill="#4a9eff"/>
+          <circle cx="91" cy="106" r="1" fill="white"/>
+          <circle cx="115" cy="106" r="1" fill="white"/>
+          <path d="M82 100 Q88 97 94 100" fill="none" stroke="#1a0a2e" stroke-width="1.5"/>
+          <path d="M106 100 Q112 97 118 100" fill="none" stroke="#1a0a2e" stroke-width="1.5"/>
+          <path d="M98 113 Q100 116 102 113" fill="none" stroke="#c07040" stroke-width="1.2"/>
+          <path d="M90 121 Q100 128 110 121" fill="none" stroke="#8b3a20" stroke-width="2"/>
+          <circle cx="65" cy="112" r="4" fill="#d6b354"/>
+          <circle cx="135" cy="112" r="4" fill="#d6b354"/>
+          <text x="22" y="40" font-size="14" fill="#f5d87a" opacity=".6">✦</text>
+          <text x="160" y="55" font-size="10" fill="#f5d87a" opacity=".5">✦</text>
+          <text x="100" y="228" text-anchor="middle" fill="#f5d87a" font-size="13" font-weight="900" font-family="Georgia,serif">CICILE</text>
+        </svg>
+      </div>
+      <div>
+        <h2 style="color:#263a5f;font-family:Georgia,serif;font-size:26px;margin-bottom:10px">Acesso liberado</h2>
+        <p>Olá. Eu sou a <strong>CICILE</strong>, o portal de entrada do Celeiro Multimídia.</p>
+        <p>Aqui sua obra deixa de ser apenas texto e começa a ganhar forma, voz, imagem, trilha, cena e presença.</p>
+        <p>Escolha abaixo o Silo que deseja acionar. Cada um usa inteligência artificial real para estruturar sua criação.</p>
+        <p style="color:#b44b71;font-weight:900">Entre com calma. A criação agora tem destino.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-silos">
+    <div class="silo-card" onclick="irTela('cinematografico')">
+      <div><h3>🎬 Silo Cinematográfico</h3><p>Roteiros, escaletas, cenas e material audiovisual para WebTV.</p></div>
+      <div style="margin-top:14px"><button class="btn btn-verde btn-sm">Abrir</button></div>
+    </div>
+    <div class="silo-card" onclick="irTela('sonoro')">
+      <div><h3>🎧 Silo Sonoro</h3><p>Narrações, audiobooks, vinhetas e chamadas para Web Rádio.</p></div>
+      <div style="margin-top:14px"><button class="btn btn-verde btn-sm">Abrir</button></div>
+    </div>
+    <div class="silo-card" onclick="irTela('music')">
+      <div><h3>🎵 Silo Music</h3><p>Músicas, trilhas, letras e base SIGMAL para rádio e TV.</p></div>
+      <div style="margin-top:14px"><button class="btn btn-verde btn-sm">Abrir</button></div>
+    </div>
+    <div class="silo-card" onclick="irTela('hq')">
+      <div><h3>📖 Silo HQ</h3><p>HQ, mangá, webtoon, gibi europeu, graphic novel e cenas.</p></div>
+      <div style="margin-top:14px"><button class="btn btn-verde btn-sm">Abrir</button></div>
+    </div>
+  </div>
+
+  <div class="painel fluxo" style="margin-top:14px">
+    <strong>Fluxo:</strong> Silo → IA (Claude) → CORSI → Expedição Multimídia → WebTV / Web Rádio / Redes
+  </div>
+
+  <div class="painel" style="text-align:center;margin-top:8px">
+    <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+      <a class="btn btn-azul btn-sm" href="pagina_respiro.html">Retornar</a>
+      <a class="btn btn-sm btn-ouro" href="web_tv_celeiro.html">WebTV</a>
+      <a class="btn btn-sm btn-ouro" href="web_radio_celeiro.html">Web Rádio</a>
+      <a class="btn btn-sm" style="background:#b44b71;color:#fff" href="cicile_reclamacao.html">Falar com CICILE</a>
+      <a class="btn btn-vermelho btn-sm" href="portal_instituto_celeiro_literario.html">Sair</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── TELA CINEMATOGRÁFICO ─────────────────────────── -->
+<div class="tela" id="tela-cinematografico">
+  <div class="painel">
+    <h2>🎬 Silo Cinematográfico</h2>
+    <p>Roteiros, escaletas, cenas e material audiovisual para WebTV e produção independente.</p>
+    <div><span class="tag">Roteiro</span><span class="tag">WebTV</span><span class="tag">Curta</span><span class="tag">Documentário</span></div>
+
+    <div class="grid2" style="margin-top:18px">
+      <div>
+        <label class="lbl">Título da obra audiovisual</label>
+        <input id="cin-titulo" placeholder="Ex: A Última Voz do Sertão">
+
+        <label class="lbl">Gênero</label>
+        <select id="cin-genero">
+          <option>Drama</option><option>Comédia</option><option>Documentário</option>
+          <option>Animação</option><option>Ficção científica</option><option>Terror</option>
+          <option>Romance</option><option>Experimental</option><option>Infantil</option>
+          <option>Musical</option><option>Suspense</option>
+        </select>
+
+        <label class="lbl">Formato</label>
+        <select id="cin-formato">
+          <option>Curta-metragem</option><option>Média-metragem</option><option>Longa-metragem</option>
+          <option>Série / episódio</option><option>Documentário</option><option>Videoclipe</option>
+          <option>Institucional</option><option>Reel para redes</option><option>WebTV Celeiro</option>
+        </select>
+
+        <label class="lbl">Duração estimada</label>
+        <select id="cin-duracao">
+          <option>2 minutos</option><option>5 minutos</option><option>10 minutos</option>
+          <option>15 minutos</option><option>20 minutos</option><option>30 minutos</option>
+          <option>45 minutos</option><option>60 minutos</option><option>90 minutos</option>
+        </select>
+
+        <label class="lbl">Sinopse / ideia / capítulo-base</label>
+        <textarea id="cin-sinopse" placeholder="Descreva a história, personagens, ambiente, conflito..."></textarea>
+
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-verde" onclick="gerarCinema()">🎬 Gerar roteiro com IA</button>
+          <button class="btn btn-ouro btn-sm" onclick="copiarSaida('cin-saida')">Copiar</button>
+        </div>
+      </div>
+      <div>
+        <label class="lbl">Roteiro / tratamento (IA)</label>
+        <div class="loader" id="cin-loader"><div class="spinner"></div>Gerando com IA...</div>
+        <div class="saida" id="cin-saida"><span class="saida-vazia">A saída aparecerá aqui...</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-escuro" onclick="irTela('hub')">← Voltar aos Silos</button>
+      <a class="btn btn-vermelho btn-sm" href="portal_instituto_celeiro_literario.html">Sair</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── TELA SONORO ──────────────────────────────────── -->
+<div class="tela" id="tela-sonoro">
+  <div class="painel">
+    <h2>🎧 Silo Sonoro</h2>
+    <p>Narrações, audiobooks, vinhetas e chamadas para Web Rádio Celeiro.</p>
+    <div><span class="tag">Audiobook</span><span class="tag">Narração</span><span class="tag">Web Rádio</span><span class="tag">Vinheta</span></div>
+
+    <div class="grid2" style="margin-top:18px">
+      <div>
+        <label class="lbl">Título do projeto ou obra</label>
+        <input id="son-titulo" placeholder="Ex: A Noite dos Grilos">
+
+        <label class="lbl">Tipo de produção</label>
+        <select id="son-tipo">
+          <option>Audiobook literário</option><option>Narração de capítulo</option>
+          <option>Vinheta de abertura</option><option>Chamada para Web Rádio</option>
+          <option>Programa Cheiro da Terra</option><option>Podcast literário</option>
+          <option>Locução institucional</option><option>Trilha falada para vídeo</option>
+        </select>
+
+        <label class="lbl">Voz desejada</label>
+        <select id="son-voz">
+          <option>Voz grave e narrativa</option><option>Voz suave e acolhedora</option>
+          <option>Voz de apresentador</option><option>Voz poética</option>
+          <option>Voz documental</option><option>Voz caipira/rural com elegância</option>
+          <option>Voz infantil/infantojuvenil</option>
+        </select>
+
+        <label class="lbl">Ritmo</label>
+        <select id="son-ritmo">
+          <option>Ritmo natural</option><option>Lento e contemplativo</option>
+          <option>Rádio dinâmica</option><option>Épico e pausado</option>
+          <option>Conversado</option><option>Dramático</option>
+        </select>
+
+        <label class="lbl">Duração alvo</label>
+        <select id="son-duracao">
+          <option>30 segundos</option><option>1 minuto</option><option>3 minutos</option>
+          <option>5 minutos</option><option>10 minutos</option><option>20 minutos</option>
+          <option>30 minutos</option><option>60 minutos</option>
+        </select>
+
+        <label class="lbl">Texto / sinopse / roteiro</label>
+        <textarea id="son-texto" placeholder="Cole o texto, trecho da obra ou instruções de locução..."></textarea>
+
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-verde" onclick="gerarSonoro()">🎙️ Gerar pacote sonoro</button>
+          <button class="btn btn-ouro btn-sm" onclick="copiarSaida('son-saida')">Copiar</button>
+          <button class="btn btn-sm btn-escuro" onclick="salvarLocal('son-saida','celeiro_bunker_sonoro')">Salvar</button>
+        </div>
+      </div>
+      <div>
+        <label class="lbl">Prévia sonora (IA)</label>
+        <div class="loader" id="son-loader"><div class="spinner"></div>Gerando com IA...</div>
+        <div class="saida" id="son-saida"><span class="saida-vazia">A saída aparecerá aqui...</span></div>
+        <div style="margin-top:10px">
+          <button class="btn btn-verde btn-sm" onclick="expedir('son-saida','Sonoro')">Enviar para Expedição</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-escuro" onclick="irTela('hub')">← Voltar aos Silos</button>
+      <a class="btn btn-vermelho btn-sm" href="portal_instituto_celeiro_literario.html">Sair</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── TELA MUSIC ───────────────────────────────────── -->
+<div class="tela" id="tela-music">
+  <div class="painel">
+    <h2>🎵 Silo Music</h2>
+    <p>Músicas, trilhas, letras completas e base SIGMAL para Web Rádio e WebTV.</p>
+    <div><span class="tag">SIGMAL Music</span><span class="tag">Trilha</span><span class="tag">Vinheta</span><span class="tag">Web Rádio</span></div>
+
+    <div class="grid2" style="margin-top:18px">
+      <div>
+        <label class="lbl">Nome do projeto / programa / personagem</label>
+        <input id="mus-projeto" placeholder="Ex: Cheiro da Terra — Tema">
+
+        <label class="lbl">Tipo</label>
+        <select id="mus-tipo">
+          <option>Tema musical</option><option>Trilha sonora</option><option>Vinheta</option>
+          <option>Abertura de programa</option><option>Tema de personagem</option>
+          <option>Encerramento</option><option>Base para locução</option><option>Jingle institucional</option>
+        </select>
+
+        <label class="lbl">Estilo musical</label>
+        <select id="mus-estilo">
+          <option>MPB</option><option>Regional brasileiro</option><option>Clássico instrumental</option>
+          <option>Eletrônico leve</option><option>Épico cinematográfico</option><option>Infantil</option>
+          <option>Rádio raiz</option><option>Rock literário</option><option>Rap/poesia falada</option>
+          <option>Forró literário</option><option>Baião contemporâneo</option>
+        </select>
+
+        <label class="lbl">Clima emocional</label>
+        <select id="mus-clima">
+          <option>Emocional</option><option>Feliz</option><option>Melancólico</option>
+          <option>Épico</option><option>Suspense</option><option>Calmo</option>
+          <option>Festeiro</option><option>Contemplativo</option><option>Saudoso</option><option>Esperançoso</option>
+        </select>
+
+        <label class="lbl">Uso principal</label>
+        <select id="mus-uso">
+          <option>Web Rádio Celeiro</option><option>WebTV Celeiro</option>
+          <option>Silo Cinematográfico</option><option>Silo Sonoro</option>
+          <option>SIGMAL Music</option><option>Programa Cheiro da Terra</option>
+          <option>HQ / Gibi</option><option>Site das Letras</option>
+        </select>
+
+        <label class="lbl">Descrição / contexto / emoção</label>
+        <textarea id="mus-descricao" placeholder="Descreva a ideia, personagem, obra ou programa..."></textarea>
+
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-verde" onclick="gerarMusic()">🎼 Gerar estrutura musical</button>
+          <button class="btn btn-ouro btn-sm" onclick="copiarSaida('mus-saida')">Copiar</button>
+          <button class="btn btn-sm btn-escuro" onclick="salvarLocal('mus-saida','celeiro_bunker_music')">Salvar</button>
+        </div>
+      </div>
+      <div>
+        <label class="lbl">Saída musical (IA)</label>
+        <div class="loader" id="mus-loader"><div class="spinner"></div>Gerando com IA...</div>
+        <div class="saida" id="mus-saida"><span class="saida-vazia">A saída aparecerá aqui...</span></div>
+        <div style="margin-top:10px">
+          <button class="btn btn-verde btn-sm" onclick="expedir('mus-saida','Music')">Enviar para Expedição</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-escuro" onclick="irTela('hub')">← Voltar aos Silos</button>
+      <a class="btn btn-vermelho btn-sm" href="portal_instituto_celeiro_literario.html">Sair</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── TELA HQ — ENTRADA ────────────────────────────── -->
+<div class="tela" id="tela-hq">
+  <div class="painel">
+    <div class="apresentacao">
+      <div class="personagem-img" style="width:180px;height:215px">
+        <!-- Charles Lee SVG inline -->
+        <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" width="180" height="215">
+          <defs>
+            <radialGradient id="bgCh" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#2b1d0a"/><stop offset="100%" stop-color="#111"/></radialGradient>
+            <radialGradient id="peleCh" cx="45%" cy="40%" r="55%"><stop offset="0%" stop-color="#e8b090"/><stop offset="100%" stop-color="#c47850"/></radialGradient>
+          </defs>
+          <rect width="200" height="240" fill="url(#bgCh)" rx="18"/>
+          <rect x="8" y="8" width="40" height="30" rx="3" fill="none" stroke="#d6b354" stroke-width="1" opacity=".2"/>
+          <rect x="152" y="8" width="40" height="30" rx="3" fill="none" stroke="#d6b354" stroke-width="1" opacity=".2"/>
+          <rect x="62" y="148" width="76" height="55" rx="8" fill="#1a1a2e"/>
+          <ellipse cx="100" cy="185" rx="48" ry="32" fill="#1a1a2e"/>
+          <rect x="68" y="150" width="64" height="45" rx="6" fill="#2a2a4e"/>
+          <polygon points="100,152 94,165 100,175 106,165" fill="#d6b354" opacity=".9"/>
+          <rect x="90" y="127" width="20" height="22" rx="7" fill="url(#peleCh)"/>
+          <ellipse cx="100" cy="107" rx="32" ry="34" fill="url(#peleCh)"/>
+          <ellipse cx="100" cy="78" rx="33" ry="16" fill="#111"/>
+          <path d="M68 92 Q72 74 100 70 Q128 74 132 92" fill="#111"/>
+          <rect x="81" y="104" width="15" height="12" rx="5" fill="none" stroke="#222" stroke-width="2.5"/>
+          <rect x="104" y="104" width="15" height="12" rx="5" fill="none" stroke="#222" stroke-width="2.5"/>
+          <line x1="96" y1="110" x2="104" y2="110" stroke="#333" stroke-width="2"/>
+          <line x1="81" y1="110" x2="76" y2="112" stroke="#333" stroke-width="2"/>
+          <line x1="119" y1="110" x2="124" y2="112" stroke="#333" stroke-width="2"/>
+          <circle cx="88" cy="110" r="3" fill="#2a4a8a"/>
+          <circle cx="111" cy="110" r="3" fill="#2a4a8a"/>
+          <path d="M82 101 Q88 98 94 101" fill="none" stroke="#111" stroke-width="1.5"/>
+          <path d="M106 101 Q112 98 118 101" fill="none" stroke="#111" stroke-width="1.5"/>
+          <path d="M98 115 Q100 118 102 115" fill="none" stroke="#a06040" stroke-width="1.2"/>
+          <path d="M91 123 Q100 129 109 123" fill="none" stroke="#7a3a18" stroke-width="1.8"/>
+          <ellipse cx="68" cy="108" rx="6" ry="10" fill="url(#peleCh)"/>
+          <ellipse cx="132" cy="108" rx="6" ry="10" fill="url(#peleCh)"/>
+          <rect x="116" y="155" width="3" height="18" rx="1.5" fill="#f5d87a"/>
+          <polygon points="117.5,173 116,155 119,155" fill="#d6b354"/>
+          <text x="100" y="225" text-anchor="middle" fill="#f5d87a" font-size="11" font-weight="900" font-family="Georgia,serif">CHARLES LEE</text>
+          <text x="100" y="237" text-anchor="middle" fill="#d6b354" font-size="9" font-family="Arial,sans-serif" opacity=".8">Guia do Gibi</text>
+        </svg>
+      </div>
+      <div>
+        <h2 style="color:#263a5f;font-family:Georgia,serif;font-size:26px;margin-bottom:10px">Charles Lee — Guia do Gibi</h2>
+        <p>Bem-vindo ao Silo HQ. Aqui sua história ganha forma em imagens, páginas, balões, ritmo e montagem.</p>
+        <p>Escolha o <strong>destino editorial</strong>. O sistema aplica tamanho, fluxo, leitura e estrutura automaticamente.</p>
+        <p style="color:#8b5a12;font-weight:900">Você escolhe o caminho. Eu cuido da estrutura.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid de formatos -->
+  <div class="grid3" id="hq-formatos">
+    <div class="formato-card">
+      <div><span class="pais-tag">Brasil</span><h3>HQ brasileira</h3><p>Gibi, aventura, humor, infantil, seriada.</p><p style="color:#aac;font-size:11px">Página de gibi, cor, montagem editorial.</p></div>
+      <button class="btn btn-verde btn-sm" onclick="abrirHQEditor('hq-brasileira')" style="margin-top:12px">Abrir HQ brasileira</button>
+    </div>
+    <div class="formato-card">
+      <div><span class="pais-tag">Japão</span><h3>Mangá japonês</h3><p>P&B, impacto emocional, ação e drama.</p><p style="color:#aac;font-size:11px">Preto e branco, ritmo de mangá.</p></div>
+      <button class="btn btn-ouro btn-sm" onclick="abrirHQEditor('manga-japones')" style="margin-top:12px">Abrir mangá</button>
+    </div>
+    <div class="formato-card">
+      <div><span class="pais-tag">Coreia</span><h3>Webtoon coreano</h3><p>Celular, rolagem vertical, publicação digital.</p><p style="color:#aac;font-size:11px">Vertical contínuo, mobile.</p></div>
+      <button class="btn btn-sm" style="background:#197d7a;color:#fff;margin-top:12px" onclick="abrirHQEditor('webtoon-coreano')">Abrir webtoon</button>
+    </div>
+    <div class="formato-card">
+      <div><span class="pais-tag">Europa</span><h3>Gibi europeu/BD</h3><p>Álbum europeu, visual elegante, páginas amplas.</p><p style="color:#aac;font-size:11px">Quadros maiores, álbum contemplativo.</p></div>
+      <button class="btn btn-azul btn-sm" onclick="abrirHQEditor('gibi-europeu')" style="margin-top:12px">Abrir gibi europeu</button>
+    </div>
+    <div class="formato-card">
+      <div><span class="pais-tag">EUA</span><h3>HQ americana</h3><p>Ação, suspense, terror, fantasia urbana.</p><p style="color:#aac;font-size:11px">Comic book, ritmo rápido, impacto.</p></div>
+      <button class="btn btn-sm" style="background:#42246b;color:#fff;margin-top:12px" onclick="abrirHQEditor('hq-americana')">Abrir HQ americana</button>
+    </div>
+    <div class="formato-card">
+      <div><span class="pais-tag">Literário</span><h3>Graphic novel</h3><p>Narrativa adulta, psicológica, experimental.</p><p style="color:#aac;font-size:11px">Composição sóbria, capa literária.</p></div>
+      <button class="btn btn-sm" style="background:#42246b;color:#fff;margin-top:12px" onclick="abrirHQEditor('graphic-novel')">Abrir graphic novel</button>
+    </div>
+  </div>
+
+  <div class="painel" style="margin-top:14px;text-align:center;font-size:13px;color:#334">
+    <strong>Fluxo:</strong> Formato → Editor HQ Inteligente → IA → CORSI → Expedição Multimídia<br>
+    <small>Cordel visual: motor próprio Qui(RON)xadá.</small>
+  </div>
+
+  <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn btn-escuro" onclick="irTela('hub')">← Voltar aos Silos</button>
+    <a class="btn btn-vermelho btn-sm" href="portal_instituto_celeiro_literario.html">Sair</a>
+  </div>
+</div>
+
+<!-- ── TELA HQ EDITOR ───────────────────────────────── -->
+<div class="tela" id="tela-hq-editor">
+  <div class="painel">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="btn btn-escuro btn-sm" onclick="irTela('hq')">← Formatos</button>
+      <h2 style="margin:0" id="hqeditor-titulo-h">📖 Editor HQ</h2>
+    </div>
+
+    <!-- Entrada -->
+    <div class="grid2" style="margin-bottom:16px">
+      <div>
+        <label class="lbl">Título da obra</label>
+        <input id="hqe-titulo" placeholder="Título">
+        <label class="lbl">História / capítulo / sinopse</label>
+        <textarea id="hqe-historia" style="min-height:200px" placeholder="Cole ou escreva a história aqui..."></textarea>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-verde" onclick="gerarHQ()">✨ Gerar obra visual com IA</button>
+        </div>
+      </div>
+      <div>
+        <div id="hqe-info" style="background:#080d18;border-radius:14px;padding:16px;color:#fff;font-family:Arial,sans-serif;font-size:13px">
+          <div style="font-weight:900;color:#f5d87a;margin-bottom:10px">Formato selecionado</div>
+          <div id="hqe-info-rows"></div>
+        </div>
+        <div id="hqe-totais" style="margin-top:12px;background:#080d18;border-radius:14px;padding:14px;text-align:center;color:#f5d87a;display:none">
+          <div id="hqe-n-quadros" style="font-size:28px;font-weight:900">0</div>
+          <div style="font-size:12px;opacity:.8">quadros gerados</div>
+          <div id="hqe-n-paginas" style="font-size:20px;font-weight:900;margin-top:6px">0</div>
+          <div style="font-size:12px;opacity:.8">páginas</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="loader" id="hqe-loader"><div class="spinner"></div>Gerando quadros com IA...</div>
+
+    <!-- Preview -->
+    <div id="hqe-preview-wrap" style="display:none">
+      <h3 style="margin-bottom:12px">Prévia visual</h3>
+      <div class="hq-nav">
+        <button class="btn btn-azul btn-sm" onclick="hqPagAnterior()">◀ Anterior</button>
+        <span class="chip" id="hqe-indicador">Página 1 de 1</span>
+        <button class="btn btn-azul btn-sm" onclick="hqProxPag()">Próxima ▶</button>
+      </div>
+      <div id="hqe-pagina" class="hq-pagina"></div>
+    </div>
+
+    <!-- Roteiro -->
+    <div id="hqe-roteiro-wrap" style="display:none;margin-top:16px">
+      <h3 style="margin-bottom:8px">Roteiro limpo</h3>
+      <div class="saida" id="hqe-roteiro" style="min-height:160px"></div>
+      <div style="margin-top:8px">
+        <button class="btn btn-ouro btn-sm" onclick="copiarSaida('hqe-roteiro')">Copiar roteiro</button>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-escuro" onclick="irTela('hq')">← Formatos</button>
+      <button class="btn btn-escuro" onclick="irTela('hub')">← Hub</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- chave gerenciada pelo proxy Vercel — modal removido -->
+
+<footer>
+  Celeiro Literário · Site das Letras Edições Literárias · Motor: Claude (Anthropic) · GitHub Pages
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ── Navegação ───────────────────────────────────────── */
+function irTela(id){
+  document.querySelectorAll('.tela').forEach(t=>t.classList.remove('ativa'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('ativo'));
+  const t = document.getElementById('tela-'+id);
+  if(t) t.classList.add('ativa');
+  const map = {hub:'Hub','cinematografico':'🎬 Cinematográfico','sonoro':'🎧 Sonoro','music':'🎵 Music','hq':'📖 HQ','hq-editor':'📖 HQ'};
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    if(b.textContent.trim() === (map[id]||'Hub')) b.classList.add('ativo');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── URL do proxy Vercel (chave fica segura no servidor) ── */
+const ENGINE_URL = 'https://celeiro-literario-api.vercel.app/api/claude';
+
+/* ── Badge de status ─────────────────────────────────── */
+function abrirModal(){ /* desativado — chave no servidor */ alert('A chave está configurada de forma segura no servidor Vercel. Nenhuma ação necessária.'); }
+function atualizarBadge(){
+  document.getElementById('apiDot').className = 'dot ok';
+  document.getElementById('apiLabel').textContent = 'IA ativa';
+}
+atualizarBadge();
+
+/* ── Chamada ao proxy Vercel ─────────────────────────── */
+async function chamarClaude(system, user, maxTokens){
+  try{
+    const r = await fetch(ENGINE_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens: maxTokens||1000,
+        system, messages:[{role:'user',content:user}]
+      })
+    });
+    const d = await r.json();
+    if(d.error) throw new Error(typeof d.error==='string'?d.error:d.error.message||JSON.stringify(d.error));
+    return d.content?.map(b=>b.text||'').join('\n') || '';
+  }catch(e){
+    console.error('Erro no proxy Vercel:',e);
+    return null; // cai no fallback local
+  }
+}
+
+/* ── Helpers de UI ───────────────────────────────────── */
+function setSaida(id, txt){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.textContent = txt;
+}
+function setLoader(id, ativo){
+  const el = document.getElementById(id);
+  if(el) el.classList.toggle('ativo', ativo);
+}
+function copiarSaida(id){
+  const el = document.getElementById(id);
+  if(!el || !el.textContent.trim()) return;
+  navigator.clipboard.writeText(el.textContent).then(()=>alert('Copiado!'));
+}
+function salvarLocal(saidaId, key){
+  const txt = document.getElementById(saidaId)?.textContent||'';
+  localStorage.setItem(key, txt);
+  localStorage.setItem('celeiro_multimidia_material', JSON.stringify({conteudo:txt,data:new Date().toLocaleString('pt-BR')}));
+  alert('Salvo no bunker local do navegador.');
+}
+function expedir(saidaId, silo){
+  const txt = document.getElementById(saidaId)?.textContent||'';
+  localStorage.setItem('celeiro_multimidia_material', JSON.stringify({silo,conteudo:txt,data:new Date().toLocaleString('pt-BR')}));
+  location.href='expedicao_multimidia.html?origem=silo_'+silo.toLowerCase();
+}
+function v(id){ return (document.getElementById(id)||{}).value?.trim()||''; }
+
+/* ── CINEMATOGRÁFICO ─────────────────────────────────── */
+async function gerarCinema(){
+  const titulo=v('cin-titulo'), genero=v('cin-genero'),
+        formato=v('cin-formato'), duracao=v('cin-duracao'), sinopse=v('cin-sinopse');
+  setLoader('cin-loader',true);
+  setSaida('cin-saida','');
+
+  const ia = await chamarClaude(
+    'Você é o motor cinematográfico do Celeiro Literário (Site das Letras Edições Literárias). Gere roteiros audiovisuais profissionais em português brasileiro.',
+    `Gere um ROTEIRO / TRATAMENTO AUDIOVISUAL completo:\n\nTítulo: ${titulo||'Obra sem título'}\nGênero: ${genero}\nFormato: ${formato}\nDuração: ${duracao}\n\nSINOPSE:\n${sinopse||'(sem sinopse — criar tratamento original para o universo literário do Celeiro)'}\n\nInclua: 1. LOGLINE  2. SINOPSE EXPANDIDA  3. PERSONAGENS PRINCIPAIS  4. ESCALETA (cenas numeradas)  5. CENA PILOTO completa  6. DIREÇÃO DE FOTOGRAFIA  7. TRILHA SONORA sugerida  8. INTEGRAÇÃO com WebTV/Web Rádio Celeiro`,
+    1500
+  );
+
+  if(ia){
+    setSaida('cin-saida', ia);
+  } else {
+    // fallback local
+    setSaida('cin-saida',
+`ROTEIRO — CELEIRO MULTIMÍDIA
+
+Título: ${titulo||'Obra sem título'}
+Gênero: ${genero}
+Formato: ${formato}
+Duração: ${duracao}
+
+LOGLINE
+Uma história que emerge do universo literário do Celeiro e toma forma audiovisual.
+
+SINOPSE
+${sinopse||'[Cole a sinopse para gerar conteúdo personalizado. No momento, o motor local usa este template.]'}
+
+ESCALETA
+1. EXT. ABERTURA — DIA — Apresentação do universo e personagem principal.
+2. INT. CONFLITO — Apresentação do problema central.
+3. EXT./INT. DESENVOLVIMENTO — Jornada do personagem.
+4. CLÍMAX — Ponto de virada da narrativa.
+5. RESOLUÇÃO — Desfecho e mensagem final.
+
+DIREÇÃO DE FOTOGRAFIA
+Paleta quente, luz natural, referências do cinema brasileiro contemporâneo.
+
+INTEGRAÇÃO
+WebTV Celeiro · Web Rádio · Redes sociais · Site das Letras
+
+💡 Configure sua chave Anthropic (botão no topo) para gerar roteiros completos com IA real.`
+    );
+  }
+  setLoader('cin-loader',false);
+}
+
+/* ── SONORO ──────────────────────────────────────────── */
+async function gerarSonoro(){
+  const tema=v('son-titulo'), tipo=v('son-tipo'), voz=v('son-voz'),
+        ritmo=v('son-ritmo'), duracao=v('son-duracao'), texto=v('son-texto');
+  setLoader('son-loader',true);
+  setSaida('son-saida','');
+
+  const ia = await chamarClaude(
+    'Você é o motor sonoro do Celeiro Literário. Gere pacotes de produção sonora editorial em português brasileiro.',
+    `Gere um PACOTE SONORO COMPLETO:\n\nProjeto: ${tema||'Projeto sonoro'}\nTipo: ${tipo}\nVoz: ${voz}\nRitmo: ${ritmo}\nDuração: ${duracao}\n\nTEXTO BASE:\n${texto||'(sem texto-base)'}\n\nInclua: 1. CONCEITO SONORO  2. DIREÇÃO DE NARRAÇÃO  3. ESTRUTURA EM BLOCOS (Abertura, Corpo, Respiração, Fechamento)  4. MARCAÇÕES DE PRODUÇÃO  5. ROTEIRO DE LOCUÇÃO  6. INTEGRAÇÃO (Web Rádio, WebTV, SIGMAL)`,
+    1200
+  );
+
+  if(ia){
+    setSaida('son-saida', ia);
+  } else {
+    setSaida('son-saida',
+`PACOTE SONORO — CELEIRO MULTIMÍDIA
+
+Projeto: ${tema||'Projeto sonoro sem título'}
+Tipo: ${tipo}
+Voz desejada: ${voz}
+Ritmo: ${ritmo}
+Duração alvo: ${duracao}
+
+TEXTO / BASE
+${texto.slice(0,1200)||'[Cole o texto para geração personalizada]'}
+
+DIREÇÃO DE NARRAÇÃO
+Abertura: saudação breve, identificação do projeto e atmosfera sonora.
+Corpo: leitura clara, com pausas naturais e respeito ao gênero literário.
+Respiração: pausas entre blocos, poemas, cenas ou capítulos.
+Intenção: coerência entre voz, emoção e destino do material.
+Fechamento: convite para leitura, escuta, Web Rádio, WebTV ou Site das Letras.
+
+MAPA DE EXECUÇÃO
+1. Preparar texto limpo.
+2. Definir voz e ritmo.
+3. Separar blocos de respiração.
+4. Gerar locução ou roteiro sonoro.
+5. Encaminhar para Expedição Multimídia.
+
+SAÍDAS
+Audiobook · Narração · Vinheta · Chamada de rádio · Trilha falada para vídeo.
+
+💡 Configure sua chave Anthropic para gerar pacotes personalizados com IA real.`
+    );
+  }
+  setLoader('son-loader',false);
+  salvarLocal('son-saida','celeiro_multimidia_material');
+}
+
+/* ── MUSIC ───────────────────────────────────────────── */
+async function gerarMusic(){
+  const proj=v('mus-projeto'), tipo=v('mus-tipo'), estilo=v('mus-estilo'),
+        clima=v('mus-clima'), uso=v('mus-uso'), desc=v('mus-descricao');
+  setLoader('mus-loader',true);
+  setSaida('mus-saida','');
+
+  const ia = await chamarClaude(
+    'Você é o motor SIGMAL Music do Celeiro Literário. Gere estruturas musicais editoriais completas com letras, cifras e direção de produção. Responda em português brasileiro.',
+    `Gere um PACOTE MUSICAL COMPLETO:\n\nProjeto: ${proj||'Projeto musical'}\nTipo: ${tipo}\nEstilo: ${estilo}\nClima: ${clima}\nUso: ${uso}\n\nCONTEXTO:\n${desc||'(sem descrição)'}\n\nInclua: 1. CONCEITO DA OBRA MUSICAL  2. ESTRUTURA (Intro→Tema→Variação→Ponte→Retorno→Encerramento)  3. LETRA / LIBRETO completo (2+ estrofes + refrão)  4. CIFRA / HARMONIA (4-6 acordes)  5. DIREÇÃO DE PRODUÇÃO (BPM, instrumentação, timbre)  6. VERSÕES (completa, vinheta 30s, base para locução)  7. INTEGRAÇÃO`,
+    1400
+  );
+
+  if(ia){
+    setSaida('mus-saida', ia);
+  } else {
+    setSaida('mus-saida',
+`🎼 PACOTE MUSICAL — CELEIRO MULTIMÍDIA
+
+Projeto: ${proj||'Projeto musical sem nome'}
+Tipo: ${tipo}
+Estilo: ${estilo}
+Clima: ${clima}
+Uso principal: ${uso}
+
+CONCEITO
+${desc||'[Descreva o contexto para gerar conteúdo personalizado]'}
+
+ESTRUTURA MUSICAL
+1. Introdução — identidade curta, reconhecível e repetível.
+2. Tema principal — melodia central do projeto.
+3. Variação — mudança leve para evitar repetição.
+4. Ponte — passagem emocional ou dramática.
+5. Retorno do tema — reforço de marca sonora.
+6. Encerramento — fade, corte limpo ou assinatura institucional.
+
+DIREÇÃO DE PRODUÇÃO
+• Manter uso seguro, institucional e sem conteúdo problemático.
+• Preparar versão curta para vinheta e versão longa para programação.
+• Se houver locução, deixar espaço de respiração para o Silo Sonoro.
+• Se houver vídeo, sincronizar com o Silo Cinematográfico/WebTV.
+
+INTEGRAÇÃO
+Silo Music → SIGMAL Music → Silo Sonoro → CORSI → Web Rádio/WebTV → Expedição.
+
+💡 Configure sua chave Anthropic para gerar letras e cifras completas com IA real.`
+    );
+  }
+  setLoader('mus-loader',false);
+  salvarLocal('mus-saida','celeiro_multimidia_material');
+}
+
+/* ── HQ ──────────────────────────────────────────────── */
+const HQ_PRESETS = {
+  'hq-brasileira':   {nome:'HQ brasileira',  estilo:'HQ brasileira colorida',   porPagina:5, cor:true},
+  'manga-japones':   {nome:'Mangá japonês',   estilo:'Mangá preto e branco',     porPagina:6, cor:false},
+  'webtoon-coreano': {nome:'Webtoon coreano', estilo:'Webtoon vertical colorido',porPagina:1, cor:true},
+  'gibi-europeu':    {nome:'Gibi europeu/BD', estilo:'BD europeia colorida',     porPagina:5, cor:true},
+  'hq-americana':    {nome:'HQ americana',    estilo:'Comic book americano',     porPagina:6, cor:true},
+  'graphic-novel':   {nome:'Graphic novel',   estilo:'Graphic novel literária',  porPagina:5, cor:true},
+};
+let hqFormatoAtual = 'hq-brasileira';
+let hqQuadros = [];
+let hqPagAtual = 0;
+
+function abrirHQEditor(formatoId){
+  hqFormatoAtual = formatoId;
+  hqQuadros = [];
+  hqPagAtual = 0;
+  const p = HQ_PRESETS[formatoId];
+  document.getElementById('hqeditor-titulo-h').textContent = '📖 Editor HQ — ' + p.nome;
+  // info box
+  const rows = [['Nome',p.nome],['Estilo',p.estilo],['Quadros/pág.',p.porPagina],['Cor',p.cor?'Colorido':'Preto e branco']];
+  document.getElementById('hqe-info-rows').innerHTML = rows.map(([k,v])=>
+    `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #ffffff15;font-size:12px"><span style="color:#aac">${k}</span><span style="font-weight:900">${v}</span></div>`
+  ).join('');
+  document.getElementById('hqe-totais').style.display='none';
+  document.getElementById('hqe-preview-wrap').style.display='none';
+  document.getElementById('hqe-roteiro-wrap').style.display='none';
+  document.getElementById('hqe-historia').value='';
+  document.getElementById('hqe-titulo').value='';
+  irTela('hq-editor');
+}
+
+function svgCena(amb, acao, cor){
+  const pals = {
+    floresta:{ceu:'#a8e6ff',chao:'#4a9b55',pers:'#2da075',roupa:'#2d5d34'},
+    cidade:  {ceu:'#c4d8f0',chao:'#8c8c8c',pers:'#d2a075',roupa:'#244d86'},
+    casa:    {ceu:'#f5e6c8',chao:'#c9a870',pers:'#d2a075',roupa:'#6b3a2a'},
+    escola:  {ceu:'#e0f0ff',chao:'#b8d4b8',pers:'#d2a075',roupa:'#1f5f8f'},
+    fantasia:{ceu:'#c8b4e0',chao:'#7a5090',pers:'#e8c0a0',roupa:'#4a1a6a'},
+    futuro:  {ceu:'#0a0a2a',chao:'#1a3a5a',pers:'#80c0ff',roupa:'#2060a0'},
+    neutro:  {ceu:'#b8dcff',chao:'#cbb58a',pers:'#d2a075',roupa:'#244d86'},
+  };
+  const pp = cor ? (pals[amb]||pals.neutro) : {ceu:'#eee',chao:'#ccc',pers:'#111',roupa:'#333'};
+  const txt = (acao||'cena').slice(0,16);
+  return `<svg viewBox="0 0 280 145" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+    <rect width="280" height="145" fill="${pp.ceu}"/>
+    <rect y="95" width="280" height="50" fill="${pp.chao}"/>
+    <circle cx="140" cy="62" r="18" fill="${pp.pers}" stroke="#111" stroke-width="2.5"/>
+    <rect x="125" y="80" width="30" height="38" rx="6" fill="${pp.roupa}" stroke="#111" stroke-width="2.5"/>
+    <path d="M122 90 Q100 110 88 130" fill="none" stroke="#111" stroke-width="3"/>
+    <path d="M158 90 Q180 110 192 130" fill="none" stroke="#111" stroke-width="3"/>
+    <path d="M133 66 Q140 73 147 66" fill="none" stroke="#111" stroke-width="2"/>
+    <rect x="95" y="8" width="90" height="20" rx="10" fill="rgba(255,255,255,.85)" stroke="#111"/>
+    <text x="140" y="22" font-size="10" text-anchor="middle" font-family="Arial">${txt}</text>
+  </svg>`;
+}
+
+async function gerarHQ(){
+  const titulo = v('hqe-titulo');
+  const historia = v('hqe-historia');
+  if(!historia){ alert('Cole a história primeiro.'); return; }
+  const p = HQ_PRESETS[hqFormatoAtual];
+  setLoader('hqe-loader',true);
+  document.getElementById('hqe-preview-wrap').style.display='none';
+  document.getElementById('hqe-roteiro-wrap').style.display='none';
+
+  const ia = await chamarClaude(
+    'Você é o motor de HQ do Celeiro Literário. Estruture histórias em quadros. Responda SOMENTE em JSON válido sem texto extra, sem markdown.',
+    `Estruture em quadros de ${p.nome} (${p.estilo}).
+Divida em ${Math.min(Math.max(6,Math.ceil(historia.length/80)),20)} quadros.
+Cada quadro: n, cena (1-2 frases visuais), dialogo (max 80 chars), ambiente (floresta|cidade|casa|escola|fantasia|futuro|neutro), acao (ação|emoção|descoberta|diálogo|narrativa).
+HISTÓRIA: ${historia.slice(0,1800)}
+Responda APENAS: {"quadros":[{"n":1,"cena":"...","dialogo":"...","ambiente":"neutro","acao":"narrativa"}]}`,
+    1400
+  );
+
+  if(ia){
+    try{
+      const limpo = ia.replace(/```json|```/g,'').trim();
+      const parsed = JSON.parse(limpo);
+      hqQuadros = parsed.quadros||[];
+    }catch{
+      hqQuadros = gerarQuadrosLocal(historia);
+    }
+  } else {
+    hqQuadros = gerarQuadrosLocal(historia);
+  }
+
+  hqPagAtual = 0;
+  renderHQPagina(titulo, p);
+  renderHQRoteiro(titulo, p);
+  setLoader('hqe-loader',false);
+
+  const total = Math.max(1,Math.ceil(hqQuadros.length/p.porPagina));
+  document.getElementById('hqe-n-quadros').textContent = hqQuadros.length;
+  document.getElementById('hqe-n-paginas').textContent = total;
+  document.getElementById('hqe-totais').style.display='block';
+  document.getElementById('hqe-preview-wrap').style.display='block';
+  document.getElementById('hqe-roteiro-wrap').style.display='block';
+}
+
+function gerarQuadrosLocal(historia){
+  const partes = historia.replace(/\s+/g,' ').trim().match(/.{1,160}(\s|$)/g)||[historia];
+  const ambs = ['floresta','cidade','casa','neutro'];
+  const acoes = ['narrativa','diálogo','emoção','descoberta'];
+  return partes.slice(0,16).map((p,i)=>({
+    n:i+1, cena:p.trim(),
+    dialogo:p.slice(0,75).trim()+(p.length>75?'...':''),
+    ambiente:ambs[i%4], acao:acoes[i%4]
+  }));
+}
+
+function renderHQPagina(titulo, p){
+  const wrap = document.getElementById('hqe-pagina');
+  const total = Math.max(1,Math.ceil(hqQuadros.length/p.porPagina));
+  if(hqPagAtual < 0) hqPagAtual=0;
+  if(hqPagAtual >= total) hqPagAtual=total-1;
+
+  const webtoon = hqFormatoAtual==='webtoon-coreano';
+  wrap.className = 'hq-pagina'+(webtoon?' webtoon':'');
+
+  const fatia = hqQuadros.slice(hqPagAtual*p.porPagina,(hqPagAtual+1)*p.porPagina);
+  let html = `<div class="hq-titulo">${titulo||'Sem título'} — ${webtoon?'Bloco':'Página'} ${hqPagAtual+1}</div>`;
+
+  fatia.forEach((q,i)=>{
+    const full = (i===0 || (p.porPagina===5 && i===4));
+    html += `<div class="quadro${full?' full':''}">
+      <div class="quadro-label">Quadro ${q.n} — ${q.acao}</div>
+      ${svgCena(q.ambiente, q.acao, p.cor)}
+      <div class="quadro-balao">${q.dialogo}</div>
+    </div>`;
+  });
+
+  if(!fatia.length) html += '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#888">Sem quadros nesta página.</div>';
+  wrap.innerHTML = html;
+
+  document.getElementById('hqe-indicador').textContent = `Página ${hqPagAtual+1} de ${total}`;
+}
+
+function renderHQRoteiro(titulo, p){
+  let txt = `ROTEIRO — ${p.nome.toUpperCase()}\nTítulo: ${titulo||'Sem título'}\nFormato: ${p.nome}\nTotal de quadros: ${hqQuadros.length}\n\n`;
+  hqQuadros.forEach(q=>{ txt += `QUADRO ${q.n}\nCena: ${q.cena}\nBalão: ${q.dialogo}\n\n`; });
+  txt += `FLUXO\nEditor HQ → IA → CORSI → Expedição Multimídia → WebTV / Bunker da Obra.`;
+  document.getElementById('hqe-roteiro').textContent = txt;
+  localStorage.setItem('celeiro_multimidia_material', JSON.stringify({silo:'HQ',titulo,formato:p.nome,conteudo:txt,data:new Date().toLocaleString('pt-BR')}));
+}
+
+function hqProxPag(){
+  const p = HQ_PRESETS[hqFormatoAtual];
+  const total = Math.max(1,Math.ceil(hqQuadros.length/p.porPagina));
+  if(hqPagAtual < total-1){ hqPagAtual++; renderHQPagina(v('hqe-titulo'),p); }
+}
+function hqPagAnterior(){
+  const p = HQ_PRESETS[hqFormatoAtual];
+  if(hqPagAtual > 0){ hqPagAtual--; renderHQPagina(v('hqe-titulo'),p); }
+}
+</script>
+</body>
+</html>
