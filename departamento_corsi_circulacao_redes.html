@@ -3,29 +3,354 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CORSI — Circulação e Redes</title>
+<title>CORSI — Circulação em Redes | Celeiro Literário</title>
 <style>
-:root{--fundo:#05070c;--azul:#10294a;--ouro:#d6b354;--creme:#fff8df;--verde:#1f7a42;--vermelho:#8b1e1e}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,var(--fundo),var(--azul),#efe2c7);color:white;text-align:center;padding:22px}h1{color:#f5d87a;font-family:Georgia,serif;font-size:44px;margin-bottom:4px}.card{background:var(--creme);color:#111;border:2px solid var(--ouro);border-radius:22px;padding:20px;margin:18px auto;max-width:920px;box-shadow:0 12px 30px rgba(0,0,0,.25)}.dark{background:#111;color:white}.btn{display:inline-block;padding:13px 18px;border-radius:999px;background:var(--ouro);color:#111;text-decoration:none;font-weight:900;border:0;cursor:pointer;margin:6px}.verde{background:var(--verde);color:white}.sair{background:var(--vermelho);color:white}input,select,textarea{width:92%;max-width:720px;padding:12px;border-radius:12px;border:2px solid #111;margin:8px;font-size:16px}textarea{min-height:110px}.lista{text-align:left;background:white;color:#111;padding:14px;border-radius:14px;white-space:pre-wrap;border:1px solid #ddd}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;text-align:left}.check{background:white;border:1px solid #ddd;border-radius:14px;padding:12px}.check label{display:block;margin:7px}.ok{color:var(--verde);font-weight:900}.erro{color:var(--vermelho);font-weight:900}.tag{display:inline-block;background:#111;color:#f5d87a;border-radius:999px;padding:6px 10px;margin:3px;font-weight:900;font-size:13px}@media(max-width:760px){.grid{grid-template-columns:1fr}h1{font-size:36px}}
+:root{
+  --azul:#07101d;--azul2:#10233f;--azul3:#17365f;
+  --ouro:#c9a646;--ouro2:#f4dc88;--cobre:#b87333;
+  --papel:#fffaf0;--txt:#1f2a3a;--muted:#5a6478;
+  --verde:#1f7a42;--verde2:#2d9a54;
+  --verm:#7b1f1f;--roxo:#3b1f6e;
+  --linha:rgba(201,166,70,.3);--r:20px;--s:0 14px 40px rgba(0,0,0,.15)
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Georgia,'Times New Roman',serif;background:linear-gradient(160deg,#f8f3e8,#ede0c4);color:var(--txt);min-height:100vh}
+
+.topbar{position:sticky;top:0;z-index:100;background:rgba(7,16,29,.97);border-bottom:2px solid var(--ouro);backdrop-filter:blur(10px)}
+.top-in{max-width:1200px;margin:auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.marca{font-family:Georgia,serif;color:var(--ouro2);font-size:14px;font-weight:700}
+.marca small{display:block;font-size:10px;color:rgba(244,220,136,.5);font-family:Arial,sans-serif;letter-spacing:.06em}
+.tnav{display:flex;gap:6px;flex-wrap:wrap}
+.tnav a{font-family:Arial,sans-serif;font-size:11px;color:#c8c0ae;text-decoration:none;padding:6px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.1);transition:.15s}
+.tnav a:hover{color:var(--ouro2);border-color:var(--ouro);background:rgba(201,166,70,.12)}
+
+.hero{background:linear-gradient(140deg,var(--azul) 0%,var(--azul3) 50%,#0d1f10 100%);color:white;padding:50px 20px 40px;border-bottom:5px solid var(--ouro);text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'CORSI';position:absolute;right:-10px;bottom:-40px;font-size:200px;font-weight:900;color:rgba(201,166,70,.05);line-height:1;pointer-events:none}
+.hero h1{font-size:clamp(40px,6vw,72px);color:var(--ouro2);margin-bottom:8px}
+.hero .cargo{font-size:18px;color:#a8c8b8;font-style:italic;margin-bottom:16px}
+.hero .missao{font-size:16px;color:#e0dace;max-width:700px;margin:0 auto;line-height:1.65;border-left:3px solid var(--ouro);padding-left:16px;text-align:left}
+
+.wrap{max-width:1200px;margin:auto;padding:36px 20px 70px;display:flex;flex-direction:column;gap:26px}
+
+/* CARDS */
+.card{background:var(--papel);border:1px solid var(--linha);border-radius:var(--r);padding:26px;box-shadow:var(--s)}
+.card h2{font-size:1.5rem;color:var(--azul2);margin-bottom:10px}
+.card h3{font-size:1.15rem;color:var(--azul2);margin-bottom:8px}
+.card p,.card li{font-size:15px;line-height:1.68;color:#3a4557}
+.card ul{padding-left:18px}
+.card ul li{margin-bottom:7px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+
+/* FLUXO */
+.fluxo{display:grid;grid-template-columns:repeat(5,1fr);border:2px solid var(--ouro);border-radius:18px;overflow:hidden;margin:16px 0}
+.fet{background:var(--azul);color:var(--ouro2);padding:18px 10px;text-align:center;border-right:1px solid rgba(201,166,70,.3);font-family:Arial,sans-serif}
+.fet:last-child{border-right:none}
+.fet .fn{font-size:24px;font-weight:900;color:var(--ouro);display:block;margin-bottom:6px}
+.fet .ft{font-size:11px;font-weight:700;display:block;margin-bottom:4px}
+.fet small{font-size:10px;color:#8a9aaa}
+
+/* PLATAFORMAS */
+.plat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.plat{background:var(--papel);border:1px solid var(--linha);border-radius:16px;padding:18px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.07)}
+.plat::before{content:'';display:block;height:4px;background:linear-gradient(90deg,var(--ouro),var(--cobre));border-radius:4px 4px 0 0;margin:-18px -18px 14px}
+.plat .pi{font-size:28px;margin-bottom:8px}
+.plat h4{font-size:15px;color:var(--azul2);margin-bottom:4px}
+.plat p{font-size:13px;color:var(--muted);line-height:1.45}
+
+/* REGRAS WEB TV/RÁDIO */
+.regra-card{background:linear-gradient(135deg,var(--azul),var(--azul3));border:2px solid var(--ouro);border-radius:var(--r);padding:26px;color:white}
+.regra-card h2{color:var(--ouro2);margin-bottom:10px}
+.regra-card p{color:#c8d8e0;font-size:15px;line-height:1.65;margin-bottom:14px}
+.regra-barra{display:flex;flex-direction:column;gap:10px;margin:14px 0}
+.regra-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.06);border-radius:14px;padding:14px}
+.regra-pct{font-size:28px;font-weight:900;color:var(--ouro2);font-family:Georgia,serif;flex-shrink:0;width:60px;text-align:center}
+.regra-desc{font-size:14px;color:#c8d8e0;line-height:1.45}
+.regra-desc strong{display:block;color:white;margin-bottom:2px}
+
+/* CHECKLIST OPERACIONAL */
+.checklist-card{background:var(--papel);border:2px solid var(--ouro);border-radius:var(--r);padding:28px;box-shadow:var(--s)}
+.checklist-card h2{color:var(--azul2);margin-bottom:6px}
+.checklist-card .sub{font-size:15px;color:var(--muted);margin-bottom:22px;font-style:italic}
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.check-box{background:#f8f4ec;border:1px solid #d4c89a;border-radius:16px;padding:16px}
+.check-box h4{font-size:15px;color:var(--azul2);margin-bottom:10px}
+.check-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
+.check-item input[type=checkbox]{margin-top:3px;flex-shrink:0;width:16px;height:16px;accent-color:var(--verde)}
+.check-item span{font-size:14px;color:#3a4557;line-height:1.45}
+
+/* FORMULÁRIO */
+.campo label{display:block;font-family:Arial,sans-serif;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--azul2);margin-bottom:6px}
+.campo input,.campo select,.campo textarea{width:100%;border:1.5px solid #d4c89a;border-radius:12px;padding:10px 12px;font:inherit;font-size:.95rem;background:#fffdf8;color:var(--txt);outline:none;transition:border-color .2s}
+.campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--ouro)}
+.campo textarea{min-height:90px;resize:vertical}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* RESULTADO */
+.resultado{display:none;background:#f0fff4;border:2px solid var(--verde2);border-radius:16px;padding:20px;margin-top:14px}
+.resultado.vis{display:block}
+.resultado h3{font-size:20px;color:#184b30;margin-bottom:8px}
+.resultado pre{font-family:Arial,sans-serif;font-size:14px;color:#2d5a3d;line-height:1.65;white-space:pre-wrap;background:#e8f8ee;border-radius:12px;padding:14px;border:1px solid #86efac}
+.resultado .pnum{font-family:'Courier New',monospace;font-size:12px;background:#184b30;color:#7fffa0;padding:6px 14px;border-radius:999px;display:inline-block;margin-top:10px}
+
+/* ALERTAS */
+.alerta{background:#fff0f0;border:1px solid #e0a0a0;border-left:5px solid var(--verm);border-radius:14px;padding:14px;font-size:14px;color:#5a0f0f;display:none;margin-top:10px}
+.alerta.vis{display:block}
+
+/* NOTICE */
+.notice{background:#fff8d6;border-left:5px solid var(--ouro);border-radius:14px;padding:16px;font-size:15px;color:#3c300a;line-height:1.65}
+.notice strong{color:#7a5200}
+
+/* BOTÕES */
+.btn{display:inline-flex;align-items:center;gap:7px;border:0;border-radius:999px;padding:12px 18px;font:700 .9rem Arial,sans-serif;cursor:pointer;transition:.15s;box-shadow:0 4px 12px rgba(0,0,0,.1);text-decoration:none}
+.btn:hover{transform:translateY(-1px)}
+.btn-ouro{background:var(--ouro);color:var(--azul)}
+.btn-ouro:hover{background:var(--ouro2)}
+.btn-verde{background:var(--verde);color:white}
+.btn-verde:hover{background:#165c31}
+.btn-azul{background:var(--azul2);color:var(--ouro2);border:1px solid rgba(201,166,70,.35)}
+.btn-azul:hover{background:var(--azul)}
+.btn-red{background:var(--verm);color:white}
+.btn-red:hover{background:#5a1515}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+
+footer{background:var(--azul);color:#c8c0ae;border-top:4px solid var(--ouro);padding:28px 20px;text-align:center}
+footer strong{color:var(--ouro2)}
+footer p{font-size:13px;line-height:1.8}
+
+@media(max-width:900px){.g2,.g3,.check-grid,.r2{grid-template-columns:1fr}.plat-grid{grid-template-columns:repeat(2,1fr)}.fluxo{grid-template-columns:repeat(3,1fr)}.fet{border-bottom:1px solid rgba(201,166,70,.3);border-right:none}}
+@media(max-width:560px){.plat-grid,.fluxo{grid-template-columns:1fr}.btns{flex-direction:column}.btn{width:100%;justify-content:center}}
 </style>
-<script>
-function perfilAtual(){return localStorage.getItem('perfil')||localStorage.getItem('celeiro_perfil')||'usuario'}
-function perfilInstitucional(){const p=perfilAtual().toLowerCase();return ['admin','heteronimo','heterônimo','wagner planas','wagner_planas'].includes(p)}
-function definirDestino(){const p=perfilAtual().toLowerCase();const destino=perfilInstitucional()?'Redes institucionais do Instituto Cultural Celeiro Literário':'Redes sociais do autor/cliente';document.getElementById('perfil').innerText=p;document.getElementById('destino').innerText=destino;}
-function marcado(id){return document.getElementById(id).checked}
-function validar(){const rede=document.getElementById('rede').value;const tvRadio=rede.includes('WebTV')||rede.includes('WebRádio');if(!marcado('licenca'))return 'Bloqueado: informe licença livre, domínio público, material próprio ou autorização.';if(!marcado('semApostas'))return 'Bloqueado: conteúdo/anúncio não pode envolver apostas, jogos ou cassino.';if(!marcado('respeitoMulher'))return 'Bloqueado: não entra conteúdo que deprecie, sexualize ou desrespeite a mulher.';if(tvRadio && !marcado('autorizaMidia'))return 'Bloqueado: WebTV/WebRádio exigem autorização específica.';if(tvRadio && !perfilInstitucional() && !marcado('materialAutorizadoCeleiro'))return 'Bloqueado: WebTV/WebRádio usam material do Celeiro ou material expressamente autorizado.';return ''}
-function prepararPostagem(){const erro=validar();if(erro){document.getElementById('saida').innerHTML='<span class="erro">'+erro+'</span>';return}const obra=document.getElementById('obra').value||localStorage.getItem('arquivoNome')||'Material pronto';const rede=document.getElementById('rede').value;const texto=document.getElementById('texto').value||'Material preparado pelo Celeiro Literário.';const destino=document.getElementById('destino').innerText;const plano='CORSI — Plano de circulação\nMaterial: '+obra+'\nDestino: '+destino+'\nCanal inicial: '+rede+'\nLegenda-base: '+texto+'\n\nAutorizações: verificadas.\nStatus: pronto para agendamento/publicação conforme operação da CORSI.';localStorage.setItem('corsi_plano',plano);document.getElementById('saida').innerText=plano;}
-function carregarMaterial(){const a=localStorage.getItem('arquivoNome')||localStorage.getItem('celeiro_silos_material_atual')||'';if(a&&!document.getElementById('obra').value){try{const j=JSON.parse(a);document.getElementById('obra').value=j.nome||a}catch(e){document.getElementById('obra').value=a}}}
-window.addEventListener('load',()=>{definirDestino();carregarMaterial();});
-</script>
 </head>
 <body>
-<h1>CORSI</h1>
-<p>Departamento de Circulação, Redes, Postagem e Programação</p>
-<section class="card dark"><h2>CORSI diz:</h2><p>Quando o material fica pronto, eu verifico autorização, separo o destino e preparo a circulação. Redes do autor são uma coisa; WebTV/WebRádio e redes institucionais do Celeiro seguem curadoria própria.</p><p><span class="tag">Sem apostas</span><span class="tag">Sem material duvidoso</span><span class="tag">Autorização obrigatória</span><span class="tag">Cultura primeiro</span></p></section>
-<section class="card"><h2>Destino automático</h2><p>Perfil identificado: <strong id="perfil"></strong></p><p>Destino sugerido: <strong id="destino"></strong></p></section>
-<section class="card"><h2>Preparar circulação</h2><input id="obra" placeholder="Nome do material pronto"><br><select id="rede"><option>Instagram</option><option>TikTok</option><option>YouTube</option><option>Facebook</option><option>Todas as redes disponíveis</option><option>WebTV Celeiro</option><option>WebRádio Celeiro</option><option>WebTV + WebRádio Celeiro</option></select><br><textarea id="texto" placeholder="Legenda ou texto-base para postagem"></textarea></section>
-<section class="card"><h2>Checklist obrigatório</h2><div class="grid"><div class="check"><strong>Direitos e autorização</strong><label><input type="checkbox" id="licenca"> Material próprio, domínio público, Creative Commons, royalty free claro ou autorizado</label><label><input type="checkbox" id="autorizaMidia"> Autoriza WebTV/WebRádio, quando aplicável</label><label><input type="checkbox" id="materialAutorizadoCeleiro"> Material pertence ao Celeiro/SIGMAL/Heterônimos ou foi autorizado para canais institucionais</label></div><div class="check"><strong>Linha editorial</strong><label><input type="checkbox" id="semApostas"> Não contém apostas, cassino, jogo de azar ou propaganda desse tipo</label><label><input type="checkbox" id="respeitoMulher"> Não deprecia, sexualiza nem desrespeita a mulher</label><label><input type="checkbox" id="cultural"> Tem ligação cultural, literária, artística, educativa ou institucional</label></div></div><br><button class="btn verde" onclick="prepararPostagem()">Preparar publicação pela CORSI</button><div id="saida" class="lista"></div></section>
-<section class="card dark"><h2>Regra WebTV / WebRádio</h2><p>50% material próprio do Celeiro/Admin/Wagner Planas/Heterônimos. 25% Trajano + SIGMAL. 5% apenas Trajano. 20% apenas SIGMAL. Todo material de terceiros precisa autorização expressa.</p></section>
-<a class="btn" href="pagina_respiro_celeiro.html?modo=interno">Voltar ao Hall</a><a class="btn" href="expedicao_multimidia.html?modo=interno">Ir para Expedição Multimídia</a><a class="btn" href="web_tv_celeiro.html?modo=interno">WebTV</a><a class="btn" href="web_radio_celeiro.html?modo=interno">WebRádio</a><a class="btn" href="cicile_reclamacao.html?departamento=CORSI">Reclamar com a CICILE</a><a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair</a>
+
+<div class="topbar">
+  <div class="top-in">
+    <div class="marca">Instituto Cultural Celeiro Literário<small>CORSI · CIRCULAÇÃO EM REDES · DEPARTAMENTO OPERACIONAL</small></div>
+    <nav class="tnav">
+      <a href="#operacao">Operação</a>
+      <a href="#checklist">Checklist</a>
+      <a href="#regras">WebTV/Rádio</a>
+      <a href="expedicao.html">Expedição Geral</a>
+      <a href="expedicao_multimidia.html">Exp. Multimídia</a>
+      <a href="cicile_reclamacao.html">CICILE</a>
+      <a href="pagina_respiro_celeiro.html">← Respiro</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <h1>CORSI</h1>
+  <p class="cargo">Departamento de Circulação, Redes, Postagem e Programação</p>
+  <p class="missao">Quando o material fica pronto nas Expedições, o CORSI verifica autorização, classifica o destino e prepara a circulação. Redes do autor são uma coisa. WebTV, WebRádio e redes institucionais do Celeiro seguem curadoria própria e regras de conteúdo específicas.</p>
+</header>
+
+<main class="wrap">
+
+  <!-- FLUXO -->
+  <div class="card">
+    <h2>Fluxo operacional do CORSI</h2>
+    <div class="fluxo">
+      <div class="fet"><span class="fn">①</span><span class="ft">Expedição libera</span><small>Editorial ou Multimídia</small></div>
+      <div class="fet"><span class="fn">②</span><span class="ft">CORSI recebe</span><small>Verifica e classifica</small></div>
+      <div class="fet"><span class="fn">③</span><span class="ft">Checklist</span><small>Autorização e linha editorial</small></div>
+      <div class="fet"><span class="fn">④</span><span class="ft">Prepara</span><small>Formato por plataforma</small></div>
+      <div class="fet"><span class="fn">⑤</span><span class="ft">Circula</span><small>Publica e agenda</small></div>
+    </div>
+  </div>
+
+  <!-- PLATAFORMAS -->
+  <div class="card">
+    <h2>Plataformas de circulação</h2>
+    <div class="plat-grid">
+      <div class="plat"><div class="pi">📸</div><h4>Instagram</h4><p>Posts, reels, stories e carrosséis de obras, autores e eventos</p></div>
+      <div class="plat"><div class="pi">▶️</div><h4>YouTube</h4><p>Vídeos, leituras, entrevistas e lançamentos com SEO editorial</p></div>
+      <div class="plat"><div class="pi">🎵</div><h4>TikTok</h4><p>Conteúdo curto para alcance de novos públicos literários</p></div>
+      <div class="plat"><div class="pi">🐦</div><h4>X / Twitter</h4><p>Comunicados institucionais, citações e agenda cultural</p></div>
+      <div class="plat"><div class="pi">🎙️</div><h4>Web Rádio</h4><p>Transmissões de leituras, entrevistas e programação ao vivo</p></div>
+      <div class="plat"><div class="pi">📺</div><h4>Web TV</h4><p>Canal de vídeo do Celeiro com programação editorial e cultural</p></div>
+      <div class="plat"><div class="pi">🎧</div><h4>Podcast / Streaming</h4><p>Spotify, Deezer e plataformas de áudio literário</p></div>
+      <div class="plat"><div class="pi">🌐</div><h4>Portal do Celeiro</h4><p>Publicação no site institucional e na Rede Mundial</p></div>
+    </div>
+  </div>
+
+  <!-- OPERAÇÃO: PREPARAR CIRCULAÇÃO -->
+  <div class="card" id="operacao">
+    <h2>Preparar plano de circulação</h2>
+    <p style="margin-bottom:20px">Informe os dados do material pronto e o CORSI gera o plano de circulação com destino, canal e protocolo de publicação.</p>
+    <div class="r2">
+      <div class="campo"><label>Nome do material</label><input type="text" id="obra" placeholder="Título da obra ou produção"></div>
+      <div class="campo"><label>Canal principal</label>
+        <select id="rede">
+          <option>Instagram</option>
+          <option>YouTube</option>
+          <option>TikTok</option>
+          <option>X / Twitter</option>
+          <option>Todas as redes disponíveis</option>
+          <option>Web TV Celeiro</option>
+          <option>Web Rádio Celeiro</option>
+          <option>Web TV + Web Rádio Celeiro</option>
+          <option>Portal do Celeiro + redes</option>
+        </select>
+      </div>
+    </div>
+    <div class="campo" style="margin-top:14px"><label>Legenda ou texto-base para postagem</label>
+      <textarea id="texto" placeholder="Texto que acompanha a publicação. O CORSI pode adaptar por plataforma."></textarea>
+    </div>
+    <div class="campo" style="margin-top:14px"><label>Perfil de destino</label>
+      <select id="perfil">
+        <option value="autor">Redes do autor / cliente</option>
+        <option value="institucional">Redes institucionais do Celeiro</option>
+        <option value="ambos">Autor + Celeiro (simultâneo)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="checklist-card" id="checklist">
+    <h2>Checklist obrigatório de autorização</h2>
+    <p class="sub">Nenhum material circula sem o checklist completo. O CORSI bloqueia envios sem autorização verificada.</p>
+    <div class="check-grid">
+      <div class="check-box">
+        <h4>Direitos e autorização</h4>
+        <div class="check-item"><input type="checkbox" id="licenca"><span>Material próprio, domínio público, Creative Commons, royalty free ou com autorização expressa</span></div>
+        <div class="check-item"><input type="checkbox" id="autorizaMidia"><span>Autoriza uso em WebTV/WebRádio, quando aplicável</span></div>
+        <div class="check-item"><input type="checkbox" id="materialCeleiro"><span>Material pertence ao Celeiro / SIGMAL / Heterônimos ou foi autorizado para canais institucionais</span></div>
+      </div>
+      <div class="check-box">
+        <h4>Linha editorial do Celeiro</h4>
+        <div class="check-item"><input type="checkbox" id="semApostas"><span>Não contém apostas, cassino, jogo de azar ou propaganda desse tipo</span></div>
+        <div class="check-item"><input type="checkbox" id="respeitoMulher"><span>Não deprecia, sexualiza nem desrespeita a mulher</span></div>
+        <div class="check-item"><input type="checkbox" id="cultural"><span>Tem ligação cultural, literária, artística, educativa ou institucional</span></div>
+      </div>
+    </div>
+
+    <div class="alerta" id="alertaChecklist">
+      ⛔ Checklist incompleto. Verifique todos os itens obrigatórios antes de preparar a publicação.
+    </div>
+
+    <div class="notice" style="margin-top:14px">
+      <strong>Tags do CORSI:</strong> Sem apostas · Sem material duvidoso · Autorização obrigatória · Cultura primeiro
+    </div>
+
+    <div class="btns">
+      <button class="btn btn-verde" onclick="prepararCirculacao()">✔ Preparar publicação pela CORSI</button>
+      <button class="btn btn-azul" onclick="limpar()">↺ Limpar</button>
+    </div>
+
+    <div class="resultado" id="resultado">
+      <h3>✅ Plano de circulação gerado</h3>
+      <pre id="planoPre"></pre>
+      <div class="pnum" id="planoNum">CORSI-000000</div>
+    </div>
+  </div>
+
+  <!-- REGRAS WEB TV / RÁDIO -->
+  <div class="regra-card" id="regras">
+    <h2>Regras: Web TV / Web Rádio Celeiro</h2>
+    <p>A programação dos canais institucionais segue proporções definidas. Todo material de terceiros exige autorização expressa.</p>
+    <div class="regra-barra">
+      <div class="regra-item"><div class="regra-pct">50%</div><div class="regra-desc"><strong>Material do Celeiro / Admin / Wagner Planas / Heterônimos</strong>Base institucional obrigatória de toda programação</div></div>
+      <div class="regra-item"><div class="regra-pct">25%</div><div class="regra-desc"><strong>Trajano Estrada + SIGMAL</strong>Material de triagem, oportunidades e produção artística da academia</div></div>
+      <div class="regra-item"><div class="regra-pct">5%</div><div class="regra-desc"><strong>Somente Trajano Estrada</strong>Curadoria específica e encaminhamentos da Mentoria Cibernética</div></div>
+      <div class="regra-item"><div class="regra-pct">20%</div><div class="regra-desc"><strong>Somente SIGMAL</strong>Produção artística das 9 áreas da academia internacional</div></div>
+    </div>
+    <div class="notice" style="background:rgba(255,255,255,.08);border-color:rgba(201,166,70,.4);color:#e0dace;margin-top:10px">
+      <strong style="color:var(--ouro2)">Atenção:</strong> Todo material de terceiros inserido na programação exige autorização expressa e documentada antes da publicação.
+    </div>
+  </div>
+
+  <!-- LINKS RÁPIDOS -->
+  <div class="card">
+    <h2>Acessos rápidos</h2>
+    <div class="btns">
+      <a class="btn btn-ouro" href="expedicao.html">📦 Expedição Geral</a>
+      <a class="btn btn-ouro" href="expedicao_editorial.html">💎 Expedição Editorial</a>
+      <a class="btn btn-ouro" href="expedicao_multimidia.html">▶️ Expedição Multimídia</a>
+      <a class="btn btn-azul" href="web_tv_celeiro.html">📺 Web TV</a>
+      <a class="btn btn-azul" href="web_radio_celeiro.html">🎙️ Web Rádio</a>
+      <a class="btn btn-red" href="cicile_reclamacao.html?departamento=CORSI">📣 Reclamar com CICILE</a>
+      <a class="btn btn-azul" href="pagina_respiro_celeiro.html">← Respiro</a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p><strong>CORSI — Departamento de Circulação em Redes</strong></p>
+  <p>Instituto Cultural Celeiro Literário · Expedições · CICILE · Web TV · Web Rádio</p>
+</footer>
+
+<script>
+function prepararCirculacao() {
+  const obra   = document.getElementById('obra').value.trim()
+  const rede   = document.getElementById('rede').value
+  const texto  = document.getElementById('texto').value.trim()
+  const perfil = document.getElementById('perfil').value
+
+  const checks = ['licenca','autorizaMidia','materialCeleiro','semApostas','respeitoMulher','cultural']
+  const obrig  = ['licenca','semApostas','respeitoMulher']
+  const faltam = obrig.filter(id => !document.getElementById(id).checked)
+
+  if (faltam.length > 0) {
+    document.getElementById('alertaChecklist').classList.add('vis')
+    return
+  }
+  document.getElementById('alertaChecklist').classList.remove('vis')
+
+  const tvRadio = rede.includes('Web TV') || rede.includes('Web Rádio')
+  if (tvRadio && !document.getElementById('materialCeleiro').checked) {
+    alert('WebTV/WebRádio exigem material do Celeiro ou autorização institucional expressa.')
+    return
+  }
+
+  const num = 'CORSI-' + Date.now().toString().slice(-6) + '-' + Math.floor(Math.random()*900+100)
+  const destino = perfil === 'institucional' ? 'Redes institucionais do Instituto Cultural Celeiro Literário' :
+                  perfil === 'autor'         ? 'Redes sociais do autor / cliente' :
+                                               'Autor + canais institucionais do Celeiro (simultâneo)'
+
+  const plano = `CORSI — Plano de Circulação
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Material: ${obra || '(não informado)'}
+Destino:  ${destino}
+Canal:    ${rede}
+Legenda:  ${texto || '(a definir)'}
+
+Autorizações: verificadas ✔
+Status: pronto para agendamento e publicação
+Protocolo: ${num}`
+
+  document.getElementById('planoPre').textContent = plano
+  document.getElementById('planoNum').textContent = num
+  document.getElementById('resultado').classList.add('vis')
+
+  try {
+    localStorage.setItem('corsi_plano', plano)
+    localStorage.setItem('corsi_ultimo_protocolo', num)
+  } catch(e) {}
+
+  document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' })
+}
+
+function limpar() {
+  document.getElementById('obra').value = ''
+  document.getElementById('texto').value = ''
+  document.getElementById('resultado').classList.remove('vis')
+  document.getElementById('alertaChecklist').classList.remove('vis')
+  ;['licenca','autorizaMidia','materialCeleiro','semApostas','respeitoMulher','cultural'].forEach(id => {
+    document.getElementById(id).checked = false
+  })
+}
+
+// Carrega material de sessão anterior se houver
+try {
+  const mat = localStorage.getItem('arquivoNome') || localStorage.getItem('celeiro_silos_material_atual') || ''
+  if (mat && !document.getElementById('obra').value) {
+    try { const j = JSON.parse(mat); document.getElementById('obra').value = j.nome || mat } 
+    catch(e) { document.getElementById('obra').value = mat }
+  }
+} catch(e) {}
+</script>
 </body>
 </html>
