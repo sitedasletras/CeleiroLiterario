@@ -4,933 +4,245 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lapidar Pensante</title>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@400;600&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #ece8de;
-  --card: #f7f4ee;
-  --ink: #1f1f1b;
-  --muted: #6f6a62;
-  --line: #ddd6c9;
-  --accent: #2f5a4d;
-  --gold: #d9a441;
-  --danger: #a63d40;
-  --shadow: 0 12px 32px rgba(0,0,0,.10);
-  --radius: 22px;
-
-  /* camadas */
-  --an:    #3f7a5a;
-  --dro:   #5a6e9e;
-  --id:    #8a5a2e;
-  --nas:   #2f5a4d;
-  --fisa:  #7a3a5a;
-  --fiiisaa: #4a4a2a;
+:root{
+--bg:#ece8de;
+--card:#f7f4ee;
+--ink:#1f1f1b;
+--muted:#6f6a62;
+--line:#ddd6c9;
+--accent:#2f5a4d;
+--gold:#d9a441;
+--danger:#a63d40;
+--shadow:0 12px 28px rgba(0,0,0,.10);
+--radius:24px;
 }
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html, body {
-  min-height: 100vh;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: 'Source Sans 3', 'Georgia', serif;
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+font-family:Georgia,"Times New Roman",serif;
+background:var(--bg);
+color:var(--ink);
+padding:28px 16px;
 }
-
-body { padding: 28px 16px 60px; }
-
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.container{
+max-width:980px;
+margin:auto;
+display:flex;
+flex-direction:column;
+gap:22px;
 }
-
-/* ── HERO ── */
-.hero {
-  background: var(--card);
-  border-radius: var(--radius);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-  padding: 34px 32px 28px;
+.card{
+background:var(--card);
+border-radius:var(--radius);
+border:1px solid var(--line);
+box-shadow:var(--shadow);
+padding:28px;
 }
-.hero-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
+h1{margin:0 0 12px 0;font-size:clamp(2.4rem,5vw,3.6rem);line-height:1.05;}
+h2{margin:0 0 8px 0;font-size:clamp(1.8rem,4vw,2.6rem);}
+p{margin:0 0 14px 0;color:var(--muted);font-size:1.08rem;line-height:1.5;}
+.highlight{
+background:#fff;
+border:1px dashed #cfc6b8;
+border-radius:16px;
+padding:14px 16px;
+color:#5e584f;
+line-height:1.45;
 }
-.hero h1 {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  font-weight: 600;
-  line-height: 1.05;
-  color: var(--ink);
+.grid{
+display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:14px;
 }
-.hero h1 span {
-  color: var(--accent);
+.layer{
+background:#fff;
+border-radius:18px;
+border:1px solid var(--line);
+padding:16px;
+text-align:center;
 }
-.hero p {
-  color: var(--muted);
-  font-size: 1.05rem;
-  line-height: 1.6;
-  margin-top: 10px;
-  max-width: 680px;
+.layer strong{display:block;font-size:1.3rem;margin-bottom:6px;}
+.layer span{font-size:.95rem;color:#6b645c;line-height:1.35;}
+.price-grid{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:16px;
+margin-top:16px;
 }
-.badge-sistema {
-  font-family: 'Cinzel', serif;
-  font-size: .78rem;
-  letter-spacing: .08em;
-  color: var(--gold);
-  background: rgba(217,164,65,.1);
-  border: 1px solid rgba(217,164,65,.3);
-  border-radius: 999px;
-  padding: 6px 14px;
-  white-space: nowrap;
-  flex-shrink: 0;
+.price-card{
+background:#fff;
+border:1px solid var(--line);
+border-radius:18px;
+padding:18px;
+text-align:center;
 }
-
-/* ── OBRA INPUT ── */
-.obra-card {
-  background: var(--card);
-  border-radius: var(--radius);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-  padding: 28px 32px;
+.price-card h3{margin:0 0 10px 0;font-size:1.35rem;}
+.price{font-size:2rem;font-weight:700;color:#1f1f1b;margin-bottom:6px;}
+.price-card p{font-size:1rem;margin:0;}
+.notice{
+background:#fff8e6;
+border:1px solid #e1c57a;
+border-radius:18px;
+padding:16px;
+color:#5d4a24;
+line-height:1.5;
 }
-.obra-card h2 {
-  font-family: 'Lora', serif;
-  font-size: 1.5rem;
-  margin-bottom: 6px;
+.notice strong{color:#2f2412;}
+.actions{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+justify-content:center;
+margin-top:14px;
 }
-.obra-card p {
-  color: var(--muted);
-  font-size: .98rem;
-  margin-bottom: 16px;
-  line-height: 1.5;
+button{
+border:none;
+border-radius:16px;
+padding:14px 20px;
+font:inherit;
+font-weight:700;
+cursor:pointer;
+transition:.18s ease;
+box-shadow:0 8px 18px rgba(0,0,0,.08);
 }
-.field-group {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 14px;
+button:hover{transform:translateY(-1px);}
+.btn-enter{background:var(--accent);color:#fff;}
+.btn-back{background:var(--gold);color:#2a1d0d;}
+.btn-exit{background:var(--danger);color:#fff;}
+.btn-respiro{
+background:rgba(47,90,77,.1);
+color:#2f5a4d;
+border:1px solid rgba(47,90,77,.3);
+box-shadow:none;
 }
-label {
-  display: block;
-  font-size: .88rem;
-  font-weight: 600;
-  color: var(--muted);
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-input[type="text"], select {
-  width: 100%;
-  padding: 11px 14px;
-  border: 1.5px solid var(--line);
-  border-radius: 12px;
-  font: inherit;
-  font-size: 1rem;
-  background: #fff;
-  color: var(--ink);
-  transition: border-color .2s;
-}
-input[type="text"]:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-textarea {
-  width: 100%;
-  min-height: 180px;
-  padding: 14px 16px;
-  border: 1.5px solid var(--line);
-  border-radius: 12px;
-  font: inherit;
-  font-size: 1rem;
-  line-height: 1.6;
-  background: #fff;
-  color: var(--ink);
-  resize: vertical;
-  transition: border-color .2s;
-}
-.char-count {
-  text-align: right;
-  font-size: .82rem;
-  color: #aaa9a5;
-  margin-top: 5px;
-}
-
-/* ── CAMADAS GRID ── */
-.camadas-title {
-  font-family: 'Lora', serif;
-  font-size: 1.3rem;
-  margin-bottom: 4px;
-}
-.camadas-sub {
-  font-size: .93rem;
-  color: var(--muted);
-  margin-bottom: 14px;
-}
-.camadas-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 18px;
-}
-.camada-toggle {
-  position: relative;
-  cursor: pointer;
-}
-.camada-toggle input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-.camada-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 14px 10px;
-  border: 2px solid var(--line);
-  border-radius: 16px;
-  background: #fff;
-  transition: all .2s;
-  text-align: center;
-  user-select: none;
-}
-.camada-toggle input:checked + .camada-label {
-  border-color: currentColor;
-  background: rgba(0,0,0,.03);
-  box-shadow: 0 4px 14px rgba(0,0,0,.08);
-}
-.camada-toggle:hover .camada-label {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0,0,0,.1);
-}
-.camada-sigla {
-  font-family: 'Cinzel', serif;
-  font-size: 1.3rem;
-  font-weight: 600;
-}
-.camada-nome {
-  font-size: .78rem;
-  color: var(--muted);
-  line-height: 1.3;
-}
-.camada-check {
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  border: 2px solid var(--line);
-  display: flex; align-items: center; justify-content: center;
-  font-size: .7rem;
-  transition: all .2s;
-}
-.camada-toggle input:checked + .camada-label .camada-check {
-  background: currentColor;
-  border-color: currentColor;
-  color: #fff;
-}
-
-/* cores por camada */
-.c-an   { color: var(--an);    } .c-an   .camada-sigla { color: var(--an);    }
-.c-dro  { color: var(--dro);   } .c-dro  .camada-sigla { color: var(--dro);   }
-.c-id   { color: var(--id);    } .c-id   .camada-sigla { color: var(--id);    }
-.c-nas  { color: var(--nas);   } .c-nas  .camada-sigla { color: var(--nas);   }
-.c-fisa { color: var(--fisa);  } .c-fisa .camada-sigla { color: var(--fisa);  }
-.c-fiiisaa { color: var(--fiiisaa); } .c-fiiisaa .camada-sigla { color: var(--fiiisaa); }
-
-.select-all-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.btn-select-all {
-  border: 1.5px solid var(--accent);
-  background: transparent;
-  color: var(--accent);
-  border-radius: 999px;
-  padding: 7px 16px;
-  font: inherit;
-  font-size: .88rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all .18s;
-}
-.btn-select-all:hover {
-  background: var(--accent);
-  color: #fff;
-}
-.preco-info {
-  font-size: .88rem;
-  color: var(--muted);
-  margin-left: auto;
-}
-.preco-info strong { color: var(--ink); }
-
-/* ── BTN PRINCIPAL ── */
-.btn-analisar {
-  width: 100%;
-  padding: 17px;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 16px;
-  font: inherit;
-  font-family: 'Cinzel', serif;
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: .04em;
-  cursor: pointer;
-  transition: all .2s;
-  box-shadow: 0 8px 24px rgba(47,90,77,.25);
-  margin-top: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-.btn-analisar:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(47,90,77,.35);
-}
-.btn-analisar:disabled {
-  opacity: .55;
-  cursor: not-allowed;
-  transform: none;
-}
-.spinner {
-  width: 18px; height: 18px;
-  border: 2.5px solid rgba(255,255,255,.4);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin .7s linear infinite;
-  display: none;
-}
-.btn-analisar.loading .spinner { display: block; }
-.btn-analisar.loading .btn-text { opacity: .7; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── RESULTADOS ── */
-#resultados { display: none; flex-direction: column; gap: 18px; }
-#resultados.visible { display: flex; }
-
-.resultado-header {
-  background: var(--accent);
-  color: #fff;
-  border-radius: var(--radius);
-  padding: 24px 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 14px;
-  box-shadow: 0 8px 24px rgba(47,90,77,.3);
-}
-.resultado-header h2 {
-  font-family: 'Cinzel', serif;
-  font-size: 1.5rem;
-}
-.resultado-header p {
-  font-size: .93rem;
-  opacity: .8;
-  margin-top: 4px;
-}
-.btn-nova {
-  background: rgba(255,255,255,.2);
-  border: 1.5px solid rgba(255,255,255,.5);
-  color: #fff;
-  border-radius: 12px;
-  padding: 10px 18px;
-  font: inherit;
-  font-weight: 600;
-  font-size: .9rem;
-  cursor: pointer;
-  transition: all .18s;
-}
-.btn-nova:hover { background: rgba(255,255,255,.35); }
-
-.camada-resultado {
-  background: var(--card);
-  border-radius: var(--radius);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  animation: slideUp .5s ease forwards;
-  opacity: 0;
-}
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.camada-resultado-header {
-  padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  border-bottom: 1px solid var(--line);
-}
-.camada-sigla-big {
-  font-family: 'Cinzel', serif;
-  font-size: 1.8rem;
-  font-weight: 600;
-  line-height: 1;
-}
-.camada-desc-header {
-  flex: 1;
-}
-.camada-desc-header strong {
-  display: block;
-  font-size: 1rem;
-  font-weight: 600;
-}
-.camada-desc-header span {
-  font-size: .85rem;
-  color: var(--muted);
-}
-.camada-status {
-  font-size: .78rem;
-  font-weight: 700;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: rgba(0,0,0,.06);
-}
-.camada-body {
-  padding: 22px 24px;
-}
-.camada-body .loading-msg {
-  color: var(--muted);
-  font-style: italic;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.camada-body .loading-msg .spinner {
-  display: block;
-  border-color: rgba(0,0,0,.15);
-  border-top-color: var(--accent);
-  width: 16px; height: 16px;
-}
-.camada-body .resposta {
-  font-family: 'Lora', serif;
-  font-size: 1rem;
-  line-height: 1.8;
-  color: var(--ink);
-  white-space: pre-wrap;
-}
-.camada-body .resposta h3 {
-  font-family: 'Cinzel', serif;
-  font-size: 1rem;
-  color: var(--accent);
-  margin: 16px 0 6px;
-}
-.camada-body .resposta strong {
-  font-weight: 700;
-}
-.camada-body .resposta em {
-  font-style: italic;
-  color: var(--muted);
-}
-
-/* ── RODAPÉ AÇÕES ── */
-.footer-block {
-  background: var(--card);
-  border-radius: var(--radius);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-  padding: 22px 28px;
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.btn-foot {
-  border: none;
-  border-radius: 14px;
-  padding: 13px 20px;
-  font: inherit;
-  font-weight: 700;
-  font-size: .95rem;
-  cursor: pointer;
-  transition: all .18s;
-  box-shadow: 0 6px 16px rgba(0,0,0,.08);
-}
-.btn-foot:hover { transform: translateY(-1px); }
-.btn-back-lapidar { background: var(--gold); color: #2a1d0d; }
-.btn-back-intro   { background: #e0dbd2; color: var(--ink); }
-.btn-exit-sys     { background: var(--danger); color: #fff; }
-
-/* ── RESPONSIVO ── */
-@media (max-width: 720px) {
-  .camadas-grid { grid-template-columns: repeat(2, 1fr); }
-  .field-group  { grid-template-columns: 1fr; }
-  .obra-card, .hero { padding: 22px 18px; }
-  .footer-block { flex-direction: column; }
-  .btn-foot { width: 100%; text-align: center; }
-  .resultado-header { flex-direction: column; }
-}
-@media (max-width: 460px) {
-  .camadas-grid { grid-template-columns: 1fr; }
+.btn-respiro:hover{background:rgba(47,90,77,.2);}
+@media(max-width:820px){
+.grid,.price-grid{grid-template-columns:1fr;}
+.card{padding:22px 18px;}
+button{width:100%;}
+.actions{flex-direction:column;}
 }
 </style>
 </head>
 <body>
-
 <div class="container">
 
-  <!-- HERO -->
-  <header class="hero">
-    <div class="hero-top">
-      <div>
-        <h1>Lapidar <span>Pensante</span></h1>
-        <p>Núcleo de inteligência editorial do Celeiro Literário. Lê, interpreta, organiza e orienta sua obra antes das etapas finais — sem alterar nada automaticamente.</p>
-      </div>
-      <span class="badge-sistema">Celeiro Literário · Editorial</span>
+  <section class="card">
+    <h1>Lapidar Pensante</h1>
+    <p>
+      O Lapidar Pensante é o núcleo de inteligência editorial do sistema.
+      Ele ajuda sua obra a ganhar clareza estrutural, coerência narrativa,
+      força expressiva e direção editorial antes das etapas finais.
+    </p>
+    <div class="highlight">
+      Este ambiente não altera sua obra automaticamente.
+      Ele lê, interpreta, organiza e orienta.
     </div>
-  </header>
-
-  <!-- FORMULÁRIO DA OBRA -->
-  <section class="obra-card" id="secao-input">
-    <h2>Sua Obra</h2>
-    <p>Cole um trecho ou o texto completo da sua obra. Selecione as camadas de análise desejadas e clique em Analisar.</p>
-
-    <div class="field-group">
-      <div>
-        <label for="titulo-obra">Título da obra</label>
-        <input type="text" id="titulo-obra" placeholder="Ex: O Silêncio das Pedras">
-      </div>
-      <div>
-        <label for="tipo-obra">Tipo de texto</label>
-        <select id="tipo-obra">
-          <option value="">Selecione o tipo...</option>
-          <option value="romance">Romance</option>
-          <option value="conto">Conto</option>
-          <option value="cronica">Crônica</option>
-          <option value="poesia">Poesia / Poema</option>
-          <option value="novela">Novela</option>
-          <option value="ensaio">Ensaio</option>
-          <option value="memorias">Memórias / Autobiografia</option>
-          <option value="cordel">Cordel</option>
-          <option value="outro">Outro</option>
-        </select>
-      </div>
-    </div>
-
-    <div>
-      <label for="texto-obra">Texto da obra (trecho ou completo)</label>
-      <textarea id="texto-obra" placeholder="Cole aqui o texto da sua obra para análise editorial..."></textarea>
-      <div class="char-count"><span id="char-count">0</span> caracteres</div>
-    </div>
-
-    <!-- CAMADAS -->
-    <div style="margin-top:22px">
-      <div class="camadas-title">Camadas de Inteligência Editorial</div>
-      <div class="camadas-sub">Selecione as camadas que deseja ativar para análise da obra.</div>
-
-      <div class="camadas-grid">
-
-        <label class="camada-toggle c-an">
-          <input type="checkbox" name="camada" value="an" id="cb-an">
-          <div class="camada-label">
-            <span class="camada-sigla">AN</span>
-            <span class="camada-nome">Análise inicial da obra</span>
-            <div class="camada-check">✓</div>
-          </div>
-        </label>
-
-        <label class="camada-toggle c-dro">
-          <input type="checkbox" name="camada" value="dro" id="cb-dro">
-          <div class="camada-label">
-            <span class="camada-sigla">DRO</span>
-            <span class="camada-nome">Desbaste e reorganização estrutural</span>
-            <div class="camada-check">✓</div>
-          </div>
-        </label>
-
-        <label class="camada-toggle c-id">
-          <input type="checkbox" name="camada" value="id" id="cb-id">
-          <div class="camada-label">
-            <span class="camada-sigla">ID</span>
-            <span class="camada-nome">Identificação editorial profunda</span>
-            <div class="camada-check">✓</div>
-          </div>
-        </label>
-
-        <label class="camada-toggle c-nas">
-          <input type="checkbox" name="camada" value="nas" id="cb-nas">
-          <div class="camada-label">
-            <span class="camada-sigla">NAS</span>
-            <span class="camada-nome">Núcleo simbiótico de integração</span>
-            <div class="camada-check">✓</div>
-          </div>
-        </label>
-
-        <label class="camada-toggle c-fisa">
-          <input type="checkbox" name="camada" value="fisa" id="cb-fisa">
-          <div class="camada-label">
-            <span class="camada-sigla">FISA</span>
-            <span class="camada-nome">Força inteligente de aceleração</span>
-            <div class="camada-check">✓</div>
-          </div>
-        </label>
-
-        <label class="camada-toggle c-fiiisaa">
-          <input type="checkbox" name="camada" value="fiiisaa" id="cb-fiiisaa">
-          <div class="camada-label">
-            <span class="camada-sigla">FIIISAA</span>
-            <span class="camada-nome">Inicialização simbiótica adaptável</span>
-            <div class="camada-check">✓</div>
-          </div>
-        </label>
-
-      </div>
-
-      <div class="select-all-row">
-        <button class="btn-select-all" onclick="selecionarTodas()">Selecionar todas (percurso completo)</button>
-        <span class="preco-info" id="preco-info">Nenhuma camada selecionada</span>
-      </div>
-    </div>
-
-    <button class="btn-analisar" id="btn-analisar" onclick="analisar()" disabled>
-      <div class="spinner"></div>
-      <span class="btn-text">✦ Iniciar Análise Editorial</span>
-    </button>
   </section>
 
-  <!-- RESULTADOS -->
-  <div id="resultados">
+  <section class="card">
+    <h2>Por que usar o Lapidar Pensante?</h2>
+    <p>
+      Muitas vezes o autor sente que a obra já está escrita,
+      mas ainda não está completamente compreendida.
+      O Lapidar Pensante atua exatamente nesse momento:
+      entre a escrita e a maturidade editorial.
+    </p>
+    <p>
+      Ele identifica estruturas narrativas, personagens, clima da obra,
+      fluxos internos, fragilidades, forças e direções possíveis.
+      A intenção é ajudar a obra a ganhar mais vida antes de seguir
+      para os demais braços do Lapidar.
+    </p>
+  </section>
 
-    <div class="resultado-header">
-      <div>
-        <h2>Análise Editorial Concluída</h2>
-        <p id="resultado-subtitulo">Lapidar Pensante · Celeiro Literário</p>
-      </div>
-      <button class="btn-nova" onclick="novaAnalise()">↺ Nova análise</button>
+  <section class="card">
+    <h2>As seis camadas de inteligência editorial</h2>
+    <div class="grid">
+      <div class="layer"><strong>AN</strong><span>Análise inicial da obra</span></div>
+      <div class="layer"><strong>DRO</strong><span>Desbaste e reorganização estrutural</span></div>
+      <div class="layer"><strong>ID</strong><span>Identificação editorial profunda</span></div>
+      <div class="layer"><strong>NAS</strong><span>Núcleo simbiótico de integração</span></div>
+      <div class="layer"><strong>FISA</strong><span>Força inteligente de aceleração</span></div>
+      <div class="layer"><strong>FIIISAA</strong><span>Inicialização simbiótica adaptável</span></div>
     </div>
+  </section>
 
-    <div id="camadas-resultado"></div>
+  <section class="card">
+    <h2>Contribuição de uso das camadas</h2>
+    <p>
+      O autor pode usar uma camada individual ou escolher o percurso completo
+      com as seis camadas.
+    </p>
+    <div class="price-grid">
+      <div class="price-card">
+        <h3>Uso individual</h3>
+        <div class="price">R$ 10</div>
+        <p>por camada no Brasil</p>
+        <br>
+        <div class="price">US$ 10</div>
+        <p>por camada no exterior</p>
+      </div>
+      <div class="price-card">
+        <h3>Uso completo</h3>
+        <div class="price">R$ 30</div>
+        <p>seis camadas no Brasil</p>
+        <br>
+        <div class="price">US$ 30</div>
+        <p>seis camadas no exterior</p>
+      </div>
+    </div>
+    <div class="notice" style="margin-top:18px;">
+      <strong>Observação editorial:</strong>
+      ao escolher três camadas avulsas, o autor já alcança o mesmo valor do percurso completo.
+      Por isso, o uso integral das seis camadas é a opção mais indicada para a maturação da obra.
+    </div>
+  </section>
 
-  </div>
+  <section class="card">
+    <h2>Liberação da obra</h2>
+    <p>
+      Ao inserir o documento no fluxo do Lapidar, a obra seguirá pelo caminho editorial escolhido.
+      A liberação final dos arquivos acontece somente ao final do percurso, na etapa de Expedição Editorial.
+    </p>
+    <div class="notice">
+      <strong>Regra de fluxo:</strong>
+      o envio do documento inicia o trabalho editorial, mas os materiais finais só são liberados
+      na Expedição, após a conclusão das etapas escolhidas e a confirmação final do processo.
+    </div>
+  </section>
 
-  <!-- RODAPÉ -->
-  <footer class="footer-block">
-    <button class="btn-foot btn-back-lapidar" onclick="window.location.href='lapidar.html'">← Retornar ao Lapidar</button>
-    <button class="btn-foot btn-back-intro"   onclick="window.location.href='lapidar_pensante_intro.html'">Ver introdução</button>
-    <button class="btn-foot btn-exit-sys"     onclick="window.location.href='pagina_respiro_celeiro.html'">Sair do sistema</button>
-  </footer>
+  <section class="card">
+    <h2>Como utilizar</h2>
+    <p>
+      Você pode entrar em qualquer camada separadamente.
+      Cada uma atua em um nível diferente da compreensão da obra.
+    </p>
+    <p>
+      Não é necessário usar todas de uma vez, mas o percurso completo com as seis camadas
+      é o caminho recomendado para uma leitura editorial mais ampla e consistente.
+    </p>
+    <div class="actions">
+      <button class="btn-enter"
+        onclick="window.location.href='lapidar_pensante.html'">
+        Entrar no Lapidar Pensante
+      </button>
+      <button class="btn-back"
+        onclick="window.location.href='lapidar.html'">
+        ← Retornar ao Lapidar
+      </button>
+      <button class="btn-respiro"
+        onclick="window.location.href='pagina_respiro.html'">
+        🗺️ Mapa do Celeiro
+      </button>
+      <button class="btn-exit"
+        onclick="alert('Saída simbólica do sistema.')">
+        Sair do sistema
+      </button>
+    </div>
+  </section>
 
 </div>
-
-<script>
-// ── DADOS DAS CAMADAS ──────────────────────────────────────────────────────
-const CAMADAS = {
-  an: {
-    sigla: 'AN',
-    nome: 'Análise Inicial',
-    desc: 'Primeira leitura editorial da obra',
-    cor: '#3f7a5a',
-    prompt: (titulo, tipo, texto) => `Você é AN, a primeira camada de inteligência editorial do Lapidar Pensante, sistema do Celeiro Literário.
-
-Realize a ANÁLISE INICIAL da obra a seguir. Sua função é fazer a primeira leitura editorial cuidadosa: reconhecer o tipo de texto, identificar a estrutura básica, os elementos narrativos ou líricos presentes, o tom da escrita, o vocabulário predominante e os primeiros sinais de identidade autoral.
-
-OBRA: "${titulo || 'Sem título'}"
-TIPO DECLARADO: ${tipo || 'Não informado'}
-TEXTO:
-${texto}
-
-Responda em português do Brasil com linguagem editorial clara e respeitosa. Organize sua resposta com estas seções:
-**Tipo e Forma** — identifique o gênero real, forma e estrutura encontrados
-**Tom e Registro** — descreva o clima emocional, o registro de linguagem e o ritmo predominante
-**Elementos Identificados** — liste os principais elementos narrativos ou líricos presentes
-**Primeiros Sinais Autorais** — aponte traços de voz e identidade que já se revelam
-**Observação Editorial** — uma nota sobre o estado atual da obra e o que ela promete
-
-Seja preciso, humano e construtivo. Máximo 400 palavras.`
-  },
-
-  dro: {
-    sigla: 'DRO',
-    nome: 'Desbaste e Reorganização',
-    desc: 'Estrutura, fluxo e coerência da obra',
-    cor: '#5a6e9e',
-    prompt: (titulo, tipo, texto) => `Você é DRO, a segunda camada de inteligência editorial do Lapidar Pensante, sistema do Celeiro Literário.
-
-Sua função é o DESBASTE E REORGANIZAÇÃO ESTRUTURAL: analisar o fluxo interno da obra, identificar pontos de tensão, rupturas, repetições desnecessárias, fragmentações ou excesso. Você não reescreve — você aponta com precisão cirúrgica o que pode ser lapidado para a obra ganhar mais força.
-
-OBRA: "${titulo || 'Sem título'}"
-TIPO: ${tipo || 'Não informado'}
-TEXTO:
-${texto}
-
-Responda em português do Brasil com linguagem editorial direta e respeitosa. Use estas seções:
-**Fluxo Interno** — como a obra avança: ritmo, pausas, aceleração
-**Pontos de Tensão** — onde a estrutura range ou perde força
-**Repetições e Excessos** — elementos que aparecem mais do que deveriam
-**O que pode ser desbastado** — sugestões específicas de lapidação (sem reescrever)
-**O que deve ser preservado** — o que não deve ser tocado, pois é a força da obra
-
-Seja um editor de mão leve e olho preciso. Máximo 400 palavras.`
-  },
-
-  id: {
-    sigla: 'ID',
-    nome: 'Identificação Editorial',
-    desc: 'Identidade, voz e posicionamento da obra',
-    cor: '#8a5a2e',
-    prompt: (titulo, tipo, texto) => `Você é ID, a terceira camada de inteligência editorial do Lapidar Pensante, sistema do Celeiro Literário.
-
-Sua função é a IDENTIFICAÇÃO EDITORIAL PROFUNDA: revelar a identidade da obra — seu lugar no mercado editorial, sua voz única, seus leitores prováveis, suas referências literárias implícitas e seu potencial de publicação.
-
-OBRA: "${titulo || 'Sem título'}"
-TIPO: ${tipo || 'Não informado'}
-TEXTO:
-${texto}
-
-Responda em português do Brasil com linguagem editorial precisa e inspiradora. Use estas seções:
-**Identidade da Obra** — quem é esta obra? Qual sua natureza profunda?
-**Voz Autoral** — como o autor se revela pela linguagem? O que o torna único?
-**Leitor Provável** — para quem esta obra fala? Qual perfil de leitor ela convida?
-**Referências Implícitas** — que obras, autores ou tradições literárias ressoam nesta escrita?
-**Posicionamento Editorial** — em qual coleção, catálogo ou mercado esta obra se encaixaria?
-**Potencial** — o que esta obra tem de especial que merece chegar ao leitor?
-
-Seja um editor que enxerga o que a obra já é, e não apenas o que ela pode ser. Máximo 400 palavras.`
-  },
-
-  nas: {
-    sigla: 'NAS',
-    nome: 'Núcleo Simbiótico',
-    desc: 'Integração e coerência interna da obra',
-    cor: '#2f5a4d',
-    prompt: (titulo, tipo, texto) => `Você é NAS, a quarta camada de inteligência editorial do Lapidar Pensante, sistema do Celeiro Literário.
-
-Seu papel é o NÚCLEO SIMBIÓTICO DE INTEGRAÇÃO: analisar como os elementos da obra dialogam entre si — personagens, espaço, tempo, linguagem, tema e forma. Você detecta se a obra está integrada ou se há partes que funcionam de modo isolado, fragmentado, sem comunicar com o todo.
-
-OBRA: "${titulo || 'Sem título'}"
-TIPO: ${tipo || 'Não informado'}
-TEXTO:
-${texto}
-
-Responda em português do Brasil com linguagem editorial atenta e construtiva. Use estas seções:
-**Coerência Interna** — a obra fala com ela mesma? Os elementos se comunicam?
-**Pontos de Integração** — onde os elementos se encontram e se fortalecem mutuamente
-**Pontos de Ruptura** — onde algo parece solto, desconexo ou fora do tom geral
-**Tema e Forma** — o que a obra diz está de acordo com como ela diz?
-**Sugestão Integrativa** — uma orientação para que a obra ganhe mais unidade interna
-
-Seja um leitor que percebe o organismo vivo dentro da obra. Máximo 400 palavras.`
-  },
-
-  fisa: {
-    sigla: 'FISA',
-    nome: 'Força Inteligente de Aceleração',
-    desc: 'O que impulsiona e o que freia a obra',
-    cor: '#7a3a5a',
-    prompt: (titulo, tipo, texto) => `Você é FISA, a quinta camada de inteligência editorial do Lapidar Pensante, sistema do Celeiro Literário.
-
-Sua função é identificar a FORÇA INTELIGENTE DE ACELERAÇÃO: o que na obra já tem energia própria, o que puxa o leitor para frente, e o que, ao contrário, freia, esfria ou dispersa a leitura. Você é o motor editorial — revela o que acelera e o que pesa.
-
-OBRA: "${titulo || 'Sem título'}"
-TIPO: ${tipo || 'Não informado'}
-TEXTO:
-${texto}
-
-Responda em português do Brasil com linguagem editorial energética e precisa. Use estas seções:
-**Forças de Aceleração** — os elementos que puxam o leitor, que criam desejo de continuar
-**Forças de Freio** — o que desacelera, esfria ou pode fazer o leitor parar
-**Pico de Energia** — onde a obra está no seu melhor momento
-**Vale de Energia** — onde a obra perde força e por quê
-**Orientação Cinética** — como liberar a energia que já existe na obra
-
-Seja um editor que sente o pulso da obra. Máximo 400 palavras.`
-  },
-
-  fiiisaa: {
-    sigla: 'FIIISAA',
-    nome: 'Inicialização Simbiótica Adaptável',
-    desc: 'Síntese final e direção editorial completa',
-    cor: '#4a4a2a',
-    prompt: (titulo, tipo, texto) => `Você é FIIISAA, a sexta e última camada de inteligência editorial do Lapidar Pensante, sistema do Celeiro Literário.
-
-Sua função é a INICIALIZAÇÃO SIMBIÓTICA ADAPTÁVEL: a grande síntese editorial. Você integra tudo que foi percebido nas camadas anteriores, nomeia a obra em sua totalidade, e entrega ao autor um mapa editorial completo — claro, inspirador e acionável — para o próximo passo da obra.
-
-OBRA: "${titulo || 'Sem título'}"
-TIPO: ${tipo || 'Não informado'}
-TEXTO:
-${texto}
-
-Responda em português do Brasil com linguagem editorial de alta visão. Use estas seções:
-**A Obra em Uma Frase** — uma sentença que captura a essência editorial desta obra
-**Síntese dos Pontos Fortes** — as três maiores forças que o autor já possui
-**Os Três Próximos Passos** — ações concretas e priorizadas para o autor agora
-**Avaliação de Maturidade Editorial** — em que estágio está esta obra? (Rascunho / Em desenvolvimento / Quase pronta / Pronta para edição)
-**Palavra Final do Lapidar** — uma mensagem direta do sistema ao autor sobre o potencial desta obra
-
-Seja a voz mais sábia, integradora e encorajadora do sistema. Máximo 500 palavras.`
-  }
-};
-
-// ── ESTADO ────────────────────────────────────────────────────────────────
-let analisando = false;
-
-// ── HELPERS ──────────────────────────────────────────────────────────────
-function camadasselecionadas() {
-  return [...document.querySelectorAll('input[name="camada"]:checked')].map(i => i.value);
-}
-
-function atualizarPreco() {
-  const n = camadasselecionadas().length;
-  const info = document.getElementById('preco-info');
-  const btn  = document.getElementById('btn-analisar');
-  const texto = document.getElementById('texto-obra').value.trim();
-
-  if (n === 0) {
-    info.innerHTML = 'Nenhuma camada selecionada';
-  } else if (n === 6) {
-    info.innerHTML = '<strong>Percurso completo</strong> · R$ 30 / US$ 30';
-  } else {
-    info.innerHTML = `<strong>${n} camada${n>1?'s':''}</strong> selecionada${n>1?'s':''} · R$ ${n*10} / US$ ${n*10}`;
-  }
-
-  btn.disabled = (n === 0 || texto.length < 20 || analisando);
-}
-
-function selecionarTodas() {
-  const cbs = document.querySelectorAll('input[name="camada"]');
-  const todas = [...cbs].every(c => c.checked);
-  cbs.forEach(c => c.checked = !todas);
-  atualizarPreco();
-}
-
-// ── EVENTOS ──────────────────────────────────────────────────────────────
-document.getElementById('texto-obra').addEventListener('input', function() {
-  document.getElementById('char-count').textContent = this.value.length.toLocaleString('pt-BR');
-  atualizarPreco();
-});
-
-document.querySelectorAll('input[name="camada"]').forEach(cb => {
-  cb.addEventListener('change', atualizarPreco);
-});
-
-// ── CHAMADA À API ─────────────────────────────────────────────────────────
-async function chamarClaude(prompt) {
-  const resp = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      messages: [{ role: 'user', content: prompt }]
-    })
-  });
-  if (!resp.ok) throw new Error(`API error: ${resp.status}`);
-  const data = await resp.json();
-  return data.content.map(b => b.text || '').join('');
-}
-
-// ── RENDERIZAR TEXTO ──────────────────────────────────────────────────────
-function renderizarTexto(txt) {
-  // converte **bold**, *italic* e títulos em html simples
-  return txt
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/^#{1,3}\s(.+)$/gm, '<h3>$1</h3>');
-}
-
-// ── ANALISAR ──────────────────────────────────────────────────────────────
-async function analisar() {
-  if (analisando) return;
-
-  const titulo = document.getElementById('titulo-obra').value.trim();
-  const tipo   = document.getElementById('tipo-obra').value;
-  const texto  = document.getElementById('texto-obra').value.trim();
-  const selecionadas = camadasselecionadas();
-
-  if (texto.length < 20) { alert('Por favor, insira o texto da obra.'); return; }
-  if (selecionadas.length === 0) { alert('Selecione ao menos uma camada.'); return; }
-
-  analisando = true;
-  const btn = document.getElementById('btn-analisar');
-  btn.classList.add('loading');
-  btn.disabled = true;
-
-  // esconde input, mostra resultados
-  document.getElementById('secao-input').style.display = 'none';
-  const secaoRes = document.getElementById('resultados');
-  secaoRes.classList.add('visible');
-
-  // subtítulo
-  document.getElementById('resultado-subtitulo').textContent =
-    `${titulo || 'Obra sem título'} · ${selecionadas.length} camada${selecionadas.length>1?'s':''} ativada${selecionadas.length>1?'s':''}`;
-
-  // container dos resultados
-  const container = document.getElementById('camadas-resultado');
-  container.innerHTML = '';
-
-  // para cada camada selecionada, criar card e chamar API
-  for (let i = 0; i < selecionadas.length; i++) {
-    const key = selecionadas[i];
-    const cam = CAMADAS[key];
-
-    // criar card
-    const card = document.createElement('div');
-    card.className = 'camada-resultado';
-    card.style.animationDelay = `${i * 0.12}s`;
-    card.innerHTML = `
-      <div class="camada-resultado-header" style="border-left: 4px solid ${cam.cor}">
-        <span class="camada-sigla-big" style="color:${cam.cor}">${cam.sigla}</span>
-        <div class="camada-desc-header">
-          <strong>${cam.nome}</strong>
-          <span>${cam.desc}</span>
-        </div>
-        <span class="camada-status" id="status-${key}">Processando...</span>
-      </div>
-      <div class="camada-body" id="body-${key}">
-        <div class="loading-msg">
-          <div class="spinner"></div>
-          <span>A camada ${cam.sigla} está lendo sua obra...</span>
-        </div>
-      </div>`;
-    container.appendChild(card);
-    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-    // chamar API
-    try {
-      const resposta = await chamarClaude(cam.prompt(titulo, tipo, texto));
-      document.getElementById(`body-${key}`).innerHTML =
-        `<div class="resposta">${renderizarTexto(resposta)}</div>`;
-      document.getElementById(`status-${key}`).textContent = '✓ Concluído';
-      document.getElementById(`status-${key}`).style.background = 'rgba(47,90,77,.12)';
-      document.getElementById(`status-${key}`).style.color = cam.cor;
-    } catch (err) {
-      document.getElementById(`body-${key}`).innerHTML =
-        `<p style="color:#a63d40">Erro ao processar esta camada. Verifique a conexão e tente novamente.<br><small>${err.message}</small></p>`;
-      document.getElementById(`status-${key}`).textContent = '✗ Erro';
-      document.getElementById(`status-${key}`).style.color = '#a63d40';
-    }
-  }
-
-  analisando = false;
-  btn.classList.remove('loading');
-}
-
-// ── NOVA ANÁLISE ──────────────────────────────────────────────────────────
-function novaAnalise() {
-  document.getElementById('resultados').classList.remove('visible');
-  document.getElementById('secao-input').style.display = '';
-  document.getElementById('camadas-resultado').innerHTML = '';
-  document.getElementById('texto-obra').value = '';
-  document.getElementById('titulo-obra').value = '';
-  document.getElementById('tipo-obra').value = '';
-  document.getElementById('char-count').textContent = '0';
-  document.querySelectorAll('input[name="camada"]').forEach(c => c.checked = false);
-  atualizarPreco();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-</script>
 </body>
 </html>
