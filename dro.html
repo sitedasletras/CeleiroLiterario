@@ -3,173 +3,577 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DRO — Lapidar Pensante</title>
-
+<title>DRO — Desbaste e Reorganização | Lapidar Pensante</title>
 <style>
 :root{
---bg:#ece8de;
---card:#f7f4ee;
---ink:#1f1f1b;
---muted:#6f6a62;
---line:#ddd6c9;
---accent:#8b6a52;
---shadow:0 12px 28px rgba(0,0,0,.10);
---radius:24px;
+  --bg:#ece8de;
+  --card:#f7f4ee;
+  --ink:#1f1f1b;
+  --muted:#6f6a62;
+  --line:#ddd6c9;
+  --accent:#8b6a52;
+  --accent2:#a8845e;
+  --gold:#d9a441;
+  --verde:#2f7a59;
+  --danger:#a63d40;
+  --shadow:0 12px 28px rgba(0,0,0,.10);
+  --radius:24px;
 }
-
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-
 body{
-min-height:100vh;
-font-family:Georgia,"Times New Roman",serif;
-background:var(--bg);
-color:var(--ink);
-display:flex;
-align-items:center;
-justify-content:center;
-padding:16px;
+  min-height:100vh;
+  font-family:Georgia,"Times New Roman",serif;
+  background:var(--bg);
+  color:var(--ink);
+  padding:28px 16px;
+}
+.container{
+  max-width:980px;
+  margin:auto;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
 }
 
-.box{
-width:min(92vw,860px);
-background:var(--card);
-border-radius:var(--radius);
-box-shadow:var(--shadow);
-border:1px solid var(--line);
-padding:34px 26px;
-text-align:center;
+/* TOPO */
+.topo{
+  background:linear-gradient(135deg,#3d2a18,#6b4a2a);
+  border-radius:var(--radius);
+  padding:28px;
+  color:white;
+  display:flex;
+  align-items:flex-start;
+  gap:20px;
+}
+.topo-badge{
+  width:72px;height:72px;
+  border-radius:18px;
+  background:linear-gradient(135deg,var(--gold),#b8832a);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.2rem;font-weight:900;
+  color:#2a1d0d;
+  flex-shrink:0;
+  box-shadow:0 8px 20px rgba(0,0,0,.2);
+}
+.topo-texto h1{margin:0 0 6px;font-size:clamp(2rem,4vw,3rem);color:var(--gold)}
+.topo-texto .camada{
+  font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  background:rgba(217,164,65,.2);border:1px solid rgba(217,164,65,.4);
+  color:var(--gold);padding:4px 12px;border-radius:999px;
+  display:inline-block;margin-bottom:10px;
+}
+.topo-texto p{margin:0;color:rgba(255,255,255,.8);font-size:1.05rem;line-height:1.55}
+
+/* SEÇÕES */
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  padding:26px;
+}
+.card h2{margin:0 0 10px;font-size:1.5rem;color:#2a1d0d}
+.card h3{margin:0 0 8px;font-size:1.15rem;color:#3d2a18}
+.card p{margin:0 0 12px;color:var(--muted);font-size:1.05rem;line-height:1.5}
+.card p:last-child{margin-bottom:0}
+
+/* CAMPO TEXTO */
+.campo-label{
+  display:block;
+  font-weight:700;font-size:.95rem;
+  color:#3d2a18;margin-bottom:8px;
+}
+.editor{
+  width:100%;min-height:220px;
+  border:2px solid #cfc6b8;border-radius:16px;
+  padding:16px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:1.05rem;line-height:1.5;
+  background:#fff;color:var(--ink);
+  outline:none;resize:vertical;
+  transition:border-color .2s;
+}
+.editor:focus{border-color:var(--accent)}
+
+/* BARRA DE PROGRESSO */
+.progresso-barra{
+  display:flex;gap:0;
+  border:1px solid var(--line);
+  border-radius:999px;overflow:hidden;
+  margin-bottom:20px;
+}
+.prog-etapa{
+  flex:1;padding:10px 8px;text-align:center;
+  font-size:.82rem;font-weight:700;
+  font-family:Arial,sans-serif;
+  background:#f0ebe3;color:#8a7d6e;
+  border-right:1px solid var(--line);
+  transition:.2s;
+}
+.prog-etapa:last-child{border-right:none}
+.prog-etapa.feita{background:#d9a441;color:#2a1d0d}
+.prog-etapa.atual{background:#8b6a52;color:white}
+
+/* RESULTADOS */
+.resultado-area{display:none}
+.resultado-area.vis{display:block}
+
+.stats-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+  margin:16px 0;
+}
+.stat-box{
+  background:#fff;border:1px solid var(--line);
+  border-radius:16px;padding:14px 12px;text-align:center;
+}
+.stat-box .sval{
+  font-size:1.8rem;font-weight:900;color:#3d2a18;display:block;margin-bottom:4px;
+}
+.stat-box .slbl{
+  font-size:.88rem;color:var(--muted);font-family:Arial,sans-serif;
 }
 
-.tag{
-display:inline-block;
-padding:6px 12px;
-border-radius:999px;
-background:#efe6df;
-color:#6e4f3a;
-font-size:.88rem;
-font-weight:700;
-letter-spacing:.05em;
-text-transform:uppercase;
-margin-bottom:14px;
+/* BLOCOS REORGANIZADOS */
+.blocos-lista{
+  display:flex;flex-direction:column;gap:10px;
+  margin:14px 0;
+}
+.bloco-item{
+  background:#fff;border:1px solid var(--line);
+  border-radius:14px;padding:14px 16px;
+  display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:start;
+}
+.bloco-num{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),#c07a20);
+  color:#2a1d0d;font-weight:900;font-size:.95rem;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.bloco-conteudo .btipo{
+  font-family:Arial,sans-serif;font-size:.78rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;
+  padding:3px 10px;border-radius:999px;
+  display:inline-block;margin-bottom:6px;
+}
+.btipo.narrativo{background:#e8f4ec;color:#2f6644}
+.btipo.descritivo{background:#e8eef8;color:#2a4a7a}
+.btipo.dialogo{background:#f4ece8;color:#7a3a20}
+.btipo.poetico{background:#f0e8f4;color:#5a2a7a}
+.btipo.transicao{background:#f4f0e4;color:#6a5820}
+.btipo.intro{background:#eef4f0;color:#20604a}
+.bloco-conteudo .btexto{
+  font-size:.98rem;color:#4a3f35;line-height:1.45;
+  max-height:80px;overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+}
+.bloco-action{
+  font-family:Arial,sans-serif;font-size:.78rem;font-weight:700;
+  padding:5px 10px;border-radius:10px;
+  border:1px solid var(--line);background:#f4f0e8;color:#5a4a38;
+  cursor:pointer;white-space:nowrap;
 }
 
-h1{
-margin:0 0 12px 0;
-font-size:clamp(2.1rem,5vw,3.4rem);
-line-height:1.05;
-color:#000;
+/* ALERTAS */
+.alertas-lista{
+  display:flex;flex-direction:column;gap:8px;
+  margin:14px 0;
+}
+.alerta-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:12px 14px;border-radius:14px;
+}
+.alerta-item.alto{background:#fdf0f0;border:1px solid #e0a0a0}
+.alerta-item.medio{background:#fdf8e8;border:1px solid #e0c870}
+.alerta-item.info{background:#eef4fd;border:1px solid #a0c0e0}
+.alerta-icone{font-size:1.2rem;flex-shrink:0;margin-top:2px}
+.alerta-texto{font-size:.98rem;color:#3a3028;line-height:1.45}
+.alerta-texto strong{display:block;margin-bottom:2px}
+
+/* TEXTO REORGANIZADO */
+.texto-result{
+  width:100%;min-height:180px;
+  border:2px solid #cfc6b8;border-radius:16px;
+  padding:16px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:1.05rem;line-height:1.6;
+  background:#fffdf8;color:var(--ink);
+  outline:none;resize:vertical;
 }
 
-p{
-margin:0 0 18px 0;
-color:var(--muted);
-font-size:1.08rem;
-line-height:1.5;
+/* NAVEGAÇÃO CAMADAS */
+.nav-camadas{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:8px;
+  margin:16px 0;
 }
-
-.note{
-margin:18px 0 0 0;
-padding:14px 16px;
-border:1px dashed #cfc6b8;
-border-radius:16px;
-background:rgba(255,255,255,.45);
-color:#6a645d;
-font-size:1rem;
-line-height:1.45;
+.nc{
+  background:#f0ebe3;border:1px solid var(--line);
+  border-radius:12px;padding:10px 6px;
+  text-align:center;font-family:Arial,sans-serif;
+  font-size:.82rem;font-weight:700;color:#8a7d6e;
+  text-decoration:none;transition:.15s;
 }
+.nc:hover{background:#e8ddd0;color:#3d2a18}
+.nc.atual{background:var(--accent);color:white;border-color:var(--accent)}
+.nc.feita{background:var(--verde);color:white;border-color:var(--verde)}
 
-.actions{
-margin-top:24px;
-display:flex;
-gap:12px;
-justify-content:center;
-flex-wrap:wrap;
-}
-
+/* BOTÕES */
 .btn{
-border:none;
-border-radius:16px;
-padding:14px 20px;
-font:inherit;
-font-weight:700;
-cursor:pointer;
-transition:.18s ease;
-box-shadow:0 8px 18px rgba(0,0,0,.08);
+  border:none;border-radius:16px;
+  padding:14px 20px;
+  font:inherit;font-weight:700;font-size:1rem;
+  cursor:pointer;transition:.18s ease;
+  box-shadow:0 8px 18px rgba(0,0,0,.08);
+  text-decoration:none;display:inline-block;
 }
+.btn:hover{transform:translateY(-1px)}
+.btn-principal{background:var(--accent);color:#fff}
+.btn-gold{background:var(--gold);color:#2a1d0d}
+.btn-verde{background:var(--verde);color:#fff}
+.btn-back{background:#e0d8cc;color:#3d2a18}
+.btn-danger{background:var(--danger);color:#fff}
+.acoes{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:16px}
 
-.btn:hover{
-transform:translateY(-1px);
+/* NOTICE */
+.notice{
+  background:#fff8e6;border:1px solid #e1c57a;
+  border-radius:16px;padding:14px 16px;
+  color:#5d4a24;line-height:1.5;font-size:1rem;
 }
+.notice strong{color:#2f2412}
 
-.btn-back{
-background:#d9a441;
-color:#2a1d0d;
-}
+/* SEPARADOR */
+.sep{height:1px;background:var(--line);margin:8px 0}
 
-.btn-home{
-background:var(--accent);
-color:#fff;
-}
-
-@media (max-width:640px){
-
-.box{
-padding:28px 18px;
-border-radius:20px;
-}
-
-.actions{
-flex-direction:column;
-}
-
-.btn{
-width:100%;
-}
-
+@media(max-width:760px){
+  .topo{flex-direction:column;gap:14px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .nav-camadas{grid-template-columns:repeat(3,1fr)}
+  .bloco-item{grid-template-columns:30px 1fr}
+  .bloco-action{display:none}
+  .acoes{flex-direction:column}
+  .btn{width:100%}
 }
 </style>
 </head>
-
 <body>
+<div class="container">
 
-<main class="box">
+  <!-- TOPO -->
+  <div class="topo">
+    <div class="topo-badge">D</div>
+    <div class="topo-texto">
+      <div class="camada">Lapidar Pensante · Camada 2 de 6</div>
+      <h1>DRO</h1>
+      <p>Desbaste estrutural e reorganização intermediária da obra. O DRO separa blocos narrativos, classifica cada segmento, identifica inconsistências de organização e prepara o material para a identificação editorial profunda da camada ID.</p>
+    </div>
+  </div>
 
-<div class="tag">Lapidar Pensante — Camada 2</div>
+  <!-- BARRA DE PROGRESSO -->
+  <div class="card" style="padding:18px">
+    <div class="progresso-barra">
+      <div class="prog-etapa feita">AN</div>
+      <div class="prog-etapa atual">DRO</div>
+      <div class="prog-etapa">ID</div>
+      <div class="prog-etapa">NAS</div>
+      <div class="prog-etapa">FISA</div>
+      <div class="prog-etapa">FIIISAA</div>
+    </div>
+    <p style="margin:0;font-size:.95rem;color:var(--muted);text-align:center">
+      Você está na camada 2 — Desbaste e Reorganização Estrutural.
+    </p>
+  </div>
 
-<h1>DRO</h1>
+  <!-- O QUE O DRO FAZ -->
+  <div class="card">
+    <h2>O que o DRO faz com sua obra</h2>
+    <p>Após a leitura inicial da camada AN, o DRO entra em ação sobre a estrutura da obra. Ele não corrige o estilo — ele organiza o que existe. Seu trabalho é separar, classificar e reorganizar cada segmento do texto para que a camada seguinte (ID) possa trabalhar com clareza editorial.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px">
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center">
+        <div style="font-size:1.6rem;margin-bottom:6px">✂️</div>
+        <strong style="display:block;margin-bottom:4px;color:#3d2a18">Desbaste</strong>
+        <span style="font-size:.92rem;color:var(--muted)">Remove ruídos estruturais: blocos sobrepostos, repetições de abertura, rupturas narrativas abruptas</span>
+      </div>
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center">
+        <div style="font-size:1.6rem;margin-bottom:6px">🗂️</div>
+        <strong style="display:block;margin-bottom:4px;color:#3d2a18">Classificação</strong>
+        <span style="font-size:.92rem;color:var(--muted)">Identifica cada bloco: narrativo, descritivo, poético, diálogo, transição ou introdução</span>
+      </div>
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center">
+        <div style="font-size:1.6rem;margin-bottom:6px">🔀</div>
+        <strong style="display:block;margin-bottom:4px;color:#3d2a18">Reorganização</strong>
+        <span style="font-size:.92rem;color:var(--muted)">Sugere ordem lógica dos blocos e sinaliza onde a obra pode ganhar mais coerência interna</span>
+      </div>
+    </div>
+  </div>
 
-<p>
-Camada de desbaste estrutural e reorganização intermediária da obra.
-Aqui ocorre a preparação editorial após a leitura inicial realizada pela camada AN.
-</p>
+  <!-- ENTRADA DO TEXTO -->
+  <div class="card">
+    <h2>Cole o texto da obra para desbaste</h2>
+    <p>Se você já passou pela camada AN, cole aqui o texto que foi analisado. Caso esteja entrando diretamente nesta camada, cole o texto da obra que deseja reorganizar.</p>
+    <label class="campo-label" for="textoEntrada">Texto da obra</label>
+    <textarea class="editor" id="textoEntrada" placeholder="Cole aqui o texto da obra...
 
-<p>
-O DRO atua separando blocos narrativos, reorganizando estruturas internas,
-identificando inconsistências leves de organização e preparando o material
-para a identificação editorial profunda da camada seguinte.
-</p>
+O DRO irá separar os blocos narrativos, classificar cada segmento e identificar inconsistências de estrutura para prepará-lo para a camada ID."></textarea>
 
-<div class="note">
-Placeholder ativo da camada DRO. Esta página reserva a segunda camada do Lapidar Pensante
-mantendo o sistema leve e modular. A lógica interna será ativada posteriormente.
-</div>
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-principal" onclick="executarDRO()">🔀 Executar desbaste e reorganização</button>
+      <button class="btn btn-back" onclick="document.getElementById('textoEntrada').value=''">✕ Limpar</button>
+    </div>
+  </div>
 
-<div class="actions">
+  <!-- RESULTADO DRO -->
+  <div class="resultado-area" id="resultadoArea">
 
-<button class="btn btn-back"
-onclick="window.location.href='lapidar_pensante.html'">
-Retornar ao Lapidar Pensante
-</button>
+    <!-- ESTATÍSTICAS -->
+    <div class="card">
+      <h2>Relatório do DRO</h2>
+      <div class="stats-grid">
+        <div class="stat-box"><span class="sval" id="statBlocos">0</span><span class="slbl">Blocos identificados</span></div>
+        <div class="stat-box"><span class="sval" id="statPalavras">0</span><span class="slbl">Palavras no texto</span></div>
+        <div class="stat-box"><span class="sval" id="statAlertas">0</span><span class="slbl">Alertas estruturais</span></div>
+        <div class="stat-box"><span class="sval" id="statTipo">—</span><span class="slbl">Tipo dominante</span></div>
+      </div>
+    </div>
 
-<button class="btn btn-home"
-onclick="window.location.href='lapidar_pensante_intro.html'">
-Voltar à explicação
-</button>
+    <!-- BLOCOS CLASSIFICADOS -->
+    <div class="card">
+      <h2>Blocos identificados e classificados</h2>
+      <p>O DRO separou o texto nos seguintes segmentos. Cada bloco recebeu uma classificação baseada em sua estrutura e função narrativa.</p>
+      <div class="blocos-lista" id="blocosLista"></div>
+    </div>
 
-</div>
+    <!-- ALERTAS ESTRUTURAIS -->
+    <div class="card" id="alertasCard">
+      <h2>Alertas estruturais</h2>
+      <p>O DRO identificou os seguintes pontos de atenção na organização interna da obra:</p>
+      <div class="alertas-lista" id="alertasLista"></div>
+    </div>
 
-</main>
+    <!-- TEXTO REORGANIZADO -->
+    <div class="card">
+      <h2>Texto após desbaste do DRO</h2>
+      <p>O texto abaixo passou pelo desbaste estrutural. Repetições de abertura e ruídos foram removidos. A ordem dos blocos foi preservada conforme o original — o reordenamento sugerido aparece nos alertas acima.</p>
+      <label class="campo-label">Texto reorganizado — pronto para a camada ID</label>
+      <textarea class="texto-result" id="textoResult" readonly></textarea>
+      <div class="acoes">
+        <button class="btn btn-verde" onclick="copiarTexto()">📋 Copiar texto reorganizado</button>
+        <button class="btn btn-gold" onclick="irParaID()">→ Avançar para camada ID</button>
+        <button class="btn btn-back" onclick="reiniciar()">↺ Reanalisar</button>
+      </div>
+    </div>
 
+    <!-- NAVEGAÇÃO ENTRE CAMADAS -->
+    <div class="card">
+      <h2>Navegação entre camadas</h2>
+      <div class="nav-camadas">
+        <a class="nc feita" href="an.html">AN<br><small>Análise</small></a>
+        <a class="nc atual" href="dro.html">DRO<br><small>Desbaste</small></a>
+        <a class="nc" href="id.html">ID<br><small>Identificação</small></a>
+        <a class="nc" href="#">NAS<br><small>Núcleo</small></a>
+        <a class="nc" href="fisa.html">FISA<br><small>Aceleração</small></a>
+        <a class="nc" href="fiiisaa.html">FIIISAA<br><small>Inicialização</small></a>
+      </div>
+      <div class="notice">
+        <strong>Regra de fluxo:</strong> após o DRO, o texto reorganizado segue para a camada <strong>ID</strong>, que fará a identificação editorial profunda — gênero, tom, voz narrativa, público e direção editorial da obra.
+      </div>
+    </div>
+
+  </div><!-- fim resultado -->
+
+  <!-- AÇÕES DE NAVEGAÇÃO (sempre visíveis) -->
+  <div class="card" style="text-align:center">
+    <div class="acoes">
+      <button class="btn btn-back" onclick="window.location.href='lapidar_pensante.html'">← Lapidar Pensante</button>
+      <button class="btn btn-back" onclick="window.location.href='lapidar_pensante_intro.html'">Explicação das camadas</button>
+      <button class="btn btn-back" onclick="window.location.href='lapidar.html'">Lapidar</button>
+      <button class="btn btn-danger" onclick="window.location.href='index.html'">Sair</button>
+    </div>
+  </div>
+
+</div><!-- fim container -->
+
+<script>
+// ── TIPOS DE BLOCO ──
+const TIPOS = {
+  dialogo:    { label:'Diálogo',    cls:'dialogo',    pesos:['—','- ','" ','« '] },
+  poetico:    { label:'Poético',    cls:'poetico',    pesos:[] },
+  narrativo:  { label:'Narrativo',  cls:'narrativo',  pesos:[] },
+  descritivo: { label:'Descritivo', cls:'descritivo', pesos:[] },
+  transicao:  { label:'Transição',  cls:'transicao',  pesos:[] },
+  intro:      { label:'Introdução', cls:'intro',      pesos:[] },
+}
+
+function classificarBloco(linhas) {
+  const texto = linhas.join(' ')
+  const avg   = linhas.reduce((s,l)=>s+l.length,0)/Math.max(1,linhas.length)
+
+  // Diálogo
+  if (linhas.some(l => /^[—\-"«]/.test(l.trim()))) return 'dialogo'
+  // Poético — linhas curtas, múltiplas
+  if (linhas.length >= 2 && avg < 50) return 'poetico'
+  // Introdução — primeiro bloco curto
+  if (linhas.length <= 2 && avg < 80) return 'intro'
+  // Transição — bloco curto mas não intro
+  if (linhas.length <= 2) return 'transicao'
+  // Descritivo — muitos adjetivos/adv ou sem verbos de ação fortes
+  if (/silên|neblin|luz|sombra|vento|cor |tom |perfum|arom/i.test(texto)) return 'descritivo'
+  // Narrativo — padrão
+  return 'narrativo'
+}
+
+function contarPalavras(texto) {
+  return texto.replace(/\n/g,' ').split(/\s+/).filter(Boolean).length
+}
+
+function detectarAlertas(blocos, textoOriginal) {
+  const alertas = []
+
+  // Blocos muito longos
+  blocos.forEach((b,i) => {
+    if (b.linhas.length > 20) {
+      alertas.push({nivel:'alto', titulo:`Bloco ${i+1} muito extenso`, desc:`Contém ${b.linhas.length} linhas. Considere dividir em dois blocos menores para facilitar a leitura editorial.`})
+    }
+  })
+
+  // Abertura repetitiva entre blocos
+  const aberturas = blocos.map(b => b.linhas[0]?.substring(0,25).toLowerCase() || '')
+  aberturas.forEach((ab,i) => {
+    if (i > 0 && ab && ab === aberturas[i-1]) {
+      alertas.push({nivel:'alto', titulo:`Abertura repetida: blocos ${i} e ${i+1}`, desc:`Os dois blocos começam com o mesmo trecho. Isso pode indicar duplicação ou necessidade de fusão.`})
+    }
+  })
+
+  // Muitos blocos de transição seguidos
+  let transSeq = 0
+  blocos.forEach((b,i) => {
+    if (b.tipo === 'transicao') { transSeq++; if (transSeq >= 2) alertas.push({nivel:'medio', titulo:`Transições consecutivas: blocos ${i} e ${i+1}`, desc:`Múltiplas transições seguidas podem fragmentar o ritmo da obra. Avalie fundir ou expandir.`}) }
+    else transSeq = 0
+  })
+
+  // Alternância abrupta poesia-prosa
+  blocos.forEach((b,i) => {
+    if (i > 0) {
+      const ant = blocos[i-1].tipo
+      if ((ant==='poetico' && b.tipo==='narrativo') || (ant==='narrativo' && b.tipo==='poetico')) {
+        alertas.push({nivel:'info', titulo:`Alternância poesia–prosa: bloco ${i+1}`, desc:`Passagem direta de bloco poético para narrativo (ou vice-versa). Verifique se há um elemento de transição adequado.`})
+      }
+    }
+  })
+
+  // Obra sem diálogos
+  if (blocos.length > 4 && !blocos.some(b=>b.tipo==='dialogo')) {
+    alertas.push({nivel:'info', titulo:'Ausência de diálogos', desc:'A obra não apresenta blocos de diálogo. Se for uma narrativa, considere se personagens precisam de voz direta.'})
+  }
+
+  // Bloco único (texto não segmentado)
+  if (blocos.length === 1) {
+    alertas.push({nivel:'medio', titulo:'Texto não segmentado', desc:'O DRO identificou apenas um bloco. O texto pode não ter parágrafos separados por linha em branco. Organize o texto em blocos para aproveitar melhor as camadas seguintes.'})
+  }
+
+  return alertas
+}
+
+function debaste(texto) {
+  // Remove linhas em branco triplas ou mais
+  let t = texto.replace(/\r\n/g,'\n').replace(/\r/g,'\n')
+  t = t.replace(/\n{3,}/g,'\n\n').trim()
+  // Remove espaços no início de linha
+  t = t.split('\n').map(l=>l.trimEnd()).join('\n')
+  return t
+}
+
+function executarDRO() {
+  const entrada = document.getElementById('textoEntrada').value.trim()
+  if (!entrada) { alert('Por favor, cole o texto da obra antes de executar o DRO.'); return }
+
+  const textoDebastado = debaste(entrada)
+  const blocosBrutos   = textoDebastado.split(/\n\s*\n/)
+  const blocos = blocosBrutos
+    .map(b => b.split('\n').filter(l=>l.trim()))
+    .filter(l=>l.length)
+    .map((linhas,i) => ({ id:i+1, linhas, tipo: classificarBloco(linhas) }))
+
+  const alertas = detectarAlertas(blocos, textoDebastado)
+
+  // Contagem tipo dominante
+  const contTipos = {}
+  blocos.forEach(b => { contTipos[b.tipo] = (contTipos[b.tipo]||0)+1 })
+  const tipoDom = Object.entries(contTipos).sort((a,b)=>b[1]-a[1])[0]?.[0] || '—'
+  const tipoDomLabel = TIPOS[tipoDom]?.label || tipoDom
+
+  // Stats
+  document.getElementById('statBlocos').textContent  = blocos.length
+  document.getElementById('statPalavras').textContent = contarPalavras(textoDebastado)
+  document.getElementById('statAlertas').textContent  = alertas.length
+  document.getElementById('statTipo').textContent     = tipoDomLabel
+
+  // Renderiza blocos
+  const lista = document.getElementById('blocosLista')
+  lista.innerHTML = ''
+  blocos.forEach(b => {
+    const t = TIPOS[b.tipo]
+    const preview = b.linhas.join(' ').substring(0,140) + (b.linhas.join(' ').length>140?'…':'')
+    const div = document.createElement('div')
+    div.className = 'bloco-item'
+    div.innerHTML = `
+      <div class="bloco-num">${b.id}</div>
+      <div class="bloco-conteudo">
+        <span class="btipo ${t.cls}">${t.label}</span>
+        <div class="btexto">${preview}</div>
+      </div>
+      <div class="bloco-action">${b.linhas.length} linha${b.linhas.length>1?'s':''}</div>
+    `
+    lista.appendChild(div)
+  })
+
+  // Renderiza alertas
+  const al = document.getElementById('alertasLista')
+  al.innerHTML = ''
+  if (alertas.length === 0) {
+    al.innerHTML = '<div class="alerta-item info"><div class="alerta-icone">✅</div><div class="alerta-texto"><strong>Nenhum alerta estrutural crítico</strong>O DRO não identificou inconsistências relevantes nesta obra. Estrutura compatível com a camada ID.</div></div>'
+  } else {
+    alertas.forEach(a => {
+      const div = document.createElement('div')
+      div.className = `alerta-item ${a.nivel}`
+      const icone = a.nivel==='alto'?'⚠️':a.nivel==='medio'?'📌':'ℹ️'
+      div.innerHTML = `<div class="alerta-icone">${icone}</div><div class="alerta-texto"><strong>${a.titulo}</strong>${a.desc}</div>`
+      al.appendChild(div)
+    })
+  }
+
+  // Texto reorganizado
+  const textoFinal = blocos.map(b => b.linhas.join('\n')).join('\n\n')
+  document.getElementById('textoResult').value = textoFinal
+
+  // Salva em sessionStorage para ID
+  sessionStorage.setItem('dro_texto_result', textoFinal)
+  sessionStorage.setItem('dro_blocos', JSON.stringify(blocos.map(b=>({id:b.id,tipo:b.tipo,linhas:b.linhas}))))
+  sessionStorage.setItem('dro_stats', JSON.stringify({blocos:blocos.length, palavras:contarPalavras(textoDebastado), alertas:alertas.length, tipoDom:tipoDomLabel}))
+
+  document.getElementById('resultadoArea').classList.add('vis')
+  document.getElementById('resultadoArea').scrollIntoView({behavior:'smooth'})
+}
+
+function copiarTexto() {
+  const t = document.getElementById('textoResult').value
+  navigator.clipboard.writeText(t).then(()=>alert('Texto copiado!')).catch(()=>{
+    document.getElementById('textoResult').select()
+    document.execCommand('copy')
+    alert('Texto copiado!')
+  })
+}
+
+function irParaID() {
+  window.location.href = 'id.html'
+}
+
+function reiniciar() {
+  document.getElementById('textoEntrada').value = ''
+  document.getElementById('resultadoArea').classList.remove('vis')
+  window.scrollTo({top:0,behavior:'smooth'})
+}
+</script>
 </body>
 </html>
