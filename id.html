@@ -3,170 +3,440 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ID — Lapidar Pensante</title>
-
+<title>ID — Identificação Editorial | Lapidar Pensante</title>
 <style>
 :root{
---bg:#ece8de;
---card:#f7f4ee;
---ink:#1f1f1b;
---muted:#6f6a62;
---line:#ddd6c9;
---accent:#5f7fb3;
---shadow:0 12px 28px rgba(0,0,0,.10);
---radius:24px;
+  --bg:#ece8de;--card:#f7f4ee;--ink:#1f1f1b;--muted:#6f6a62;
+  --line:#ddd6c9;--accent:#3d6a9a;--accent2:#2a5080;
+  --gold:#d9a441;--verde:#2f7a59;--danger:#a63d40;
+  --shadow:0 12px 28px rgba(0,0,0,.10);--radius:24px;
 }
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{min-height:100vh;font-family:Georgia,"Times New Roman",serif;background:var(--bg);color:var(--ink);padding:28px 16px}
+.container{max-width:980px;margin:auto;display:flex;flex-direction:column;gap:20px}
 
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
+/* TOPO */
+.topo{background:linear-gradient(135deg,#163050,#2a5080);border-radius:var(--radius);padding:28px;color:white;display:flex;align-items:flex-start;gap:20px}
+.topo-badge{width:72px;height:72px;border-radius:18px;background:linear-gradient(135deg,#4a7ab8,#2a5080);display:flex;align-items:center;justify-content:center;font-size:2.2rem;font-weight:900;color:white;flex-shrink:0;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.topo-texto h1{margin:0 0 6px;font-size:clamp(2rem,4vw,3rem);color:#a8d0f0}
+.topo-texto .camada{font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(168,208,240,.15);border:1px solid rgba(168,208,240,.35);color:#a8d0f0;padding:4px 12px;border-radius:999px;display:inline-block;margin-bottom:10px}
+.topo-texto p{margin:0;color:rgba(255,255,255,.8);font-size:1.05rem;line-height:1.55}
 
-body{
-min-height:100vh;
-font-family:Georgia,"Times New Roman",serif;
-background:var(--bg);
-color:var(--ink);
-display:flex;
-align-items:center;
-justify-content:center;
-padding:16px;
-}
+/* PROGRESSO */
+.progresso-barra{display:flex;gap:0;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-bottom:16px}
+.prog-etapa{flex:1;padding:10px 8px;text-align:center;font-size:.82rem;font-weight:700;font-family:Arial,sans-serif;background:#f0ebe3;color:#8a7d6e;border-right:1px solid var(--line);transition:.2s}
+.prog-etapa:last-child{border-right:none}
+.prog-etapa.feita{background:#2f7a59;color:white}
+.prog-etapa.atual{background:var(--accent);color:white}
 
-.box{
-width:min(92vw,860px);
-background:var(--card);
-border-radius:var(--radius);
-box-shadow:var(--shadow);
-border:1px solid var(--line);
-padding:34px 26px;
-text-align:center;
-}
+/* CARD */
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow);padding:26px}
+.card h2{margin:0 0 10px;font-size:1.5rem;color:#163050}
+.card h3{margin:0 0 8px;font-size:1.15rem;color:#163050}
+.card p,.card li{font-size:15px;line-height:1.68;color:#3a4557}
+.card ul{padding-left:18px}
+.card ul li{margin-bottom:7px}
 
-.tag{
-display:inline-block;
-padding:6px 12px;
-border-radius:999px;
-background:#e8f0f9;
-color:#496f9d;
-font-size:.88rem;
-font-weight:700;
-letter-spacing:.05em;
-text-transform:uppercase;
-margin-bottom:14px;
-}
+/* EDITOR */
+.campo-label{display:block;font-weight:700;font-size:.95rem;color:#163050;margin-bottom:8px}
+.editor{width:100%;min-height:200px;border:2px solid #cfc6b8;border-radius:16px;padding:16px;font-family:Georgia,"Times New Roman",serif;font-size:1.05rem;line-height:1.5;background:#fff;color:var(--ink);outline:none;resize:vertical;transition:border-color .2s}
+.editor:focus{border-color:var(--accent)}
 
-h1{
-margin:0 0 12px 0;
-font-size:clamp(2.1rem,5vw,3.4rem);
-line-height:1.05;
-color:#000;
-}
+/* RESULTADO */
+.resultado-area{display:none}
+.resultado-area.vis{display:block}
 
-p{
-margin:0 0 18px 0;
-color:var(--muted);
-font-size:1.08rem;
-line-height:1.5;
-}
+/* FICHAS DE IDENTIFICAÇÃO */
+.fichas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0}
+.ficha{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;position:relative;overflow:hidden}
+.ficha::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--accent)}
+.ficha .flabel{font-family:Arial,sans-serif;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:6px}
+.ficha .fval{font-size:1.05rem;font-weight:700;color:#163050}
+.ficha .fbarra{height:6px;border-radius:999px;background:#e0d8cc;margin-top:8px;overflow:hidden}
+.ficha .ffill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),#6aaae0);transition:width .6s ease}
 
-.note{
-margin:18px 0 0 0;
-padding:14px 16px;
-border:1px dashed #cfc6b8;
-border-radius:16px;
-background:rgba(255,255,255,.45);
-color:#6a645d;
-font-size:1rem;
-line-height:1.45;
-}
+/* MAPA DE ELEMENTOS */
+.mapa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.mapa-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.mapa-item.presente{border-color:var(--verde);background:#edf7f2}
+.mapa-item.ausente{opacity:.5}
+.mapa-item .mi{font-size:1.4rem;margin-bottom:6px}
+.mapa-item .mn{font-size:.9rem;font-weight:700;color:#163050;margin-bottom:2px}
+.mapa-item .mv{font-size:.82rem;color:var(--muted);font-family:Arial,sans-serif}
 
-.actions{
-margin-top:24px;
-display:flex;
-gap:12px;
-justify-content:center;
-flex-wrap:wrap;
-}
+/* DIRECIONAMENTOS */
+.dir-lista{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.dir-item{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:14px}
+.dir-item.forte{border-left:4px solid var(--accent)}
+.dir-item.medio{border-left:4px solid var(--gold)}
+.dir-item.leve{border-left:4px solid #c0b8a8}
+.dir-icone{font-size:1.1rem;flex-shrink:0;margin-top:2px}
+.dir-texto{font-size:.98rem;color:#3a3028;line-height:1.45}
+.dir-texto strong{display:block;margin-bottom:2px;color:#163050}
 
-.btn{
-border:none;
-border-radius:16px;
-padding:14px 20px;
-font:inherit;
-font-weight:700;
-cursor:pointer;
-transition:.18s ease;
-box-shadow:0 8px 18px rgba(0,0,0,.08);
-}
+/* TEXTO SAÍDA */
+.texto-result{width:100%;min-height:160px;border:2px solid #cfc6b8;border-radius:16px;padding:16px;font-family:Georgia,"Times New Roman",serif;font-size:1.05rem;line-height:1.6;background:#fffdf8;color:var(--ink);outline:none;resize:vertical}
 
-.btn:hover{
-transform:translateY(-1px);
-}
+/* NAV CAMADAS */
+.nav-camadas{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:16px 0}
+.nc{background:#f0ebe3;border:1px solid var(--line);border-radius:12px;padding:10px 6px;text-align:center;font-family:Arial,sans-serif;font-size:.82rem;font-weight:700;color:#8a7d6e;text-decoration:none;transition:.15s}
+.nc:hover{background:#e8ddd0;color:#163050}
+.nc.atual{background:var(--accent);color:white;border-color:var(--accent)}
+.nc.feita{background:var(--verde);color:white;border-color:var(--verde)}
 
-.btn-back{
-background:#d9a441;
-color:#2a1d0d;
-}
+/* NOTICE */
+.notice{background:#e8f0f9;border:1px solid #88b4d8;border-radius:16px;padding:14px 16px;color:#1a3a5a;line-height:1.5;font-size:1rem}
+.notice strong{color:#163050}
 
-.btn-home{
-background:var(--accent);
-color:#fff;
-}
+/* BOTÕES */
+.btn{border:none;border-radius:16px;padding:14px 20px;font:inherit;font-weight:700;font-size:1rem;cursor:pointer;transition:.18s ease;box-shadow:0 8px 18px rgba(0,0,0,.08);text-decoration:none;display:inline-block}
+.btn:hover{transform:translateY(-1px)}
+.btn-principal{background:var(--accent);color:#fff}
+.btn-gold{background:var(--gold);color:#2a1d0d}
+.btn-verde{background:var(--verde);color:#fff}
+.btn-back{background:#e0d8cc;color:#3d2a18}
+.btn-danger{background:var(--danger);color:#fff}
+.acoes{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:16px}
 
-@media (max-width:640px){
-.box{
-padding:28px 18px;
-border-radius:20px;
-}
-
-.actions{
-flex-direction:column;
-}
-
-.btn{
-width:100%;
-}
+@media(max-width:760px){
+  .topo{flex-direction:column;gap:14px}
+  .fichas-grid,.mapa-grid{grid-template-columns:1fr 1fr}
+  .nav-camadas{grid-template-columns:repeat(3,1fr)}
+  .acoes{flex-direction:column}
+  .btn{width:100%}
 }
 </style>
 </head>
-
 <body>
+<div class="container">
 
-<main class="box">
+  <!-- TOPO -->
+  <div class="topo">
+    <div class="topo-badge">I</div>
+    <div class="topo-texto">
+      <div class="camada">Lapidar Pensante · Camada 3 de 6</div>
+      <h1>ID — Identificação Editorial</h1>
+      <p>A terceira camada do Lapidar Pensante identifica a natureza profunda da obra: gênero, forma, tom, voz narrativa, presença de personagens, ritmo e necessidades editoriais. O ID direciona o material para os setores corretos do Lapidar.</p>
+    </div>
+  </div>
 
-<div class="tag">Lapidar Pensante — Camada 3</div>
+  <!-- PROGRESSO -->
+  <div class="card" style="padding:18px">
+    <div class="progresso-barra">
+      <div class="prog-etapa feita">AN</div>
+      <div class="prog-etapa feita">DRO</div>
+      <div class="prog-etapa atual">ID</div>
+      <div class="prog-etapa">NAS</div>
+      <div class="prog-etapa">FISA</div>
+      <div class="prog-etapa">FIIISAA</div>
+    </div>
+    <p style="margin:0;font-size:.95rem;color:var(--muted);text-align:center">Você está na camada 3 — Identificação Editorial Profunda.</p>
+  </div>
 
-<h1>ID</h1>
+  <!-- O QUE O ID FAZ -->
+  <div class="card">
+    <h2>O que o ID identifica</h2>
+    <p>O ID não edita — ele lê com precisão editorial. Após o desbaste do DRO, o ID entra com perguntas mais profundas sobre a natureza da obra.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px">
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center">
+        <div style="font-size:1.6rem;margin-bottom:6px">🎭</div>
+        <strong style="display:block;margin-bottom:4px;color:#163050">Gênero e forma</strong>
+        <span style="font-size:.92rem;color:var(--muted)">Conto, romance, crônica, poesia, ensaio, híbrido — e a forma dentro do gênero</span>
+      </div>
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center">
+        <div style="font-size:1.6rem;margin-bottom:6px">🧭</div>
+        <strong style="display:block;margin-bottom:4px;color:#163050">Voz e tom</strong>
+        <span style="font-size:.92rem;color:var(--muted)">Narrador, pessoa, tom emocional predominante e consistência da voz ao longo da obra</span>
+      </div>
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center">
+        <div style="font-size:1.6rem;margin-bottom:6px">🗺️</div>
+        <strong style="display:block;margin-bottom:4px;color:#163050">Direcionamento</strong>
+        <span style="font-size:.92rem;color:var(--muted)">Para quais setores do Lapidar e quais camadas seguintes a obra deve ser encaminhada</span>
+      </div>
+    </div>
+  </div>
 
-<p>
-Camada de identificação editorial profunda. O ID reconhece a natureza da obra
-e direciona o material para os setores mais adequados do Lapidar.
-</p>
+  <!-- ENTRADA -->
+  <div class="card">
+    <h2>Cole o texto para identificação editorial</h2>
+    <p>Se você passou pelo DRO, cole aqui o texto reorganizado. O ID fará a leitura profunda de identidade editorial da obra.</p>
+    <label class="campo-label" for="textoEntrada">Texto da obra (após DRO)</label>
+    <textarea class="editor" id="textoEntrada" placeholder="Cole aqui o texto reorganizado pelo DRO...
 
-<p>
-Nesta camada, o sistema poderá identificar gênero, forma, tom, personagens,
-narrador, ritmo, necessidades editoriais e possíveis caminhos de desenvolvimento.
-</p>
+O ID irá identificar: gênero, forma, tom, voz narrativa, personagens, ritmo, necessidades editoriais e os setores mais adequados do Lapidar para esta obra."></textarea>
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-principal" onclick="executarID()">🧭 Executar identificação editorial</button>
+      <button class="btn btn-back" onclick="document.getElementById('textoEntrada').value=''">✕ Limpar</button>
+    </div>
+  </div>
 
-<div class="note">
-Placeholder ativo da camada ID. Esta página reserva a terceira camada do Lapidar Pensante
-sem pesar o sistema. A identificação editorial profunda será desenvolvida por etapas.
+  <!-- RESULTADO -->
+  <div class="resultado-area" id="resultadoArea">
+
+    <!-- FICHAS -->
+    <div class="card">
+      <h2>Identidade editorial da obra</h2>
+      <div class="fichas-grid">
+        <div class="ficha">
+          <div class="flabel">Gênero</div>
+          <div class="fval" id="idGenero">—</div>
+          <div class="fbarra"><div class="ffill" id="idGeneroBarra" style="width:0%"></div></div>
+        </div>
+        <div class="ficha">
+          <div class="flabel">Forma</div>
+          <div class="fval" id="idForma">—</div>
+          <div class="fbarra"><div class="ffill" id="idFormaBarra" style="width:0%;background:linear-gradient(90deg,#7a5ab8,#a888e0)"></div></div>
+        </div>
+        <div class="ficha">
+          <div class="flabel">Voz narrativa</div>
+          <div class="fval" id="idVoz">—</div>
+          <div class="fbarra"><div class="ffill" id="idVozBarra" style="width:0%;background:linear-gradient(90deg,#d9a441,#b87820)"></div></div>
+        </div>
+        <div class="ficha">
+          <div class="flabel">Tom emocional</div>
+          <div class="fval" id="idTom">—</div>
+          <div class="fbarra"><div class="ffill" id="idTomBarra" style="width:0%;background:linear-gradient(90deg,#7a3a60,#a86080)"></div></div>
+        </div>
+        <div class="ficha">
+          <div class="flabel">Ritmo narrativo</div>
+          <div class="fval" id="idRitmo">—</div>
+          <div class="fbarra"><div class="ffill" id="idRitmoBarra" style="width:0%;background:linear-gradient(90deg,#3a7a5a,#60b088)"></div></div>
+        </div>
+        <div class="ficha">
+          <div class="flabel">Maturidade editorial</div>
+          <div class="fval" id="idMaturidade">—</div>
+          <div class="fbarra"><div class="ffill" id="idMaturidadeBarra" style="width:0%;background:linear-gradient(90deg,#5a4a20,#c09040)"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAPA DE ELEMENTOS -->
+    <div class="card">
+      <h2>Mapa de elementos identificados</h2>
+      <div class="mapa-grid" id="mapaGrid"></div>
+    </div>
+
+    <!-- DIRECIONAMENTOS -->
+    <div class="card">
+      <h2>Direcionamentos editoriais do ID</h2>
+      <p>Com base na identificação profunda, o ID aponta os caminhos recomendados para esta obra dentro do Lapidar:</p>
+      <div class="dir-lista" id="dirLista"></div>
+    </div>
+
+    <!-- TEXTO PREPARADO PARA NAS -->
+    <div class="card">
+      <h2>Texto preparado para NAS</h2>
+      <p>O texto abaixo recebeu a ficha de identidade editorial e está pronto para entrar na camada NAS — Núcleo de Aprofundamento e Síntese.</p>
+      <label class="campo-label">Texto identificado — pronto para NAS</label>
+      <textarea class="texto-result" id="textoResult" readonly></textarea>
+      <div class="acoes">
+        <button class="btn btn-verde" onclick="copiarTexto()">📋 Copiar texto</button>
+        <button class="btn btn-gold" onclick="window.location.href='nas.html'">→ Avançar para NAS</button>
+        <button class="btn btn-back" onclick="reiniciar()">↺ Reanalisar</button>
+      </div>
+    </div>
+
+    <!-- NAVEGAÇÃO -->
+    <div class="card">
+      <h2>Navegação entre camadas</h2>
+      <div class="nav-camadas">
+        <a class="nc feita" href="an.html">AN<br><small>Análise</small></a>
+        <a class="nc feita" href="dro.html">DRO<br><small>Desbaste</small></a>
+        <a class="nc atual" href="id.html">ID<br><small>Identificação</small></a>
+        <a class="nc" href="#">NAS<br><small>Núcleo</small></a>
+        <a class="nc" href="fisa.html">FISA<br><small>Aceleração</small></a>
+        <a class="nc" href="fiiisaa.html">FIIISAA<br><small>Inicialização</small></a>
+      </div>
+      <div class="notice">
+        <strong>Próxima etapa:</strong> o texto com ficha de identidade editorial segue para <strong>NAS</strong> — Núcleo de Aprofundamento e Síntese, que trabalhará sobre os elementos identificados aqui.
+      </div>
+    </div>
+
+  </div><!-- fim resultado -->
+
+  <!-- NAVEGAÇÃO SEMPRE VISÍVEL -->
+  <div class="card" style="text-align:center">
+    <div class="acoes">
+      <button class="btn btn-back" onclick="window.location.href='lapidar_pensante.html'">← Lapidar Pensante</button>
+      <button class="btn btn-back" onclick="window.location.href='lapidar_pensante_intro.html'">Explicação das camadas</button>
+      <button class="btn btn-back" onclick="window.location.href='lapidar.html'">Lapidar</button>
+      <button class="btn btn-back" onclick="window.location.href='pagina_respiro_celeiro.html'">← Respiro</button>
+      <button class="btn btn-danger" onclick="window.location.href='index.html'">Sair</button>
+    </div>
+  </div>
+
 </div>
 
-<div class="actions">
+<script>
+function detectarGenero(texto, blocos) {
+  const avg = blocos.map(b=>b.join?' '.join(b):b).reduce((s,b)=>s+b.length,0)/Math.max(1,blocos.length)
+  const temDialogo = /^[—\-"«]/m.test(texto)
+  const temVerso = blocos.some&&blocos.some(b=>Array.isArray(b)&&b.length>=2&&b.reduce((s,l)=>s+l.length,0)/b.length<50)
+  const temEnsaio = /\bportanto\b|\bcontudo\b|\bconclui-se\b|\bneste sentido\b|\bpor conseguinte\b/i.test(texto)
+  const temCarta = /prezad[oa]|caro\s|querido\s|atenciosamente/i.test(texto)
+  const palavras = texto.split(/\s+/).filter(Boolean).length
 
-<button class="btn btn-back"
-onclick="window.location.href='lapidar_pensante.html'">
-Retornar ao Lapidar Pensante
-</button>
+  if (temVerso && !temDialogo) return {genero:'Poesia', conf:88}
+  if (temCarta) return {genero:'Literatura epistolar', conf:82}
+  if (temEnsaio) return {genero:'Ensaio / não ficção', conf:78}
+  if (palavras > 8000) return {genero:'Romance', conf:80}
+  if (palavras > 2000 && temDialogo) return {genero:'Conto / novela', conf:76}
+  if (palavras < 800) return {genero:'Conto curto / crônica', conf:72}
+  return {genero:'Prosa narrativa', conf:68}
+}
 
-<button class="btn btn-home"
-onclick="window.location.href='lapidar_pensante_intro.html'">
-Voltar à explicação
-</button>
+function detectarForma(texto, genero) {
+  if (genero.includes('Poesia')) {
+    if (/\d{1,2}\s*verso|soneto|quadra|terceto/i.test(texto)) return {forma:'Soneto / forma fixa', conf:80}
+    if (texto.split('\n').filter(l=>l.trim()).length > 40) return {forma:'Poema longo / sequência', conf:74}
+    return {forma:'Poema livre', conf:70}
+  }
+  if (/capítulo|cap\./i.test(texto)) return {forma:'Estrutura em capítulos', conf:85}
+  if (/parte\s+[ivxlIVXL\d]/i.test(texto)) return {forma:'Estrutura em partes', conf:80}
+  if (texto.split(/\n\s*\n/).length > 8) return {forma:'Blocos narrativos', conf:72}
+  return {forma:'Texto corrido', conf:60}
+}
 
-</div>
+function detectarRitmo(texto) {
+  const frases = texto.split(/[.!?]+/).filter(f=>f.trim().length>10)
+  const avgFrase = frases.reduce((s,f)=>s+f.split(/\s+/).length,0)/Math.max(1,frases.length)
+  if (avgFrase < 10) return {ritmo:'Rápido / fragmentado', conf:80}
+  if (avgFrase < 18) return {ritmo:'Médio / equilibrado', conf:82}
+  if (avgFrase < 28) return {ritmo:'Lento / contemplativo', conf:78}
+  return {ritmo:'Denso / dissertativo', conf:72}
+}
 
-</main>
+function detectarMaturidade(texto, palavras) {
+  const variedade = new Set(texto.toLowerCase().split(/\s+/).filter(w=>w.length>4)).size
+  const ratio = variedade / Math.max(1, palavras)
+  if (ratio > 0.55) return {mat:'Alta — vocabulário rico', conf:82}
+  if (ratio > 0.4) return {mat:'Média — em desenvolvimento', conf:75}
+  return {mat:'Inicial — ainda se forma', conf:65}
+}
 
+function detectarElementos(texto) {
+  return [
+    {icone:'👤', nome:'Personagens', presente:/[A-ZÁÉÍÓÚ][a-záéíóú]{2,}\s+(disse|perguntou|respondeu|pensou|olhou|foi|estava)/i.test(texto), desc:'Com ação/fala'},
+    {icone:'💬', nome:'Diálogos', presente:/^[—\-"«]/m.test(texto), desc:'Falas identificadas'},
+    {icone:'⏱️', nome:'Tempo narrativo', presente:/ontem|hoje|amanhã|então|depois|antes|naquela|anos/i.test(texto), desc:'Referências temporais'},
+    {icone:'📍', nome:'Espaço/lugar', presente:/rua|cidade|campo|casa|quarto|mar|rio|floresta|jardim/i.test(texto), desc:'Cenário identificado'},
+    {icone:'⚡', nome:'Conflito', presente:/mas\s|porém|contudo|entretanto|apesar|conflito|luta|disputa/i.test(texto), desc:'Tensão ou oposição'},
+    {icone:'🔄', nome:'Arco narrativo', presente:/começou|terminou|mudou|transformou|aprendeu|descobriu/i.test(texto), desc:'Movimento da trama'},
+    {icone:'🌡️', nome:'Tensão emocional', presente:/medo|amor|ódio|tristeza|alegria|angústia|saudade|dor/i.test(texto), desc:'Carga emocional'},
+    {icone:'🎨', nome:'Descrição sensorial', presente:/cheiro|perfume|cor|luz|sombra|som|silêncio|toque|sabor/i.test(texto), desc:'Elementos sensoriais'},
+    {icone:'💭', nome:'Reflexão / interior', presente:/penso|sinto|lembro|imagino|sonho|duvido|questiono/i.test(texto), desc:'Voz interior'},
+  ]
+}
+
+function gerarDirecionamentos(genero, forma, voz, tom, ritmo, palavras, elementos) {
+  const dirs = []
+  if (genero.includes('Poesia')) dirs.push({force:'forte', icone:'📐', titulo:'Encaminhar ao Castor — Diagramador de Poesia', desc:'Obra poética identificada. O Castor é o módulo especializado em diagramação, métrica e layout de poesia no Lapidar.'})
+  if (genero.includes('Romance') || palavras > 5000) dirs.push({force:'forte', icone:'📦', titulo:'Percurso completo das 6 camadas', desc:'Obra extensa exige o percurso integral. Não pule etapas — cada camada do Lapidar Pensante contribui para a maturação.'})
+  if (forma.includes('capítulo')) dirs.push({force:'forte', icone:'📖', titulo:'Encaminhar ao Pólux Paginado', desc:'Estrutura em capítulos identificada. O Pólux Paginado (Dias Gramador de Livros) fará a diagramação editorial por capítulo.'})
+  if (!elementos.some(e=>e.nome==='Conflito'&&e.presente)) dirs.push({force:'medio', icone:'⚡', titulo:'Ausência de conflito aparente', desc:'A obra pode ganhar com a introdução de tensão narrativa. Verifique se há oposição de forças ou dilema do protagonista.'})
+  if (ritmo.includes('Denso')) dirs.push({force:'medio', icone:'✂️', titulo:'Ritmo denso — considerar DRO adicional', desc:'Frases muito longas podem dificultar a leitura. Considere retornar ao DRO para um desbaste de ritmo antes de avançar.'})
+  if (palavras < 500) dirs.push({force:'medio', icone:'📏', titulo:'Obra muito curta', desc:'Com menos de 500 palavras, o ID opera com precisão limitada. Considere expandir o texto antes de continuar o percurso.'})
+  if (voz.includes('mista') || voz.includes('Indefinida')) dirs.push({force:'medio', icone:'🎙️', titulo:'Voz narrativa indefinida', desc:'A obra alterna vozes sem padrão claro. O NAS ajudará a definir e sustentar a voz narrativa ao longo do texto.'})
+  if (dirs.length === 0) dirs.push({force:'leve', icone:'✅', titulo:'Identidade editorial clara', desc:'O ID não identificou inconsistências. A obra segue para NAS em boas condições de aprofundamento.'})
+  return dirs
+}
+
+function executarID() {
+  const entrada = document.getElementById('textoEntrada').value.trim()
+  if (!entrada) { alert('Cole o texto da obra antes de executar o ID.'); return }
+
+  const linhas = entrada.split('\n').filter(l=>l.trim())
+  const blocos = entrada.split(/\n\s*\n/).map(b=>b.split('\n').filter(l=>l.trim())).filter(b=>b.length)
+  const palavras = entrada.split(/\s+/).filter(Boolean).length
+
+  // Recupera dados do AN se disponível
+  const anTipo = sessionStorage.getItem('an_tipo') || ''
+  const anOrg  = sessionStorage.getItem('an_org') || ''
+
+  const {genero, conf:cg} = detectarGenero(entrada, blocos)
+  const {forma, conf:cf}  = detectarForma(entrada, genero)
+  const {ritmo, conf:cr}  = detectarRitmo(entrada)
+  const {mat, conf:cm}    = detectarMaturidade(entrada, palavras)
+
+  // Voz e tom (reutiliza lógica do AN)
+  const eu  = (entrada.match(/\beu\b|\bme\b|\bmim\b/gi)||[]).length
+  const ele  = (entrada.match(/\bele\b|\bela\b|\beles\b/gi)||[]).length
+  const voz  = eu > ele ? {v:'Primeira pessoa', c:Math.min(90,Math.round(eu/(eu+ele+1)*100))} : ele > eu ? {v:'Terceira pessoa', c:Math.min(88,Math.round(ele/(eu+ele+1)*100))} : {v:'Voz mista / indefinida', c:55}
+  const melanc = (entrada.match(/solidão|perda|saudade|luto|silêncio|ausência|melancolia/gi)||[]).length
+  const lirico = (entrada.match(/luz|beleza|amor|flor|céu|sonho|encanto/gi)||[]).length
+  const tenso  = (entrada.match(/medo|ameaça|perigo|conflito|raiva|violência/gi)||[]).length
+  const maxTom = Math.max(melanc,lirico,tenso,1)
+  const tom = melanc===maxTom?{t:'Melancólico / elegíaco',c:Math.min(85,Math.round(melanc/maxTom*80))} : lirico===maxTom?{t:'Lírico / contemplativo',c:Math.min(85,Math.round(lirico/maxTom*80))} : {t:'Tenso / dramático',c:Math.min(85,Math.round(tenso/maxTom*80))}
+
+  const elementos = detectarElementos(entrada)
+  const dirs = gerarDirecionamentos(genero, forma, voz.v, tom.t, ritmo, palavras, elementos)
+
+  // Preenche fichas
+  document.getElementById('idGenero').textContent = genero
+  document.getElementById('idGeneroBarra').style.width = cg+'%'
+  document.getElementById('idForma').textContent = forma
+  document.getElementById('idFormaBarra').style.width = cf+'%'
+  document.getElementById('idVoz').textContent = voz.v
+  document.getElementById('idVozBarra').style.width = voz.c+'%'
+  document.getElementById('idTom').textContent = tom.t
+  document.getElementById('idTomBarra').style.width = tom.c+'%'
+  document.getElementById('idRitmo').textContent = ritmo
+  document.getElementById('idRitmoBarra').style.width = cr+'%'
+  document.getElementById('idMaturidade').textContent = mat
+  document.getElementById('idMaturidadeBarra').style.width = cm+'%'
+
+  // Mapa de elementos
+  const mg = document.getElementById('mapaGrid')
+  mg.innerHTML = ''
+  elementos.forEach(e => {
+    const d = document.createElement('div')
+    d.className = 'mapa-item' + (e.presente?' presente':'')
+    d.innerHTML = `<div class="mi">${e.icone}</div><div class="mn">${e.nome}</div><div class="mv">${e.presente?'✔ Identificado':'Não detectado'}</div>`
+    mg.appendChild(d)
+  })
+
+  // Direcionamentos
+  const dl = document.getElementById('dirLista')
+  dl.innerHTML = ''
+  dirs.forEach(d => {
+    const div = document.createElement('div')
+    div.className = `dir-item ${d.force}`
+    div.innerHTML = `<div class="dir-icone">${d.icone}</div><div class="dir-texto"><strong>${d.titulo}</strong>${d.desc}</div>`
+    dl.appendChild(div)
+  })
+
+  // Texto saída
+  document.getElementById('textoResult').value = entrada
+
+  // Salva para NAS
+  sessionStorage.setItem('id_texto_result', entrada)
+  sessionStorage.setItem('id_genero', genero)
+  sessionStorage.setItem('id_forma', forma)
+  sessionStorage.setItem('id_voz', voz.v)
+  sessionStorage.setItem('id_tom', tom.t)
+  sessionStorage.setItem('id_ritmo', ritmo)
+  sessionStorage.setItem('id_maturidade', mat)
+
+  document.getElementById('resultadoArea').classList.add('vis')
+  document.getElementById('resultadoArea').scrollIntoView({behavior:'smooth'})
+}
+
+function copiarTexto() {
+  const t = document.getElementById('textoResult').value
+  navigator.clipboard.writeText(t).then(()=>alert('Texto copiado!')).catch(()=>{document.getElementById('textoResult').select();document.execCommand('copy');alert('Texto copiado!')})
+}
+
+function reiniciar() {
+  document.getElementById('textoEntrada').value = ''
+  document.getElementById('resultadoArea').classList.remove('vis')
+  window.scrollTo({top:0,behavior:'smooth'})
+}
+
+// Carrega texto do DRO se disponível
+const droTexto = sessionStorage.getItem('dro_texto_result')
+if (droTexto && !document.getElementById('textoEntrada').value) {
+  document.getElementById('textoEntrada').value = droTexto
+}
+</script>
 </body>
 </html>
