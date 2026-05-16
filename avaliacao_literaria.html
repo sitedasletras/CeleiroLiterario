@@ -1,236 +1,334 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Avaliação Literária — Celeiro Literário</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avaliação Literária — Lapidar | Celeiro Literário</title>
 <style>
 :root{
-  --bg:#0f110a;--surface:#141710;--card:#191c14;--line:#252a1c;
-  --txt:#f0f0e8;--muted:#8a9080;--soft:#c8ccb8;
-  --verde:#7af56a;--verde2:#4af590;--ouro:#f5d46a;--rosa:#f5a06a;
-  --shadow:0 16px 48px rgba(0,0,0,.5);--radius:22px;
+  --bg:#ece8de;--card:#f7f4ee;--ink:#1f1f1b;--muted:#6f6a62;
+  --line:#ddd6c9;--roxo:#5f4a9a;--roxo2:#7a60b8;
+  --gold:#d9a441;--verde:#2f7a59;--danger:#a63d40;
+  --shadow:0 12px 28px rgba(0,0,0,.10);--radius:24px;
 }
-*{box-sizing:border-box;margin:0;padding:0;}
-html,body{min-height:100vh;background:var(--bg);color:var(--txt);font-family:'DM Sans',system-ui,sans-serif;}
-.topbar{position:sticky;top:0;z-index:30;background:rgba(15,17,10,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-.brand{display:flex;align-items:center;gap:12px;}
-.brand-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#4af590,#7af56a);display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 16px rgba(122,245,106,.3);}
-.brand-text h1{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--txt);line-height:1;}
-.brand-text p{font-size:.8rem;color:var(--muted);margin-top:2px;}
-.top-btns{display:flex;gap:8px;flex-wrap:wrap;}
-.btn{border:none;border-radius:11px;padding:9px 15px;font:600 .86rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
-.btn:hover{transform:translateY(-1px);}
-.btn-verde{background:linear-gradient(135deg,#4af590,#7af56a);color:#0a2010;}
-.btn-amber{background:#d4a44c;color:#1a1000;}
-.btn-red{background:#d44c4c;color:#fff;}
-.btn-ghost{background:rgba(255,255,255,.07);color:var(--soft);border:1px solid var(--line);}
-.wrap{max-width:1100px;margin:0 auto;padding:18px;display:flex;flex-direction:column;gap:16px;}
-.hero{background:linear-gradient(135deg,rgba(122,245,106,.08),rgba(74,245,144,.04));border:1px solid rgba(122,245,106,.15);border-radius:var(--radius);padding:28px;}
-.hero h2{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:8px;}
-.hero p{color:var(--muted);font-size:.95rem;line-height:1.55;}
-.box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;}
-.box h3{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:14px;}
-.field{margin-bottom:12px;}
-.field label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;}
-.input,.select,.textarea{width:100%;border:1.5px solid var(--line);border-radius:11px;background:var(--surface);color:var(--txt);padding:10px 12px;font:inherit;font-size:.93rem;outline:none;transition:border-color .2s;}
-.textarea{min-height:200px;resize:vertical;line-height:1.55;}
-.input:focus,.select:focus,.textarea:focus{border-color:var(--verde);}
-.select option{background:var(--surface);}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{min-height:100vh;font-family:Georgia,"Times New Roman",serif;background:var(--bg);color:var(--ink);padding:28px 16px}
+.container{max-width:980px;margin:auto;display:flex;flex-direction:column;gap:20px}
 
-/* DIMENSÕES AVALIAÇÃO */
-.dims-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
-.dim-card{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:14px;transition:.2s;}
-.dim-card.ativa{border-color:var(--verde);}
-.dim-header{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
-.dim-emoji{font-size:1.2rem;}
-.dim-nome{font-weight:700;font-size:.92rem;}
-.dim-desc{font-size:.8rem;color:var(--muted);line-height:1.4;margin-bottom:8px;}
-.dim-nota{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--ouro);}
-.dim-justif{font-size:.78rem;color:var(--soft);font-style:italic;margin-top:6px;min-height:30px;}
-.dim-bar-bg{height:5px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden;margin-top:8px;}
-.dim-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--verde),var(--verde2));width:0%;transition:width .6s ease;}
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(10,8,22,.96);border-bottom:2px solid var(--gold);backdrop-filter:blur(8px);margin:-28px -16px 0;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.marca{font-family:Georgia,serif;color:#f4dc88;font-size:13px;font-weight:700}
+.marca small{display:block;font-size:10px;color:rgba(244,220,136,.5);font-family:Arial,sans-serif}
+.tnav{display:flex;gap:5px;flex-wrap:wrap}
+.tnav a{font-family:Arial,sans-serif;font-size:11px;color:#c8c0ae;text-decoration:none;padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.1);transition:.15s}
+.tnav a:hover{color:#f4dc88;border-color:var(--gold);background:rgba(217,164,65,.12)}
 
-.resultado{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;display:none;}
-.resultado.vis{display:block;}
-.nota-wrap{display:flex;align-items:center;gap:20px;margin-bottom:16px;flex-wrap:wrap;}
-.nota-geral{font-family:'Playfair Display',serif;font-size:4rem;color:var(--ouro);line-height:1;text-shadow:0 0 30px rgba(245,212,106,.3);}
-.nota-info{flex:1;}
-.nota-info h4{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:4px;}
-.nota-info p{color:var(--muted);font-size:.88rem;}
-.parecer{background:rgba(122,245,106,.06);border:1px solid rgba(122,245,106,.15);border-radius:14px;padding:16px;margin-top:12px;font-size:.92rem;color:var(--soft);line-height:1.7;white-space:pre-wrap;}
-.ia-spin{text-align:center;color:var(--verde);font-style:italic;font-size:.9rem;padding:14px;animation:pulse 1.5s infinite;display:none;}
-@keyframes pulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+/* TOPO */
+.topo{background:linear-gradient(135deg,#2a1060,#4a2880);border-radius:var(--radius);padding:28px;color:white;display:flex;align-items:flex-start;gap:20px}
+.topo-badge{width:72px;height:72px;border-radius:18px;background:linear-gradient(135deg,#7a60b8,#4a2880);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.topo-texto h1{margin:0 0 6px;font-size:clamp(1.8rem,4vw,2.8rem);color:#c8b0f8}
+.topo-texto p{margin:0;color:rgba(255,255,255,.8);font-size:1rem;line-height:1.55}
 
-.links-aval{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;}
-.link-aval{display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);text-decoration:none;color:var(--txt);font-size:.88rem;font-weight:600;transition:.14s;}
-.link-aval:hover{transform:translateY(-1px);border-color:var(--verde);}
+/* CARD */
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow);padding:26px}
+.card h2{margin:0 0 10px;font-size:1.5rem;color:#2a1060}
+.card p{font-size:15px;line-height:1.68;color:#3a4557;margin-bottom:12px}
+.card p:last-child{margin-bottom:0}
 
-@media(max-width:640px){.row2{grid-template-columns:1fr;}.dims-grid{grid-template-columns:1fr;}.nota-wrap{flex-direction:column;}}
+/* EDITOR */
+.campo-label{display:block;font-weight:700;font-size:.95rem;color:#2a1060;margin-bottom:8px}
+.editor{width:100%;min-height:220px;border:2px solid #cfc6b8;border-radius:16px;padding:16px;font-family:Georgia,"Times New Roman",serif;font-size:1.05rem;line-height:1.5;background:#fff;color:var(--ink);outline:none;resize:vertical;transition:border-color .2s}
+.editor:focus{border-color:var(--roxo)}
+
+/* RESULTADO */
+.resultado-area{display:none}
+.resultado-area.vis{display:block}
+
+/* RAIO-X */
+.raiox-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.dim{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.dim h4{font-size:1rem;color:#2a1060;margin:0 0 6px}
+.dim .nota-num{font-size:2rem;font-weight:900;color:var(--roxo);font-family:Georgia,serif}
+.dim .nota-label{font-family:Arial,sans-serif;font-size:.78rem;color:var(--muted);margin-left:6px}
+.dim p{font-size:.9rem;color:#4a5568;line-height:1.5;margin-top:8px;margin-bottom:0}
+.barra-wrap{height:8px;background:#e8e0f0;border-radius:999px;margin-top:10px;overflow:hidden}
+.barra-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--roxo),var(--roxo2));transition:width .6s ease}
+
+/* NOTA GERAL */
+.nota-geral{background:linear-gradient(135deg,#2a1060,#4a2880);border-radius:18px;padding:22px;color:white;text-align:center}
+.nota-geral .ng-num{font-size:4rem;font-weight:900;color:#c8b0f8;font-family:Georgia,serif;line-height:1}
+.nota-geral .ng-label{font-size:1rem;color:rgba(255,255,255,.7);margin-top:6px}
+.nota-geral .ng-desc{font-size:.95rem;color:rgba(255,255,255,.85);margin-top:10px;line-height:1.55}
+
+/* PARECER */
+.parecer-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;font-size:15px;line-height:1.72;color:#1f1f1b;white-space:pre-wrap;font-family:Georgia,serif}
+
+/* ENCAMINHAMENTOS */
+.enc-lista{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.enc-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:14px;text-decoration:none;color:inherit;transition:.15s}
+.enc-item:hover{border-color:var(--roxo);background:#f8f4ff}
+.enc-ic{font-size:1.2rem}
+.enc-txt strong{display:block;color:#2a1060;font-size:.95rem}
+.enc-txt span{font-size:.85rem;color:var(--muted)}
+
+/* PROTOCOLO */
+.protocolo-box{background:#f0ebff;border:1px solid #c0a8e8;border-radius:14px;padding:14px;font-family:Arial,sans-serif;font-size:13px;color:#2a1060;text-align:center}
+.protocolo-box .pnum{font-family:'Courier New',monospace;font-size:14px;font-weight:700;background:#2a1060;color:#c8b0f8;padding:6px 14px;border-radius:999px;display:inline-block;margin-top:8px}
+
+/* BOTÕES */
+.btn{border:none;border-radius:16px;padding:13px 18px;font:inherit;font-weight:700;font-size:.95rem;cursor:pointer;transition:.18s ease;box-shadow:0 6px 16px rgba(0,0,0,.1);text-decoration:none;display:inline-block}
+.btn:hover{transform:translateY(-1px)}
+.btn-roxo{background:var(--roxo);color:#fff}
+.btn-gold{background:var(--gold);color:#2a1d0d}
+.btn-back{background:#e0d8cc;color:#3d2a18}
+.btn-danger{background:var(--danger);color:#fff}
+.acoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+
+footer{background:#0a0816;color:#c8c0ae;border-top:4px solid var(--gold);padding:26px 20px;text-align:center;margin:-28px -16px 0}
+footer strong{color:#f4dc88}
+footer p{font-size:13px;line-height:1.8}
+
+@media(max-width:760px){
+  .topo{flex-direction:column;gap:14px}
+  .raiox-grid{grid-template-columns:1fr}
+  .acoes{flex-direction:column}
+  .btn{width:100%;text-align:center}
+}
 </style>
 </head>
 <body>
-<header class="topbar">
-  <div class="brand">
-    <div class="brand-icon">📗</div>
-    <div class="brand-text">
+<div class="container">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="marca">Instituto Cultural Celeiro Literário<small>AVALIAÇÃO LITERÁRIA · LAPIDAR</small></div>
+    <nav class="tnav">
+      <a href="lapidar.html">← Lapidar</a>
+      <a href="id.html">ID</a>
+      <a href="dro.html">DRO</a>
+      <a href="an.html">AN</a>
+      <a href="cicile.html">CICILE</a>
+      <a href="pagina_respiro_celeiro.html">← Respiro</a>
+    </nav>
+  </div>
+
+  <!-- TOPO -->
+  <div class="topo">
+    <div class="topo-badge">📋</div>
+    <div class="topo-texto">
       <h1>Avaliação Literária</h1>
-      <p>Celeiro Literário · Parecer técnico editorial</p>
+      <p>Parecer técnico, relatório crítico por dimensões e Raio-X de progressão da obra. Cole o texto e receba uma avaliação estruturada com notas por dimensão editorial, nota geral, parecer crítico e encaminhamentos dentro do Lapidar.</p>
     </div>
   </div>
-  <div class="top-btns">
-    <button class="btn btn-verde" onclick="avaliar()">✦ Avaliar</button>
-    <a class="btn btn-amber" href="lapidar.html">← Lapidar</a>
-    <a class="btn btn-red"   href="pagina_respiro_celeiro.html">Sair</a>
-  </div>
-</header>
 
-<div class="wrap">
-  <div class="hero">
-    <h2>Avaliação Literária da Obra</h2>
-    <p>Parecer técnico editorial completo: análise de estrutura, voz autoral, coerência interna, potencial de publicação e maturidade da obra. IA interna do Celeiro + síntese pela API Anthropic.</p>
+  <!-- ENTRADA -->
+  <div class="card">
+    <h2>Cole o texto para avaliação</h2>
+    <p>A avaliação analisa cinco dimensões editoriais: estrutura, linguagem, personagens/vozes, ritmo e originalidade. O parecer final indica o nível de maturidade editorial e os próximos passos recomendados.</p>
+    <label class="campo-label">Texto da obra</label>
+    <textarea class="editor" id="textoEntrada" placeholder="Cole aqui o texto que deseja avaliar...
+
+A Avaliação Literária gerará:
+— Notas por dimensão (0 a 10)
+— Nota geral ponderada
+— Parecer crítico editorial
+— Raio-X de progressão
+— Encaminhamentos para o Lapidar"></textarea>
+    <div class="acoes">
+      <button class="btn btn-roxo" onclick="executarAvaliacao()">📋 Gerar avaliação literária</button>
+      <button class="btn btn-back" onclick="document.getElementById('textoEntrada').value=''">✕ Limpar</button>
+    </div>
   </div>
 
-  <div class="box">
-    <h3>Dados da obra</h3>
-    <div class="row2">
-      <div class="field"><label>Título</label><input class="input" id="titulo" type="text" placeholder="Título da obra"></div>
-      <div class="field"><label>Tipo</label>
-        <select class="select" id="tipo">
-          <option value="">Selecione...</option>
-          <option value="romance">Romance</option>
-          <option value="conto">Conto</option>
-          <option value="poesia">Poesia</option>
-          <option value="cronica">Crônica</option>
-          <option value="novela">Novela</option>
-          <option value="infantil">Infantil/Juvenil</option>
-          <option value="memorias">Memórias</option>
-          <option value="ensaio">Ensaio</option>
-          <option value="cordel">Cordel</option>
-        </select>
+  <!-- RESULTADO -->
+  <div class="resultado-area" id="resultadoArea">
+
+    <!-- NOTA GERAL -->
+    <div class="card">
+      <h2>Resultado geral</h2>
+      <div style="display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:center">
+        <div class="nota-geral">
+          <div class="ng-num" id="notaGeral">—</div>
+          <div class="ng-label">nota geral / 10</div>
+          <div class="ng-desc" id="nivelDesc">—</div>
+        </div>
+        <div>
+          <p id="resumoAvaliacao" style="font-size:16px;line-height:1.7;color:#2a1060;font-style:italic"></p>
+          <div class="protocolo-box" style="margin-top:12px">
+            Protocolo de avaliação
+            <div class="pnum" id="numProtocolo">AVAL-000000</div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="field"><label>Texto da obra</label>
-      <textarea class="textarea" id="texto" placeholder="Cole aqui o trecho ou texto completo..."></textarea>
-    </div>
-    <button class="btn btn-verde" style="width:100%;padding:14px;margin-top:4px;" onclick="avaliar()">✦ Gerar Avaliação Literária</button>
-  </div>
 
-  <div class="box">
-    <h3>8 Dimensões Literárias</h3>
-    <div class="dims-grid" id="dimsGrid"></div>
-  </div>
-
-  <div class="resultado" id="resultadoBox">
-    <div class="nota-wrap">
-      <div class="nota-geral" id="notaGeral">—</div>
-      <div class="nota-info">
-        <h4 id="notaClasse">Aguardando avaliação</h4>
-        <p id="notaDesc"></p>
-      </div>
+    <!-- RAIO-X POR DIMENSÃO -->
+    <div class="card">
+      <h2>Raio-X de progressão — 5 dimensões</h2>
+      <div class="raiox-grid" id="raixGrid"></div>
     </div>
-    <div class="ia-spin" id="iaSpin">✦ Gerando parecer literário...</div>
-    <div class="parecer" id="parecer" style="display:none"></div>
-  </div>
 
-  <div class="box">
-    <h3>Outras avaliações</h3>
-    <div class="links-aval">
-      <a class="link-aval" href="avaliacao_emocional.html">💜 Avaliação Emocional</a>
-      <a class="link-aval" href="avaliacao_mercado.html">📊 Avaliação de Mercado</a>
-      <a class="link-aval" href="lapidar_pensante.html">✦ Lapidar Pensante</a>
+    <!-- PARECER CRÍTICO -->
+    <div class="card">
+      <h2>Parecer crítico editorial</h2>
+      <div class="parecer-box" id="parecerBox"></div>
     </div>
-  </div>
+
+    <!-- ENCAMINHAMENTOS -->
+    <div class="card">
+      <h2>Encaminhamentos recomendados</h2>
+      <div class="enc-lista" id="encLista"></div>
+    </div>
+
+    <div class="acoes" style="justify-content:center">
+      <a class="btn btn-roxo" href="lapidar.html">← Voltar ao Lapidar</a>
+      <a class="btn btn-gold" href="id.html">→ ID — Identificação editorial</a>
+      <a class="btn btn-back" href="pagina_respiro_celeiro.html">← Respiro</a>
+      <button class="btn btn-back" onclick="reiniciar()">↺ Nova avaliação</button>
+    </div>
+
+  </div><!-- fim resultado -->
+
 </div>
 
+<footer>
+  <p><strong>Avaliação Literária</strong> — Lapidar · Instituto Cultural Celeiro Literário</p>
+</footer>
+
 <script>
-const $=id=>document.getElementById(id);
+function avaliarDimensoes(texto) {
+  const palavras = texto.split(/\s+/).filter(Boolean).length
+  const blocos   = texto.split(/\n\s*\n/).filter(b=>b.trim())
+  const frases   = texto.split(/[.!?]+/).filter(f=>f.trim().length > 8)
+  const avgFrase = frases.reduce((s,f)=>s+f.split(/\s+/).length,0)/Math.max(1,frases.length)
+  const varLex   = new Set(texto.toLowerCase().split(/\s+/).filter(w=>w.length>4)).size
+  const ratioLex = varLex / Math.max(1,palavras)
 
-const DIMS=[
-  {id:'estrutura',  emoji:'🏗️', nome:'Estrutura',         desc:'Organização, coerência e fluidez da narrativa ou forma poética.'},
-  {id:'voz',        emoji:'🎙️', nome:'Voz Autoral',        desc:'Identidade e singularidade da escrita — o que torna este autor único.'},
-  {id:'linguagem',  emoji:'✒️', nome:'Linguagem',          desc:'Qualidade do vocabulário, precisão, riqueza e adequação ao gênero.'},
-  {id:'coerencia',  emoji:'🔗', nome:'Coerência Interna',  desc:'Consistência entre elementos da obra: personagens, tempo, espaço, tom.'},
-  {id:'ritmo',      emoji:'🎼', nome:'Ritmo e Fluidez',    desc:'Como a obra avança — aceleração, pausas, respiros e tensão.'},
-  {id:'tema',       emoji:'🌐', nome:'Tema e Profundidade',desc:'Relevância e profundidade do tema central abordado.'},
-  {id:'personagens',emoji:'👤', nome:'Personagens/Voz',    desc:'Believabilidade e riqueza dos personagens ou da voz narrativa.'},
-  {id:'maturidade', emoji:'🌱', nome:'Maturidade Editorial',desc:'Proximidade da obra de estar pronta para publicação.'},
-];
+  // 1. ESTRUTURA
+  const temCap = /capítulo|CAPÍTULO|cap\./i.test(texto)
+  const temBlocos = blocos.length > 3
+  const temTitulo = /^[A-ZÁÉÍÓÚ][a-záéíóú\s]{3,30}$/m.test(texto)
+  let est = 4
+  if (temCap) est += 2
+  if (temBlocos) est += 1.5
+  if (temTitulo) est += 1
+  if (palavras > 500) est += 0.5
+  est = Math.min(10, Math.round(est * 10) / 10)
 
-let notas={};
+  // 2. LINGUAGEM
+  let ling = 4
+  if (ratioLex > 0.55) ling += 3
+  else if (ratioLex > 0.4) ling += 2
+  else if (ratioLex > 0.3) ling += 1
+  if (avgFrase > 8 && avgFrase < 25) ling += 1.5
+  if (/metáfora|como\s+[au]m\s|qual\s|semelhante|parecia|lembrava/i.test(texto)) ling += 1
+  ling = Math.min(10, Math.round(ling * 10) / 10)
 
-function renderDims(){
-  $('dimsGrid').innerHTML=DIMS.map(d=>`
-    <div class="dim-card" id="dc-${d.id}">
-      <div class="dim-header"><span class="dim-emoji">${d.emoji}</span><span class="dim-nome">${d.nome}</span></div>
-      <div class="dim-desc">${d.desc}</div>
-      <div class="dim-nota" id="dn-${d.id}">—</div>
-      <div class="dim-bar-bg"><div class="dim-bar" id="db-${d.id}"></div></div>
-      <div class="dim-justif" id="dj-${d.id}"></div>
-    </div>`).join('');
+  // 3. PERSONAGENS / VOZES
+  let pers = 3
+  const temDialogo = /^[—\-"«]/m.test(texto)
+  const temAção = /[A-ZÁÉÍÓÚ][a-z]{2,}\s+(disse|perguntou|respondeu|pensou|olhou|foi|estava)/i.test(texto)
+  const temInterior = /penso|sinto|lembro|imagino|sentia/i.test(texto)
+  if (temDialogo) pers += 2
+  if (temAção) pers += 2
+  if (temInterior) pers += 1.5
+  if (palavras < 300) pers = Math.min(pers, 5)
+  pers = Math.min(10, Math.round(pers * 10) / 10)
+
+  // 4. RITMO
+  let ritmo = 4
+  if (avgFrase >= 10 && avgFrase <= 20) ritmo += 3
+  else if (avgFrase > 5 && avgFrase < 30) ritmo += 1.5
+  const temVariacao = frases.some(f=>f.split(/\s+/).length < 5) && frases.some(f=>f.split(/\s+/).length > 15)
+  if (temVariacao) ritmo += 2
+  if (blocos.length > 5) ritmo += 0.5
+  ritmo = Math.min(10, Math.round(ritmo * 10) / 10)
+
+  // 5. ORIGINALIDADE
+  let orig = 4
+  const clicheCount = (texto.match(/coração partido|brilho nos olhos|fim do túnel|vai dar certo|nada é impossível|como se não houvesse amanhã/gi)||[]).length
+  orig -= clicheCount * 0.5
+  if (ratioLex > 0.5) orig += 2
+  if (temDialogo && temInterior) orig += 1.5
+  if (/neologismo|invenção|palavra-\w+/i.test(texto)) orig += 1
+  orig = Math.max(2, Math.min(10, Math.round(orig * 10) / 10))
+
+  return [
+    {nome:'Estrutura', nota:est, peso:0.2, desc:'Organização interna, divisão em blocos, presença de marcadores estruturais e coerência do todo.'},
+    {nome:'Linguagem', nota:ling, peso:0.25, desc:'Riqueza vocabular, variedade lexical, uso de figuras e controle das frases.'},
+    {nome:'Personagens / Vozes', nota:pers, peso:0.2, desc:'Presença e distinção de personagens, diálogos, ação e voz interior.'},
+    {nome:'Ritmo', nota:ritmo, peso:0.2, desc:'Equilíbrio entre frases longas e curtas, cadência da leitura e variação de intensidade.'},
+    {nome:'Originalidade', nota:orig, peso:0.15, desc:'Fuga de clichês, vocabulário próprio e voz autoral reconhecível.'},
+  ]
 }
 
-async function chamarAPI(prompt){
-  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
-  const d=await r.json();return d.content.map(b=>b.text||'').join('');
+function gerarParecer(dims, geral, palavras) {
+  const niveis = {alto:'A obra apresenta maturidade editorial consistente em suas dimensões principais.',medio:'A obra está em desenvolvimento com base sólida — há potencial claro para amadurecimento editorial.',baixo:'A obra está em fase inicial. Os fundamentos estão presentes, mas precisam de mais elaboração.'}
+  const nivel = geral >= 7.5 ? 'alto' : geral >= 5.5 ? 'medio' : 'baixo'
+  const ponto_forte = dims.reduce((a,b)=>a.nota>b.nota?a:b)
+  const ponto_fraco = dims.reduce((a,b)=>a.nota<b.nota?a:b)
+  return `PARECER EDITORIAL — Avaliação Literária · Celeiro Literário\n\n${niveis[nivel]}\n\nPonto mais forte: ${ponto_forte.nome} (${ponto_forte.nota}/10)\n${ponto_forte.desc}\n\nPonto de atenção: ${ponto_fraco.nome} (${ponto_fraco.nota}/10)\n${ponto_fraco.desc}\n\nExtensão analisada: ${palavras} palavras.\n\n${nivel==='alto'?'Recomendação: avançar para as camadas finais do Lapidar Pensante e preparar para expedição.':nivel==='medio'?'Recomendação: trabalhar o ponto de atenção acima e re-avaliar após revisão focada.':'Recomendação: retornar às primeiras camadas do Lapidar Pensante (AN e DRO) para refinamento estrutural antes de nova avaliação.'}`
 }
 
-async function avaliar(){
-  const titulo=$('titulo').value.trim()||'Obra sem título';
-  const tipo=$('tipo').value||'não informado';
-  const texto=$('texto').value.trim();
-  if(texto.length<30){alert('Cole o texto da obra.');return;}
-
-  notas={};
-  DIMS.forEach(d=>{$(`dn-${d.id}`).textContent='—';$(`db-${d.id}`).style.width='0%';$(`dj-${d.id}`).textContent='';$(`dc-${d.id}`).classList.remove('ativa');});
-  $('resultadoBox').classList.remove('vis');$('parecer').style.display='none';
-
-  const prompt=`Você é avaliador literário do Celeiro Literário.
-
-Avalie a obra nas 8 dimensões. Nota de 0 a 10.0 (1 casa decimal) para cada uma.
-
-OBRA: "${titulo}" | TIPO: ${tipo}
-TEXTO: ${texto.substring(0,3000)}
-
-Responda APENAS JSON sem markdown:
-{"estrutura":{"nota":0.0,"justif":""},"voz":{"nota":0.0,"justif":""},"linguagem":{"nota":0.0,"justif":""},"coerencia":{"nota":0.0,"justif":""},"ritmo":{"nota":0.0,"justif":""},"tema":{"nota":0.0,"justif":""},"personagens":{"nota":0.0,"justif":""},"maturidade":{"nota":0.0,"justif":""}}`;
-
-  try{
-    const raw=await chamarAPI(prompt);
-    const json=JSON.parse(raw.replace(/```json|```/g,'').trim());
-
-    for(const d of DIMS){
-      await new Promise(r=>setTimeout(r,120));
-      const dado=json[d.id];if(!dado)continue;
-      const n=Math.max(0,Math.min(10,Math.round(Number(dado.nota)*10)/10));
-      notas[d.id]=n;
-      $(`dn-${d.id}`).textContent=n.toFixed(1);
-      $(`db-${d.id}`).style.width=(n/10*100)+'%';
-      $(`dj-${d.id}`).textContent=dado.justif||'';
-      $(`dc-${d.id}`).classList.add('ativa');
-    }
-
-    const vals=Object.values(notas);
-    const media=vals.reduce((s,v)=>s+v,0)/vals.length;
-    const nf=Math.round(media*10)/10;
-    const cls=nf>=9?'Obra de excelência literária':nf>=8?'Obra de alto padrão literário':nf>=7?'Obra com forte potencial':nf>=6?'Obra em bom desenvolvimento':nf>=5?'Obra em desenvolvimento':' Obra necessita revisão';
-
-    $('notaGeral').textContent=nf.toFixed(1);
-    $('notaClasse').textContent=cls;
-    $('notaDesc').textContent=`"${titulo}" · ${vals.length} dimensões avaliadas`;
-    $('resultadoBox').classList.add('vis');
-
-    $('iaSpin').style.display='block';
-    const sintese=await chamarAPI(`Você é o avaliador literário do Celeiro Literário.\n\nA obra "${titulo}" (${tipo}) obteve nota literária ${nf.toFixed(1)}/10.0.\n\nNotas: ${DIMS.map(d=>`${d.nome}: ${notas[d.id]?.toFixed(1)||'—'}`).join(', ')}\n\nEscreva um parecer literário completo em português:\n**Diagnóstico geral** — estado atual da obra\n**Forças da obra** — o que já funciona bem\n**Pontos de revisão** — o que precisa ser trabalhado\n**Potencial editorial** — onde esta obra pode chegar\n**Recomendação** — próximos passos concretos\n\nMáximo 380 palavras. Tom editorial respeitoso e construtivo.`);
-    $('iaSpin').style.display='none';
-    $('parecer').textContent=sintese;$('parecer').style.display='block';
-    $('resultadoBox').scrollIntoView({behavior:'smooth'});
-  }catch(e){$('iaSpin').style.display='none';alert('Erro: '+e.message);}
+function gerarEncaminhamentos(dims, geral) {
+  const enc = []
+  const ponto_fraco = dims.reduce((a,b)=>a.nota<b.nota?a:b)
+  enc.push({ic:'📐', dest:'id.html', titulo:'ID — Identificação editorial', desc:'Para aprofundar a análise de gênero, forma, voz e tom da obra'})
+  if (ponto_fraco.nome === 'Estrutura' || ponto_fraco.nome === 'Ritmo') enc.push({ic:'✂️', dest:'dro.html', titulo:'DRO — Desbaste e reorganização', desc:'Retornar para desbaste estrutural e reorganização dos blocos narrativos'})
+  if (geral >= 7) enc.push({ic:'📦', dest:'expedicao_editorial.html', titulo:'Expedição Editorial', desc:'Obra com maturidade para iniciar o processo de saída pelo Lapidar'})
+  enc.push({ic:'🌾', dest:'pagina_respiro_celeiro.html', titulo:'Respiro — Mapa do Celeiro', desc:'Voltar ao mapa geral do Instituto'})
+  return enc
 }
 
-renderDims();
+function executarAvaliacao() {
+  const entrada = document.getElementById('textoEntrada').value.trim()
+  if (!entrada) { alert('Cole o texto antes de gerar a avaliação.'); return }
+  const palavras = entrada.split(/\s+/).filter(Boolean).length
+  const dims = avaliarDimensoes(entrada)
+  const geral = Math.round(dims.reduce((s,d)=>s+d.nota*d.peso,0) * 10) / 10
+  const nivel = geral >= 7.5 ? 'Maturidade alta' : geral >= 5.5 ? 'Em desenvolvimento' : 'Fase inicial'
+  const num = 'AVAL-' + Date.now().toString().slice(-6) + '-' + Math.floor(Math.random()*900+100)
+
+  document.getElementById('notaGeral').textContent = geral.toFixed(1)
+  document.getElementById('nivelDesc').textContent = nivel
+  document.getElementById('resumoAvaliacao').textContent = `"${nivel}" — Obra de ${palavras} palavras avaliada em 5 dimensões editoriais. Veja o Raio-X completo abaixo.`
+  document.getElementById('numProtocolo').textContent = num
+
+  // Raio-X
+  const rg = document.getElementById('raixGrid')
+  rg.innerHTML = ''
+  dims.forEach(d => {
+    const div = document.createElement('div')
+    div.className = 'dim'
+    div.innerHTML = `<h4>${d.nome}</h4><span class="nota-num">${d.nota.toFixed(1)}</span><span class="nota-label">/ 10</span><div class="barra-wrap"><div class="barra-fill" style="width:${d.nota*10}%"></div></div><p>${d.desc}</p>`
+    rg.appendChild(div)
+  })
+
+  // Parecer
+  document.getElementById('parecerBox').textContent = gerarParecer(dims, geral, palavras)
+
+  // Encaminhamentos
+  const el = document.getElementById('encLista')
+  el.innerHTML = ''
+  gerarEncaminhamentos(dims, geral).forEach(e => {
+    const a = document.createElement('a')
+    a.className = 'enc-item'; a.href = e.dest
+    a.innerHTML = `<span class="enc-ic">${e.ic}</span><div class="enc-txt"><strong>${e.titulo}</strong><span>${e.desc}</span></div>`
+    el.appendChild(a)
+  })
+
+  // Salva
+  try { sessionStorage.setItem('avaliacao_ultimo', JSON.stringify({num, geral, nivel, dims: dims.map(d=>({nome:d.nome,nota:d.nota}))})) } catch(e){}
+
+  document.getElementById('resultadoArea').classList.add('vis')
+  document.getElementById('resultadoArea').scrollIntoView({behavior:'smooth'})
+}
+
+function reiniciar() {
+  document.getElementById('textoEntrada').value = ''
+  document.getElementById('resultadoArea').classList.remove('vis')
+  window.scrollTo({top:0,behavior:'smooth'})
+}
 </script>
 </body>
 </html>
