@@ -1,127 +1,24 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Celeiro Literário — Login Administrativo</title>
-<style>
-:root{
---bg:#071422;
---card:#fffaf0;
---ink:#10233f;
---gold:#d8b56d;
---green:#5f7f4f;
---line:#d8d0c1;
-}
-*{box-sizing:border-box}
-body{
-margin:0;
-min-height:100vh;
-background:radial-gradient(circle at top,#163455,#071422 65%);
-font-family:Georgia,'Times New Roman',serif;
-display:grid;
-place-items:center;
-color:var(--ink);
-padding:20px;
-}
-.box{
-width:min(460px,100%);
-background:var(--card);
-border:1px solid rgba(216,181,109,.65);
-border-radius:28px;
-padding:28px;
-box-shadow:0 24px 60px rgba(0,0,0,.35);
-}
-.seal{
-text-align:center;
-font-weight:900;
-color:#6b5527;
-background:#eef4e7;
-border-radius:999px;
-padding:8px 14px;
-margin:0 auto 16px;
-width:max-content;
-}
-h1{text-align:center;margin:0 0 8px;font-size:2rem}
-.sub{
-text-align:center;
-color:#61707d;
-margin-bottom:22px;
-line-height:1.4;
-}
-label{
-display:block;
-font-weight:900;
-margin:12px 0 6px;
-}
-input{
-width:100%;
-border:1px solid var(--line);
-border-radius:14px;
-padding:13px;
-background:#fff;
-font:16px Georgia,serif;
-}
-.btn{
-width:100%;
-border:0;
-border-radius:999px;
-background:var(--ink);
-color:white;
-padding:14px;
-font-weight:900;
-font-family:Georgia,serif;
-margin-top:18px;
-cursor:pointer;
-}
-.btn.back{
-background:var(--green);
-text-decoration:none;
-display:block;
-text-align:center;
-}
-.msg{
-margin-top:14px;
-padding:12px;
-border-radius:14px;
-background:#fff1d1;
-color:#654500;
-display:none;
-}
-</style>
-</head>
-<body>
-<main class="box">
-<div class="seal">Celeiro Literário — Área Interna</div>
-<h1>Login Administrativo</h1>
-<p class="sub">Entrada reservada para acessar OHE e ferramentas internas.</p>
-
-<label>Usuário</label>
-<input id="usuario" placeholder="admin">
-
-<label>Senha</label>
-<input id="senha" type="password" placeholder="senha administrativa">
-
-<button class="btn" onclick="entrar()">Entrar</button>
-<a class="btn back" href="index.html">Voltar ao Celeiro</a>
-
-<div id="msg" class="msg">Acesso negado.</div>
-</main>
-
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Login Admin — Celeiro Literário</title>
+<style>body{margin:0;font-family:Georgia,serif;background:linear-gradient(180deg,#07101d,#17365d);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}.box{background:#fffaf0;border:1px solid #d6b354;border-radius:24px;padding:36px 28px;max-width:420px;width:100%;text-align:center;box-shadow:0 18px 45px rgba(0,0,0,.35)}h1{margin:0 0 6px;font-size:1.8rem;color:#07101d}p{color:#6f6a62;margin:0 0 22px;font-size:1rem}label{display:block;text-align:left;font-weight:700;margin-bottom:5px;font-size:.95rem;color:#243043}input{width:100%;border:1px solid #ddd6c9;border-radius:12px;padding:12px;font:inherit;font-size:1rem;background:#fffdf8;box-sizing:border-box;margin-bottom:14px}.btn-login{width:100%;border:none;border-radius:16px;padding:14px;font:inherit;font-weight:700;font-size:1rem;cursor:pointer;background:#17365d;color:#f0d882;transition:.18s}.btn-login:hover{background:#225d99}.link-mapa{display:block;margin-top:16px;color:#5a8aaa;font-size:.9rem;text-decoration:none;font-style:italic}.link-mapa:hover{text-decoration:underline}</style>
+</head><body>
+<div class="box">
+  <h1>Acesso Administrativo</h1>
+  <p>Instituto Cultural Celeiro Literário</p>
+  <label for="user">Usuário</label>
+  <input type="text" id="user" placeholder="seu usuário">
+  <label for="pass">Senha</label>
+  <input type="password" id="pass" placeholder="••••••••">
+  <button class="btn-login" onclick="tentarLogin()">Entrar</button>
+  <a class="link-mapa" href="pagina_respiro.html">🗺️ Mapa do Celeiro</a>
+  <a class="link-mapa" href="portal_instituto_celeiro_literario.html">← Portal Principal</a>
+</div>
 <script>
-function entrar(){
-const u=document.getElementById('usuario').value.trim().toLowerCase();
-const s=document.getElementById('senha').value.trim();
-
-if((u==='admin'||u==='wagner'||u==='heteronimo') && s==='celeiro2026'){
-localStorage.setItem('celeiro_admin_ok','sim');
-location.href='painel_admin.html';
-}else{
-const msg=document.getElementById('msg');
-msg.style.display='block';
-msg.textContent='Usuário ou senha incorretos.';
-}
+function tentarLogin(){
+  const u=document.getElementById('user').value.trim();
+  const p=document.getElementById('pass').value;
+  if(!u||!p){alert('Preencha usuário e senha.');return;}
+  alert('Autenticação em desenvolvimento. Sistema de login será integrado em breve.');
 }
 </script>
-</body>
-</html>
+</body></html>
+
