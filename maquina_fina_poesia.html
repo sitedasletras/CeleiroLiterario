@@ -1,12 +1,518 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Máquina Fina de Poesia</title>
-<style>body{margin:0;font-family:Georgia,serif;background:#ece8de;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}.box{background:#f7f4ee;border:1px solid #ddd6c9;border-radius:24px;padding:32px 26px;max-width:520px;width:100%;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.10)}h1{margin:0 0 12px;font-size:2.4rem;color:#000}p{color:#6f6a62;font-size:1.08rem;line-height:1.5;margin:0 0 22px}.btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}button{border:none;border-radius:16px;padding:13px 20px;font:inherit;font-weight:700;cursor:pointer;transition:.18s}button:hover{transform:translateY(-1px)}.back{background:#d9a441;color:#2a1d0d}.mapa{background:rgba(63,122,90,.12);color:#2f5a4d;border:1px solid rgba(63,122,90,.3)}</style>
-</head><body>
-<div class="box">
-  <h1>Máquina Fina de Poesia</h1>
-  <p>Refinamento poético ativo. Módulo em desenvolvimento dentro do Celeiro Literário.</p>
-  <div class="btns">
-    <button class="back" onclick="window.location.href='lapidar.html'">← Retornar ao Lapidar</button>
-    <button class="mapa" onclick="window.location.href='pagina_respiro.html'">🗺️ Mapa do Celeiro</button>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Máquina Fina de Poesia — Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0a1a;--surface:#13101f;--card:#1a1528;--line:#252038;
+  --txt:#f0eef8;--muted:#8a80a8;--soft:#c0b8d8;
+  --roxo:#5f4fa8;--roxo2:#8a7ad8;--roxo3:#b8a8f0;
+  --ouro:#d8a84c;--ouro2:#f0cc80;
+  --rosa:#c86aaa;--rosa2:#e8a8d8;
+  --shadow:0 16px 48px rgba(0,0,0,.5);--radius:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;background:var(--bg);color:var(--txt);font-family:'DM Sans',Georgia,serif;}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:30;background:rgba(14,10,26,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--roxo),var(--roxo2));display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 16px rgba(95,79,168,.4);}
+.brand-text h1{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--txt);line-height:1;}
+.brand-text p{font-size:.78rem;color:var(--muted);margin-top:2px;}
+.top-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{border:none;border-radius:11px;padding:9px 15px;font:600 .86rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+.btn:hover{transform:translateY(-1px);}
+.btn-roxo{background:var(--roxo);color:#fff;}
+.btn-amber{background:#d4a44c;color:#1a1000;}
+.btn-red{background:#d44c4c;color:#fff;}
+.btn-ghost{background:rgba(255,255,255,.07);color:var(--soft);border:1px solid var(--line);}
+.btn-respiro{background:linear-gradient(135deg,#2a1a3a,#3a2a5a);color:var(--roxo3);border:1px solid rgba(95,79,168,.3);}
+.btn-respiro:hover{background:linear-gradient(135deg,#3a2a5a,#4a3a6a);}
+
+.wrap{max-width:1100px;margin:0 auto;padding:22px 18px 60px;display:grid;grid-template-columns:300px minmax(0,1fr);gap:16px;align-items:start;}
+
+/* PAINEL */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;padding:18px;position:sticky;top:76px;}
+.panel h2{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--roxo3);}
+.panel-sec{display:flex;flex-direction:column;gap:7px;}
+.panel-sec label{font-size:.74rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+.select,.input{width:100%;border:1.5px solid var(--line);border-radius:11px;background:var(--surface);color:var(--txt);padding:9px 11px;font:inherit;font-size:.9rem;outline:none;transition:border-color .2s;}
+.select:focus,.input:focus{border-color:var(--roxo2);}
+.select option{background:var(--surface);}
+.status-box{font-size:.82rem;border-radius:11px;padding:9px 11px;background:rgba(95,79,168,.1);border:1px solid rgba(95,79,168,.2);color:var(--roxo3);line-height:1.4;min-height:40px;}
+
+/* MODOS */
+.modos-refino{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.modo-refino{border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 6px;cursor:pointer;font:600 .76rem 'DM Sans',sans-serif;color:var(--muted);text-align:center;transition:.14s;line-height:1.3;}
+.modo-refino:hover{border-color:var(--roxo2);color:var(--roxo3);}
+.modo-refino.ativo{border-color:var(--roxo2);background:rgba(95,79,168,.15);color:var(--roxo2);}
+
+/* FORMAS */
+.formas-grid{display:flex;flex-wrap:wrap;gap:5px;}
+.forma-tag{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:4px 9px;font:600 .72rem 'DM Sans',sans-serif;color:var(--muted);cursor:pointer;transition:.12s;white-space:nowrap;}
+.forma-tag:hover{border-color:var(--roxo2);color:var(--roxo3);}
+.forma-tag.ativa{border-color:var(--roxo2);background:rgba(95,79,168,.15);color:var(--roxo2);}
+
+/* MAIN */
+.main{display:flex;flex-direction:column;gap:14px;}
+.box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
+.box h2{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:14px;color:var(--soft);}
+
+/* ESTÍMULO */
+.estimulo-recebido{background:rgba(95,79,168,.08);border:1px solid rgba(95,79,168,.2);border-radius:14px;padding:14px;font-style:italic;font-family:'Playfair Display',serif;font-size:.95rem;color:var(--roxo3);line-height:1.7;min-height:48px;}
+
+/* EDITOR */
+.editor{width:100%;min-height:240px;border:1.5px solid var(--line);border-radius:14px;padding:16px;resize:vertical;background:var(--surface);color:var(--txt);font-family:'Playfair Display',Georgia,serif;font-size:1.08rem;line-height:1.8;outline:none;}
+.editor:focus{border-color:var(--roxo2);}
+
+/* CONTADOR SÍLABAS */
+.contadores{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;}
+.contador-item{font-size:.78rem;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;padding:4px 10px;}
+.contador-item span{color:var(--roxo3);font-weight:700;}
+
+/* PROCESSAR */
+.acao-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
+.btn-processar{flex:1;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--roxo),var(--roxo2));color:#fff;font:700 .95rem 'DM Sans',sans-serif;cursor:pointer;transition:.16s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 20px rgba(95,79,168,.35);}
+.btn-processar:hover{transform:translateY(-2px);}
+.btn-processar:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* SPINNER */
+.spin{display:none;text-align:center;padding:20px;color:var(--roxo3);font-style:italic;font-family:'Playfair Display',serif;animation:pulse 1.5s infinite;}
+.spin.vis{display:block;}
+@keyframes pulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+
+/* RESULTADO */
+.resultado-box{display:none;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:20px;}
+.resultado-box.vis{display:block;}
+.resultado-poema{font-family:'Playfair Display',Georgia,serif;font-size:1.08rem;line-height:2;color:var(--txt);white-space:pre-wrap;text-align:left;}
+.resultado-analise{margin-top:16px;padding:14px 16px;background:rgba(95,79,168,.08);border:1px solid rgba(95,79,168,.2);border-radius:12px;font-size:.88rem;color:var(--roxo3);line-height:1.6;font-style:italic;}
+.resultado-analise strong{color:var(--roxo2);font-style:normal;}
+
+/* TABS */
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.tab{border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 14px;font:600 .82rem 'DM Sans',sans-serif;color:var(--muted);cursor:pointer;transition:.14s;}
+.tab:hover{border-color:var(--roxo2);color:var(--roxo3);}
+.tab.ativo{border-color:var(--roxo2);background:rgba(95,79,168,.15);color:var(--roxo2);}
+
+/* VERSÕES */
+.versoes-lista{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow:auto;}
+.versao-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px;}
+.versao-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.versao-num{font-size:.72rem;font-weight:700;color:var(--roxo2);background:rgba(95,79,168,.15);padding:2px 8px;border-radius:999px;}
+.versao-forma{font-size:.72rem;color:var(--muted);}
+.versao-preview{font-family:'Playfair Display',serif;font-size:.88rem;color:var(--soft);line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-style:italic;}
+.versao-vazia{color:var(--muted);font-style:italic;font-size:.88rem;}
+
+/* AÇÕES */
+.acoes-resultado{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.btn-acao{border:none;border-radius:11px;padding:10px 14px;font:600 .84rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;}
+.btn-acao:hover{transform:translateY(-1px);}
+.btn-copiar  {background:rgba(255,255,255,.1);color:var(--soft);border:1px solid var(--line);}
+.btn-lapidar {background:var(--ouro);color:#1a1000;}
+.btn-nova    {background:var(--roxo);color:#fff;}
+.btn-base    {background:rgba(255,255,255,.07);color:var(--muted);border:1px solid var(--line);}
+.btn-estimulo{background:rgba(95,79,168,.15);color:var(--roxo3);border:1px solid rgba(95,79,168,.2);}
+
+/* RESPIRO */
+.respiro-box{background:linear-gradient(135deg,rgba(95,79,168,.1),rgba(200,106,170,.08));border:1px solid rgba(95,79,168,.2);border-radius:var(--radius);padding:22px;text-align:center;}
+.respiro-box h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--roxo3);margin-bottom:8px;}
+.respiro-box p{font-size:.88rem;color:var(--muted);line-height:1.55;margin-bottom:14px;}
+.btn-ir-respiro{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--roxo),var(--rosa));color:#fff;font:700 .92rem 'DM Sans',sans-serif;cursor:pointer;transition:.16s;box-shadow:0 6px 20px rgba(95,79,168,.3);}
+.btn-ir-respiro:hover{transform:translateY(-2px);}
+
+@media(max-width:900px){.wrap{grid-template-columns:1fr;}.panel{position:relative;top:auto;}}
+@media(max-width:560px){.modos-refino{grid-template-columns:1fr;}.acao-bar,.acoes-resultado{flex-direction:column;}.btn-acao,.btn-processar{width:100%;justify-content:center;}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">🖊️</div>
+    <div class="brand-text">
+      <h1>Máquina Fina de Poesia</h1>
+      <p>Celeiro Literário · Refinamento e criação poética com IA</p>
+    </div>
+  </div>
+  <div class="top-btns">
+    <a class="btn btn-ghost"   href="maquina_estimulos_narrativos.html">← Estímulos</a>
+    <a class="btn btn-amber"   href="lapidar.html">Lapidar</a>
+    <a class="btn btn-respiro" href="pagina_respiro_celeiro.html">🌿 Respiro</a>
+    <a class="btn btn-red"     href="pagina_respiro_celeiro.html">Sair</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- PAINEL -->
+  <aside class="panel">
+    <h2>🖊️ Controles</h2>
+    <div class="status-box" id="statusBox">Aguardando poema ou estímulo.</div>
+
+    <div class="panel-sec">
+      <label>Forma poética</label>
+      <select class="select" id="formaPoema">
+        <option value="verso_livre" selected>Verso Livre</option>
+        <option value="soneto_italiano">Soneto Italiano</option>
+        <option value="soneto_ingles">Soneto Inglês</option>
+        <option value="haiku">Haiku (5-7-5)</option>
+        <option value="pantum">Pantum</option>
+        <option value="ghazal">Ghazal</option>
+        <option value="sestina">Sestina</option>
+        <option value="villanelle">Villanelle</option>
+        <option value="elegia">Elegia</option>
+        <option value="ode">Ode</option>
+        <option value="limerick">Limerick</option>
+        <option value="acrostico">Acróstico</option>
+        <option value="nme">Novo Mov. Estrofista</option>
+        <option value="caligrama">Caligrama</option>
+        <option value="poema_prosa">Poema em Prosa</option>
+        <option value="epico">Épico / Narrativo</option>
+      </select>
+    </div>
+
+    <div class="panel-sec">
+      <label>Tom emocional</label>
+      <select class="select" id="tomEmocional">
+        <option value="melancolico">Melancólico</option>
+        <option value="contemplativo" selected>Contemplativo</option>
+        <option value="ardente">Ardente / Apaixonado</option>
+        <option value="satirico">Satírico / Irônico</option>
+        <option value="epico_tom">Épico / Grandioso</option>
+        <option value="intimo">Íntimo / Confessional</option>
+        <option value="mistico">Místico / Transcendente</option>
+        <option value="furioso">Furioso / Político</option>
+        <option value="lyrico">Lírico / Suave</option>
+        <option value="humour">Humor / Leveza</option>
+      </select>
+    </div>
+
+    <div class="panel-sec">
+      <label>Rima</label>
+      <select class="select" id="rima">
+        <option value="sem_rima" selected>Sem rima (verso livre)</option>
+        <option value="rima_toante">Rima toante (vogais)</option>
+        <option value="rima_perfeita">Rima perfeita</option>
+        <option value="rima_cruzada">Rima cruzada (ABAB)</option>
+        <option value="rima_emparelhada">Rima emparelhada (AABB)</option>
+        <option value="rima_interpolada">Rima interpolada (ABBA)</option>
+      </select>
+    </div>
+
+    <div class="panel-sec">
+      <label>Alinhamento</label>
+      <select class="select" id="alinhamento">
+        <option value="esquerda" selected>À esquerda</option>
+        <option value="centro">Centralizado</option>
+        <option value="direita">À direita</option>
+      </select>
+    </div>
+
+    <div class="panel-sec">
+      <label>Extensão</label>
+      <select class="select" id="extensao">
+        <option value="micro">Micro (1 estrofe)</option>
+        <option value="curto" selected>Curto (2-3 estrofes)</option>
+        <option value="medio">Médio (4-6 estrofes)</option>
+        <option value="longo">Longo (7+ estrofes)</option>
+      </select>
+    </div>
+
+    <div class="panel-sec">
+      <label>Modo de refinamento</label>
+      <div class="modos-refino" id="modosRefino">
+        <div class="modo-refino ativo" data-modo="criar"       onclick="setModo('criar',this)">Criar poema</div>
+        <div class="modo-refino"      data-modo="continuar"   onclick="setModo('continuar',this)">Continuar</div>
+        <div class="modo-refino"      data-modo="reescrever"  onclick="setModo('reescrever',this)">Reescrever</div>
+        <div class="modo-refino"      data-modo="lapidar"     onclick="setModo('lapidar',this)">Lapidar</div>
+        <div class="modo-refino"      data-modo="rimar"       onclick="setModo('rimar',this)">Rimar</div>
+        <div class="modo-refino"      data-modo="traduzir_pt" onclick="setModo('traduzir_pt',this)">Adaptar PT</div>
+      </div>
+    </div>
+
+    <div class="panel-sec">
+      <button class="btn btn-roxo" style="width:100%" onclick="limpar()">✕ Limpar tudo</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- ESTÍMULO -->
+    <div class="box">
+      <h2>✦ Estímulo / Tema poético</h2>
+      <div class="estimulo-recebido" id="estimuloRecebido">Nenhum estímulo recebido. Cole uma ideia abaixo ou venha da Máquina de Estímulos.</div>
+    </div>
+
+    <!-- EDITOR -->
+    <div class="box">
+      <h2>Seu poema</h2>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:12px;">Cole seu rascunho, o estímulo recebido, ou comece com uma imagem, palavra ou verso. A máquina trabalha a partir do que você trouxer.</p>
+      <textarea class="editor" id="textoEditor" placeholder="Escreva um verso, uma palavra, uma imagem ou cole seu rascunho..."></textarea>
+      <div class="contadores">
+        <div class="contador-item">Versos: <span id="ctVersos">0</span></div>
+        <div class="contador-item">Estrofes: <span id="ctEstrofes">0</span></div>
+        <div class="contador-item">Palavras: <span id="ctPalavras">0</span></div>
+      </div>
+      <div class="acao-bar">
+        <button class="btn-processar" id="btnProcessar" onclick="processar()">
+          <span id="btnIco">🖊️</span>
+          <span id="btnTxt">Processar com IA</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- SPINNER -->
+    <div class="spin" id="spinWrap">✦ A Máquina Fina está tecendo os versos...</div>
+
+    <!-- RESULTADO -->
+    <div class="resultado-box" id="resultadoBox">
+      <div class="tabs">
+        <div class="tab ativo" onclick="mostrarTab('resultado',this)">Poema</div>
+        <div class="tab"       onclick="mostrarTab('analise',this)">Análise</div>
+        <div class="tab"       onclick="mostrarTab('versoes',this)">Versões</div>
+      </div>
+
+      <!-- POEMA -->
+      <div id="tabResultado">
+        <div class="resultado-poema" id="resultadoPoema" style="text-align:left"></div>
+        <div class="acoes-resultado">
+          <button class="btn-acao btn-copiar"   onclick="copiar()">📋 Copiar</button>
+          <button class="btn-acao btn-nova"     onclick="usarComoBase()">↺ Usar como base</button>
+          <a      class="btn-acao btn-lapidar"  href="lapidar_pensante.html">✦ Lapidar Pensante</a>
+          <a      class="btn-acao btn-estimulo" href="maquina_estimulos_narrativos.html">← Novos estímulos</a>
+        </div>
+      </div>
+
+      <!-- ANÁLISE -->
+      <div id="tabAnalise" style="display:none">
+        <div class="resultado-analise" id="resultadoAnalise"></div>
+      </div>
+
+      <!-- VERSÕES -->
+      <div id="tabVersoes" style="display:none">
+        <div class="versoes-lista" id="versoesLista">
+          <span class="versao-vazia">Nenhuma versão anterior ainda.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PÁGINA DE RESPIRO -->
+    <div class="respiro-box">
+      <h3>🌿 Precisa de um respiro?</h3>
+      <p>A escrita poética é intensa. Quando sentir que precisa pausar, respirar e voltar com mais clareza — a Página de Respiro está aqui para isso.</p>
+      <a class="btn-ir-respiro" href="pagina_respiro_celeiro.html">🌿 Ir para a Página de Respiro</a>
+    </div>
+
   </div>
 </div>
-</body></html>
+
+<script>
+const $=id=>document.getElementById(id);
+let modoAtual='criar';
+let versoes=[];
+
+// ── RECEBER ESTÍMULO VIA URL ────────────────────────────────────────────────
+window.addEventListener('load',()=>{
+  const params=new URLSearchParams(window.location.search);
+  const estimulo=params.get('estimulo');
+  if(estimulo){
+    const dec=decodeURIComponent(estimulo);
+    $('estimuloRecebido').textContent=dec;
+    $('textoEditor').value=dec;
+    $('statusBox').textContent='✓ Estímulo recebido da Máquina de Estímulos.';
+  }
+  const ls=localStorage.getItem('maquina_estimulo_poesia');
+  if(ls&&!estimulo){
+    $('estimuloRecebido').textContent=ls;
+    $('textoEditor').value=ls;
+  }
+  atualizarContadores();
+});
+
+// ── CONTADORES ──────────────────────────────────────────────────────────────
+$('textoEditor').addEventListener('input',atualizarContadores);
+function atualizarContadores(){
+  const t=$('textoEditor').value;
+  const linhas=t.split('\n').filter(l=>l.trim());
+  const estrofes=t.split(/\n\s*\n/).filter(b=>b.trim()).length;
+  const palavras=t.trim()?t.trim().split(/\s+/).length:0;
+  $('ctVersos').textContent=linhas.length;
+  $('ctEstrofes').textContent=estrofes;
+  $('ctPalavras').textContent=palavras;
+}
+
+// ── MODO ────────────────────────────────────────────────────────────────────
+function setModo(modo,el){
+  modoAtual=modo;
+  document.querySelectorAll('.modo-refino').forEach(b=>b.classList.remove('ativo'));
+  el.classList.add('ativo');
+  const textos={
+    criar:'🖊️ Criar poema',continuar:'→ Continuar poema',
+    reescrever:'↺ Reescrever',lapidar:'✦ Lapidar',
+    rimar:'~ Rimar versos',traduzir_pt:'🇧🇷 Adaptar PT'
+  };
+  $('btnIco').textContent=modo==='criar'?'🖊️':modo==='lapidar'?'✦':modo==='rimar'?'~':'→';
+  $('btnTxt').textContent=textos[modo]||'Processar';
+}
+
+// ── TABS ────────────────────────────────────────────────────────────────────
+function mostrarTab(tab,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('ativo'));
+  el.classList.add('ativo');
+  ['tabResultado','tabAnalise','tabVersoes'].forEach(id=>$(id).style.display='none');
+  if(tab==='resultado')$('tabResultado').style.display='block';
+  if(tab==='analise')  $('tabAnalise').style.display='block';
+  if(tab==='versoes')  $('tabVersoes').style.display='block';
+}
+
+// ── API ─────────────────────────────────────────────────────────────────────
+async function chamarAPI(prompt){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+  });
+  const d=await r.json();
+  return d.content.map(b=>b.text||'').join('');
+}
+
+// ── PROCESSAR ───────────────────────────────────────────────────────────────
+async function processar(){
+  const texto=$('textoEditor').value.trim();
+  if(!texto){$('statusBox').textContent='Escreva ou cole algo primeiro.';return;}
+
+  const forma   =$('formaPoema').options[$('formaPoema').selectedIndex].text;
+  const formaId =$('formaPoema').value;
+  const tom     =$('tomEmocional').options[$('tomEmocional').selectedIndex].text;
+  const rima    =$('rima').options[$('rima').selectedIndex].text;
+  const alin    =$('alinhamento').value;
+  const ext     =$('extensao').options[$('extensao').selectedIndex].text;
+  const estimulo=$('estimuloRecebido').textContent;
+
+  const modoDesc={
+    criar:     'Crie um poema original e completo a partir do texto/tema fornecido',
+    continuar: 'Continue o poema a partir do ponto onde parou, mantendo tom e voz',
+    reescrever:'Reescreva completamente o poema com nova força e originalidade',
+    lapidar:   'Lapide o poema: melhore o ritmo, as imagens e a precisão sem alterar o essencial',
+    rimar:     'Adicione ou ajuste as rimas respeitando a musicalidade e o sentido',
+    traduzir_pt:'Adapte o poema para o português brasileiro com voz literária autêntica',
+  };
+
+  const instrucaoForma = formaId==='soneto_italiano'
+    ? 'Siga rigorosamente a estrutura do Soneto Italiano: 14 versos em 2 quartetos (ABBA ABBA) e 2 tercetos (CDE CDE ou CDC DCD).'
+    : formaId==='soneto_ingles'
+    ? 'Siga a estrutura do Soneto Inglês: 14 versos em 3 quartetos (ABAB CDCD EFEF) e 1 dístico (GG).'
+    : formaId==='haiku'
+    ? 'Siga a forma haiku: 3 versos com 5, 7 e 5 sílabas respectivamente. Foque em imagem da natureza e kigo.'
+    : formaId==='pantum'
+    ? 'Siga a forma pantum: quadras onde o 2º e 4º verso de cada estrofe se tornam o 1º e 3º da próxima.'
+    : formaId==='ghazal'
+    ? 'Siga a forma ghazal: dísticos autônomos com radif (palavra/frase repetida ao final). Último dístico contém o nome do poeta.'
+    : formaId==='villanelle'
+    ? 'Siga a villanelle: 19 versos, 5 tercetos e 1 quadra final, com dois refrões alternados.'
+    : formaId==='limerick'
+    ? 'Siga o limerick: 5 versos, esquema AABBA, tom humorístico.'
+    : formaId==='acrostico'
+    ? 'Crie um acróstico: as iniciais de cada verso formam uma palavra ou frase.'
+    : `Escreva no estilo ${forma}.`;
+
+  $('btnProcessar').disabled=true;
+  $('spinWrap').classList.add('vis');
+  $('resultadoBox').classList.remove('vis');
+
+  const prompt=`Você é a Máquina Fina de Poesia do Celeiro Literário — especialista em poesia brasileira e formas poéticas mundiais.
+
+MODO: ${modoDesc[modoAtual]}
+FORMA: ${forma}
+${instrucaoForma}
+TOM EMOCIONAL: ${tom}
+RIMA: ${rima}
+EXTENSÃO: ${ext}
+${estimulo&&estimulo!=='Nenhum estímulo recebido.'?`ESTÍMULO/TEMA: ${estimulo}`:''}
+
+TEXTO DO ESCRITOR:
+${texto}
+
+INSTRUÇÕES:
+- ${modoDesc[modoAtual]}
+- Preserve a voz e as imagens do escritor como referência
+- Use linguagem poética precisa, rica em imagens e sonoridade
+- Escreva apenas em português brasileiro
+- ${instrucaoForma}
+- Tom: ${tom} | Rima: ${rima}
+
+Retorne APENAS o poema, depois uma linha em branco, depois:
+[ANÁLISE]:
+Uma análise literária breve do poema gerado, com: forma usada, recursos poéticos presentes, tom predominante, imagem central e uma sugestão para o poeta continuar desenvolvendo este trabalho.`;
+
+  try{
+    const full=await chamarAPI(prompt);
+    const partes=full.split('[ANÁLISE]:');
+    const poema=partes[0].trim();
+    const analise=partes[1]?.trim()||'';
+
+    // alinhar poema
+    const alinStyle = alin==='centro'?'center':alin==='direita'?'right':'left';
+    $('resultadoPoema').style.textAlign=alinStyle;
+    $('resultadoPoema').textContent=poema;
+    $('resultadoAnalise').innerHTML=analise
+      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+      .replace(/\n/g,'<br>');
+    $('resultadoBox').classList.add('vis');
+    $('statusBox').textContent=`✓ Modo "${modoAtual}" · Forma "${forma}" aplicados.`;
+
+    // salvar versão
+    versoes.unshift({modo:modoAtual,forma,poema,analise,ts:new Date().toLocaleTimeString('pt-BR')});
+    renderVersoes();
+    mostrarTab('resultado',document.querySelector('.tab'));
+
+  }catch(e){
+    $('resultadoPoema').textContent='Erro: '+e.message;
+    $('resultadoBox').classList.add('vis');
+  }finally{
+    $('spinWrap').classList.remove('vis');
+    $('btnProcessar').disabled=false;
+  }
+}
+
+function renderVersoes(){
+  const lista=$('versoesLista');
+  if(!versoes.length){lista.innerHTML='<span class="versao-vazia">Nenhuma versão ainda.</span>';return;}
+  lista.innerHTML=versoes.map((v,i)=>`
+    <div class="versao-item">
+      <div class="versao-header">
+        <span class="versao-num">v${versoes.length-i}</span>
+        <span class="versao-forma">${v.modo} · ${v.forma} · ${v.ts}</span>
+      </div>
+      <div class="versao-preview">${v.poema.substring(0,100)}...</div>
+      <button onclick="restaurarVersao(${i})" style="margin-top:8px;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:8px;padding:4px 10px;font-size:.75rem;cursor:pointer;font-family:inherit;">Restaurar</button>
+    </div>`).join('');
+}
+
+function restaurarVersao(i){
+  $('textoEditor').value=versoes[i].poema;
+  mostrarTab('resultado',document.querySelector('.tab'));
+  atualizarContadores();
+}
+
+function usarComoBase(){
+  const t=$('resultadoPoema').textContent;
+  if(t){$('textoEditor').value=t;$('resultadoBox').classList.remove('vis');window.scrollTo({top:0,behavior:'smooth'});atualizarContadores();}
+}
+function copiar(){
+  navigator.clipboard.writeText($('resultadoPoema').textContent).then(()=>alert('Poema copiado!'));
+}
+function limpar(){
+  $('textoEditor').value='';
+  $('resultadoBox').classList.remove('vis');
+  $('estimuloRecebido').textContent='Nenhum estímulo recebido.';
+  $('statusBox').textContent='Limpo. Pronto para um novo poema.';
+  atualizarContadores();
+}
+</script>
+</body>
+</html>
