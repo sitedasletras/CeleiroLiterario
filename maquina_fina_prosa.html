@@ -1,12 +1,394 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Máquina Fina de Prosa v2</title>
-<style>body{margin:0;font-family:Georgia,serif;background:#ece8de;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}.box{background:#f7f4ee;border:1px solid #ddd6c9;border-radius:24px;padding:32px 26px;max-width:520px;width:100%;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.10)}h1{margin:0 0 12px;font-size:2.4rem;color:#000}p{color:#6f6a62;font-size:1.08rem;line-height:1.5;margin:0 0 22px}.btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}button{border:none;border-radius:16px;padding:13px 20px;font:inherit;font-weight:700;cursor:pointer;transition:.18s}button:hover{transform:translateY(-1px)}.back{background:#d9a441;color:#2a1d0d}.mapa{background:rgba(63,122,90,.12);color:#2f5a4d;border:1px solid rgba(63,122,90,.3)}</style>
-</head><body>
-<div class="box">
-  <h1>Máquina Fina de Prosa <small style="font-size:1.2rem">v2</small></h1>
-  <p>Refinamento narrativo ativo — versão 2. Módulo em desenvolvimento dentro do Celeiro Literário.</p>
-  <div class="btns">
-    <button class="back" onclick="window.location.href='lapidar.html'">← Retornar ao Lapidar</button>
-    <button class="mapa" onclick="window.location.href='pagina_respiro.html'">🗺️ Mapa do Celeiro</button>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Máquina Fina de Prosa — Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e1a12;--surface:#121e16;--card:#17231a;--line:#1e3025;
+  --txt:#f0f5f0;--muted:#7a9880;--soft:#b8d0c0;
+  --verde:#3f7a5a;--verde2:#5aab7a;--verde3:#8ad4a8;
+  --ouro:#d8a84c;--ouro2:#f0cc80;
+  --shadow:0 16px 48px rgba(0,0,0,.5);--radius:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;background:var(--bg);color:var(--txt);font-family:'DM Sans',Georgia,serif;}
+
+.topbar{position:sticky;top:0;z-index:30;background:rgba(14,26,18,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--verde),var(--verde2));display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 16px rgba(63,122,90,.4);}
+.brand-text h1{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--txt);line-height:1;}
+.brand-text p{font-size:.78rem;color:var(--muted);margin-top:2px;}
+.top-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{border:none;border-radius:11px;padding:9px 15px;font:600 .86rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+.btn:hover{transform:translateY(-1px);}
+.btn-verde{background:var(--verde);color:#fff;}
+.btn-amber{background:#d4a44c;color:#1a1000;}
+.btn-red{background:#d44c4c;color:#fff;}
+.btn-ghost{background:rgba(255,255,255,.07);color:var(--soft);border:1px solid var(--line);}
+
+.wrap{max-width:1100px;margin:0 auto;padding:22px 18px 60px;display:grid;grid-template-columns:300px minmax(0,1fr);gap:16px;align-items:start;}
+
+/* PAINEL */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;padding:18px;position:sticky;top:76px;}
+.panel h2{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--verde3);}
+.panel-sec{display:flex;flex-direction:column;gap:7px;}
+.panel-sec label{font-size:.74rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+.select,.input{width:100%;border:1.5px solid var(--line);border-radius:11px;background:var(--surface);color:var(--txt);padding:9px 11px;font:inherit;font-size:.9rem;outline:none;transition:border-color .2s;}
+.select:focus,.input:focus{border-color:var(--verde2);}
+.select option{background:var(--surface);}
+.status-box{font-size:.82rem;border-radius:11px;padding:9px 11px;background:rgba(63,122,90,.1);border:1px solid rgba(63,122,90,.2);color:var(--verde3);line-height:1.4;min-height:40px;}
+
+/* MODOS GRID */
+.modos-refino{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.modo-refino{border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:8px;cursor:pointer;font:600 .78rem 'DM Sans',sans-serif;color:var(--muted);text-align:center;transition:.14s;}
+.modo-refino:hover{border-color:var(--verde2);color:var(--verde3);}
+.modo-refino.ativo{border-color:var(--verde2);background:rgba(63,122,90,.15);color:var(--verde2);}
+
+/* MAIN */
+.main{display:flex;flex-direction:column;gap:14px;}
+.box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
+.box h2{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:14px;color:var(--soft);}
+.box h3{font-size:.95rem;font-weight:700;margin-bottom:10px;color:var(--muted);}
+
+/* ESTIMULO RECEBIDO */
+.estimulo-recebido{background:rgba(63,122,90,.08);border:1px solid rgba(63,122,90,.2);border-radius:14px;padding:14px;font-style:italic;font-size:.93rem;color:var(--verde3);line-height:1.6;min-height:48px;}
+
+/* EDITOR */
+.editor{width:100%;min-height:280px;border:1.5px solid var(--line);border-radius:14px;padding:16px;resize:vertical;background:var(--surface);color:var(--txt);font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;line-height:1.7;outline:none;}
+.editor:focus{border-color:var(--verde2);}
+
+/* BARRA AÇÃO */
+.acao-bar{display:flex;gap:10px;flex-wrap:wrap;}
+.btn-processar{flex:1;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--verde),var(--verde2));color:#fff;font:700 .95rem 'DM Sans',sans-serif;cursor:pointer;transition:.16s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 20px rgba(63,122,90,.3);}
+.btn-processar:hover{transform:translateY(-2px);}
+.btn-processar:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* SPINNER */
+.spin{display:none;text-align:center;padding:20px;color:var(--verde2);font-style:italic;animation:pulse 1.5s infinite;}
+.spin.vis{display:block;}
+@keyframes pulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+
+/* RESULTADO */
+.resultado-box{display:none;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:18px;}
+.resultado-box.vis{display:block;}
+.resultado-texto{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;line-height:1.8;color:var(--txt);white-space:pre-wrap;}
+.resultado-nota{margin-top:14px;padding:12px 14px;background:rgba(63,122,90,.08);border:1px solid rgba(63,122,90,.2);border-radius:12px;font-size:.85rem;color:var(--verde3);line-height:1.55;font-style:italic;}
+
+/* TABS */
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.tab{border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 14px;font:600 .82rem 'DM Sans',sans-serif;color:var(--muted);cursor:pointer;transition:.14s;}
+.tab:hover{border-color:var(--verde2);color:var(--verde3);}
+.tab.ativo{border-color:var(--verde2);background:rgba(63,122,90,.15);color:var(--verde2);}
+
+/* VERSÕES */
+.versoes-lista{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow:auto;}
+.versao-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px;}
+.versao-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.versao-num{font-size:.72rem;font-weight:700;color:var(--verde2);background:rgba(63,122,90,.15);padding:2px 8px;border-radius:999px;}
+.versao-modo{font-size:.72rem;color:var(--muted);}
+.versao-texto{font-size:.88rem;color:var(--soft);line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.versao-vazia{color:var(--muted);font-style:italic;font-size:.88rem;}
+
+/* AÇÕES RESULTADO */
+.acoes-resultado{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.btn-acao{border:none;border-radius:11px;padding:10px 14px;font:600 .84rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;}
+.btn-acao:hover{transform:translateY(-1px);}
+.btn-copiar  {background:rgba(255,255,255,.1);color:var(--soft);border:1px solid var(--line);}
+.btn-lapidar {background:var(--ouro);color:#1a1000;}
+.btn-nova    {background:var(--verde);color:#fff;}
+.btn-estimulo{background:rgba(255,255,255,.07);color:var(--muted);border:1px solid var(--line);}
+
+@media(max-width:900px){.wrap{grid-template-columns:1fr;}.panel{position:relative;top:auto;}}
+@media(max-width:560px){.modos-refino{grid-template-columns:1fr;}.acao-bar{flex-direction:column;}.acoes-resultado{flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">📖</div>
+    <div class="brand-text">
+      <h1>Máquina Fina de Prosa</h1>
+      <p>Celeiro Literário · Refinamento e desenvolvimento narrativo</p>
+    </div>
+  </div>
+  <div class="top-btns">
+    <a class="btn btn-ghost" href="maquina_estimulos_narrativos.html">← Estímulos</a>
+    <a class="btn btn-amber" href="lapidar.html">Lapidar</a>
+    <a class="btn btn-red"   href="pagina_respiro_celeiro.html">Sair</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- PAINEL -->
+  <aside class="panel">
+    <h2>⚙️ Controles</h2>
+    <div class="status-box" id="statusBox">Aguardando texto ou estímulo.</div>
+
+    <div class="panel-sec">
+      <label>Tipo de obra</label>
+      <select class="select" id="tipoObra">
+        <option value="conto">Conto</option>
+        <option value="romance" selected>Romance / Capítulo</option>
+        <option value="cronica">Crônica</option>
+        <option value="flash">Flash fiction</option>
+        <option value="sci-fi">Ficção Científica</option>
+        <option value="terror">Terror</option>
+        <option value="fantasia">Fantasia / Medieval</option>
+        <option value="realismo_magico">Realismo Mágico</option>
+        <option value="policial">Policial / Noir</option>
+        <option value="distopia">Distopia / Utopia</option>
+      </select>
+    </div>
+
+    <div class="panel-sec">
+      <label>Tempo narrativo</label>
+      <select class="select" id="tempoNarrativo">
+        <option value="presente">Presente</option>
+        <option value="passado" selected>Passado</option>
+        <option value="futuro">Futuro</option>
+        <option value="atemporal">Atemporal</option>
+      </select>
+    </div>
+
+    <div class="panel-sec">
+      <label>Voz narrativa</label>
+      <select class="select" id="vozNarrativa">
+        <option value="primeira" selected>1ª pessoa</option>
+        <option value="terceira">3ª pessoa</option>
+        <option value="segunda">2ª pessoa</option>
+        <option value="multipla">Múltiplas vozes</option>
+      </select>
+    </div>
+
+    <div class="panel-sec">
+      <label>Extensão do resultado</label>
+      <select class="select" id="extensao">
+        <option value="curto">Curto (1 parágrafo)</option>
+        <option value="medio" selected>Médio (3-4 parágrafos)</option>
+        <option value="longo">Longo (6-8 parágrafos)</option>
+      </select>
+    </div>
+
+    <div class="panel-sec">
+      <label>Modo de refinamento</label>
+      <div class="modos-refino" id="modosRefino">
+        <div class="modo-refino ativo" data-modo="desenvolver"  onclick="setModoRefino('desenvolver',this)">Desenvolver</div>
+        <div class="modo-refino"      data-modo="reescrever"   onclick="setModoRefino('reescrever',this)">Reescrever</div>
+        <div class="modo-refino"      data-modo="continuar"    onclick="setModoRefino('continuar',this)">Continuar</div>
+        <div class="modo-refino"      data-modo="lapidar"      onclick="setModoRefino('lapidar',this)">Lapidar</div>
+        <div class="modo-refino"      data-modo="intensificar" onclick="setModoRefino('intensificar',this)">Intensificar</div>
+        <div class="modo-refino"      data-modo="simplificar"  onclick="setModoRefino('simplificar',this)">Simplificar</div>
+      </div>
+    </div>
+
+    <div class="panel-sec">
+      <button class="btn btn-verde" style="width:100%" onclick="limpar()">✕ Limpar tudo</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- ESTÍMULO RECEBIDO -->
+    <div class="box">
+      <h2>✦ Estímulo / Ideia-base</h2>
+      <div class="estimulo-recebido" id="estimuloRecebido">Nenhum estímulo recebido. Cole um estímulo abaixo ou venha da Máquina de Estímulos.</div>
+    </div>
+
+    <!-- EDITOR -->
+    <div class="box">
+      <h2>Seu texto</h2>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:12px;">Cole seu rascunho, o estímulo recebido, ou comece do zero. A máquina vai trabalhar com o que você escreveu.</p>
+      <textarea class="editor" id="textoEditor" placeholder="Escreva ou cole seu texto aqui..."></textarea>
+      <div class="acao-bar" style="margin-top:12px;">
+        <button class="btn-processar" id="btnProcessar" onclick="processar()">
+          <span id="btnIco">📖</span>
+          <span id="btnTxt">Processar com IA</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- SPINNER -->
+    <div class="spin" id="spinWrap">✦ A Máquina Fina está trabalhando no seu texto...</div>
+
+    <!-- RESULTADO -->
+    <div class="resultado-box" id="resultadoBox">
+      <div class="tabs" id="tabsResultado">
+        <div class="tab ativo" onclick="mostrarTab('resultado',this)">Resultado</div>
+        <div class="tab"       onclick="mostrarTab('versoes',this)">Versões anteriores</div>
+      </div>
+
+      <!-- TAB RESULTADO -->
+      <div id="tabResultado">
+        <div class="resultado-texto" id="resultadoTexto"></div>
+        <div class="resultado-nota" id="resultadoNota"></div>
+        <div class="acoes-resultado">
+          <button class="btn-acao btn-copiar"   onclick="copiar()">📋 Copiar texto</button>
+          <button class="btn-acao btn-nova"     onclick="usarComoBase()">↺ Usar como base</button>
+          <a      class="btn-acao btn-lapidar"  href="lapidar_pensante.html">✦ Lapidar Pensante</a>
+          <a      class="btn-acao btn-estimulo" href="maquina_estimulos_narrativos.html">← Novos estímulos</a>
+        </div>
+      </div>
+
+      <!-- TAB VERSÕES -->
+      <div id="tabVersoes" style="display:none;">
+        <div class="versoes-lista" id="versoesLista">
+          <span class="versao-vazia">Nenhuma versão anterior ainda.</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
-</body></html>
+
+<script>
+const $=id=>document.getElementById(id);
+let modoRefino='desenvolver';
+let versoes=[];
+
+// ── RECEBER ESTÍMULO VIA URL ────────────────────────────────────────────────
+window.addEventListener('load',()=>{
+  const params = new URLSearchParams(window.location.search);
+  const estimulo = params.get('estimulo');
+  if(estimulo){
+    $('estimuloRecebido').textContent = decodeURIComponent(estimulo);
+    $('textoEditor').value = decodeURIComponent(estimulo);
+    $('statusBox').textContent = '✓ Estímulo recebido da Máquina de Estímulos.';
+  }
+  // também tenta localStorage
+  const ls = localStorage.getItem('maquina_estimulo_atual');
+  if(ls && !estimulo){
+    $('estimuloRecebido').textContent = ls;
+    $('textoEditor').value = ls;
+  }
+});
+
+function setModoRefino(modo, el){
+  modoRefino = modo;
+  document.querySelectorAll('.modo-refino').forEach(b=>b.classList.remove('ativo'));
+  el.classList.add('ativo');
+}
+
+function mostrarTab(tab, el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('ativo'));
+  el.classList.add('ativo');
+  $('tabResultado').style.display = tab==='resultado'?'block':'none';
+  $('tabVersoes').style.display   = tab==='versoes'?'block':'none';
+}
+
+async function processar(){
+  const texto = $('textoEditor').value.trim();
+  if(!texto){ $('statusBox').textContent='Cole ou escreva um texto primeiro.'; return; }
+
+  const tipo   = $('tipoObra').value;
+  const tempo  = $('tempoNarrativo').value;
+  const voz    = $('vozNarrativa').value;
+  const ext    = $('extensao').value;
+  const estimulo = $('estimuloRecebido').textContent;
+
+  const extMap = {curto:'1 parágrafo denso',medio:'3 a 4 parágrafos',longo:'6 a 8 parágrafos'};
+  const modoMap = {
+    desenvolver:`Desenvolva o texto, expandindo as ideias centrais com riqueza narrativa`,
+    reescrever: `Reescreva completamente preservando a essência, mas com nova força estilística`,
+    continuar:  `Continue o texto a partir do ponto onde parou, mantendo tom e voz`,
+    lapidar:    `Lapide o texto: melhore o ritmo, as imagens e a precisão das palavras sem alterar o conteúdo`,
+    intensificar:`Intensifique a carga emocional e narrativa do texto`,
+    simplificar:`Simplifique sem perder profundidade — torne o texto mais direto e limpo`,
+  };
+
+  $('btnProcessar').disabled=true;
+  $('spinWrap').classList.add('vis');
+  $('resultadoBox').classList.remove('vis');
+
+  const prompt=`Você é a Máquina Fina de Prosa do Celeiro Literário — um refinador literário especializado em prosa brasileira.
+
+MODO: ${modoMap[modoRefino]||'Desenvolva o texto'}
+TIPO DE OBRA: ${tipo}
+TEMPO NARRATIVO: ${tempo}
+VOZ NARRATIVA: ${voz} pessoa
+EXTENSÃO: ${extMap[ext]}
+${estimulo && estimulo!=='Nenhum estímulo recebido.'?`ESTÍMULO/IDEIA-BASE: ${estimulo}`:''}
+
+TEXTO DO ESCRITOR:
+${texto}
+
+INSTRUÇÕES:
+- ${modoMap[modoRefino]}
+- Mantenha a voz e o estilo do escritor como referência
+- Use linguagem literária rica e precisa
+- Respeite o tempo narrativo (${tempo}) e a voz (${voz} pessoa)
+- Extensão: ${extMap[ext]}
+- Escreva apenas em português brasileiro
+
+Retorne APENAS o texto processado, seguido de uma linha em branco e depois uma nota do tipo:
+[NOTA DA MÁQUINA]: Uma observação editorial curta sobre o que foi feito e uma sugestão para o escritor continuar.`;
+
+  try{
+    const r = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    const d = await r.json();
+    const full = d.content.map(b=>b.text||'').join('');
+    const partes = full.split('[NOTA DA MÁQUINA]:');
+    const texto_res = partes[0].trim();
+    const nota_res  = partes[1]?.trim()||'';
+
+    $('resultadoTexto').textContent = texto_res;
+    $('resultadoNota').textContent  = nota_res ? '✦ ' + nota_res : '';
+    $('resultadoBox').classList.add('vis');
+    $('statusBox').textContent = `✓ Modo "${modoRefino}" aplicado com sucesso.`;
+
+    // salvar versão
+    versoes.unshift({modo:modoRefino, tipo, texto:texto_res, ts:new Date().toLocaleTimeString('pt-BR')});
+    renderVersoes();
+    mostrarTab('resultado', document.querySelector('.tab'));
+
+  }catch(e){
+    $('resultadoTexto').textContent='Erro: '+e.message;
+    $('resultadoBox').classList.add('vis');
+  }finally{
+    $('spinWrap').classList.remove('vis');
+    $('btnProcessar').disabled=false;
+  }
+}
+
+function renderVersoes(){
+  const lista=$('versoesLista');
+  if(!versoes.length){lista.innerHTML='<span class="versao-vazia">Nenhuma versão anterior ainda.</span>';return;}
+  lista.innerHTML=versoes.map((v,i)=>`
+    <div class="versao-item">
+      <div class="versao-header">
+        <span class="versao-num">v${versoes.length-i}</span>
+        <span class="versao-modo">${v.modo} · ${v.tipo} · ${v.ts}</span>
+      </div>
+      <div class="versao-texto">${v.texto.substring(0,120)}...</div>
+      <button onclick="restaurarVersao(${i})" style="margin-top:8px;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:8px;padding:4px 10px;font-size:.75rem;cursor:pointer;">Restaurar</button>
+    </div>`).join('');
+}
+
+function restaurarVersao(i){
+  $('textoEditor').value = versoes[i].texto;
+  mostrarTab('resultado', document.querySelector('.tab'));
+}
+
+function usarComoBase(){
+  const t = $('resultadoTexto').textContent;
+  if(t){ $('textoEditor').value=t; $('resultadoBox').classList.remove('vis'); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+function copiar(){
+  navigator.clipboard.writeText($('resultadoTexto').textContent).then(()=>alert('Texto copiado!'));
+}
+function limpar(){
+  $('textoEditor').value='';$('resultadoBox').classList.remove('vis');
+  $('estimuloRecebido').textContent='Nenhum estímulo recebido.';
+  $('statusBox').textContent='Texto limpo.';
+}
+</script>
+</body>
+</html>
