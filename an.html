@@ -4,170 +4,674 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AN — Lapidar Pensante</title>
-
 <style>
 :root{
---bg:#ece8de;
---card:#f7f4ee;
---ink:#1f1f1b;
---muted:#6f6a62;
---line:#ddd6c9;
---accent:#3f7a5a;
---shadow:0 12px 28px rgba(0,0,0,.10);
---radius:24px;
+  --bg:#ece8de;
+  --card:#f7f4ee;
+  --ink:#1f1f1b;
+  --muted:#6f6a62;
+  --line:#ddd6c9;
+  --accent:#3f7a5a;
+  --vermelho:#b94040;
+  --ouro:#c9a646;
+  --shadow:0 12px 28px rgba(0,0,0,.10);
+  --radius:24px;
 }
 
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 
 body{
-min-height:100vh;
-font-family:Georgia,"Times New Roman",serif;
-background:var(--bg);
-color:var(--ink);
-display:flex;
-align-items:center;
-justify-content:center;
-padding:16px;
+  min-height:100vh;
+  font-family:Georgia,'Times New Roman',serif;
+  background:var(--bg);
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:24px 16px 48px;
 }
 
+/* ── CAIXA PRINCIPAL ── */
 .box{
-width:min(92vw,860px);
-background:var(--card);
-border-radius:var(--radius);
-box-shadow:var(--shadow);
-border:1px solid var(--line);
-padding:34px 26px;
-text-align:center;
+  width:min(94vw,860px);
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+  padding:34px 28px;
+  text-align:center;
 }
 
+/* ── TAG ── */
 .tag{
-display:inline-block;
-padding:6px 12px;
-border-radius:999px;
-background:#e4f0e8;
-color:#2f694e;
-font-size:.88rem;
-font-weight:700;
-letter-spacing:.05em;
-text-transform:uppercase;
-margin-bottom:14px;
+  display:inline-block;
+  padding:6px 14px;
+  border-radius:999px;
+  background:#e4f0e8;
+  color:#2f6944;
+  font-size:.88rem;
+  font-weight:700;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  margin-bottom:14px;
 }
 
 h1{
-margin:0 0 12px 0;
-font-size:clamp(2.1rem,5vw,3.4rem);
-line-height:1.05;
-color:#000;
+  margin:0 0 6px;
+  font-size:clamp(2.1rem,5vw,3.2rem);
+  line-height:1.05;
+  color:#000;
+}
+.subtitulo{
+  font-size:1rem;
+  color:var(--muted);
+  margin-bottom:22px;
+  font-style:italic;
 }
 
-p{
-margin:0 0 18px 0;
-color:var(--muted);
-font-size:1.08rem;
-line-height:1.5;
+/* ── ÁREA DE ENTRADA ── */
+.campo-label{
+  text-align:left;
+  font-size:.92rem;
+  font-weight:700;
+  color:var(--ink);
+  margin-bottom:6px;
+  margin-top:20px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.campo-label .dica{
+  font-weight:400;
+  font-style:italic;
+  color:var(--muted);
+  font-size:.82rem;
 }
 
-.note{
-margin:18px 0 0 0;
-padding:14px 16px;
-border:1px dashed #cfc6b8;
-border-radius:16px;
-background:rgba(255,255,255,.45);
-color:#6a645d;
-font-size:1rem;
-line-height:1.45;
+textarea{
+  width:100%;
+  min-height:200px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fffdf8;
+  padding:16px;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:1rem;
+  color:var(--ink);
+  line-height:1.6;
+  resize:vertical;
+  transition:.15s;
+  outline:none;
+}
+textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(63,122,90,.12);}
+
+/* ── OPÇÕES DE ANÁLISE ── */
+.opcoes-titulo{
+  text-align:left;
+  font-size:.92rem;
+  font-weight:700;
+  color:var(--ink);
+  margin:20px 0 10px;
+}
+.opcoes-grade{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:10px;
+  text-align:left;
+  margin-bottom:20px;
+}
+.opcao{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:#fffdf8;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px 14px;
+  cursor:pointer;
+  transition:.15s;
+  font-size:.9rem;
+  color:var(--ink);
+  user-select:none;
+}
+.opcao:hover{border-color:var(--accent);background:#f0f8f4;}
+.opcao input[type=checkbox]{
+  accent-color:var(--accent);
+  width:16px;height:16px;
+  flex-shrink:0;
+}
+.opcao.selecionada{
+  border-color:var(--accent);
+  background:#e8f5ee;
 }
 
+/* ── CONTADOR ── */
+.contador{
+  text-align:right;
+  font-size:.8rem;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+/* ── BOTÕES ── */
 .actions{
-margin-top:24px;
-display:flex;
-gap:12px;
-justify-content:center;
-flex-wrap:wrap;
+  margin-top:24px;
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
 }
-
 .btn{
-border:none;
-border-radius:16px;
-padding:14px 20px;
-font:inherit;
-font-weight:700;
-cursor:pointer;
-transition:.18s ease;
-box-shadow:0 8px 18px rgba(0,0,0,.08);
+  border:none;
+  border-radius:16px;
+  padding:14px 24px;
+  font:inherit;
+  font-weight:700;
+  cursor:pointer;
+  transition:.18s ease;
+  box-shadow:0 8px 18px rgba(0,0,0,.08);
+  font-size:1rem;
 }
+.btn:hover{transform:translateY(-1px);}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 
-.btn:hover{
-transform:translateY(-1px);
+.btn-analisar{
+  background:var(--accent);
+  color:#fff;
+  padding:16px 32px;
+  font-size:1.05rem;
 }
-
+.btn-limpar{
+  background:#e8e3d8;
+  color:var(--ink);
+}
 .btn-back{
-background:#d9a441;
-color:#2a1d0d;
+  background:#d9a441;
+  color:#2a1d0d;
 }
-
 .btn-home{
-background:var(--accent);
-color:#fff;
+  background:var(--accent);
+  color:#fff;
+}
+.btn-respiro{
+  background:rgba(63,122,90,.1);
+  color:var(--accent);
+  border:1px solid rgba(63,122,90,.3);
+  box-shadow:none;
+}
+.btn-respiro:hover{background:rgba(63,122,90,.18);}
+
+/* ── RESULTADO ── */
+.resultado-wrap{
+  margin-top:28px;
+  display:none;
+  text-align:left;
+}
+.resultado-wrap.visivel{display:block;}
+
+.resultado-cabecalho{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.resultado-titulo{
+  font-size:1.1rem;
+  font-weight:700;
+  color:var(--ink);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.badge-camada{
+  display:inline-block;
+  background:#e4f0e8;
+  color:#2f6944;
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  padding:3px 10px;
+  border-radius:999px;
 }
 
-@media (max-width:640px){
-.box{
-padding:28px 18px;
-border-radius:20px;
+.resultado-corpo{
+  background:#fffdf8;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:22px 20px;
+  font-size:.98rem;
+  line-height:1.72;
+  color:var(--ink);
+  white-space:pre-wrap;
+  min-height:80px;
+}
+.resultado-corpo.carregando{
+  color:var(--muted);
+  font-style:italic;
+  animation:pulso .9s ease infinite;
+}
+@keyframes pulso{50%{opacity:.4}}
+
+/* Blocos internos do resultado */
+.resultado-corpo h3{
+  font-family:Georgia,serif;
+  font-size:1rem;
+  color:var(--accent);
+  margin:18px 0 6px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:4px;
+}
+.resultado-corpo strong{color:#2a2a26;}
+
+/* ── MÉTRICAS ── */
+.metricas{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:10px;
+  margin-top:16px;
+}
+.metrica{
+  background:#f0ede6;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px 14px;
+  text-align:center;
+}
+.metrica-valor{
+  font-family:Georgia,serif;
+  font-size:1.4rem;
+  font-weight:700;
+  color:var(--accent);
+  display:block;
+}
+.metrica-nome{
+  font-size:.75rem;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-top:2px;
 }
 
-.actions{
-flex-direction:column;
+/* ── NOTA ORIGINAL ── */
+.note{
+  margin:20px 0 0;
+  padding:14px 16px;
+  border:1px dashed #cfc6b8;
+  border-radius:16px;
+  background:rgba(255,255,255,.45);
+  color:#6a6545;
+  font-size:.9rem;
+  line-height:1.45;
+  text-align:left;
 }
 
-.btn{
-width:100%;
+/* ── PRÓXIMAS CAMADAS ── */
+.proximas{
+  margin-top:22px;
+  padding:16px 18px;
+  background:#e8f5ee;
+  border:1px solid #b8dcc8;
+  border-radius:16px;
+  text-align:left;
 }
+.proximas-titulo{
+  font-weight:700;
+  font-size:.9rem;
+  color:#2f6944;
+  margin-bottom:10px;
+}
+.proximas-lista{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.proxima-btn{
+  text-decoration:none;
+  background:#fff;
+  border:1px solid #b8dcc8;
+  border-radius:999px;
+  padding:6px 14px;
+  font-size:.85rem;
+  color:#2f6944;
+  font-family:Georgia,serif;
+  transition:.15s;
+}
+.proxima-btn:hover{background:#d4eedd;border-color:#6ab88a;}
+
+/* ── RESPONSIVO ── */
+@media(max-width:640px){
+  .box{padding:24px 16px;}
+  .actions{flex-direction:column;}
+  .btn{width:100%;}
+  .opcoes-grade{grid-template-columns:1fr 1fr;}
 }
 </style>
 </head>
-
 <body>
 
 <main class="box">
 
-<div class="tag">Lapidar Pensante — Camada 1</div>
+  <div class="tag">Lapidar Pensante — Camada 1</div>
+  <h1>AN</h1>
+  <p class="subtitulo">Análise Inicial da Obra — primeira leitura leve e diagnóstico estrutural</p>
 
-<h1>AN</h1>
+  <!-- CAMPO DE TEXTO -->
+  <div class="campo-label">
+    Cole seu texto aqui
+    <span class="dica">— trecho, capítulo, poema ou obra completa</span>
+  </div>
+  <textarea id="textoObra"
+    placeholder="Cole aqui o texto da obra que deseja analisar. Pode ser um poema, um conto, um capítulo de romance, um trecho de crônica — qualquer forma literária..."
+    oninput="atualizarContador()"></textarea>
+  <div class="contador" id="contador">0 palavras · 0 caracteres</div>
 
-<p>
-Camada de análise inicial da obra. O AN funciona como a primeira leitura leve:
-ele recebe o material, observa sua estrutura básica e prepara o caminho para as próximas camadas.
-</p>
+  <!-- OPÇÕES DE ANÁLISE -->
+  <div class="opcoes-titulo">O que deseja analisar? <span style="font-weight:400;font-style:italic;color:var(--muted);font-size:.85rem">(escolha uma ou mais)</span></div>
+  <div class="opcoes-grade">
+    <label class="opcao" id="op-estrutura">
+      <input type="checkbox" value="estrutura" checked onchange="toggleOpcao(this)">
+      📐 Estrutura geral
+    </label>
+    <label class="opcao selecionada" id="op-genero">
+      <input type="checkbox" value="genero" checked onchange="toggleOpcao(this)">
+      📚 Gênero literário
+    </label>
+    <label class="opcao" id="op-voz">
+      <input type="checkbox" value="voz" onchange="toggleOpcao(this)">
+      🗣️ Voz narrativa
+    </label>
+    <label class="opcao" id="op-ritmo">
+      <input type="checkbox" value="ritmo" onchange="toggleOpcao(this)">
+      🎵 Ritmo e cadência
+    </label>
+    <label class="opcao" id="op-pontos">
+      <input type="checkbox" value="pontos" onchange="toggleOpcao(this)">
+      ⚡ Pontos fortes
+    </label>
+    <label class="opcao" id="op-sugestoes">
+      <input type="checkbox" value="sugestoes" onchange="toggleOpcao(this)">
+      🔧 Sugestões iniciais
+    </label>
+  </div>
 
-<p>
-Nesta etapa, o sistema poderá reconhecer sinais iniciais como tipo de texto,
-organização geral, presença de capítulos, versos, diálogos, blocos narrativos
-e primeiros indícios de forma editorial.
-</p>
+  <!-- BOTÕES PRINCIPAIS -->
+  <div class="actions">
+    <button class="btn btn-analisar" id="btnAnalisar" onclick="analisar()">
+      🔍 Iniciar Análise AN
+    </button>
+    <button class="btn btn-limpar" onclick="limpar()">
+      ✕ Limpar
+    </button>
+  </div>
 
-<div class="note">
-Placeholder ativo da camada AN. Esta página reserva a primeira camada do Lapidar Pensante
-sem pesar o sistema. O motor interno será desenvolvido depois.
-</div>
+  <!-- RESULTADO -->
+  <div class="resultado-wrap" id="resultadoWrap">
 
-<div class="actions">
+    <div class="resultado-cabecalho">
+      <div class="resultado-titulo">
+        📋 Relatório AN
+        <span class="badge-camada">Camada 1 · Análise Inicial</span>
+      </div>
+      <button class="btn btn-limpar" style="padding:8px 16px;font-size:.85rem" onclick="copiarResultado()">
+        📋 Copiar
+      </button>
+    </div>
 
-<button class="btn btn-back"
-onclick="window.location.href='lapidar_pensante.html'">
-Retornar ao Lapidar Pensante
-</button>
+    <div class="resultado-corpo" id="resultadoCorpo"></div>
 
-<button class="btn btn-home"
-onclick="window.location.href='lapidar_pensante_intro.html'">
-Voltar à explicação
-</button>
+    <div class="metricas" id="metricas"></div>
 
-</div>
+    <!-- Próximas camadas -->
+    <div class="proximas" id="proximasWrap" style="display:none">
+      <div class="proximas-titulo">✦ Próximas camadas do Lapidar Pensante</div>
+      <div class="proximas-lista">
+        <a class="proxima-btn" href="lapidar_pensante.html">🔙 Lapidar Pensante</a>
+        <a class="proxima-btn" href="maquina_fina_poesia.html">🖊️ Máquina Fina de Poesia</a>
+        <a class="proxima-btn" href="maquina_fina_prosa_v2.html">📜 Máquina Fina de Prosa</a>
+        <a class="proxima-btn" href="desbaste_textual_leve.html">✂️ Desbaste Textual</a>
+        <a class="proxima-btn" href="avaliacao_literaria.html">⚖️ Avaliação Literária</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NOTA ORIGINAL PRESERVADA -->
+  <div class="note">
+    <strong>Sobre a Camada AN:</strong> esta é a primeira leitura leve da obra.
+    O AN recebe o material, observa sua estrutura básica e prepara o caminho para as próximas camadas —
+    reconhecendo sinais iniciais como tipo de texto, organização geral, presença de capítulos, versos,
+    diálogos, blocos narrativos e primeiros indícios de forma editorial.
+  </div>
+
+  <!-- NAVEGAÇÃO -->
+  <div class="actions" style="margin-top:28px">
+    <button class="btn btn-back"
+      onclick="window.location.href='lapidar_pensante.html'">
+      ← Lapidar Pensante
+    </button>
+    <button class="btn btn-home"
+      onclick="window.location.href='lapidar_pensante_intro.html'">
+      Voltar à explicação
+    </button>
+    <a class="btn btn-respiro" href="pagina_respiro.html">
+      🗺️ Mapa do Celeiro
+    </a>
+  </div>
 
 </main>
+
+<!-- ════════════════════════════════════
+     JAVASCRIPT — Claude API
+════════════════════════════════════ -->
+<script>
+// ── Contador de palavras ──
+function atualizarContador() {
+  const txt = document.getElementById('textoObra').value.trim();
+  const palavras = txt ? txt.split(/\s+/).length : 0;
+  const chars    = txt.length;
+  document.getElementById('contador').textContent =
+    `${palavras.toLocaleString('pt-BR')} palavra${palavras !== 1 ? 's' : ''} · ${chars.toLocaleString('pt-BR')} caractere${chars !== 1 ? 's' : ''}`;
+}
+
+// ── Toggle opção ──
+function toggleOpcao(checkbox) {
+  checkbox.closest('.opcao').classList.toggle('selecionada', checkbox.checked);
+}
+
+// Marcar as que começam marcadas
+document.querySelectorAll('.opcao input:checked').forEach(cb => {
+  cb.closest('.opcao').classList.add('selecionada');
+});
+
+// ── Montar lista de dimensões pedidas ──
+function dimensoesSelecionadas() {
+  const mapa = {
+    estrutura:  'Estrutura geral do texto (organização, divisões, blocos)',
+    genero:     'Identificação do gênero literário e subgênero',
+    voz:        'Voz narrativa (1ª/3ª pessoa, narrador, ponto de vista)',
+    ritmo:      'Ritmo, cadência e musicalidade do texto',
+    pontos:     'Pontos fortes identificados na obra',
+    sugestoes:  'Sugestões iniciais de lapidação para as próximas camadas',
+  };
+  return Array.from(document.querySelectorAll('.opcao input:checked'))
+    .map(cb => mapa[cb.value])
+    .filter(Boolean);
+}
+
+// ── Calcular métricas básicas ──
+function calcularMetricas(texto) {
+  const palavras   = texto.trim() ? texto.trim().split(/\s+/).length : 0;
+  const paragrafos = texto.split(/\n\s*\n/).filter(p => p.trim()).length;
+  const frases     = texto.split(/[.!?…]+/).filter(f => f.trim()).length;
+  const chars      = texto.length;
+  const temVersos  = texto.split('\n').filter(l => l.trim() && l.trim().split(/\s+/).length < 12).length > palavras * .3;
+  const forma      = temVersos ? 'Verso' : 'Prosa';
+  return { palavras, paragrafos, frases, chars, forma };
+}
+
+// ── Exibir métricas ──
+function exibirMetricas(m) {
+  const wrap = document.getElementById('metricas');
+  wrap.innerHTML = [
+    { v: m.palavras.toLocaleString('pt-BR'), n: 'Palavras' },
+    { v: m.paragrafos, n: 'Parágrafos / Estrofes' },
+    { v: m.frases, n: 'Frases / Versos' },
+    { v: m.forma, n: 'Forma detectada' },
+  ].map(item => `
+    <div class="metrica">
+      <span class="metrica-valor">${item.v}</span>
+      <span class="metrica-nome">${item.n}</span>
+    </div>
+  `).join('');
+}
+
+// ── Analisar ──
+async function analisar() {
+  const texto = document.getElementById('textoObra').value.trim();
+  if (!texto) {
+    alert('Por favor, cole o texto da obra antes de iniciar a análise.');
+    return;
+  }
+  if (texto.split(/\s+/).length < 10) {
+    alert('O texto está muito curto. Cole pelo menos algumas frases ou versos para uma análise significativa.');
+    return;
+  }
+
+  const dims = dimensoesSelecionadas();
+  if (dims.length === 0) {
+    alert('Selecione ao menos uma dimensão de análise.');
+    return;
+  }
+
+  const btn     = document.getElementById('btnAnalisar');
+  const wrap    = document.getElementById('resultadoWrap');
+  const corpo   = document.getElementById('resultadoCorpo');
+  const proximas = document.getElementById('proximasWrap');
+
+  btn.disabled    = true;
+  btn.textContent = '⏳ Analisando…';
+  wrap.classList.add('visivel');
+  corpo.className = 'resultado-corpo carregando';
+  corpo.textContent = 'O AN está realizando a primeira leitura da sua obra…';
+  proximas.style.display = 'none';
+  document.getElementById('metricas').innerHTML = '';
+
+  // Métricas locais imediatas
+  exibirMetricas(calcularMetricas(texto));
+
+  const trecho = texto.length > 4000 ? texto.slice(0, 4000) + '\n\n[... texto truncado para análise inicial ...]' : texto;
+
+  const prompt = `Você é o AN — a Camada 1 do Lapidar Pensante, sistema editorial do Site das Letras Edições Literárias & Multimídia, dentro do Celeiro Literário.
+
+Sua função é realizar a PRIMEIRA LEITURA LEVE da obra: observar sua estrutura básica, identificar o tipo de texto e preparar o caminho para as próximas camadas de lapidação.
+
+O autor solicita análise das seguintes dimensões:
+${dims.map((d, i) => `${i + 1}. ${d}`).join('\n')}
+
+TEXTO DA OBRA:
+"""
+${trecho}
+"""
+
+Produza um relatório AN completo, com linguagem editorial culta, clara e encorajadora. Use este formato exato:
+
+### 📐 Identificação Geral
+[Tipo de texto, gênero, subgênero, extensão estimada da obra completa]
+
+### 🔍 Leitura Estrutural
+[Análise da organização, blocos, divisões, sequência — apenas as dimensões pedidas]
+
+### ✦ Primeiros Indícios Editoriais
+[Sinais que o AN captura: presença de capítulos, versos, diálogos, voz narrativa, ritmo — conforme dimensões pedidas]
+
+### ⚡ Destaques da Primeira Leitura
+[2 a 4 pontos fortes genuínos identificados — apenas se "pontos fortes" foi pedido]
+
+### 🔧 Notas para as Próximas Camadas
+[Observações que o AN repassa para o Lapidar Pensante — sugestões leves, sem julgamento — apenas se "sugestões" foi pedido]
+
+### 📋 Diagnóstico AN
+[Uma frase final de síntese: o AN entrega sua leitura ao Lapidar Pensante]
+
+Seja preciso, literário e encorajador. Esta é a primeira camada — não lapide ainda, apenas leia e registre.`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data  = await response.json();
+    const texto_resposta = data.content?.map(b => b.text || '').join('') || '';
+
+    corpo.className   = 'resultado-corpo';
+    corpo.textContent = texto_resposta;
+    proximas.style.display = 'block';
+
+    // Scroll suave ao resultado
+    wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  } catch (err) {
+    corpo.className   = 'resultado-corpo';
+    corpo.textContent = `⚠️ Não foi possível conectar ao motor de análise.\n\nVerifique a configuração da API e tente novamente.\n\nErro técnico: ${err.message}`;
+  }
+
+  btn.disabled    = false;
+  btn.textContent = '🔍 Iniciar Análise AN';
+}
+
+// ── Copiar resultado ──
+function copiarResultado() {
+  const texto = document.getElementById('resultadoCorpo').textContent;
+  navigator.clipboard.writeText(texto).then(() => {
+    alert('Relatório AN copiado para a área de transferência.');
+  }).catch(() => {
+    alert('Não foi possível copiar automaticamente. Selecione o texto manualmente.');
+  });
+}
+
+// ── Limpar ──
+function limpar() {
+  document.getElementById('textoObra').value = '';
+  document.getElementById('contador').textContent = '0 palavras · 0 caracteres';
+  document.getElementById('resultadoWrap').classList.remove('visivel');
+  document.getElementById('resultadoCorpo').textContent = '';
+  document.getElementById('metricas').innerHTML = '';
+  document.getElementById('proximasWrap').style.display = 'none';
+}
+
+// ── Modo interno Celeiro ──
+(function () {
+  const p = new URLSearchParams(location.search);
+  const interno =
+    p.get('modo') === 'interno' ||
+    p.get('entrada') === 'celeiro' ||
+    localStorage.getItem('celeiro_modo_interno') === 'sim';
+  if (interno) {
+    localStorage.setItem('celeiro_modo_interno', 'sim');
+    document.querySelectorAll('a[href]').forEach(a => {
+      const h = a.getAttribute('href');
+      if (h && !h.startsWith('http') && !h.startsWith('#')) {
+        try {
+          const u = new URL(h, location.href);
+          u.searchParams.set('modo', 'interno');
+          a.href = u.pathname + u.search;
+        } catch(e){}
+      }
+    });
+  }
+})();
+</script>
 
 </body>
 </html>
