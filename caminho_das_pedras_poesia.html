@@ -3,25 +3,129 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Caminho das Pedras — Trilha Poesia</title>
+<title>Trilha Poesia — Caminho das Pedras</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;900&display=swap" rel="stylesheet">
 <style>
-:root{--azul:#07101d;--azul2:#10294a;--ouro:#d6b354;--ouro2:#f5df8f;--papel:#fffaf0;--texto:#111827;--verde:#184b30;--vermelho:#8b1e1e}*{box-sizing:border-box}body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#07101d,#10294a 45%,#efe2c7);color:var(--texto)}.hero{padding:42px 18px;text-align:center;color:#fff5cf;border-bottom:8px solid var(--ouro)}.hero h1{font-size:clamp(40px,8vw,74px);margin:0;color:var(--ouro2)}.hero p{font-size:22px}.wrap{max-width:1120px;margin:auto;padding:30px 18px 70px}.palco,.card{background:rgba(255,250,240,.96);border:2px solid var(--ouro);border-radius:30px;padding:26px;box-shadow:0 18px 50px rgba(0,0,0,.25);margin-bottom:24px}.avatar{display:grid;grid-template-columns:190px 1fr;gap:24px;align-items:center}.avatar-img{width:180px;border-radius:24px;border:5px solid var(--ouro);background:#07101d;box-shadow:0 12px 30px rgba(0,0,0,.25);overflow:hidden}.avatar-img img{width:100%;display:block}.fala{background:white;border:1px solid #e2c873;border-radius:24px;padding:24px;font-size:21px;line-height:1.45}.destaque{background:#07101d;color:#fff5cf;border-left:8px solid var(--ouro);border-radius:22px;padding:22px;font-size:24px;text-align:center}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.modulos{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.modulo{background:white;border:1px solid #e2c873;border-radius:20px;padding:18px}.modulo strong{display:block;color:#07101d;font-size:20px;margin-bottom:8px}.chips{display:flex;flex-wrap:wrap;gap:10px}.chip{background:#fff;border:2px solid var(--ouro);border-radius:999px;padding:9px 14px;font-family:Arial,sans-serif;font-weight:bold}.btn{display:inline-block;text-decoration:none;border-radius:999px;padding:14px 24px;font-weight:900;font-family:Arial,sans-serif;margin:8px;background:var(--ouro);color:#111;box-shadow:0 6px 0 #8a6b00}.btn.verde{background:#1f7a42;color:white;box-shadow:0 6px 0 #0f4d27}.btn.sair{background:#8b1e1e;color:white;box-shadow:0 6px 0 #4d0e0e}.acoes{text-align:center;margin-top:26px}.rodape{background:#07101d;color:#fff5cf;text-align:center;padding:24px;border-top:6px solid var(--ouro)}@media(max-width:900px){.avatar,.grid{grid-template-columns:1fr}.avatar-img{margin:auto}.modulos{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.modulos{grid-template-columns:1fr}.fala{font-size:18px}.destaque{font-size:20px}}
+  :root {
+    --ouro: #C9A84C; --branco-perola: #F5F0E8; --cinza-suave: #9CA3AF;
+    --verde-nav: #16A34A; --vermelho-nav: #DC2626;
+    /* Trilha Poesia — marrom dourado claro */
+    --cor1: #2A1E0A; --cor2: #3A2A10; --cor3: #4A3520; --cor4: #5A4530;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: linear-gradient(160deg, var(--cor1) 0%, var(--cor2) 35%, var(--cor3) 65%, var(--cor4) 100%); color:var(--branco-perola); font-family:'Cormorant Garamond',serif; min-height:100vh; }
+  body::before { content:''; position:fixed; inset:0; background: radial-gradient(ellipse at 25% 25%, rgba(201,168,76,0.1) 0%, transparent 50%), radial-gradient(ellipse at 75% 75%, rgba(201,168,76,0.06) 0%, transparent 50%); pointer-events:none; z-index:0; }
+  .stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .star { position:absolute; background:white; border-radius:50%; animation:twinkle var(--d,3s) ease-in-out infinite; opacity:var(--o,0.3); }
+  @keyframes twinkle { 0%,100%{opacity:var(--o,0.3)}50%{opacity:0.05} }
+  .container { position:relative; z-index:1; max-width:600px; margin:0 auto; padding:24px 16px 100px; }
+  .btn-voltar { display:inline-flex; align-items:center; gap:8px; background:transparent; border:1px solid rgba(201,168,76,0.3); color:var(--ouro); padding:10px 18px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; margin-bottom:28px; }
+  .btn-voltar:hover { background:rgba(201,168,76,0.1); }
+  .guia-principal { background:rgba(0,0,0,0.35); border:1px solid rgba(201,168,76,0.2); border-radius:16px; padding:24px; display:flex; align-items:flex-start; gap:18px; margin-bottom:32px; }
+  .guia-foto { width:90px; height:90px; border-radius:50%; object-fit:cover; border:2px solid rgba(201,168,76,0.4); flex-shrink:0; }
+  .guia-tag { font-family:'Cinzel',serif; font-size:9px; letter-spacing:3px; color:var(--ouro); opacity:0.7; margin-bottom:6px; }
+  .guia-nome { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--branco-perola); margin-bottom:8px; }
+  .guia-fala { font-size:14px; font-style:italic; color:var(--cinza-suave); line-height:1.7; }
+  .dept-header { text-align:center; margin-bottom:32px; }
+  .dept-subtitulo { font-family:'Cinzel',serif; font-size:10px; letter-spacing:4px; color:var(--ouro); opacity:0.7; margin-bottom:10px; }
+  .dept-titulo { font-family:'Playfair Display',serif; font-size:clamp(28px,6vw,42px); font-weight:900; color:var(--branco-perola); margin-bottom:8px; }
+  .dept-desc { font-style:italic; font-size:14px; color:var(--cinza-suave); line-height:1.7; max-width:440px; margin:0 auto; }
+  .linha-divisora { width:100px; height:1px; background:linear-gradient(90deg, transparent, var(--ouro), transparent); margin:16px auto; }
+  .secao { margin-bottom:28px; }
+  .secao-titulo { font-family:'Cinzel',serif; font-size:10px; letter-spacing:3px; color:var(--ouro); opacity:0.7; margin-bottom:14px; border-left:2px solid var(--ouro); padding-left:12px; }
+  .formas-grid { display:flex; flex-wrap:wrap; gap:8px; }
+  .forma-tag { background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.2); color:var(--ouro); padding:6px 12px; border-radius:20px; font-family:'Cinzel',serif; font-size:9px; letter-spacing:1px; }
+  .modulos-lista { display:flex; flex-direction:column; gap:8px; }
+  .modulo-item { background:rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:14px 16px; display:flex; align-items:flex-start; gap:14px; }
+  .modulo-num { font-family:'Cinzel',serif; font-size:11px; color:var(--ouro); opacity:0.7; flex-shrink:0; width:28px; height:28px; text-align:center; border:1px solid rgba(201,168,76,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; }
+  .modulo-titulo { font-family:'Cinzel',serif; font-size:10px; letter-spacing:1px; color:var(--branco-perola); margin-bottom:4px; }
+  .modulo-texto { font-size:13px; color:var(--cinza-suave); font-style:italic; line-height:1.5; }
+  .info-box { background:rgba(0,0,0,0.25); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; margin-bottom:10px; }
+  .info-box-titulo { font-family:'Cinzel',serif; font-size:9px; letter-spacing:2px; color:var(--ouro); opacity:0.7; margin-bottom:6px; }
+  .info-box-texto { font-size:13px; color:var(--cinza-suave); line-height:1.6; font-style:italic; }
+  .info-box-texto strong { color:var(--branco-perola); font-style:normal; }
+  .btn-inscricao { display:flex; align-items:center; justify-content:center; gap:10px; background:var(--verde-nav); color:white; padding:16px; border-radius:8px; font-family:'Cinzel',serif; font-size:12px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; margin-bottom:12px; box-shadow:0 4px 20px rgba(22,163,74,0.3); }
+  .btn-inscricao:hover { background:#15803d; transform:translateY(-2px); }
+  .nav-rodape { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
+  .btn-reclamacao { display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(220,38,38,0.1); border:1px solid rgba(220,38,38,0.25); color:#FCA5A5; padding:12px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; }
+  .btn-reclamacao:hover { background:rgba(220,38,38,0.2); }
+  .btn-sair { display:flex; align-items:center; justify-content:center; gap:8px; background:transparent; border:1px solid rgba(156,163,175,0.2); color:var(--cinza-suave); padding:12px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; }
+  .btn-sair:hover { border-color:rgba(220,38,38,0.4); color:#FCA5A5; }
+  .rodape-inst { text-align:center; margin-top:20px; font-family:'Cinzel',serif; font-size:8px; letter-spacing:2px; color:var(--ouro); opacity:0.3; }
 </style>
 </head>
 <body>
-<header class="hero"><h1>Trilha Poesia</h1><p>Caminho das Pedras — Formação profunda de autores poéticos</p></header>
-<main class="wrap">
-<section class="palco"><div class="avatar"><div class="avatar-img"><img src="file_000000005c14720ead5fab70cd868287.png" alt="Senhor Pena"></div><div class="fala"><p><strong>Eu sou o Senhor Pena.</strong></p><p>A Trilha Poesia do Caminho das Pedras é uma formação autoral completa para poetas, poetisas e criadores que desejam aprofundar linguagem, ritmo, imagem, voz, tradição, estrofe e presença literária.</p><p>O Diretor Lápis apresenta o caminho. Aqui, eu conduzo você pelo trabalho poético, da escuta interior à construção consciente de uma obra poética com identidade autoral.</p></div></div></section>
-<section class="card"><div class="destaque">Este não é um curso de escrita criativa genérica. É uma formação estruturada e profunda de autores poéticos.</div></section>
-<section class="grid">
-<div class="card"><h2>Formas poéticas trabalhadas</h2><p>O participante aprende a reconhecer e experimentar formas poéticas tradicionais, contemporâneas e autorais.</p><div class="chips"><span class="chip">Haicai</span><span class="chip">Soneto</span><span class="chip">Sextina</span><span class="chip">Pantum</span><span class="chip">Ghazal</span><span class="chip">Elegia</span><span class="chip">Limerick</span><span class="chip">Verso livre</span><span class="chip">Cordel</span><span class="chip">Sextilha</span></div></div>
-<div class="card"><h2>Novo Movimento Estrofista</h2><p>O Novo Movimento Estrofista é eixo essencial desta trilha. O estudante será apresentado à lógica estrofista autoral, à organização das estrofes, à progressão formal e à construção de poesia como arquitetura viva.</p><div class="chips"><span class="chip">Estrofe</span><span class="chip">Ritmo</span><span class="chip">Forma</span><span class="chip">Movimento autoral</span><span class="chip">Identidade poética</span></div></div>
-</section>
-<section class="card"><h2>Máquina de Estímulos Narrativos e Poéticos</h2><p>Durante a formação, o participante aprende a utilizar a Máquina de Estímulos como ferramenta de desbloqueio criativo, geração de imagens poéticas, ampliação de temas, organização de ciclos, construção de vozes e desenvolvimento de conjuntos poéticos.</p></section>
-<section class="card"><h2>Lonely Eagle na Poesia</h2><p>Na certificação da Trilha Poesia, <strong>Lonely Eagle</strong> representa a dimensão autoral heteronímica da poesia, ao lado do Senhor Pena e da direção pedagógica do Caminho das Pedras.</p></section>
-<section class="card"><h2>Os 8 módulos da Trilha Poesia</h2><div class="modulos"><div class="modulo"><strong>Módulo 1</strong>Fundamentos da linguagem poética.</div><div class="modulo"><strong>Módulo 2</strong>Ritmo, imagem, escuta e voz poética.</div><div class="modulo"><strong>Módulo 3</strong>Estrofe, forma e arquitetura do poema.</div><div class="modulo"><strong>Módulo 4</strong>Tradição poética, repertório e leitura orientada.</div><div class="modulo"><strong>Módulo 5</strong>Formas poéticas: haicai, soneto, sextina, pantum, ghazal, cordel e outras estruturas.</div><div class="modulo"><strong>Módulo 6</strong>Novo Movimento Estrofista: criação, organização e identidade estrofista.</div><div class="modulo"><strong>Módulo 7</strong>Projeto de livro de poesia e consolidação autoral.</div><div class="modulo"><strong>Módulo 8</strong>Circulação poética, preparação editorial e integração com Celeiro, Lapidar e SIGMAL.</div></div></section>
-<section class="grid"><div class="card"><h2>Valores</h2><p><strong>À vista:</strong> R$ 700 no Brasil / US$ 700 no exterior.</p><p><strong>Parcelado pedagógico:</strong> R$ 1.000 no Brasil / US$ 1.000 no exterior, em 4 pagamentos sequenciais. Cada pagamento libera 2 módulos.</p></div><div class="card"><h2>Certificação</h2><p>O certificado é emitido somente após a conclusão integral dos 8 módulos, sempre com o nome do cursante e a categoria de formação: Trilha Poesia.</p></div></section>
-<div class="acoes"><a class="btn verde" href="sigmal_formulario_inscricao.html?area=Caminho%20das%20Pedras%20-%20Trilha%20Poesia">Inscrever-se na Trilha Poesia</a><a class="btn" href="caminho_das_pedras.html?modo=interno">Voltar ao Caminho das Pedras</a><a class="btn" href="mailto:celeiroliterariositedasletras@gmail.com?subject=Reclama%C3%A7%C3%A3o%20-%20Trilha%20Poesia">Falar com a CICILE</a><a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair do sistema</a></div>
-</main><footer class="rodape"><strong>Trilha Poesia</strong><br>Caminho das Pedras — Instituto Cultural Celeiro Literário</footer>
+<div class="stars" id="stars"></div>
+<div class="container">
+
+  <a href="caminho_das_pedras.html" class="btn-voltar">← Caminho das Pedras</a>
+
+  <div class="guia-principal">
+    <img class="guia-foto" src="file_000000005c14720ead5fab70cd868287.png" alt="Senhor Pena" onerror="this.style.display='none'">
+    <div>
+      <p class="guia-tag">✦ MESTRE DA LINHA POÉTICA ✦</p>
+      <p class="guia-nome">Senhor Pena</p>
+      <p class="guia-fala">O verso é a voz da eternidade. Esta não é uma formação genérica — é uma jornada profunda de linguagem, forma e voz. Da escuta interior à construção consciente de uma obra poética com identidade autoral.</p>
+    </div>
+  </div>
+
+  <div class="dept-header">
+    <p class="dept-subtitulo">✦ CAMINHO DAS PEDRAS ✦</p>
+    <h1 class="dept-titulo">Trilha Poesia</h1>
+    <div class="linha-divisora"></div>
+    <p class="dept-desc">Formação autoral completa para poetas — 8 módulos progressivos com foco em forma, ritmo, voz e identidade poética.</p>
+  </div>
+
+  <div class="secao">
+    <p class="secao-titulo">FORMAS POÉTICAS TRABALHADAS</p>
+    <div class="formas-grid">
+      <span class="forma-tag">Haicai</span><span class="forma-tag">Soneto</span>
+      <span class="forma-tag">Sextina</span><span class="forma-tag">Pantum</span>
+      <span class="forma-tag">Ghazal</span><span class="forma-tag">Elegia</span>
+      <span class="forma-tag">Limerick</span><span class="forma-tag">Verso Livre</span>
+      <span class="forma-tag">Cordel</span><span class="forma-tag">Sextilha</span>
+      <span class="forma-tag">Oitava Real</span>
+      <span class="forma-tag">Novo Movimento Estrofista</span>
+    </div>
+  </div>
+
+  <div class="secao">
+    <p class="secao-titulo">OS 8 MÓDULOS</p>
+    <div class="modulos-lista">
+      <div class="modulo-item"><span class="modulo-num">1</span><div><p class="modulo-titulo">FUNDAMENTOS</p><p class="modulo-texto">Fundamentos da linguagem poética — escuta, imagem e presença</p></div></div>
+      <div class="modulo-item"><span class="modulo-num">2</span><div><p class="modulo-titulo">RITMO E VOZ</p><p class="modulo-texto">Ritmo, imagem, escuta e voz poética — construção do som interno</p></div></div>
+      <div class="modulo-item"><span class="modulo-num">3</span><div><p class="modulo-titulo">ESTROFE E FORMA</p><p class="modulo-texto">Estrofe, forma e arquitetura do poema — organização e progressão</p></div></div>
+      <div class="modulo-item"><span class="modulo-num">4</span><div><p class="modulo-titulo">TRADIÇÃO</p><p class="modulo-texto">Tradição poética, repertório e leitura orientada — diálogo com o cânone</p></div></div>
+      <div class="modulo-item"><span class="modulo-num">5</span><div><p class="modulo-titulo">FORMAS CLÁSSICAS</p><p class="modulo-texto">Haicai, soneto, sextina, pantum, ghazal, cordel, sextilha e outras estruturas</p></div></div>
+      <div class="modulo-item"><span class="modulo-num">6</span><div><p class="modulo-titulo">NOVO MOVIMENTO ESTROFISTA</p><p class="modulo-texto">Criação, organização e identidade estrofista — eixo essencial da trilha</p></div></div>
+      <div class="modulo-item"><span class="modulo-num">7</span><div><p class="modulo-titulo">PROJETO DE LIVRO</p><p class="modulo-texto">Projeto de livro de poesia e consolidação autoral — da obra ao mundo</p></div></div>
+      <div class="modulo-item"><span class="modulo-num">8</span><div><p class="modulo-titulo">CIRCULAÇÃO</p><p class="modulo-texto">Circulação poética, preparação editorial e integração com Celeiro, Lapidar e SIGMAL</p></div></div>
+    </div>
+  </div>
+
+  <div class="secao">
+    <p class="secao-titulo">INFORMAÇÕES</p>
+    <div class="info-box">
+      <p class="info-box-titulo">✦ CERTIFICAÇÃO</p>
+      <p class="info-box-texto">Emitida após conclusão integral dos <strong>8 módulos</strong>. Todo material é exclusivo dos Heterônimos do Site das Letras — nenhum autor externo.</p>
+    </div>
+    <div class="info-box">
+      <p class="info-box-titulo">✦ BOLSA TRAJANO ESTRADA</p>
+      <p class="info-box-texto"><strong>1 mês gratuito</strong> de orientação de trajetória, editais, concursos e oportunidades literárias.</p>
+    </div>
+  </div>
+
+  <a href="sigmal_formulario_inscricao.html?area=Trilha+Poesia" class="btn-inscricao">✦ Inscrever-se na Trilha Poesia</a>
+
+  <div class="nav-rodape">
+    <a href="cicile_reclamacao.html?departamento=Trilha%20Poesia" class="btn-reclamacao">⚑ Reclamação</a>
+    <a href="celeiro_entrada.html" class="btn-sair">✕ Sair do Celeiro</a>
+  </div>
+  <p class="rodape-inst">✦ CELEIRO LITERÁRIO · SITE DAS LETRAS EDIÇÕES LITERÁRIAS ✦</p>
+</div>
+<script>
+  const sc=document.getElementById('stars');
+  for(let i=0;i<50;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--o:${Math.random()*0.3+0.05};animation-delay:${Math.random()*4}s;`;sc.appendChild(s);}
+</script>
 </body>
 </html>
