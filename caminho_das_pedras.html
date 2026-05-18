@@ -4,35 +4,122 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Caminho das Pedras — Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;900&display=swap" rel="stylesheet">
 <style>
-:root{--azul:#07101d;--azul2:#10294a;--ouro:#d6b354;--ouro2:#f5df8f;--papel:#fffaf0;--texto:#111827;--verde:#184b30;--vermelho:#8b1e1e}*{box-sizing:border-box}body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#07101d,#10294a 48%,#efe2c7);color:var(--texto)}.hero{padding:42px 18px;text-align:center;color:#fff5cf;border-bottom:8px solid var(--ouro)}.hero h1{font-size:clamp(42px,8vw,76px);margin:0;color:var(--ouro2)}.hero p{font-size:22px;margin:10px 0 0}.wrap{max-width:1120px;margin:auto;padding:30px 18px 70px}.palco{background:rgba(255,250,240,.96);border:2px solid var(--ouro);border-radius:30px;padding:26px;box-shadow:0 18px 50px rgba(0,0,0,.28);margin-bottom:24px}.avatar{display:grid;grid-template-columns:190px 1fr;gap:24px;align-items:center}.avatar-img{width:180px;border-radius:24px;border:5px solid var(--ouro);background:#07101d;box-shadow:0 12px 30px rgba(0,0,0,.25);overflow:hidden}.avatar-img img{width:100%;display:block}.fala{background:white;border:1px solid #e2c873;border-radius:24px;padding:24px;font-size:21px;line-height:1.45}.fala strong{color:#07101d}.trilhas{display:grid;grid-template-columns:1fr 1fr;gap:22px}.trilha{background:#fffaf0;border:3px solid var(--ouro);border-radius:26px;padding:28px;box-shadow:0 14px 36px rgba(0,0,0,.22);text-align:center}.trilha img{width:100%;max-width:310px;border-radius:22px;border:3px solid var(--ouro);margin-bottom:16px}.trilha h2{font-size:38px;margin:0 0 8px;color:#07101d}.trilha p{font-size:19px;line-height:1.4}.btn{display:inline-block;text-decoration:none;border-radius:999px;padding:14px 24px;font-weight:900;font-family:Arial,sans-serif;margin:8px;background:var(--ouro);color:#111;box-shadow:0 6px 0 #8a6b00}.btn.prosseguir{background:#1f7a42;color:white;box-shadow:0 6px 0 #0f4d27}.btn.voltar{background:#d6b354;color:#111}.btn.mapa{background:rgba(31,122,66,.12);color:#184b30;border:1px solid rgba(31,122,66,.35);box-shadow:none}.btn.sair{background:#8b1e1e;color:white;box-shadow:0 6px 0 #4d0e0e}.info{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}.mini{background:white;border:1px solid #e2c873;border-radius:20px;padding:20px}.mini h3{margin-top:0;color:#07101d}.acoes{text-align:center;margin-top:26px}.rodape{background:#07101d;color:#fff5cf;text-align:center;padding:24px;border-top:6px solid var(--ouro)}@media(max-width:760px){.avatar{grid-template-columns:1fr;text-align:center}.avatar-img{margin:auto}.trilhas,.info{grid-template-columns:1fr}.fala{font-size:18px}.trilha h2{font-size:32px}}
+  :root {
+    --ouro: #C9A84C; --branco-perola: #F5F0E8; --cinza-suave: #9CA3AF;
+    --verde-nav: #16A34A; --vermelho-nav: #DC2626;
+    --cor1: #1A0F06; --cor2: #2A1A0A; --cor3: #3A2A1A; --cor4: #4A3520;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: linear-gradient(160deg, var(--cor1) 0%, var(--cor2) 35%, var(--cor3) 65%, var(--cor4) 100%); color: var(--branco-perola); font-family: 'Cormorant Garamond', serif; min-height: 100vh; }
+  body::before { content:''; position:fixed; inset:0; background: radial-gradient(ellipse at 30% 20%, rgba(201,168,76,0.08) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(201,168,76,0.05) 0%, transparent 50%); pointer-events:none; z-index:0; }
+  .stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .star { position:absolute; background:white; border-radius:50%; animation:twinkle var(--d,3s) ease-in-out infinite; opacity:var(--o,0.3); }
+  @keyframes twinkle { 0%,100%{opacity:var(--o,0.3)}50%{opacity:0.05} }
+  .container { position:relative; z-index:1; max-width:600px; margin:0 auto; padding:24px 16px 100px; }
+  .btn-voltar { display:inline-flex; align-items:center; gap:8px; background:transparent; border:1px solid rgba(201,168,76,0.3); color:var(--ouro); padding:10px 18px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; margin-bottom:28px; }
+  .btn-voltar:hover { background:rgba(201,168,76,0.1); }
+  .guia-principal { background:rgba(0,0,0,0.35); border:1px solid rgba(201,168,76,0.2); border-radius:16px; padding:24px; display:flex; align-items:flex-start; gap:18px; margin-bottom:32px; }
+  .guia-foto { width:90px; height:90px; border-radius:50%; object-fit:cover; border:2px solid rgba(201,168,76,0.4); flex-shrink:0; }
+  .guia-tag { font-family:'Cinzel',serif; font-size:9px; letter-spacing:3px; color:var(--ouro); opacity:0.7; margin-bottom:6px; }
+  .guia-nome { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--branco-perola); margin-bottom:8px; }
+  .guia-fala { font-size:14px; font-style:italic; color:var(--cinza-suave); line-height:1.7; }
+  .dept-header { text-align:center; margin-bottom:32px; }
+  .dept-subtitulo { font-family:'Cinzel',serif; font-size:10px; letter-spacing:4px; color:var(--ouro); opacity:0.7; margin-bottom:10px; }
+  .dept-titulo { font-family:'Playfair Display',serif; font-size:clamp(28px,6vw,42px); font-weight:900; color:var(--branco-perola); margin-bottom:8px; }
+  .dept-desc { font-style:italic; font-size:14px; color:var(--cinza-suave); line-height:1.7; max-width:440px; margin:0 auto; }
+  .linha-divisora { width:100px; height:1px; background:linear-gradient(90deg, transparent, var(--ouro), transparent); margin:16px auto; }
+  .info-grid { display:flex; flex-direction:column; gap:10px; margin-bottom:32px; }
+  .info-box { background:rgba(0,0,0,0.25); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; }
+  .info-box-titulo { font-family:'Cinzel',serif; font-size:9px; letter-spacing:2px; color:var(--ouro); opacity:0.7; margin-bottom:6px; }
+  .info-box-texto { font-size:13px; color:var(--cinza-suave); line-height:1.6; font-style:italic; }
+  .info-box-texto strong { color:var(--branco-perola); font-style:normal; }
+  .secao-titulo { font-family:'Cinzel',serif; font-size:10px; letter-spacing:3px; color:var(--ouro); opacity:0.7; margin-bottom:16px; border-left:2px solid var(--ouro); padding-left:12px; }
+  .trilhas-grid { display:flex; flex-direction:column; gap:16px; margin-bottom:32px; }
+  .trilha-card { border-radius:14px; padding:22px; display:flex; align-items:center; gap:18px; text-decoration:none; color:inherit; transition:all 0.3s ease; border:1px solid rgba(255,255,255,0.08); position:relative; overflow:hidden; }
+  .trilha-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 60%); opacity:0; transition:opacity 0.3s ease; }
+  .trilha-card:hover::before { opacity:1; }
+  .trilha-card:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(0,0,0,0.4); border-color:rgba(201,168,76,0.3); }
+  .trilha-poesia { background: linear-gradient(135deg, #2A1E0A 0%, #3A2A10 50%, #4A3520 100%); }
+  .trilha-prosa { background: linear-gradient(135deg, #1A0A08 0%, #2A1210 50%, #3A1A14 100%); }
+  .trilha-foto { width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid rgba(201,168,76,0.3); flex-shrink:0; }
+  .trilha-info { flex:1; }
+  .trilha-tag { font-family:'Cinzel',serif; font-size:8px; letter-spacing:2px; color:var(--ouro); opacity:0.7; margin-bottom:4px; }
+  .trilha-nome { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--branco-perola); margin-bottom:4px; }
+  .trilha-desc { font-size:12px; color:var(--cinza-suave); font-style:italic; line-height:1.5; }
+  .trilha-seta { color:var(--ouro); font-size:20px; opacity:0.6; transition:all 0.3s ease; }
+  .trilha-card:hover .trilha-seta { opacity:1; transform:translateX(4px); }
+  .nav-rodape { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+  .btn-reclamacao { display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(220,38,38,0.1); border:1px solid rgba(220,38,38,0.25); color:#FCA5A5; padding:12px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; }
+  .btn-reclamacao:hover { background:rgba(220,38,38,0.2); }
+  .btn-sair { display:flex; align-items:center; justify-content:center; gap:8px; background:transparent; border:1px solid rgba(156,163,175,0.2); color:var(--cinza-suave); padding:12px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; }
+  .btn-sair:hover { border-color:rgba(220,38,38,0.4); color:#FCA5A5; }
+  .rodape-inst { text-align:center; margin-top:20px; font-family:'Cinzel',serif; font-size:8px; letter-spacing:2px; color:var(--ouro); opacity:0.3; }
 </style>
 </head>
 <body>
-<header class="hero"><h1>Caminho das Pedras</h1><p>Formação autoral em Prosa e Poesia</p></header>
-<main class="wrap">
-<section class="palco"><div class="avatar"><div class="avatar-img"><img src="file_00000000c784720e8e82aaa0b55f714b.png" alt="Diretor Lápis"></div><div class="fala">
-<p><strong>Eu sou o Diretor Lápis.</strong></p>
-<p>Bem-vindo ao Caminho das Pedras, método de formação autoral progressiva criado para orientar escritores e criadores literários no desenvolvimento consciente de sua linguagem, de sua técnica e de sua identidade artística.</p>
-<p>Aqui você poderá escolher entre duas trilhas principais: <strong>Trilha Poesia</strong>, conduzida pelo Mestre Pena, e <strong>Trilha Prosa</strong>, conduzida pela Senhorita Kaneta.</p>
-<p>Cada trilha foi organizada para acompanhar o autor desde os fundamentos até o domínio avançado da escrita. O percurso completo é organizado em <strong>8 módulos formativos</strong>, com duração pedagógica prevista de até <strong>24 meses</strong>, respeitando o ritmo individual de cada autor.</p>
-<p>Durante a formação, o participante recebe acesso orientado à <strong>Máquina de Estímulos Narrativos</strong>, ferramenta de apoio criativo para construção de textos, ideias e projetos autorais.</p>
-<p>Ao ingressar, o participante recebe <strong>1 mês gratuito de acompanhamento de trajetória autoral</strong> com Trajano Estrada, voltado para concursos, editais e oportunidades literárias.</p>
-<p><strong>Valores:</strong> à vista, <strong>R$ 700 no Brasil / US$ 700 no exterior</strong>. Parcelado pedagógico: <strong>R$ 1.000 no Brasil / US$ 1.000 no exterior</strong>, em <strong>4 pagamentos sequenciais</strong>. Cada pagamento libera <strong>2 módulos</strong>.</p>
-<p>O certificado de formação só é emitido após a conclusão integral dos <strong>8 módulos</strong>, sempre com o nome do cursante e a categoria de formação correspondente à trilha escolhida.</p>
-<p><strong>Agora escolha sua trilha de formação.</strong></p>
-</div></div></section>
-<section class="trilhas">
-<div class="trilha"><img src="file_000000005c14720ead5fab70cd868287.png" alt="Senhor Pena"><h2>Trilha Poesia</h2><p>Conduzida pelo <strong>Senhor Pena</strong>, para poetas, poetisas e autores que desejam aprofundar voz, forma, ritmo, imagem poética, estrofe e tradição.</p><a class="btn prosseguir" href="caminho_das_pedras_poesia.html?modo=interno">Entrar na Trilha Poesia</a></div>
-<div class="trilha"><img src="file_0000000044d471f594f8db3ae2d6043f.png" alt="Senhorita Kaneta"><h2>Trilha Prosa</h2><p>Conduzida pela <strong>Senhorita Kaneta</strong>, para escritores e escritoras que desejam desenvolver narrativa, personagem, estrutura, ritmo, cenas e capítulos.</p><a class="btn prosseguir" href="caminho_das_pedras_prosa.html?modo=interno">Entrar na Trilha Prosa</a></div>
-</section>
-<section class="info"><div class="mini"><h3>Certificado</h3><p>Emitido somente após conclusão integral dos 8 módulos, sempre com nome do cursante e categoria de formação.</p></div><div class="mini"><h3>Bolsa Trajano Estrada</h3><p>1 mês gratuito de orientação de trajetória autoral, concursos, editais e oportunidades.</p></div><div class="mini"><h3>Pagamento sequencial</h3><p>4 pagamentos. Cada pagamento libera 2 módulos até completar os 8 módulos da trilha.</p></div></section>
-<div class="acoes">
-  <a class="btn mapa" href="pagina_respiro.html">🗺️ Mapa do Celeiro</a>
-  <a class="btn" href="cicile_reclamacao.html?departamento=Caminho%20das%20Pedras">Reclamar com a CICILE</a>
-  <a class="btn sair" href="portal_instituto_celeiro_literario.html">Sair do sistema</a>
+<div class="stars" id="stars"></div>
+<div class="container">
+  <a href="celeiro_hall.html" class="btn-voltar">← Hall do Celeiro</a>
+  <div class="guia-principal">
+    <img class="guia-foto" src="file_00000000c784720e8e82aaa0b55f714b.png" alt="Diretor Lapiz" onerror="this.style.display='none'">
+    <div>
+      <p class="guia-tag">✦ DIRETOR PEDAGÓGICO E ARQUITETO ✦</p>
+      <p class="guia-nome">Diretor Lapiz</p>
+      <p class="guia-fala">Bem-vindo ao Caminho das Pedras. Aqui você escolhe entre a Trilha Poesia, conduzida pelo Senhor Pena, e a Trilha Prosa, conduzida pela Senhorita Kaneta. Cada trilha tem 8 módulos formativos, respeitando o ritmo individual de cada autor. Ensinar é abrir estradas. Guiar é transformar destinos.</p>
+    </div>
+  </div>
+  <div class="dept-header">
+    <p class="dept-subtitulo">✦ FORMAÇÃO & TRAJETÓRIA ✦</p>
+    <h1 class="dept-titulo">Caminho das Pedras</h1>
+    <div class="linha-divisora"></div>
+    <p class="dept-desc">Formação autoral em Poesia e Prosa — 8 módulos progressivos, ritmo individual, até 24 meses de jornada.</p>
+  </div>
+  <div class="info-grid">
+    <div class="info-box">
+      <p class="info-box-titulo">✦ ESTRUTURA</p>
+      <p class="info-box-texto"><strong>8 módulos formativos</strong> · Duração de até <strong>24 meses</strong> · Ritmo individual · Duas trilhas disponíveis</p>
+    </div>
+    <div class="info-box">
+      <p class="info-box-titulo">✦ CERTIFICAÇÃO</p>
+      <p class="info-box-texto">Emitida somente após conclusão integral dos <strong>8 módulos</strong>, com nome do cursante e categoria da trilha. Todo material é exclusivo dos Heterônimos do Site das Letras.</p>
+    </div>
+    <div class="info-box">
+      <p class="info-box-titulo">✦ BOLSA TRAJANO ESTRADA</p>
+      <p class="info-box-texto"><strong>1 mês gratuito</strong> de orientação de trajetória autoral, concursos, editais e oportunidades literárias.</p>
+    </div>
+  </div>
+  <p class="secao-titulo">ESCOLHA SUA TRILHA</p>
+  <div class="trilhas-grid">
+    <a href="caminho_das_pedras_poesia.html" class="trilha-card trilha-poesia">
+      <img class="trilha-foto" src="file_000000005c14720ead5fab70cd868287.png" alt="Senhor Pena" onerror="this.style.display='none'">
+      <div class="trilha-info">
+        <p class="trilha-tag">✦ MESTRE DA LINHA POÉTICA</p>
+        <p class="trilha-nome">Trilha Poesia</p>
+        <p class="trilha-desc">Conduzida pelo Senhor Pena — Haicai · Soneto · Sextina · Pantum · Cordel · Novo Movimento Estrofista</p>
+      </div>
+      <span class="trilha-seta">→</span>
+    </a>
+    <a href="caminho_das_pedras_prosa.html" class="trilha-card trilha-prosa">
+      <img class="trilha-foto" src="file_0000000044d471f594f8db3ae2d6043f.png" alt="Senhorita Kaneta" onerror="this.style.display='none'">
+      <div class="trilha-info">
+        <p class="trilha-tag">✦ PROFESSORA DA LINHA DE PROSA</p>
+        <p class="trilha-nome">Trilha Prosa</p>
+        <p class="trilha-desc">Conduzida pela Senhorita Kaneta — Romance · Conto · Crônica · Narrativa · Estrutura Dramática</p>
+      </div>
+      <span class="trilha-seta">→</span>
+    </a>
+  </div>
+  <div class="nav-rodape">
+    <a href="cicile_reclamacao.html?departamento=Caminho%20das%20Pedras" class="btn-reclamacao">⚑ Reclamação</a>
+    <a href="celeiro_entrada.html" class="btn-sair">✕ Sair do Celeiro</a>
+  </div>
+  <p class="rodape-inst">✦ CELEIRO LITERÁRIO · SITE DAS LETRAS EDIÇÕES LITERÁRIAS ✦</p>
 </div>
-</main>
-<footer class="rodape"><strong>Caminho das Pedras</strong><br>Instituto Cultural Celeiro Literário</footer>
+<script>
+  const sc=document.getElementById('stars');
+  for(let i=0;i<50;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--o:${Math.random()*0.3+0.05};animation-delay:${Math.random()*4}s;`;sc.appendChild(s);}
+</script>
 </body>
 </html>
