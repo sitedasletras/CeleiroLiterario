@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escrita Inclusiva — Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e18;--surface:#10141f;--card:#161c2a;--line:#202840;
+  --txt:#f4f2f8;--muted:#7a88a8;--soft:#b8c4d8;
+  --azul:#3a7abd;--azul2:#5a9add;--verde:#2f8a5a;--verde2:#4ab87a;
+  --roxo:#6a4ab8;--roxo2:#8a6ad8;--rosa:#b84a7a;--rosa2:#d87aa8;
+  --ouro:#d8a84c;--ouro2:#f0cc80;
+  --shadow:0 16px 48px rgba(0,0,0,.5);--radius:22px;
+  --fonte-base:1.1rem;--espaco-base:1.8;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;background:var(--bg);color:var(--txt);font-family:'DM Sans',Georgia,serif;font-size:var(--fonte-base);}
+
+/* ACESSIBILIDADE GLOBAL */
+body.fonte-grande{--fonte-base:1.3rem;}
+body.fonte-muito-grande{--fonte-base:1.6rem;}
+body.alto-contraste{--bg:#000;--surface:#0a0a0a;--card:#111;--line:#333;--txt:#fff;--muted:#ccc;--soft:#eee;}
+body.modo-escuro-suave{--bg:#1a1a2e;--card:#16213e;--surface:#0f3460;}
+*:focus{outline:3px solid var(--azul2);outline-offset:3px;}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:30;background:rgba(10,14,24,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-icon{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--azul),var(--roxo));display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 4px 16px rgba(58,122,189,.35);}
+.brand-text h1{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--txt);line-height:1;}
+.brand-text p{font-size:.75rem;color:var(--muted);margin-top:2px;}
+.top-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{border:none;border-radius:12px;padding:10px 16px;font:600 .88rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;min-height:44px;}
+.btn:hover{transform:translateY(-1px);}
+.btn-azul{background:var(--azul);color:#fff;}
+.btn-amber{background:#d4a44c;color:#1a1000;}
+.btn-red{background:#c44c4c;color:#fff;}
+.btn-ghost{background:rgba(255,255,255,.07);color:var(--soft);border:1px solid var(--line);}
+
+/* CONTROLES ACESSIBILIDADE */
+.acess-bar{background:rgba(255,255,255,.04);border-bottom:1px solid var(--line);padding:8px 20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.acess-label{font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-right:4px;}
+.acess-btn{border:1.5px solid var(--line);background:var(--surface);border-radius:9px;padding:6px 12px;font:600 .78rem 'DM Sans',sans-serif;color:var(--muted);cursor:pointer;transition:.14s;min-height:36px;}
+.acess-btn:hover,.acess-btn.ativo{border-color:var(--azul2);background:rgba(58,122,189,.15);color:var(--azul2);}
+.acess-sep{width:1px;height:24px;background:var(--line);margin:0 4px;}
+
+/* LAYOUT */
+.wrap{max-width:1100px;margin:0 auto;padding:20px 18px 60px;display:flex;flex-direction:column;gap:16px;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,rgba(58,122,189,.1),rgba(106,74,184,.08),rgba(47,138,90,.06));border:1px solid rgba(58,122,189,.2);border-radius:var(--radius);padding:26px;text-align:center;}
+.hero h2{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:10px;color:var(--ouro2);}
+.hero p{color:var(--muted);font-size:.95rem;line-height:1.65;max-width:680px;margin:0 auto;}
+
+/* MODOS DE DEFICIÊNCIA */
+.modos-titulo{font-size:.75rem;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;text-align:center;}
+.modos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;}
+.modo-card{border:2px solid var(--line);background:var(--surface);border-radius:16px;padding:16px 12px;cursor:pointer;text-align:center;transition:.18s ease;display:flex;flex-direction:column;align-items:center;gap:8px;min-height:100px;}
+.modo-card:hover{transform:translateY(-2px);}
+.modo-card.ativo{border-color:var(--azul2);}
+.modo-ico{font-size:1.8rem;}
+.modo-nome{font:700 .88rem 'DM Sans',sans-serif;}
+.modo-desc{font-size:.72rem;color:var(--muted);line-height:1.3;}
+
+/* INTERFACE ADAPTATIVA */
+.interface-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;display:none;}
+.interface-box.vis{display:block;}
+.interface-titulo{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+
+/* VOZ */
+.voz-area{display:flex;flex-direction:column;align-items:center;gap:16px;padding:10px 0;}
+.btn-microfone{width:120px;height:120px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--azul),var(--roxo));color:#fff;font-size:2.5rem;cursor:pointer;transition:.2s;box-shadow:0 8px 28px rgba(58,122,189,.4);display:flex;align-items:center;justify-content:center;}
+.btn-microfone:hover{transform:scale(1.06);}
+.btn-microfone.gravando{background:linear-gradient(135deg,#c44c4c,#a83030);animation:pulseMic 1s infinite;}
+@keyframes pulseMic{0%,100%{box-shadow:0 8px 28px rgba(196,76,76,.4);}50%{box-shadow:0 8px 48px rgba(196,76,76,.7),0 0 0 12px rgba(196,76,76,.15);}}
+.voz-status{font-size:.9rem;color:var(--muted);font-style:italic;}
+.transcricao-box{width:100%;min-height:80px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;font-family:'Playfair Display',serif;font-size:1rem;line-height:1.7;color:var(--soft);}
+
+/* TECLADO ADAPTADO */
+.teclado-editor{width:100%;min-height:180px;border:2px solid var(--line);border-radius:14px;padding:16px;background:var(--surface);color:var(--txt);font-family:'Playfair Display',serif;font-size:1.1rem;line-height:1.8;outline:none;resize:vertical;}
+.teclado-editor:focus{border-color:var(--azul2);}
+.teclas-rapidas{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.tecla{border:2px solid var(--line);background:var(--surface);border-radius:11px;padding:10px 16px;font:600 .88rem 'DM Sans',sans-serif;color:var(--soft);cursor:pointer;transition:.14s;min-height:44px;min-width:44px;}
+.tecla:hover{border-color:var(--azul2);background:rgba(58,122,189,.15);color:var(--azul2);}
+
+/* CLIQUE MÍNIMO */
+.clique-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.clique-btn{border:2px solid var(--line);background:var(--surface);border-radius:16px;padding:20px;font:600 1rem 'DM Sans',sans-serif;color:var(--soft);cursor:pointer;transition:.16s;min-height:80px;display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;}
+.clique-btn:hover,.clique-btn:focus{border-color:var(--azul2);background:rgba(58,122,189,.15);color:var(--azul2);}
+.pergunta-ia{background:rgba(58,122,189,.08);border:1px solid rgba(58,122,189,.2);border-radius:14px;padding:16px;font-size:1.1rem;color:var(--azul2);line-height:1.6;margin-bottom:12px;font-style:italic;}
+
+/* FRAGMENTOS */
+.fragmento-area{display:flex;flex-direction:column;gap:10px;}
+.fragmento-input{width:100%;padding:13px 16px;border:2px solid var(--line);border-radius:13px;background:var(--surface);color:var(--txt);font:'DM Sans',sans-serif;font-size:1rem;outline:none;min-height:60px;}
+.fragmento-input:focus{border-color:var(--verde2);}
+.btn-add-fragmento{padding:12px 20px;border:none;border-radius:12px;background:var(--verde);color:#fff;font:700 .9rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;}
+.btn-add-fragmento:hover{background:var(--verde2);}
+.fragmentos-lista{display:flex;flex-direction:column;gap:8px;}
+.fragmento-item{background:rgba(47,138,90,.07);border:1px solid rgba(47,138,90,.2);border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;}
+.fragmento-num{font-size:.72rem;font-weight:700;color:var(--verde2);background:rgba(47,138,90,.15);padding:2px 7px;border-radius:999px;flex-shrink:0;margin-top:2px;}
+.fragmento-txt{font-size:.93rem;color:var(--soft);line-height:1.5;flex:1;}
+.btn-rem{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:2px 6px;border-radius:6px;transition:.12s;}
+.btn-rem:hover{color:#c44c4c;background:rgba(196,76,76,.1);}
+
+/* TEXTO DESENVOLVIDO */
+.desenvolvimento-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:18px;display:none;}
+.desenvolvimento-box.vis{display:block;}
+.dev-titulo{font-family:'Playfair Display',serif;font-size:1rem;color:var(--ouro2);margin-bottom:12px;}
+.dev-texto{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;line-height:1.9;color:var(--txt);white-space:pre-wrap;}
+.dev-nota{margin-top:12px;padding:12px 14px;background:rgba(58,122,189,.07);border:1px solid rgba(58,122,189,.18);border-radius:12px;font-size:.85rem;color:var(--azul2);line-height:1.55;font-style:italic;}
+
+/* SPINNER */
+.spin{display:none;text-align:center;padding:18px;color:var(--azul2);font-style:italic;animation:pulse 1.5s infinite;}
+.spin.vis{display:block;}
+@keyframes pulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+
+/* AÇÕES */
+.acoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+.btn-acao{border:none;border-radius:11px;padding:12px 16px;font:600 .88rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;min-height:46px;}
+.btn-acao:hover{transform:translateY(-1px);}
+.btn-processar{background:linear-gradient(135deg,var(--azul),var(--roxo));color:#fff;box-shadow:0 6px 20px rgba(58,122,189,.3);}
+.btn-copiar   {background:rgba(255,255,255,.1);color:var(--soft);border:1px solid var(--line);}
+.btn-lapidar  {background:var(--ouro);color:#1a1000;}
+.btn-respiro  {background:linear-gradient(135deg,var(--verde),var(--verde2));color:#fff;}
+
+/* LEITORA DE TELA */
+.leitor-box{background:rgba(106,74,184,.08);border:1px solid rgba(106,74,184,.2);border-radius:14px;padding:16px;margin-top:12px;}
+.leitor-box h4{font-size:.88rem;font-weight:700;color:var(--roxo2);margin-bottom:8px;}
+.leitor-controles{display:flex;gap:8px;flex-wrap:wrap;}
+.btn-leitor{border:1.5px solid rgba(106,74,184,.3);background:rgba(106,74,184,.1);border-radius:10px;padding:8px 14px;font:600 .82rem 'DM Sans',sans-serif;color:var(--roxo2);cursor:pointer;transition:.14s;min-height:40px;}
+.btn-leitor:hover{background:rgba(106,74,184,.2);}
+
+/* PROGRESSO NARRATIVO */
+.progresso{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;}
+.progresso h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--soft);margin-bottom:12px;}
+.prog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;}
+.prog-item{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;}
+.prog-val{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--azul2);line-height:1;}
+.prog-lbl{font-size:.7rem;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.04em;}
+
+/* TIPS */
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;}
+.tip{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;font-size:.85rem;color:var(--muted);line-height:1.5;}
+.tip strong{color:var(--soft);display:block;margin-bottom:4px;font-size:.9rem;}
+
+@media(max-width:680px){
+  .modos-grid{grid-template-columns:1fr 1fr;}
+  .clique-grid{grid-template-columns:1fr;}
+  .acoes,.top-btns{flex-direction:column;}
+  .btn,.btn-acao{width:100%;justify-content:center;}
+  .acess-bar{gap:6px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar" role="banner">
+  <div class="brand">
+    <div class="brand-icon" aria-hidden="true">✍️</div>
+    <div class="brand-text">
+      <h1>Escrita Inclusiva</h1>
+      <p>Celeiro Literário · Para cada escritor, do seu jeito</p>
+    </div>
+  </div>
+  <div class="top-btns">
+    <a class="btn btn-ghost"  href="lapidar.html" aria-label="Retornar ao Lapidar">← Lapidar</a>
+    <a class="btn btn-respiro" href="pagina_respiro_celeiro.html" aria-label="Página de Respiro">🌿 Respiro</a>
+    <a class="btn btn-red"    href="pagina_respiro_celeiro.html" aria-label="Sair do sistema">Sair</a>
+  </div>
+</header>
+
+<!-- BARRA DE ACESSIBILIDADE -->
+<div class="acess-bar" role="toolbar" aria-label="Controles de acessibilidade">
+  <span class="acess-label">Acessibilidade:</span>
+  <button class="acess-btn" onclick="setFonte('normal')"   aria-label="Fonte normal">A</button>
+  <button class="acess-btn" onclick="setFonte('grande')"   aria-label="Fonte grande">A+</button>
+  <button class="acess-btn" onclick="setFonte('muito-grande')" aria-label="Fonte muito grande">A++</button>
+  <div class="acess-sep" aria-hidden="true"></div>
+  <button class="acess-btn" onclick="setContraste()" aria-label="Alto contraste" id="btnContraste">◑ Contraste</button>
+  <button class="acess-btn" onclick="lerTela()"      aria-label="Ler página em voz alta">🔊 Ler tela</button>
+  <button class="acess-btn" onclick="pausarLeitura()" aria-label="Pausar leitura">⏸ Pausar</button>
+  <div class="acess-sep" aria-hidden="true"></div>
+  <button class="acess-btn" onclick="aumentarEspaco()" aria-label="Aumentar espaçamento">↕ Espaço</button>
+</div>
+
+<div class="wrap" role="main">
+
+  <!-- HERO -->
+  <div class="hero" role="region" aria-label="Introdução">
+    <h2>Escrita Inclusiva</h2>
+    <p>Esta máquina foi feita para que <strong>qualquer pessoa</strong> possa criar e desenvolver histórias — independente de limitações motoras, visuais, auditivas ou cognitivas. Escolha o modo que melhor se adapta à sua realidade.</p>
+  </div>
+
+  <!-- MODOS -->
+  <div role="region" aria-label="Escolha seu modo de escrita">
+    <div class="modos-titulo">✦ Como você prefere escrever hoje?</div>
+    <div class="modos-grid" id="modosGrid">
+      <div class="modo-card" role="button" tabindex="0" aria-pressed="false" data-modo="voz" onclick="setModo('voz',this)" onkeydown="if(event.key==='Enter')setModo('voz',this)">
+        <span class="modo-ico" aria-hidden="true">🎙️</span>
+        <span class="modo-nome">Pela Voz</span>
+        <span class="modo-desc">Fale e a IA escreve. Para quem tem dificuldade de digitar.</span>
+      </div>
+      <div class="modo-card" role="button" tabindex="0" aria-pressed="false" data-modo="teclado" onclick="setModo('teclado',this)" onkeydown="if(event.key==='Enter')setModo('teclado',this)">
+        <span class="modo-ico" aria-hidden="true">⌨️</span>
+        <span class="modo-nome">Teclado Adaptado</span>
+        <span class="modo-desc">Teclas grandes, comandos rápidos. Para slow typing.</span>
+      </div>
+      <div class="modo-card" role="button" tabindex="0" aria-pressed="false" data-modo="cliques" onclick="setModo('cliques',this)" onkeydown="if(event.key==='Enter')setModo('cliques',this)">
+        <span class="modo-ico" aria-hidden="true">👁️</span>
+        <span class="modo-nome">Cliques Mínimos</span>
+        <span class="modo-desc">Interface simplificada. A IA guia com perguntas simples.</span>
+      </div>
+      <div class="modo-card" role="button" tabindex="0" aria-pressed="false" data-modo="fragmentos" onclick="setModo('fragmentos',this)" onkeydown="if(event.key==='Enter')setModo('fragmentos',this)">
+        <span class="modo-ico" aria-hidden="true">🧩</span>
+        <span class="modo-nome">Fragmentos</span>
+        <span class="modo-desc">Envie pedaços de ideias. A IA constrói a história.</span>
+      </div>
+      <div class="modo-card" role="button" tabindex="0" aria-pressed="false" data-modo="ditado" onclick="setModo('ditado',this)" onkeydown="if(event.key==='Enter')setModo('ditado',this)">
+        <span class="modo-ico" aria-hidden="true">📝</span>
+        <span class="modo-nome">Ditado + Refino</span>
+        <span class="modo-desc">Cole texto bruto (voz-texto). A IA refina e desenvolve.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODO: VOZ -->
+  <div class="interface-box" id="modo-voz" role="region" aria-label="Modo de escrita por voz">
+    <div class="interface-titulo">🎙️ Escrita pela Voz</div>
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px;line-height:1.55;">Clique no botão e fale. Sua voz será transcrita e desenvolvida pela IA em texto literário.</p>
+    <div class="voz-area">
+      <button class="btn-microfone" id="btnMic" onclick="toggleVoz()" aria-label="Iniciar gravação de voz" aria-live="polite">🎙️</button>
+      <div class="voz-status" id="vozStatus" aria-live="polite">Clique no microfone para começar</div>
+    </div>
+    <div style="margin-top:16px;">
+      <label style="font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px;">Transcrição / Cole o texto falado</label>
+      <div class="transcricao-box" id="vozTexto" contenteditable="true" aria-label="Área de transcrição de voz" aria-multiline="true" role="textbox">O texto transcrito aparecerá aqui. Você também pode colar texto de qualquer aplicativo de voz...</div>
+    </div>
+    <div style="margin-top:12px;">
+      <label style="font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px;">O que a IA deve fazer?</label>
+      <select id="vozModo" class="teclado-editor" style="min-height:auto;padding:10px;font-size:.95rem;" aria-label="Escolha o que a IA fará com o texto">
+        <option value="desenvolver">Desenvolver e expandir minha história</option>
+        <option value="corrigir">Corrigir e organizar o texto</option>
+        <option value="continuar">Continuar de onde eu parei</option>
+        <option value="transformar">Transformar em prosa literária</option>
+      </select>
+    </div>
+    <div class="acoes">
+      <button class="btn-acao btn-processar" onclick="processar('voz')" aria-label="Processar texto com IA">✦ Desenvolver com IA</button>
+    </div>
+    <div class="leitor-box">
+      <h4>🔊 Leitura do resultado</h4>
+      <div class="leitor-controles">
+        <button class="btn-leitor" onclick="lerResultado()" aria-label="Ler resultado em voz alta">▶ Ler resultado</button>
+        <button class="btn-leitor" onclick="pausarLeitura()" aria-label="Pausar leitura">⏸ Pausar</button>
+        <button class="btn-leitor" onclick="pararLeitura()" aria-label="Parar leitura">⏹ Parar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODO: TECLADO ADAPTADO -->
+  <div class="interface-box" id="modo-teclado" role="region" aria-label="Modo teclado adaptado">
+    <div class="interface-titulo">⌨️ Teclado Adaptado</div>
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:14px;line-height:1.55;">Teclas grandes e comandos rápidos. Escreva no seu ritmo — a IA completa e expande o texto.</p>
+    <textarea class="teclado-editor" id="tecladoTexto" aria-label="Área de escrita adaptada" placeholder="Escreva aqui... pode ser devagar, com erros, em fragmentos. A IA entende." rows="8"></textarea>
+    <div class="teclas-rapidas" role="group" aria-label="Atalhos rápidos">
+      <button class="tecla" onclick="inserir('tecladoTexto','\n\nE então ')" aria-label="Inserir continuação">→ E então</button>
+      <button class="tecla" onclick="inserir('tecladoTexto','\nMas ')" aria-label="Inserir mas">↩ Mas</button>
+      <button class="tecla" onclick="inserir('tecladoTexto','\nDe repente ')" aria-label="Inserir de repente">! De repente</button>
+      <button class="tecla" onclick="inserir('tecladoTexto','\nEle/Ela sentiu ')" aria-label="Inserir sentimento">💭 Sentiu</button>
+      <button class="tecla" onclick="inserir('tecladoTexto','\nO lugar era ')" aria-label="Inserir lugar">📍 Lugar</button>
+      <button class="tecla" onclick="inserir('tecladoTexto','\nO tempo era ')" aria-label="Inserir tempo">🕐 Tempo</button>
+      <button class="tecla" onclick="inserir('tecladoTexto','\nFIM DA CENA\n\n')" aria-label="Fim da cena">◼ Fim cena</button>
+      <button class="tecla" onclick="limparCampo('tecladoTexto')" aria-label="Limpar texto">✕ Limpar</button>
+    </div>
+    <div class="acoes">
+      <button class="btn-acao btn-processar" onclick="processar('teclado')" aria-label="Desenvolver com IA">✦ Desenvolver com IA</button>
+    </div>
+  </div>
+
+  <!-- MODO: CLIQUES MÍNIMOS -->
+  <div class="interface-box" id="modo-cliques" role="region" aria-label="Modo de cliques mínimos">
+    <div class="interface-titulo">👁️ Modo Cliques Mínimos</div>
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px;line-height:1.55;">A IA faz perguntas simples. Você responde com um clique. Juntos constroem a história.</p>
+    <div class="pergunta-ia" id="perguntaAtual" aria-live="polite" role="status">Clique em "Começar" para a IA fazer a primeira pergunta sobre sua história.</div>
+    <div class="clique-grid" id="opcoesClique" role="group" aria-label="Opções de resposta"></div>
+    <div style="margin-top:12px;">
+      <button class="btn-acao btn-processar" onclick="iniciarCliques()" id="btnIniciarCliques" aria-label="Começar a construir história">▶ Começar história</button>
+    </div>
+    <div id="historiaConstruida" style="display:none;margin-top:14px;">
+      <div style="font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;">História sendo construída:</div>
+      <div id="historiaTexto" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;font-family:'Playfair Display',serif;font-size:.95rem;color:var(--soft);line-height:1.7;"></div>
+    </div>
+  </div>
+
+  <!-- MODO: FRAGMENTOS -->
+  <div class="interface-box" id="modo-fragmentos" role="region" aria-label="Modo de fragmentos">
+    <div class="interface-titulo">🧩 Escrita por Fragmentos</div>
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:14px;line-height:1.55;">Envie pedaços de ideias — palavras soltas, imagens, emoções, cenas. A IA constrói a história a partir deles.</p>
+    <div class="fragmento-area">
+      <div style="display:flex;gap:8px;">
+        <input class="fragmento-input" id="fragmentoInput" type="text" placeholder="Ex: mulher velha / chuva / carta perdida / medo de esquecer..." aria-label="Digite um fragmento de ideia" style="flex:1;">
+        <button class="btn-add-fragmento" onclick="adicionarFragmento()" aria-label="Adicionar fragmento">+ Adicionar</button>
+      </div>
+      <div class="fragmentos-lista" id="fragmentosLista" aria-label="Lista de fragmentos adicionados" aria-live="polite"></div>
+    </div>
+    <div class="acoes">
+      <button class="btn-acao btn-processar" onclick="processar('fragmentos')" aria-label="Construir história com IA">✦ Construir história</button>
+    </div>
+  </div>
+
+  <!-- MODO: DITADO + REFINO -->
+  <div class="interface-box" id="modo-ditado" role="region" aria-label="Modo ditado e refino">
+    <div class="interface-titulo">📝 Ditado + Refino</div>
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:14px;line-height:1.55;">Cole aqui o texto bruto do seu app de voz (pode estar cheio de erros, sem pontuação). A IA refina e transforma em texto literário.</p>
+    <textarea class="teclado-editor" id="ditadoTexto" aria-label="Cole seu texto de voz aqui" placeholder="Cole aqui o texto gerado pelo seu app de voz... pode estar com erros, sem pontuação, fragmentado. A IA entende e transforma." rows="10"></textarea>
+    <div class="acoes">
+      <button class="btn-acao btn-processar" onclick="processar('ditado')" aria-label="Refinar e desenvolver com IA">✦ Refinar e desenvolver</button>
+    </div>
+  </div>
+
+  <!-- SPINNER -->
+  <div class="spin" id="spinWrap" aria-live="polite" role="status">✦ Desenvolvendo sua história...</div>
+
+  <!-- RESULTADO -->
+  <div class="desenvolvimento-box" id="devBox" role="region" aria-label="Texto desenvolvido pela IA" aria-live="polite">
+    <div class="dev-titulo">✦ Sua história desenvolvida</div>
+    <div class="dev-texto" id="devTexto"></div>
+    <div class="dev-nota" id="devNota"></div>
+    <div class="acoes">
+      <button class="btn-acao btn-copiar"  onclick="copiar()" aria-label="Copiar texto">📋 Copiar</button>
+      <button class="btn-acao btn-acao"    onclick="usarComoBase()" style="background:rgba(255,255,255,.1);color:var(--soft);border:1px solid var(--line);" aria-label="Continuar a partir deste texto">↺ Continuar</button>
+      <a      class="btn-acao btn-lapidar" href="lapidar_pensante.html" aria-label="Levar ao Lapidar Pensante">✦ Lapidar Pensante</a>
+      <button class="btn-acao btn-acao"    onclick="lerResultado()" style="background:rgba(106,74,184,.15);color:var(--roxo2);border:1px solid rgba(106,74,184,.2);" aria-label="Ler resultado em voz alta">🔊 Ler em voz alta</button>
+    </div>
+  </div>
+
+  <!-- PROGRESSO -->
+  <div class="progresso" role="region" aria-label="Progresso da sessão">
+    <h3>📊 Progresso desta sessão</h3>
+    <div class="prog-grid">
+      <div class="prog-item"><div class="prog-val" id="pFragmentos">0</div><div class="prog-lbl">Fragmentos</div></div>
+      <div class="prog-item"><div class="prog-val" id="pGeracoes">0</div><div class="prog-lbl">Gerações</div></div>
+      <div class="prog-item"><div class="prog-val" id="pPalavras">0</div><div class="prog-lbl">Palavras</div></div>
+      <div class="prog-item"><div class="prog-val" id="pModo">—</div><div class="prog-lbl">Modo ativo</div></div>
+    </div>
+  </div>
+
+  <!-- DICAS -->
+  <div class="tips" role="complementary" aria-label="Dicas de uso">
+    <div class="tip"><strong>🎙️ Modo Voz</strong>Funciona com qualquer app de voz do celular. Cole o texto aqui e a IA transforma em literatura.</div>
+    <div class="tip"><strong>⌨️ Teclado Adaptado</strong>Teclas rápidas para palavras de transição. Escreva no seu ritmo — sem pressa.</div>
+    <div class="tip"><strong>👁️ Cliques Mínimos</strong>Interface pensada para quem tem mobilidade reduzida. A IA guia com perguntas de sim/não e opções simples.</div>
+    <div class="tip"><strong>🧩 Fragmentos</strong>Não precisa escrever frases completas. Uma palavra, uma emoção, uma imagem — a IA constrói o resto.</div>
+  </div>
+
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let modoAtual=null;
+let fragmentos=[];
+let geracoes=0;
+let respostasClique=[];
+let perguntaIdx=0;
+let sinteseVoz=window.speechSynthesis;
+let reconhecimento=null;
+
+// ── ACESSIBILIDADE ──────────────────────────────────────────────────────────
+function setFonte(tamanho){
+  document.body.classList.remove('fonte-grande','fonte-muito-grande');
+  if(tamanho==='grande') document.body.classList.add('fonte-grande');
+  if(tamanho==='muito-grande') document.body.classList.add('fonte-muito-grande');
+  document.querySelectorAll('.acess-btn').forEach(b=>{
+    if((tamanho==='grande'&&b.textContent==='A+')||(tamanho==='muito-grande'&&b.textContent==='A++')||(tamanho==='normal'&&b.textContent==='A')) b.classList.add('ativo');
+    else if(b.textContent==='A'||b.textContent==='A+'||b.textContent==='A++') b.classList.remove('ativo');
+  });
+}
+function setContraste(){
+  document.body.classList.toggle('alto-contraste');
+  $('btnContraste').classList.toggle('ativo');
+}
+function aumentarEspaco(){
+  const atual=parseFloat(document.documentElement.style.getPropertyValue('--espaco-base'))||1.8;
+  document.documentElement.style.setProperty('--espaco-base', atual>=2.4?1.8:atual+0.2);
+}
+function lerTela(){
+  const textos=Array.from(document.querySelectorAll('h1,h2,h3,h4,p,.hero p,.pergunta-ia,.dev-texto')).map(e=>e.textContent).join('. ');
+  falar(textos);
+}
+function lerResultado(){
+  const t=$('devTexto').textContent;
+  if(t) falar(t);
+}
+function falar(texto){
+  if(!sinteseVoz) return;
+  sinteseVoz.cancel();
+  const utter=new SpeechSynthesisUtterance(texto);
+  utter.lang='pt-BR';utter.rate=.9;utter.pitch=1;
+  sinteseVoz.speak(utter);
+}
+function pausarLeitura(){if(sinteseVoz){if(sinteseVoz.paused)sinteseVoz.resume();else sinteseVoz.pause();}}
+function pararLeitura(){if(sinteseVoz)sinteseVoz.cancel();}
+
+// ── MODO ───────────────────────────────────────────────────────────────────
+function setModo(modo,el){
+  modoAtual=modo;
+  document.querySelectorAll('.modo-card').forEach(c=>{c.classList.remove('ativo');c.setAttribute('aria-pressed','false');});
+  el.classList.add('ativo');el.setAttribute('aria-pressed','true');
+  document.querySelectorAll('.interface-box').forEach(b=>b.classList.remove('vis'));
+  $('modo-'+modo)?.classList.add('vis');
+  $('pModo').textContent=modo;
+  $('devBox').classList.remove('vis');
+  document.getElementById('modo-'+modo)?.scrollIntoView({behavior:'smooth',block:'nearest'});
+  falar(`Modo ${modo} ativado.`);
+}
+
+// ── VOZ ────────────────────────────────────────────────────────────────────
+function toggleVoz(){
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){
+    $('vozStatus').textContent='Reconhecimento de voz não disponível. Use um app externo e cole o texto.';
+    return;
+  }
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!reconhecimento){
+    reconhecimento=new SR();
+    reconhecimento.lang='pt-BR';
+    reconhecimento.continuous=true;
+    reconhecimento.interimResults=true;
+    reconhecimento.onresult=e=>{
+      let texto='';
+      for(let r of e.results) texto+=r[0].transcript;
+      $('vozTexto').textContent=texto;
+    };
+    reconhecimento.onerror=e=>{ $('vozStatus').textContent='Erro: '+e.error+'. Cole o texto manualmente.'; };
+  }
+  const btn=$('btnMic');
+  if(btn.classList.contains('gravando')){
+    reconhecimento.stop();btn.classList.remove('gravando');btn.textContent='🎙️';
+    $('vozStatus').textContent='Gravação pausada. Clique para continuar.';
+  } else {
+    reconhecimento.start();btn.classList.add('gravando');btn.textContent='⏹';
+    $('vozStatus').textContent='🔴 Gravando... Fale agora.';
+    falar('Gravação iniciada. Fale agora.');
+  }
+}
+
+// ── TECLAS RÁPIDAS ─────────────────────────────────────────────────────────
+function inserir(id,texto){
+  const el=$(id);
+  const pos=el.selectionStart||el.value.length;
+  el.value=el.value.slice(0,pos)+texto+el.value.slice(pos);
+  el.selectionStart=el.selectionEnd=pos+texto.length;
+  el.focus();
+}
+function limparCampo(id){$(id).value='';}
+
+// ── FRAGMENTOS ─────────────────────────────────────────────────────────────
+function adicionarFragmento(){
+  const input=$('fragmentoInput');
+  const txt=input.value.trim();
+  if(!txt)return;
+  fragmentos.push(txt);
+  input.value='';
+  renderFragmentos();
+  $('pFragmentos').textContent=fragmentos.length;
+  falar(`Fragmento adicionado: ${txt}`);
+}
+$('fragmentoInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();adicionarFragmento();}});
+function removerFragmento(i){fragmentos.splice(i,1);renderFragmentos();$('pFragmentos').textContent=fragmentos.length;}
+function renderFragmentos(){
+  const lista=$('fragmentosLista');
+  if(!fragmentos.length){lista.innerHTML='<span style="color:var(--muted);font-style:italic;font-size:.85rem;">Nenhum fragmento ainda. Adicione ideias, palavras, imagens...</span>';return;}
+  lista.innerHTML=fragmentos.map((f,i)=>`
+    <div class="fragmento-item">
+      <span class="fragmento-num">${i+1}</span>
+      <span class="fragmento-txt">${f}</span>
+      <button class="btn-rem" onclick="removerFragmento(${i})" aria-label="Remover fragmento ${i+1}">✕</button>
+    </div>`).join('');
+}
+renderFragmentos();
+
+// ── CLIQUES MÍNIMOS ────────────────────────────────────────────────────────
+const PERGUNTAS=[
+  {p:'Sua história é sobre um ser humano ou algo diferente?',op:['Um ser humano','Um animal','Um ser fantástico','Uma ideia ou sentimento']},
+  {p:'Esse ser está feliz ou em sofrimento no início?',op:['Feliz','Em sofrimento','Confuso/perdido','Indiferente']},
+  {p:'A história acontece em que tipo de lugar?',op:['Cidade / Interior','Campo / Natureza','Lugar fantástico','Dentro da mente']},
+  {p:'O que muda a vida desse ser?',op:['Uma perda','Um encontro','Um segredo','Uma viagem']},
+  {p:'Como a história termina?',op:['Com esperança','Com tristeza','Em aberto','Com transformação']},
+];
+function iniciarCliques(){
+  respostasClique=[];perguntaIdx=0;
+  $('historiaConstruida').style.display='none';
+  $('historiaTexto').textContent='';
+  $('btnIniciarCliques').style.display='none';
+  mostrarPergunta();
+}
+function mostrarPergunta(){
+  if(perguntaIdx>=PERGUNTAS.length){construirHistoriaCliques();return;}
+  const pq=PERGUNTAS[perguntaIdx];
+  $('perguntaAtual').textContent=pq.p;
+  falar(pq.p);
+  $('opcoesClique').innerHTML=pq.op.map((o,i)=>`
+    <button class="clique-btn" onclick="responderClique('${o}')" aria-label="${o}" tabindex="0">
+      ${o}
+    </button>`).join('');
+}
+function responderClique(resp){
+  respostasClique.push(resp);
+  perguntaIdx++;
+  const hist=$('historiaTexto');
+  $('historiaConstruida').style.display='block';
+  hist.textContent=(hist.textContent?hist.textContent+' • ':'')+resp;
+  mostrarPergunta();
+  falar(`Você escolheu: ${resp}`);
+}
+async function construirHistoriaCliques(){
+  $('perguntaAtual').textContent='Construindo sua história...';
+  $('opcoesClique').innerHTML='';
+  await processar('cliques');
+}
+
+// ── API ────────────────────────────────────────────────────────────────────
+async function chamarAPI(prompt){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+  });
+  const d=await r.json();
+  return d.content.map(b=>b.text||'').join('');
+}
+
+// ── PROCESSAR ──────────────────────────────────────────────────────────────
+async function processar(modo){
+  $('spinWrap').classList.add('vis');
+  $('devBox').classList.remove('vis');
+  falar('Desenvolvendo sua história. Aguarde.');
+
+  let prompt='';
+  const base=`Você é um assistente literário inclusivo do Celeiro Literário. Seu papel é transformar fragmentos, falas, cliques ou textos brutos em narrativas literárias ricas em português brasileiro. Seja sempre gentil, encorajador e respeite profundamente a visão criativa da pessoa.`;
+
+  try{
+    if(modo==='voz'){
+      const texto=$('vozTexto').textContent||$('vozTexto').innerText||'';
+      const modoVoz=$('vozModo').value;
+      if(!texto||texto.includes('O texto transcrito')){$('spinWrap').classList.remove('vis');falar('Por favor, fale ou cole um texto primeiro.');return;}
+      prompt=`${base}\n\nMODO: ${modoVoz}\nTEXTO FALADO/TRANSCRITO:\n${texto}\n\nDesenvolvimento completo em prosa literária. Depois escreva:\n[NOTA]: Uma palavra de encorajamento para o escritor.`;
+    }
+    else if(modo==='teclado'){
+      const texto=$('tecladoTexto').value.trim();
+      if(!texto){$('spinWrap').classList.remove('vis');falar('Escreva algo primeiro.');return;}
+      prompt=`${base}\n\nTexto escrito (pode ter erros ou fragmentos):\n${texto}\n\nDesenvolvimento completo em prosa literária. Depois:\n[NOTA]: Uma palavra de encorajamento.`;
+    }
+    else if(modo==='fragmentos'){
+      if(!fragmentos.length){$('spinWrap').classList.remove('vis');falar('Adicione pelo menos um fragmento.');return;}
+      prompt=`${base}\n\nFRAGMENTOS DE IDEIAS:\n${fragmentos.map((f,i)=>`${i+1}. ${f}`).join('\n')}\n\nCrie uma história literária completa conectando todos esses fragmentos de forma coesa e emocionalmente rica. Depois:\n[NOTA]: Uma palavra de encorajamento.`;
+    }
+    else if(modo==='ditado'){
+      const texto=$('ditadoTexto').value.trim();
+      if(!texto){$('spinWrap').classList.remove('vis');falar('Cole seu texto de voz primeiro.');return;}
+      prompt=`${base}\n\nTEXTO BRUTO DE VOZ (com possíveis erros):\n${texto}\n\nRefine, organize e transforme em prosa literária preservando o conteúdo e a voz do escritor. Depois:\n[NOTA]: Uma palavra de encorajamento.`;
+    }
+    else if(modo==='cliques'){
+      const respostas=respostasClique.join(' | ');
+      prompt=`${base}\n\nESTRUTURA ESCOLHIDA PELO ESCRITOR:\n${PERGUNTAS.map((p,i)=>`${p.p} → ${respostasClique[i]||'não respondido'}`).join('\n')}\n\nCrie uma história literária completa baseada exatamente nessas escolhas. Seja fiel às decisões do escritor. Depois:\n[NOTA]: Uma palavra de encorajamento.`;
+    }
+
+    const full=await chamarAPI(prompt);
+    const partes=full.split('[NOTA]:');
+    $('devTexto').textContent=partes[0].trim();
+    $('devNota').textContent=partes[1]?'✦ '+partes[1].trim():'';
+    $('devBox').classList.add('vis');
+
+    geracoes++;
+    $('pGeracoes').textContent=geracoes;
+    const palavras=(partes[0].match(/\b\w+\b/g)||[]).length;
+    $('pPalavras').textContent=palavras;
+
+    if(modo==='cliques'){
+      $('perguntaAtual').textContent='História criada! Role para ver o resultado.';
+      $('btnIniciarCliques').style.display='inline-flex';
+      $('btnIniciarCliques').textContent='▶ Criar nova história';
+    }
+    falar('Sua história foi criada. Role para ver o resultado.');
+
+  }catch(e){
+    $('devTexto').textContent='Erro: '+e.message;
+    $('devBox').classList.add('vis');
+  }finally{
+    $('spinWrap').classList.remove('vis');
+  }
+}
+
+// ── AÇÕES ──────────────────────────────────────────────────────────────────
+function copiar(){
+  navigator.clipboard.writeText($('devTexto').textContent).then(()=>{
+    falar('Texto copiado!');
+    alert('Texto copiado!');
+  });
+}
+function usarComoBase(){
+  const t=$('devTexto').textContent;
+  if(!t)return;
+  if(modoAtual==='teclado') $('tecladoTexto').value=t;
+  else if(modoAtual==='ditado') $('ditadoTexto').value=t;
+  else if(modoAtual==='voz') $('vozTexto').textContent=t;
+  $('devBox').classList.remove('vis');
+  window.scrollTo({top:0,behavior:'smooth'});
+  falar('Texto carregado para continuar a história.');
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────
+// Anunciar para leitores de tela
+setTimeout(()=>{
+  const anuncio=document.createElement('div');
+  anuncio.setAttribute('aria-live','polite');
+  anuncio.setAttribute('aria-atomic','true');
+  anuncio.style.cssText='position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;';
+  anuncio.textContent='Máquina de Escrita Inclusiva carregada. Escolha seu modo de escrita.';
+  document.body.appendChild(anuncio);
+},500);
+</script>
+</body>
+</html>
