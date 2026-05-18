@@ -1,30 +1,116 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Caminho das Pedras — Trilha Prosa</title>
-<style>body{margin:0;font-family:Georgia,"Times New Roman",serif;background:linear-gradient(180deg,#07101d,#10294a 48%,#efe2c7);color:#111827}header{padding:42px 18px;text-align:center;color:#fff5cf;border-bottom:8px solid #d6b354}header h1{font-size:clamp(42px,8vw,76px);margin:0;color:#f5df8f}header p{font-size:22px;margin:10px 0 0}.wrap{max-width:1120px;margin:auto;padding:30px 18px 70px}.card{background:rgba(255,250,240,.96);border:2px solid #d6b354;border-radius:30px;padding:26px;box-shadow:0 18px 50px rgba(0,0,0,.28);margin-bottom:24px}.card h2{color:#07101d;margin-top:0}.modulos{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;margin-top:18px}.modulo{background:white;border:1px solid #e2c873;border-radius:20px;padding:20px}.modulo h3{margin-top:0;color:#07101d;font-size:1.1rem}.btn{display:inline-block;text-decoration:none;border-radius:999px;padding:14px 24px;font-weight:900;font-family:Arial,sans-serif;margin:8px;background:#d6b354;color:#111;box-shadow:0 6px 0 #8a6b00}.btn.voltar{background:#5e6b69;color:white;box-shadow:0 6px 0 #2e3b38}.btn.mapa{background:rgba(31,122,66,.12);color:#184b30;border:1px solid rgba(31,122,66,.35);box-shadow:none}.acoes{text-align:center;margin-top:26px}.rodape{background:#07101d;color:#fff5cf;text-align:center;padding:24px;border-top:6px solid #d6b354}@media(max-width:640px){.modulos{grid-template-columns:1fr}}</style>
-</head><body>
-<header><h1>Trilha Prosa</h1><p>Conduzida pela Senhorita Kaneta — Caminho das Pedras</p></header>
-<main class="wrap">
-<div class="card">
-<h2>Sobre a Trilha Prosa</h2>
-<p>A Trilha Prosa acompanha o autor desde os fundamentos da narrativa até o domínio avançado da ficção. Conduzida pela Senhorita Kaneta, a trilha é organizada em 8 módulos formativos com duração de até 24 meses.</p>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trilha Prosa — Caminho das Pedras</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ouro: #C9A84C; --branco-perola: #F5F0E8; --cinza-suave: #9CA3AF;
+    --verde-nav: #16A34A; --vermelho-nav: #DC2626;
+    /* Trilha Prosa — marrom avermelhado escuro */
+    --cor1: #1A0A08; --cor2: #2A1210; --cor3: #3A1A14; --cor4: #4A2420;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: linear-gradient(160deg, var(--cor1) 0%, var(--cor2) 35%, var(--cor3) 65%, var(--cor4) 100%); color:var(--branco-perola); font-family:'Cormorant Garamond',serif; min-height:100vh; }
+  body::before { content:''; position:fixed; inset:0; background: radial-gradient(ellipse at 25% 25%, rgba(201,168,76,0.07) 0%, transparent 50%), radial-gradient(ellipse at 75% 75%, rgba(201,168,76,0.04) 0%, transparent 50%); pointer-events:none; z-index:0; }
+  .stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .star { position:absolute; background:white; border-radius:50%; animation:twinkle var(--d,3s) ease-in-out infinite; opacity:var(--o,0.3); }
+  @keyframes twinkle { 0%,100%{opacity:var(--o,0.3)}50%{opacity:0.05} }
+  .container { position:relative; z-index:1; max-width:600px; margin:0 auto; padding:24px 16px 100px; }
+  .btn-voltar { display:inline-flex; align-items:center; gap:8px; background:transparent; border:1px solid rgba(201,168,76,0.3); color:var(--ouro); padding:10px 18px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; margin-bottom:28px; }
+  .btn-voltar:hover { background:rgba(201,168,76,0.1); }
+  .guia-principal { background:rgba(0,0,0,0.35); border:1px solid rgba(201,168,76,0.2); border-radius:16px; padding:24px; display:flex; align-items:flex-start; gap:18px; margin-bottom:32px; }
+  .guia-foto { width:90px; height:90px; border-radius:50%; object-fit:cover; border:2px solid rgba(201,168,76,0.4); flex-shrink:0; }
+  .guia-tag { font-family:'Cinzel',serif; font-size:9px; letter-spacing:3px; color:var(--ouro); opacity:0.7; margin-bottom:6px; }
+  .guia-nome { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--branco-perola); margin-bottom:8px; }
+  .guia-fala { font-size:14px; font-style:italic; color:var(--cinza-suave); line-height:1.7; }
+  .dept-header { text-align:center; margin-bottom:32px; }
+  .dept-subtitulo { font-family:'Cinzel',serif; font-size:10px; letter-spacing:4px; color:var(--ouro); opacity:0.7; margin-bottom:10px; }
+  .dept-titulo { font-family:'Playfair Display',serif; font-size:clamp(28px,6vw,42px); font-weight:900; color:var(--branco-perola); margin-bottom:8px; }
+  .dept-desc { font-style:italic; font-size:14px; color:var(--cinza-suave); line-height:1.7; max-width:440px; margin:0 auto; }
+  .linha-divisora { width:100px; height:1px; background:linear-gradient(90deg, transparent, var(--ouro), transparent); margin:16px auto; }
+  .secao { margin-bottom:28px; }
+  .secao-titulo { font-family:'Cinzel',serif; font-size:10px; letter-spacing:3px; color:var(--ouro); opacity:0.7; margin-bottom:14px; border-left:2px solid var(--ouro); padding-left:12px; }
+  .modulos-lista { display:flex; flex-direction:column; gap:8px; }
+  .modulo-item { background:rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:14px 16px; display:flex; align-items:flex-start; gap:14px; }
+  .modulo-num { font-family:'Cinzel',serif; font-size:11px; color:var(--ouro); opacity:0.7; flex-shrink:0; width:28px; height:28px; text-align:center; border:1px solid rgba(201,168,76,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; }
+  .modulo-titulo { font-family:'Cinzel',serif; font-size:10px; letter-spacing:1px; color:var(--branco-perola); margin-bottom:4px; }
+  .modulo-texto { font-size:13px; color:var(--cinza-suave); font-style:italic; line-height:1.5; }
+  .info-box { background:rgba(0,0,0,0.25); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; margin-bottom:10px; }
+  .info-box-titulo { font-family:'Cinzel',serif; font-size:9px; letter-spacing:2px; color:var(--ouro); opacity:0.7; margin-bottom:6px; }
+  .info-box-texto { font-size:13px; color:var(--cinza-suave); line-height:1.6; font-style:italic; }
+  .info-box-texto strong { color:var(--branco-perola); font-style:normal; }
+  .btn-inscricao { display:flex; align-items:center; justify-content:center; gap:10px; background:var(--verde-nav); color:white; padding:16px; border-radius:8px; font-family:'Cinzel',serif; font-size:12px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; margin-bottom:12px; box-shadow:0 4px 20px rgba(22,163,74,0.3); }
+  .btn-inscricao:hover { background:#15803d; transform:translateY(-2px); }
+  .nav-rodape { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
+  .btn-reclamacao { display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(220,38,38,0.1); border:1px solid rgba(220,38,38,0.25); color:#FCA5A5; padding:12px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; }
+  .btn-reclamacao:hover { background:rgba(220,38,38,0.2); }
+  .btn-sair { display:flex; align-items:center; justify-content:center; gap:8px; background:transparent; border:1px solid rgba(156,163,175,0.2); color:var(--cinza-suave); padding:12px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; }
+  .btn-sair:hover { border-color:rgba(220,38,38,0.4); color:#FCA5A5; }
+  .rodape-inst { text-align:center; margin-top:20px; font-family:'Cinzel',serif; font-size:8px; letter-spacing:2px; color:var(--ouro); opacity:0.3; }
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="container">
+
+  <a href="caminho_das_pedras.html" class="btn-voltar">← Caminho das Pedras</a>
+
+  <div class="guia-principal">
+    <img class="guia-foto" src="file_0000000044d471f594f8db3ae2d6043f.png" alt="Senhorita Kaneta" onerror="this.style.display='none'">
+    <div>
+      <p class="guia-tag">✦ PROFESSORA DA LINHA DE PROSA ✦</p>
+      <p class="guia-nome">Senhorita Kaneta</p>
+      <p class="guia-fala">A narrativa é o mapa de mundos que ainda não existem. Aqui você aprenderá a construir personagens, estruturar histórias e dar voz às suas narrativas com técnica e profundidade autoral.</p>
+    </div>
+  </div>
+
+  <div class="dept-header">
+    <p class="dept-subtitulo">✦ CAMINHO DAS PEDRAS ✦</p>
+    <h1 class="dept-titulo">Trilha Prosa</h1>
+    <div class="linha-divisora"></div>
+    <p class="dept-desc">Formação autoral para narradores — Romance · Conto · Crônica · 8 módulos progressivos de estrutura dramática e narrativa.</p>
+  </div>
+
+  <div class="secao">
+    <p class="secao-titulo">OS 8 MÓDULOS</p>
+    <div class="modulos-lista">
+      <div class="modulo-item"><span class="modulo-num">1</span><div><p class="modulo-titulo">FUNDAMENTOS</p><p class="modulo-texto">Fundamentos da narrativa — cena, tempo, espaço e personagem</p></div></div>
+      <div class="modulo-item"><span class="modulo-num">2</span><div><p class="modulo-titulo">PERSONAGENS</p><p class="modulo-texto">Construção de personagens — psicologia, voz e contradição</p></div></div>
+      <div class="modulo-item"><span class="modulo-num">3</span><div><p class="modulo-titulo">ESTRUTURA</p><p class="modulo-texto">Estrutura narrativa — arco, conflito, clímax e resolução</p></div></div>
+      <div class="modulo-item"><span class="modulo-num">4</span><div><p class="modulo-titulo">PONTO DE VISTA</p><p class="modulo-texto">Ponto de vista e narrador — quem conta e como conta</p></div></div>
+      <div class="modulo-item"><span class="modulo-num">5</span><div><p class="modulo-titulo">DIÁLOGO E CENA</p><p class="modulo-texto">Diálogo e cena — ritmo, subtexto e dramaturgia da prosa</p></div></div>
+      <div class="modulo-item"><span class="modulo-num">6</span><div><p class="modulo-titulo">GÊNEROS</p><p class="modulo-texto">Conto, novela e romance — formas e exigências de cada gênero</p></div></div>
+      <div class="modulo-item"><span class="modulo-num">7</span><div><p class="modulo-titulo">REVISÃO E LAPIDAÇÃO</p><p class="modulo-texto">Revisão e lapidação — trabalhar o texto após o rascunho</p></div></div>
+      <div class="modulo-item"><span class="modulo-num">8</span><div><p class="modulo-titulo">PUBLICAÇÃO</p><p class="modulo-texto">Publicação e circulação — editoras, plataformas e integração com Celeiro e SIGMAL</p></div></div>
+    </div>
+  </div>
+
+  <div class="secao">
+    <p class="secao-titulo">INFORMAÇÕES</p>
+    <div class="info-box">
+      <p class="info-box-titulo">✦ CERTIFICAÇÃO</p>
+      <p class="info-box-texto">Emitida após conclusão integral dos <strong>8 módulos</strong>. Todo material é exclusivo dos Heterônimos do Site das Letras — nenhum autor externo.</p>
+    </div>
+    <div class="info-box">
+      <p class="info-box-titulo">✦ BOLSA TRAJANO ESTRADA</p>
+      <p class="info-box-texto"><strong>1 mês gratuito</strong> de orientação de trajetória, editais, concursos e oportunidades literárias.</p>
+    </div>
+  </div>
+
+  <a href="sigmal_formulario_inscricao.html?area=Trilha+Prosa" class="btn-inscricao">✦ Inscrever-se na Trilha Prosa</a>
+
+  <div class="nav-rodape">
+    <a href="cicile_reclamacao.html?departamento=Trilha%20Prosa" class="btn-reclamacao">⚑ Reclamação</a>
+    <a href="celeiro_entrada.html" class="btn-sair">✕ Sair do Celeiro</a>
+  </div>
+  <p class="rodape-inst">✦ CELEIRO LITERÁRIO · SITE DAS LETRAS EDIÇÕES LITERÁRIAS ✦</p>
 </div>
-<div class="card">
-<h2>Módulos da Trilha</h2>
-<div class="modulos">
-<div class="modulo"><h3>Módulo 1</h3><p>Fundamentos da narrativa — cena, tempo, espaço e personagem.</p></div>
-<div class="modulo"><h3>Módulo 2</h3><p>Construção de personagens — psicologia, voz e contradição.</p></div>
-<div class="modulo"><h3>Módulo 3</h3><p>Estrutura narrativa — arco, conflito, clímax e resolução.</p></div>
-<div class="modulo"><h3>Módulo 4</h3><p>Ponto de vista e narrador — quem conta e como conta.</p></div>
-<div class="modulo"><h3>Módulo 5</h3><p>Diálogo e cena — ritmo, subtexto e dramaturgia da prosa.</p></div>
-<div class="modulo"><h3>Módulo 6</h3><p>Conto, novela e romance — formas e exigências de cada gênero.</p></div>
-<div class="modulo"><h3>Módulo 7</h3><p>Revisão e lapidação — trabalhar o texto após o rascunho.</p></div>
-<div class="modulo"><h3>Módulo 8</h3><p>Publicação e circulação — editoras, agentes e plataformas.</p></div>
-</div>
-</div>
-<div class="acoes">
-<a class="btn" href="caminho_das_pedras_escritores_fase2.html">Avançar para Fase 2</a>
-<a class="btn voltar" href="caminho_das_pedras.html">← Voltar ao Caminho das Pedras</a>
-<a class="btn mapa" href="pagina_respiro.html">🗺️ Mapa do Celeiro</a>
-</div>
-</main>
-<footer class="rodape"><strong>Trilha Prosa</strong> — Caminho das Pedras — Instituto Cultural Celeiro Literário</footer>
-</body></html>
+<script>
+  const sc=document.getElementById('stars');
+  for(let i=0;i<50;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--o:${Math.random()*0.3+0.05};animation-delay:${Math.random()*4}s;`;sc.appendChild(s);}
+</script>
+</body>
+</html>
