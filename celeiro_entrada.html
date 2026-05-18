@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instituto Cultural Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ouro: #C9A84C;
+    --ouro-claro: #E8C97A;
+    --azul-profundo: #0A0F1E;
+    --azul-card: #141E33;
+    --branco-perola: #F5F0E8;
+    --cinza-suave: #9CA3AF;
+    --verde-nav: #16A34A;
+    --vermelho-nav: #DC2626;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--azul-profundo);
+    color: var(--branco-perola);
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--d, 3s) ease-in-out infinite;
+    opacity: var(--o, 0.4);
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: var(--o, 0.4); transform: scale(1); }
+    50% { opacity: 0.1; transform: scale(0.5); }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px 60px;
+  }
+
+  /* Cabeçalho */
+  .header {
+    text-align: center;
+    margin-bottom: 44px;
+    animation: fadeDown 1s ease forwards;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .selo-wrapper {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 24px;
+    animation: pulseGold 3s ease-in-out infinite;
+  }
+
+  @keyframes pulseGold {
+    0%, 100% { filter: drop-shadow(0 0 15px rgba(201,168,76,0.5)); }
+    50% { filter: drop-shadow(0 0 40px rgba(201,168,76,0.9)); }
+  }
+
+  .selo-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+  }
+
+  .subtitulo-inst {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--ouro);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.8;
+  }
+
+  .titulo-principal {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(30px, 7vw, 54px);
+    font-weight: 900;
+    color: var(--branco-perola);
+    line-height: 1.1;
+    text-shadow: 0 0 40px rgba(201,168,76,0.3);
+    margin-bottom: 6px;
+  }
+
+  .titulo-dourado {
+    color: var(--ouro);
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .linha-divisora {
+    width: 140px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ouro), transparent);
+    margin: 18px auto;
+  }
+
+  .tagline {
+    font-style: italic;
+    font-size: 15px;
+    color: var(--cinza-suave);
+    max-width: 380px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* Botões de acesso */
+  .secao-acesso {
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 44px;
+    animation: fadeUp 1s ease 0.3s forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .acesso-titulo {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--ouro);
+    text-align: center;
+    margin-bottom: 18px;
+    opacity: 0.7;
+  }
+
+  .botoes-acesso {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 24px;
+    border-radius: 8px;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .btn-entrar {
+    background: var(--verde-nav);
+    color: white;
+    box-shadow: 0 4px 20px rgba(22,163,74,0.3);
+  }
+  .btn-entrar:hover {
+    background: #15803d;
+    box-shadow: 0 4px 30px rgba(22,163,74,0.5);
+    transform: translateY(-2px);
+  }
+
+  .btn-cadastro {
+    background: transparent;
+    color: var(--ouro);
+    border: 1px solid var(--ouro);
+  }
+  .btn-cadastro:hover {
+    background: rgba(201,168,76,0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(201,168,76,0.2);
+  }
+
+  .btn-senha {
+    background: transparent;
+    color: var(--cinza-suave);
+    border: 1px solid rgba(156,163,175,0.2);
+    font-size: 11px;
+  }
+  .btn-senha:hover {
+    color: var(--branco-perola);
+    border-color: rgba(156,163,175,0.4);
+  }
+
+  /* Vitrines */
+  .secao-vitrines {
+    width: 100%;
+    max-width: 500px;
+    animation: fadeUp 1s ease 0.6s forwards;
+    opacity: 0;
+  }
+
+  .vitrines-titulo {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--ouro);
+    text-align: center;
+    margin-bottom: 20px;
+    opacity: 0.7;
+  }
+
+  .vitrines-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .vitrine-card {
+    background: var(--azul-card);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 12px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vitrine-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .vitrine-card:hover::before { opacity: 1; }
+  .vitrine-card:hover {
+    border-color: rgba(201,168,76,0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+
+  .vitrine-icone {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(201,168,76,0.2);
+    flex-shrink: 0;
+  }
+
+  .vitrine-icone-emoji {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.1);
+    border: 2px solid rgba(201,168,76,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+
+  .vitrine-info { flex: 1; }
+
+  .vitrine-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--ouro);
+    opacity: 0.7;
+    margin-bottom: 4px;
+  }
+
+  .vitrine-nome {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--branco-perola);
+    margin-bottom: 4px;
+  }
+
+  .vitrine-desc {
+    font-size: 12px;
+    color: var(--cinza-suave);
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .vitrine-seta {
+    color: var(--ouro);
+    font-size: 18px;
+    opacity: 0.6;
+    transition: transform 0.3s ease;
+  }
+  .vitrine-card:hover .vitrine-seta {
+    transform: translateX(4px);
+    opacity: 1;
+  }
+
+  /* Rodapé */
+  .rodape {
+    margin-top: 50px;
+    text-align: center;
+    animation: fadeUp 1s ease 0.9s forwards;
+    opacity: 0;
+  }
+
+  .rodape-linha {
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
+    margin: 0 auto 20px;
+  }
+
+  .rodape-texto {
+    font-style: italic;
+    font-size: 13px;
+    color: var(--cinza-suave);
+    opacity: 0.6;
+    max-width: 320px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .rodape-assinatura {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--ouro);
+    opacity: 0.4;
+    margin-top: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="container">
+
+  <!-- Cabeçalho com selo oficial -->
+  <div class="header">
+    <div class="selo-wrapper">
+      <img 
+        src="https://raw.githubusercontent.com/sitedasletras/CeleiroLiterario/main/IMG-20260501-WA0000.jpg"
+        alt="Instituto Cultural Celeiro Literário"
+        onerror="this.style.display='none'; document.getElementById('selo-fallback').style.display='flex';"
+      >
+      <div id="selo-fallback" style="display:none; width:180px; height:180px; border-radius:50%; border:3px solid #C9A84C; background:radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%); align-items:center; justify-content:center; flex-direction:column; gap:4px;">
+        <div style="font-family:'Cinzel',serif; font-size:9px; letter-spacing:3px; color:#C9A84C; opacity:0.7;">INSTITUTO CULTURAL</div>
+        <div style="font-size:36px;">🌾</div>
+        <div style="font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; color:#C9A84C;">CELEIRO LITERÁRIO</div>
+      </div>
+    </div>
+    <p class="subtitulo-inst">✦ Instituto Cultural ✦</p>
+    <h1 class="titulo-principal">
+      Celeiro<br>
+      <span class="titulo-dourado">Literário</span>
+    </h1>
+    <div class="linha-divisora"></div>
+    <p class="tagline">Um ambiente editorial vivo — onde a palavra é lapidada, publicada, difundida e celebrada.</p>
+  </div>
+
+  <!-- Botões de acesso -->
+  <div class="secao-acesso">
+    <p class="acesso-titulo">✦ Acesso ao Celeiro ✦</p>
+    <div class="botoes-acesso">
+      <a href="celeiro_hall.html" class="btn btn-entrar">✦ Entrar no Celeiro</a>
+      <a href="cadastro_celeiro.html" class="btn btn-cadastro">✦ Faça seu Cadastro</a>
+      <a href="recuperar_senha.html" class="btn btn-senha">🔒 Recuperar Senha</a>
+    </div>
+  </div>
+
+  <!-- Vitrines -->
+  <div class="secao-vitrines">
+    <p class="vitrines-titulo">✦ Conheça o Ecossistema ✦</p>
+    <div class="vitrines-grid">
+
+      <a href="difusao.html" class="vitrine-card">
+        <div class="vitrine-icone-emoji">📻</div>
+        <div class="vitrine-info">
+          <p class="vitrine-tag">Complexo de Comunicação</p>
+          <p class="vitrine-nome">Difusão</p>
+          <p class="vitrine-desc">Web Rádio & Web TV — os canais do Celeiro</p>
+        </div>
+        <span class="vitrine-seta">→</span>
+      </a>
+
+      <a href="sigmal_academia_artistica_internacional.html" class="vitrine-card">
+        <img 
+          class="vitrine-icone"
+          src="https://raw.githubusercontent.com/sitedasletras/CeleiroLiterario/main/file_00000000b1e071fbad15b4ac2196c73e~2.png"
+          alt="SIGMAL"
+          onerror="this.outerHTML='<div class=vitrine-icone-emoji>🎓</div>'"
+        >
+        <div class="vitrine-info">
+          <p class="vitrine-tag">Academia Internacional</p>
+          <p class="vitrine-nome">SIGMAL</p>
+          <p class="vitrine-desc">São Roque International Global Music, Arts & Letters Academy</p>
+        </div>
+        <span class="vitrine-seta">→</span>
+      </a>
+
+      <a href="site_das_letras.html" class="vitrine-card">
+        <img 
+          class="vitrine-icone"
+          src="https://raw.githubusercontent.com/sitedasletras/CeleiroLiterario/main/file_000000006abc720ebca3e51bb5182a06.png"
+          alt="Site das Letras"
+          onerror="this.outerHTML='<div class=vitrine-icone-emoji>📚</div>'"
+        >
+        <div class="vitrine-info">
+          <p class="vitrine-tag">Edições Literárias & Multimídia</p>
+          <p class="vitrine-nome">Site das Letras</p>
+          <p class="vitrine-desc">O museu vivo das obras do Celeiro</p>
+        </div>
+        <span class="vitrine-seta">→</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Rodapé -->
+  <div class="rodape">
+    <div class="rodape-linha"></div>
+    <p class="rodape-texto">"A palavra que não circula apodrece em silêncio. O Celeiro existe para que ela respire, cresça e chegue ao mundo."</p>
+    <p class="rodape-assinatura">✦ Site das Letras Edições Literárias & Multimídia ✦</p>
+  </div>
+
+</div>
+
+<script>
+  const starsContainer = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    star.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%; top:${Math.random()*100}%;
+      --d:${Math.random()*4+2}s; --o:${Math.random()*0.5+0.1};
+      animation-delay:${Math.random()*4}s;
+    `;
+    starsContainer.appendChild(star);
+  }
+</script>
+</body>
+</html>
