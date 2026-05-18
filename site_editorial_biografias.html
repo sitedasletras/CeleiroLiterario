@@ -3,19 +3,516 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Biografias — Sala Editorial</title>
+<title>Biografias dos Escritores · Site das Letras</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;1,400&family=Space+Mono&display=swap" rel="stylesheet">
 <style>
-body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#07101d,#17365d 42%,#eef6ff);color:#0b1d33}.container{max-width:920px;margin:auto;padding:40px}.card{background:white;border-radius:24px;padding:28px;box-shadow:0 18px 45px rgba(0,0,0,.18);border:1px solid #d6b354}h1{text-align:center;color:#17365d}.tag{display:inline-block;background:#17365d;color:white;border-radius:999px;padding:8px 16px;font-family:Arial,sans-serif;font-weight:bold}.texto{font-size:20px;line-height:1.45}.btn{display:inline-block;margin-top:30px;padding:12px 22px;border-radius:999px;background:#17365d;color:white;text-decoration:none;font-weight:bold;font-family:Arial,sans-serif}.nota{margin-top:18px;font-family:Arial,sans-serif;color:#43576e}</style>
+:root{--azul:#07182b;--azul-mid:#10294a;--ouro:#d6b354;--papel:#fff8df;--tinta:#1a1208;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--papel);color:var(--tinta);font-family:'Libre Baskerville',Georgia,serif;}
+.cab{background:var(--azul);padding:2rem 3rem;border-bottom:3px solid var(--ouro);}
+.nav{display:flex;gap:0.8rem;margin-bottom:1rem;flex-wrap:wrap;}
+.nav a{font-family:'Space Mono',monospace;font-size:0.5rem;letter-spacing:0.12em;color:rgba(213,179,84,0.5);text-decoration:none;text-transform:uppercase;}
+.nav a:hover{color:var(--ouro);}
+.nav span{color:rgba(213,179,84,0.2);}
+.cab-titulo{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(1.8rem,4vw,2.8rem);color:var(--ouro);margin-bottom:0.4rem;}
+.cab-desc{font-style:italic;font-size:0.82rem;color:rgba(213,179,84,0.4);max-width:550px;line-height:1.6;}
+.busca-bar{background:var(--azul-mid);padding:0.8rem 3rem;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(213,179,84,0.1);}
+.busca{background:rgba(213,179,84,0.05);border:1px solid rgba(213,179,84,0.15);color:#f5edd8;font-family:'Libre Baskerville',serif;font-size:0.85rem;padding:0.5rem 0.9rem;outline:none;width:100%;max-width:380px;}
+.busca:focus{border-color:var(--ouro);}
+.busca::placeholder{color:rgba(213,179,84,0.3);font-style:italic;}
+.container{max-width:1300px;margin:0 auto;padding:2rem 3rem;}
+.cnt{font-family:'Space Mono',monospace;font-size:0.45rem;letter-spacing:0.12em;color:rgba(213,179,84,0.3);text-transform:uppercase;margin-bottom:1.2rem;}
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;}
+.card{background:white;border:1px solid rgba(122,95,26,0.1);text-decoration:none;color:var(--tinta);display:block;transition:all 0.3s;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,0.04);}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,0.1);border-color:rgba(213,179,84,0.3);}
+.faixa{height:3px;}
+.corpo{padding:1.1rem 1.3rem;}
+.eixo{font-family:'Space Mono',monospace;font-size:0.4rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.25rem;}
+.nome{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.1rem;color:var(--tinta);margin-bottom:0.15rem;line-height:1.2;}
+.orig{font-family:'Space Mono',monospace;font-size:0.42rem;letter-spacing:0.08em;color:#8899aa;text-transform:uppercase;margin-bottom:0.6rem;}
+.espec{font-style:italic;font-size:0.75rem;color:#3a2a10;line-height:1.5;margin-bottom:0.6rem;}
+.obras-cnt{font-family:'Space Mono',monospace;font-size:0.4rem;letter-spacing:0.08em;color:rgba(122,95,26,0.45);text-transform:uppercase;}
+.rodape{background:var(--azul);padding:1.5rem 3rem;margin-top:2.5rem;text-align:center;border-top:1px solid rgba(213,179,84,0.08);}
+.rod{font-family:'Space Mono',monospace;font-size:0.45rem;letter-spacing:0.12em;color:rgba(213,179,84,0.22);text-transform:uppercase;line-height:2;}
+.rod a{color:rgba(213,179,84,0.38);text-decoration:none;}
+.rod a:hover{color:var(--ouro);}
+@media(max-width:768px){.cab,.container,.busca-bar{padding:1rem;}.grade{grid-template-columns:1fr;}}
+</style>
 </head>
 <body>
+<div class="cab">
+  <div class="nav">
+    <a href="portal_instituto_celeiro_literario.html">Celeiro Literário</a><span>/</span>
+    <a href="site_das_letras_edicoes_literarias.html">Site das Letras</a><span>/</span>
+    <a href="site_editorial.html">Sala Editorial</a><span>/</span>
+    <a href="#" style="color:var(--ouro);">Biografias</a>
+  </div>
+  <div class="cab-titulo">Biografias dos Escritores</div>
+  <div class="cab-desc">Conheça os autores do Site das Letras Edições Literárias. Cada biografia é atualizada a cada nova obra publicada.</div>
+</div>
+<div class="busca-bar">
+  <input type="text" class="busca" id="busca" placeholder="Buscar por nome ou especialidade..." oninput="filtrar()">
+</div>
 <div class="container">
-<div class="card">
-<span class="tag">Atualização editorial</span>
-<h1>Biografias Literárias</h1>
-<p class="texto">Aqui ficam reunidas as biografias públicas autorais da parte literária do Site das Letras.</p>
-<p class="nota">As biografias literárias são atualizadas pela área editorial interna e replicadas aqui como versão pública.</p>
-<a class="btn" href="site_editorial.html">Voltar à Sala Editorial</a>
+  <div class="cnt" id="cnt">49 autores no catálogo</div>
+  <div class="grade" id="grade"><a href="biografia_aj-santos.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">A.J. dos Santos</div>
+        <div class="orig">Itapecerica, MG</div>
+        <div class="espec">Escreve terror psicológico rural com foco em Chupa-Cabras e Lobisomens — criaturas do folclore brasileiro que,...</div>
+        <div class="obras-cnt">8 obras publicadas</div>
+      </div>
+    </a><a href="biografia_amanda-fisher.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Amanda Fernanda Fisher Leão</div>
+        <div class="orig">Caraguatatuba, SP</div>
+        <div class="espec">Escreve sobre pirataria, sereias mitológicas de diferentes culturas do mundo e o Fomea — criatura marinha únic...</div>
+        <div class="obras-cnt">10 obras publicadas</div>
+      </div>
+    </a><a href="biografia_amelie-hanna.html" class="card">
+      <div class="faixa" style="background:#ad1457;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#ad1457;">POESIA</div>
+        <div class="nome">Amélie Maia Hanna</div>
+        <div class="orig">Praia Grande / Bertioga, SP</div>
+        <div class="espec">Poetisa exclusivamente de sonetos — memórias afetivas, cotidiano e emoções tratadas com rigor formal e voz mad...</div>
+        <div class="obras-cnt">1 obra publicada</div>
+      </div>
+    </a><a href="biografia_anisio-teixeira.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Anísio Teixeira</div>
+        <div class="orig">Sorocaba, SP</div>
+        <div class="espec">Escreve sobre zumbis, pós-apocalipse e horror existencial — o zumbi como metáfora profunda da condição humana ...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_articus-persida.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Articus da Pérsida</div>
+        <div class="orig">Acre, Terra Santa (1274)</div>
+        <div class="espec">Escreve sobre cavalaria templária, amor impossível e o legado medieval — narrativas de honra, fé e paixão proi...</div>
+        <div class="obras-cnt">6 obras publicadas</div>
+      </div>
+    </a><a href="biografia_aurora-wings.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Aurora Wings</div>
+        <div class="orig">Caribe (2022)</div>
+        <div class="espec">Escreve ficção científica reflexiva, distopia, aventuras espaciais em novos universos, androides e super-herói...</div>
+        <div class="obras-cnt">5 obras publicadas</div>
+      </div>
+    </a><a href="biografia_padre-benedicttus.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Padre Benedicttus Konstantinos</div>
+        <div class="orig">Catânia, Itália</div>
+        <div class="espec">Escreve catolicismo gótico — a guerra entre o celibato e o amor, as gárgulas como guardiãs com consciência, o ...</div>
+        <div class="obras-cnt">18 obras publicadas</div>
+      </div>
+    </a><a href="biografia_birihani-tesifa.html" class="card">
+      <div class="faixa" style="background:#ad1457;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#ad1457;">POESIA</div>
+        <div class="nome">Birihani Selami Ina Tesifa</div>
+        <div class="orig">Malásia</div>
+        <div class="espec">Poeta exclusivamente de ghazais — amor, devoção e perda tratados com musicalidade e precisão técnica da tradiç...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_caliope-papazissis.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Calíope Papazissis</div>
+        <div class="orig">Hortolândia, SP</div>
+        <div class="espec">Escreve mitopoética contemporânea — mitologias grega, nórdica, celta e italiana recontadas como arquétipos viv...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_chesco-irlanda.html" class="card">
+      <div class="faixa" style="background:#1565c0;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#1565c0;">PROSA</div>
+        <div class="nome">Chesco Irlanda</div>
+        <div class="orig">Duartina, SP</div>
+        <div class="espec">Escreve literatura infantil e infanto-juvenil — histórias que equilibram imaginação, leveza e valor formativo ...</div>
+        <div class="obras-cnt">7 obras publicadas</div>
+      </div>
+    </a><a href="biografia_claudiney-diaz.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Claudiney Aristides Diaz</div>
+        <div class="orig">Nova Russas, CE</div>
+        <div class="espec">Escritor em processo de descoberta — sua identidade literária está sendo construída organicamente, sem territó...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_creone-porfiro.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Creone Porfírio</div>
+        <div class="orig">Ceilândia, DF</div>
+        <div class="espec">Escreve sobre patriotismo puro, guerras brasileiras e memória militar — o amor ao Brasil como valor absoluto e...</div>
+        <div class="obras-cnt">5 obras publicadas</div>
+      </div>
+    </a><a href="biografia_cristovao-duarte.html" class="card">
+      <div class="faixa" style="background:#1565c0;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#1565c0;">PROSA</div>
+        <div class="nome">Cristovão Duarte</div>
+        <div class="orig">Interior de SP</div>
+        <div class="espec">Escreve sobre aracnídeos e horror subterrâneo — narrativas de suspense e aventura onde o que rasteja nas treva...</div>
+        <div class="obras-cnt">4 obras publicadas</div>
+      </div>
+    </a><a href="biografia_daniel-fernandes.html" class="card">
+      <div class="faixa" style="background:#ad1457;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#ad1457;">POESIA</div>
+        <div class="nome">Daniel Fernandes</div>
+        <div class="orig">São Paulo, SP</div>
+        <div class="espec">Poeta do desejo e da sensualidade — cada poema é uma musa diferente. Linguagem direta, com pudor literário, ja...</div>
+        <div class="obras-cnt">5 obras publicadas</div>
+      </div>
+    </a><a href="biografia_darius-vamus.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Dárius Ninus Vamus</div>
+        <div class="orig">São Paulo, SP</div>
+        <div class="espec">Escreve sobre futebol de várzea, humor popular, limerique e elegias — o riso e a leveza como linguagem literár...</div>
+        <div class="obras-cnt">6 obras publicadas</div>
+      </div>
+    </a><a href="biografia_demetrius-varas.html" class="card">
+      <div class="faixa" style="background:#1565c0;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#1565c0;">PROSA</div>
+        <div class="nome">Demetrius Varas</div>
+        <div class="orig">São Roque, SP</div>
+        <div class="espec">Escreve prosa sensual e psicológica exclusivamente ambientada no Condomínio Lúxuria Towers — universo de perso...</div>
+        <div class="obras-cnt">8 obras publicadas</div>
+      </div>
+    </a><a href="biografia_din-kin-lin.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Din Kin Lin</div>
+        <div class="orig">Xangai / São Paulo, SP</div>
+        <div class="espec">Escreve sobre lendas orientais e China — dragões como seres de sabedoria, imperadores, seres místicos e a filo...</div>
+        <div class="obras-cnt">3 obras publicadas</div>
+      </div>
+    </a><a href="biografia_diogenes-alencar.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Diógenes Bueno de Alencar</div>
+        <div class="orig">Sobradinho, DF</div>
+        <div class="espec">Escreve sobre arquipélagos, penínsulas e memória — a geografia como metáfora da experiência humana de isolamen...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_hama-amarin.html" class="card">
+      <div class="faixa" style="background:#ad1457;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#ad1457;">POESIA</div>
+        <div class="nome">Hama Amarin</div>
+        <div class="orig">Guararema, SP</div>
+        <div class="espec">Poeta exclusivamente de pantuns — perdão, ciclos emocionais e memória circular como territórios de uma escrita...</div>
+        <div class="obras-cnt">1 obra publicada</div>
+      </div>
+    </a><a href="biografia_hernesto-bevilacqua.html" class="card">
+      <div class="faixa" style="background:#ad1457;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#ad1457;">POESIA</div>
+        <div class="nome">Hernesto Bevilácqua</div>
+        <div class="orig">Serra Negra, SP</div>
+        <div class="espec">Poeta exclusivamente de odes — contemplação, exaltação e lirismo clássico com musicalidade e rigor formal.</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_horando-prado.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Horando Almeida Prado</div>
+        <div class="orig">Itanhaém, SP</div>
+        <div class="espec">Escreve sobre o mar caiçara, a pesca e a sereia que encanta pescadores — lenda popular do litoral sul paulista...</div>
+        <div class="obras-cnt">6 obras publicadas</div>
+      </div>
+    </a><a href="biografia_icabode-kahpote.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Icabode Kahpote</div>
+        <div class="orig">Campos do Jordão, SP</div>
+        <div class="espec">Escreve sextinas e contos póstumos — a morte como ponto de vista, não como tema. Uma voz que fala do outro lad...</div>
+        <div class="obras-cnt">2 obras publicadas</div>
+      </div>
+    </a><a href="biografia_imediato-thompson.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Imediato Thompson</div>
+        <div class="orig">Nova Escócia, Canadá</div>
+        <div class="espec">Escreve sobre a Décima Terceira Constelação de Ophiuchus, o Planeta Atlantis e a Estrela Rasalhague — territór...</div>
+        <div class="obras-cnt">8 obras publicadas</div>
+      </div>
+    </a><a href="biografia_jl-gomes.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">J.L. Gomes</div>
+        <div class="orig">Bauru, SP</div>
+        <div class="espec">Escreve literatura espírita narrativa e afetiva com o Espírito Irmão Pullius como coautor — mensagens de confo...</div>
+        <div class="obras-cnt">3 obras publicadas</div>
+      </div>
+    </a><a href="biografia_jorge-cavalcanti.html" class="card">
+      <div class="faixa" style="background:#2e7d32;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#2e7d32;">CORDEL</div>
+        <div class="nome">Jorge Cavalcanti</div>
+        <div class="orig">Campos do Jordão, SP</div>
+        <div class="espec">Escreve exclusivamente cordel — a tradição cordelista como linguagem viva e atual, com métrica rigorosa e narr...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_juka-pituskaq.html" class="card">
+      <div class="faixa" style="background:#ad1457;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#ad1457;">POESIA</div>
+        <div class="nome">Juka Pituskaq</div>
+        <div class="orig">Mairinque, SP (1890)</div>
+        <div class="espec">Criador do Novo Movimento Estrofista — forma poética de rigor clássico que honra a tradição sem ser antiquada.</div>
+        <div class="obras-cnt">3 obras publicadas</div>
+      </div>
+    </a><a href="biografia_julia-abdalla.html" class="card">
+      <div class="faixa" style="background:#1565c0;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#1565c0;">PROSA</div>
+        <div class="nome">Julia Abdalla</div>
+        <div class="orig">São Paulo, SP</div>
+        <div class="espec">Escreve sobre culinária como narrativa — receitas que carregam memórias afetivas, histórias e o cuidado do ato...</div>
+        <div class="obras-cnt">1 obra publicada</div>
+      </div>
+    </a><a href="biografia_mario-sabino.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Mário Célio Sabino</div>
+        <div class="orig">Mairinque, SP</div>
+        <div class="espec">Escreve terror fantasmagórico e gótico psicológico — fantasmas, ocultismo e paranormal tratados com seriedade ...</div>
+        <div class="obras-cnt">4 obras publicadas</div>
+      </div>
+    </a><a href="biografia_michelangelo-miguel.html" class="card">
+      <div class="faixa" style="background:#ad1457;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#ad1457;">POESIA</div>
+        <div class="nome">Michelangelo Miguel</div>
+        <div class="orig">Mogi das Cruzes, SP</div>
+        <div class="espec">Escreve poemas narrativos — poesia que conta histórias com personagens, cenas e trajetórias, unindo lirismo e ...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_pyetra-luyza.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Pyetra Luyza</div>
+        <div class="orig">Santo André, SP</div>
+        <div class="espec">Escreve ecoficção e jornalismo literário — a natureza em risco como personagem central, com foco nas represas ...</div>
+        <div class="obras-cnt">1 obra publicada</div>
+      </div>
+    </a><a href="biografia_raimundo-nonato.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Raimundo José da Silva Nonato</div>
+        <div class="orig">Peruíbe, SP</div>
+        <div class="espec">Escreve sobre a seca nordestina e a resistência do povo sertanejo — memória oral e testemunho como matéria lit...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_renat-kolotov.html" class="card">
+      <div class="faixa" style="background:#1565c0;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#1565c0;">PROSA</div>
+        <div class="nome">Renat Kolotov</div>
+        <div class="orig">Campina das Missões, RS</div>
+        <div class="espec">Escreve sobre a Revolução Russa e resistência histórica — memória familiar de dois mundos: o russo que ficou e...</div>
+        <div class="obras-cnt">1 obra publicada</div>
+      </div>
+    </a><a href="biografia_rovonilson-bautista.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Rovonilson Reigns Bautista</div>
+        <div class="orig">Santo André, SP</div>
+        <div class="espec">Escreve rap literário e narrativas da rua — marquises, FEBEM, vida periférica e redenção pelo verso. Único aut...</div>
+        <div class="obras-cnt">5 obras publicadas</div>
+      </div>
+    </a><a href="biografia_henrich-jones.html" class="card">
+      <div class="faixa" style="background:#1565c0;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#1565c0;">PROSA</div>
+        <div class="nome">Henrich Jones</div>
+        <div class="orig">Brasília, DF</div>
+        <div class="espec">Escreve aventura arqueológica e mistério histórico — civilizações antigas, paleontologia e os segredos que os ...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_sebastiao-anjos.html" class="card">
+      <div class="faixa" style="background:#ad1457;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#ad1457;">POESIA</div>
+        <div class="nome">Sebastião Ferreira dos Anjos</div>
+        <div class="orig">Santo Antônio do Monte, MG</div>
+        <div class="espec">Escreve poemas dissertativos — lirismo e argumentação em síntese, o verso como instrumento de pensamento e pos...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_valter-marques.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Valter Marques</div>
+        <div class="orig">Recife, PE / São Roque, SP</div>
+        <div class="espec">Escreve sobre erros do passado, dor consciente e reconciliação humana — tanto prosa quanto poesia, a escrita c...</div>
+        <div class="obras-cnt">2 obras publicadas</div>
+      </div>
+    </a><a href="biografia_victor-pereira.html" class="card">
+      <div class="faixa" style="background:#1565c0;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#1565c0;">PROSA</div>
+        <div class="nome">Victor A. Pereira</div>
+        <div class="orig">Bragança Paulista, SP</div>
+        <div class="espec">Escreve romance policial, mistério e tensão investigativa — três camadas obrigatórias em cada obra, no estilo ...</div>
+        <div class="obras-cnt">6 obras publicadas</div>
+      </div>
+    </a><a href="biografia_wilson-silva.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Wilson Silva</div>
+        <div class="orig">São Paulo, SP</div>
+        <div class="espec">Escreve sobre o cotidiano, o amor e o lirismo da vida ordinária — o ordinário elevado pela afetividade e pelo ...</div>
+        <div class="obras-cnt">9 obras publicadas</div>
+      </div>
+    </a><a href="biografia_yago-mattos.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Yago Mattos</div>
+        <div class="orig">Praia Grande, SP</div>
+        <div class="espec">Escreve sobre lendas urbanas contemporâneas — bruxas e misticismo do cotidiano moderno, sem folclorismo region...</div>
+        <div class="obras-cnt">3 obras publicadas</div>
+      </div>
+    </a><a href="biografia_wagner-planas.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Wagner Planas</div>
+        <div class="orig">São Paulo, SP</div>
+        <div class="espec">Escritor de múltiplos territórios e criador do ecossistema heteronímico — responsável pela Máquina de Geração ...</div>
+        <div class="obras-cnt">7 obras publicadas</div>
+      </div>
+    </a><a href="biografia_noraya-sakamoto.html" class="card">
+      <div class="faixa" style="background:#ad1457;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#ad1457;">POESIA</div>
+        <div class="nome">Noraya Sakamoto</div>
+        <div class="orig">São Paulo, SP</div>
+        <div class="espec">Poetisa exclusivamente de haiku — natureza, silêncio e instante com sensibilidade nipo-brasileira única.</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_vladislava-karnstein.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Vladislava Karnstein</div>
+        <div class="orig">Transilvânia (1642)</div>
+        <div class="espec">Escreve vampirismo aristocrático e sedução sombria — quatro séculos de memórias de uma condessa imortal que at...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_dona-catarina.html" class="card">
+      <div class="faixa" style="background:#ad1457;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#ad1457;">POESIA</div>
+        <div class="nome">Dona Catarina Trovante</div>
+        <div class="orig">Curitiba, PR</div>
+        <div class="espec">Escreve exclusivamente trovas — quadras métricas rigorosas a serviço de temas nacionais, do amor, da natureza ...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_santiago-poetrix.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Santiago Poetrix</div>
+        <div class="orig">Santos, SP</div>
+        <div class="espec">Escreve Poetrix — forma literária híbrida entre poesia e prosa poética. O leitor nunca sabe exatamente o que e...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_irmao-ezequias.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Irmão Ezequias Luz</div>
+        <div class="orig">Fortaleza, CE</div>
+        <div class="espec">Escreve literatura cristã evangélica e terror espiritual — batalha entre o bem e o mal onde a redenção é conqu...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_marina-vozes.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Marina das Vozes</div>
+        <div class="orig">São Paulo, SP</div>
+        <div class="espec">Escreve crônica urbana pura — São Paulo e a vida metropolitana observadas com ironia fina e afeto genuíno pela...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_helena-valenca.html" class="card">
+      <div class="faixa" style="background:#1565c0;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#1565c0;">PROSA</div>
+        <div class="nome">Helena Duarte Valença</div>
+        <div class="orig">Campinas, SP</div>
+        <div class="espec">Escreve narrativas de reconstrução feminina — memória doméstica e liberdade após silenciamento, com densidade ...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_marina-torres.html" class="card">
+      <div class="faixa" style="background:#ad1457;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#ad1457;">POESIA</div>
+        <div class="nome">Marina Torres Azevedo</div>
+        <div class="orig">Juiz de Fora, MG</div>
+        <div class="espec">Escreve poesia testemunhal de reconstrução feminina — cura, memória e retomada da voz com linguagem direta e m...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a><a href="biografia_clara-rios.html" class="card">
+      <div class="faixa" style="background:#e65100;"></div>
+      <div class="corpo">
+        <div class="eixo" style="color:#e65100;">HÍBRIDO</div>
+        <div class="nome">Clara Mendes Rios</div>
+        <div class="orig">Sorocaba, SP</div>
+        <div class="espec">Escreve prosa poética híbrida de travessia — narrativa, memória e imagens simbólicas de reconstrução pessoal a...</div>
+        <div class="obras-cnt">0 obras publicadas</div>
+      </div>
+    </a></div>
 </div>
+<div class="rodape">
+  <div class="rod">
+    Site das Letras Edições Literárias & Multimídia<br>
+    SIGMAL — São Roque International Global Music, Arts & Letters Academy<br>
+    <a href="site_editorial.html">← Voltar à Sala Editorial</a>
+  </div>
 </div>
+<script>
+const cards=document.querySelectorAll('.card');
+function filtrar(){
+  const b=document.getElementById('busca').value.toLowerCase();
+  let v=0;
+  cards.forEach(c=>{const s=!b||c.textContent.toLowerCase().includes(b);c.style.display=s?'block':'none';if(s)v++;});
+  document.getElementById('cnt').textContent=v+' autor'+(v!==1?'es':'')+' no catálogo';
+}
+</script>
 </body>
 </html>
