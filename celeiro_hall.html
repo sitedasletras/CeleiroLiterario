@@ -7,340 +7,82 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ouro: #C9A84C;
-    --ouro-claro: #E8C97A;
-    --azul-profundo: #0A0F1E;
-    --azul-medio: #111827;
-    --azul-card: #141E33;
-    --branco-perola: #F5F0E8;
-    --cinza-suave: #9CA3AF;
-    --verde-nav: #16A34A;
-    --amarelo-nav: #CA8A04;
-    --vermelho-nav: #DC2626;
-
-    /* Cores dos departamentos */
-    --cor-portais: #1E3A5F;
-    --cor-radar: #1A3A2A;
-    --cor-parceiros: #3A1A2A;
-    --cor-oficinas: #2A1A3A;
-    --cor-dados: #1A2A3A;
-    --cor-formacao: #3A2A1A;
-    --cor-lapidar: #2A3A1A;
-    --cor-siteletras: #1A2050;
-    --cor-multimídia: #1A1A3A;
-    --cor-comunicacao: #2A1A1A;
-    --cor-sigmal: #2A2000;
-    --cor-expedicao: #3A1A1A;
-    --cor-corsi: #1A3A3A;
-    --cor-admin: #1A1A1A;
+    --ouro: #C9A84C; --ouro-claro: #E8C97A;
+    --azul-profundo: #0A0F1E; --azul-card: #141E33;
+    --branco-perola: #F5F0E8; --cinza-suave: #9CA3AF;
+    --verde-nav: #16A34A; --amarelo-nav: #CA8A04; --vermelho-nav: #DC2626;
   }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--azul-profundo); color:var(--branco-perola); font-family:'Cormorant Garamond',serif; min-height:100vh; overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; background: radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.05) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.03) 0%, transparent 50%); pointer-events:none; z-index:0; }
+  .stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .star { position:absolute; background:white; border-radius:50%; animation:twinkle var(--d,3s) ease-in-out infinite; opacity:var(--o,0.3); }
+  @keyframes twinkle { 0%,100%{opacity:var(--o,0.3)}50%{opacity:0.05} }
+  .container { position:relative; z-index:1; max-width:600px; margin:0 auto; padding:30px 16px 80px; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  .btn-voltar { display:inline-flex; align-items:center; gap:8px; background:transparent; border:1px solid rgba(201,168,76,0.3); color:var(--ouro); padding:10px 20px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; margin-bottom:28px; transition:all 0.3s ease; }
+  .btn-voltar:hover { background:rgba(201,168,76,0.1); }
 
-  body {
-    background: var(--azul-profundo);
-    color: var(--branco-perola);
-    font-family: 'Cormorant Garamond', serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  .cicile-hall { background:rgba(20,30,51,0.9); border:1px solid rgba(201,168,76,0.25); border-radius:16px; padding:20px; display:flex; align-items:center; gap:16px; margin-bottom:32px; }
+  .cicile-foto { width:75px; height:75px; border-radius:50%; object-fit:cover; border:2px solid rgba(201,168,76,0.3); flex-shrink:0; }
+  .cicile-fala p { font-style:italic; font-size:14px; color:var(--cinza-suave); line-height:1.6; }
+  .cicile-fala strong { color:var(--ouro); font-style:normal; }
+  .cicile-nome { font-family:'Cinzel',serif; font-size:9px; letter-spacing:3px; color:var(--ouro); opacity:0.6; margin-top:6px; }
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.05) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.03) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
-  }
+  .hall-titulo { text-align:center; margin-bottom:28px; }
+  .hall-titulo h2 { font-family:'Cinzel',serif; font-size:11px; letter-spacing:4px; color:var(--ouro); opacity:0.7; margin-bottom:8px; }
+  .linha-divisora { width:100px; height:1px; background:linear-gradient(90deg, transparent, var(--ouro), transparent); margin:0 auto; }
 
-  .stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-  .star {
-    position: absolute; background: white; border-radius: 50%;
-    animation: twinkle var(--d, 3s) ease-in-out infinite;
-    opacity: var(--o, 0.3);
-  }
-  @keyframes twinkle {
-    0%, 100% { opacity: var(--o, 0.3); } 50% { opacity: 0.05; }
-  }
+  .secao { margin-bottom:28px; }
+  .secao-titulo { font-family:'Cinzel',serif; font-size:9px; letter-spacing:3px; color:var(--ouro); opacity:0.6; text-transform:uppercase; margin-bottom:12px; border-left:2px solid var(--ouro); padding-left:10px; }
 
-  .container {
-    position: relative; z-index: 1;
-    max-width: 600px; margin: 0 auto;
-    padding: 30px 16px 80px;
-  }
+  .dept-grid { display:flex; flex-direction:column; gap:10px; }
 
-  /* CICILE boas-vindas */
-  .cicile-hall {
-    background: rgba(20,30,51,0.9);
-    border: 1px solid rgba(201,168,76,0.25);
-    border-radius: 16px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 32px;
-    animation: fadeDown 0.8s ease forwards;
-  }
+  .dept-card { border-radius:12px; padding:16px; display:flex; align-items:center; gap:14px; text-decoration:none; color:inherit; transition:all 0.3s ease; border:1px solid rgba(255,255,255,0.06); position:relative; overflow:hidden; }
+  .dept-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 60%); opacity:0; transition:opacity 0.3s ease; }
+  .dept-card:hover::before { opacity:1; }
+  .dept-card:hover { transform:translateX(4px); border-color:rgba(201,168,76,0.3); box-shadow:0 4px 20px rgba(0,0,0,0.3); }
 
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  .dept-icone { width:46px; height:46px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; background:rgba(255,255,255,0.06); }
+  .dept-icone img { width:46px; height:46px; border-radius:50%; object-fit:cover; }
 
-  .cicile-foto {
-    width: 75px; height: 75px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid rgba(201,168,76,0.4);
-    flex-shrink: 0;
-  }
+  .dept-info { flex:1; }
+  .dept-tag { font-family:'Cinzel',serif; font-size:8px; letter-spacing:2px; color:var(--ouro); opacity:0.6; margin-bottom:3px; }
+  .dept-nome { font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:var(--branco-perola); margin-bottom:2px; }
+  .dept-desc { font-size:11px; color:var(--cinza-suave); font-style:italic; line-height:1.4; }
 
-  .cicile-fala p {
-    font-size: 14px;
-    font-style: italic;
-    color: var(--cinza-suave);
-    line-height: 1.6;
-  }
-  .cicile-fala strong { color: var(--ouro); font-style: normal; }
-  .cicile-nome {
-    font-family: 'Cinzel', serif;
-    font-size: 9px;
-    letter-spacing: 3px;
-    color: var(--ouro);
-    opacity: 0.6;
-    margin-top: 6px;
-  }
+  .dept-seta { color:var(--ouro); font-size:16px; opacity:0.5; transition:all 0.3s ease; }
+  .dept-card:hover .dept-seta { opacity:1; transform:translateX(3px); }
 
-  /* Título do hall */
-  .hall-titulo {
-    text-align: center;
-    margin-bottom: 28px;
-    animation: fadeUp 0.8s ease 0.2s forwards;
-    opacity: 0;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .hall-titulo h2 {
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: var(--ouro);
-    opacity: 0.7;
-    margin-bottom: 8px;
-  }
-
-  .linha-divisora {
-    width: 100px; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--ouro), transparent);
-    margin: 0 auto;
-  }
-
-  /* Seção de departamentos */
-  .secao {
-    margin-bottom: 28px;
-    animation: fadeUp 0.8s ease forwards;
-    opacity: 0;
-  }
-
-  .secao-titulo {
-    font-family: 'Cinzel', serif;
-    font-size: 9px;
-    letter-spacing: 3px;
-    color: var(--ouro);
-    opacity: 0.6;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    padding-left: 4px;
-    border-left: 2px solid var(--ouro);
-    padding-left: 10px;
-  }
-
-  .dept-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .dept-card {
-    border-radius: 12px;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255,255,255,0.06);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .dept-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 60%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .dept-card:hover::before { opacity: 1; }
-  .dept-card:hover {
-    transform: translateX(4px);
-    border-color: rgba(201,168,76,0.3);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  }
-
-  .dept-icone {
-    width: 46px; height: 46px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
-    background: rgba(255,255,255,0.06);
-  }
-
-  .dept-icone img {
-    width: 46px; height: 46px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  .dept-info { flex: 1; }
-
-  .dept-tag {
-    font-family: 'Cinzel', serif;
-    font-size: 8px;
-    letter-spacing: 2px;
-    color: var(--ouro);
-    opacity: 0.6;
-    margin-bottom: 3px;
-  }
-
-  .dept-nome {
-    font-family: 'Playfair Display', serif;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--branco-perola);
-    margin-bottom: 2px;
-  }
-
-  .dept-desc {
-    font-size: 11px;
-    color: var(--cinza-suave);
-    font-style: italic;
-    line-height: 1.4;
-  }
-
-  .dept-seta {
-    color: var(--ouro);
-    font-size: 16px;
-    opacity: 0.5;
-    transition: all 0.3s ease;
-  }
-  .dept-card:hover .dept-seta { opacity: 1; transform: translateX(3px); }
-
-  /* Botão reclamação */
-  .btn-reclamacao {
-    position: fixed;
-    bottom: 20px;
-    right: 16px;
-    background: rgba(220,38,38,0.15);
-    border: 1px solid rgba(220,38,38,0.3);
-    color: #FCA5A5;
-    padding: 10px 16px;
-    border-radius: 30px;
-    font-family: 'Cinzel', serif;
-    font-size: 10px;
-    letter-spacing: 2px;
-    cursor: pointer;
-    text-decoration: none;
-    z-index: 100;
-    transition: all 0.3s ease;
-  }
-  .btn-reclamacao:hover {
-    background: rgba(220,38,38,0.3);
-    border-color: rgba(220,38,38,0.6);
-  }
-
-  /* Botão voltar */
-  .btn-voltar {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: transparent;
-    border: 1px solid rgba(201,168,76,0.3);
-    color: var(--ouro);
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-family: 'Cinzel', serif;
-    font-size: 10px;
-    letter-spacing: 2px;
-    cursor: pointer;
-    text-decoration: none;
-    margin-bottom: 28px;
-    transition: all 0.3s ease;
-  }
-  .btn-voltar:hover { background: rgba(201,168,76,0.1); }
-
-  /* Cores por departamento */
-  .d-portais { background: var(--cor-portais); }
-  .d-radar { background: var(--cor-radar); }
-  .d-parceiros { background: var(--cor-parceiros); }
-  .d-oficinas { background: var(--cor-oficinas); }
-  .d-dados { background: var(--cor-dados); }
-  .d-formacao { background: var(--cor-formacao); }
-  .d-lapidar { background: var(--cor-lapidar); }
-  .d-siteletras { background: var(--cor-siteletras); }
-  .d-multimidia { background: var(--cor-multimídia); }
-  .d-comunicacao { background: var(--cor-comunicacao); }
-  .d-sigmal { background: var(--cor-sigmal); }
-  .d-expedicao { background: var(--cor-expedicao); }
-  .d-corsi { background: var(--cor-corsi); }
-  .d-admin { background: var(--cor-admin); }
+  .btn-reclamacao { position:fixed; bottom:20px; right:16px; background:rgba(220,38,38,0.15); border:1px solid rgba(220,38,38,0.3); color:#FCA5A5; padding:10px 16px; border-radius:30px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; z-index:100; transition:all 0.3s ease; }
+  .btn-reclamacao:hover { background:rgba(220,38,38,0.3); }
 </style>
 </head>
 <body>
-
 <div class="stars" id="stars"></div>
-
 <div class="container">
 
-  <!-- Botão voltar -->
   <a href="celeiro_entrada.html" class="btn-voltar">← Voltar à Entrada</a>
 
   <!-- CICILE -->
   <div class="cicile-hall">
-    <img
-      class="cicile-foto"
-      src="file_00000000bc3071fb999124a47a93c7dd_2.png"
-      alt="CICILE"
-      onerror="this.style.display='none'"
-    >
+    <img class="cicile-foto" src="file_00000000bc3071fb999124a47a93c7dd_2.png" alt="CICILE" onerror="this.style.display='none'">
     <div class="cicile-fala">
       <p>Bem-vindo ao <strong>Hall do Celeiro</strong>. Escolha um departamento para começar sua jornada. Cada espaço tem seu próprio guia esperando por você.</p>
       <p class="cicile-nome">✦ CICILE · PORTAL DE ENTRADA ✦</p>
     </div>
   </div>
 
-  <!-- Título -->
   <div class="hall-titulo">
     <h2>✦ DEPARTAMENTOS DO CELEIRO ✦</h2>
     <div class="linha-divisora"></div>
   </div>
 
   <!-- 01 Portais Principais -->
-  <div class="secao" style="animation-delay: 0.1s">
+  <div class="secao">
     <p class="secao-titulo">01 · Portais Principais</p>
     <div class="dept-grid">
-      <a href="site_das_letras.html" class="dept-card d-siteletras">
+      <a href="site_das_letras.html" class="dept-card" style="background:#1A2050;">
         <div class="dept-icone">
           <img src="file_000000006abc720ebca3e51bb5182a06.png" alt="Site das Letras" onerror="this.parentElement.innerHTML='📚'">
         </div>
@@ -355,10 +97,10 @@
   </div>
 
   <!-- 02 Novos Portais -->
-  <div class="secao" style="animation-delay: 0.2s">
+  <div class="secao">
     <p class="secao-titulo">02 · Novos Portais</p>
     <div class="dept-grid">
-      <a href="radar_literario.html" class="dept-card d-radar">
+      <a href="radar_literario.html" class="dept-card" style="background:#1A3A2A;">
         <div class="dept-icone">📡</div>
         <div class="dept-info">
           <p class="dept-tag">Notícias</p>
@@ -367,7 +109,7 @@
         </div>
         <span class="dept-seta">→</span>
       </a>
-      <a href="parceiros_culturais.html" class="dept-card d-parceiros">
+      <a href="parceiros_culturais.html" class="dept-card" style="background:#3A1A2A;">
         <div class="dept-icone">✦</div>
         <div class="dept-info">
           <p class="dept-tag">Parceiros</p>
@@ -380,10 +122,10 @@
   </div>
 
   <!-- 03 Oficinas -->
-  <div class="secao" style="animation-delay: 0.3s">
+  <div class="secao">
     <p class="secao-titulo">03 · Oficinas de Criação</p>
     <div class="dept-grid">
-      <a href="lapidar.html" class="dept-card d-lapidar">
+      <a href="lapidar.html" class="dept-card" style="background:#2A3A1A;">
         <div class="dept-icone">💎</div>
         <div class="dept-info">
           <p class="dept-tag">Ateliê</p>
@@ -396,10 +138,10 @@
   </div>
 
   <!-- 04 Máquina de Dados -->
-  <div class="secao" style="animation-delay: 0.35s">
+  <div class="secao">
     <p class="secao-titulo">04 · Geração de Dados</p>
     <div class="dept-grid">
-      <a href="maquina_dados.html" class="dept-card d-dados">
+      <a href="maquina_dados.html" class="dept-card" style="background:#1A2A3A;">
         <div class="dept-icone">⚡</div>
         <div class="dept-info">
           <p class="dept-tag">Criação</p>
@@ -412,10 +154,10 @@
   </div>
 
   <!-- 05 Formação -->
-  <div class="secao" style="animation-delay: 0.4s">
+  <div class="secao">
     <p class="secao-titulo">05 · Formação & Trajetória</p>
     <div class="dept-grid">
-      <a href="caminho_das_pedras.html" class="dept-card d-formacao">
+      <a href="caminho_das_pedras.html" class="dept-card" style="background:#3A2A1A;">
         <div class="dept-icone">
           <img src="file_00000000c784720e8e82aaa0b55f714b.png" alt="Diretor Lapiz" onerror="this.parentElement.innerHTML='🪨'">
         </div>
@@ -426,7 +168,7 @@
         </div>
         <span class="dept-seta">→</span>
       </a>
-      <a href="mentoria_cibernetica.html" class="dept-card d-formacao">
+      <a href="mentoria_cibernetica.html" class="dept-card" style="background:#2A3A2A;">
         <div class="dept-icone">🤖</div>
         <div class="dept-info">
           <p class="dept-tag">Mentoria · Carreira · Evolução</p>
@@ -435,7 +177,7 @@
         </div>
         <span class="dept-seta">→</span>
       </a>
-      <a href="conte_comigo.html" class="dept-card d-formacao">
+      <a href="conte_comigo.html" class="dept-card" style="background:#2A2A3A;">
         <div class="dept-icone">✍️</div>
         <div class="dept-info">
           <p class="dept-tag">Acessibilidade</p>
@@ -448,10 +190,10 @@
   </div>
 
   <!-- 06 Silo Multimídia -->
-  <div class="secao" style="animation-delay: 0.5s">
+  <div class="secao">
     <p class="secao-titulo">06 · Silo Multimídia</p>
     <div class="dept-grid">
-      <a href="silo_multimidia.html" class="dept-card d-multimidia">
+      <a href="silo_multimidia.html" class="dept-card" style="background:#1A1A3A;">
         <div class="dept-icone">🎬</div>
         <div class="dept-info">
           <p class="dept-tag">CICILE · Portal</p>
@@ -464,10 +206,10 @@
   </div>
 
   <!-- 07 Complexo de Comunicação -->
-  <div class="secao" style="animation-delay: 0.55s">
+  <div class="secao">
     <p class="secao-titulo">07 · Complexo de Comunicação</p>
     <div class="dept-grid">
-      <a href="difusao.html" class="dept-card d-comunicacao">
+      <a href="difusao.html" class="dept-card" style="background:#2A1A1A;">
         <div class="dept-icone">📺</div>
         <div class="dept-info">
           <p class="dept-tag">Canais de Difusão</p>
@@ -480,10 +222,10 @@
   </div>
 
   <!-- 08 SIGMAL -->
-  <div class="secao" style="animation-delay: 0.6s">
+  <div class="secao">
     <p class="secao-titulo">08 · SIGMAL Academy</p>
     <div class="dept-grid">
-      <a href="sigmal_academia_artistica_internacional.html" class="dept-card d-sigmal">
+      <a href="sigmal_academia_artistica_internacional.html" class="dept-card" style="background:#2A2000;">
         <div class="dept-icone">
           <img src="file_00000000b1e071fbad15b4ac2196c73e~2.png" alt="SIGMAL" onerror="this.parentElement.innerHTML='🎓'">
         </div>
@@ -497,11 +239,11 @@
     </div>
   </div>
 
-  <!-- 09 Expedição Geral -->
-  <div class="secao" style="animation-delay: 0.65s">
+  <!-- 09 Expedição Editorial Geral -->
+  <div class="secao">
     <p class="secao-titulo">09 · Expedição Editorial Geral</p>
     <div class="dept-grid">
-      <a href="expedicao_geral.html" class="dept-card d-expedicao">
+      <a href="expedicao_geral.html" class="dept-card" style="background:#3A1A1A;">
         <div class="dept-icone">🌐</div>
         <div class="dept-info">
           <p class="dept-tag">Expedição</p>
@@ -514,10 +256,10 @@
   </div>
 
   <!-- 10 CORSI -->
-  <div class="secao" style="animation-delay: 0.7s">
+  <div class="secao">
     <p class="secao-titulo">10 · Circulação & Redes</p>
     <div class="dept-grid">
-      <a href="corsi.html" class="dept-card d-corsi">
+      <a href="corsi.html" class="dept-card" style="background:#1A3A3A;">
         <div class="dept-icone">
           <img src="file_00000000b8e0720eb8a15a16c209d672.png" alt="CORSI" onerror="this.parentElement.innerHTML='📡'">
         </div>
@@ -531,33 +273,31 @@
     </div>
   </div>
 
+  <!-- 11 CICILE -->
+  <div class="secao">
+    <p class="secao-titulo">11 · Portal de Entrada</p>
+    <div class="dept-grid">
+      <a href="cicile.html" class="dept-card" style="background:#1A0A18;">
+        <div class="dept-icone">
+          <img src="file_00000000bc3071fb999124a47a93c7dd_2.png" alt="CICILE" onerror="this.parentElement.innerHTML='✦'">
+        </div>
+        <div class="dept-info">
+          <p class="dept-tag">Portal · Comunicação · Reclamações</p>
+          <p class="dept-nome">CICILE</p>
+          <p class="dept-desc">Portal de entrada · Reclamações · Comunicação interna</p>
+        </div>
+        <span class="dept-seta">→</span>
+      </a>
+    </div>
+  </div>
+
 </div>
 
-<!-- Botão de reclamação fixo -->
-<a href="reclamacao.html" class="btn-reclamacao">⚑ Reclamação</a>
+<a href="cicile_reclamacao.html" class="btn-reclamacao">⚑ Reclamação</a>
 
 <script>
-  // Estrelas
-  const sc = document.getElementById('stars');
-  for (let i = 0; i < 60; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    const sz = Math.random() * 2 + 0.5;
-    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--o:${Math.random()*0.4+0.05};animation-delay:${Math.random()*4}s;`;
-    sc.appendChild(s);
-  }
-
-  // Animação das seções
-  const secoes = document.querySelectorAll('.secao');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.style.animation = `fadeUp 0.6s ease forwards`;
-        e.target.style.opacity = '1';
-      }
-    });
-  }, { threshold: 0.1 });
-  secoes.forEach(s => observer.observe(s));
+  const sc=document.getElementById('stars');
+  for(let i=0;i<60;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--o:${Math.random()*0.4+0.05};animation-delay:${Math.random()*4}s;`;sc.appendChild(s);}
 </script>
 </body>
 </html>
