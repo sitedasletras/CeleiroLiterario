@@ -1,52 +1,355 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Conta Comigo — Mentoria Literária</title>
-<style>body{margin:0;font-family:Georgia,serif;background:linear-gradient(180deg,#fbf7ed,#e2f0e6);min-height:100vh;padding:24px 16px}.wrap{max-width:820px;margin:auto}.box{background:#fffaf0;border:1px solid #ddd6c9;border-radius:24px;padding:28px;box-shadow:0 12px 28px rgba(0,0,0,.10);margin-bottom:18px}h1{margin:0 0 8px;font-size:2.2rem;color:#000}.tag{display:inline-block;padding:5px 12px;border-radius:999px;background:#e4f0e8;color:#2f6944;font-size:.88rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px}p{color:#6f6a62;font-size:1.05rem;line-height:1.5;margin:0 0 14px}label{display:block;font-weight:700;margin-bottom:6px;font-size:.95rem;color:#243043}textarea,select{width:100%;border:1px solid #ddd6c9;border-radius:14px;padding:12px;font:inherit;font-size:1rem;background:#fffdf8;margin-bottom:14px;box-sizing:border-box;color:#1f1f1b}textarea{min-height:160px;resize:vertical}.resultado{background:#fff;border:1px solid #c5d9c0;border-radius:18px;padding:18px;white-space:pre-wrap;line-height:1.6;color:#1f3020;font-size:1rem;min-height:80px;display:none}.carregando{color:#6a8a7a;font-style:italic;animation:pulso .8s ease infinite}@keyframes pulso{50%{opacity:.4}}.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}button,a.btn{border:none;border-radius:16px;padding:13px 20px;font:inherit;font-weight:700;cursor:pointer;transition:.18s;text-decoration:none;display:inline-block}button:hover,a.btn:hover{transform:translateY(-1px)}.enviar{background:#2f7d4a;color:#fff}.back{background:#d9a441;color:#2a1d0d}.mapa{background:rgba(47,125,74,.12);color:#2f5a4d;border:1px solid rgba(47,125,74,.3)}</style>
-</head><body>
-<div class="wrap">
-<div class="box">
-  <div class="tag">Mentoria Literária</div>
-  <h1>Conta Comigo</h1>
-  <p>Espaço de orientação literária assistida. Compartilhe sua dúvida, desafio ou projeto — e receba uma orientação editorial personalizada.</p>
-</div>
-<div class="box">
-  <label for="tipo">Tipo de orientação</label>
-  <select id="tipo">
-    <option>Obra em processo</option><option>Escolha editorial</option><option>Carreira literária</option>
-    <option>Leitura e referências</option><option>Concursos e editais</option><option>Outro</option>
-  </select>
-  <label for="pergunta">Sua pergunta ou desafio</label>
-  <textarea id="pergunta" placeholder="Conte o que está enfrentando na sua escrita ou carreira literária..."></textarea>
-  <div class="btns">
-    <button class="enviar" id="btnEnviar" onclick="orientar()">Receber orientação</button>
-    <a class="btn back" href="mentoria_cibernetica.html">← Mentoria</a>
-    <a class="btn mapa" href="pagina_respiro.html">🗺️ Mapa do Celeiro</a>
-  </div>
-</div>
-<div class="box" id="boxResultado" style="display:none">
-  <label>Orientação editorial</label>
-  <div class="resultado" id="resultado"></div>
-</div>
-</div>
-<script>
-async function orientar(){
-  const tipo=document.getElementById('tipo').value;
-  const pergunta=document.getElementById('pergunta').value.trim();
-  if(!pergunta){alert('Por favor, descreva sua dúvida ou desafio antes de continuar.');return;}
-  const btn=document.getElementById('btnEnviar');
-  const box=document.getElementById('boxResultado');
-  const res=document.getElementById('resultado');
-  btn.disabled=true;btn.textContent='⏳ Orientando…';
-  box.style.display='block';res.style.display='block';
-  res.className='resultado carregando';res.textContent='Preparando sua orientação literária…';
-  const prompt=;
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
-    const data=await r.json();
-    const texto=data.content?.map(b=>b.text||'').join('')||'';
-    res.className='resultado';res.textContent=texto;
-  }catch(e){
-    res.className='resultado';res.textContent='⚠️ Não foi possível conectar ao serviço de orientação. Tente novamente em instantes.';
-  }
-  btn.disabled=false;btn.textContent='Receber orientação';
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conte Comigo — Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f2ede4;--card:#fffaf0;--paper:#ffffff;--ink:#1f1a14;--muted:#6a6052;--line:#ddd0ba;
+  --verde:#2f7a4a;--verde2:#4aab6a;--verde3:#d4f0e0;
+  --azul:#2a5a8a;--azul2:#4a8abd;
+  --ouro:#d8a84c;--ouro2:#f0cc80;
+  --roxo:#6a4ab8;--roxo2:#9a7ad8;
+  --shadow:0 12px 28px rgba(0,0,0,.10);--radius:24px;
 }
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:'DM Sans',Georgia,serif;}
+body{padding:0 0 60px;}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:30;background:rgba(242,237,228,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--verde),var(--verde2));display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 14px rgba(47,122,74,.3);}
+.brand-text h1{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--ink);line-height:1;}
+.brand-text p{font-size:.78rem;color:var(--muted);margin-top:2px;}
+.top-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{border:none;border-radius:11px;padding:9px 15px;font:600 .86rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+.btn:hover{transform:translateY(-1px);}
+.btn-verde{background:var(--verde);color:#fff;}
+.btn-amber{background:#d4a44c;color:#1a1000;}
+.btn-red{background:#c44c4c;color:#fff;}
+.btn-ghost{background:rgba(0,0,0,.06);color:var(--ink);border:1px solid var(--line);}
+
+.wrap{max-width:1100px;margin:0 auto;padding:24px 18px;display:flex;flex-direction:column;gap:18px;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#e8f5ee,#f0f8e8);border:1px solid #c4dcc8;border-radius:var(--radius);padding:32px 28px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;box-shadow:var(--shadow);}
+.hero h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);color:var(--verde);margin-bottom:10px;line-height:1.05;}
+.hero p{color:var(--muted);font-size:1rem;line-height:1.65;max-width:680px;}
+.hero-badge{text-align:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 20px;min-width:110px;box-shadow:0 4px 14px rgba(0,0,0,.06);}
+.hero-badge .num{font-family:'Playfair Display',serif;font-size:2rem;color:var(--verde);line-height:1;}
+.hero-badge .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:3px;}
+
+/* SETORES GRID */
+.setores-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+/* SETOR CARD */
+.setor{background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;transition:.18s;}
+.setor:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(0,0,0,.12);}
+.setor-tag{display:inline-flex;align-items:center;gap:6px;width:max-content;padding:5px 13px;border-radius:999px;font-size:.76rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#fff;}
+.setor h2{font-family:'Playfair Display',serif;font-size:1.5rem;line-height:1.1;}
+.setor p{color:var(--muted);font-size:.93rem;line-height:1.55;flex:1;}
+
+/* MÓDULOS */
+.modulos{display:flex;flex-direction:column;gap:4px;}
+.mod{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:12px;text-decoration:none;color:var(--ink);transition:.12s;border:1px solid transparent;}
+.mod:hover{background:rgba(0,0,0,.04);border-color:var(--line);}
+.mod-ico{font-size:.95rem;flex-shrink:0;width:22px;text-align:center;}
+.mod-nome{font-size:.88rem;font-weight:600;flex:1;line-height:1.3;}
+.mod-desc{font-size:.73rem;color:var(--muted);display:block;}
+.badge{font-size:.65rem;padding:2px 7px;border-radius:999px;font-weight:700;flex-shrink:0;}
+.b-novo{background:rgba(47,122,74,.14);color:#2a6a42;}
+.b-ativo{background:rgba(0,0,0,.06);color:#5a5550;}
+.b-ia{background:rgba(106,74,184,.12);color:#5a32c0;}
+
+.btn-setor{margin-top:auto;border:none;border-radius:14px;padding:14px;font:700 .9rem 'DM Sans',sans-serif;cursor:pointer;transition:.15s;color:#fff;width:100%;}
+.btn-setor:hover{transform:translateY(-1px);opacity:.95;}
+.inclusiva-c .setor-tag,.inclusiva-c .btn-setor{background:linear-gradient(135deg,var(--azul),var(--roxo));}
+.mentoria-c  .setor-tag,.mentoria-c  .btn-setor{background:var(--verde);}
+
+/* MENTORIA BOX */
+.mentoria-form{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
+.mentoria-form h3{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:6px;}
+.mentoria-form > p{color:var(--muted);font-size:.92rem;line-height:1.5;margin-bottom:16px;}
+.field label{display:block;font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;}
+.select,.textarea{width:100%;border:1.5px solid var(--line);border-radius:13px;background:#fff;color:var(--ink);padding:11px 14px;font:inherit;font-size:.95rem;outline:none;transition:border-color .2s;margin-bottom:14px;}
+.select:focus,.textarea:focus{border-color:var(--verde2);}
+.textarea{min-height:160px;resize:vertical;line-height:1.6;}
+.btn-orientar{width:100%;padding:15px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--verde),var(--verde2));color:#fff;font:700 1rem 'DM Sans',sans-serif;cursor:pointer;transition:.16s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 20px rgba(47,122,74,.3);}
+.btn-orientar:hover{transform:translateY(-2px);}
+.btn-orientar:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* SPINNER */
+.spin{display:none;text-align:center;padding:18px;color:var(--verde);font-style:italic;animation:pulse 1.5s infinite;}
+.spin.vis{display:block;}
+@keyframes pulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+
+/* RESULTADO */
+.resultado-box{display:none;background:rgba(47,122,74,.06);border:1px solid rgba(47,122,74,.2);border-radius:16px;padding:18px;}
+.resultado-box.vis{display:block;}
+.resultado-box h4{font-family:'Playfair Display',serif;font-size:1rem;color:var(--verde);margin-bottom:10px;}
+.resultado-texto{font-size:.95rem;line-height:1.75;color:var(--ink);white-space:pre-wrap;}
+
+/* FLUXO */
+.fluxo-box{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 22px;box-shadow:0 6px 18px rgba(0,0,0,.07);}
+.fluxo-box h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;}
+.fluxo-steps{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.fs{border:none;border-radius:10px;padding:8px 14px;font:600 .82rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;color:#fff;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;}
+.fs:hover{transform:translateY(-1px);opacity:.9;}
+.fs-sep{color:#bbb;font-size:.85rem;padding:0 2px;}
+
+/* FOOTER */
+.footer-nav{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px 20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;box-shadow:0 6px 18px rgba(0,0,0,.07);}
+
+@media(max-width:760px){.setores-grid{grid-template-columns:1fr;}.hero{grid-template-columns:1fr;}.hero-badge{display:none;}.fluxo-steps{flex-direction:column;align-items:flex-start;}.footer-nav{flex-direction:column;}.btn{width:100%;justify-content:center;}}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">🤝</div>
+    <div class="brand-text">
+      <h1>Conte Comigo</h1>
+      <p>Celeiro Literário · Escrita inclusiva e mentoria literária</p>
+    </div>
+  </div>
+  <div class="top-btns">
+    <a class="btn btn-ghost" href="lapidar.html">← Lapidar</a>
+    <a class="btn btn-ghost" href="pagina_respiro_celeiro.html">🌿 Respiro</a>
+    <a class="btn btn-red"   href="pagina_respiro_celeiro.html">Sair</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <h2>Conte Comigo</h2>
+      <p>Um departamento feito para que <strong>todo escritor seja acolhido</strong> — independente de limitações físicas, cognitivas ou de experiência. Aqui você encontra suporte para escrever do seu jeito e orientação editorial personalizada para avançar na sua jornada.</p>
+    </div>
+    <div class="hero-badge">
+      <div class="num">🤝</div>
+      <div class="lbl">Acolhimento</div>
+    </div>
+  </div>
+
+  <!-- FLUXO -->
+  <div class="fluxo-box">
+    <h3>Como posso te ajudar hoje?</h3>
+    <div class="fluxo-steps">
+      <a class="fs" style="background:linear-gradient(135deg,#2a5a8a,#6a4ab8);" href="maquina_escrita_inclusiva.html">✍️ Quero escrever com apoio</a>
+      <span class="fs-sep">·</span>
+      <a class="fs" style="background:var(--verde);" href="#mentoria">💬 Tenho uma dúvida literária</a>
+      <span class="fs-sep">·</span>
+      <a class="fs" style="background:var(--ouro);color:#1a1000;" href="caminho_das_pedras.html">🪨 Quero seguir o Caminho das Pedras</a>
+      <span class="fs-sep">·</span>
+      <a class="fs" style="background:var(--roxo);" href="lapidar.html">💎 Ir para o Lapidar</a>
+    </div>
+  </div>
+
+  <!-- SETORES -->
+  <div class="setores-grid">
+
+    <!-- ESCRITA INCLUSIVA -->
+    <article class="setor inclusiva-c">
+      <span class="setor-tag">✍️ Escrita Inclusiva</span>
+      <h2>Máquina de Escrita Inclusiva</h2>
+      <p>Para escritores com deficiência visual, motora, auditiva ou cognitiva. Escreva pela voz, por fragmentos, por cliques mínimos ou por ditado. A IA desenvolve sua história do seu jeito.</p>
+      <div class="modulos">
+        <a class="mod" href="maquina_escrita_inclusiva.html">
+          <span class="mod-ico">🎙️</span>
+          <span class="mod-nome">Pela Voz<span class="mod-desc">Fale e a IA escreve e desenvolve</span></span>
+          <span class="badge b-novo">novo</span>
+        </a>
+        <a class="mod" href="maquina_escrita_inclusiva.html">
+          <span class="mod-ico">⌨️</span>
+          <span class="mod-nome">Teclado Adaptado<span class="mod-desc">Teclas grandes, comandos rápidos</span></span>
+          <span class="badge b-novo">novo</span>
+        </a>
+        <a class="mod" href="maquina_escrita_inclusiva.html">
+          <span class="mod-ico">👁️</span>
+          <span class="mod-nome">Cliques Mínimos<span class="mod-desc">Interface para mobilidade reduzida</span></span>
+          <span class="badge b-novo">novo</span>
+        </a>
+        <a class="mod" href="maquina_escrita_inclusiva.html">
+          <span class="mod-ico">🧩</span>
+          <span class="mod-nome">Por Fragmentos<span class="mod-desc">Palavras soltas → história completa</span></span>
+          <span class="badge b-novo">novo</span>
+        </a>
+        <a class="mod" href="maquina_escrita_inclusiva.html">
+          <span class="mod-ico">📝</span>
+          <span class="mod-nome">Ditado + Refino<span class="mod-desc">Cole texto bruto de voz e a IA refina</span></span>
+          <span class="badge b-novo">novo</span>
+        </a>
+      </div>
+      <button class="btn-setor" onclick="window.location.href='maquina_escrita_inclusiva.html'">Acessar Escrita Inclusiva →</button>
+    </article>
+
+    <!-- MENTORIA -->
+    <article class="setor mentoria-c">
+      <span class="setor-tag">💬 Mentoria</span>
+      <h2>Mentoria Literária</h2>
+      <p>Compartilhe sua dúvida, desafio ou projeto. Receba orientação editorial personalizada com IA — sobre sua obra, carreira, concursos ou leitura.</p>
+      <div class="modulos">
+        <a class="mod" href="#mentoria">
+          <span class="mod-ico">📖</span>
+          <span class="mod-nome">Obra em processo<span class="mod-desc">Dúvidas sobre o texto em desenvolvimento</span></span>
+          <span class="badge b-ia">IA</span>
+        </a>
+        <a class="mod" href="#mentoria">
+          <span class="mod-ico">🏆</span>
+          <span class="mod-nome">Concursos e editais<span class="mod-desc">Orientação para submissão</span></span>
+          <span class="badge b-ia">IA</span>
+        </a>
+        <a class="mod" href="#mentoria">
+          <span class="mod-ico">📈</span>
+          <span class="mod-nome">Carreira literária<span class="mod-desc">Estratégia autoral e mercado</span></span>
+          <span class="badge b-ia">IA</span>
+        </a>
+        <a class="mod" href="#mentoria">
+          <span class="mod-ico">📚</span>
+          <span class="mod-nome">Leitura e referências<span class="mod-desc">Indicações e formação literária</span></span>
+          <span class="badge b-ia">IA</span>
+        </a>
+        <a class="mod" href="mentoria_cibernetica.html">
+          <span class="mod-ico">🤖</span>
+          <span class="mod-nome">Mentoria Cibernética<span class="mod-desc">Módulo avançado de mentoria</span></span>
+          <span class="badge b-ativo">ativo</span>
+        </a>
+      </div>
+      <button class="btn-setor" onclick="document.getElementById('mentoria').scrollIntoView({behavior:'smooth'})">Acessar Mentoria →</button>
+    </article>
+
+  </div>
+
+  <!-- FORMULÁRIO DE MENTORIA -->
+  <div class="mentoria-form" id="mentoria">
+    <h3>💬 Orientação Literária Personalizada</h3>
+    <p>Conte o que está enfrentando na sua escrita ou carreira. Receba uma orientação editorial direta e humana, gerada pela IA do Celeiro.</p>
+
+    <div class="field">
+      <label>Tipo de orientação</label>
+      <select class="select" id="tipoOrientacao">
+        <option value="obra">Obra em processo</option>
+        <option value="editorial">Escolha editorial</option>
+        <option value="carreira">Carreira literária</option>
+        <option value="leitura">Leitura e referências</option>
+        <option value="concursos">Concursos e editais</option>
+        <option value="bloqueio">Bloqueio criativo</option>
+        <option value="identidade">Identidade autoral</option>
+        <option value="outro">Outro</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Sua pergunta ou desafio</label>
+      <textarea class="textarea" id="pergunta" placeholder="Conte o que está enfrentando na sua escrita ou carreira literária. Seja específico — quanto mais detalhes, melhor a orientação."></textarea>
+    </div>
+
+    <button class="btn-orientar" id="btnOrientar" onclick="orientar()">
+      <span id="btnIco">💬</span>
+      <span id="btnTxt">Receber orientação</span>
+    </button>
+
+    <div class="spin" id="spinWrap">✦ Preparando sua orientação literária...</div>
+
+    <div class="resultado-box" id="resultadoBox" style="margin-top:16px;">
+      <h4>✦ Sua orientação editorial</h4>
+      <div class="resultado-texto" id="resultadoTexto"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;">
+        <button onclick="copiarOrientacao()" style="border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:10px;padding:9px 14px;font:600 .84rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;" onmouseover="this.style.borderColor='var(--verde)'" onmouseout="this.style.borderColor='var(--line)'">📋 Copiar</button>
+        <a href="lapidar_pensante.html" style="border:none;background:var(--ouro);color:#1a1000;border-radius:10px;padding:9px 14px;font:600 .84rem 'DM Sans',sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;">✦ Levar ao Lapidar Pensante</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-nav">
+    <a class="btn btn-ghost"  href="caminho_das_pedras.html">🪨 Caminho das Pedras</a>
+    <a class="btn btn-ghost"  href="lapidar.html">← Lapidar</a>
+    <a class="btn btn-ghost"  href="pagina_respiro_celeiro.html">🌿 Página de Respiro</a>
+    <a class="btn btn-red"    href="pagina_respiro_celeiro.html">Sair do sistema</a>
+  </div>
+
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+async function orientar(){
+  const tipo=$('tipoOrientacao').value;
+  const pergunta=$('pergunta').value.trim();
+  if(!pergunta){alert('Por favor, descreva sua dúvida ou desafio antes de continuar.');return;}
+
+  $('btnOrientar').disabled=true;
+  $('btnIco').textContent='⏳';
+  $('btnTxt').textContent='Preparando orientação…';
+  $('spinWrap').classList.add('vis');
+  $('resultadoBox').classList.remove('vis');
+
+  const tipoDesc={
+    obra:'obra literária em processo de criação',
+    editorial:'escolha editorial e publicação',
+    carreira:'carreira e trajetória literária',
+    leitura:'leitura e referências literárias',
+    concursos:'concursos literários e editais',
+    bloqueio:'bloqueio criativo e desbloqueio autoral',
+    identidade:'identidade e voz autoral',
+    outro:'questão literária diversa'
+  };
+
+  const prompt=`Você é um orientador literário experiente e acolhedor do Celeiro Literário — instituto cultural dedicado à formação de escritores brasileiros.
+
+Um escritor busca orientação sobre: ${tipoDesc[tipo]||'questão literária'}.
+
+PERGUNTA / DESAFIO DO ESCRITOR:
+${pergunta}
+
+Forneça uma orientação editorial completa, direta e encorajadora em português brasileiro. Sua resposta deve:
+- Reconhecer o desafio com empatia
+- Oferecer orientação prática e específica
+- Sugerir próximos passos concretos
+- Indicar recursos do Celeiro Literário quando relevante (Lapidar, Caminho das Pedras, avaliações, diagramação)
+- Encerrar com uma frase de encorajamento autoral
+
+Tom: acolhedor, profissional e inspirador. Máximo 400 palavras.`;
+
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    const d=await r.json();
+    const texto=d.content?.map(b=>b.text||'').join('')||'';
+    $('resultadoTexto').textContent=texto;
+    $('resultadoBox').classList.add('vis');
+    $('resultadoBox').scrollIntoView({behavior:'smooth'});
+  }catch(e){
+    $('resultadoTexto').textContent='⚠️ Não foi possível conectar ao serviço de orientação. Tente novamente em instantes.';
+    $('resultadoBox').classList.add('vis');
+  }finally{
+    $('spinWrap').classList.remove('vis');
+    $('btnOrientar').disabled=false;
+    $('btnIco').textContent='💬';
+    $('btnTxt').textContent='Receber orientação';
+  }
+}
+
+function copiarOrientacao(){
+  navigator.clipboard.writeText($('resultadoTexto').textContent)
+    .then(()=>alert('Orientação copiada!'));
+}
+
+// Enter no textarea
+$('pergunta').addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.ctrlKey) orientar();
+});
 </script>
-</body></html>
+</body>
+</html>
