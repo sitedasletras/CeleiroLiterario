@@ -1,22 +1,181 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Mentoria Cibernética Literária</title>
-<style>body{margin:0;font-family:Georgia,"Times New Roman",serif;background:linear-gradient(180deg,#fbf7ed,#e2f0e6);color:#243043}header{background:linear-gradient(135deg,#0f1c2e,#2f7d4a);color:white;padding:70px 20px;text-align:center;border-bottom:8px solid #c9a646}h1{margin:0;font-size:clamp(32px,6vw,60px);color:#f4dc88}.subtitle{margin-top:12px;font-size:20px;color:#fff5cf}main{max-width:1100px;margin:auto;padding:40px 20px 80px}.card{background:#fffaf0;border-radius:22px;padding:28px;margin-bottom:28px;box-shadow:0 18px 40px rgba(8,17,31,.16)}.card h2{margin-top:0;color:#0f1c2e}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:16px}.item{background:white;border:1px solid #ddd6c9;border-radius:18px;padding:18px}.item h3{margin-top:0;color:#184b30;font-size:1rem}.btn{display:inline-block;margin-top:16px;padding:12px 20px;border-radius:999px;font-weight:bold;text-decoration:none;background:#c9a646;color:#111;margin-right:8px}.btn-mapa{background:rgba(47,125,74,.12);color:#12331f;border:1px solid rgba(47,125,74,.3)}footer{background:#07101d;color:white;text-align:center;padding:30px;border-top:6px solid #c9a646}</style>
-</head><body>
-<header><h1>Mentoria Cibernética</h1><p class="subtitle">Orientação inteligente de escrita e carreira literária</p></header>
-<main>
-<div class="card"><h2>O que é a Mentoria Cibernética</h2><p>A Mentoria Cibernética é um serviço de orientação literária assistida por inteligência artificial, integrada ao ecossistema do Celeiro Literário. O autor recebe orientação sobre sua obra, sua trajetória e suas escolhas editoriais de forma contínua e personalizada.</p></div>
-<div class="card"><h2>Áreas de orientação</h2>
-<div class="grid">
-<div class="item"><h3>Obra em processo</h3><p>Orientação sobre estrutura, forma, voz e direção da obra em desenvolvimento.</p></div>
-<div class="item"><h3>Escolhas editoriais</h3><p>Apoio para decisões sobre publicação, plataformas e caminhos editoriais.</p></div>
-<div class="item"><h3>Carreira literária</h3><p>Orientação estratégica para o desenvolvimento da carreira do autor.</p></div>
-<div class="item"><h3>Leitura e referências</h3><p>Indicação de leituras e referências alinhadas ao projeto autoral de cada escritor.</p></div>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentoria Cibernética — Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ouro: #C9A84C; --branco-perola: #F5F0E8; --cinza-suave: #9CA3AF;
+    --verde-nav: #16A34A; --vermelho-nav: #DC2626;
+    /* Mentoria Cibernética — verde escuro elegante */
+    --cor1: #060F06; --cor2: #0F1F0F; --cor3: #162A16; --cor4: #1E3A1E;
+    /* Seções internas em tonalidades diferentes */
+    --sec-trajano: #0A1A14;
+    --sec-carreira: #0A140A;
+    --sec-acomp: #14140A;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: linear-gradient(160deg, var(--cor1) 0%, var(--cor2) 35%, var(--cor3) 65%, var(--cor4) 100%); color:var(--branco-perola); font-family:'Cormorant Garamond',serif; min-height:100vh; }
+  body::before { content:''; position:fixed; inset:0; background: radial-gradient(ellipse at 30% 20%, rgba(201,168,76,0.07) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(201,168,76,0.04) 0%, transparent 50%); pointer-events:none; z-index:0; }
+  .stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .star { position:absolute; background:white; border-radius:50%; animation:twinkle var(--d,3s) ease-in-out infinite; opacity:var(--o,0.3); }
+  @keyframes twinkle { 0%,100%{opacity:var(--o,0.3)}50%{opacity:0.05} }
+  .container { position:relative; z-index:1; max-width:600px; margin:0 auto; padding:24px 16px 100px; }
+
+  .btn-voltar { display:inline-flex; align-items:center; gap:8px; background:transparent; border:1px solid rgba(201,168,76,0.3); color:var(--ouro); padding:10px 18px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; margin-bottom:28px; }
+  .btn-voltar:hover { background:rgba(201,168,76,0.1); }
+
+  /* Guia Principal */
+  .guia-principal { background:rgba(0,0,0,0.4); border:1px solid rgba(201,168,76,0.2); border-radius:16px; overflow:hidden; margin-bottom:32px; }
+  .guia-foto-banner { width:100%; height:200px; object-fit:cover; object-position:top; display:block; }
+  .guia-info-box { padding:20px 24px; }
+  .guia-tag { font-family:'Cinzel',serif; font-size:9px; letter-spacing:3px; color:var(--ouro); opacity:0.7; margin-bottom:6px; }
+  .guia-nome { font-family:'Playfair Display',serif; font-size:24px; font-weight:900; color:var(--branco-perola); margin-bottom:4px; }
+  .guia-subtitulo { font-family:'Cinzel',serif; font-size:9px; letter-spacing:2px; color:var(--ouro); opacity:0.6; margin-bottom:12px; }
+  .guia-fala { font-size:14px; font-style:italic; color:var(--cinza-suave); line-height:1.7; }
+
+  /* Header */
+  .dept-header { text-align:center; margin-bottom:32px; }
+  .dept-subtitulo { font-family:'Cinzel',serif; font-size:10px; letter-spacing:4px; color:var(--ouro); opacity:0.7; margin-bottom:10px; }
+  .dept-titulo { font-family:'Playfair Display',serif; font-size:clamp(26px,6vw,40px); font-weight:900; color:var(--branco-perola); margin-bottom:8px; }
+  .dept-desc { font-style:italic; font-size:14px; color:var(--cinza-suave); line-height:1.7; max-width:440px; margin:0 auto; }
+  .linha-divisora { width:100px; height:1px; background:linear-gradient(90deg, transparent, var(--ouro), transparent); margin:16px auto; }
+
+  /* Seções */
+  .secao { margin-bottom:24px; }
+  .secao-titulo { font-family:'Cinzel',serif; font-size:10px; letter-spacing:3px; color:var(--ouro); opacity:0.7; margin-bottom:14px; border-left:2px solid var(--ouro); padding-left:12px; }
+
+  /* Card de seção */
+  .secao-card { border-radius:14px; padding:22px; border:1px solid rgba(255,255,255,0.06); margin-bottom:12px; }
+  .secao-card-titulo { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--branco-perola); margin-bottom:8px; }
+  .secao-card-texto { font-size:13px; color:var(--cinza-suave); font-style:italic; line-height:1.7; }
+  .secao-card-texto strong { color:var(--branco-perola); font-style:normal; }
+
+  .trajano-card { background: linear-gradient(135deg, var(--sec-trajano) 0%, #0F2020 100%); }
+  .carreira-card { background: linear-gradient(135deg, var(--sec-carreira) 0%, #0F1A0F 100%); }
+  .acomp-card { background: linear-gradient(135deg, var(--sec-acomp) 0%, #1A1A0F 100%); }
+
+  /* Serviços do Trajano */
+  .servicos-lista { display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  .servico-item { display:flex; align-items:center; gap:12px; padding:10px 14px; background:rgba(0,0,0,0.2); border-radius:8px; border:1px solid rgba(201,168,76,0.1); }
+  .servico-icone { font-size:16px; flex-shrink:0; }
+  .servico-texto { font-size:13px; color:var(--cinza-suave); font-style:italic; }
+  .servico-texto strong { color:var(--branco-perola); font-style:normal; }
+
+  /* Info box */
+  .info-box { background:rgba(0,0,0,0.25); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; margin-bottom:10px; }
+  .info-box-titulo { font-family:'Cinzel',serif; font-size:9px; letter-spacing:2px; color:var(--ouro); opacity:0.7; margin-bottom:6px; }
+  .info-box-texto { font-size:13px; color:var(--cinza-suave); line-height:1.6; font-style:italic; }
+  .info-box-texto strong { color:var(--branco-perola); font-style:normal; }
+
+  /* Botões */
+  .btn-assinar { display:flex; align-items:center; justify-content:center; gap:10px; background:var(--verde-nav); color:white; padding:16px; border-radius:8px; font-family:'Cinzel',serif; font-size:12px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; margin-bottom:12px; box-shadow:0 4px 20px rgba(22,163,74,0.3); }
+  .btn-assinar:hover { background:#15803d; transform:translateY(-2px); }
+
+  .nav-rodape { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
+  .btn-reclamacao { display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(220,38,38,0.1); border:1px solid rgba(220,38,38,0.25); color:#FCA5A5; padding:12px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; }
+  .btn-reclamacao:hover { background:rgba(220,38,38,0.2); }
+  .btn-sair { display:flex; align-items:center; justify-content:center; gap:8px; background:transparent; border:1px solid rgba(156,163,175,0.2); color:var(--cinza-suave); padding:12px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; }
+  .btn-sair:hover { border-color:rgba(220,38,38,0.4); color:#FCA5A5; }
+  .rodape-inst { text-align:center; margin-top:20px; font-family:'Cinzel',serif; font-size:8px; letter-spacing:2px; color:var(--ouro); opacity:0.3; }
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="container">
+
+  <a href="celeiro_hall.html" class="btn-voltar">← Hall do Celeiro</a>
+
+  <!-- Guia Principal: Trajano Estrada -->
+  <div class="guia-principal">
+    <img class="guia-foto-banner" src="file_00000000bcc071fb9070ef2ae20fccf0.png" alt="Trajano Estrada" onerror="this.style.display='none'">
+    <div class="guia-info-box">
+      <p class="guia-tag">✦ GESTÃO DE CARREIRAS ✦</p>
+      <p class="guia-nome">Trajano Estrada</p>
+      <p class="guia-subtitulo">RESULTADOS · ESTRATÉGIA · PROPÓSITO</p>
+      <p class="guia-fala">Sua carreira literária não acontece por acaso. Acontece por estratégia, posicionamento e alta performance. Estou aqui para transformar seu talento em trajetória real — com método, visão e propósito.</p>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="dept-header">
+    <p class="dept-subtitulo">✦ FORMAÇÃO & TRAJETÓRIA ✦</p>
+    <h1 class="dept-titulo">Mentoria Cibernética</h1>
+    <div class="linha-divisora"></div>
+    <p class="dept-desc">Acompanhamento inteligente de carreira literária — Trajano Estrada conduz você do talento à trajetória autoral consolidada.</p>
+  </div>
+
+  <!-- Trajano Estrada -->
+  <div class="secao">
+    <p class="secao-titulo">TRAJANO ESTRADA · MENTOR DE CARREIRA</p>
+    <div class="secao-card trajano-card">
+      <p class="secao-card-titulo">O que Trajano faz por você</p>
+      <p class="secao-card-texto">Acompanhamento mensal da sua carreira dentro da sua área na SIGMAL. Estratégia, posicionamento autoral e orientação de trajetória com inteligência artificial e visão editorial.</p>
+      <div class="servicos-lista">
+        <div class="servico-item"><span class="servico-icone">📍</span><p class="servico-texto"><strong>Trajetória autoral</strong> — mapeamento e evolução da sua carreira</p></div>
+        <div class="servico-item"><span class="servico-icone">📋</span><p class="servico-texto"><strong>Editais e concursos</strong> — oportunidades filtradas para sua área</p></div>
+        <div class="servico-item"><span class="servico-icone">🎯</span><p class="servico-texto"><strong>Posicionamento</strong> — identidade autoral e estratégia de presença</p></div>
+        <div class="servico-item"><span class="servico-icone">📈</span><p class="servico-texto"><strong>Alta performance</strong> — metas, resultados e próximos passos</p></div>
+        <div class="servico-item"><span class="servico-icone">🌍</span><p class="servico-texto"><strong>Expansão</strong> — caminhos para circulação nacional e internacional</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auxílio de Carreira -->
+  <div class="secao">
+    <p class="secao-titulo">AUXÍLIO DE CARREIRA</p>
+    <div class="secao-card carreira-card">
+      <p class="secao-card-titulo">Suporte à Profissionalização</p>
+      <p class="secao-card-texto">Orientação prática para o desenvolvimento da carreira literária — do primeiro livro à presença consolidada no mercado editorial e cultural.</p>
+      <div class="servicos-lista">
+        <div class="servico-item"><span class="servico-icone">📚</span><p class="servico-texto"><strong>Publicação</strong> — plataformas, editoras e caminhos editoriais</p></div>
+        <div class="servico-item"><span class="servico-icone">🤝</span><p class="servico-texto"><strong>Parcerias</strong> — conexões com o ecossistema Celeiro e SIGMAL</p></div>
+        <div class="servico-item"><span class="servico-icone">💼</span><p class="servico-texto"><strong>Profissionalização</strong> — direitos autorais, contratos e presença digital</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Acompanhamento -->
+  <div class="secao">
+    <p class="secao-titulo">ACOMPANHAMENTO & EVOLUÇÃO</p>
+    <div class="secao-card acomp-card">
+      <p class="secao-card-titulo">Painel de Trajetória</p>
+      <p class="secao-card-texto">Registro e visualização da evolução autoral ao longo do tempo — obras produzidas, cursos concluídos, certificações obtidas e marcos da carreira dentro do Celeiro.</p>
+      <div class="servicos-lista">
+        <div class="servico-item"><span class="servico-icone">📊</span><p class="servico-texto"><strong>Histórico editorial</strong> — registro completo da trajetória</p></div>
+        <div class="servico-item"><span class="servico-icone">🏆</span><p class="servico-texto"><strong>Conquistas</strong> — certificações, publicações e marcos autorais</p></div>
+        <div class="servico-item"><span class="servico-icone">🔮</span><p class="servico-texto"><strong>Próximos passos</strong> — orientação para o futuro da carreira</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Informações -->
+  <div class="secao">
+    <p class="secao-titulo">INFORMAÇÕES</p>
+    <div class="info-box">
+      <p class="info-box-titulo">✦ BOLSA TRAJANO ESTRADA</p>
+      <p class="info-box-texto">Ao ingressar no Caminho das Pedras, o participante recebe <strong>1 mês gratuito</strong> de acompanhamento de trajetória autoral com Trajano Estrada.</p>
+    </div>
+    <div class="info-box">
+      <p class="info-box-titulo">✦ CONTE COMIGO</p>
+      <p class="info-box-texto">Usuários do Conte Comigo podem contratar o Trajano Estrada separadamente como serviço opcional.</p>
+    </div>
+  </div>
+
+  <a href="assinar_mentoria.html" class="btn-assinar">✦ Assinar a Mentoria Cibernética</a>
+
+  <div class="nav-rodape">
+    <a href="cicile_reclamacao.html?departamento=Mentoria%20Cibernetica" class="btn-reclamacao">⚑ Reclamação</a>
+    <a href="celeiro_entrada.html" class="btn-sair">✕ Sair do Celeiro</a>
+  </div>
+  <p class="rodape-inst">✦ CELEIRO LITERÁRIO · SITE DAS LETRAS EDIÇÕES LITERÁRIAS ✦</p>
+
 </div>
-</div>
-<div class="card"><h2>Como acessar</h2><p>A mentoria é acessada diretamente pelo sistema do Celeiro Literário. O autor pode iniciar uma sessão a qualquer momento dentro do ambiente interno.</p>
-<a class="btn" href="conta_comigo.html">Ir para Conta Comigo</a>
-<a class="btn" href="caminho_das_pedras.html">← Caminho das Pedras</a>
-<a class="btn btn-mapa" href="pagina_respiro.html">🗺️ Mapa do Celeiro</a>
-</div>
-</main>
-<footer>Mentoria Cibernética — Instituto Cultural Celeiro Literário</footer>
-</body></html>
+<script>
+  const sc=document.getElementById('stars');
+  for(let i=0;i<50;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--o:${Math.random()*0.3+0.05};animation-delay:${Math.random()*4}s;`;sc.appendChild(s);}
+</script>
+</body>
+</html>
