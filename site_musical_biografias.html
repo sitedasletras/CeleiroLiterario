@@ -3,19 +3,709 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Biografias — Sala Musical</title>
+<title>Biografias Musicais · SIGMAL Music · Site das Letras</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;1,400&family=Space+Mono&display=swap" rel="stylesheet">
 <style>
-body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#0b1a2f,#244d86 46%,#eef6ff);color:#0b1d33}.container{max-width:920px;margin:auto;padding:40px}.card{background:white;border-radius:24px;padding:28px;box-shadow:0 18px 45px rgba(0,0,0,.18);border:1px solid #d6b354}h1{text-align:center;color:#244d86}.tag{display:inline-block;background:#244d86;color:white;border-radius:999px;padding:8px 16px;font-family:Arial,sans-serif;font-weight:bold}.texto{font-size:20px;line-height:1.45}.btn{display:inline-block;margin-top:30px;padding:12px 22px;border-radius:999px;background:#244d86;color:white;text-decoration:none;font-weight:bold;font-family:Arial,sans-serif}.nota{margin-top:18px;font-family:Arial,sans-serif;color:#43576e}</style>
+:root{--azul:#07182b;--azul-mid:#10294a;--ouro:#d6b354;--roxo:#3d1a6e;--papel:#fff8df;--tinta:#1a1208;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--papel);color:var(--tinta);font-family:'Libre Baskerville',Georgia,serif;}
+.cab{background:linear-gradient(135deg,var(--azul),var(--roxo));padding:2rem 3rem;border-bottom:3px solid var(--ouro);}
+.nav{display:flex;gap:0.8rem;margin-bottom:1rem;flex-wrap:wrap;}
+.nav a{font-family:'Space Mono',monospace;font-size:0.5rem;letter-spacing:0.12em;color:rgba(213,179,84,0.5);text-decoration:none;text-transform:uppercase;}
+.nav a:hover{color:var(--ouro);}
+.nav span{color:rgba(213,179,84,0.2);}
+.cab-titulo{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(1.8rem,4vw,2.8rem);color:var(--ouro);margin-bottom:0.4rem;}
+.cab-desc{font-style:italic;font-size:0.82rem;color:rgba(213,179,84,0.4);max-width:580px;line-height:1.6;}
+.busca-bar{background:var(--azul-mid);padding:0.8rem 3rem;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(213,179,84,0.1);}
+.busca{background:rgba(213,179,84,0.05);border:1px solid rgba(213,179,84,0.15);color:#f5edd8;font-family:'Libre Baskerville',serif;font-size:0.85rem;padding:0.5rem 0.9rem;outline:none;width:100%;max-width:380px;}
+.container{max-width:1300px;margin:0 auto;padding:2rem 3rem;}
+.cnt{font-family:'Space Mono',monospace;font-size:0.45rem;letter-spacing:0.12em;color:rgba(213,179,84,0.3);text-transform:uppercase;margin-bottom:1.2rem;}
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem;}
+.card{background:white;border:1px solid rgba(122,95,26,0.1);text-decoration:none;color:var(--tinta);display:flex;align-items:flex-start;gap:1rem;padding:1.2rem;transition:all 0.3s;box-shadow:0 1px 5px rgba(0,0,0,0.04);}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,0.1);border-color:rgba(213,179,84,0.3);}
+.ic{font-size:2rem;flex-shrink:0;}
+.corpo{flex:1;}
+.cat{font-family:'Space Mono',monospace;font-size:0.38rem;letter-spacing:0.15em;color:rgba(122,95,26,0.5);text-transform:uppercase;margin-bottom:0.2rem;}
+.nome{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--tinta);margin-bottom:0.15rem;line-height:1.2;}
+.orig{font-family:'Space Mono',monospace;font-size:0.4rem;letter-spacing:0.08em;color:#8899aa;text-transform:uppercase;margin-bottom:0.4rem;}
+.inst{font-style:italic;font-size:0.75rem;color:#3a2a10;}
+.rodape{background:var(--azul);padding:1.5rem 3rem;margin-top:2.5rem;text-align:center;border-top:1px solid rgba(213,179,84,0.08);}
+.rod{font-family:'Space Mono',monospace;font-size:0.45rem;letter-spacing:0.12em;color:rgba(213,179,84,0.22);text-transform:uppercase;line-height:2;}
+.rod a{color:rgba(213,179,84,0.38);text-decoration:none;}
+@media(max-width:768px){.cab,.container,.busca-bar{padding:1rem;}.grade{grid-template-columns:1fr;}}
+</style>
 </head>
 <body>
+<div class="cab">
+  <div class="nav">
+    <a href="portal_instituto_celeiro_literario.html">Celeiro Literário</a><span>/</span>
+    <a href="site_musical.html">Sala Musical</a><span>/</span>
+    <a href="#" style="color:var(--ouro);">Biografias Musicais</a>
+  </div>
+  <div class="cab-titulo">Biografias Musicais</div>
+  <div class="cab-desc">Artistas, bandas e conjuntos da SIGMAL Music — Site das Letras. Biografias criadas e atualizadas pelo Maestro Aaron Cantarelli Vox a cada nova obra publicada.</div>
+</div>
+<div class="busca-bar">
+  <input type="text" class="busca" id="busca" placeholder="Buscar por nome, estilo ou origem..." oninput="filtrar()">
+</div>
 <div class="container">
-<div class="card">
-<span class="tag">Atualização musical</span>
-<h1>Biografias Musicais</h1>
-<p class="texto">Aqui ficam reunidas as biografias públicas autorais da parte musical do Site das Letras.</p>
-<p class="nota">As biografias musicais são criadas e atualizadas pelo Maestro Aaron Cantarelli Vox e replicadas aqui como versão pública.</p>
-<a class="btn" href="site_musical.html">Voltar à Sala Musical</a>
+  <div class="cnt" id="cnt">71 artistas no catálogo</div>
+  <div class="grade" id="grade">
+    <a href="bio_musical_mus-001.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · CLASSICO</div>
+        <div class="nome">Isadora Vellini</div>
+        <div class="orig">Brasil — São Paulo, descendente italiana</div>
+        <div class="inst">Soprano lírico</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-002.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · CLASSICO</div>
+        <div class="nome">Valentina Osei-Bonsu</div>
+        <div class="orig">Gana</div>
+        <div class="inst">Mezzo-soprano</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-003.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · CLASSICO</div>
+        <div class="nome">Camille Dufresne</div>
+        <div class="orig">França</div>
+        <div class="inst">Soprano lírico</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-004.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · WORLD</div>
+        <div class="nome">Fatimah Al-Rashid</div>
+        <div class="orig">Líbano</div>
+        <div class="inst">Voz árabe / Maqam</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-005.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · CLASSICO</div>
+        <div class="nome">Marco Ferretti</div>
+        <div class="orig">Itália — Nápoles</div>
+        <div class="inst">Tenor lírico napolitano</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-006.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · CLASSICO</div>
+        <div class="nome">Kwabena Asante</div>
+        <div class="orig">Gana</div>
+        <div class="inst">Tenor dramático</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-007.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · CLASSICO</div>
+        <div class="nome">Hiroshi Tanaka</div>
+        <div class="orig">Japão</div>
+        <div class="inst">Tenor lírico japonês</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-008.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · CLASSICO</div>
+        <div class="nome">Viktor Melnyk</div>
+        <div class="orig">Ucrânia</div>
+        <div class="inst">Barítono dramático</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-009.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · CLASSICO</div>
+        <div class="nome">Samuel Okafor</div>
+        <div class="orig">Nigéria</div>
+        <div class="inst">Baixo profundo</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-010.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · MPB</div>
+        <div class="nome">Maristela Braga</div>
+        <div class="orig">Brasil — Bahia</div>
+        <div class="inst">Voz popular / MPB</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-011.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · MPB</div>
+        <div class="nome">Sebastião Neto</div>
+        <div class="orig">Brasil — Minas Gerais</div>
+        <div class="inst">Voz MPB masculina</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-012.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · FOLK</div>
+        <div class="nome">Dandara Quilombo</div>
+        <div class="orig">Brasil — Maranhão</div>
+        <div class="inst">Voz / Percussão</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-013.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · SAMBA</div>
+        <div class="nome">Jairo Silveira</div>
+        <div class="orig">Brasil — Rio de Janeiro</div>
+        <div class="inst">Voz de samba</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-014.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · SAMBA</div>
+        <div class="nome">Conceição Palmares</div>
+        <div class="orig">Brasil — Bahia</div>
+        <div class="inst">Voz de samba / axé</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-015.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · JAZZ</div>
+        <div class="nome">Josephine Walker</div>
+        <div class="orig">Estados Unidos — Nova Orleans</div>
+        <div class="inst">Voz jazz / blues</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-016.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · JAZZ</div>
+        <div class="nome">Raymond Coltrane</div>
+        <div class="orig">Estados Unidos — Chicago</div>
+        <div class="inst">Voz de jazz</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-017.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · WORLD</div>
+        <div class="nome">Amina Coulibaly</div>
+        <div class="orig">Mali</div>
+        <div class="inst">Griot / voz mandinga</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-018.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · GOSPEL</div>
+        <div class="nome">Ruth Evangelista</div>
+        <div class="orig">Brasil — Pernambuco</div>
+        <div class="inst">Soprano gospel</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-019.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · GOSPEL</div>
+        <div class="nome">Pastor Elias Voz</div>
+        <div class="orig">Brasil — Minas Gerais</div>
+        <div class="inst">Barítono gospel</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-020.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · FOLK</div>
+        <div class="nome">Rosinha do Vale</div>
+        <div class="orig">Brasil — Ceará</div>
+        <div class="inst">Voz / Viola caipira</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-021.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · FOLK</div>
+        <div class="nome">Seu Maneco Aboio</div>
+        <div class="orig">Brasil — Sertão da Paraíba</div>
+        <div class="inst">Aboiador</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-022.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · FOLK</div>
+        <div class="nome">Siobhán Ní Faoláin</div>
+        <div class="orig">Irlanda</div>
+        <div class="inst">Voz / Harpa celta</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-023.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · FOLK</div>
+        <div class="nome">Dmitri Balalaika</div>
+        <div class="orig">Rússia</div>
+        <div class="inst">Voz / Balalaika</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-024.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · POP</div>
+        <div class="nome">Luana Star</div>
+        <div class="orig">Brasil — São Paulo</div>
+        <div class="inst">Voz pop / R&B</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-025.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · POP</div>
+        <div class="nome">Kevin Soul</div>
+        <div class="orig">Reino Unido — Londres</div>
+        <div class="inst">Voz soul / pop</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-026.html" class="card">
+      <div class="ic">🎹</div>
+      <div class="corpo">
+        <div class="cat">INST · CLASSICO</div>
+        <div class="nome">Adaeze Piano</div>
+        <div class="orig">Nigéria</div>
+        <div class="inst">Piano clássico</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-027.html" class="card">
+      <div class="ic">🎹</div>
+      <div class="corpo">
+        <div class="cat">INST · CLASSICO</div>
+        <div class="nome">Alexei Volkov</div>
+        <div class="orig">Rússia</div>
+        <div class="inst">Piano — escola russa</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-028.html" class="card">
+      <div class="ic">🎻</div>
+      <div class="corpo">
+        <div class="cat">INST · CLASSICO</div>
+        <div class="nome">Yoko Mitsui</div>
+        <div class="orig">Japão</div>
+        <div class="inst">Violino concertista</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-029.html" class="card">
+      <div class="ic">🎸</div>
+      <div class="corpo">
+        <div class="cat">INST · CLASSICO</div>
+        <div class="nome">Pablo Casado</div>
+        <div class="orig">Espanha — Catalunha</div>
+        <div class="inst">Violoncelo</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-030.html" class="card">
+      <div class="ic">🎷</div>
+      <div class="corpo">
+        <div class="cat">INST · WORLD</div>
+        <div class="nome">Asel Flautista</div>
+        <div class="orig">Quirguistão</div>
+        <div class="inst">Flauta / Kaval</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-031.html" class="card">
+      <div class="ic">🎷</div>
+      <div class="corpo">
+        <div class="cat">INST · CLASSICO</div>
+        <div class="nome">Jean-Pierre Hautbois</div>
+        <div class="orig">França</div>
+        <div class="inst">Oboé</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-032.html" class="card">
+      <div class="ic">🎷</div>
+      <div class="corpo">
+        <div class="cat">INST · JAZZ</div>
+        <div class="nome">Carlos Sax</div>
+        <div class="orig">Brasil — Rio de Janeiro</div>
+        <div class="inst">Saxofone tenor</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-033.html" class="card">
+      <div class="ic">🎸</div>
+      <div class="corpo">
+        <div class="cat">INST · WORLD</div>
+        <div class="nome">Leila Oud</div>
+        <div class="orig">Egito</div>
+        <div class="inst">Oud / Guitarra árabe</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-034.html" class="card">
+      <div class="ic">🎸</div>
+      <div class="corpo">
+        <div class="cat">INST · WORLD</div>
+        <div class="nome">Ravi Sitar</div>
+        <div class="orig">Índia — Varanasi</div>
+        <div class="inst">Sitar / Raga</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-035.html" class="card">
+      <div class="ic">🎸</div>
+      <div class="corpo">
+        <div class="cat">INST · FOLK</div>
+        <div class="nome">Tomás Viola</div>
+        <div class="orig">Brasil — Goiás</div>
+        <div class="inst">Viola caipira</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-036.html" class="card">
+      <div class="ic">🥁</div>
+      <div class="corpo">
+        <div class="cat">INST · WORLD</div>
+        <div class="nome">Ibrahim Kora</div>
+        <div class="orig">Senegal</div>
+        <div class="inst">Kora / Percussão mandinga</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-037.html" class="card">
+      <div class="ic">🎸</div>
+      <div class="corpo">
+        <div class="cat">INST · WORLD</div>
+        <div class="nome">Keiko Shamisen</div>
+        <div class="orig">Japão</div>
+        <div class="inst">Shamisen / Koto</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-038.html" class="card">
+      <div class="ic">🥁</div>
+      <div class="corpo">
+        <div class="cat">INST · MPB</div>
+        <div class="nome">Percival Drums</div>
+        <div class="orig">Brasil — Salvador</div>
+        <div class="inst">Bateria / Percussão</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-039.html" class="card">
+      <div class="ic">🎻</div>
+      <div class="corpo">
+        <div class="cat">INST · CLASSICO</div>
+        <div class="nome">Luisa Harpa</div>
+        <div class="orig">Argentina</div>
+        <div class="inst">Harpa orquestral</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-040.html" class="card">
+      <div class="ic">🥁</div>
+      <div class="corpo">
+        <div class="cat">INST · WORLD</div>
+        <div class="nome">Ahmed Bendir</div>
+        <div class="orig">Marrocos</div>
+        <div class="inst">Percussão árabe / Darbuka</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-041.html" class="card">
+      <div class="ic">🎹</div>
+      <div class="corpo">
+        <div class="cat">INST · FOLK</div>
+        <div class="nome">Olga Acordeão</div>
+        <div class="orig">Rússia — Sibéria</div>
+        <div class="inst">Acordeão / Bayan</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-042.html" class="card">
+      <div class="ic">🎸</div>
+      <div class="corpo">
+        <div class="cat">INST · FOLK</div>
+        <div class="nome">Santiago Guitarra</div>
+        <div class="orig">Chile</div>
+        <div class="inst">Guitarra clássica / Charango</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-043.html" class="card">
+      <div class="ic">🎻</div>
+      <div class="corpo">
+        <div class="cat">INST · JAZZ</div>
+        <div class="nome">Mingus Contrabaixo</div>
+        <div class="orig">Estados Unidos — Nova York</div>
+        <div class="inst">Contrabaixo jazz</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-044.html" class="card">
+      <div class="ic">🎻</div>
+      <div class="corpo">
+        <div class="cat">INST · WORLD</div>
+        <div class="nome">Zhen Erhu</div>
+        <div class="orig">China</div>
+        <div class="inst">Erhu / Violino chinês</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-045.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · CLASSICO</div>
+        <div class="nome">Felix Contratenor</div>
+        <div class="orig">Alemanha</div>
+        <div class="inst">Contratenor</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-046.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · CLASSICO</div>
+        <div class="nome">Tadashi Falsete</div>
+        <div class="orig">Japão</div>
+        <div class="inst">Contratenor / Voz de cabeça</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-047.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · WORLD</div>
+        <div class="nome">Elena Fado</div>
+        <div class="orig">Portugal — Lisboa</div>
+        <div class="inst">Voz de fado</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-048.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · WORLD</div>
+        <div class="nome">Carmen Flamenca</div>
+        <div class="orig">Espanha — Sevilha</div>
+        <div class="inst">Cante flamenco</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-049.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · WORLD</div>
+        <div class="nome">Nino Georgiano</div>
+        <div class="orig">Geórgia</div>
+        <div class="inst">Voz polifônica georgiana</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-050.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · WORLD</div>
+        <div class="nome">Miriam Klezmer</div>
+        <div class="orig">Israel</div>
+        <div class="inst">Voz klezmer / cantora</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-051.html" class="card">
+      <div class="ic">🎵</div>
+      <div class="corpo">
+        <div class="cat">CONJUNTO · MPB</div>
+        <div class="nome">Duo Lua & Mar</div>
+        <div class="orig">Brasil — Rio de Janeiro</div>
+        <div class="inst">Duo — voz e violão</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-052.html" class="card">
+      <div class="ic">🎵</div>
+      <div class="corpo">
+        <div class="cat">CONJUNTO · FOLK</div>
+        <div class="nome">Trio Árido</div>
+        <div class="orig">Brasil — Nordeste</div>
+        <div class="inst">Trio — voz e percussão</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-053.html" class="card">
+      <div class="ic">🎵</div>
+      <div class="corpo">
+        <div class="cat">CONJUNTO · WORLD</div>
+        <div class="nome">Duo Sakura</div>
+        <div class="orig">Japão / Brasil</div>
+        <div class="inst">Duo — koto e voz</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-054.html" class="card">
+      <div class="ic">🎵</div>
+      <div class="corpo">
+        <div class="cat">CONJUNTO · JAZZ</div>
+        <div class="nome">Trio Jazz Marginal</div>
+        <div class="orig">Brasil — São Paulo</div>
+        <div class="inst">Trio jazz</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-055.html" class="card">
+      <div class="ic">🎹</div>
+      <div class="corpo">
+        <div class="cat">INST · ELETRÔNICO</div>
+        <div class="nome">Diana Synthesis</div>
+        <div class="orig">Alemanha — Berlim</div>
+        <div class="inst">Sintetizadores / Produção eletrônica</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-056.html" class="card">
+      <div class="ic">🎹</div>
+      <div class="corpo">
+        <div class="cat">INST · EXPERIMENTAL</div>
+        <div class="nome">Elo Experimental</div>
+        <div class="orig">Brasil — São Paulo</div>
+        <div class="inst">Produção experimental</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-057.html" class="card">
+      <div class="ic">🎹</div>
+      <div class="corpo">
+        <div class="cat">INST · ELETRÔNICO</div>
+        <div class="nome">Tariq Electronic</div>
+        <div class="orig">Tunísia</div>
+        <div class="inst">Eletrônico / DJ</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-058.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · WORLD</div>
+        <div class="nome">Renata Bolero</div>
+        <div class="orig">México</div>
+        <div class="inst">Voz de bolero / balada latina</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-059.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · MPB</div>
+        <div class="nome">Cléo Lunna</div>
+        <div class="orig">Brasil — Recife</div>
+        <div class="inst">Voz MPB / Manguebeat</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-060.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · WORLD</div>
+        <div class="nome">Abebe Girma</div>
+        <div class="orig">Etiópia</div>
+        <div class="inst">Voz etíope / Ethio-jazz</div>
+      </div>
+    </a>
+    <a href="bio_musical_mus-rov.html" class="card">
+      <div class="ic">🎤</div>
+      <div class="corpo">
+        <div class="cat">VOZ · RAP</div>
+        <div class="nome">Rovonilson Reigns Bautista</div>
+        <div class="orig">Brasil — Santo André, SP</div>
+        <div class="inst">Rapper / Letrista</div>
+      </div>
+    </a>
+    <a href="bio_musical_band-001.html" class="card">
+      <div class="ic">🎸</div>
+      <div class="corpo">
+        <div class="cat">BANDA · ROCK</div>
+        <div class="nome">Ferro & Chuva</div>
+        <div class="orig">Brasil</div>
+        <div class="inst">Banda — Rock Brasileiro · Formação Completa</div>
+      </div>
+    </a>
+    <a href="bio_musical_band-002.html" class="card">
+      <div class="ic">🎵</div>
+      <div class="corpo">
+        <div class="cat">BANDA · JAZZ</div>
+        <div class="nome">Noite de Sal</div>
+        <div class="orig">Brasil</div>
+        <div class="inst">Quinteto — Jazz / MPB · Formação Completa</div>
+      </div>
+    </a>
+    <a href="bio_musical_band-003.html" class="card">
+      <div class="ic">🎵</div>
+      <div class="corpo">
+        <div class="cat">BANDA · FORRO</div>
+        <div class="nome">Forró do Fim do Mundo</div>
+        <div class="orig">Brasil — Nordeste</div>
+        <div class="inst">Trio — Forró Pé de Serra · Formação Clássica</div>
+      </div>
+    </a>
+    <a href="bio_musical_band-004.html" class="card">
+      <div class="ic">🎵</div>
+      <div class="corpo">
+        <div class="cat">BANDA · WORLD</div>
+        <div class="nome">Diáspora Sound System</div>
+        <div class="orig">Internacional</div>
+        <div class="inst">Coletivo — Afrobeat / Reggae / Eletrônico</div>
+      </div>
+    </a>
+    <a href="bio_musical_band-005.html" class="card">
+      <div class="ic">🎻</div>
+      <div class="corpo">
+        <div class="cat">BANDA · CLASSICO</div>
+        <div class="nome">Câmara Negra</div>
+        <div class="orig">Internacional</div>
+        <div class="inst">Quarteto — Música de Câmara / Contemporânea</div>
+      </div>
+    </a>
+    <a href="bio_musical_band-006.html" class="card">
+      <div class="ic">🎵</div>
+      <div class="corpo">
+        <div class="cat">BANDA · WORLD</div>
+        <div class="nome">Tango Bruto</div>
+        <div class="orig">Argentina / Internacional</div>
+        <div class="inst">Quarteto — Tango Nuevo / Milonga</div>
+      </div>
+    </a>
+    <a href="bio_musical_band-007.html" class="card">
+      <div class="ic">🎵</div>
+      <div class="corpo">
+        <div class="cat">BANDA · JAZZ</div>
+        <div class="nome">Big Band do Celeiro</div>
+        <div class="orig">Brasil / Internacional</div>
+        <div class="inst">Big Band — Jazz / Swing / Funk</div>
+      </div>
+    </a>
+    <a href="bio_musical_band-008.html" class="card">
+      <div class="ic">🎵</div>
+      <div class="corpo">
+        <div class="cat">BANDA · WORLD</div>
+        <div class="nome">Al-Andalus</div>
+        <div class="orig">Internacional — Mediterrâneo</div>
+        <div class="inst">Quinteto — Música do Mundo / Flamenco / Árabe / Fado</div>
+      </div>
+    </a>
+    <a href="bio_musical_band-009.html" class="card">
+      <div class="ic">🎵</div>
+      <div class="corpo">
+        <div class="cat">BANDA · CLASSICO</div>
+        <div class="nome">Ângelus Prime</div>
+        <div class="orig">Internacional</div>
+        <div class="inst">Sexteto Vocal — Gregoriano Pop / 2 Vozes Femininas</div>
+      </div>
+    </a>
+    <a href="bio_musical_orquestra.html" class="card">
+      <div class="ic">🎻</div>
+      <div class="corpo">
+        <div class="cat">ORQUESTRA · CLASSICO</div>
+        <div class="nome">Orquestra Filarmônica do Celeiro Literário</div>
+        <div class="orig">Celeiro Literário — Instituto Cultural</div>
+        <div class="inst">Orquestra Filarmônica permanente — Cordas, Sopros Metais, Sopros Madeiras, Percussão & Teclados</div>
+      </div>
+    </a></div>
 </div>
+<div class="rodape">
+  <div class="rod">
+    SIGMAL Music — Site das Letras Edições Literárias & Multimídia<br>
+    São Roque International Global Music, Arts & Letters Academy<br>
+    <a href="site_musical.html">← Voltar à Sala Musical</a>
+  </div>
 </div>
+<script>
+const cards=document.querySelectorAll('.card');
+function filtrar(){
+  const b=document.getElementById('busca').value.toLowerCase();
+  let v=0;
+  cards.forEach(c=>{const s=!b||c.textContent.toLowerCase().includes(b);c.style.display=s?'flex':'none';if(s)v++;});
+  document.getElementById('cnt').textContent=v+' artista'+(v!==1?'s':'')+' no catálogo';
+}
+</script>
 </body>
 </html>
