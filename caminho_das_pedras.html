@@ -4,122 +4,245 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Caminho das Pedras — Celeiro Literário</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ouro: #C9A84C; --branco-perola: #F5F0E8; --cinza-suave: #9CA3AF;
-    --verde-nav: #16A34A; --vermelho-nav: #DC2626;
-    --cor1: #1A0F06; --cor2: #2A1A0A; --cor3: #3A2A1A; --cor4: #4A3520;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background: linear-gradient(160deg, var(--cor1) 0%, var(--cor2) 35%, var(--cor3) 65%, var(--cor4) 100%); color: var(--branco-perola); font-family: 'Cormorant Garamond', serif; min-height: 100vh; }
-  body::before { content:''; position:fixed; inset:0; background: radial-gradient(ellipse at 30% 20%, rgba(201,168,76,0.08) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(201,168,76,0.05) 0%, transparent 50%); pointer-events:none; z-index:0; }
-  .stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
-  .star { position:absolute; background:white; border-radius:50%; animation:twinkle var(--d,3s) ease-in-out infinite; opacity:var(--o,0.3); }
-  @keyframes twinkle { 0%,100%{opacity:var(--o,0.3)}50%{opacity:0.05} }
-  .container { position:relative; z-index:1; max-width:600px; margin:0 auto; padding:24px 16px 100px; }
-  .btn-voltar { display:inline-flex; align-items:center; gap:8px; background:transparent; border:1px solid rgba(201,168,76,0.3); color:var(--ouro); padding:10px 18px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; margin-bottom:28px; }
-  .btn-voltar:hover { background:rgba(201,168,76,0.1); }
-  .guia-principal { background:rgba(0,0,0,0.35); border:1px solid rgba(201,168,76,0.2); border-radius:16px; padding:24px; display:flex; align-items:flex-start; gap:18px; margin-bottom:32px; }
-  .guia-foto { width:90px; height:90px; border-radius:50%; object-fit:cover; border:2px solid rgba(201,168,76,0.4); flex-shrink:0; }
-  .guia-tag { font-family:'Cinzel',serif; font-size:9px; letter-spacing:3px; color:var(--ouro); opacity:0.7; margin-bottom:6px; }
-  .guia-nome { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--branco-perola); margin-bottom:8px; }
-  .guia-fala { font-size:14px; font-style:italic; color:var(--cinza-suave); line-height:1.7; }
-  .dept-header { text-align:center; margin-bottom:32px; }
-  .dept-subtitulo { font-family:'Cinzel',serif; font-size:10px; letter-spacing:4px; color:var(--ouro); opacity:0.7; margin-bottom:10px; }
-  .dept-titulo { font-family:'Playfair Display',serif; font-size:clamp(28px,6vw,42px); font-weight:900; color:var(--branco-perola); margin-bottom:8px; }
-  .dept-desc { font-style:italic; font-size:14px; color:var(--cinza-suave); line-height:1.7; max-width:440px; margin:0 auto; }
-  .linha-divisora { width:100px; height:1px; background:linear-gradient(90deg, transparent, var(--ouro), transparent); margin:16px auto; }
-  .info-grid { display:flex; flex-direction:column; gap:10px; margin-bottom:32px; }
-  .info-box { background:rgba(0,0,0,0.25); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; }
-  .info-box-titulo { font-family:'Cinzel',serif; font-size:9px; letter-spacing:2px; color:var(--ouro); opacity:0.7; margin-bottom:6px; }
-  .info-box-texto { font-size:13px; color:var(--cinza-suave); line-height:1.6; font-style:italic; }
-  .info-box-texto strong { color:var(--branco-perola); font-style:normal; }
-  .secao-titulo { font-family:'Cinzel',serif; font-size:10px; letter-spacing:3px; color:var(--ouro); opacity:0.7; margin-bottom:16px; border-left:2px solid var(--ouro); padding-left:12px; }
-  .trilhas-grid { display:flex; flex-direction:column; gap:16px; margin-bottom:32px; }
-  .trilha-card { border-radius:14px; padding:22px; display:flex; align-items:center; gap:18px; text-decoration:none; color:inherit; transition:all 0.3s ease; border:1px solid rgba(255,255,255,0.08); position:relative; overflow:hidden; }
-  .trilha-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 60%); opacity:0; transition:opacity 0.3s ease; }
-  .trilha-card:hover::before { opacity:1; }
-  .trilha-card:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(0,0,0,0.4); border-color:rgba(201,168,76,0.3); }
-  .trilha-poesia { background: linear-gradient(135deg, #2A1E0A 0%, #3A2A10 50%, #4A3520 100%); }
-  .trilha-prosa { background: linear-gradient(135deg, #1A0A08 0%, #2A1210 50%, #3A1A14 100%); }
-  .trilha-foto { width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid rgba(201,168,76,0.3); flex-shrink:0; }
-  .trilha-info { flex:1; }
-  .trilha-tag { font-family:'Cinzel',serif; font-size:8px; letter-spacing:2px; color:var(--ouro); opacity:0.7; margin-bottom:4px; }
-  .trilha-nome { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--branco-perola); margin-bottom:4px; }
-  .trilha-desc { font-size:12px; color:var(--cinza-suave); font-style:italic; line-height:1.5; }
-  .trilha-seta { color:var(--ouro); font-size:20px; opacity:0.6; transition:all 0.3s ease; }
-  .trilha-card:hover .trilha-seta { opacity:1; transform:translateX(4px); }
-  .nav-rodape { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
-  .btn-reclamacao { display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(220,38,38,0.1); border:1px solid rgba(220,38,38,0.25); color:#FCA5A5; padding:12px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; }
-  .btn-reclamacao:hover { background:rgba(220,38,38,0.2); }
-  .btn-sair { display:flex; align-items:center; justify-content:center; gap:8px; background:transparent; border:1px solid rgba(156,163,175,0.2); color:var(--cinza-suave); padding:12px; border-radius:8px; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; cursor:pointer; text-decoration:none; transition:all 0.3s ease; }
-  .btn-sair:hover { border-color:rgba(220,38,38,0.4); color:#FCA5A5; }
-  .rodape-inst { text-align:center; margin-top:20px; font-family:'Cinzel',serif; font-size:8px; letter-spacing:2px; color:var(--ouro); opacity:0.3; }
+:root{
+  --azul:#07101d;--azul2:#10294a;--ouro:#d6b354;--ouro2:#f5df8f;
+  --verde:#1f7a42;--roxo:#4a2a7a;--vermelho:#8b1e1e;
+  --bg:#ece8de;--card:#fffaf0;--ink:#1f1f1b;--muted:#6a6052;--line:#ddd0ba;
+  --shadow:0 12px 32px rgba(0,0,0,.15);--radius:24px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;font-family:'DM Sans',Georgia,serif;color:var(--ink);}
+body{background:linear-gradient(180deg,#07101d 0%,#10294a 40%,#ece8de 100%);padding:0 0 60px;}
+
+/* HERO */
+.hero{padding:52px 18px 40px;text-align:center;color:#fff5cf;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(214,179,84,.18),transparent 65%);pointer-events:none;}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;padding:7px 16px;border-radius:999px;background:rgba(214,179,84,.15);border:1px solid rgba(214,179,84,.35);color:var(--ouro);font-size:.82rem;font-weight:700;margin-bottom:16px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,7vw,5rem);line-height:1;color:var(--ouro2);margin-bottom:12px;position:relative;}
+.hero p{font-size:1.1rem;color:#d8c8a0;line-height:1.6;max-width:700px;margin:0 auto;position:relative;}
+
+/* DIRETOR */
+.diretor-box{max-width:900px;margin:0 auto 0;padding:0 18px;}
+.diretor-card{background:rgba(255,250,240,.97);border:2px solid var(--ouro);border-radius:28px;padding:24px;display:flex;align-items:center;gap:20px;box-shadow:var(--shadow);margin-bottom:0;}
+.diretor-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#10294a,#07101d);border:3px solid var(--ouro);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;}
+.diretor-texto h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--azul);margin-bottom:4px;}
+.diretor-texto p{font-size:.93rem;color:var(--muted);line-height:1.5;}
+
+/* MAIN */
+.main{max-width:1160px;margin:0 auto;padding:28px 18px 0;}
+
+/* TRILHAS */
+.trilhas-titulo{font-family:'Playfair Display',serif;font-size:1rem;color:rgba(255,250,240,.7);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;text-align:center;}
+.trilhas-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.trilha-card{border-radius:var(--radius);padding:28px;color:#fff;cursor:pointer;transition:.2s ease;box-shadow:var(--shadow);text-decoration:none;display:block;position:relative;overflow:hidden;}
+.trilha-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1),transparent 60%);pointer-events:none;}
+.trilha-card:hover{transform:translateY(-3px);box-shadow:0 20px 48px rgba(0,0,0,.3);}
+.trilha-poesia{background:linear-gradient(135deg,#1a3a5f,#2a5a8a);}
+.trilha-prosa {background:linear-gradient(135deg,#184b30,#2a7a4a);}
+.trilha-card .trilha-icon{font-size:2.2rem;margin-bottom:10px;display:block;}
+.trilha-card h2{font-family:'Playfair Display',serif;font-size:1.7rem;line-height:1.1;margin-bottom:8px;}
+.trilha-card p{font-size:.92rem;opacity:.85;line-height:1.5;margin-bottom:14px;}
+.trilha-card ul{padding-left:16px;opacity:.85;font-size:.88rem;line-height:1.6;}
+.trilha-card .trilha-btn{display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.4);font:700 .88rem 'DM Sans',sans-serif;transition:.14s;}
+.trilha-card:hover .trilha-btn{background:rgba(255,255,255,.3);}
+
+/* FASES */
+.fases-titulo{font-family:'Playfair Display',serif;font-size:1rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
+.fases-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.fase-card{background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 6px 18px rgba(0,0,0,.07);text-decoration:none;color:var(--ink);transition:.18s;display:flex;flex-direction:column;gap:8px;}
+.fase-card:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(0,0,0,.11);}
+.fase-num{font-family:'Playfair Display',serif;font-size:2rem;line-height:1;color:var(--ouro);}
+.fase-titulo{font-weight:700;font-size:.95rem;color:var(--azul2);}
+.fase-desc{font-size:.82rem;color:var(--muted);line-height:1.4;flex:1;}
+.fase-tempo{font-size:.75rem;color:var(--ouro);font-weight:700;background:rgba(214,179,84,.1);border:1px solid rgba(214,179,84,.25);border-radius:999px;padding:3px 9px;width:fit-content;}
+.fase-status{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:999px;width:fit-content;}
+.s-disponivel{background:rgba(31,122,66,.12);color:#1f7a42;}
+.s-novo{background:rgba(214,179,84,.15);color:#7a6020;}
+
+/* INTEGRAÇÕES */
+.integracoes{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:0 6px 18px rgba(0,0,0,.07);margin-bottom:20px;}
+.integracoes h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--ink);margin-bottom:14px;}
+.int-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.int-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f7f4ee;border:1px solid var(--line);border-radius:13px;text-decoration:none;color:var(--ink);transition:.14s;}
+.int-item:hover{background:#f0ebe0;transform:translateX(3px);}
+.int-ico{font-size:1.1rem;flex-shrink:0;}
+.int-nome{font-weight:700;font-size:.87rem;}
+.int-desc{font-size:.73rem;color:var(--muted);display:block;}
+
+/* FOOTER */
+.footer-nav{background:rgba(255,250,240,.97);border:1px solid var(--line);border-radius:20px;padding:16px 20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;box-shadow:0 6px 18px rgba(0,0,0,.07);}
+.btn{border:none;border-radius:13px;padding:12px 20px;font:700 .88rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.btn:hover{transform:translateY(-1px);}
+.btn-ouro{background:var(--ouro);color:#2a1d0d;}
+.btn-azul{background:#1e3a5f;color:#fff;}
+.btn-sair{background:var(--vermelho);color:#fff;}
+
+@media(max-width:860px){.trilhas-grid{grid-template-columns:1fr;}.fases-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:540px){.fases-grid{grid-template-columns:1fr;}.footer-nav{flex-direction:column;}.btn{width:100%;justify-content:center;}.diretor-card{flex-direction:column;text-align:center;}}
 </style>
 </head>
 <body>
-<div class="stars" id="stars"></div>
-<div class="container">
-  <a href="celeiro_hall.html" class="btn-voltar">← Hall do Celeiro</a>
-  <div class="guia-principal">
-    <img class="guia-foto" src="file_00000000c784720e8e82aaa0b55f714b.png" alt="Diretor Lapiz" onerror="this.style.display='none'">
-    <div>
-      <p class="guia-tag">✦ DIRETOR PEDAGÓGICO E ARQUITETO ✦</p>
-      <p class="guia-nome">Diretor Lapiz</p>
-      <p class="guia-fala">Bem-vindo ao Caminho das Pedras. Aqui você escolhe entre a Trilha Poesia, conduzida pelo Senhor Pena, e a Trilha Prosa, conduzida pela Senhorita Kaneta. Cada trilha tem 8 módulos formativos, respeitando o ritmo individual de cada autor. Ensinar é abrir estradas. Guiar é transformar destinos.</p>
-    </div>
-  </div>
-  <div class="dept-header">
-    <p class="dept-subtitulo">✦ FORMAÇÃO & TRAJETÓRIA ✦</p>
-    <h1 class="dept-titulo">Caminho das Pedras</h1>
-    <div class="linha-divisora"></div>
-    <p class="dept-desc">Formação autoral em Poesia e Prosa — 8 módulos progressivos, ritmo individual, até 24 meses de jornada.</p>
-  </div>
-  <div class="info-grid">
-    <div class="info-box">
-      <p class="info-box-titulo">✦ ESTRUTURA</p>
-      <p class="info-box-texto"><strong>8 módulos formativos</strong> · Duração de até <strong>24 meses</strong> · Ritmo individual · Duas trilhas disponíveis</p>
-    </div>
-    <div class="info-box">
-      <p class="info-box-titulo">✦ CERTIFICAÇÃO</p>
-      <p class="info-box-texto">Emitida somente após conclusão integral dos <strong>8 módulos</strong>, com nome do cursante e categoria da trilha. Todo material é exclusivo dos Heterônimos do Site das Letras.</p>
-    </div>
-    <div class="info-box">
-      <p class="info-box-titulo">✦ BOLSA TRAJANO ESTRADA</p>
-      <p class="info-box-texto"><strong>1 mês gratuito</strong> de orientação de trajetória autoral, concursos, editais e oportunidades literárias.</p>
-    </div>
-  </div>
-  <p class="secao-titulo">ESCOLHA SUA TRILHA</p>
-  <div class="trilhas-grid">
-    <a href="caminho_das_pedras_poesia.html" class="trilha-card trilha-poesia">
-      <img class="trilha-foto" src="file_000000005c14720ead5fab70cd868287.png" alt="Senhor Pena" onerror="this.style.display='none'">
-      <div class="trilha-info">
-        <p class="trilha-tag">✦ MESTRE DA LINHA POÉTICA</p>
-        <p class="trilha-nome">Trilha Poesia</p>
-        <p class="trilha-desc">Conduzida pelo Senhor Pena — Haicai · Soneto · Sextina · Pantum · Cordel · Novo Movimento Estrofista</p>
-      </div>
-      <span class="trilha-seta">→</span>
-    </a>
-    <a href="caminho_das_pedras_prosa.html" class="trilha-card trilha-prosa">
-      <img class="trilha-foto" src="file_0000000044d471f594f8db3ae2d6043f.png" alt="Senhorita Kaneta" onerror="this.style.display='none'">
-      <div class="trilha-info">
-        <p class="trilha-tag">✦ PROFESSORA DA LINHA DE PROSA</p>
-        <p class="trilha-nome">Trilha Prosa</p>
-        <p class="trilha-desc">Conduzida pela Senhorita Kaneta — Romance · Conto · Crônica · Narrativa · Estrutura Dramática</p>
-      </div>
-      <span class="trilha-seta">→</span>
-    </a>
-  </div>
-  <div class="nav-rodape">
-    <a href="cicile_reclamacao.html?departamento=Caminho%20das%20Pedras" class="btn-reclamacao">⚑ Reclamação</a>
-    <a href="celeiro_entrada.html" class="btn-sair">✕ Sair do Celeiro</a>
-  </div>
-  <p class="rodape-inst">✦ CELEIRO LITERÁRIO · SITE DAS LETRAS EDIÇÕES LITERÁRIAS ✦</p>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">✦ Instituto Cultural Celeiro Literário</div>
+  <h1>Caminho das Pedras</h1>
+  <p>A trilha de formação autoral do Celeiro Literário. Do primeiro texto à projeção internacional — 4 fases, 2 trilhas, ferramentas reais e acompanhamento da trajetória.</p>
 </div>
-<script>
-  const sc=document.getElementById('stars');
-  for(let i=0;i<50;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--o:${Math.random()*0.3+0.05};animation-delay:${Math.random()*4}s;`;sc.appendChild(s);}
-</script>
+
+<!-- DIRETOR LÁPIS -->
+<div class="diretor-box" style="margin-top:24px;">
+  <div class="diretor-card">
+    <div class="diretor-avatar">✒️</div>
+    <div class="diretor-texto">
+      <h3>Diretor Lápis — Guia do Caminho</h3>
+      <p>Olá, escritor. Bem-vindo ao Caminho das Pedras. Aqui você encontra sua trilha de formação — escolha entre Poesia ou Prosa, avance pelas 4 fases e utilize todas as ferramentas do Celeiro para chegar onde sua obra merece chegar. Cada pedra do caminho é um passo real.</p>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- TRILHAS -->
+  <div style="margin-top:28px;">
+    <div class="trilhas-titulo">✦ Escolha sua trilha de formação</div>
+    <div class="trilhas-grid">
+
+      <a class="trilha-card trilha-poesia" href="caminho_das_pedras_poesia.html">
+        <span class="trilha-icon">🖊️</span>
+        <h2>Trilha da Poesia</h2>
+        <p>Para poetas, letristas e escritores da palavra lírica. 8 módulos progressivos guiados pelo Senhor Pena.</p>
+        <ul>
+          <li>Forma poética e verso livre</li>
+          <li>Soneto, cordel e haiku</li>
+          <li>Voz lírica e identidade poética</li>
+          <li>Publicação e circulação</li>
+        </ul>
+        <div class="trilha-btn">Entrar na trilha →</div>
+      </a>
+
+      <a class="trilha-card trilha-prosa" href="caminho_das_pedras_prosa.html">
+        <span class="trilha-icon">📖</span>
+        <h2>Trilha da Prosa</h2>
+        <p>Para contistas, romancistas e cronistas. 8 módulos progressivos guiados pela Senhorita Kaneta.</p>
+        <ul>
+          <li>Conto, crônica e romance</li>
+          <li>Construção de personagens</li>
+          <li>Estrutura narrativa e ritmo</li>
+          <li>Publicação e mercado editorial</li>
+        </ul>
+        <div class="trilha-btn">Entrar na trilha →</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- FASES -->
+  <div>
+    <div class="fases-titulo">✦ As 4 Fases da jornada autoral</div>
+    <div class="fases-grid">
+
+      <a class="fase-card" href="caminho_das_pedras_poesia.html">
+        <span class="fase-num">1</span>
+        <span class="fase-titulo">Iniciação autoral</span>
+        <span class="fase-desc">Primeiros textos, técnica fundamental e construção da voz. Incluso nas trilhas de Poesia e Prosa.</span>
+        <span class="fase-tempo">0 a 6 meses</span>
+        <span class="fase-status s-disponivel">✓ Disponível</span>
+      </a>
+
+      <a class="fase-card" href="caminho_das_pedras_escritores_fase2.html">
+        <span class="fase-num">2</span>
+        <span class="fase-titulo">Consolidação autoral</span>
+        <span class="fase-desc">Primeiro livro estruturado, concursos literários, tradução e publicação em plataformas.</span>
+        <span class="fase-tempo">6 a 12 meses</span>
+        <span class="fase-status s-disponivel">✓ Disponível</span>
+      </a>
+
+      <a class="fase-card" href="caminho_das_pedras_escritores_fase3.html">
+        <span class="fase-num">3</span>
+        <span class="fase-titulo">Circulação estratégica</span>
+        <span class="fase-desc">Presença pública ampliada, editais internacionais, audiovisual e redes culturais.</span>
+        <span class="fase-tempo">12 a 24 meses</span>
+        <span class="fase-status s-disponivel">✓ Disponível</span>
+      </a>
+
+      <a class="fase-card" href="caminho_das_pedras_escritores_fase4.html">
+        <span class="fase-num">4</span>
+        <span class="fase-titulo">Projeção internacional</span>
+        <span class="fase-desc">Publicação editorial formal, identidade consolidada, feiras internacionais e legado autoral.</span>
+        <span class="fase-tempo">24 meses em diante</span>
+        <span class="fase-status s-novo">✦ Novo</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- INTEGRAÇÕES COM O CELEIRO -->
+  <div class="integracoes">
+    <h3>✦ Ferramentas do Celeiro integradas ao Caminho</h3>
+    <div class="int-grid">
+      <a class="int-item" href="lapidar.html">
+        <span class="int-ico">💎</span>
+        <span><span class="int-nome">Lapidar</span><span class="int-desc">Hub editorial completo</span></span>
+      </a>
+      <a class="int-item" href="lapidar_pensante.html">
+        <span class="int-ico">✦</span>
+        <span><span class="int-nome">Lapidar Pensante</span><span class="int-desc">6 camadas de IA editorial</span></span>
+      </a>
+      <a class="int-item" href="avaliacao_literaria.html">
+        <span class="int-ico">📗</span>
+        <span><span class="int-nome">Avaliação Literária</span><span class="int-desc">Parecer técnico da obra</span></span>
+      </a>
+      <a class="int-item" href="avaliacao_emocional.html">
+        <span class="int-ico">💜</span>
+        <span><span class="int-nome">Avaliação Emocional</span><span class="int-desc">Nota 0–10.000 por categoria</span></span>
+      </a>
+      <a class="int-item" href="avaliacao_mercado.html">
+        <span class="int-ico">📊</span>
+        <span><span class="int-nome">Avaliação de Mercado</span><span class="int-desc">Viabilidade editorial</span></span>
+      </a>
+      <a class="int-item" href="segunda_linguas.html">
+        <span class="int-ico">🌐</span>
+        <span><span class="int-nome">Segunda Língua(s)</span><span class="int-desc">Tradução em 12 idiomas</span></span>
+      </a>
+      <a class="int-item" href="okapista.html">
+        <span class="int-ico">📘</span>
+        <span><span class="int-nome">OKapista</span><span class="int-desc">Criação de capas</span></span>
+      </a>
+      <a class="int-item" href="dias_gramador_livros.html">
+        <span class="int-ico">🌾</span>
+        <span><span class="int-nome">Diagramação</span><span class="int-desc">Pólux, Castor, Centauro e mais</span></span>
+      </a>
+      <a class="int-item" href="silo_multimidia.html">
+        <span class="int-ico">🎬</span>
+        <span><span class="int-nome">Silos Multimídia</span><span class="int-desc">Expansão sonora e visual</span></span>
+      </a>
+      <a class="int-item" href="acompanhamento_trajetoria_publico.html">
+        <span class="int-ico">📈</span>
+        <span><span class="int-nome">Trajetória Autoral</span><span class="int-desc">Acompanhamento da carreira</span></span>
+      </a>
+      <a class="int-item" href="radar_mundial_oportunidades_artisticas.html">
+        <span class="int-ico">🎯</span>
+        <span><span class="int-nome">Radar Mundial</span><span class="int-desc">Oportunidades internacionais</span></span>
+      </a>
+      <a class="int-item" href="bpl_banco_personagens_literarios.html">
+        <span class="int-ico">👤</span>
+        <span><span class="int-nome">Banco de Personagens</span><span class="int-desc">Criação de personagens literários</span></span>
+      </a>
+    </div>
+  </div>
+
+  <!-- FOOTER NAV -->
+  <div class="footer-nav">
+    <a class="btn btn-ouro"  href="portal_instituto_celeiro_literario.html">← Portal do Instituto</a>
+    <a class="btn btn-azul"  href="lapidar.html">Ir para o Lapidar</a>
+    <a class="btn btn-azul"  href="acompanhamento_trajetoria_publico.html">Minha trajetória</a>
+    <a class="btn btn-sair"  href="pagina_respiro_celeiro.html">Sair do sistema</a>
+  </div>
+
+</div>
+
 </body>
 </html>
