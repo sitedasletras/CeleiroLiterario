@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caminho das Pedras — Fase 3</title>
+<style>
+:root{--azul:#07101d;--azul2:#10294a;--ouro:#d6b354;--ouro2:#f5df8f;--papel:#fffaf0;--texto:#111827;--verde:#184b30;--vermelho:#8b1e1e;--pedra:#4f5a58;--agua:#6aa6a1}
+*{box-sizing:border-box}
+body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#07101d,#10294a 48%,#efe2c7);color:var(--texto)}
+header{padding:42px 18px;text-align:center;color:#fff5cf;border-bottom:8px solid var(--ouro)}
+header h1{font-size:clamp(36px,7vw,68px);margin:0;color:var(--ouro2)}
+header p{font-size:20px;margin:8px 0 0;color:#e8d8a8}
+.wrap{max-width:1100px;margin:auto;padding:30px 18px 70px}
+.card{background:rgba(255,250,240,.96);border:2px solid var(--ouro);border-radius:28px;padding:26px;box-shadow:0 18px 50px rgba(0,0,0,.25);margin-bottom:22px}
+.card h2{color:var(--azul);margin:0 0 12px;font-size:1.6rem}
+.card p,.card ul{font-size:1rem;line-height:1.6;color:#333}
+.card ul{padding-left:20px}
+.destaque{background:var(--azul);color:#fff5cf;border-left:8px solid var(--ouro);border-radius:22px;padding:20px;font-size:1.1rem;text-align:center;margin-bottom:22px}
+.step{background:#f0f7f5;border-left:6px solid var(--pedra);border-radius:16px;padding:18px;margin-top:16px}
+.step strong{display:block;color:var(--azul);font-size:1.05rem;margin-bottom:8px}
+.step ul{margin:0;padding-left:18px}
+.step li{margin-bottom:4px;color:#2a3a4a}
+.fase-nav{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.fase-step{display:flex;align-items:center;gap:0}
+.fase-btn{border:2px solid rgba(214,179,84,.4);background:rgba(255,250,240,.3);color:#d6b354;border-radius:999px;padding:7px 14px;font:600 .82rem Georgia,serif;cursor:pointer;text-decoration:none;transition:.14s;white-space:nowrap}
+.fase-btn:hover{background:rgba(214,179,84,.2);}
+.fase-btn.ativa{background:var(--ouro);color:#111;border-color:var(--ouro);}
+.fase-sep{color:#d6b354;opacity:.5;padding:0 4px;font-size:.9rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.acoes{text-align:center;margin-top:26px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{display:inline-flex;align-items:center;text-decoration:none;border-radius:999px;padding:13px 22px;font-weight:900;font-family:Arial,sans-serif;transition:.15s ease;box-shadow:0 5px 0 rgba(0,0,0,.2)}
+.btn:hover{transform:translateY(-1px)}
+.btn-ouro{background:var(--ouro);color:#111}
+.btn-verde{background:#1f7a42;color:#fff}
+.btn-sair{background:var(--vermelho);color:#fff}
+.rodape{background:var(--azul);color:#fff5cf;text-align:center;padding:22px;border-top:6px solid var(--ouro)}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}.acoes{flex-direction:column}.btn{width:100%;justify-content:center}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Caminho das Pedras</h1>
+  <p>Fase 3 — Circulação autoral estratégica</p>
+</header>
+
+<div class="wrap">
+
+  <!-- NAVEGAÇÃO ENTRE FASES -->
+  <div class="fase-nav">
+    <div class="fase-step"><a class="fase-btn" href="caminho_das_pedras.html">Início</a><span class="fase-sep">→</span></div>
+    <div class="fase-step"><a class="fase-btn" href="caminho_das_pedras_poesia.html">Trilha Poesia</a><span class="fase-sep">·</span></div>
+    <div class="fase-step"><a class="fase-btn" href="caminho_das_pedras_prosa.html">Trilha Prosa</a><span class="fase-sep">→</span></div>
+    <div class="fase-step"><a class="fase-btn" href="caminho_das_pedras_escritores_fase2.html">Fase 2</a><span class="fase-sep">→</span></div>
+    <div class="fase-step"><span class="fase-btn ativa">Fase 3</span><span class="fase-sep">→</span></div>
+    <div class="fase-step"><a class="fase-btn" href="caminho_das_pedras_escritores_fase4.html">Fase 4</a></div>
+  </div>
+
+  <div class="destaque">
+    Ampliar a presença pública do autor por meio de circulação estratégica nacional e internacional.
+  </div>
+
+  <div class="card">
+    <h2>Etapas da Fase 3</h2>
+    <div class="step">
+      <strong>1 — Participar de editais e chamadas internacionais</strong>
+      <ul>
+        <li>Seleção de editais compatíveis</li>
+        <li>Envio de textos estratégicos</li>
+        <li>Participação em coletâneas internacionais</li>
+      </ul>
+    </div>
+    <div class="step">
+      <strong>2 — Produzir presença audiovisual autoral</strong>
+      <ul>
+        <li>Vídeos curtos com apoio dos Silos</li>
+        <li>Leituras narradas</li>
+        <li>Apresentações autorais públicas</li>
+      </ul>
+    </div>
+    <div class="step">
+      <strong>3 — Ativar circulação em plataformas culturais</strong>
+      <ul>
+        <li>Participação em festivais</li>
+        <li>Publicações digitais ampliadas</li>
+        <li>Eventos culturais institucionais</li>
+      </ul>
+    </div>
+    <div class="step">
+      <strong>4 — Tradução estratégica ampliada</strong>
+      <ul>
+        <li>Publicação de trechos em língua estrangeira</li>
+        <li>Entrada em chamadas multilíngues</li>
+      </ul>
+    </div>
+    <div class="step">
+      <strong>5 — Consolidação da presença institucional</strong>
+      <ul>
+        <li>Integração com SIGMAL</li>
+        <li>Ativação do acompanhamento de trajetória</li>
+        <li>Participação em redes culturais</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>Ferramentas desta fase</h2>
+      <ul>
+        <li>Radar Mundial de Oportunidades Artísticas</li>
+        <li>Web Rádio Celeiro Literário</li>
+        <li>Web TV Celeiro Literário</li>
+        <li>Silos multimídia</li>
+        <li>Segunda Língua(s) — tradução multilíngue</li>
+        <li>Acompanhamento e Evolução da Trajetória</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Resultado esperado</h2>
+      <ul>
+        <li>Circulação internacional inicial</li>
+        <li>Presença audiovisual estruturada</li>
+        <li>Participação em eventos culturais</li>
+        <li>Entrada em redes institucionais</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="acoes">
+    <a class="btn btn-verde" href="radar_mundial_oportunidades_artisticas.html">Ir para o Radar Mundial</a>
+    <a class="btn btn-verde" href="segunda_linguas.html">Traduzir minha obra</a>
+    <a class="btn btn-ouro"  href="caminho_das_pedras_escritores_fase4.html">Ir para Fase 4 →</a>
+    <a class="btn btn-ouro"  href="caminho_das_pedras_escritores_fase2.html">← Voltar à Fase 2</a>
+    <a class="btn btn-sair"  href="pagina_respiro_celeiro.html">Sair do sistema</a>
+  </div>
+
+</div>
+
+<footer class="rodape">
+  <strong>Fase 3 — Circulação Autoral Estratégica</strong><br>
+  Caminho das Pedras · Instituto Cultural Celeiro Literário
+</footer>
+
+</body>
+</html>
