@@ -3,319 +3,188 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CORSI — Circulação em Redes | Celeiro Literário</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>CORSI — Circulação & Redes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;900&display=swap" rel="stylesheet">
 <style>
-:root{
-  --azul:#0f1c2e; --azul2:#07101d; --azul3:#0d2540;
-  --ouro:#c9a646; --ouro2:#f4dc88; --cobre:#b87333;
-  --papel:#fffaf0; --papel2:#f7f1e2; --texto:#243043; --cinza:#4a5568;
-  --roxo:#3b1f6e; --roxo2:#5e3aad; --roxo3:#9b6dff;
-  --linha:rgba(201,166,70,.28); --r:22px; --s:0 18px 50px rgba(8,17,31,.15);
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Source Serif 4',Georgia,serif;background:linear-gradient(170deg,#fbf7ed,#ede0c4);color:var(--texto);min-height:100vh}
+  :root {
+    --ouro:#C9A84C;--branco-perola:#F5F0E8;--cinza-suave:#9CA3AF;
+    --verde-nav:#16A34A;--vermelho-nav:#DC2626;--amarelo-nav:#CA8A04;
+    /* CORSI — marrom terroso quente */
+    --cor1:#0A0806;--cor2:#160E08;--cor3:#22140A;--cor4:#2E1C0E;
+    --sec1:#1A1008;--sec2:#140C06;--sec3:#200E08;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:linear-gradient(160deg,var(--cor1) 0%,var(--cor2) 35%,var(--cor3) 65%,var(--cor4) 100%);color:var(--branco-perola);font-family:'Cormorant Garamond',serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(201,168,76,0.08) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(201,168,76,0.04) 0%,transparent 50%);pointer-events:none;z-index:0;}
+  .stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .star{position:absolute;background:white;border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite;opacity:var(--o,0.3);}
+  @keyframes twinkle{0%,100%{opacity:var(--o,0.3)}50%{opacity:0.05}}
+  .container{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:24px 16px 100px;}
 
-/* TOPBAR */
-.topbar{position:sticky;top:0;z-index:100;background:rgba(7,16,29,.97);border-bottom:2px solid var(--ouro);backdrop-filter:blur(10px)}
-.top-in{max-width:1200px;margin:auto;padding:10px 22px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.marca{font-family:'Playfair Display',serif;color:var(--ouro2);font-size:14px}
-.marca small{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(244,220,136,.5)}
-.tnav{display:flex;gap:6px;flex-wrap:wrap}
-.tnav a{font-family:'JetBrains Mono',monospace;font-size:11px;color:#c8c0ae;text-decoration:none;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.1);transition:.18s}
-.tnav a:hover{color:var(--ouro2);border-color:var(--ouro);background:rgba(201,166,70,.12)}
+  .btn-voltar{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(201,168,76,0.3);color:var(--ouro);padding:10px 18px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;margin-bottom:24px;}
+  .btn-voltar:hover{background:rgba(201,168,76,0.1);}
 
-/* HERO */
-.hero{
-  background:radial-gradient(ellipse 60% 50% at 10% 15%,rgba(94,58,173,.2),transparent),
-             radial-gradient(ellipse 50% 60% at 90% 85%,rgba(201,166,70,.12),transparent),
-             linear-gradient(148deg,var(--azul2) 0%,var(--roxo) 55%,#0d0520 100%);
-  color:white;padding:68px 22px 56px;border-bottom:7px solid var(--ouro);position:relative;overflow:hidden
-}
-.hero::after{content:'CORSI';position:absolute;right:-10px;bottom:-50px;font-family:'Playfair Display',serif;font-size:200px;font-weight:900;color:rgba(155,109,255,.06);line-height:1;pointer-events:none}
-.hero-in{max-width:1200px;margin:auto;display:grid;grid-template-columns:200px 1fr;gap:44px;align-items:start;position:relative;z-index:1}
-.h-esq{display:flex;flex-direction:column;align-items:center;gap:14px}
-.corsi-av{width:178px;height:178px;border-radius:24px;background:linear-gradient(135deg,var(--roxo),#1a0d42);border:4px solid var(--ouro);box-shadow:0 0 0 8px rgba(94,58,173,.18),0 28px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
-.corsi-av .av-s{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;color:var(--ouro2);line-height:1}
-.corsi-av .av-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(244,220,136,.55);letter-spacing:.1em;text-align:center}
-.pill{font-family:'JetBrains Mono',monospace;font-size:11px;padding:6px 14px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
-.p-roxo{background:rgba(94,58,173,.3);border:1px solid var(--roxo3);color:var(--roxo3)}
-.p-ouro{background:rgba(201,166,70,.15);border:1px solid rgba(201,166,70,.4);color:var(--ouro2)}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--roxo3);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.h-dir .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ouro2);border:1px solid rgba(201,166,70,.4);display:inline-block;padding:7px 14px;border-radius:999px;margin-bottom:14px;letter-spacing:.08em}
-.h-dir h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5.5vw,68px);line-height:1;color:var(--ouro2);margin-bottom:6px}
-.h-dir .cargo{font-size:clamp(15px,2vw,20px);color:#b8a8d4;font-style:italic;margin-bottom:20px}
-.h-dir .missao{font-size:17px;line-height:1.72;color:#e0dace;border-left:3px solid var(--ouro);padding-left:18px;max-width:740px;margin-bottom:24px}
-.h-chips{display:flex;flex-wrap:wrap;gap:9px}
-.chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#ddd8cc;font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px 13px;border-radius:12px}
-.chip strong{color:var(--ouro2)}
+  /* Guia */
+  .guia-principal{background:rgba(0,0,0,0.4);border:1px solid rgba(201,168,76,0.2);border-radius:16px;padding:24px;display:flex;align-items:flex-start;gap:18px;margin-bottom:32px;}
+  .guia-foto{width:90px;height:90px;border-radius:50%;object-fit:cover;border:2px solid rgba(201,168,76,0.4);flex-shrink:0;}
+  .guia-tag{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--ouro);opacity:0.7;margin-bottom:6px;}
+  .guia-nome{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--branco-perola);margin-bottom:4px;}
+  .guia-subtitulo{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--ouro);opacity:0.5;margin-bottom:10px;}
+  .guia-fala{font-size:14px;font-style:italic;color:var(--cinza-suave);line-height:1.7;}
 
-/* LAYOUT */
-.wrap{max-width:1200px;margin:auto;padding:44px 22px 80px}
-.sec{margin-bottom:52px}
-.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
-.sec-head .barra{width:7px;height:34px;background:var(--ouro);border-radius:20px;flex-shrink:0}
-.sec-head h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,36px);color:var(--azul)}
-.subtag{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--azul);color:var(--ouro2);padding:4px 11px;border-radius:999px}
+  /* Header */
+  .dept-header{text-align:center;margin-bottom:32px;}
+  .dept-subtitulo{font-family:'Cinzel',serif;font-size:10px;letter-spacing:4px;color:var(--ouro);opacity:0.7;margin-bottom:10px;}
+  .dept-titulo{font-family:'Playfair Display',serif;font-size:clamp(26px,6vw,40px);font-weight:900;color:var(--branco-perola);margin-bottom:8px;}
+  .dept-desc{font-style:italic;font-size:14px;color:var(--cinza-suave);line-height:1.7;max-width:440px;margin:0 auto;}
+  .linha-divisora{width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--ouro),transparent);margin:16px auto;}
 
-/* CARDS */
-.card{background:var(--papel);border:1px solid var(--linha);border-radius:var(--r);padding:26px;box-shadow:var(--s)}
-.card h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--azul);margin-bottom:12px}
-.card p,.card li{font-size:15px;line-height:1.68;color:#3a4557}
-.card ul{padding-left:18px}
-.card ul li{margin-bottom:7px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  /* Seções */
+  .secao{margin-bottom:24px;}
+  .secao-titulo{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;color:var(--ouro);opacity:0.7;margin-bottom:14px;border-left:2px solid var(--ouro);padding-left:12px;}
 
-/* REDES GRID */
-.redes-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.rede-item{background:var(--papel);border:1px solid var(--linha);border-radius:18px;padding:20px;text-align:center;box-shadow:0 6px 18px rgba(8,17,31,.08);transition:.18s;position:relative;overflow:hidden}
-.rede-item::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
-.rede-item.roxo::before{background:linear-gradient(90deg,var(--roxo2),var(--roxo3))}
-.rede-item.ouro::before{background:var(--ouro)}
-.rede-item:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(8,17,31,.14);border-color:var(--ouro)}
-.rede-item .ri{font-size:32px;margin-bottom:10px}
-.rede-item h4{font-family:'Playfair Display',serif;font-size:16px;color:var(--azul);margin-bottom:5px}
-.rede-item p{font-size:13px;color:var(--cinza);line-height:1.5}
+  .secao-card{border-radius:14px;padding:22px;border:1px solid rgba(255,255,255,0.06);margin-bottom:12px;}
+  .secao-card-titulo{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--branco-perola);margin-bottom:8px;}
+  .secao-card-texto{font-size:13px;color:var(--cinza-suave);font-style:italic;line-height:1.7;}
+  .secao-card-texto strong{color:var(--branco-perola);font-style:normal;}
 
-/* FLUXO */
-.fluxo{display:grid;grid-template-columns:repeat(5,1fr);border:2px solid var(--ouro);border-radius:18px;overflow:hidden;margin:18px 0}
-.f-et{background:var(--azul2);color:var(--ouro2);padding:20px 12px;text-align:center;border-right:1px solid rgba(201,166,70,.3);font-family:'JetBrains Mono',monospace}
-.f-et:last-child{border-right:none}
-.f-et .fn{font-size:26px;font-weight:900;color:var(--ouro);display:block;margin-bottom:8px}
-.f-et .ft{font-size:12px;font-weight:700;display:block;margin-bottom:5px}
-.f-et small{font-size:11px;color:#8a9aaa}
+  .card-redes{background:linear-gradient(135deg,var(--sec1) 0%,#1E1208 100%);}
+  .card-difusao{background:linear-gradient(135deg,var(--sec2) 0%,#180A06 100%);}
+  .card-programacao{background:linear-gradient(135deg,var(--sec3) 0%,#240A08 100%);}
 
-/* CARD ESCURO */
-.card-esc{background:linear-gradient(135deg,var(--azul2),var(--roxo));border:2px solid var(--ouro);border-radius:var(--r);padding:28px;color:white}
-.card-esc h3{font-family:'Playfair Display',serif;font-size:24px;color:var(--ouro2);margin-bottom:10px}
-.card-esc p{font-size:15px;color:#d4cce8;line-height:1.65;margin-bottom:14px}
-.tags-roxo{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.tag-r{background:rgba(94,58,173,.25);border:1px solid rgba(155,109,255,.4);color:var(--roxo3);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:10px}
+  .servicos-lista{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
+  .servico-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(0,0,0,0.2);border-radius:8px;border:1px solid rgba(201,168,76,0.1);}
+  .servico-icone{font-size:18px;flex-shrink:0;}
+  .servico-texto{font-size:13px;color:var(--cinza-suave);font-style:italic;}
+  .servico-texto strong{color:var(--branco-perola);font-style:normal;}
 
-/* NOTICE */
-.notice{background:#fff8d6;border-left:6px solid var(--ouro);border-radius:16px;padding:18px;font-size:15px;color:#3c300a;line-height:1.65;margin-bottom:22px}
-.notice strong{color:#7a5200}
+  /* Fluxo */
+  .fluxo-box{background:rgba(0,0,0,0.25);border:1px solid rgba(201,168,76,0.15);border-radius:12px;padding:18px;margin-bottom:24px;}
+  .fluxo-titulo{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--ouro);opacity:0.7;margin-bottom:14px;}
+  .fluxo-steps{display:flex;flex-direction:column;gap:8px;}
+  .fluxo-step{display:flex;align-items:center;gap:12px;}
+  .fluxo-seta{color:var(--ouro);opacity:0.4;font-size:12px;text-align:center;padding-left:20px;}
+  .step-num{width:28px;height:28px;border-radius:50%;border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:10px;color:var(--ouro);flex-shrink:0;}
+  .step-texto{font-size:13px;color:var(--cinza-suave);font-style:italic;}
+  .step-texto strong{color:var(--branco-perola);font-style:normal;}
 
-/* BOTÕES */
-.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:0;cursor:pointer;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;padding:13px 22px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.12);transition:.18s}
-.b-ouro{background:var(--ouro);color:var(--azul2)}
-.b-ouro:hover{background:var(--ouro2)}
-.b-roxo{background:var(--roxo2);color:white}
-.b-roxo:hover{background:var(--roxo)}
-.b-esc{background:var(--azul);color:var(--ouro2);border:1px solid rgba(201,166,70,.35)}
-.b-esc:hover{background:#0a1422}
-.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  /* Aviso Admin */
+  .aviso-admin{background:rgba(220,38,38,0.06);border:1px solid rgba(220,38,38,0.2);border-radius:10px;padding:16px 18px;margin-bottom:24px;}
+  .aviso-admin-titulo{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:#FCA5A5;margin-bottom:6px;}
+  .aviso-admin-texto{font-size:13px;color:var(--cinza-suave);font-style:italic;line-height:1.6;}
+  .aviso-admin-texto strong{color:#FCA5A5;font-style:normal;}
 
-footer{background:var(--azul2);color:#c8c0ae;border-top:6px solid var(--ouro);padding:32px 22px;text-align:center}
-footer strong{color:var(--ouro2)}
-footer p{font-size:14px;line-height:1.8}
-footer .mono{font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.4;margin-top:8px}
-
-@media(max-width:980px){.hero-in{grid-template-columns:1fr}.h-esq{flex-direction:row}.redes-grid{grid-template-columns:repeat(2,1fr)}.fluxo{grid-template-columns:repeat(3,1fr)}.f-et{border-bottom:1px solid rgba(201,166,70,.3);border-right:none}.g3{grid-template-columns:1fr 1fr}}
-@media(max-width:620px){.g2,.g3,.redes-grid{grid-template-columns:1fr}.fluxo{grid-template-columns:1fr}}
+  .nav-rodape{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
+  .btn-reclamacao{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.25);color:#FCA5A5;padding:12px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;}
+  .btn-reclamacao:hover{background:rgba(220,38,38,0.2);}
+  .btn-sair{display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:1px solid rgba(156,163,175,0.2);color:var(--cinza-suave);padding:12px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;}
+  .btn-sair:hover{border-color:rgba(220,38,38,0.4);color:#FCA5A5;}
+  .rodape-inst{text-align:center;margin-top:20px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--ouro);opacity:0.3;}
 </style>
 </head>
 <body>
+<div class="stars" id="stars"></div>
+<div class="container">
 
-<div class="topbar">
-  <div class="top-in">
-    <div class="marca">Instituto Cultural Celeiro Literário<small>CORSI · CIRCULAÇÃO EM REDES · DEPARTAMENTO INTERNO</small></div>
-    <nav class="tnav">
-      <a href="#funcoes">Funções</a>
-      <a href="#redes">Redes</a>
-      <a href="#fluxo">Fluxo</a>
-      <a href="#expedicoes">Expedições</a>
-      <a href="cicile.html">CICILE</a>
-      <a href="pagina_respiro_celeiro.html">← Celeiro</a>
-    </nav>
+  <a href="celeiro_hall.html" class="btn-voltar">← Hall do Celeiro</a>
+
+  <!-- Guia: A CORSI -->
+  <div class="guia-principal">
+    <img class="guia-foto" src="file_00000000b8e0720eb8a15a16c209d672.png" alt="A CORSI" onerror="this.style.display='none'">
+    <div>
+      <p class="guia-tag">✦ ESTAÇÃO DE CONSOLIDAÇÃO EDITORIAL ✦</p>
+      <p class="guia-nome">A CORSI</p>
+      <p class="guia-subtitulo">VERIFICAÇÃO · FECHAMENTO · CONSOLIDAÇÃO TÉCNICA</p>
+      <p class="guia-fala">Tudo que nasce no Celeiro passa por mim antes de chegar ao mundo. Sou a ponte entre a criação e a circulação — garanto que cada obra chegue onde precisa, da forma certa.</p>
+    </div>
   </div>
+
+  <!-- Header -->
+  <div class="dept-header">
+    <p class="dept-subtitulo">✦ CIRCULAÇÃO & REDES ✦</p>
+    <h1 class="dept-titulo">CORSI</h1>
+    <div class="linha-divisora"></div>
+    <p class="dept-desc">Estação de consolidação editorial — distribuição de todo o material do Celeiro nas redes, Web TV, Web Rádio e plataformas digitais.</p>
+  </div>
+
+  <!-- Redes Sociais -->
+  <div class="secao">
+    <p class="secao-titulo">REDES SOCIAIS</p>
+    <div class="secao-card card-redes">
+      <p class="secao-card-titulo">Gestão de todas as redes</p>
+      <p class="secao-card-texto">A CORSI gerencia todas as redes sociais do Celeiro Literário e publica todo o material produzido — independente de onde foi gerado.</p>
+      <div class="servicos-lista">
+        <div class="servico-item"><span class="servico-icone">📸</span><p class="servico-texto"><strong>Instagram</strong> — publicações, stories e reels literários</p></div>
+        <div class="servico-item"><span class="servico-icone">▶️</span><p class="servico-texto"><strong>YouTube</strong> — vídeos, poesias e conteúdo audiovisual</p></div>
+        <div class="servico-item"><span class="servico-icone">🎵</span><p class="servico-texto"><strong>TikTok</strong> — conteúdo cultural em formato curto</p></div>
+        <div class="servico-item"><span class="servico-icone">🐦</span><p class="servico-texto"><strong>X / Twitter</strong> — circulação de textos e notícias literárias</p></div>
+        <div class="servico-item"><span class="servico-icone">📘</span><p class="servico-texto"><strong>Facebook</strong> — alcance e comunidade literária</p></div>
+        <div class="servico-item"><span class="servico-icone">💼</span><p class="servico-texto"><strong>Outras redes</strong> — pode criar acessos em todas disponíveis</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Difusão -->
+  <div class="secao">
+    <p class="secao-titulo">CANAIS DE DIFUSÃO</p>
+    <div class="secao-card card-difusao">
+      <p class="secao-card-titulo">Web TV & Web Rádio</p>
+      <p class="secao-card-texto">A CORSI distribui conteúdo nos dois canais oficiais de difusão do Celeiro e é responsável pela programação de ambos.</p>
+      <div class="servicos-lista">
+        <div class="servico-item"><span class="servico-icone">📺</span><p class="servico-texto"><strong>Web TV</strong> — distribuição e programação do canal televisivo</p></div>
+        <div class="servico-item"><span class="servico-icone">📻</span><p class="servico-texto"><strong>Web Rádio</strong> — distribuição e programação do canal sonoro</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Programação -->
+  <div class="secao">
+    <p class="secao-titulo">PROGRAMAÇÃO</p>
+    <div class="secao-card card-programacao">
+      <p class="secao-card-titulo">Grade de conteúdo</p>
+      <p class="secao-card-texto">A CORSI organiza e programa toda a grade de conteúdo dos canais — definindo horários, formatos e distribuição do material produzido nos Silos Multimídia.</p>
+      <div class="servicos-lista">
+        <div class="servico-item"><span class="servico-icone">🗓️</span><p class="servico-texto"><strong>Grade semanal</strong> — programação organizada por tema e formato</p></div>
+        <div class="servico-item"><span class="servico-icone">🎬</span><p class="servico-texto"><strong>Silo Cinematográfico</strong> — roteiros e material audiovisual para Web TV</p></div>
+        <div class="servico-item"><span class="servico-icone">🎧</span><p class="servico-texto"><strong>Silo Sonoro</strong> — narrações e audiobooks para Web Rádio</p></div>
+        <div class="servico-item"><span class="servico-icone">🎵</span><p class="servico-texto"><strong>Silo Music</strong> — músicas e trilhas para rádio e TV</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fluxo de chegada -->
+  <div class="secao">
+    <p class="secao-titulo">FLUXO DE CHEGADA DO MATERIAL</p>
+    <div class="fluxo-box">
+      <p class="fluxo-titulo">✦ TODO MATERIAL DO CELEIRO CHEGA À CORSI</p>
+      <div class="fluxo-steps">
+        <div class="fluxo-step"><span class="step-num">1</span><p class="step-texto"><strong>Expedição do Lapidar</strong> → CORSI</p></div>
+        <div class="fluxo-seta">↓</div>
+        <div class="fluxo-step"><span class="step-num">2</span><p class="step-texto"><strong>Expedição Multimídia</strong> → CORSI</p></div>
+        <div class="fluxo-seta">↓</div>
+        <div class="fluxo-step"><span class="step-num">3</span><p class="step-texto"><strong>Expedição Editorial Geral</strong> → CORSI</p></div>
+        <div class="fluxo-seta">↓</div>
+        <div class="fluxo-step"><span class="step-num">4</span><p class="step-texto"><strong>CORSI</strong> → Redes · Web TV · Web Rádio · Mundo</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aviso Admin -->
+  <div class="aviso-admin">
+    <p class="aviso-admin-titulo">✦ ACESSO ADMINISTRATIVO</p>
+    <p class="aviso-admin-texto">A gestão completa da CORSI é de acesso exclusivo do <strong>Admin — Wagner Planas</strong>. Todo material produzido no Celeiro, por ele, em qualquer departamento, passa pela CORSI para circular.</p>
+  </div>
+
+  <div class="nav-rodape">
+    <a href="cicile_reclamacao.html?departamento=CORSI" class="btn-reclamacao">⚑ Reclamação</a>
+    <a href="celeiro_entrada.html" class="btn-sair">✕ Sair do Celeiro</a>
+  </div>
+  <p class="rodape-inst">✦ CELEIRO LITERÁRIO · SITE DAS LETRAS EDIÇÕES LITERÁRIAS ✦</p>
+
 </div>
-
-<header class="hero">
-  <div class="hero-in">
-    <div class="h-esq">
-      <div class="corsi-av">
-        <span class="av-s">CO</span>
-        <span class="av-sub">CORSI<br>CIRCULAÇÃO</span>
-      </div>
-      <span class="pill p-roxo"><span class="dot"></span> Operacional</span>
-      <span class="pill p-ouro">✦ Celeiro Literário</span>
-    </div>
-    <div class="h-dir">
-      <div class="eyebrow">✦ DEPARTAMENTO DE CIRCULAÇÃO · REDES SOCIAIS E DIGITAIS</div>
-      <h1>CORSI</h1>
-      <p class="cargo">Departamento de Circulação em Redes do Instituto Cultural Celeiro Literário</p>
-      <p class="missao">O CORSI é o departamento responsável por colocar as obras, os autores e o Celeiro Literário em circulação nas redes digitais. Recebe o material finalizado pelas Expedições — Geral, Editorial e Multimídia — e o distribui de forma estratégica nas plataformas certas, no formato certo, para o público certo.</p>
-      <div class="h-chips">
-        <div class="chip">📲 <strong>Redes sociais</strong></div>
-        <div class="chip">▶️ <strong>YouTube</strong></div>
-        <div class="chip">🎙️ <strong>Web Rádio / Web TV</strong></div>
-        <div class="chip">📡 <strong>Streaming</strong></div>
-        <div class="chip">📰 <strong>Distribuição editorial</strong></div>
-        <div class="chip">🌐 <strong>Circulação internacional</strong></div>
-      </div>
-    </div>
-  </div>
-</header>
-
-<main class="wrap">
-
-  <!-- FUNÇÃO DO CORSI -->
-  <section class="sec" id="funcoes">
-    <div class="sec-head"><div class="barra"></div><h2>O papel do CORSI</h2><span class="subtag">Da obra finalizada à circulação pública</span></div>
-
-    <div class="notice">
-      O CORSI entra em ação depois que o material sai da Expedição. Ele não produz conteúdo — ele <strong>distribui, posiciona e faz circular</strong> o que foi finalizado pelo autor dentro do Celeiro.
-    </div>
-
-    <div class="fluxo">
-      <div class="f-et"><span class="fn">①</span><span class="ft">Obra finalizada</span><small>Expedição libera</small></div>
-      <div class="f-et"><span class="fn">②</span><span class="ft">CORSI recebe</span><small>Classifica por plataforma</small></div>
-      <div class="f-et"><span class="fn">③</span><span class="ft">Prepara formatos</span><small>Cada rede seu formato</small></div>
-      <div class="f-et"><span class="fn">④</span><span class="ft">Distribui</span><small>Publica e agenda</small></div>
-      <div class="f-et"><span class="fn">⑤</span><span class="ft">Monitora</span><small>Alcance e retorno</small></div>
-    </div>
-
-    <div class="g3">
-      <div class="card">
-        <h3>O que o CORSI recebe</h3>
-        <ul>
-          <li>Obras finalizadas pelo Lapidar / Expedição Editorial</li>
-          <li>Produções audiovisuais do Silo Multimídia / Expedição Multimídia</li>
-          <li>Material da Expedição Geral do Celeiro</li>
-          <li>Conteúdo institucional e comunicados do Instituto</li>
-          <li>Material da SIGMAL e de eventos do ecossistema</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>O que o CORSI entrega</h3>
-        <ul>
-          <li>Publicações nas redes sociais do Celeiro</li>
-          <li>Vídeos no YouTube com SEO editorial</li>
-          <li>Episódios na Web Rádio / Web TV</li>
-          <li>Distribuição em plataformas de streaming literário</li>
-          <li>Circulação em grupos e comunidades temáticas</li>
-          <li>Relatório de alcance para a direção e o autor</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Critérios de circulação</h3>
-        <ul>
-          <li>Perfil do público-alvo da obra</li>
-          <li>Área artística (9 áreas SIGMAL)</li>
-          <li>Idioma e alcance geográfico</li>
-          <li>Formato disponível (texto, áudio, vídeo)</li>
-          <li>Periodicidade e calendário editorial</li>
-          <li>Prioridade institucional da semana</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- REDES E PLATAFORMAS -->
-  <section class="sec" id="redes">
-    <div class="sec-head"><div class="barra"></div><h2>Redes e plataformas</h2><span class="subtag">Onde o CORSI faz circular</span></div>
-
-    <div class="redes-grid">
-      <div class="rede-item roxo">
-        <div class="ri">📸</div>
-        <h4>Instagram</h4>
-        <p>Posts, reels, stories e carrosséis de obras, autores e eventos do Celeiro</p>
-      </div>
-      <div class="rede-item roxo">
-        <div class="ri">▶️</div>
-        <h4>YouTube</h4>
-        <p>Vídeos de obras, entrevistas, leituras, lançamentos e conteúdo da SIGMAL</p>
-      </div>
-      <div class="rede-item roxo">
-        <div class="ri">🎵</div>
-        <h4>TikTok</h4>
-        <p>Conteúdo curto e dinâmico para alcance de novos públicos literários</p>
-      </div>
-      <div class="rede-item roxo">
-        <div class="ri">🐦</div>
-        <h4>X / Twitter</h4>
-        <p>Comunicados institucionais, citações e agenda cultural do Celeiro</p>
-      </div>
-      <div class="rede-item ouro">
-        <div class="ri">🎙️</div>
-        <h4>Web Rádio</h4>
-        <p>Transmissões de leituras, entrevistas e programação literária ao vivo</p>
-      </div>
-      <div class="rede-item ouro">
-        <div class="ri">📺</div>
-        <h4>Web TV</h4>
-        <p>Canal de vídeo do Celeiro com programação editorial e cultural</p>
-      </div>
-      <div class="rede-item ouro">
-        <div class="ri">🎧</div>
-        <h4>Podcast / Streaming</h4>
-        <p>Distribuição em Spotify, Deezer e plataformas de áudio literário</p>
-      </div>
-      <div class="rede-item ouro">
-        <div class="ri">🌐</div>
-        <h4>Portal e Rede Mundial</h4>
-        <p>Publicação no portal do Celeiro e na Rede Mundial de Oportunidades</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- RELAÇÃO COM EXPEDIÇÕES -->
-  <section class="sec" id="expedicoes">
-    <div class="sec-head"><div class="barra"></div><h2>Relação com as Expedições</h2><span class="subtag">CORSI recebe de todas as três</span></div>
-
-    <div class="g3">
-      <div class="card-esc">
-        <h3>Expedição Geral</h3>
-        <p>A porta de saída geral do Celeiro. O CORSI recebe materiais de alcance amplo: comunicados, campanhas institucionais, lançamentos coletivos e conteúdo transversal do Instituto.</p>
-        <div class="tags-roxo">
-          <span class="tag-r">Comunicados</span>
-          <span class="tag-r">Campanhas</span>
-          <span class="tag-r">Lançamentos coletivos</span>
-        </div>
-        <div class="btns"><a class="btn b-ouro" href="expedicao.html">→ Expedição Geral</a></div>
-      </div>
-      <div class="card-esc">
-        <h3>Expedição Editorial</h3>
-        <p>A porta de saída do Lapidar. O CORSI recebe obras individuais finalizadas: textos, poesias, livros prontos para circulação digital — cada uma com seu público-alvo mapeado.</p>
-        <div class="tags-roxo">
-          <span class="tag-r">Obras individuais</span>
-          <span class="tag-r">Textos e poesias</span>
-          <span class="tag-r">Livros digitais</span>
-        </div>
-        <div class="btns"><a class="btn b-ouro" href="expedicao_editorial.html">→ Expedição Editorial</a></div>
-      </div>
-      <div class="card-esc">
-        <h3>Expedição Multimídia</h3>
-        <p>A porta de saída do Silo Multimídia. O CORSI recebe produções audiovisuais prontas — vídeos, áudios, podcasts — e distribui nas plataformas de mídia conforme o formato.</p>
-        <div class="tags-roxo">
-          <span class="tag-r">Vídeos</span>
-          <span class="tag-r">Áudios e podcasts</span>
-          <span class="tag-r">Produções ao vivo</span>
-        </div>
-        <div class="btns"><a class="btn b-ouro" href="expedicao_multimidia.html">→ Expedição Multimídia</a></div>
-      </div>
-    </div>
-  </section>
-
-  <div class="btns" style="justify-content:center">
-    <a class="btn b-roxo" href="expedicao.html">📦 Expedição Geral</a>
-    <a class="btn b-ouro" href="expedicao_editorial.html">💎 Expedição Editorial</a>
-    <a class="btn b-ouro" href="expedicao_multimidia.html">▶️ Expedição Multimídia</a>
-    <a class="btn b-esc" href="cicile.html">CICILE</a>
-    <a class="btn b-esc" href="pagina_respiro_celeiro.html">← Celeiro</a>
-  </div>
-
-</main>
-
-<footer>
-  <p><strong>CORSI</strong> — Departamento de Circulação em Redes</p>
-  <p>Instituto Cultural Celeiro Literário · Expedições · SIGMAL · CICILE</p>
-  <p class="mono">corsi.html · departamento_corsi_circulacao_redes</p>
-</footer>
-
+<script>
+  const sc=document.getElementById('stars');
+  for(let i=0;i<50;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--o:${Math.random()*0.3+0.05};animation-delay:${Math.random()*4}s;`;sc.appendChild(s);}
+</script>
 </body>
 </html>
