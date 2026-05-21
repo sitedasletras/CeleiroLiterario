@@ -3,745 +3,538 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BPL — Banco de Personagens Literários · Operacional</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<title>BPL — Banco de Personagens Literários · Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;1,400&family=Space+Mono&display=swap" rel="stylesheet">
 <style>
-:root{
-  --azul:#07101d;--azul2:#0f1c2e;--azul3:#17365f;
-  --ouro:#c9a646;--ouro2:#f4dc88;--cobre:#b87333;
-  --vinho:#6d1a2a;--verm:#c0392b;
-  --papel:#fffaf0;--txt:#1f2a3a;--muted:#5a6478;
-  --verde:#1f7a42;--roxo:#3b1f6e;
-  --linha:rgba(201,166,70,.25);--r:18px;
-  --s:0 14px 40px rgba(0,0,0,.18);
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  font-family:'Libre Baskerville',Georgia,serif;
-  background:linear-gradient(170deg,#07101d 0%,#0a1828 60%,#0d1f10 100%);
-  color:white;min-height:100vh;
-}
-
-/* TOPBAR */
-.topbar{position:sticky;top:0;z-index:100;background:rgba(7,16,29,.98);border-bottom:2px solid var(--ouro);backdrop-filter:blur(10px)}
-.top-in{max-width:1400px;margin:auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.marca{font-family:'DM Mono',monospace;color:var(--ouro2);font-size:13px;font-weight:700}
-.marca small{display:block;font-size:10px;color:rgba(244,220,136,.45);letter-spacing:.08em}
-.tnav{display:flex;gap:5px;flex-wrap:wrap}
-.tnav a{font-family:'DM Mono',monospace;font-size:11px;color:#c8c0ae;text-decoration:none;padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.1);transition:.15s}
-.tnav a:hover{color:var(--ouro2);border-color:var(--ouro);background:rgba(201,166,70,.12)}
-
-/* HERO */
-.hero{
-  background:
-    radial-gradient(ellipse 60% 50% at 15% 20%,rgba(109,26,42,.3),transparent),
-    radial-gradient(ellipse 40% 60% at 85% 80%,rgba(92,45,110,.2),transparent),
-    linear-gradient(148deg,#030d18 0%,#07101d 50%,#0a1a0a 100%);
-  padding:60px 20px 44px;
-  border-bottom:4px solid var(--ouro);
-  text-align:center;position:relative;overflow:hidden;
-}
-.hero::before{
-  content:'BPL';
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  font-family:'Playfair Display',serif;font-size:340px;font-weight:900;
-  color:rgba(201,166,70,.03);line-height:1;pointer-events:none;white-space:nowrap;
-}
-.hero-badge{
-  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;
-  border:1px solid rgba(192,57,43,.5);color:#e57368;
-  padding:6px 16px;border-radius:999px;display:inline-block;margin-bottom:20px;
-}
-.hero h1{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(42px,7vw,96px);
-  background:linear-gradient(160deg,var(--ouro2) 0%,var(--ouro) 40%,var(--cobre) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  margin-bottom:6px;line-height:.95;
-}
-.hero-sub{
-  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.35em;
-  color:rgba(201,166,70,.55);margin-bottom:18px;text-transform:uppercase;
-}
-.hero-desc{
-  font-size:17px;color:rgba(240,236,224,.75);max-width:640px;margin:0 auto 28px;
-  line-height:1.7;font-style:italic;
-}
-.hero-stats{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
-.hstat{text-align:center}
-.hstat .hn{font-family:'Playfair Display',serif;font-size:36px;color:var(--ouro2);font-weight:900;display:block}
-.hstat .hl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;color:rgba(201,166,70,.5);text-transform:uppercase}
-
-/* WRAP */
-.wrap{max-width:1400px;margin:auto;padding:36px 20px 80px}
-
-/* SEÇÕES */
-.sec{margin-bottom:52px}
-.sec-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.28em;color:rgba(201,166,70,.5);text-transform:uppercase;margin-bottom:8px}
-.sec-title{font-family:'Playfair Display',serif;font-size:clamp(26px,3vw,40px);color:var(--ouro2);margin-bottom:4px}
-.sec-title em{color:var(--ouro);font-style:italic}
-.sec-divider{width:50px;height:2px;background:linear-gradient(to right,var(--ouro),transparent);margin:14px 0 26px}
-
-/* BUSCA E FILTROS */
-.filtros-barra{
-  background:rgba(15,28,46,.9);border:1px solid var(--linha);
-  border-radius:var(--r);padding:20px;margin-bottom:28px;
-  display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;
-}
-.filtro-campo label{
-  display:block;font-family:'DM Mono',monospace;font-size:10px;
-  letter-spacing:.08em;text-transform:uppercase;color:rgba(201,166,70,.6);margin-bottom:6px;
-}
-.filtro-campo input,.filtro-campo select{
-  border:1px solid rgba(201,166,70,.3);border-radius:10px;
-  padding:9px 12px;font-family:'DM Mono',monospace;font-size:13px;
-  background:rgba(7,16,29,.8);color:var(--ouro2);outline:none;transition:.2s;
-}
-.filtro-campo input{min-width:240px}
-.filtro-campo select{min-width:160px}
-.filtro-campo input:focus,.filtro-campo select:focus{border-color:var(--ouro)}
-.filtro-campo input::placeholder{color:rgba(201,166,70,.3)}
-.btn-buscar{
-  background:var(--ouro);color:var(--azul);border:0;border-radius:10px;
-  padding:9px 20px;font-family:'DM Mono',monospace;font-size:12px;font-weight:700;
-  cursor:pointer;transition:.15s;height:38px;margin-top:auto;
-}
-.btn-buscar:hover{background:var(--ouro2)}
-.resultado-info{font-family:'DM Mono',monospace;font-size:12px;color:rgba(201,166,70,.5);margin-bottom:16px}
-
-/* GRADE DE ARTISTAS */
-.artistas-grade{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;
-}
-.artista-card{
-  background:rgba(10,24,40,.95);
-  border:1px solid rgba(201,166,70,.12);
-  border-radius:var(--r);overflow:hidden;
-  transition:.22s;cursor:pointer;
-}
-.artista-card:hover{
-  border-color:rgba(201,166,70,.4);
-  transform:translateY(-3px);
-  box-shadow:0 16px 40px rgba(0,0,0,.4);
-}
-.artista-header{
-  padding:16px 18px 12px;
-  display:flex;align-items:flex-start;gap:14px;
-  border-bottom:1px solid rgba(201,166,70,.08);
-}
-.artista-iniciais{
-  width:52px;height:52px;border-radius:14px;
-  background:linear-gradient(135deg,rgba(201,166,70,.15),rgba(201,166,70,.05));
-  border:1px solid rgba(201,166,70,.25);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Playfair Display',serif;font-size:18px;font-weight:900;
-  color:var(--ouro2);flex-shrink:0;
-}
-.artista-id-wrap{flex:1}
-.artista-nome{font-family:'Playfair Display',serif;font-size:18px;color:var(--ouro2);margin-bottom:2px}
-.artista-origem{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;color:rgba(201,166,70,.45);text-transform:uppercase}
-.artista-body{padding:14px 18px}
-.artista-tipo-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.tipo-tag{
-  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.05em;
-  padding:3px 9px;border-radius:999px;border:1px solid;
-}
-.t-teatro{border-color:rgba(155,109,255,.4);color:#c8a8ff;background:rgba(155,109,255,.08)}
-.t-cinema{border-color:rgba(255,165,0,.4);color:#ffd080;background:rgba(255,165,0,.08)}
-.t-serie{border-color:rgba(0,200,200,.4);color:#80e8e8;background:rgba(0,200,200,.08)}
-.t-performance{border-color:rgba(255,80,180,.4);color:#ff80cc;background:rgba(255,80,180,.08)}
-.t-videoclipe{border-color:rgba(255,50,80,.4);color:#ff9090;background:rgba(255,50,80,.08)}
-.t-animacao{border-color:rgba(80,220,120,.4);color:#80f0a0;background:rgba(80,220,120,.08)}
-.t-audiobook{border-color:rgba(200,166,70,.4);color:var(--ouro2);background:rgba(200,166,70,.08)}
-.artista-personalidade{
-  font-size:13px;color:rgba(240,236,224,.6);line-height:1.5;margin-bottom:10px;
-  font-style:italic;border-left:2px solid rgba(201,166,70,.2);padding-left:10px;
-}
-.artista-especialidade{
-  font-family:'DM Mono',monospace;font-size:11px;color:rgba(201,166,70,.6);
-  display:flex;align-items:center;gap:6px;
-}
-.artista-footer{
-  padding:10px 18px 14px;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.artista-obras{font-family:'DM Mono',monospace;font-size:10px;color:rgba(201,166,70,.35)}
-.btn-convocar{
-  background:linear-gradient(135deg,var(--vinho),var(--verm));
-  color:white;border:0;border-radius:999px;
-  padding:6px 14px;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;
-  cursor:pointer;transition:.15s;
-}
-.btn-convocar:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(192,57,43,.4)}
-
-/* MODAL CONVOCAÇÃO */
-.modal-overlay{
-  display:none;position:fixed;inset:0;
-  background:rgba(3,13,24,.92);z-index:200;
-  align-items:center;justify-content:center;padding:20px;
-}
-.modal-overlay.aberto{display:flex}
-.modal{
-  background:linear-gradient(135deg,#07101d,#0f1c2e);
-  border:2px solid var(--ouro);border-radius:24px;
-  padding:32px;max-width:640px;width:100%;
-  max-height:90vh;overflow-y:auto;
-  position:relative;
-}
-.modal h2{font-family:'Playfair Display',serif;font-size:28px;color:var(--ouro2);margin-bottom:4px}
-.modal .m-sub{font-family:'DM Mono',monospace;font-size:11px;color:rgba(201,166,70,.5);margin-bottom:22px;letter-spacing:.08em}
-.modal-campo label{display:block;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:rgba(201,166,70,.7);margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase}
-.modal-campo input,.modal-campo select,.modal-campo textarea{
-  width:100%;border:1px solid rgba(201,166,70,.3);border-radius:12px;
-  padding:11px 14px;font-family:'Libre Baskerville',serif;font-size:14px;
-  background:rgba(7,16,29,.8);color:var(--ouro2);outline:none;
-  transition:border-color .2s;margin-bottom:14px;
-}
-.modal-campo textarea{min-height:90px;resize:vertical}
-.modal-campo input:focus,.modal-campo select:focus,.modal-campo textarea:focus{border-color:var(--ouro)}
-.modal-artista-selecionado{
-  background:rgba(201,166,70,.08);border:1px solid rgba(201,166,70,.25);
-  border-radius:14px;padding:14px;margin-bottom:18px;
-  display:flex;align-items:center;gap:12px;
-}
-.mas-iniciais{
-  width:44px;height:44px;border-radius:12px;
-  background:rgba(201,166,70,.15);border:1px solid rgba(201,166,70,.3);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--ouro2);
-}
-.mas-nome{font-family:'Playfair Display',serif;font-size:17px;color:var(--ouro2)}
-.mas-info{font-family:'DM Mono',monospace;font-size:10px;color:rgba(201,166,70,.45)}
-.modal-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-.btn-confirmar{background:linear-gradient(135deg,var(--vinho),var(--verm));color:white;border:0;border-radius:999px;padding:12px 22px;font-family:'DM Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;transition:.15s}
-.btn-confirmar:hover{box-shadow:0 4px 16px rgba(192,57,43,.4)}
-.btn-fechar{background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:12px 22px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;transition:.15s}
-.btn-fechar:hover{background:rgba(255,255,255,.1)}
-.modal-close{position:absolute;top:16px;right:18px;background:0;border:0;color:rgba(201,166,70,.4);font-size:20px;cursor:pointer;line-height:1}
-.modal-close:hover{color:var(--ouro)}
-
-/* MATERNIDADE */
-.maternidade-card{
-  background:linear-gradient(135deg,rgba(92,45,110,.25),rgba(7,16,29,.95));
-  border:2px solid rgba(155,109,255,.4);border-radius:var(--r);
-  padding:32px;margin-bottom:20px;
-}
-.maternidade-card h3{font-family:'Playfair Display',serif;font-size:28px;color:#c8a8ff;margin-bottom:8px}
-.maternidade-card p{font-size:15px;color:rgba(240,236,224,.7);line-height:1.65;margin-bottom:18px}
-.mat-form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.mat-campo label{display:block;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:rgba(155,109,255,.7);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
-.mat-campo input,.mat-campo select,.mat-campo textarea{
-  width:100%;border:1px solid rgba(155,109,255,.3);border-radius:12px;
-  padding:11px 14px;font-family:'DM Mono',monospace;font-size:13px;
-  background:rgba(7,16,29,.8);color:#c8a8ff;outline:none;transition:border-color .2s;
-}
-.mat-campo textarea{min-height:80px;resize:vertical}
-.mat-campo input:focus,.mat-campo select:focus,.mat-campo textarea:focus{border-color:rgba(155,109,255,.7)}
-.wide{grid-column:1/-1}
-.btn-gerar{
-  background:linear-gradient(135deg,#5e3aad,#3b1f6e);color:white;
-  border:0;border-radius:999px;padding:14px 24px;
-  font-family:'DM Mono',monospace;font-size:13px;font-weight:700;
-  cursor:pointer;transition:.15s;margin-top:6px;
-  box-shadow:0 6px 20px rgba(92,45,110,.35);
-}
-.btn-gerar:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(92,45,110,.5)}
-
-/* REGISTRO CONVOCAÇÕES */
-.convocacoes-lista{display:flex;flex-direction:column;gap:10px}
-.conv-item{
-  background:rgba(10,24,40,.9);border:1px solid rgba(201,166,70,.15);
-  border-radius:14px;padding:14px 18px;
-  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
-}
-.conv-num{font-family:'DM Mono',monospace;font-size:11px;color:rgba(201,166,70,.35);min-width:100px}
-.conv-nome{font-family:'Playfair Display',serif;font-size:16px;color:var(--ouro2);flex:1}
-.conv-obra{font-size:13px;color:rgba(240,236,224,.55);flex:2;font-style:italic}
-.conv-tipo{font-family:'DM Mono',monospace;font-size:10px;color:rgba(201,166,70,.5)}
-.conv-vazio{font-family:'DM Mono',monospace;font-size:13px;color:rgba(201,166,70,.3);padding:20px;text-align:center;border:1px dashed rgba(201,166,70,.15);border-radius:14px}
-
-/* RESULTADO MATERNIDADE */
-.mat-resultado{
-  display:none;background:rgba(92,45,110,.15);border:1px solid rgba(155,109,255,.35);
-  border-radius:16px;padding:22px;margin-top:18px;
-}
-.mat-resultado.vis{display:block}
-.mat-resultado h4{font-family:'Playfair Display',serif;font-size:22px;color:#c8a8ff;margin-bottom:14px}
-.mat-resultado pre{font-family:'DM Mono',monospace;font-size:12px;color:rgba(200,168,255,.8);line-height:1.7;white-space:pre-wrap;background:rgba(7,16,29,.5);border-radius:12px;padding:14px}
-.mat-protocolo{font-family:'DM Mono',monospace;font-size:12px;background:#3b1f6e;color:#c8a8ff;padding:6px 14px;border-radius:999px;display:inline-block;margin-top:10px}
-
-footer{background:rgba(0,0,0,.5);border-top:3px solid var(--ouro);padding:28px 20px;text-align:center;color:rgba(200,192,178,.6)}
-footer strong{color:var(--ouro2)}
-footer p{font-size:13px;line-height:1.8}
-
-@media(max-width:900px){.artistas-grade{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}.mat-form{grid-template-columns:1fr}.filtros-barra{flex-direction:column}}
-@media(max-width:560px){.artistas-grade{grid-template-columns:1fr}.hero-stats{gap:16px}}
+:root{--azul:#07182b;--vinho:#1a0510;--ouro:#d6b354;--papel:#fff8df;--tinta:#1a1208;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--papel);color:var(--tinta);font-family:'Libre Baskerville',Georgia,serif;}
+.cab{background:linear-gradient(135deg,var(--azul),var(--vinho));padding:2rem 3rem;border-bottom:3px solid var(--ouro);}
+.nav{display:flex;gap:0.8rem;margin-bottom:1rem;flex-wrap:wrap;}
+.nav a{font-family:'Space Mono',monospace;font-size:0.5rem;letter-spacing:0.12em;color:rgba(213,179,84,0.5);text-decoration:none;text-transform:uppercase;}
+.nav span{color:rgba(213,179,84,0.2);}
+.cab-titulo{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(1.8rem,4vw,2.8rem);color:var(--ouro);margin-bottom:0.4rem;}
+.cab-desc{font-style:italic;font-size:0.82rem;color:rgba(213,179,84,0.4);max-width:580px;line-height:1.6;}
+.busca-bar{background:#10294a;padding:0.8rem 3rem;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(213,179,84,0.1);display:flex;gap:0.6rem;flex-wrap:wrap;}
+.busca{background:rgba(213,179,84,0.05);border:1px solid rgba(213,179,84,0.15);color:#f5edd8;font-family:'Libre Baskerville',serif;font-size:0.85rem;padding:0.5rem 0.9rem;outline:none;flex:1;max-width:380px;}
+.sel{background:rgba(213,179,84,0.05);border:1px solid rgba(213,179,84,0.15);color:#f5edd8;font-family:'Space Mono',monospace;font-size:0.5rem;padding:0.5rem 0.7rem;outline:none;cursor:pointer;}
+.sel option{background:#10294a;}
+.container{max-width:1300px;margin:0 auto;padding:2rem 3rem;}
+.cnt{font-family:'Space Mono',monospace;font-size:0.45rem;letter-spacing:0.12em;color:rgba(213,179,84,0.3);text-transform:uppercase;margin-bottom:1.2rem;}
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;}
+.card{background:white;border:1px solid rgba(122,95,26,0.1);text-decoration:none;color:var(--tinta);display:flex;align-items:flex-start;gap:0.8rem;padding:1.1rem;transition:all 0.3s;box-shadow:0 1px 5px rgba(0,0,0,0.04);}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.1);}
+.iniciais{width:44px;height:44px;border-radius:50%;border:1px solid;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:0.9rem;flex-shrink:0;}
+.corpo{flex:1;}
+.esp{font-family:'Space Mono',monospace;font-size:0.38rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.2rem;}
+.nome{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--tinta);margin-bottom:0.1rem;line-height:1.2;}
+.orig{font-family:'Space Mono',monospace;font-size:0.38rem;letter-spacing:0.08em;color:#8899aa;text-transform:uppercase;margin-bottom:0.3rem;}
+.pers{font-style:italic;font-size:0.72rem;color:#3a2a10;line-height:1.4;margin-bottom:0.3rem;}
+.conv-cnt{font-family:'Space Mono',monospace;font-size:0.38rem;letter-spacing:0.08em;color:rgba(122,95,26,0.5);text-transform:uppercase;}
+.rodape{background:var(--azul);padding:1.5rem 3rem;margin-top:2.5rem;text-align:center;border-top:1px solid rgba(213,179,84,0.08);}
+.rod{font-family:'Space Mono',monospace;font-size:0.45rem;letter-spacing:0.12em;color:rgba(213,179,84,0.22);text-transform:uppercase;line-height:2;}
+.rod a{color:rgba(213,179,84,0.38);text-decoration:none;}
+@media(max-width:768px){.cab,.container,.busca-bar{padding:1rem;}.grade{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
-
-<!-- TOPBAR -->
-<div class="topbar">
-  <div class="top-in">
-    <div class="marca">BPL — BANCO DE PERSONAGENS LITERÁRIOS<small>OPERACIONAL · RESTRITO · TRIPLOOHESIGMALBPL</small></div>
-    <nav class="tnav">
-      <a href="#convocacao">Convocar</a>
-      <a href="#maternidade">Maternidade</a>
-      <a href="#registro">Registro</a>
-      <a href="https://triploohesigmalbpl.vercel.app/" target="_blank">↗ SIGMAL HQ</a>
-      <a href="pagina_respiro_celeiro.html">← Respiro</a>
-    </nav>
+<div class="cab">
+  <div class="nav">
+    <a href="portal_instituto_celeiro_literario.html">Celeiro Literário</a><span>/</span>
+    <a href="#" style="color:var(--ouro);">BPL — Banco de Personagens Literários</a>
+  </div>
+  <div class="cab-titulo">BPL — Banco de Personagens Literários</div>
+  <div class="cab-desc">Atores e atrizes imortais que habitam as obras. Não envelhecem. A biografia é o acervo — atualizada a cada nova participação registrada por Charlton Moisés Heston.</div>
+</div>
+<div class="busca-bar">
+  <input type="text" class="busca" id="busca" placeholder="Buscar por nome, origem ou especialidade..." oninput="filtrar()">
+  <select class="sel" id="filtro-esp" onchange="filtrar()">
+    <option value="">Todas as especialidades</option>
+    <option value="drama">Drama</option>
+    <option value="comedia">Comédia</option>
+    <option value="acao">Ação</option>
+    <option value="suspense">Suspense</option>
+    <option value="romance">Romance</option>
+    <option value="tragedia">Tragédia</option>
+    <option value="experimental">Experimental</option>
+  </select>
+</div>
+<div class="container">
+  <div class="cnt" id="cnt">50 membros do elenco</div>
+  <div class="grade" id="grade"><a href="bpl_bio_bpl-001.html" class="card" style="border-left:3px solid #c8a8ff;">
+      <div class="iniciais" style="color:#c8a8ff;border-color:#c8a8ff;">IV</div>
+      <div class="corpo">
+        <div class="esp" style="color:#c8a8ff;">DRAMA</div>
+        <div class="nome">Isolde Vael Carrim</div>
+        <div class="orig">África do Sul</div>
+        <div class="pers">Presença magnética de silêncio — atriz que comunica mais com o olhar do que com ...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-002.html" class="card" style="border-left:3px solid #c8a8ff;">
+      <div class="iniciais" style="color:#c8a8ff;border-color:#c8a8ff;">EM</div>
+      <div class="corpo">
+        <div class="esp" style="color:#c8a8ff;">DRAMA</div>
+        <div class="nome">Esteban Morales Vega</div>
+        <div class="orig">Colômbia</div>
+        <div class="pers">Intensidade bruta. O ator que faz o espectador sentir que está invadindo um mome...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-003.html" class="card" style="border-left:3px solid #c8a8ff;">
+      <div class="iniciais" style="color:#c8a8ff;border-color:#c8a8ff;">YT</div>
+      <div class="corpo">
+        <div class="esp" style="color:#c8a8ff;">DRAMA</div>
+        <div class="nome">Yuki Tanegawa</div>
+        <div class="orig">Japão</div>
+        <div class="pers">Delicadeza que parte. Especialista em personagens que carregam dor sem demonstra...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-004.html" class="card" style="border-left:3px solid #c8a8ff;">
+      <div class="iniciais" style="color:#c8a8ff;border-color:#c8a8ff;">DM</div>
+      <div class="corpo">
+        <div class="esp" style="color:#c8a8ff;">DRAMA</div>
+        <div class="nome">Darius Mehrabani</div>
+        <div class="orig">Irã</div>
+        <div class="pers">Gravidade intelectual. Atores de personagens que pensam enquanto sofrem — drama ...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-005.html" class="card" style="border-left:3px solid #c8a8ff;">
+      <div class="iniciais" style="color:#c8a8ff;border-color:#c8a8ff;">AD</div>
+      <div class="corpo">
+        <div class="esp" style="color:#c8a8ff;">DRAMA</div>
+        <div class="nome">Amara Diallo Keita</div>
+        <div class="orig">Guiné-Conacri</div>
+        <div class="pers">Força matriarcal. A voz que carrega a memória de um povo. Drama de resistência e...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-006.html" class="card" style="border-left:3px solid #a0a0a0;">
+      <div class="iniciais" style="color:#a0a0a0;border-color:#a0a0a0;">MS</div>
+      <div class="corpo">
+        <div class="esp" style="color:#a0a0a0;">TRAGÉDIA</div>
+        <div class="nome">Mirela Szabo</div>
+        <div class="orig">Hungria</div>
+        <div class="pers">A tragédia como arte. Especialista em personagens que caem com grandeza — Shakes...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-007.html" class="card" style="border-left:3px solid #c8a8ff;">
+      <div class="iniciais" style="color:#c8a8ff;border-color:#c8a8ff;">TI</div>
+      <div class="corpo">
+        <div class="esp" style="color:#c8a8ff;">DRAMA</div>
+        <div class="nome">Tomás Induni Leal</div>
+        <div class="orig">Brasil — Rio Grande do Sul</div>
+        <div class="pers">Sotaque do Sul, coração universal. Drama de classe trabalhadora com dignidade in...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-008.html" class="card" style="border-left:3px solid #ffd080;">
+      <div class="iniciais" style="color:#ffd080;border-color:#ffd080;">BA</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ffd080;">COMÉDIA</div>
+        <div class="nome">Bridget Afolabi</div>
+        <div class="orig">Nigéria</div>
+        <div class="pers">Timing perfeito. A comédia que vem da observação — ri com as pessoas, nunca dela...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-009.html" class="card" style="border-left:3px solid #ffd080;">
+      <div class="iniciais" style="color:#ffd080;border-color:#ffd080;">SC</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ffd080;">COMÉDIA</div>
+        <div class="nome">Serafino Conti Neri</div>
+        <div class="orig">Itália — Nápoles</div>
+        <div class="pers">Commedia dell'arte contemporânea. O corpo como instrumento cômico — física, exag...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-010.html" class="card" style="border-left:3px solid #ffd080;">
+      <div class="iniciais" style="color:#ffd080;border-color:#ffd080;">PJ</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ffd080;">COMÉDIA</div>
+        <div class="nome">Park Jimon</div>
+        <div class="orig">Coreia do Sul</div>
+        <div class="pers">Deadpan asiático — o humor que não avisa quando começa. Especialista em comédia ...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-011.html" class="card" style="border-left:3px solid #ffd080;">
+      <div class="iniciais" style="color:#ffd080;border-color:#ffd080;">FM</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ffd080;">COMÉDIA</div>
+        <div class="nome">Fatou Mbengue</div>
+        <div class="orig">Senegal</div>
+        <div class="pers">Alegria que transborda. A comédia que nasce do excesso de vida — personagens que...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-012.html" class="card" style="border-left:3px solid #ffd080;">
+      <div class="iniciais" style="color:#ffd080;border-color:#ffd080;">LC</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ffd080;">COMÉDIA</div>
+        <div class="nome">Lucho Cienfuegos</div>
+        <div class="orig">Peru</div>
+        <div class="pers">O palhaço que não usa máscara. Comédia de rua, de mercado, de vida popular latin...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-013.html" class="card" style="border-left:3px solid #ff8080;">
+      <div class="iniciais" style="color:#ff8080;border-color:#ff8080;">ZN</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ff8080;">AÇÃO / AVENTURA</div>
+        <div class="nome">Zara Nkemdirim</div>
+        <div class="orig">Nigéria</div>
+        <div class="pers">Heroína que não precisa de resgate. Ação com inteligência — o movimento como nar...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-014.html" class="card" style="border-left:3px solid #ff8080;">
+      <div class="iniciais" style="color:#ff8080;border-color:#ff8080;">RB</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ff8080;">AÇÃO / AVENTURA</div>
+        <div class="nome">Ren Bashir Khattak</div>
+        <div class="orig">Paquistão</div>
+        <div class="pers">Precisão militar com coração humano. O herói que duvida — ação e ética em tensão...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-015.html" class="card" style="border-left:3px solid #ff8080;">
+      <div class="iniciais" style="color:#ff8080;border-color:#ff8080;">IV</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ff8080;">AÇÃO / AVENTURA</div>
+        <div class="nome">Ingrid Valkonen</div>
+        <div class="orig">Finlândia</div>
+        <div class="pers">Escandinava de aço. Frieza calculada que explode em momentos precisos — ação de ...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-016.html" class="card" style="border-left:3px solid #ff8080;">
+      <div class="iniciais" style="color:#ff8080;border-color:#ff8080;">CA</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ff8080;">AÇÃO / AVENTURA</div>
+        <div class="nome">Celestino Aguiar Fontes</div>
+        <div class="orig">Brasil — Bahia</div>
+        <div class="pers">Ginga e força. A capoeira como linguagem corporal — ação brasileira com raiz afr...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-017.html" class="card" style="border-left:3px solid #80c8ff;">
+      <div class="iniciais" style="color:#80c8ff;border-color:#80c8ff;">VS</div>
+      <div class="corpo">
+        <div class="esp" style="color:#80c8ff;">SUSPENSE / NOIR</div>
+        <div class="nome">Vera Silvestri Manzoni</div>
+        <div class="orig">Itália — Milão</div>
+        <div class="pers">Femme fatale com profundidade. O mistério como estado permanente — nunca se sabe...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-018.html" class="card" style="border-left:3px solid #80c8ff;">
+      <div class="iniciais" style="color:#80c8ff;border-color:#80c8ff;">KB</div>
+      <div class="corpo">
+        <div class="esp" style="color:#80c8ff;">SUSPENSE / NOIR</div>
+        <div class="nome">Konrad Brehmer</div>
+        <div class="orig">Alemanha</div>
+        <div class="pers">O investigador que se perde no caso. Noir psicológico — a linha entre o detetive...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-019.html" class="card" style="border-left:3px solid #80c8ff;">
+      <div class="iniciais" style="color:#80c8ff;border-color:#80c8ff;">LH</div>
+      <div class="corpo">
+        <div class="esp" style="color:#80c8ff;">SUSPENSE / NOIR</div>
+        <div class="nome">Layla Haddad Osman</div>
+        <div class="orig">Sudão</div>
+        <div class="pers">Silêncio que ameaça. O suspense no que não é dito — personagens que sabem mais d...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-020.html" class="card" style="border-left:3px solid #80c8ff;">
+      <div class="iniciais" style="color:#80c8ff;border-color:#80c8ff;">GP</div>
+      <div class="corpo">
+        <div class="esp" style="color:#80c8ff;">SUSPENSE / NOIR</div>
+        <div class="nome">Gavriil Petrov-Ilyich</div>
+        <div class="orig">Rússia</div>
+        <div class="pers">Peso eslavo do passado. O suspense que vem da história — personagens carregados ...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-021.html" class="card" style="border-left:3px solid #ff80b0;">
+      <div class="iniciais" style="color:#ff80b0;border-color:#ff80b0;">CM</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ff80b0;">ROMANCE</div>
+        <div class="nome">Celeste Mourão Braga</div>
+        <div class="orig">Brasil — Minas Gerais</div>
+        <div class="pers">O amor que dói suavemente. Romance com textura — não o amor grandioso, mas o amo...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-022.html" class="card" style="border-left:3px solid #ff80b0;">
+      <div class="iniciais" style="color:#ff80b0;border-color:#ff80b0;">OC</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ff80b0;">ROMANCE</div>
+        <div class="nome">Olivier Chastenet</div>
+        <div class="orig">França</div>
+        <div class="pers">O amante que escuta. Romance intelectual — o desejo que passa pela conversa ante...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-023.html" class="card" style="border-left:3px solid #ff80b0;">
+      <div class="iniciais" style="color:#ff80b0;border-color:#ff80b0;">PS</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ff80b0;">ROMANCE</div>
+        <div class="nome">Priya Subramaniam</div>
+        <div class="orig">Índia — Tamil Nadu</div>
+        <div class="pers">Tradição e desejo em conflito. O romance entre o que a família quer e o que o co...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-024.html" class="card" style="border-left:3px solid #ff80b0;">
+      <div class="iniciais" style="color:#ff80b0;border-color:#ff80b0;">RQ</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ff80b0;">ROMANCE</div>
+        <div class="nome">Rafael Queiroga Salave'a</div>
+        <div class="orig">Brasil — Pernambuco</div>
+        <div class="pers">Amor de repente. O personagem que aparece e muda tudo — presença física que a câ...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-025.html" class="card" style="border-left:3px solid #ff80b0;">
+      <div class="iniciais" style="color:#ff80b0;border-color:#ff80b0;">NO</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ff80b0;">ROMANCE</div>
+        <div class="nome">Nadia Oufkir</div>
+        <div class="orig">Marrocos</div>
+        <div class="pers">Amor proibido com elegância. Romance entre mundos — o desejo que atravessa front...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-026.html" class="card" style="border-left:3px solid #80ffd0;">
+      <div class="iniciais" style="color:#80ffd0;border-color:#80ffd0;">SH</div>
+      <div class="corpo">
+        <div class="esp" style="color:#80ffd0;">EXPERIMENTAL</div>
+        <div class="nome">Sable Huxley Owens</div>
+        <div class="orig">Reino Unido — País de Gales</div>
+        <div class="pers">O corpo como texto. Performance que questiona o que é personagem — teatro físico...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-027.html" class="card" style="border-left:3px solid #80ffd0;">
+      <div class="iniciais" style="color:#80ffd0;border-color:#80ffd0;">KM</div>
+      <div class="corpo">
+        <div class="esp" style="color:#80ffd0;">EXPERIMENTAL</div>
+        <div class="nome">Kenji Matsunaga Rios</div>
+        <div class="orig">Brasil — São Paulo, descendente japonês</div>
+        <div class="pers">Dois mundos em um corpo. O experimental como busca de identidade — entre Oriente...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-028.html" class="card" style="border-left:3px solid #80ffd0;">
+      <div class="iniciais" style="color:#80ffd0;border-color:#80ffd0;">AM</div>
+      <div class="corpo">
+        <div class="esp" style="color:#80ffd0;">EXPERIMENTAL</div>
+        <div class="nome">Asel Mamytbekova</div>
+        <div class="orig">Quirguistão</div>
+        <div class="pers">Tradição nômade em forma contemporânea. O experimental que nasce da memória ance...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-029.html" class="card" style="border-left:3px solid #a0a0a0;">
+      <div class="iniciais" style="color:#a0a0a0;border-color:#a0a0a0;">AO</div>
+      <div class="corpo">
+        <div class="esp" style="color:#a0a0a0;">TRAGÉDIA</div>
+        <div class="nome">Adaeze Onwudiwe</div>
+        <div class="orig">Nigéria — Igbo</div>
+        <div class="pers">A tragédia como herança. Personagens que carregam o peso de gerações — o destino...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-030.html" class="card" style="border-left:3px solid #a0a0a0;">
+      <div class="iniciais" style="color:#a0a0a0;border-color:#a0a0a0;">VI</div>
+      <div class="corpo">
+        <div class="esp" style="color:#a0a0a0;">TRAGÉDIA</div>
+        <div class="nome">Vasile Ionescu-Doran</div>
+        <div class="orig">Romênia</div>
+        <div class="pers">O herói que sabe que vai cair. Tragédia clássica com sensibilidade contemporânea...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-031.html" class="card" style="border-left:3px solid #c8a8ff;">
+      <div class="iniciais" style="color:#c8a8ff;border-color:#c8a8ff;">SK</div>
+      <div class="corpo">
+        <div class="esp" style="color:#c8a8ff;">DRAMA</div>
+        <div class="nome">Sunita Karmakar</div>
+        <div class="orig">Bangladesh</div>
+        <div class="pers">Resiliência silenciosa. Personagens que sobrevivem sem fazer barulho — a força i...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-032.html" class="card" style="border-left:3px solid #c8a8ff;">
+      <div class="iniciais" style="color:#c8a8ff;border-color:#c8a8ff;">ME</div>
+      <div class="corpo">
+        <div class="esp" style="color:#c8a8ff;">DRAMA</div>
+        <div class="nome">Marcus Elroy Thorne</div>
+        <div class="orig">Jamaica</div>
+        <div class="pers">Carisma de palco. A presença que preenche o espaço — drama com energia caribenha...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-033.html" class="card" style="border-left:3px solid #ffd080;">
+      <div class="iniciais" style="color:#ffd080;border-color:#ffd080;">FO</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ffd080;">COMÉDIA</div>
+        <div class="nome">Florentina Oprea Vlad</div>
+        <div class="orig">Romênia</div>
+        <div class="pers">Comédia de dama. O humor que vem da elegância levada longe demais.</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-034.html" class="card" style="border-left:3px solid #c8a8ff;">
+      <div class="iniciais" style="color:#c8a8ff;border-color:#c8a8ff;">IA</div>
+      <div class="corpo">
+        <div class="esp" style="color:#c8a8ff;">DRAMA</div>
+        <div class="nome">Ibrahim Al-Rashid</div>
+        <div class="orig">Jordânia</div>
+        <div class="pers">Dignidade do exílio. Personagens entre dois mundos — a identidade como questão p...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-035.html" class="card" style="border-left:3px solid #c8a8ff;">
+      <div class="iniciais" style="color:#c8a8ff;border-color:#c8a8ff;">EV</div>
+      <div class="corpo">
+        <div class="esp" style="color:#c8a8ff;">DRAMA</div>
+        <div class="nome">Esperanza Villarreal</div>
+        <div class="orig">México — Oaxaca</div>
+        <div class="pers">A voz da terra. Drama de raiz indígena — a espiritualidade como presença cênica.</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-036.html" class="card" style="border-left:3px solid #ff8080;">
+      <div class="iniciais" style="color:#ff8080;border-color:#ff8080;">NA</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ff8080;">AÇÃO / AVENTURA</div>
+        <div class="nome">Nnamdi Achebe Osei</div>
+        <div class="orig">Gana</div>
+        <div class="pers">Liderança natural. O herói coletivo — ação como responsabilidade comunitária.</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-037.html" class="card" style="border-left:3px solid #80c8ff;">
+      <div class="iniciais" style="color:#80c8ff;border-color:#80c8ff;">VR</div>
+      <div class="corpo">
+        <div class="esp" style="color:#80c8ff;">SUSPENSE / NOIR</div>
+        <div class="nome">Valentina Russo Ferretti</div>
+        <div class="orig">Brasil — São Paulo, italiana</div>
+        <div class="pers">Dupla identidade. O suspense da mulher que tem dois rostos — público e privado e...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-038.html" class="card" style="border-left:3px solid #80c8ff;">
+      <div class="iniciais" style="color:#80c8ff;border-color:#80c8ff;">TM</div>
+      <div class="corpo">
+        <div class="esp" style="color:#80c8ff;">SUSPENSE / NOIR</div>
+        <div class="nome">Taavi Mäkinen</div>
+        <div class="orig">Estônia</div>
+        <div class="pers">Nórdico hermético. O suspense do homem que não fala — a ameaça no silêncio bálti...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-039.html" class="card" style="border-left:3px solid #ffd080;">
+      <div class="iniciais" style="color:#ffd080;border-color:#ffd080;">CE</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ffd080;">COMÉDIA</div>
+        <div class="nome">Chidinma Ezeh</div>
+        <div class="orig">Nigéria — Enugu</div>
+        <div class="pers">Energia inesgotável. A comédia que não para — personagens que vivem em velocidad...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-040.html" class="card" style="border-left:3px solid #a0a0a0;">
+      <div class="iniciais" style="color:#a0a0a0;border-color:#a0a0a0;">AV</div>
+      <div class="corpo">
+        <div class="esp" style="color:#a0a0a0;">TRAGÉDIA</div>
+        <div class="nome">Aleksandr Voronov</div>
+        <div class="orig">Ucrânia</div>
+        <div class="pers">Melancolia eslava. A tragédia como condição climática — o peso do inverno como e...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-041.html" class="card" style="border-left:3px solid #80ffd0;">
+      <div class="iniciais" style="color:#80ffd0;border-color:#80ffd0;">MP</div>
+      <div class="corpo">
+        <div class="esp" style="color:#80ffd0;">EXPERIMENTAL</div>
+        <div class="nome">Meera Pillai Nair</div>
+        <div class="orig">Índia — Kerala</div>
+        <div class="pers">Kathakali contemporâneo. O gesto ancestral como linguagem experimental — tradiçã...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-042.html" class="card" style="border-left:3px solid #ff80b0;">
+      <div class="iniciais" style="color:#ff80b0;border-color:#ff80b0;">CA</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ff80b0;">ROMANCE</div>
+        <div class="nome">Cássio Avelar Drummond</div>
+        <div class="orig">Brasil — Rio de Janeiro</div>
+        <div class="pers">O sedutor honesto. Romance carioca — o amor que não se leva a sério, mas é o mai...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-043.html" class="card" style="border-left:3px solid #ff80b0;">
+      <div class="iniciais" style="color:#ff80b0;border-color:#ff80b0;">AB</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ff80b0;">ROMANCE</div>
+        <div class="nome">Aine Ní Bhriain</div>
+        <div class="orig">Irlanda</div>
+        <div class="pers">O amor que conta histórias. Romance irlandês — narrativa e afeto como mesma cois...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-044.html" class="card" style="border-left:3px solid #80c8ff;">
+      <div class="iniciais" style="color:#80c8ff;border-color:#80c8ff;">HW</div>
+      <div class="corpo">
+        <div class="esp" style="color:#80c8ff;">SUSPENSE / NOIR</div>
+        <div class="nome">Hideo Watanabe Suzu</div>
+        <div class="orig">Japão</div>
+        <div class="pers">Contenção japonesa. O suspense no que não explode — a tensão como estado permane...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-045.html" class="card" style="border-left:3px solid #c8a8ff;">
+      <div class="iniciais" style="color:#c8a8ff;border-color:#c8a8ff;">BO</div>
+      <div class="corpo">
+        <div class="esp" style="color:#c8a8ff;">DRAMA</div>
+        <div class="nome">Blessing Okonkwo</div>
+        <div class="orig">Nigéria — Lagos</div>
+        <div class="pers">Bênção e peso. A mulher que carrega o sagrado no cotidiano — drama espiritual af...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-046.html" class="card" style="border-left:3px solid #c8a8ff;">
+      <div class="iniciais" style="color:#c8a8ff;border-color:#c8a8ff;">SA</div>
+      <div class="corpo">
+        <div class="esp" style="color:#c8a8ff;">DRAMA</div>
+        <div class="nome">Simón Arce Palomino</div>
+        <div class="orig">Bolívia</div>
+        <div class="pers">O andino contemporâneo. Drama de altitude — personagens que vivem entre o mundo ...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-047.html" class="card" style="border-left:3px solid #a0a0a0;">
+      <div class="iniciais" style="color:#a0a0a0;border-color:#a0a0a0;">RW</div>
+      <div class="corpo">
+        <div class="esp" style="color:#a0a0a0;">TRAGÉDIA</div>
+        <div class="nome">Roksana Wiśniewska</div>
+        <div class="orig">Polônia</div>
+        <div class="pers">Precisão trágica. A tragédia como matemática — cada passo em direção ao fim é ca...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-048.html" class="card" style="border-left:3px solid #ff8080;">
+      <div class="iniciais" style="color:#ff8080;border-color:#ff8080;">CE</div>
+      <div class="corpo">
+        <div class="esp" style="color:#ff8080;">AÇÃO / AVENTURA</div>
+        <div class="nome">Chukwuemeka Eze</div>
+        <div class="orig">Nigéria — Igbo</div>
+        <div class="pers">Força e filosofia. O herói que pensa enquanto age — ação com substância intelect...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-049.html" class="card" style="border-left:3px solid #80ffd0;">
+      <div class="iniciais" style="color:#80ffd0;border-color:#80ffd0;">LS</div>
+      <div class="corpo">
+        <div class="esp" style="color:#80ffd0;">EXPERIMENTAL</div>
+        <div class="nome">Luna Sepúlveda Arias</div>
+        <div class="orig">Chile</div>
+        <div class="pers">Corpo-texto. A experimentação como política — a performance que questiona o que ...</div>
+        
+      </div>
+    </a><a href="bpl_bio_bpl-050.html" class="card" style="border-left:3px solid #c8a8ff;">
+      <div class="iniciais" style="color:#c8a8ff;border-color:#c8a8ff;">EB</div>
+      <div class="corpo">
+        <div class="esp" style="color:#c8a8ff;">DRAMA</div>
+        <div class="nome">Ezra Blackwood-Osei</div>
+        <div class="orig">Reino Unido — Londres, afro-britânico</div>
+        <div class="pers">Londres e Lagos em um só corpo. Drama da diáspora afro-britânica — identidade co...</div>
+        
+      </div>
+    </a></div>
+</div>
+<div class="rodape">
+  <div class="rod">
+    BPL — Banco de Personagens Literários · Núcleo de Elenco Heteronímico Mundial SIGMAL<br>
+    Site das Letras Edições Literárias & Multimídia · Celeiro Literário<br>
+    <a href="portal_instituto_celeiro_literario.html">← Voltar ao Celeiro</a>
   </div>
 </div>
-
-<!-- HERO -->
-<header class="hero">
-  <div class="hero-badge">🎭 MÓDULO OPERACIONAL · ACESSO RESTRITO · NÃO INDEXADO</div>
-  <h1>BPL</h1>
-  <div class="hero-sub">BANCO DE PERSONAGENS LITERÁRIOS · CELEIRO LITERÁRIO</div>
-  <p class="hero-desc">Atores e atrizes imortais que habitam as obras. Não envelhecem. Não morrem. A biografia é o acervo das obras em que trabalharam.</p>
-  <div class="hero-stats">
-    <div class="hstat"><span class="hn" id="totalArtistas">50</span><span class="hl">Artistas fundadores</span></div>
-    <div class="hstat"><span class="hn" id="totalConvocacoes">0</span><span class="hl">Convocações</span></div>
-    <div class="hstat"><span class="hn">300</span><span class="hl">Capacidade total</span></div>
-    <div class="hstat"><span class="hn">∞</span><span class="hl">Carreiras abertas</span></div>
-  </div>
-</header>
-
-<main class="wrap">
-
-  <!-- BUSCA E CONVOCAÇÃO -->
-  <section class="sec" id="convocacao">
-    <div class="sec-label">// BANCO DE ARTISTAS</div>
-    <div class="sec-title">Encontrar & <em>Convocar</em></div>
-    <div class="sec-divider"></div>
-
-    <div class="filtros-barra">
-      <div class="filtro-campo">
-        <label>Buscar por nome ou personalidade</label>
-        <input type="text" id="busca" placeholder="Nome, traço, origem..." oninput="filtrar()">
-      </div>
-      <div class="filtro-campo">
-        <label>Especialidade</label>
-        <select id="filtroEspecialidade" onchange="filtrar()">
-          <option value="">Todas</option>
-          <option value="drama">Drama</option>
-          <option value="comedia">Comédia</option>
-          <option value="acao">Ação / Aventura</option>
-          <option value="suspense">Suspense / Noir</option>
-          <option value="romance">Romance</option>
-          <option value="tragedia">Tragédia</option>
-          <option value="experimental">Experimental</option>
-        </select>
-      </div>
-      <div class="filtro-campo">
-        <label>Formato</label>
-        <select id="filtroFormato" onchange="filtrar()">
-          <option value="">Todos</option>
-          <option value="teatro">Teatro</option>
-          <option value="cinema">Cinema</option>
-          <option value="serie">Série</option>
-          <option value="performance">Performance</option>
-          <option value="videoclipe">Videoclipe</option>
-          <option value="animacao">Animação</option>
-          <option value="audiobook">Audiobook</option>
-        </select>
-      </div>
-      <div class="filtro-campo">
-        <label>Origem</label>
-        <select id="filtroOrigem" onchange="filtrar()">
-          <option value="">Todas</option>
-          <option value="brasil">Brasil</option>
-          <option value="europa">Europa</option>
-          <option value="africa">África</option>
-          <option value="asia">Ásia</option>
-          <option value="americas">Américas</option>
-          <option value="oriente">Oriente Médio</option>
-        </select>
-      </div>
-      <button class="btn-buscar" onclick="filtrar()">🔍 Filtrar</button>
-    </div>
-
-    <div class="resultado-info" id="resultadoInfo">Exibindo 50 artistas fundadores</div>
-    <div class="artistas-grade" id="artistas-grade"></div>
-  </section>
-
-  <!-- MATERNIDADE -->
-  <section class="sec" id="maternidade">
-    <div class="sec-label">// GERAÇÃO DE NOVO ARTISTA</div>
-    <div class="sec-title">A <em>Maternidade</em></div>
-    <div class="sec-divider"></div>
-
-    <div class="maternidade-card">
-      <h3>🌱 Nenhum artista disponível para esta obra?</h3>
-      <p>A Maternidade gera um novo artista sob demanda — com perfil calibrado para aquela obra específica. Ao nascer, ele entra permanentemente no banco e sua biografia começa a ser escrita.</p>
-
-      <div class="mat-form">
-        <div class="mat-campo">
-          <label>Nome artístico</label>
-          <input type="text" id="matNome" placeholder="Nome do novo artista">
-        </div>
-        <div class="mat-campo">
-          <label>Origem / Nacionalidade</label>
-          <input type="text" id="matOrigem" placeholder="Ex: Marroquina, Coreana, Baiana...">
-        </div>
-        <div class="mat-campo">
-          <label>Gênero</label>
-          <select id="matGenero">
-            <option value="feminino">Feminino</option>
-            <option value="masculino">Masculino</option>
-            <option value="nao-binario">Não-binário</option>
-          </select>
-        </div>
-        <div class="mat-campo">
-          <label>Especialidade de atuação</label>
-          <select id="matEspecialidade">
-            <option value="drama">Drama</option>
-            <option value="comedia">Comédia</option>
-            <option value="acao">Ação / Aventura</option>
-            <option value="suspense">Suspense / Noir</option>
-            <option value="romance">Romance</option>
-            <option value="tragedia">Tragédia</option>
-            <option value="experimental">Experimental</option>
-          </select>
-        </div>
-        <div class="mat-campo wide">
-          <label>Personalidade e traços marcantes</label>
-          <textarea id="matPersonalidade" placeholder="Ex: Introvertido, olhar penetrante, presença física imponente, capaz de emoção contida. Especialista em cenas de confronto silencioso..."></textarea>
-        </div>
-        <div class="mat-campo">
-          <label>Formatos que domina</label>
-          <select id="matFormato" multiple style="height:90px">
-            <option value="teatro">Teatro</option>
-            <option value="cinema">Cinema</option>
-            <option value="serie">Série</option>
-            <option value="performance">Performance</option>
-            <option value="videoclipe">Videoclipe (cenas)</option>
-            <option value="animacao">Animação / Desenho</option>
-            <option value="audiobook">Audiobook</option>
-          </select>
-        </div>
-        <div class="mat-campo">
-          <label>Obra que motivou o nascimento</label>
-          <input type="text" id="matObraNasc" placeholder="Título da obra">
-        </div>
-      </div>
-
-      <div style="margin-top:6px">
-        <button class="btn-gerar" onclick="gerarArtista()">🌱 Registrar nascimento na Maternidade</button>
-      </div>
-
-      <div class="mat-resultado" id="matResultado">
-        <h4>✅ Artista registrado</h4>
-        <pre id="matPre"></pre>
-        <div class="mat-protocolo" id="matProtocolo">MAT-000000</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- REGISTRO DE CONVOCAÇÕES -->
-  <section class="sec" id="registro">
-    <div class="sec-label">// HISTÓRICO</div>
-    <div class="sec-title">Registro de <em>Convocações</em></div>
-    <div class="sec-divider"></div>
-    <div class="convocacoes-lista" id="convLista">
-      <div class="conv-vazio">Nenhuma convocação registrada ainda. Convoque um artista acima.</div>
-    </div>
-  </section>
-
-</main>
-
-<!-- MODAL CONVOCAÇÃO -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal">
-    <button class="modal-close" onclick="fecharModal()">✕</button>
-    <h2>Convocar artista</h2>
-    <div class="m-sub">REGISTRO DE CONVOCAÇÃO · BPL</div>
-    <div class="modal-artista-selecionado" id="modalArtistaSel"></div>
-    <div class="modal-campo">
-      <label>Título da obra</label>
-      <input type="text" id="convObra" placeholder="Nome da obra">
-    </div>
-    <div class="modal-campo">
-      <label>Formato da produção</label>
-      <select id="convFormato">
-        <option>Teatro</option><option>Cinema</option><option>Série</option>
-        <option>Performance</option><option>Videoclipe (cenas)</option>
-        <option>Animação / Desenho</option><option>Audiobook</option>
-      </select>
-    </div>
-    <div class="modal-campo">
-      <label>Papel / Personagem que vai interpretar</label>
-      <input type="text" id="convPapel" placeholder="Nome ou descrição do personagem">
-    </div>
-    <div class="modal-campo">
-      <label>Observações (opcional)</label>
-      <textarea id="convObs" placeholder="Instruções especiais, tom, cenas..."></textarea>
-    </div>
-    <div class="modal-btns">
-      <button class="btn-confirmar" onclick="confirmarConvocacao()">🎭 Confirmar convocação</button>
-      <button class="btn-fechar" onclick="fecharModal()">Cancelar</button>
-    </div>
-  </div>
-</div>
-
-<footer>
-  <p><strong>BPL — Banco de Personagens Literários</strong> · Módulo operacional restrito</p>
-  <p>Instituto Cultural Celeiro Literário · Triploohesigmalbpl · Silo Multimídia · Núcleo N</p>
-</footer>
-
 <script>
-// ══════════════════════════════════════════════
-// BANCO DOS 50 ARTISTAS FUNDADORES
-// ══════════════════════════════════════════════
-const ARTISTAS = [
-  // DRAMA
-  {id:'BPL-001',nome:'Isolde Vael Carrim',iniciais:'IV',origem:'África do Sul',genero:'F',especialidade:'drama',formatos:['cinema','teatro','serie'],personalidade:'Presença magnética e contida. Capaz de transmitir dor sem mover um músculo. Mestre do silêncio cênico.',fisico:'Alta, pele escura profunda, olhos castanhos intensos'},
-  {id:'BPL-002',nome:'Esteban Morales Vega',iniciais:'EM',origem:'Colômbia',genero:'M',especialidade:'drama',formatos:['teatro','cinema','audiobook'],personalidade:'Voz grave e rouca que carrega décadas. Especialista em personagens que guardam segredos pesados.',fisico:'Forte, cabelo grisalho prematuro, expressão sempre pensativa'},
-  {id:'BPL-003',nome:'Yuki Tanegawa',iniciais:'YT',origem:'Japão',genero:'F',especialidade:'drama',formatos:['anime','teatro','performance'],personalidade:'Precisão milimétrica nos movimentos. Expressão facial mínima, impacto máximo. Escola Nô e cinema de arte.',fisico:'Delicada, postura absolutamente ereta, quase estática'},
-  {id:'BPL-004',nome:'Darius Mehrabani',iniciais:'DM',origem:'Irã',genero:'M',especialidade:'drama',formatos:['cinema','serie','videoclipe'],personalidade:'Olhar que atravessa a câmera. Especialista em figuras trágicas de alto nível moral.',fisico:'Esguio, barba densa, mãos expressivas'},
-  {id:'BPL-005',nome:'Amara Diallo Keïta',iniciais:'AD',origem:'Guiné-Conacri',genero:'F',especialidade:'drama',formatos:['teatro','performance','cinema'],personalidade:'Energia teatral natural. Choro real, raiva real. Nunca simula — sempre está.',fisico:'Robusta, presença que domina o palco, voz de mezzo'},
-  {id:'BPL-006',nome:'Mirela Szabo',iniciais:'MS',origem:'Hungria',genero:'F',especialidade:'tragedia',formatos:['teatro','cinema','audiobook'],personalidade:'Especialista em ruína elegante. Personagens que caem com dignidade absoluta.',fisico:'Angulosa, cabelo curto, olhos cinza-verdes'},
-  {id:'BPL-007',nome:'Tomás Induni Leal',iniciais:'TI',origem:'Brasil — Rio Grande do Sul',genero:'M',especialidade:'drama',formatos:['teatro','serie','cinema'],personalidade:'Carisma silencioso. Não precisa falar muito — o corpo comunica. Estilo naturalista.',fisico:'Médio, ombros largos, jeito descuidado mas preciso'},
-
-  // COMÉDIA
-  {id:'BPL-008',nome:'Bridget Afolabi',iniciais:'BA',origem:'Nigéria',genero:'F',especialidade:'comedia',formatos:['teatro','serie','videoclipe'],personalidade:'Timing perfeito. Humor que nasce do absurdo do cotidiano. Nunca faz graça — ela só existe e é engraçado.',fisico:'Baixa, enérgica, expressões faciais ricas'},
-  {id:'BPL-009',nome:'Serafino Conti Neri',iniciais:'SC',origem:'Itália — Nápoles',genero:'M',especialidade:'comedia',formatos:['teatro','performance','cinema'],personalidade:'Exagero calculado. Mestre da comédia física e da sátira política. Escola dell\'arte.',fisico:'Rechonchudo, gesticulação ampla, voz nasalada'},
-  {id:'BPL-010',nome:'Park Jiwon',iniciais:'PJ',origem:'Coreia do Sul',genero:'M',especialidade:'comedia',formatos:['serie','animacao','videoclipe'],personalidade:'Ironia seca. O humor está no que ele não diz. Especialista em personagens que acham que são sérios.',fisico:'Alto, feições inexpressivas propositalmente, postura rígida'},
-  {id:'BPL-011',nome:'Fatou Mbengue',iniciais:'FM',origem:'Senegal',genero:'F',especialidade:'comedia',formatos:['teatro','performance','serie'],personalidade:'Energia transbordante. Rir junto com ela é inevitável. Comédia que vem da alegria, não da ironia.',fisico:'Alta, sorriso amplo, movimentos expansivos'},
-  {id:'BPL-012',nome:'Lucho Cienfuegos',iniciais:'LC',origem:'Peru',genero:'M',especialidade:'comedia',formatos:['teatro','cinema','animacao'],personalidade:'Personagens que se levam muito a sério em situações ridículas. Naturalismo cômico.',fisico:'Bigodinho, olhos expressivos, andar solene e absurdo'},
-
-  // AÇÃO / AVENTURA
-  {id:'BPL-013',nome:'Zara Nkemdirim',iniciais:'ZN',origem:'Nigéria',genero:'F',especialidade:'acao',formatos:['cinema','serie','performance'],personalidade:'Fisicamente imponente e precisa. Ação lúcida — sem excesso. Especialista em guerreiras silenciosas.',fisico:'Atlética, 1,80m, expressão determinada e calma'},
-  {id:'BPL-014',nome:'Ren Bashir Khattak',iniciais:'RB',origem:'Paquistão',genero:'M',especialidade:'acao',formatos:['cinema','serie','videoclipe'],personalidade:'Velocidade e controle. Ação que parece dança. Escola de artes marciais e teatro físico.',fisico:'Ágil, compacto, olhar concentrado'},
-  {id:'BPL-015',nome:'Ingrid Valkonen',iniciais:'IV',origem:'Finlândia',genero:'F',especialidade:'acao',formatos:['cinema','teatro','performance'],personalidade:'Fria como gelo, eficiente como máquina. Especialista em figuras de autoridade e combate.',fisico:'Loura, alta, postura militar'},
-  {id:'BPL-016',nome:'Celestino Aguiar Fontes',iniciais:'CA',origem:'Brasil — Bahia',genero:'M',especialidade:'acao',formatos:['cinema','serie','videoclipe'],personalidade:'Explosivo quando precisa, calmo quando domina. Capoeira e teatro de rua como base.',fisico:'Musculoso, sorriso fácil que engana'},
-
-  // SUSPENSE / NOIR
-  {id:'BPL-017',nome:'Vera Silvestri Manzoni',iniciais:'VS',origem:'Itália — Milão',genero:'F',especialidade:'suspense',formatos:['cinema','serie','audiobook'],personalidade:'Femme fatale com consciência moral. Nunca é só vilã — tem razões. Olhar que revela e esconde ao mesmo tempo.',fisico:'Esguia, cabelo negro, movimentos lentos e calculados'},
-  {id:'BPL-018',nome:'Konrad Brehmer',iniciais:'KB',origem:'Alemanha',genero:'M',especialidade:'suspense',formatos:['cinema','serie','teatro'],personalidade:'O homem que sabe de tudo mas fala pouco. Presença perturbadora. Especialista em antagonistas ambíguos.',fisico:'Pálido, olhos azuis frios, sorriso raro e desconcertante'},
-  {id:'BPL-019',nome:'Layla Haddad Osman',iniciais:'LH',origem:'Sudão',genero:'F',especialidade:'suspense',formatos:['cinema','serie','performance'],personalidade:'Inteligência que assusta. Personagens que calculam três jogadas à frente. Suspense psicológico.',fisico:'Elegante, voz baixa e precisa, presença que incomoda'},
-  {id:'BPL-020',nome:'Gavriil Petrov-Ilyich',iniciais:'GP',origem:'Rússia',genero:'M',especialidade:'suspense',formatos:['cinema','teatro','audiobook'],personalidade:'Peso existencial. Personagens que carregam o mundo como fardo escolhido. Noir filosófico.',fisico:'Grande, lento nos movimentos, olhar que parece acusar'},
-
-  // ROMANCE
-  {id:'BPL-021',nome:'Celeste Mourão Braga',iniciais:'CM',origem:'Brasil — Minas Gerais',genero:'F',especialidade:'romance',formatos:['cinema','serie','videoclipe'],personalidade:'Vulnerabilidade magnética. O espectador quer protegê-la e ao mesmo tempo teme por ela.',fisico:'Delicada, cabelo ondulado, olhos mel'},
-  {id:'BPL-022',nome:'Olivier Chastenet',iniciais:'OC',origem:'França',genero:'M',especialidade:'romance',formatos:['cinema','teatro','videoclipe'],personalidade:'Charme sem esforço. O homem que não sabe que é irresistível — e isso é o que o torna irresistível.',fisico:'Moreno claro, sorriso assimétrico, gestos lentos e quentes'},
-  {id:'BPL-023',nome:'Priya Subramaniam',iniciais:'PS',origem:'Índia — Tamil Nadu',genero:'F',especialidade:'romance',formatos:['cinema','animacao','videoclipe'],personalidade:'Amor que vem do centro. Não performa sentimento — ele acontece. Dança clássica indiana como formação.',fisico:'Pequena, olhos expressivos enormes, mãos que narram'},
-  {id:'BPL-024',nome:'Rafael Queiroga Salave\'a',iniciais:'RQ',origem:'Brasil — Pernambuco',genero:'M',especialidade:'romance',formatos:['teatro','cinema','audiobook'],personalidade:'O amor que machuca com gentileza. Especialista em personagens que amam errado mas com sinceridade.',fisico:'Esguio, rosto expressivo, voz morna e próxima'},
-  {id:'BPL-025',nome:'Nadia Oufkir',iniciais:'NO',origem:'Marrocos',genero:'F',especialidade:'romance',formatos:['cinema','serie','videoclipe'],personalidade:'Paixão mediterrânea com razão europeia. Conflito interno como motor. Amor que transforma.',fisico:'Alta, cabelo crespo solto, presença que aquece'},
-
-  // EXPERIMENTAL
-  {id:'BPL-026',nome:'Sable Huxley Owens',iniciais:'SH',origem:'Reino Unido — País de Gales',genero:'F',especialidade:'experimental',formatos:['performance','teatro','animacao'],personalidade:'Habita o espaço entre gêneros e formas. Desconstrução física e vocal. Teatro pós-dramático.',fisico:'Andrógina, movimentos não convencionais, voz que muda de registro'},
-  {id:'BPL-027',nome:'Kenji Matsunaga Rios',iniciais:'KM',origem:'Brasil — São Paulo, descendente japonês',genero:'M',especialidade:'experimental',formatos:['performance','animacao','teatro'],personalidade:'Hibridismo cultural como linguagem. Corpo como texto. Butoh e teatro contemporâneo brasileiro.',fisico:'Compacto, movimentos imprevisíveis, rosto em constante transformação'},
-  {id:'BPL-028',nome:'Asel Mamytbekova',iniciais:'AM',origem:'Quirguistão',genero:'F',especialidade:'experimental',formatos:['performance','teatro','videoclipe'],personalidade:'Tradição nômade e vanguarda ocidental fundidas. Uso de silêncio como dramaturgia.',fisico:'Pequena, pele dourada, olhos amendoados, presença hipnótica'},
-
-  // TRAGÉDIA
-  {id:'BPL-029',nome:'Adaeze Onwudiwe',iniciais:'AO',origem:'Nigéria — Igbo',genero:'F',especialidade:'tragedia',formatos:['teatro','cinema','audiobook'],personalidade:'A dor que enobrece. Personagens que perdem tudo mas não perdem a dignidade. Teatro grego revisitado.',fisico:'Imponente, cabelo trançado longo, voz de contralto'},
-  {id:'BPL-030',nome:'Vasile Ionescu-Doran',iniciais:'VI',origem:'Romênia',genero:'M',especialidade:'tragedia',formatos:['teatro','cinema','audiobook'],personalidade:'O herói que cai por escolha própria. Compreende a tragédia como purificação. Escola romena clássica.',fisico:'Anguloso, cabelo escuro, olhar trágico natural'},
-
-  // PERFIS VARIADOS — para cobrir diversidade
-  {id:'BPL-031',nome:'Sunita Karmakar',iniciais:'SK',origem:'Bangladesh',genero:'F',especialidade:'drama',formatos:['cinema','serie','audiobook'],personalidade:'Resiliência como estética. Personagens que sobrevivem e transformam a sobrevivência em beleza.',fisico:'Miúda, força invisível, sorriso que guarda tristeza'},
-  {id:'BPL-032',nome:'Marcus Elroy Thorne',iniciais:'ME',origem:'Jamaica',genero:'M',especialidade:'drama',formatos:['teatro','cinema','serie'],personalidade:'Ritmo caribenho na fala, peso africano no olhar. Personagens que transitam entre mundos culturais.',fisico:'Alto, largo, movimentos que lembram dança sem ser dança'},
-  {id:'BPL-033',nome:'Florentina Oprea Vlad',iniciais:'FO',origem:'Romênia',genero:'F',especialidade:'comedia',formatos:['teatro','serie','animacao'],personalidade:'Ironia que não fere. Humor nascido da compaixão. Especialista em personagens que erram com elegância.',fisico:'Rechonchuda, óculos redondos, sorriso permanente'},
-  {id:'BPL-034',nome:'Ibrahim Al-Rashid',iniciais:'IA',origem:'Jordânia',genero:'M',especialidade:'drama',formatos:['cinema','teatro','audiobook'],personalidade:'Dignidade árabe clássica. Personagens de honra que enfrentam escolhas impossíveis.',fisico:'Barba aparada, postura nobre, olhar que pesa'},
-  {id:'BPL-035',nome:'Esperanza Villarreal',iniciais:'EV',origem:'México — Oaxaca',genero:'F',especialidade:'drama',formatos:['cinema','performance','teatro'],personalidade:'Terra, raiz e fúria suave. Mulheres indígenas fortes que o mundo tenta silenciar. Não silencia.',fisico:'Baixa, trança, cores vivas, presença que ocupa mais do que o corpo'},
-  {id:'BPL-036',nome:'Nnamdi Achebe Osei',iniciais:'NA',origem:'Gana',genero:'M',especialidade:'acao',formatos:['cinema','serie','videoclipe'],personalidade:'Nobreza física e moral. O guerreiro que não quer guerrear mas sabe o que faz quando precisa.',fisico:'Muito alto, musculoso, movimentos de felino'},
-  {id:'BPL-037',nome:'Valentina Russo Ferretti',iniciais:'VR',origem:'Brasil — São Paulo, italiana',genero:'F',especialidade:'romance',formatos:['cinema','serie','teatro'],personalidade:'Paixão com método. Ama com intensidade italiana mas pensa com precisão brasileira.',fisico:'Morena, cabelo volumoso, sorriso que conquista sem pedir permissão'},
-  {id:'BPL-038',nome:'Taavi Mäkinen',iniciais:'TM',origem:'Estônia',genero:'M',especialidade:'suspense',formatos:['cinema','serie','audiobook'],personalidade:'Frio nórdico que guarda brasas. O antagonista que tem razão mas escolhe o caminho errado.',fisico:'Pálido, olhos claros, quase imóvel'},
-  {id:'BPL-039',nome:'Chidinma Ezeh',iniciais:'CE',origem:'Nigéria — Enugu',genero:'F',especialidade:'comedia',formatos:['teatro','serie','videoclipe'],personalidade:'Alegria que nasce do chão. Comédia popular nigeriana com timing universal.',fisico:'Pequena, sorriso que toma o rosto inteiro, energia que não para'},
-  {id:'BPL-040',nome:'Aleksandr Voronov',iniciais:'AV',origem:'Ucrânia',genero:'M',especialidade:'tragedia',formatos:['teatro','cinema','audiobook'],personalidade:'Peso histórico nos ombros. Personagens que carregam nações inteiras como destino pessoal.',fisico:'Grande, lento, olhar que conheceu guerras mesmo sem vivê-las'},
-  {id:'BPL-041',nome:'Meera Pillai Nair',iniciais:'MP',origem:'Índia — Kerala',genero:'F',especialidade:'experimental',formatos:['performance','teatro','animacao'],personalidade:'Kathakali e teatro contemporâneo em um único corpo. Transformação como identidade.',fisico:'Pequena, olhos pintados expressivos, gestual preciso e sagrado'},
-  {id:'BPL-042',nome:'Cássio Avelar Drummond',iniciais:'CA',origem:'Brasil — Rio de Janeiro',genero:'M',especialidade:'drama',formatos:['teatro','cinema','serie'],personalidade:'Malandro com alma. O anti-herói carioca que é impossível não amar mesmo quando erra.',fisico:'Esguio, sorriso diagonal, olhar esperto'},
-  {id:'BPL-043',nome:'Áine Ní Bhriain',iniciais:'AB',origem:'Irlanda',genero:'F',especialidade:'romance',formatos:['teatro','cinema','audiobook'],personalidade:'Amor com raiz céltica. Personagens que amam além do razoável e encontram sabedoria nisso.',fisico:'Ruiva, sardas, olhos verdes, pele de mármore'},
-  {id:'BPL-044',nome:'Hideo Watanabe Suzu',iniciais:'HW',origem:'Japão',genero:'M',especialidade:'suspense',formatos:['cinema','animacao','serie'],personalidade:'O detetive que encontrou a resposta mas hesita em revelá-la. Tensão como modo de existir.',fisico:'Compacto, cabelo liso preto, óculos finos'},
-  {id:'BPL-045',nome:'Blessing Okonkwo',iniciais:'BO',origem:'Nigéria — Lagos',genero:'F',especialidade:'drama',formatos:['teatro','serie','cinema'],personalidade:'Força que vem de dentro para fora. Personagens que constroem o próprio destino sem pedir licença.',fisico:'Imponente, trança afro, voz que comanda'},
-  {id:'BPL-046',nome:'Simón Arce Palomino',iniciais:'SA',origem:'Bolívia',genero:'M',especialidade:'drama',formatos:['teatro','cinema','performance'],personalidade:'Andino e contemporâneo. Personagens que guardam cosmovisão indígena dentro de narrativas urbanas.',fisico:'Baixo, rosto redondo, olhos escuros profundos'},
-  {id:'BPL-047',nome:'Roksana Wiśniewska',iniciais:'RW',origem:'Polônia',genero:'F',especialidade:'tragedia',formatos:['teatro','cinema','audiobook'],personalidade:'Escola polonesa de Grotowski. Corpo como instrumento total. Tragédia como cerimônia.',fisico:'Alta, muito magra, presença que assusta e hipnotiza'},
-  {id:'BPL-048',nome:'Chukwuemeka Eze',iniciais:'CE',origem:'Nigéria — Igbo',genero:'M',especialidade:'acao',formatos:['cinema','serie','videoclipe'],personalidade:'Herói que duvida. Força física com peso moral. Ação como consequência, não como prazer.',fisico:'Corpulento, cicatriz no queixo, olhar pesado mas gentil'},
-  {id:'BPL-049',nome:'Luna Sepúlveda Araya',iniciais:'LS',origem:'Chile',genero:'F',especialidade:'experimental',formatos:['performance','teatro','videoclipe'],personalidade:'O corpo como manifesto político. Performance que incomoda e não pede desculpa.',fisico:'Alta, cabelo curto, tatuagens visíveis, postura desafiadora'},
-  {id:'BPL-050',nome:'Ezra Blackwood-Osei',iniciais:'EB',origem:'Reino Unido — Londres, afro-britânico',genero:'M',especialidade:'drama',formatos:['teatro','cinema','audiobook'],personalidade:'Shakespeare e afrofuturismo no mesmo corpo. Erudição que nasce da rua. Verso e prosa com igual fluência.',fisico:'Alto, cabelo afro volumoso, dicção perfeita, mãos que gesticulam como um mestre'},
-]
-
-let artistas = [...ARTISTAS]
-let artistaSelecionado = null
-let convocacoes = JSON.parse(localStorage.getItem('bpl_convocacoes')||'[]')
-let artistas_gerados = JSON.parse(localStorage.getItem('bpl_artistas_gerados')||'[]')
-
-// Adiciona artistas gerados pela Maternidade ao banco
-artistas = [...ARTISTAS, ...artistas_gerados]
-
-function iniciais(nome){ return nome.split(' ').filter((_,i,a)=>i===0||i===a.length-1).map(n=>n[0]).join('') }
-
-function formatoTag(f){
-  const m={teatro:'t-teatro',cinema:'t-cinema',serie:'t-serie',performance:'t-performance',
-    videoclipe:'t-videoclipe',animacao:'t-animacao',audiobook:'t-audiobook',anime:'t-animacao'}
-  const l={teatro:'Teatro',cinema:'Cinema',serie:'Série',performance:'Performance',
-    videoclipe:'Videoclipe',animacao:'Animação',audiobook:'Audiobook',anime:'Animação'}
-  return `<span class="tipo-tag ${m[f]||'t-audiobook'}">${l[f]||f}</span>`
-}
-
-function renderArtistas(lista){
-  const g = document.getElementById('artistas-grade')
-  document.getElementById('resultadoInfo').textContent =
-    `Exibindo ${lista.length} artista${lista.length!==1?'s':''}`
-  if(!lista.length){
-    g.innerHTML='<div class="conv-vazio" style="grid-column:1/-1">Nenhum artista encontrado com esses filtros. Acione a Maternidade para gerar um novo.</div>'
-    return
-  }
-  g.innerHTML = lista.map(a=>`
-    <div class="artista-card" onclick="abrirModal('${a.id}')">
-      <div class="artista-header">
-        <div class="artista-iniciais">${a.iniciais||iniciais(a.nome)}</div>
-        <div class="artista-id-wrap">
-          <div class="artista-nome">${a.nome}</div>
-          <div class="artista-origem">${a.id} · ${a.origem}</div>
-        </div>
-      </div>
-      <div class="artista-body">
-        <div class="artista-tipo-wrap">${(a.formatos||[]).map(formatoTag).join('')}</div>
-        <div class="artista-personalidade">"${a.personalidade}"</div>
-        <div class="artista-especialidade">✦ ${a.especialidade.toUpperCase()}</div>
-      </div>
-      <div class="artista-footer">
-        <span class="artista-obras">${(a.obras||[]).length} obra${(a.obras||[]).length!==1?'s':''} no currículo</span>
-        <button class="btn-convocar" onclick="event.stopPropagation();abrirModal('${a.id}')">Convocar →</button>
-      </div>
-    </div>
-  `).join('')
-}
-
+const cards=document.querySelectorAll('.card');
 function filtrar(){
-  const busca = document.getElementById('busca').value.toLowerCase()
-  const esp   = document.getElementById('filtroEspecialidade').value
-  const fmt   = document.getElementById('filtroFormato').value
-  const orig  = document.getElementById('filtroOrigem').value
-
-  const origemMap={brasil:'brasil',europa:['itália','alemanha','frança','reino unido','finlândia','irlanda','estônia','polônia','romênia','hungria','ucrânia','país de gales'],africa:['nigéria','gana','guiné','senegal','sudão','áfrica do sul','marrocos'],asia:['japão','coreia','índia','irã','bangladesh','quirguistão','paquistão'],americas:['colômbia','peru','brasil','bolívia','chile','jamaica','méxico'],oriente:['jordânia','irã']}
-
-  const lista = artistas.filter(a=>{
-    const txt = (a.nome+a.personalidade+a.origem+a.especialidade).toLowerCase()
-    if(busca && !txt.includes(busca)) return false
-    if(esp && a.especialidade!==esp) return false
-    if(fmt && !(a.formatos||[]).includes(fmt)) return false
-    if(orig){
-      const o = a.origem.toLowerCase()
-      if(orig==='brasil') return o.includes('brasil')
-      const regioes = origemMap[orig]||[]
-      if(Array.isArray(regioes)) return regioes.some(r=>o.includes(r))
-    }
-    return true
-  })
-  renderArtistas(lista)
+  const b=document.getElementById('busca').value.toLowerCase();
+  const e=document.getElementById('filtro-esp').value;
+  let v=0;
+  cards.forEach(c=>{
+    const txt=c.textContent.toLowerCase();
+    const esp=c.querySelector('.esp')?.textContent.toLowerCase()||'';
+    const show=(!b||txt.includes(b))&&(!e||esp.includes(e));
+    c.style.display=show?'flex':'none';
+    if(show)v++;
+  });
+  document.getElementById('cnt').textContent=v+' membro'+(v!==1?'s':'')+' do elenco';
 }
-
-function abrirModal(id){
-  artistaSelecionado = artistas.find(a=>a.id===id)
-  if(!artistaSelecionado) return
-  const a = artistaSelecionado
-  document.getElementById('modalArtistaSel').innerHTML=`
-    <div class="mas-iniciais">${a.iniciais||iniciais(a.nome)}</div>
-    <div>
-      <div class="mas-nome">${a.nome}</div>
-      <div class="mas-info">${a.id} · ${a.origem} · ${a.especialidade.toUpperCase()}</div>
-    </div>
-  `
-  document.getElementById('convObra').value=''
-  document.getElementById('convPapel').value=''
-  document.getElementById('convObs').value=''
-  document.getElementById('modalOverlay').classList.add('aberto')
-}
-
-function fecharModal(){
-  document.getElementById('modalOverlay').classList.remove('aberto')
-  artistaSelecionado = null
-}
-
-function confirmarConvocacao(){
-  const obra  = document.getElementById('convObra').value.trim()
-  const fmt   = document.getElementById('convFormato').value
-  const papel = document.getElementById('convPapel').value.trim()
-  const obs   = document.getElementById('convObs').value.trim()
-  if(!obra){alert('Informe o título da obra.');return}
-  if(!papel){alert('Informe o papel/personagem.');return}
-  const num = 'CONV-'+Date.now().toString().slice(-6)+'-'+Math.floor(Math.random()*900+100)
-  const conv = {num, artista:artistaSelecionado.nome, artistaId:artistaSelecionado.id, obra, fmt, papel, obs, em:new Date().toLocaleDateString('pt-BR')}
-  convocacoes.unshift(conv)
-  localStorage.setItem('bpl_convocacoes', JSON.stringify(convocacoes))
-  // Adiciona à biografia do artista
-  const idx = artistas.findIndex(a=>a.id===artistaSelecionado.id)
-  if(idx>=0){ if(!artistas[idx].obras) artistas[idx].obras=[]
-    artistas[idx].obras.push({obra,fmt,papel,em:conv.em}) }
-  document.getElementById('totalConvocacoes').textContent = convocacoes.length
-  renderConvocacoes()
-  filtrar()
-  fecharModal()
-  alert(`✅ ${artistaSelecionado.nome} convocado(a) para "${obra}" como ${papel}.\nProtocolo: ${num}`)
-}
-
-function renderConvocacoes(){
-  const lista = document.getElementById('convLista')
-  if(!convocacoes.length){
-    lista.innerHTML='<div class="conv-vazio">Nenhuma convocação registrada ainda.</div>'
-    return
-  }
-  lista.innerHTML = convocacoes.map(c=>`
-    <div class="conv-item">
-      <span class="conv-num">${c.num}</span>
-      <span class="conv-nome">${c.artista}</span>
-      <span class="conv-obra">${c.papel} em "${c.obra}"</span>
-      <span class="conv-tipo">${c.fmt} · ${c.em}</span>
-    </div>
-  `).join('')
-}
-
-function gerarArtista(){
-  const nome = document.getElementById('matNome').value.trim()
-  const orig = document.getElementById('matOrigem').value.trim()
-  const gen  = document.getElementById('matGenero').value
-  const esp  = document.getElementById('matEspecialidade').value
-  const pers = document.getElementById('matPersonalidade').value.trim()
-  const obra = document.getElementById('matObraNasc').value.trim()
-  const fmts = Array.from(document.getElementById('matFormato').selectedOptions).map(o=>o.value)
-  if(!nome){alert('Informe o nome artístico.');return}
-  if(!orig){alert('Informe a origem/nacionalidade.');return}
-  const novoId = 'BPL-MAT-'+String(ARTISTAS.length+artistas_gerados.length+1).padStart(3,'0')
-  const novoArtista = {
-    id:novoId, nome, iniciais:iniciais(nome), origem:orig, genero:gen[0].toUpperCase(),
-    especialidade:esp, formatos:fmts, personalidade:pers||'Perfil em definição.',
-    fisico:'A ser definido em obra', obras:obra?[{obra,fmt:'Obra de nascimento',papel:'Protagonista ou coadjuvante',em:new Date().toLocaleDateString('pt-BR')}]:[]
-  }
-  artistas_gerados.push(novoArtista)
-  artistas.push(novoArtista)
-  localStorage.setItem('bpl_artistas_gerados', JSON.stringify(artistas_gerados))
-  document.getElementById('totalArtistas').textContent = artistas.length
-  const num = 'MAT-'+Date.now().toString().slice(-6)
-  const pre = `REGISTRO CIVIL HETERONÔMICO — MATERNIDADE BPL
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ID:          ${novoId}
-Nome:        ${nome}
-Origem:      ${orig}
-Gênero:      ${gen}
-Especialidade: ${esp}
-Formatos:    ${fmts.join(', ')||'A definir'}
-Personalidade: ${pers||'Em formação'}
-Obra de nascimento: ${obra||'Não informada'}
-Registrado em: ${new Date().toLocaleDateString('pt-BR')}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Este artista é imortal. Não envelhece. Sua biografia
-se escreve a cada obra em que trabalhar.`
-  document.getElementById('matPre').textContent = pre
-  document.getElementById('matProtocolo').textContent = num
-  document.getElementById('matResultado').classList.add('vis')
-  filtrar()
-}
-
-// INICIALIZAR
-renderArtistas(artistas)
-renderConvocacoes()
-document.getElementById('totalArtistas').textContent = artistas.length
-document.getElementById('totalConvocacoes').textContent = convocacoes.length
-document.getElementById('modalOverlay').addEventListener('click', e=>{if(e.target===e.currentTarget)fecharModal()})
 </script>
 </body>
 </html>
