@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linha de Produção — Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e18;--surface:#111520;--card:#161d2e;--line:#1e2a40;
+  --txt:#f0eef8;--muted:#7a88a8;--soft:#b8c4d8;
+  --ouro:#d8a84c;--ouro2:#f0cc80;
+  --verde:#2f8a5a;--verde2:#4ab87a;
+  --azul:#2a5a9a;--azul2:#4a8acd;
+  --roxo:#6a3af5;--roxo2:#a87af5;
+  --vermelho:#c44c4c;--vermelho2:#e87a7a;
+  --shadow:0 16px 48px rgba(0,0,0,.5);--radius:20px;
+
+  /* PERFIS */
+  --admin:#d8a84c;
+  --hetero:#8a6af5;
+  --wagner:#4a8acd;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;background:var(--bg);color:var(--txt);font-family:'DM Sans',Georgia,serif;}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:30;background:rgba(10,14,24,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:11px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-icon{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,var(--ouro),#a07828);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.brand-text h1{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--ouro2);line-height:1;}
+.brand-text p{font-size:.72rem;color:var(--muted);margin-top:2px;}
+.top-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+
+/* PERFIL SELECTOR */
+.perfil-selector{display:flex;gap:6px;}
+.perfil-btn{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font:600 .78rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;color:var(--muted);}
+.perfil-btn:hover{transform:translateY(-1px);}
+.perfil-btn.ativo-admin  {border-color:var(--admin); background:rgba(216,168,76,.15);color:var(--admin);}
+.perfil-btn.ativo-hetero {border-color:var(--hetero);background:rgba(138,106,245,.15);color:var(--hetero);}
+.perfil-btn.ativo-wagner {border-color:var(--wagner);background:rgba(74,138,205,.15);color:var(--wagner);}
+
+.btn{border:none;border-radius:10px;padding:8px 14px;font:600 .82rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+.btn:hover{transform:translateY(-1px);}
+.btn-amber{background:var(--ouro);color:#1a1000;}
+.btn-red  {background:var(--vermelho);color:#fff;}
+.btn-ghost{background:rgba(255,255,255,.07);color:var(--soft);border:1px solid var(--line);}
+
+.wrap{max-width:1300px;margin:0 auto;padding:18px;display:flex;flex-direction:column;gap:14px;}
+
+/* ENTRADA OHE */
+.ohe-box{background:linear-gradient(135deg,rgba(216,168,76,.1),rgba(216,168,76,.04));border:1px solid rgba(216,168,76,.25);border-radius:var(--radius);padding:20px;}
+.ohe-box h2{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--ouro2);margin-bottom:6px;}
+.ohe-box p{font-size:.88rem;color:var(--muted);line-height:1.5;margin-bottom:14px;}
+.ohe-input-row{display:flex;gap:10px;flex-wrap:wrap;}
+.ohe-textarea{flex:1;min-width:260px;min-height:100px;border:1.5px solid var(--line);border-radius:13px;background:var(--surface);color:var(--txt);padding:12px;font:inherit;font-size:.92rem;line-height:1.6;outline:none;resize:vertical;}
+.ohe-textarea:focus{border-color:var(--ouro);}
+.ohe-meta{display:flex;flex-direction:column;gap:8px;min-width:200px;}
+.select{width:100%;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--txt);padding:9px 11px;font:inherit;font-size:.88rem;outline:none;}
+.select:focus{border-color:var(--ouro);}
+.select option{background:var(--surface);}
+.btn-disparar{width:100%;padding:13px;border:none;border-radius:13px;background:linear-gradient(135deg,var(--ouro),#a07828);color:#1a1000;font:700 .95rem 'DM Sans',sans-serif;cursor:pointer;transition:.16s;box-shadow:0 6px 20px rgba(216,168,76,.3);margin-top:auto;}
+.btn-disparar:hover{transform:translateY(-2px);}
+.btn-disparar:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* STATUS ENTRADA */
+.status-entrada{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:.85rem;color:var(--muted);}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+.status-dot.ativo{background:var(--verde2);box-shadow:0 0 0 3px rgba(74,184,122,.2);}
+.status-dot.processando{background:var(--ouro);animation:pulse .8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* PIPELINE */
+.pipeline-titulo{font-size:.75rem;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
+.pipeline{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+.etapa{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px;position:relative;transition:.2s;}
+.etapa.ativa{border-color:var(--verde2);background:rgba(47,138,90,.08);}
+.etapa.processando{border-color:var(--ouro);background:rgba(216,168,76,.08);animation:borderPulse 1s infinite;}
+.etapa.concluida{border-color:var(--verde);background:rgba(47,138,90,.12);}
+.etapa.erro{border-color:var(--vermelho);background:rgba(196,76,76,.08);}
+@keyframes borderPulse{0%,100%{border-color:var(--ouro);}50%{border-color:var(--ouro2);}}
+.etapa-ico{font-size:1.4rem;}
+.etapa-nome{font-weight:700;font-size:.85rem;color:var(--txt);}
+.etapa-desc{font-size:.72rem;color:var(--muted);line-height:1.35;}
+.etapa-status{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:999px;width:fit-content;}
+.es-aguardando {background:rgba(122,136,168,.15);color:var(--muted);}
+.es-processando{background:rgba(216,168,76,.2);color:var(--ouro);}
+.es-concluida  {background:rgba(47,138,90,.2);color:var(--verde2);}
+.es-erro       {background:rgba(196,76,76,.2);color:var(--vermelho2);}
+.etapa-btn{border:1px solid var(--line);background:rgba(255,255,255,.05);border-radius:8px;padding:5px 10px;font:600 .72rem 'DM Sans',sans-serif;color:var(--soft);cursor:pointer;transition:.12s;display:none;}
+.etapa-btn:hover{border-color:var(--azul2);color:var(--azul2);}
+.etapa.ativa .etapa-btn,.etapa.concluida .etapa-btn{display:block;}
+
+/* NOTIFICAÇÕES */
+.notif-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;}
+.notif-box h3{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--soft);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.notif-badge{background:var(--vermelho);color:#fff;border-radius:999px;font-size:.65rem;font-weight:700;padding:1px 6px;}
+.notifs-lista{display:flex;flex-direction:column;gap:6px;max-height:200px;overflow:auto;}
+.notif-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:11px;}
+.notif-ico{font-size:1rem;flex-shrink:0;margin-top:1px;}
+.notif-corpo{flex:1;}
+.notif-titulo{font-weight:700;font-size:.85rem;color:var(--txt);}
+.notif-msg{font-size:.78rem;color:var(--muted);line-height:1.4;margin-top:2px;}
+.notif-ts{font-size:.68rem;color:var(--muted);white-space:nowrap;flex-shrink:0;}
+.notif-vazia{color:var(--muted);font-style:italic;font-size:.85rem;}
+
+/* LOG */
+.log-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;}
+.log-box h3{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--soft);margin-bottom:12px;}
+.log-lista{font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);background:rgba(0,0,0,.3);border-radius:10px;padding:12px;max-height:200px;overflow:auto;display:flex;flex-direction:column;gap:3px;}
+.log-item{line-height:1.4;}
+.log-ts{color:var(--muted);}
+.log-info{color:var(--azul2);}
+.log-ok{color:var(--verde2);}
+.log-warn{color:var(--ouro);}
+.log-err{color:var(--vermelho2);}
+
+/* MATERIAL PRODUZIDO */
+.material-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;}
+.material-box h3{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--soft);margin-bottom:12px;}
+.material-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.material-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:12px;}
+.material-tipo{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:999px;width:fit-content;margin-bottom:6px;}
+.mt-diagramado{background:rgba(47,138,90,.15);color:var(--verde2);}
+.mt-capa      {background:rgba(216,168,76,.15);color:var(--ouro);}
+.mt-silo      {background:rgba(74,138,205,.15);color:var(--azul2);}
+.mt-social    {background:rgba(138,106,245,.15);color:var(--roxo2);}
+.material-nome{font-weight:700;font-size:.88rem;color:var(--txt);margin-bottom:3px;}
+.material-desc{font-size:.75rem;color:var(--muted);line-height:1.4;}
+.material-acoes{display:flex;gap:5px;margin-top:8px;}
+.btn-mat{border:1px solid var(--line);background:transparent;border-radius:7px;padding:4px 9px;font:600 .7rem 'DM Sans',sans-serif;color:var(--muted);cursor:pointer;transition:.12s;}
+.btn-mat:hover{border-color:var(--azul2);color:var(--azul2);}
+
+/* ADMIN ONLY */
+.admin-only{display:none;}
+.perfil-admin .admin-only{display:block;}
+.hetero-only{display:none;}
+.perfil-hetero .admin-only,.perfil-hetero .hetero-only{display:block;}
+
+/* CORSI PANEL */
+.corsi-box{background:linear-gradient(135deg,rgba(74,138,205,.08),rgba(138,106,245,.06));border:1px solid rgba(74,138,205,.2);border-radius:var(--radius);padding:16px;}
+.corsi-box h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--azul2);margin-bottom:12px;}
+.corsi-destinos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.corsi-dest{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:13px;padding:12px;}
+.corsi-dest h4{font-size:.88rem;font-weight:700;color:var(--txt);margin-bottom:4px;display:flex;align-items:center;gap:7px;}
+.corsi-dest p{font-size:.78rem;color:var(--muted);line-height:1.4;margin-bottom:8px;}
+.btn-recado{width:100%;border:none;border-radius:10px;padding:10px;font:600 .82rem 'DM Sans',sans-serif;cursor:pointer;transition:.14s;color:#fff;}
+.btn-recado:hover{transform:translateY(-1px);}
+.btn-aaron   {background:linear-gradient(135deg,#1a3a5f,#2a5a8a);}
+.btn-charlton{background:linear-gradient(135deg,#3a1a5f,#5a2a8a);}
+.corsi-canais{display:flex;gap:8px;flex-wrap:wrap;}
+.canal-btn{border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 14px;font:600 .78rem 'DM Sans',sans-serif;color:var(--muted);cursor:pointer;transition:.14s;}
+.canal-btn:hover,.canal-btn.ativo{border-color:var(--azul2);background:rgba(74,138,205,.12);color:var(--azul2);}
+
+@media(max-width:860px){.pipeline{grid-template-columns:1fr 1fr;}.corsi-destinos{grid-template-columns:1fr;}.ohe-input-row{flex-direction:column;}}
+@media(max-width:540px){.pipeline{grid-template-columns:1fr;}.perfil-selector{flex-wrap:wrap;}.material-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body class="perfil-admin" id="body">
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">🏭</div>
+    <div class="brand-text">
+      <h1>Linha de Produção Celeiro</h1>
+      <p>OHE → Diagramação → Capas → Silos → Distribuição</p>
+    </div>
+  </div>
+  <div class="top-right">
+    <div class="perfil-selector">
+      <button class="perfil-btn ativo-admin" id="btnAdmin"  onclick="setPerfil('admin')" >👑 Admin</button>
+      <button class="perfil-btn"             id="btnHetero" onclick="setPerfil('hetero')">🎭 Heterônimo</button>
+      <button class="perfil-btn"             id="btnWagner" onclick="setPerfil('wagner')">✒️ Wagner Planas</button>
+    </div>
+    <a class="btn btn-amber" href="lapidar.html">← Lapidar</a>
+    <a class="btn btn-red"   href="pagina_respiro_celeiro.html">Sair</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ENTRADA OHE -->
+  <div class="ohe-box">
+    <h2>📥 Entrada do Material OHE</h2>
+    <p>Cole o material gerado no OHE (triploohesigmalbpl) ou importe via localStorage. Ao disparar, o sistema inicia automaticamente toda a linha de produção.</p>
+    <div class="ohe-input-row">
+      <textarea class="ohe-textarea" id="oheTexto" placeholder="Cole aqui o material gerado pelo OHE — texto, rascunho, roteiro ou obra completa..."></textarea>
+      <div class="ohe-meta">
+        <div>
+          <label style="font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Tipo de material</label>
+          <select class="select" id="tipoMaterial">
+            <option value="obra_literaria">Obra literária</option>
+            <option value="roteiro">Roteiro</option>
+            <option value="poesia">Poesia / Cordel</option>
+            <option value="infantil">Infantil / Juvenil</option>
+            <option value="tecnico">Técnico</option>
+            <option value="multimidia">Multimídia</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Perfil de origem</label>
+          <select class="select" id="origemPerfil">
+            <option value="admin">Admin</option>
+            <option value="hetero">Heterônimo</option>
+            <option value="wagner">Wagner Planas</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Trilha sonora?</label>
+          <select class="select" id="trilhaSonora">
+            <option value="sim">Sim — notificar Maestro Aaron</option>
+            <option value="nao">Não</option>
+            <option value="avaliar">Avaliar após silos</option>
+          </select>
+        </div>
+        <button class="btn-disparar" id="btnDisparar" onclick="dispararLinha()">
+          🚀 Disparar linha de produção
+        </button>
+      </div>
+    </div>
+
+    <div class="status-entrada" id="statusEntrada" style="margin-top:12px;">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusTxt">Aguardando material do OHE.</span>
+    </div>
+
+    <!-- Importar do localStorage OHE -->
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-ghost" onclick="importarOHE()">📥 Importar do OHE (localStorage)</button>
+      <button class="btn btn-ghost" onclick="limparEntrada()">✕ Limpar</button>
+    </div>
+  </div>
+
+  <!-- PIPELINE -->
+  <div>
+    <div class="pipeline-titulo">✦ Pipeline de produção — status em tempo real</div>
+    <div class="pipeline" id="pipeline">
+
+      <div class="etapa" id="etapa-ohe" data-etapa="ohe">
+        <span class="etapa-ico">📥</span>
+        <span class="etapa-nome">Recepção OHE</span>
+        <span class="etapa-desc">Material recebido do OHE via ponte</span>
+        <span class="etapa-status es-aguardando" id="st-ohe">Aguardando</span>
+        <button class="etapa-btn" onclick="irPara('lapidar_sistema_editorial_modular.html')">Abrir</button>
+      </div>
+
+      <div class="etapa" id="etapa-gram" data-etapa="gram">
+        <span class="etapa-ico">🌾</span>
+        <span class="etapa-nome">Dias Gramador</span>
+        <span class="etapa-desc">Diagramação do miolo editorial</span>
+        <span class="etapa-status es-aguardando" id="st-gram">Aguardando</span>
+        <button class="etapa-btn" onclick="irPara('dias_gramador_livros.html')">Abrir</button>
+      </div>
+
+      <div class="etapa" id="etapa-capa" data-etapa="capa">
+        <span class="etapa-ico">📘</span>
+        <span class="etapa-nome">OKapista</span>
+        <span class="etapa-desc">Criação de capas</span>
+        <span class="etapa-status es-aguardando" id="st-capa">Aguardando</span>
+        <button class="etapa-btn" onclick="irPara('okapista.html')">Abrir</button>
+      </div>
+
+      <div class="etapa" id="etapa-silo" data-etapa="silo">
+        <span class="etapa-ico">🎬</span>
+        <span class="etapa-nome">Silos Multimídia</span>
+        <span class="etapa-desc">Sonoro, visual, musical, HQ</span>
+        <span class="etapa-status es-aguardando" id="st-silo">Aguardando</span>
+        <button class="etapa-btn" onclick="irPara('silo_multimidia.html')">Abrir</button>
+      </div>
+
+      <div class="etapa" id="etapa-sigmal" data-etapa="sigmal">
+        <span class="etapa-ico">🎵</span>
+        <span class="etapa-nome">SIGMAL Music</span>
+        <span class="etapa-desc">Maestro Aaron — trilha sonora</span>
+        <span class="etapa-status es-aguardando" id="st-sigmal">Aguardando</span>
+        <button class="etapa-btn" onclick="irPara('silo_music.html')">Abrir</button>
+      </div>
+
+      <div class="etapa" id="etapa-bpl" data-etapa="bpl">
+        <span class="etapa-ico">🎭</span>
+        <span class="etapa-nome">Núcleo N / BPL</span>
+        <span class="etapa-desc">Charlton — elenco e material</span>
+        <span class="etapa-status es-aguardando" id="st-bpl">Aguardando</span>
+        <button class="etapa-btn" onclick="irPara('bpl_banco_personagens_literarios.html')">Abrir</button>
+      </div>
+
+      <div class="etapa" id="etapa-corsi" data-etapa="corsi">
+        <span class="etapa-ico">📡</span>
+        <span class="etapa-nome">CORSI</span>
+        <span class="etapa-desc">Circulação e distribuição</span>
+        <span class="etapa-status es-aguardando" id="st-corsi">Aguardando</span>
+        <button class="etapa-btn" onclick="irPara('departamento_corsi_circulacao_redes.html')">Abrir</button>
+      </div>
+
+      <div class="etapa" id="etapa-post" data-etapa="post">
+        <span class="etapa-ico">🌐</span>
+        <span class="etapa-nome">Publicação</span>
+        <span class="etapa-desc">Redes, TV Web e Rádio</span>
+        <span class="etapa-status es-aguardando" id="st-post">Aguardando</span>
+        <button class="etapa-btn" onclick="irPara('expedicao_editorial.html')">Abrir</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LAYOUT ADMIN/HETERO -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;" class="admin-only hetero-only">
+
+    <!-- NOTIFICAÇÕES -->
+    <div class="notif-box">
+      <h3>🔔 Notificações <span class="notif-badge" id="notifCount">0</span></h3>
+      <div class="notifs-lista" id="notifLista">
+        <span class="notif-vazia">Nenhuma notificação ainda.</span>
+      </div>
+    </div>
+
+    <!-- LOG -->
+    <div class="log-box admin-only">
+      <h3>📋 Log de atividades</h3>
+      <div class="log-lista" id="logLista">
+        <span class="log-item log-info">[sistema] Linha de produção iniciada. Aguardando material OHE.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CORSI PANEL — Admin e Hetero -->
+  <div class="corsi-box admin-only hetero-only">
+    <h3>📡 CORSI — Central de Recados e Distribuição</h3>
+    <div class="corsi-destinos">
+      <div class="corsi-dest">
+        <h4>🎵 Maestro Aaron</h4>
+        <p>SIGMAL Music — seleciona compositor e produz trilha sonora para a obra.</p>
+        <button class="btn-recado btn-aaron" onclick="enviarRecado('aaron')">
+          📨 Enviar recado ao Maestro Aaron
+        </button>
+      </div>
+      <div class="corsi-dest">
+        <h4>🎭 Charlton Moisés Heston</h4>
+        <p>Núcleo N / BPL — separa elenco e produz material de apoio para a obra.</p>
+        <button class="btn-recado btn-charlton" onclick="enviarRecado('charlton')">
+          📨 Enviar recado ao Charlton
+        </button>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;">Canais de publicação</div>
+      <div class="corsi-canais" id="canaisGrid">
+        <button class="canal-btn" data-canal="instagram" onclick="toggleCanal(this)">📸 Instagram</button>
+        <button class="canal-btn" data-canal="facebook" onclick="toggleCanal(this)">👥 Facebook</button>
+        <button class="canal-btn" data-canal="youtube" onclick="toggleCanal(this)">▶️ YouTube</button>
+        <button class="canal-btn" data-canal="tiktok" onclick="toggleCanal(this)">🎵 TikTok</button>
+        <button class="canal-btn" data-canal="tv" onclick="toggleCanal(this)">📺 TV Web</button>
+        <button class="canal-btn" data-canal="radio" onclick="toggleCanal(this)">📻 Rádio Web</button>
+        <button class="canal-btn" data-canal="spotify" onclick="toggleCanal(this)">🎧 Spotify</button>
+        <button class="canal-btn" data-canal="amazon" onclick="toggleCanal(this)">📦 Amazon</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATERIAL PRODUZIDO -->
+  <div class="material-box">
+    <h3>📦 Material produzido nesta sessão</h3>
+    <div class="material-grid" id="materialGrid">
+      <div style="color:var(--muted);font-style:italic;font-size:.85rem;">Nenhum material produzido ainda.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let perfilAtual='admin';
+let notificacoes=[];
+let logItens=[];
+let materiais=[];
+let canaisAtivos=[];
+let linhaRodando=false;
+
+// ── PERFIL ──────────────────────────────────────────────────────────────────
+function setPerfil(p){
+  perfilAtual=p;
+  document.body.className='perfil-'+p;
+  ['admin','hetero','wagner'].forEach(k=>{
+    $('btn'+k.charAt(0).toUpperCase()+k.slice(1)).className=
+      'perfil-btn'+(p===k?' ativo-'+k:'');
+  });
+  addLog(`Perfil alterado para: ${p.toUpperCase()}`,'info');
+}
+
+// ── IMPORTAR OHE ────────────────────────────────────────────────────────────
+function importarOHE(){
+  const chaves=['ohe_catapulta_lapidar','lapidar_preparacao_editora',
+                'ohe_texto_limpo_saida','lapidar_obra_texto','obra_texto'];
+  for(const k of chaves){
+    const v=localStorage.getItem(k);
+    if(v&&v.trim()){
+      $('oheTexto').value=v;
+      $('statusTxt').textContent='✓ Material importado do OHE via localStorage.';
+      $('statusDot').className='status-dot ativo';
+      addLog(`Material importado do OHE via chave: ${k}`,'ok');
+      return;
+    }
+  }
+  $('statusTxt').textContent='Nenhum material encontrado no localStorage do OHE.';
+  addLog('Nenhum material OHE encontrado no localStorage.','warn');
+}
+
+function limparEntrada(){
+  $('oheTexto').value='';
+  $('statusTxt').textContent='Aguardando material do OHE.';
+  $('statusDot').className='status-dot';
+}
+
+// ── DISPARAR LINHA ──────────────────────────────────────────────────────────
+async function dispararLinha(){
+  const texto=$('oheTexto').value.trim();
+  if(!texto){
+    $('statusTxt').textContent='⚠️ Cole o material antes de disparar.';
+    return;
+  }
+  if(linhaRodando) return;
+  linhaRodando=true;
+  $('btnDisparar').disabled=true;
+  $('statusDot').className='status-dot processando';
+
+  const tipo=$('tipoMaterial').value;
+  const origem=$('origemPerfil').value;
+  const trilha=$('trilhaSonora').value;
+
+  // salvar no localStorage para os módulos lerem
+  localStorage.setItem('lapidar_obra_texto',texto);
+  localStorage.setItem('linha_producao_tipo',tipo);
+  localStorage.setItem('linha_producao_origem',origem);
+
+  addLog(`Linha de produção disparada por: ${origem.toUpperCase()} | Tipo: ${tipo}`,'ok');
+  addNotif('🚀','Linha iniciada',`Material de ${origem} na fila — tipo: ${tipo}`);
+
+  // ETAPA 1: OHE
+  await rodarEtapa('ohe','Recepção OHE','Material recebido e catalogado',400);
+
+  // ETAPA 2: GRAMADOR
+  await rodarEtapa('gram','Dias Gramador','Diagramação em processamento...',1200,
+    ()=>adicionarMaterial('diagramado',`Obra diagramada — ${tipo}`,'Miolo editorial pronto para revisão'));
+
+  // ETAPA 3: CAPA
+  await rodarEtapa('capa','OKapista','Criando capa da obra...',900,
+    ()=>adicionarMaterial('capa',`Capa gerada — ${tipo}`,'Capa editorial pronta para download'));
+
+  // ETAPA 4: SILOS
+  await rodarEtapa('silo','Silos Multimídia','Processando áudio, vídeo, HQ...',1500,
+    ()=>adicionarMaterial('silo','Pacote multimídia','Conteúdo distribuído nos silos'));
+
+  // ETAPA 5: SIGMAL (se trilha)
+  if(trilha==='sim'||trilha==='avaliar'){
+    await rodarEtapa('sigmal','SIGMAL Music','Notificando Maestro Aaron...',800);
+    await enviarRecadoAuto('aaron', `Nova obra de ${origem} precisa de trilha sonora — tipo: ${tipo}`);
+  } else {
+    setEtapa('sigmal','concluida','Trilha não necessária');
+  }
+
+  // ETAPA 6: BPL/NÚCLEO N
+  await rodarEtapa('bpl','Núcleo N / BPL','Notificando Charlton...',800);
+  await enviarRecadoAuto('charlton',`Nova obra de ${origem} — separar elenco e material de apoio. Tipo: ${tipo}`);
+
+  // ETAPA 7: CORSI
+  await rodarEtapa('corsi','CORSI','Preparando distribuição...',700);
+
+  // ETAPA 8: PUBLICAÇÃO
+  await rodarEtapa('post','Publicação','Distribuindo nos canais ativos...',600,
+    ()=>adicionarMaterial('social','Publicação programada',`Canais: ${canaisAtivos.length>0?canaisAtivos.join(', '):'Aguardando seleção'}`));
+
+  // CONCLUÍDO
+  $('statusDot').className='status-dot ativo';
+  $('statusTxt').textContent='✅ Linha de produção concluída com sucesso!';
+  addLog('Linha de produção concluída.','ok');
+  addNotif('✅','Produção concluída',`Obra de ${origem} processada em todos os estágios.`);
+  $('btnDisparar').disabled=false;
+  linhaRodando=false;
+}
+
+async function rodarEtapa(id, nome, msg, delay, callback){
+  setEtapa(id,'processando','Processando...');
+  addLog(`[${nome}] Iniciando...`,'info');
+  await esperar(delay);
+  setEtapa(id,'concluida','Concluído ✓');
+  addLog(`[${nome}] ${msg}`,'ok');
+  addNotif('✓',nome,msg);
+  if(callback) callback();
+}
+
+function setEtapa(id, estado, statusTxt){
+  const el=$('etapa-'+id);
+  const st=$('st-'+id);
+  if(!el||!st) return;
+  el.className='etapa '+estado;
+  st.className='etapa-status es-'+estado;
+  st.textContent=statusTxt;
+}
+
+function esperar(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+// ── RECADOS ─────────────────────────────────────────────────────────────────
+function enviarRecado(dest){
+  const texto=$('oheTexto').value.trim()||'material em produção';
+  const msgs={
+    aaron:`Maestro Aaron, nova obra chegou para avaliação de trilha sonora: "${texto.substring(0,80)}..." — verifique a fila de produção.`,
+    charlton:`Charlton Moisés Heston, nova obra para separar elenco e produzir material de apoio: "${texto.substring(0,80)}..." — acesse o BPL.`
+  };
+  const nomes={aaron:'Maestro Aaron (SIGMAL Music)',charlton:'Charlton Moisés Heston (Núcleo N/BPL)'};
+  localStorage.setItem('recado_'+dest, JSON.stringify({
+    msg:msgs[dest], ts:new Date().toISOString(), lido:false
+  }));
+  addLog(`[CORSI] Recado enviado para: ${nomes[dest]}`,'ok');
+  addNotif('📨','Recado enviado',`Para: ${nomes[dest]}`);
+  alert(`✓ Recado enviado para ${nomes[dest]}!\n\n"${msgs[dest]}"`);
+}
+
+async function enviarRecadoAuto(dest, msg){
+  localStorage.setItem('recado_'+dest, JSON.stringify({
+    msg, ts:new Date().toISOString(), lido:false, auto:true
+  }));
+  addLog(`[CORSI AUTO] Recado automático para: ${dest.toUpperCase()}`,'ok');
+  addNotif('📨',`Recado → ${dest.charAt(0).toUpperCase()+dest.slice(1)}`,msg.substring(0,60)+'...');
+}
+
+// ── CANAIS ───────────────────────────────────────────────────────────────────
+function toggleCanal(btn){
+  const canal=btn.dataset.canal;
+  btn.classList.toggle('ativo');
+  if(btn.classList.contains('ativo')) canaisAtivos.push(canal);
+  else canaisAtivos=canaisAtivos.filter(c=>c!==canal);
+  addLog(`Canal ${btn.classList.contains('ativo')?'ativado':'desativado'}: ${canal}`,'info');
+}
+
+// ── MATERIAL ─────────────────────────────────────────────────────────────────
+function adicionarMaterial(tipo, nome, desc){
+  materiais.push({tipo,nome,desc,ts:new Date().toLocaleTimeString('pt-BR')});
+  renderMaterial();
+}
+function renderMaterial(){
+  const grid=$('materialGrid');
+  if(!materiais.length){grid.innerHTML='<div style="color:var(--muted);font-style:italic;font-size:.85rem;">Nenhum material produzido ainda.</div>';return;}
+  const tipos={diagramado:'mt-diagramado',capa:'mt-capa',silo:'mt-silo',social:'mt-social'};
+  const labels={diagramado:'Diagramado',capa:'Capa',silo:'Silo',social:'Social'};
+  grid.innerHTML=materiais.map(m=>`
+    <div class="material-item">
+      <div class="material-tipo ${tipos[m.tipo]||'mt-silo'}">${labels[m.tipo]||m.tipo} · ${m.ts}</div>
+      <div class="material-nome">${m.nome}</div>
+      <div class="material-desc">${m.desc}</div>
+      <div class="material-acoes">
+        <button class="btn-mat">📋 Copiar</button>
+        <button class="btn-mat">↓ Baixar</button>
+      </div>
+    </div>`).join('');
+}
+
+// ── NOTIFICAÇÕES ──────────────────────────────────────────────────────────────
+function addNotif(ico, titulo, msg){
+  notificacoes.unshift({ico,titulo,msg,ts:new Date().toLocaleTimeString('pt-BR')});
+  if(notificacoes.length>20) notificacoes.pop();
+  renderNotifs();
+}
+function renderNotifs(){
+  const lista=$('notifLista');
+  const count=$('notifCount');
+  if(!lista||!count) return;
+  count.textContent=String(notificacoes.length);
+  if(!notificacoes.length){lista.innerHTML='<span class="notif-vazia">Nenhuma notificação ainda.</span>';return;}
+  lista.innerHTML=notificacoes.map(n=>`
+    <div class="notif-item">
+      <span class="notif-ico">${n.ico}</span>
+      <div class="notif-corpo">
+        <div class="notif-titulo">${n.titulo}</div>
+        <div class="notif-msg">${n.msg}</div>
+      </div>
+      <span class="notif-ts">${n.ts}</span>
+    </div>`).join('');
+}
+
+// ── LOG ───────────────────────────────────────────────────────────────────────
+function addLog(msg, tipo='info'){
+  const ts=new Date().toLocaleTimeString('pt-BR');
+  logItens.unshift({msg,tipo,ts});
+  if(logItens.length>50) logItens.pop();
+  renderLog();
+}
+function renderLog(){
+  const lista=$('logLista');
+  if(!lista) return;
+  lista.innerHTML=logItens.map(l=>
+    `<span class="log-item log-${l.tipo}">[${l.ts}] ${l.msg}</span>`
+  ).join('');
+}
+
+// ── NAVEGAÇÃO ─────────────────────────────────────────────────────────────────
+function irPara(url){
+  // salvar texto no localStorage antes de navegar
+  const texto=$('oheTexto').value.trim();
+  if(texto) localStorage.setItem('lapidar_obra_texto',texto);
+  window.location.href=url;
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+// tentar importar automaticamente ao carregar
+window.addEventListener('load',()=>{
+  importarOHE();
+  renderMaterial();
+  renderNotifs();
+  renderLog();
+});
+</script>
+</body>
+</html>
