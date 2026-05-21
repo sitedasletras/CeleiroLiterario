@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site das Letras — Edições Literárias & Multimídia</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ouro:#C9A84C;--branco-perola:#F5F0E8;--cinza-suave:#9CA3AF;
+    --verde-nav:#16A34A;--vermelho-nav:#DC2626;
+    /* Site das Letras — azul escuro elegante */
+    --cor1:#060810;--cor2:#0A0E1C;--cor3:#0E1428;--cor4:#121A34;
+    /* Sala Editorial — azul médio */
+    --sala-editorial:#0E1830;
+    /* Sala Musical — azul-roxo */
+    --sala-musical:#140E2A;
+    /* Sala Visual — azul petróleo */
+    --sala-visual:#0A1620;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:linear-gradient(160deg,var(--cor1) 0%,var(--cor2) 35%,var(--cor3) 65%,var(--cor4) 100%);color:var(--branco-perola);font-family:'Cormorant Garamond',serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(201,168,76,0.07) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(100,150,255,0.05) 0%,transparent 50%);pointer-events:none;z-index:0;}
+  .stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .star{position:absolute;background:white;border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite;opacity:var(--o,0.3);}
+  @keyframes twinkle{0%,100%{opacity:var(--o,0.3)}50%{opacity:0.05}}
+  .container{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:24px 16px 100px;}
+
+  .btn-voltar{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(201,168,76,0.3);color:var(--ouro);padding:10px 18px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;margin-bottom:24px;}
+  .btn-voltar:hover{background:rgba(201,168,76,0.1);}
+
+  /* Guia */
+  .guia-principal{background:rgba(0,0,0,0.4);border:1px solid rgba(201,168,76,0.2);border-radius:16px;padding:24px;display:flex;align-items:flex-start;gap:18px;margin-bottom:32px;}
+  .guia-foto{width:90px;height:90px;border-radius:50%;object-fit:cover;border:2px solid rgba(201,168,76,0.4);flex-shrink:0;}
+  .guia-tag{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:var(--ouro);opacity:0.7;margin-bottom:6px;}
+  .guia-nome{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--branco-perola);margin-bottom:4px;}
+  .guia-subtitulo{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--ouro);opacity:0.5;margin-bottom:10px;}
+  .guia-fala{font-size:14px;font-style:italic;color:var(--cinza-suave);line-height:1.7;}
+
+  /* Header */
+  .dept-header{text-align:center;margin-bottom:32px;}
+  .dept-subtitulo{font-family:'Cinzel',serif;font-size:10px;letter-spacing:4px;color:var(--ouro);opacity:0.7;margin-bottom:10px;}
+  .dept-titulo{font-family:'Playfair Display',serif;font-size:clamp(24px,6vw,38px);font-weight:900;color:var(--branco-perola);margin-bottom:4px;}
+  .dept-titulo-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--cinza-suave);margin-bottom:8px;}
+  .dept-desc{font-style:italic;font-size:13px;color:var(--cinza-suave);line-height:1.7;max-width:440px;margin:0 auto;}
+  .linha-divisora{width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--ouro),transparent);margin:16px auto;}
+
+  /* Salas */
+  .secao{margin-bottom:24px;}
+  .secao-titulo{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;color:var(--ouro);opacity:0.7;margin-bottom:14px;border-left:2px solid var(--ouro);padding-left:12px;}
+
+  .sala-card{border-radius:16px;padding:24px;border:1px solid rgba(255,255,255,0.06);margin-bottom:16px;transition:all 0.3s ease;}
+  .sala-card:hover{border-color:rgba(201,168,76,0.2);box-shadow:0 8px 30px rgba(0,0,0,0.3);}
+
+  .sala-editorial{background:linear-gradient(135deg,var(--sala-editorial) 0%,#162040 100%);}
+  .sala-musical{background:linear-gradient(135deg,var(--sala-musical) 0%,#1C1238 100%);}
+  .sala-visual{background:linear-gradient(135deg,var(--sala-visual) 0%,#0E2030 100%);}
+
+  .sala-header{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+  .sala-guia-foto{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid rgba(201,168,76,0.3);flex-shrink:0;}
+  .sala-guia-info{}
+  .sala-guia-tag{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--ouro);opacity:0.6;margin-bottom:3px;}
+  .sala-guia-nome{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--branco-perola);}
+  .sala-titulo{font-family:'Cinzel',serif;font-size:13px;letter-spacing:3px;color:var(--ouro);margin-bottom:8px;}
+  .sala-desc{font-size:13px;font-style:italic;color:var(--cinza-suave);line-height:1.6;margin-bottom:16px;}
+
+  /* Seções da sala */
+  .secoes-sala{display:flex;flex-direction:column;gap:8px;}
+  .secao-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;text-decoration:none;color:inherit;transition:all 0.3s ease;border:1px solid rgba(255,255,255,0.06);}
+  .secao-item:hover{border-color:rgba(201,168,76,0.3);transform:translateX(4px);}
+  .secao-item-livre{background:rgba(22,163,74,0.08);border-color:rgba(22,163,74,0.15);}
+  .secao-item-celeiro{background:rgba(201,168,76,0.06);border-color:rgba(201,168,76,0.1);}
+  .secao-item-info{}
+  .secao-item-badge{font-family:'Cinzel',serif;font-size:7px;letter-spacing:2px;padding:3px 8px;border-radius:10px;margin-bottom:4px;display:inline-block;}
+  .badge-livre{background:rgba(22,163,74,0.2);color:#86efac;}
+  .badge-celeiro{background:rgba(201,168,76,0.15);color:var(--ouro);}
+  .secao-item-nome{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--branco-perola);}
+  .secao-item-desc{font-size:11px;color:var(--cinza-suave);font-style:italic;}
+  .secao-seta{color:var(--ouro);opacity:0.5;font-size:16px;transition:all 0.3s ease;}
+  .secao-item:hover .secao-seta{opacity:1;transform:translateX(3px);}
+
+  .nav-rodape{display:flex;flex-direction:column;gap:10px;margin-top:20px;}
+  .btn-reclamacao{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.25);color:#FCA5A5;padding:12px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;}
+  .btn-reclamacao:hover{background:rgba(220,38,38,0.2);}
+  .btn-sair{display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:1px solid rgba(156,163,175,0.2);color:var(--cinza-suave);padding:12px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;}
+  .btn-sair:hover{border-color:rgba(220,38,38,0.4);color:#FCA5A5;}
+  .rodape-inst{text-align:center;margin-top:20px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--ouro);opacity:0.3;}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="container">
+
+  <a href="celeiro_hall.html" class="btn-voltar">← Hall do Celeiro</a>
+
+  <!-- Guia: Harmony -->
+  <div class="guia-principal">
+    <img class="guia-foto" src="file_00000000bc3071fb999124a47a93c7dd_3.png" alt="Harmony" onerror="this.style.display='none'">
+    <div>
+      <p class="guia-tag">✦ HALL LITERÁRIO ✦</p>
+      <p class="guia-nome">Harmony</p>
+      <p class="guia-subtitulo">GUIA DO SITE DAS LETRAS</p>
+      <p class="guia-fala">Bem-vindo ao Site das Letras — o museu vivo das obras do Celeiro. Aqui você encontra livros, músicas, audiovisual e as biografias de cada heterônimo. Escolha uma sala para continuar.</p>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="dept-header">
+    <p class="dept-subtitulo">✦ PORTAIS PRINCIPAIS ✦</p>
+    <h1 class="dept-titulo">Site das Letras</h1>
+    <p class="dept-titulo-sub">Edições Literárias & Multimídia</p>
+    <div class="linha-divisora"></div>
+    <p class="dept-desc">Local de exposição — como um museu que apresenta obras. Livros, músicas, audiovisual e biografias de cada classe heteronômica.</p>
+  </div>
+
+  <!-- Salas -->
+  <div class="secao">
+    <p class="secao-titulo">AS TRÊS SALAS</p>
+
+    <!-- Sala Editorial -->
+    <div class="sala-card sala-editorial">
+      <div class="sala-header">
+        <img class="sala-guia-foto" src="file_00000000bc3071fb999124a47a93c7dd_4.png" alt="Fernando Peçanha" onerror="this.style.display='none'">
+        <div class="sala-guia-info">
+          <p class="sala-guia-tag">✦ EDITORIAL</p>
+          <p class="sala-guia-nome">Fernando Peçanha</p>
+        </div>
+      </div>
+      <p class="sala-titulo">SALA EDITORIAL</p>
+      <p class="sala-desc">Livros, biografias, amostras e selos editoriais do Site das Letras.</p>
+      <div class="secoes-sala">
+        <a href="sala_editorial_biografias.html" class="secao-item secao-item-livre">
+          <div class="secao-item-info">
+            <span class="secao-item-badge badge-livre">ACESSO LIVRE</span>
+            <p class="secao-item-nome">📖 Biografias</p>
+            <p class="secao-item-desc">Versão pública das biografias de autores do Site das Letras</p>
+          </div>
+          <span class="secao-seta">→</span>
+        </a>
+        <a href="sala_editorial_livros.html" class="secao-item secao-item-celeiro">
+          <div class="secao-item-info">
+            <span class="secao-item-badge badge-celeiro">ACESSO CELEIRO</span>
+            <p class="secao-item-nome">📚 Livraria</p>
+            <p class="secao-item-desc">Catálogo completo — títulos, sinopses, preços e links de aquisição</p>
+          </div>
+          <span class="secao-seta">→</span>
+        </a>
+        <a href="sala_editorial_amostras.html" class="secao-item secao-item-celeiro">
+          <div class="secao-item-info">
+            <span class="secao-item-badge badge-celeiro">ACESSO CELEIRO</span>
+            <p class="secao-item-nome">📄 Amostras</p>
+            <p class="secao-item-desc">Leitura de até 10 páginas de cada obra</p>
+          </div>
+          <span class="secao-seta">→</span>
+        </a>
+        <a href="sala_editorial_selos.html" class="secao-item secao-item-celeiro">
+          <div class="secao-item-info">
+            <span class="secao-item-badge badge-celeiro">ACESSO CELEIRO</span>
+            <p class="secao-item-nome">🏷️ Selos</p>
+            <p class="secao-item-desc">Selos autorais e editoriais — identidade visual e posicionamento</p>
+          </div>
+          <span class="secao-seta">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sala Musical -->
+    <div class="sala-card sala-musical">
+      <div class="sala-header">
+        <img class="sala-guia-foto" src="file_00000000bc3071fb999124a47a93c7dd_5.png" alt="Maestro Aaron" onerror="this.style.display='none'">
+        <div class="sala-guia-info">
+          <p class="sala-guia-tag">✦ MUSICAL</p>
+          <p class="sala-guia-nome">Maestro Aaron</p>
+        </div>
+      </div>
+      <p class="sala-titulo">SALA MUSICAL</p>
+      <p class="sala-desc">Músicas, artistas, biografias musicais e selos da SIGMAL Music.</p>
+      <div class="secoes-sala">
+        <a href="sala_musical_musicas.html" class="secao-item secao-item-celeiro">
+          <div class="secao-item-info">
+            <span class="secao-item-badge badge-celeiro">ACESSO CELEIRO</span>
+            <p class="secao-item-nome">🎵 Músicas</p>
+            <p class="secao-item-desc">Catálogo musical e obras sonoras</p>
+          </div>
+          <span class="secao-seta">→</span>
+        </a>
+        <a href="sala_musical_biografias.html" class="secao-item secao-item-livre">
+          <div class="secao-item-info">
+            <span class="secao-item-badge badge-livre">ACESSO LIVRE</span>
+            <p class="secao-item-nome">🎤 Biografias Musicais</p>
+            <p class="secao-item-desc">Artistas, bandas, compositores e projetos musicais</p>
+          </div>
+          <span class="secao-seta">→</span>
+        </a>
+        <a href="sala_musical_selos.html" class="secao-item secao-item-celeiro">
+          <div class="secao-item-info">
+            <span class="secao-item-badge badge-celeiro">ACESSO CELEIRO</span>
+            <p class="secao-item-nome">🎼 Selos Musicais</p>
+            <p class="secao-item-desc">Selos SIGMAL Music por artista e estilo</p>
+          </div>
+          <span class="secao-seta">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sala Visual -->
+    <div class="sala-card sala-visual">
+      <div class="sala-header">
+        <img class="sala-guia-foto" src="file_0000000041fc71fbb55b41612ff59a3c.png" alt="Charlton Moisés Heston" onerror="this.style.display='none'">
+        <div class="sala-guia-info">
+          <p class="sala-guia-tag">✦ VISUAL</p>
+          <p class="sala-guia-nome">Charlton Moisés Heston</p>
+        </div>
+      </div>
+      <p class="sala-titulo">SALA VISUAL</p>
+      <p class="sala-desc">Videoclipes, produções cinematográficas e materiais audiovisuais.</p>
+      <div class="secoes-sala">
+        <a href="sala_visual_filmes.html" class="secao-item secao-item-celeiro">
+          <div class="secao-item-info">
+            <span class="secao-item-badge badge-celeiro">ACESSO CELEIRO</span>
+            <p class="secao-item-nome">🎬 Filmes</p>
+            <p class="secao-item-desc">Produções cinematográficas do Celeiro</p>
+          </div>
+          <span class="secao-seta">→</span>
+        </a>
+        <a href="sala_visual_videoclipes.html" class="secao-item secao-item-celeiro">
+          <div class="secao-item-info">
+            <span class="secao-item-badge badge-celeiro">ACESSO CELEIRO</span>
+            <p class="secao-item-nome">🎥 Videoclipes</p>
+            <p class="secao-item-desc">Produções musicais audiovisuais</p>
+          </div>
+          <span class="secao-seta">→</span>
+        </a>
+        <a href="difusao.html" class="secao-item secao-item-livre">
+          <div class="secao-item-info">
+            <span class="secao-item-badge badge-livre">ACESSO LIVRE</span>
+            <p class="secao-item-nome">📺 Web TV</p>
+            <p class="secao-item-desc">Programas e transmissões institucionais</p>
+          </div>
+          <span class="secao-seta">→</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-rodape">
+    <a href="cicile_reclamacao.html?departamento=Site%20das%20Letras" class="btn-reclamacao">⚑ Reclamação</a>
+    <a href="celeiro_entrada.html" class="btn-sair">✕ Sair do Celeiro</a>
+  </div>
+  <p class="rodape-inst">✦ CELEIRO LITERÁRIO · SITE DAS LETRAS EDIÇÕES LITERÁRIAS ✦</p>
+
+</div>
+<script>
+  const sc=document.getElementById('stars');
+  for(let i=0;i<50;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--o:${Math.random()*0.3+0.05};animation-delay:${Math.random()*4}s;`;sc.appendChild(s);}
+</script>
+</body>
+</html>
