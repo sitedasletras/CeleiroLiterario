@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Difusão — Web TV & Web Rádio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+  :root{--ouro:#C9A84C;--branco-perola:#F5F0E8;--cinza-suave:#9CA3AF;--verde-nav:#16A34A;--vermelho-nav:#DC2626;--cor1:#100606;--cor2:#1C0A08;--cor3:#280C0A;--cor4:#340E0C;--sec-tv:#1A0808;--sec-radio:#200C06;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:linear-gradient(160deg,var(--cor1) 0%,var(--cor2) 35%,var(--cor3) 65%,var(--cor4) 100%);color:var(--branco-perola);font-family:'Cormorant Garamond',serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(201,168,76,0.07) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(255,100,100,0.04) 0%,transparent 50%);pointer-events:none;z-index:0;}
+  .stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .star{position:absolute;background:white;border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite;opacity:var(--o,0.3);}
+  @keyframes twinkle{0%,100%{opacity:var(--o,0.3)}50%{opacity:0.05}}
+  .container{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:24px 16px 100px;}
+  .btn-voltar{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(201,168,76,0.3);color:var(--ouro);padding:10px 18px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;margin-bottom:24px;}
+  .btn-voltar:hover{background:rgba(201,168,76,0.1);}
+  .dept-header{text-align:center;margin-bottom:32px;}
+  .dept-subtitulo{font-family:'Cinzel',serif;font-size:10px;letter-spacing:4px;color:var(--ouro);opacity:0.7;margin-bottom:10px;}
+  .dept-titulo{font-family:'Playfair Display',serif;font-size:clamp(26px,6vw,40px);font-weight:900;color:var(--branco-perola);margin-bottom:8px;}
+  .dept-desc{font-style:italic;font-size:14px;color:var(--cinza-suave);line-height:1.7;max-width:440px;margin:0 auto;}
+  .linha-divisora{width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--ouro),transparent);margin:16px auto;}
+  .aviso{background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:16px 20px;margin-bottom:28px;text-align:center;}
+  .aviso-texto{font-style:italic;font-size:14px;color:var(--cinza-suave);line-height:1.6;}
+  .aviso-texto strong{color:var(--ouro);font-style:normal;}
+  .secao{margin-bottom:24px;}
+  .secao-titulo{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;color:var(--ouro);opacity:0.7;margin-bottom:14px;border-left:2px solid var(--ouro);padding-left:12px;}
+  .canal-card{border-radius:16px;padding:24px;border:1px solid rgba(255,255,255,0.06);margin-bottom:16px;}
+  .canal-tv{background:linear-gradient(135deg,var(--sec-tv) 0%,#220A08 100%);}
+  .canal-radio{background:linear-gradient(135deg,var(--sec-radio) 0%,#280E06 100%);}
+  .canal-icone{font-size:48px;text-align:center;margin-bottom:16px;filter:drop-shadow(0 0 10px rgba(201,168,76,0.3));}
+  .canal-titulo{font-family:'Cinzel',serif;font-size:13px;letter-spacing:3px;color:var(--ouro);margin-bottom:6px;text-align:center;}
+  .canal-nome{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--branco-perola);margin-bottom:8px;text-align:center;}
+  .canal-desc{font-size:13px;font-style:italic;color:var(--cinza-suave);line-height:1.6;text-align:center;margin-bottom:18px;}
+  .servicos-lista{display:flex;flex-direction:column;gap:8px;}
+  .servico-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(0,0,0,0.2);border-radius:8px;border:1px solid rgba(201,168,76,0.1);}
+  .servico-icone{font-size:16px;flex-shrink:0;}
+  .servico-texto{font-size:13px;color:var(--cinza-suave);font-style:italic;}
+  .servico-texto strong{color:var(--branco-perola);font-style:normal;}
+  .btn-canal{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--verde-nav);color:white;padding:14px;border-radius:8px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;margin-top:16px;box-shadow:0 4px 20px rgba(22,163,74,0.3);}
+  .btn-canal:hover{background:#15803d;transform:translateY(-2px);}
+  .nav-rodape{display:flex;flex-direction:column;gap:10px;margin-top:20px;}
+  .btn-reclamacao{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.25);color:#FCA5A5;padding:12px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;}
+  .btn-reclamacao:hover{background:rgba(220,38,38,0.2);}
+  .btn-sair{display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:1px solid rgba(156,163,175,0.2);color:var(--cinza-suave);padding:12px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;}
+  .btn-sair:hover{border-color:rgba(220,38,38,0.4);color:#FCA5A5;}
+  .rodape-inst{text-align:center;margin-top:20px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--ouro);opacity:0.3;}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="container">
+  <a href="celeiro_hall.html" class="btn-voltar">← Hall do Celeiro</a>
+  <div class="dept-header">
+    <p class="dept-subtitulo">✦ COMPLEXO DE COMUNICAÇÃO ✦</p>
+    <h1 class="dept-titulo">Difusão</h1>
+    <div class="linha-divisora"></div>
+    <p class="dept-desc">Os canais oficiais de difusão do Celeiro Literário — Web TV e Web Rádio. Não são silos — são canais.</p>
+  </div>
+  <div class="aviso">
+    <p class="aviso-texto">A programação e distribuição de ambos os canais é gerenciada pela <strong>CORSI</strong>. O conteúdo é produzido nos <strong>Silos Multimídia</strong>.</p>
+  </div>
+  <div class="secao">
+    <p class="secao-titulo">CANAIS DE DIFUSÃO</p>
+    <div class="canal-card canal-tv">
+      <div class="canal-icone">📺</div>
+      <p class="canal-titulo">✦ CANAL AUDIOVISUAL ✦</p>
+      <p class="canal-nome">Web TV</p>
+      <p class="canal-desc">Canal televisivo oficial do Celeiro Literário — programas, transmissões e produções audiovisuais.</p>
+      <div class="servicos-lista">
+        <div class="servico-item"><span class="servico-icone">🎬</span><p class="servico-texto"><strong>Produções cinematográficas</strong> — roteiros e cenas do Silo Cinematográfico</p></div>
+        <div class="servico-item"><span class="servico-icone">🎥</span><p class="servico-texto"><strong>Videoclipes</strong> — produções musicais audiovisuais</p></div>
+        <div class="servico-item"><span class="servico-icone">🏛️</span><p class="servico-texto"><strong>Transmissões institucionais</strong> — programas e eventos do Celeiro</p></div>
+        <div class="servico-item"><span class="servico-icone">🗓️</span><p class="servico-texto"><strong>Grade programada</strong> — organizada pela CORSI</p></div>
+      </div>
+      <a href="#" class="btn-canal">▶ Acessar Web TV</a>
+    </div>
+    <div class="canal-card canal-radio">
+      <div class="canal-icone">📻</div>
+      <p class="canal-titulo">✦ CANAL SONORO ✦</p>
+      <p class="canal-nome">Web Rádio</p>
+      <p class="canal-desc">Canal sonoro oficial do Celeiro Literário — músicas, narrações, audiobooks e vinhetas culturais.</p>
+      <div class="servicos-lista">
+        <div class="servico-item"><span class="servico-icone">🎧</span><p class="servico-texto"><strong>Narrações e audiobooks</strong> — do Silo Sonoro</p></div>
+        <div class="servico-item"><span class="servico-icone">🎵</span><p class="servico-texto"><strong>Músicas e trilhas</strong> — do Silo Music</p></div>
+        <div class="servico-item"><span class="servico-icone">🎙️</span><p class="servico-texto"><strong>Vinhetas e chamadas</strong> — identidade sonora do Celeiro</p></div>
+        <div class="servico-item"><span class="servico-icone">🗓️</span><p class="servico-texto"><strong>Programação diária</strong> — organizada pela CORSI</p></div>
+      </div>
+      <a href="#" class="btn-canal">🎙 Acessar Web Rádio</a>
+    </div>
+  </div>
+  <div class="nav-rodape">
+    <a href="cicile_reclamacao.html?departamento=Difusao" class="btn-reclamacao">⚑ Reclamação</a>
+    <a href="celeiro_entrada.html" class="btn-sair">✕ Sair do Celeiro</a>
+  </div>
+  <p class="rodape-inst">✦ CELEIRO LITERÁRIO · SITE DAS LETRAS EDIÇÕES LITERÁRIAS ✦</p>
+</div>
+<script>
+  const sc=document.getElementById('stars');
+  for(let i=0;i<50;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--o:${Math.random()*0.3+0.05};animation-delay:${Math.random()*4}s;`;sc.appendChild(s);}
+</script>
+</body>
+</html>
