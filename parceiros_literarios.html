@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parceiros Culturais — Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+  :root{--ouro:#C9A84C;--branco-perola:#F5F0E8;--cinza-suave:#9CA3AF;--verde-nav:#16A34A;--vermelho-nav:#DC2626;--cor1:#0A0808;--cor2:#140C0A;--cor3:#1C100C;--cor4:#24140E;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:linear-gradient(160deg,var(--cor1) 0%,var(--cor2) 35%,var(--cor3) 65%,var(--cor4) 100%);color:var(--branco-perola);font-family:'Cormorant Garamond',serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(201,168,76,0.08) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(201,168,76,0.04) 0%,transparent 50%);pointer-events:none;z-index:0;}
+  .stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .star{position:absolute;background:white;border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite;opacity:var(--o,0.3);}
+  @keyframes twinkle{0%,100%{opacity:var(--o,0.3)}50%{opacity:0.05}}
+  .container{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:24px 16px 100px;}
+  .btn-voltar{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(201,168,76,0.3);color:var(--ouro);padding:10px 18px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;margin-bottom:24px;}
+  .btn-voltar:hover{background:rgba(201,168,76,0.1);}
+  .dept-header{text-align:center;margin-bottom:28px;}
+  .dept-subtitulo{font-family:'Cinzel',serif;font-size:10px;letter-spacing:4px;color:var(--ouro);opacity:0.7;margin-bottom:10px;}
+  .dept-titulo{font-family:'Playfair Display',serif;font-size:clamp(26px,6vw,40px);font-weight:900;color:var(--branco-perola);margin-bottom:8px;}
+  .dept-desc{font-style:italic;font-size:13px;color:var(--cinza-suave);line-height:1.7;max-width:440px;margin:0 auto;}
+  .linha-divisora{width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--ouro),transparent);margin:16px auto;}
+
+  /* Aviso editorial */
+  .aviso-editorial{background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.15);border-radius:12px;padding:16px 20px;margin-bottom:28px;text-align:center;}
+  .aviso-texto{font-style:italic;font-size:13px;color:var(--cinza-suave);line-height:1.6;}
+  .aviso-texto strong{color:var(--ouro);font-style:normal;}
+
+  /* Filtros de categoria */
+  .filtros{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+  .filtro-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--cinza-suave);padding:7px 14px;border-radius:20px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:1px;cursor:pointer;transition:all 0.3s ease;}
+  .filtro-btn:hover,.filtro-btn.ativo{background:rgba(201,168,76,0.15);border-color:var(--ouro);color:var(--ouro);}
+
+  .secao-titulo{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;color:var(--ouro);opacity:0.7;margin-bottom:16px;border-left:2px solid var(--ouro);padding-left:12px;}
+
+  /* Cards de parceiros */
+  .parceiros-lista{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;}
+
+  .parceiro-card{border-radius:16px;padding:22px;border:1px solid rgba(201,168,76,0.15);transition:all 0.3s ease;position:relative;overflow:hidden;}
+  .parceiro-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.04) 0%,transparent 60%);opacity:0;transition:opacity 0.3s ease;}
+  .parceiro-card:hover::before{opacity:1;}
+  .parceiro-card:hover{border-color:rgba(201,168,76,0.3);box-shadow:0 8px 30px rgba(0,0,0,0.3);}
+
+  .cat-livros{background:linear-gradient(135deg,#0E1A0A 0%,#162410 100%);}
+  .cat-formacao{background:linear-gradient(135deg,#0A0E1A 0%,#101624 100%);}
+  .cat-eventos{background:linear-gradient(135deg,#1A0A10 0%,#240E18 100%);}
+  .cat-ferramentas{background:linear-gradient(135deg,#1A100A 0%,#241808 100%);}
+
+  .parceiro-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+  .parceiro-badge{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;padding:4px 10px;border-radius:10px;}
+  .badge-livros{background:rgba(22,163,74,0.2);color:#86efac;}
+  .badge-formacao{background:rgba(100,150,255,0.15);color:#93C5FD;}
+  .badge-eventos{background:rgba(255,100,150,0.15);color:#FCA5A5;}
+  .badge-ferramentas{background:rgba(201,168,76,0.15);color:var(--ouro);}
+  .parceiro-tag{font-family:'Cinzel',serif;font-size:8px;letter-spacing:1px;color:var(--ouro);opacity:0.6;}
+
+  .parceiro-nome{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--branco-perola);margin-bottom:8px;}
+  .parceiro-desc{font-size:13px;color:var(--cinza-suave);font-style:italic;line-height:1.6;margin-bottom:14px;}
+
+  .parceiro-nota{background:rgba(255,255,255,0.04);border-left:2px solid var(--ouro);padding:10px 14px;border-radius:0 8px 8px 0;margin-bottom:14px;}
+  .parceiro-nota-texto{font-size:12px;color:var(--cinza-suave);font-style:italic;line-height:1.5;}
+  .parceiro-nota-texto strong{color:var(--ouro);font-style:normal;}
+
+  .btn-parceiro{display:inline-flex;align-items:center;gap:8px;background:var(--verde-nav);color:white;padding:11px 20px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;box-shadow:0 4px 15px rgba(22,163,74,0.2);}
+  .btn-parceiro:hover{background:#15803d;transform:translateY(-2px);}
+
+  /* Anúncios AdSense */
+  .adsense-box{background:rgba(0,0,0,0.2);border:1px dashed rgba(201,168,76,0.15);border-radius:12px;padding:20px;text-align:center;margin-bottom:24px;}
+  .adsense-titulo{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--ouro);opacity:0.5;margin-bottom:8px;}
+  .adsense-subtitulo{font-size:12px;color:var(--cinza-suave);font-style:italic;opacity:0.6;}
+
+  .nav-rodape{display:flex;flex-direction:column;gap:10px;margin-top:20px;}
+  .btn-reclamacao{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.25);color:#FCA5A5;padding:12px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;}
+  .btn-reclamacao:hover{background:rgba(220,38,38,0.2);}
+  .btn-sair{display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:1px solid rgba(156,163,175,0.2);color:var(--cinza-suave);padding:12px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;}
+  .btn-sair:hover{border-color:rgba(220,38,38,0.4);color:#FCA5A5;}
+  .rodape-inst{text-align:center;margin-top:20px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--ouro);opacity:0.3;}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="container">
+
+  <a href="celeiro_hall.html" class="btn-voltar">← Hall do Celeiro</a>
+
+  <div class="dept-header">
+    <p class="dept-subtitulo">✦ PARCEIROS ✦</p>
+    <h1 class="dept-titulo">Parceiros Culturais</h1>
+    <div class="linha-divisora"></div>
+    <p class="dept-desc">Empresas e iniciativas alinhadas ao universo literário, artístico e cultural — nacionais e internacionais.</p>
+  </div>
+
+  <div class="aviso-editorial">
+    <p class="aviso-texto">Este espaço é dedicado a <strong>parceiros que respeitam a palavra</strong>. Todo parceiro passou por curadoria editorial. <strong>Nenhum anúncio de jogos de azar, conteúdo adulto ou vulgarização</strong> tem lugar neste Celeiro.</p>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filtros">
+    <button class="filtro-btn ativo" onclick="filtrar(this,'todos')">Todos</button>
+    <button class="filtro-btn" onclick="filtrar(this,'livros')">📚 Livrarias</button>
+    <button class="filtro-btn" onclick="filtrar(this,'formacao')">🎓 Formação</button>
+    <button class="filtro-btn" onclick="filtrar(this,'eventos')">🎭 Eventos</button>
+    <button class="filtro-btn" onclick="filtrar(this,'ferramentas')">✏️ Ferramentas</button>
+  </div>
+
+  <!-- Livrarias & Plataformas -->
+  <p class="secao-titulo">📚 LIVRARIAS & PLATAFORMAS LITERÁRIAS</p>
+  <div class="parceiros-lista">
+
+    <div class="parceiro-card cat-livros" data-cat="livros">
+      <div class="parceiro-header">
+        <span class="parceiro-badge badge-livros">LIVRARIA DIGITAL</span>
+        <span class="parceiro-tag">✦ PARCEIRO</span>
+      </div>
+      <p class="parceiro-nome">UICLAP — Loja Oficial</p>
+      <p class="parceiro-desc">A plataforma brasileira de autopublicação por impressão sob demanda. Conecta autores diretamente ao mercado, sem custo de publicação e sem tiragem mínima.</p>
+      <div class="parceiro-nota">
+        <p class="parceiro-nota-texto">✦ <strong>Nossos livros estão disponíveis aqui.</strong> Você compra diretamente do autor.</p>
+      </div>
+      <a href="https://uiclap.com" target="_blank" class="btn-parceiro">Visitar a Loja UICLAP →</a>
+    </div>
+
+    <div class="parceiro-card cat-livros" data-cat="livros">
+      <div class="parceiro-header">
+        <span class="parceiro-badge badge-livros">MARKETPLACE</span>
+        <span class="parceiro-tag">✦ PARCEIRO</span>
+      </div>
+      <p class="parceiro-nome">Hotmart + UICLAP</p>
+      <p class="parceiro-desc">A parceria entre a Hotmart e a UICLAP permite a venda de livros físicos em uma das maiores plataformas de produtos digitais do Brasil e do mundo.</p>
+      <div class="parceiro-nota">
+        <p class="parceiro-nota-texto">✦ <strong>Amplia o alcance</strong> dos nossos títulos para o público da Hotmart.</p>
+      </div>
+      <a href="https://hotmart.com" target="_blank" class="btn-parceiro">Conhecer a parceria →</a>
+    </div>
+
+    <div class="parceiro-card cat-livros" data-cat="livros">
+      <div class="parceiro-header">
+        <span class="parceiro-badge badge-livros">REDE DE AUTORES</span>
+        <span class="parceiro-tag">✦ PARCEIRO</span>
+      </div>
+      <p class="parceiro-nome">Clube de Autores</p>
+      <p class="parceiro-desc">A maior rede social para escritores da América Latina, com publicação, venda e distribuição de obras em livrarias de todo o Brasil.</p>
+      <div class="parceiro-nota">
+        <p class="parceiro-nota-texto">✦ <strong>Canal alternativo</strong> de distribuição para nossas obras.</p>
+      </div>
+      <a href="https://clubedeautores.com.br" target="_blank" class="btn-parceiro">Acessar Clube de Autores →</a>
+    </div>
+
+  </div>
+
+  <!-- Formação -->
+  <p class="secao-titulo">🎓 EDUCAÇÃO, ESCRITA & ARTES</p>
+  <div class="parceiros-lista">
+
+    <div class="parceiro-card cat-formacao" data-cat="formacao">
+      <div class="parceiro-header">
+        <span class="parceiro-badge badge-formacao">FORMAÇÃO</span>
+        <span class="parceiro-tag">✦ INDICADO</span>
+      </div>
+      <p class="parceiro-nome">Oficinas de Escrita Criativa</p>
+      <p class="parceiro-desc">Plataformas e escolas de escrita criativa, poesia, dramaturgia e narrativa. Formação literária séria para escritores em desenvolvimento.</p>
+      <div class="parceiro-nota">
+        <p class="parceiro-nota-texto">✦ Adicione aqui um parceiro real de cursos literários com seu link de afiliado.</p>
+      </div>
+      <a href="#" class="btn-parceiro">Conhecer os cursos →</a>
+    </div>
+
+  </div>
+
+  <!-- Eventos -->
+  <p class="secao-titulo">🎭 EVENTOS & FESTIVAIS LITERÁRIOS</p>
+  <div class="parceiros-lista">
+
+    <div class="parceiro-card cat-eventos" data-cat="eventos">
+      <div class="parceiro-header">
+        <span class="parceiro-badge badge-eventos">CULTURA</span>
+        <span class="parceiro-tag">✦ INDICADO</span>
+      </div>
+      <p class="parceiro-nome">Eventos & Festivais Literários</p>
+      <p class="parceiro-desc">Feiras de livros, festivais de poesia, bienais e encontros literários. Onde autores e leitores se encontram ao vivo e em páginas.</p>
+      <div class="parceiro-nota">
+        <p class="parceiro-nota-texto">✦ Adicione aqui links de eventos parceiros com sua comissão de afiliado.</p>
+      </div>
+      <a href="#" class="btn-parceiro">Ver próximos eventos →</a>
+    </div>
+
+  </div>
+
+  <!-- Ferramentas -->
+  <p class="secao-titulo">✏️ FERRAMENTAS EDITORIAIS</p>
+  <div class="parceiros-lista">
+
+    <div class="parceiro-card cat-ferramentas" data-cat="ferramentas">
+      <div class="parceiro-header">
+        <span class="parceiro-badge badge-ferramentas">PRODUÇÃO</span>
+        <span class="parceiro-tag">✦ INDICADO</span>
+      </div>
+      <p class="parceiro-nome">Ferramentas Editoriais</p>
+      <p class="parceiro-desc">Softwares, papelarias especializadas e serviços de diagramação, revisão e design de capas para autores independentes.</p>
+      <div class="parceiro-nota">
+        <p class="parceiro-nota-texto">✦ Adicione aqui parceiros de ferramentas editoriais com seu link afiliado.</p>
+      </div>
+      <a href="#" class="btn-parceiro">Conhecer as ferramentas →</a>
+    </div>
+
+  </div>
+
+  <!-- Espaço AdSense -->
+  <div class="adsense-box">
+    <p class="adsense-titulo">✦ ANÚNCIOS CURADOS</p>
+    <p class="adsense-subtitulo">Exibidos automaticamente pelo Google AdSense — filtrados por categoria cultural e literária.<br>Categorias bloqueadas: jogos de azar · conteúdo adulto · política · bebidas alcoólicas.</p>
+  </div>
+
+  <div class="nav-rodape">
+    <a href="cicile_reclamacao.html?departamento=Parceiros%20Culturais" class="btn-reclamacao">⚑ Reclamação</a>
+    <a href="celeiro_entrada.html" class="btn-sair">✕ Sair do Celeiro</a>
+  </div>
+  <p class="rodape-inst">✦ CELEIRO LITERÁRIO · SITE DAS LETRAS EDIÇÕES LITERÁRIAS ✦</p>
+
+</div>
+<script>
+  const sc=document.getElementById('stars');
+  for(let i=0;i<50;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--o:${Math.random()*0.3+0.05};animation-delay:${Math.random()*4}s;`;sc.appendChild(s);}
+
+  function filtrar(btn,cat){
+    document.querySelectorAll('.filtro-btn').forEach(b=>b.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    document.querySelectorAll('.parceiro-card').forEach(card=>{
+      if(cat==='todos'||card.dataset.cat===cat){
+        card.style.display='block';
+      }else{
+        card.style.display='none';
+      }
+    });
+  }
+</script>
+</body>
+</html>
