@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Máquina de Geração de Dados — Celeiro Literário</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+  :root{--ouro:#C9A84C;--branco-perola:#F5F0E8;--cinza-suave:#9CA3AF;--verde-nav:#16A34A;--vermelho-nav:#DC2626;--amarelo-nav:#CA8A04;--cor1:#060A10;--cor2:#0A0E18;--cor3:#0E1422;--cor4:#121A2C;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:linear-gradient(160deg,var(--cor1) 0%,var(--cor2) 35%,var(--cor3) 65%,var(--cor4) 100%);color:var(--branco-perola);font-family:'Cormorant Garamond',serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(201,168,76,0.08) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(100,150,255,0.04) 0%,transparent 50%);pointer-events:none;z-index:0;}
+  .stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .star{position:absolute;background:white;border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite;opacity:var(--o,0.3);}
+  @keyframes twinkle{0%,100%{opacity:var(--o,0.3)}50%{opacity:0.05}}
+  .container{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:24px 16px 100px;}
+  .btn-voltar{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(201,168,76,0.3);color:var(--ouro);padding:10px 18px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;margin-bottom:24px;}
+  .btn-voltar:hover{background:rgba(201,168,76,0.1);}
+  .dept-header{text-align:center;margin-bottom:28px;}
+  .dept-subtitulo{font-family:'Cinzel',serif;font-size:10px;letter-spacing:4px;color:var(--ouro);opacity:0.7;margin-bottom:10px;}
+  .dept-titulo{font-family:'Playfair Display',serif;font-size:clamp(22px,5vw,36px);font-weight:900;color:var(--branco-perola);margin-bottom:8px;}
+  .dept-desc{font-style:italic;font-size:13px;color:var(--cinza-suave);line-height:1.7;max-width:440px;margin:0 auto;}
+  .linha-divisora{width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--ouro),transparent);margin:16px auto;}
+
+  /* Formulário */
+  .form-box{background:rgba(0,0,0,0.35);border:1px solid rgba(201,168,76,0.15);border-radius:16px;padding:22px;margin-bottom:20px;}
+  .form-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--ouro);opacity:0.7;margin-bottom:10px;display:block;}
+
+  /* Seletor de categoria */
+  .categoria-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px;}
+  .categoria-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--cinza-suave);padding:14px;border-radius:12px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;cursor:pointer;transition:all 0.3s ease;text-align:center;}
+  .categoria-btn:hover,.categoria-btn.ativo{background:rgba(201,168,76,0.15);border-color:var(--ouro);color:var(--ouro);}
+  .categoria-btn .cat-icone{font-size:24px;display:block;margin-bottom:6px;}
+  .categoria-btn .cat-nome{display:block;}
+
+  /* Campos */
+  .campos-grid{display:flex;flex-direction:column;gap:14px;margin-bottom:20px;}
+  .campo-grupo{display:flex;flex-direction:column;gap:6px;}
+  .form-input{width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:12px 14px;color:var(--branco-perola);font-family:'Cormorant Garamond',serif;font-size:14px;transition:border-color 0.3s ease;}
+  .form-input::placeholder{color:rgba(156,163,175,0.4);font-style:italic;}
+  .form-input:focus{outline:none;border-color:rgba(201,168,76,0.4);}
+  .form-select{width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:12px 14px;color:var(--branco-perola);font-family:'Cormorant Garamond',serif;font-size:14px;cursor:pointer;}
+  .form-select:focus{outline:none;border-color:rgba(201,168,76,0.4);}
+
+  /* Camadas */
+  .camadas-box{background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.12);border-radius:12px;padding:16px;margin-bottom:20px;}
+  .camadas-titulo{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--ouro);opacity:0.7;margin-bottom:12px;}
+  .camadas-grid{display:flex;flex-direction:column;gap:8px;}
+  .camada-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;background:rgba(0,0,0,0.2);}
+  .camada-badge{font-family:'Cinzel',serif;font-size:8px;letter-spacing:1px;padding:3px 8px;border-radius:10px;flex-shrink:0;}
+  .badge-primaria{background:rgba(201,168,76,0.2);color:var(--ouro);}
+  .badge-secundaria{background:rgba(100,150,255,0.15);color:#93C5FD;}
+  .badge-terciaria{background:rgba(150,100,255,0.15);color:#C4B5FD;}
+  .camada-desc{font-size:12px;color:var(--cinza-suave);font-style:italic;}
+
+  /* Botão gerar */
+  .btn-gerar{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--verde-nav);color:white;padding:16px;border-radius:8px;font-family:'Cinzel',serif;font-size:12px;letter-spacing:2px;cursor:pointer;border:none;transition:all 0.3s ease;box-shadow:0 4px 20px rgba(22,163,74,0.3);}
+  .btn-gerar:hover{background:#15803d;transform:translateY(-2px);}
+  .btn-gerar:disabled{background:#374151;cursor:not-allowed;transform:none;box-shadow:none;}
+
+  /* Loading */
+  .loading{display:none;text-align:center;padding:24px;}
+  .loading.ativo{display:block;}
+  .loading-texto{font-style:italic;color:var(--cinza-suave);font-size:14px;margin-top:12px;}
+  .dots{display:inline-flex;gap:4px;}
+  .dot{width:6px;height:6px;background:var(--ouro);border-radius:50%;animation:bounce 1.2s ease-in-out infinite;}
+  .dot:nth-child(2){animation-delay:0.2s;}
+  .dot:nth-child(3){animation-delay:0.4s;}
+  @keyframes bounce{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
+
+  /* Resultado */
+  .resultado-box{display:none;background:rgba(0,0,0,0.35);border:1px solid rgba(201,168,76,0.2);border-radius:16px;padding:22px;margin-bottom:20px;}
+  .resultado-box.ativo{display:block;}
+  .resultado-titulo{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;color:var(--ouro);opacity:0.8;margin-bottom:16px;display:block;}
+  .resultado-categoria{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--ouro);opacity:0.5;margin-bottom:12px;}
+
+  /* Cards de dados */
+  .dados-grid{display:flex;flex-direction:column;gap:8px;}
+  .dado-item{background:rgba(0,0,0,0.25);border:1px solid rgba(201,168,76,0.1);border-radius:10px;padding:12px 14px;}
+  .dado-label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--ouro);opacity:0.6;margin-bottom:4px;}
+  .dado-valor{font-size:14px;color:var(--branco-perola);line-height:1.5;}
+
+  .resultado-acoes{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+  .btn-novo{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);color:var(--ouro);padding:13px;border-radius:8px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;cursor:pointer;transition:all 0.3s ease;}
+  .btn-novo:hover{background:rgba(201,168,76,0.2);}
+  .btn-salvar{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--amarelo-nav);color:white;padding:13px;border-radius:8px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;cursor:pointer;border:none;transition:all 0.3s ease;}
+  .btn-salvar:hover{background:#a16207;transform:translateY(-2px);}
+  .btn-lapidar{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(30,58,30,0.6);border:1px solid rgba(100,200,100,0.2);color:#86efac;padding:13px;border-radius:8px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;}
+  .btn-lapidar:hover{background:rgba(30,58,30,0.9);}
+
+  .nav-rodape{display:flex;flex-direction:column;gap:10px;margin-top:20px;}
+  .btn-reclamacao{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.25);color:#FCA5A5;padding:12px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;}
+  .btn-reclamacao:hover{background:rgba(220,38,38,0.2);}
+  .btn-sair{display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:1px solid rgba(156,163,175,0.2);color:var(--cinza-suave);padding:12px;border-radius:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:all 0.3s ease;}
+  .btn-sair:hover{border-color:rgba(220,38,38,0.4);color:#FCA5A5;}
+  .rodape-inst{text-align:center;margin-top:20px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--ouro);opacity:0.3;}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="container">
+
+  <a href="celeiro_hall.html" class="btn-voltar">← Hall do Celeiro</a>
+
+  <div class="dept-header">
+    <p class="dept-subtitulo">✦ GERAÇÃO DE DADOS ✦</p>
+    <h1 class="dept-titulo">Máquina de Geração de Dados</h1>
+    <div class="linha-divisora"></div>
+    <p class="dept-desc">Selecione a categoria, informe tema e território — a máquina gera os dados narrativos para sua obra.</p>
+  </div>
+
+  <div class="form-box">
+
+    <label class="form-label">✦ CATEGORIA</label>
+    <div class="categoria-grid">
+      <button class="categoria-btn ativo" onclick="selecionarCategoria(this,'Cordel')">
+        <span class="cat-icone">📜</span>
+        <span class="cat-nome">Cordel</span>
+      </button>
+      <button class="categoria-btn" onclick="selecionarCategoria(this,'Poesia')">
+        <span class="cat-icone">✏️</span>
+        <span class="cat-nome">Poesia</span>
+      </button>
+      <button class="categoria-btn" onclick="selecionarCategoria(this,'Prosa')">
+        <span class="cat-icone">📖</span>
+        <span class="cat-nome">Prosa</span>
+      </button>
+      <button class="categoria-btn" onclick="selecionarCategoria(this,'Híbrido')">
+        <span class="cat-icone">🔀</span>
+        <span class="cat-nome">Híbrido</span>
+      </button>
+    </div>
+
+    <div class="campos-grid">
+      <div class="campo-grupo">
+        <label class="form-label">✦ TEMA</label>
+        <input type="text" id="inputTema" class="form-input" placeholder="Ex: amor proibido, guerra, saudade, natureza...">
+      </div>
+      <div class="campo-grupo">
+        <label class="form-label">✦ TERRITÓRIO</label>
+        <input type="text" id="inputTerritorio" class="form-input" placeholder="Ex: Nordeste brasileiro, Europa medieval, futuro distópico...">
+      </div>
+      <div class="campo-grupo">
+        <label class="form-label">✦ TEMPO NARRATIVO</label>
+        <select id="selectTempo" class="form-select">
+          <option value="Presente">Presente</option>
+          <option value="Passado">Passado</option>
+          <option value="Futuro">Futuro</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="camadas-box">
+      <p class="camadas-titulo">✦ AS 3 CAMADAS GERADAS</p>
+      <div class="camadas-grid">
+        <div class="camada-item">
+          <span class="camada-badge badge-primaria">PRIMÁRIA</span>
+          <p class="camada-desc">Predominante — o elemento central da obra</p>
+        </div>
+        <div class="camada-item">
+          <span class="camada-badge badge-secundaria">SECUNDÁRIA</span>
+          <p class="camada-desc">Complementar — aprofunda e enriquece</p>
+        </div>
+        <div class="camada-item">
+          <span class="camada-badge badge-terciaria">TERCIÁRIA</span>
+          <p class="camada-desc">Auxiliar — detalhe que completa o universo</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-gerar" id="btnGerar" onclick="gerarDados()">⚡ Gerar Dados Narrativos</button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <p class="loading-texto">Gerando dados para sua obra...</p>
+  </div>
+
+  <div class="resultado-box" id="resultadoBox">
+    <span class="resultado-titulo">✦ DADOS GERADOS</span>
+    <p class="resultado-categoria" id="resultadoCategoria"></p>
+    <div class="dados-grid" id="dadosGrid"></div>
+    <div class="resultado-acoes">
+      <button class="btn-novo" onclick="gerarDados()">⚡ Gerar Novos Dados</button>
+      <button class="btn-salvar" onclick="salvarDados()">⬇ Salvar como .txt</button>
+      <a href="lapidar.html" class="btn-lapidar">💎 Ir para o Lapidar</a>
+    </div>
+  </div>
+
+  <div class="nav-rodape">
+    <a href="cicile_reclamacao.html?departamento=Maquina%20de%20Dados" class="btn-reclamacao">⚑ Reclamação</a>
+    <a href="celeiro_entrada.html" class="btn-sair">✕ Sair do Celeiro</a>
+  </div>
+  <p class="rodape-inst">✦ CELEIRO LITERÁRIO · SITE DAS LETRAS EDIÇÕES LITERÁRIAS ✦</p>
+
+</div>
+<script>
+  const sc=document.getElementById('stars');
+  for(let i=0;i<50;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--o:${Math.random()*0.3+0.05};animation-delay:${Math.random()*4}s;`;sc.appendChild(s);}
+
+  let categoriaSelecionada='Cordel';
+  let dadosGerados='';
+
+  function selecionarCategoria(btn,cat){
+    document.querySelectorAll('.categoria-btn').forEach(b=>b.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    categoriaSelecionada=cat;
+  }
+
+  async function gerarDados(){
+    const tema=document.getElementById('inputTema').value.trim();
+    const territorio=document.getElementById('inputTerritorio').value.trim();
+    const tempo=document.getElementById('selectTempo').value;
+
+    if(!tema||!territorio){alert('Por favor, informe o Tema e o Território.');return;}
+
+    document.getElementById('btnGerar').disabled=true;
+    document.getElementById('loading').classList.add('ativo');
+    document.getElementById('resultadoBox').classList.remove('ativo');
+
+    const prompt=`Você é a Máquina de Geração de Dados Narrativos do Celeiro Literário — Site das Letras Edições Literárias.
+
+Gere dados narrativos completos para uma obra literária com os seguintes parâmetros:
+
+Categoria: ${categoriaSelecionada}
+Tema: ${tema}
+Território: ${territorio}
+Tempo narrativo: ${tempo}
+
+Gere os seguintes dados organizados em JSON puro (sem markdown, sem explicações, apenas o JSON):
+{
+  "categoria": "${categoriaSelecionada}",
+  "tema": "...",
+  "territorio": "...",
+  "tempo_narrativo": "${tempo}",
+  "epoca": "...",
+  "local_especifico": "...",
+  "protagonista": "nome, idade, característica principal",
+  "antagonista": "nome, idade, característica principal",
+  "personagens_secundarios": ["personagem 1", "personagem 2", "personagem 3"],
+  "conflito_central": "...",
+  "tom_narrativo": "...",
+  "ideia_base": "...",
+  "camada_primaria": "elemento predominante da obra",
+  "camada_secundaria": "elemento complementar",
+  "camada_terciaria": "elemento auxiliar",
+  "incipit_sugerido": "primeira frase ou verso sugerido para iniciar a obra"
+}
+
+Adapte os dados ao estilo da categoria:
+- Cordel: linguagem nordestina, ritmo, xilogravura
+- Poesia: imagem poética, metáfora, musicalidade
+- Prosa: narrativa, cena, tensão dramática
+- Híbrido: mistura de recursos de prosa e poesia`;
+
+    try{
+      const response=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+      });
+      const data=await response.json();
+      const texto=data.content.map(i=>i.text||'').join('');
+      const clean=texto.replace(/```json|```/g,'').trim();
+      const json=JSON.parse(clean);
+      exibirDados(json);
+    }catch(err){
+      alert('Erro ao gerar dados. Tente novamente.');
+      console.error(err);
+    }finally{
+      document.getElementById('btnGerar').disabled=false;
+      document.getElementById('loading').classList.remove('ativo');
+    }
+  }
+
+  function exibirDados(json){
+    dadosGerados=JSON.stringify(json,null,2);
+    document.getElementById('resultadoCategoria').textContent=`✦ ${json.categoria} · ${json.tempo_narrativo}`;
+
+    const campos=[
+      {label:'ÉPOCA',valor:json.epoca},
+      {label:'LOCAL ESPECÍFICO',valor:json.local_especifico},
+      {label:'PROTAGONISTA',valor:json.protagonista},
+      {label:'ANTAGONISTA',valor:json.antagonista},
+      {label:'PERSONAGENS SECUNDÁRIOS',valor:Array.isArray(json.personagens_secundarios)?json.personagens_secundarios.join(' · '):json.personagens_secundarios},
+      {label:'CONFLITO CENTRAL',valor:json.conflito_central},
+      {label:'TOM NARRATIVO',valor:json.tom_narrativo},
+      {label:'IDEIA BASE',valor:json.ideia_base},
+      {label:'🥇 CAMADA PRIMÁRIA',valor:json.camada_primaria},
+      {label:'🥈 CAMADA SECUNDÁRIA',valor:json.camada_secundaria},
+      {label:'🥉 CAMADA TERCIÁRIA',valor:json.camada_terciaria},
+      {label:'✦ INCIPIT SUGERIDO',valor:json.incipit_sugerido},
+    ];
+
+    const grid=document.getElementById('dadosGrid');
+    grid.innerHTML=campos.map(c=>`
+      <div class="dado-item">
+        <p class="dado-label">${c.label}</p>
+        <p class="dado-valor">${c.valor||'—'}</p>
+      </div>
+    `).join('');
+
+    document.getElementById('resultadoBox').classList.add('ativo');
+    document.getElementById('resultadoBox').scrollIntoView({behavior:'smooth'});
+  }
+
+  function salvarDados(){
+    if(!dadosGerados)return;
+    const blob=new Blob([dadosGerados],{type:'text/plain;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=`dados_${categoriaSelecionada.toLowerCase()}_${Date.now()}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+</script>
+</body>
+</html>
